@@ -133,3 +133,9 @@
 ```
 <adjective> ::= [a-z]+
 ```
+
+```
+<preposition> ::= 'to'
+                 |'with'
+                 |'from' ...
+```
