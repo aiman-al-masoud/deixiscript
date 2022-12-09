@@ -12,6 +12,6 @@
     },
 
     "include": [
-      "app/src/**/*", "app/src/types",
+      "app/**/*", "app/src/types",
     ]
 }
