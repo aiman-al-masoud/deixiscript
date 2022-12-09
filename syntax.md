@@ -5,7 +5,7 @@
 
 ```
 <declaration> ::= <simple>
-                 |<complex>
+                 |<compound>
 ```
 
 ```
@@ -14,20 +14,20 @@
 ```
 
 ```
-<complex> ::= <subordination>
-             |<conjunction>
+<compound> ::= <complex>
+             |<conjunctive>
 ```
 
 ```
-<subordination> ::=  <subord_conj> <simple> ['then'] <simple>
+<complex> ::=  <subord_conj> <simple> ['then'] <simple>
                     |<simple> <subord_conj> <simple>
 ```
 
 ```
-<conjunction> ::= <simple> <conj_conj> <simple>
+<conjunctive> ::= <simple> <conj_conj> <simple>
                  |<simple> <conj_conj> <iverb> <complement>*
                  |<simple> <conj_conj> <mverb> <object> <complement>*
-                 |<conjunction> <conj_conj> <conjunction>
+                 |<conjunctive> <conj_conj> <conjunctive>
 ```
 
 ```
