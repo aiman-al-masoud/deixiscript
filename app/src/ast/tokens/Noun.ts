@@ -1,7 +1,8 @@
 import Universe from "../../universe/Universe";
 import Token from "../interfaces/Token";
+import AbstractToken from "./AbstractToken";
 
-export default class Noun implements Token{
+export default class Noun extends AbstractToken{
     
     exec(universe: Universe) {
         throw new Error("Method not implemented.");

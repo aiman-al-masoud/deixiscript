@@ -1,5 +1,4 @@
 export default [
     "a",
-    "an",
-    "the"
+    "an"
 ]
