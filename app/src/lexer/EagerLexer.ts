@@ -7,7 +7,9 @@ export default class EagerLexer implements Lexer{
     protected readonly tokens:Token[]
     protected _pos:number
 
-    constructor(readonly sourceCode:string){ //TODO: reconstruct "do not" and "does not" tokens
+    constructor(readonly sourceCode:string){ 
+        //TODO: reconstruct "do not" and "does not" tokens
+        //TODO: nouns vs adjectives
         this.tokens = sourceCode.split(/\s+|\./).map(e=>!e?'.':e).map(tokenOf)
         this._pos = 0
     }
