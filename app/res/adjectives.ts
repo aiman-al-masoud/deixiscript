@@ -1,4 +1,5 @@
 export default [
     "big",
-    "small"
+    "small",
+    "helpful"
 ]

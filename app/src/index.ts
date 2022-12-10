@@ -34,4 +34,5 @@ session.consult('capra(webpack). ');
 // console.log(getParser('the big cat on the table is eating tuna').parse() )
 // console.log(getParser('the big cat on the mat').parse() )
 // console.log(getParser('every dog is stupid').parse() )
-console.log(getParser('the cat that is smart').parse() )
+// console.log(getParser('the cat that is smart').parse() )
+console.log(getParser('nodejs is not helpful').parse() )
