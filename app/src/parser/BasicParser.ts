@@ -32,20 +32,21 @@ export default class BasicParser implements Parser {
         try { return method() } catch { this.lx.backTo(memento) }
     }
 
-    private errorOut(errorMsg:string){
+    private errorOut(errorMsg: string):Ast {
+        console.debug(errorMsg)
         throw new Error(errorMsg)
-        return new FullStop('.')
     }
 
     parse(): Ast {
         return this.try(this.parseDeclaration)
             ?? this.try(this.parseQuestion)
-            ?? this.errorOut('FAILED')
+            ?? this.errorOut('FAILED: parse()')
     }
 
     protected parseDeclaration(): Declaration {
-        const memento = this.lx.pos
-        try { return this.parseSimple() } catch { }
+        return this.try(this.parseSimple)
+            ?? this.try(this.parseCompound)
+            ?? this.errorOut('FAILED: parseDeclaration()')
     }
 
     protected parseQuestion(): Question {
