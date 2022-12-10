@@ -1,4 +1,4 @@
-Based on a mapping between verbs and methods, and between nouns and objects.
+Based on a mapping between verbs and methods, and between nouns and objects. TDLR: verbs are method wrappers and nouns are object wrappers.
 
 the first array concatenates with the second array
 
@@ -19,3 +19,4 @@ become -> a predicate that assigns new properties to existing entities
 red -> css color
 
 if the button is red, then the ...
+
