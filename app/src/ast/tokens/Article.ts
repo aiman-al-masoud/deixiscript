@@ -1,6 +1,5 @@
 import definite_articles from "../../../res/definite_articles";
 import Universe from "../../universe/Universe";
-import Token from "../interfaces/Token";
 import AbstractToken from "./AbstractToken";
 
 export default class Article extends AbstractToken{
@@ -11,6 +10,10 @@ export default class Article extends AbstractToken{
 
     isDefinite(){
         return definite_articles.includes(this.string)
+    }
+
+    toString(){
+        return `Article(${this.string}, isDefinite=${this.isDefinite()})`
     }
 
 }
