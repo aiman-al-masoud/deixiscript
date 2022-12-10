@@ -4,7 +4,6 @@ import CompoundSentence from "../ast/interfaces/CompoundSentence";
 import Declaration from "../ast/interfaces/Declaration";
 import Question from "../ast/interfaces/Question";
 import SimpleSentence from "../ast/interfaces/SimpleSentence";
-import Token from "../ast/interfaces/Token";
 import VerbSentence from "../ast/interfaces/VerbSentence";
 import Complement from "../ast/phrases/Complement";
 import NounPhrase from "../ast/phrases/NounPhrase";
@@ -16,26 +15,25 @@ import CopulaSentence from "../ast/sentences/CopulaSentence";
 import IntransitiveSentence from "../ast/sentences/IntransitiveSentence";
 import MonotransitiveSentence from "../ast/sentences/MonotransitiveSentence";
 import Copula from "../ast/tokens/Copula";
-import FullStop from "../ast/tokens/FullStop";
 import Negation from "../ast/tokens/Negation";
 import Lexer, { getLexer } from "../lexer/Lexer";
 import Parser from "./Parser";
 
 export default class BasicParser implements Parser {
 
-    private lx: Lexer
+    protected lx: Lexer
 
     constructor(sourceCode: string) {
         this.lx = getLexer(sourceCode)
     }
 
-    private try<T extends Ast>(method: () => T) {
+    protected try<T extends Ast>(method: () => T) {
         const memento = this.lx.pos
         try { return method() } catch { this.lx.backTo(memento) }
     }
 
-    private errorOut(errorMsg: string): Ast {
-        console.debug(errorMsg)
+    protected errorOut(errorMsg: string): Ast {
+        this.lx.croak(errorMsg)
         throw new Error(errorMsg)
     }
 
@@ -77,16 +75,16 @@ export default class BasicParser implements Parser {
     protected parseCopulaSentence(): CopulaSentence {
 
         const subject = this.parseNounPhrase()
-        const copula = this.assert<Copula>(this.lx.peek, 'FAILED: parseCopulaSentence(), expected copula')
-        const negation = this.softAssert<Negation>(this.lx.peek)
+        const copula = this.lx.assert<Copula>({errorMsg:'FAILED: parseCopulaSentence(), expected copula'})
+        const negation = this.lx.assert<Negation>({errorOut:false})
         const predicate = this.parseNounPhrase()
 
-        return new CopulaSentence(subject, copula, predicate, negation)
+        return new CopulaSentence(subject, copula as Copula, predicate, negation)
 
     }
 
     protected parseComplex(): ComplexSentence {
-
+        
     }
 
     protected parseConjunctive(): ConjunctiveSentence {
@@ -102,7 +100,7 @@ export default class BasicParser implements Parser {
     }
 
     protected parseBinaryQuestion(): BinaryQuestion {
-        
+
     }
 
     protected parseCopulaQuestion(): CopulaQuestion {
@@ -110,7 +108,7 @@ export default class BasicParser implements Parser {
     }
 
     protected parseNounPhrase(): NounPhrase {
-
+        
     }
 
     protected parseComplement(): Complement {
@@ -119,28 +117,6 @@ export default class BasicParser implements Parser {
 
     protected parseSubordinateClause(): SubordinateClause {
 
-    }
-
-    protected check<T extends Token>(t: T): t is T {
-        return t !== undefined
-    }
-
-    protected assert<T extends Token>(t: Token, errorMsg: string): T {
-        if (this.check(t)) {
-            this.lx.next()
-            return (t as T)
-        } else {
-            throw new Error(errorMsg)
-        }
-    }
-
-    protected softAssert<T extends Token>(t: Token): T | undefined {
-        if (this.check(t)) {
-            this.lx.next()
-            return (t as T)
-        } else {
-            return undefined
-        }
     }
 
 
