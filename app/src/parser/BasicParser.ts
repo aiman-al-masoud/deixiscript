@@ -76,33 +76,12 @@ export default class BasicParser implements Parser {
 
     protected parseCopulaSentence(): CopulaSentence {
 
-        // const subject = this.parseNounPhrase()
-        
-        // if ( !(this.lx.peek instanceof Copula) ){
-        //     throw new Error('FAILED: parseCopulaSentence()')
-        // }
-
-        // const copula = this.lx.peek
-        // this.lx.next()
-
-        // let negation:Negation
-
-        // if ( this.lx.peek instanceof Negation ){
-        //     negation = this.lx.peek
-        // }
-
-        // const predicate = this.parseNounPhrase()
-
-
-
-        /////////////////////////////
-
-
         const subject = this.parseNounPhrase()
-        const copula = this.eat<Copula>(this.lx.peek, 'Expected copula')
-        const negation = this.eat<Negation>(this.lx.peek, '', false)
+        const copula = this.assert<Copula>(this.lx.peek, 'FAILED: parseCopulaSentence(), expected copula')
+        const negation = this.softAssert<Negation>(this.lx.peek)
         const predicate = this.parseNounPhrase()
-        return new CopulaSentence(subject, copula as Copula, predicate, negation)
+
+        return new CopulaSentence(subject, copula, predicate, negation)
 
     }
 
@@ -111,10 +90,6 @@ export default class BasicParser implements Parser {
     }
 
     protected parseConjunctive(): ConjunctiveSentence {
-
-    }
-
-    protected parseCopulaSentence(): CopulaSentence {
 
     }
 
@@ -127,7 +102,7 @@ export default class BasicParser implements Parser {
     }
 
     protected parseBinaryQuestion(): BinaryQuestion {
-
+        
     }
 
     protected parseCopulaQuestion(): CopulaQuestion {
@@ -146,20 +121,28 @@ export default class BasicParser implements Parser {
 
     }
 
-    check<T extends Token>(t:T):t is T{
-        return t!==undefined
+    protected check<T extends Token>(t: T): t is T {
+        return t !== undefined
     }
 
-    eat<T extends Token>(t:Token, errorMsg:string, throwError=true):T|undefined{
-        if (this.check(t)){
+    protected assert<T extends Token>(t: Token, errorMsg: string): T {
+        if (this.check(t)) {
             this.lx.next()
             return (t as T)
-        }else if (throwError){
+        } else {
             throw new Error(errorMsg)
-        }else{
+        }
+    }
+
+    protected softAssert<T extends Token>(t: Token): T | undefined {
+        if (this.check(t)) {
+            this.lx.next()
+            return (t as T)
+        } else {
             return undefined
         }
     }
+
 
 
 }
