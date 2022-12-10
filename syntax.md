@@ -74,11 +74,28 @@
 ```
 
 ```
-<subordinate_clause> ::= <rel_pro> <copula> <subject>
-                        |<rel_pro> <iverb> <complement>*
-                        |<rel_pro> <mverb> <object> <complement>*
-                        |<rel_pro> <subject> <mverb> <complement>*
+<subordinate_clause> ::= <copula_subordinate_clause>
+                        |<iverb_subordinate_clause>
+                        |<mverb_subordinate_clause1> 
+                        |<mverb_subordinate_clause2>
 ```
+
+```
+<copula_subordinate_clause> ::= <rel_pro> <copula> <subject>
+```
+
+```
+<iverb_subordinate_clause> ::= <rel_pro> <iverb> <complement>*
+```
+
+```
+<mverb_subordinate_clause1> ::= <rel_pro> <mverb> <object> <complement>*
+```
+
+```
+<mverb_subordinate_clause2> ::= <rel_pro> <subject> <mverb> <complement>*
+```
+
 
 ```
 <quantifier> ::= 'every'

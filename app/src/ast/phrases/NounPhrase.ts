@@ -5,7 +5,7 @@ import Article from "../tokens/Article";
 import Noun from "../tokens/Noun";
 import Quantifier from "../tokens/Quantifier";
 import Complement from "./Complement";
-import SubordinateClause from "./SubordinateClause";
+import SubordinateClause from "../interfaces/SubordinateClause";
 
 export default class NounPhrase implements Phrase {
 
