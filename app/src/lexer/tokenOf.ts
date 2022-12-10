@@ -29,6 +29,7 @@ import SubordinatingConjunction from '../ast/tokens/SubordinatingConjunction'
 import Noun from '../ast/tokens/Noun'
 import Adjective from '../ast/tokens/Adjective'
 import Token from '../ast/interfaces/Token'
+import FullStop from '../ast/tokens/FullStop'
 
 export default function tokenOf(string:string):Token{
     
@@ -60,6 +61,8 @@ export default function tokenOf(string:string):Token{
         return new Noun(string)
     }else if (adjectives.includes(string)){
         return new Adjective(string)
+    }else if ('.' === string){
+        return new FullStop('.')
     }
 
     return new Adjective(string)
