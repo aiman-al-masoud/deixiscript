@@ -162,7 +162,7 @@ export default class BasicParser implements Parser {
         console.debug('parseNounPhrase()', noun)
 
         const subordinateClause = undefined // this.parseSubordinateClause() //TODO
-        const complements : Complement[] = []  // = this.parseComplements() //TODO
+        const complements = this.parseComplements() //TODO
 
         return new NounPhrase(adjectives, complements, noun, quantifier, article, subordinateClause)
     }

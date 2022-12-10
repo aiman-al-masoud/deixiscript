@@ -1,3 +1,5 @@
 export default [
-    "cat"
+    "cat",
+    "mat",
+    "table"
 ]

@@ -28,10 +28,8 @@ session.consult('capra(webpack). ');
 // console.log(lexer.peek)
 ///////////////////////////////////////////////////////
 
-const parser = getParser('the cat is big')
-console.log(parser)
-const ast = parser.parse()
-console.log(ast)
 
-
-
+// console.log(getParser('the cat is big').parse())
+// console.log(getParser('the big cat').parse() )
+// console.log(getParser('the big cat on the table is eating tuna').parse() )
+console.log(getParser('the big cat on the mat').parse() )

@@ -5,7 +5,7 @@ import NounPhrase from "./NounPhrase";
 
 export default class Complement implements Phrase{
 
-    constructor(preposition:Preposition, nounPhrase:NounPhrase){
+    constructor(readonly preposition:Preposition, readonly nounPhrase:NounPhrase){
 
     }
     
