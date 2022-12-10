@@ -15,7 +15,11 @@ import CopulaSentence from "../ast/sentences/CopulaSentence";
 import IntransitiveSentence from "../ast/sentences/IntransitiveSentence";
 import MonotransitiveSentence from "../ast/sentences/MonotransitiveSentence";
 import Copula from "../ast/tokens/Copula";
+import IVerb from "../ast/tokens/IVerb";
+import MVerb from "../ast/tokens/MVerb";
 import Negation from "../ast/tokens/Negation";
+import SubordinatingConjunction from "../ast/tokens/SubordinatingConjunction";
+import Then from "../ast/tokens/Then";
 import Lexer, { getLexer } from "../lexer/Lexer";
 import Parser from "./Parser";
 
@@ -40,6 +44,7 @@ export default class BasicParser implements Parser {
     parse(): Ast {
         return this.try(this.parseDeclaration)
             ?? this.try(this.parseQuestion)
+            ?? this.try(this.parseNounPhrase) // for quick topic reference
             ?? this.errorOut('FAILED: parse()')
     }
 
@@ -85,22 +90,47 @@ export default class BasicParser implements Parser {
 
     protected parseComplex(): ComplexSentence {
         
+        const subconj = this.lx.assert<SubordinatingConjunction>({errorOut:false})
+
+        if(subconj){
+            const condition = this.parseSimple()
+            this.lx.assert<Then>({errorOut:false})
+            const outcome = this.parseSimple()
+            return new ComplexSentence(condition, outcome, subconj)
+        }else{
+            const outcome = this.parseSimple()
+            const subconj = this.lx.assert<SubordinatingConjunction>({errorOut:true, errorMsg:'expected subordinating conjunction'})
+            const condition = this.parseSimple()
+            return new ComplexSentence(condition, outcome, subconj as SubordinatingConjunction)
+        }
+
     }
 
     protected parseConjunctive(): ConjunctiveSentence {
-
+           
     }
 
     protected parseIntransitiveSentence(): IntransitiveSentence {
-
+        const subject = this.parseNounPhrase()
+        const negation = this.lx.assert<Negation>({errorOut:false})
+        const iverb = this.lx.assert<IVerb>({errorMsg:'expected i-verb'})
+        const complements = this.parseComplements()
+        return new IntransitiveSentence(subject, iverb as IVerb, complements, negation)
     }
 
     protected parseMonotransitiveSentence(): MonotransitiveSentence {
-
+        const subject = this.parseNounPhrase()
+        const negation = this.lx.assert<Negation>({errorOut:false})
+        const mverb = this.lx.assert<MVerb>({errorMsg:'expected i-verb'})
+        const cs1 = this.parseComplements()
+        const object = this.parseNounPhrase()
+        const cs2 = this.parseComplements()
+        return new MonotransitiveSentence(subject, mverb as MVerb, object, cs1.concat(cs2), negation)
     }
 
     protected parseBinaryQuestion(): BinaryQuestion {
-
+        return this.try(this.parseCopulaQuestion) 
+        ?? this.errorOut('FAILED: parseBinaryQuestion()')
     }
 
     protected parseCopulaQuestion(): CopulaQuestion {
@@ -109,6 +139,10 @@ export default class BasicParser implements Parser {
 
     protected parseNounPhrase(): NounPhrase {
         
+    }
+
+    protected parseComplements(): Complement[] {
+
     }
 
     protected parseComplement(): Complement {
