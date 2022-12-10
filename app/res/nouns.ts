@@ -1,5 +1,6 @@
 export default [
     "cat",
     "mat",
-    "table"
+    "table",
+    "dog"
 ]
