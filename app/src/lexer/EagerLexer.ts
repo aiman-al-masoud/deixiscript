@@ -1,6 +1,9 @@
 import Token from "../ast/interfaces/Token";
-import Lexer, { AssertArgs } from "./Lexer";
+import AbstractToken from "../ast/tokens/AbstractToken";
+import Lexer, { AssertArgs, Constructor } from "./Lexer";
 import tokenOf from "./tokenOf";
+
+
 
 export default class EagerLexer implements Lexer{
 
@@ -34,18 +37,30 @@ export default class EagerLexer implements Lexer{
         throw new Error(`${errorMsg} at ${this._pos}`);
     }
 
-    assert <T extends Token>(args:AssertArgs): T|undefined {
 
-        const check = <T extends Token>(t:T):t is T=>t!==undefined
 
-        if (check(this.peek as T)) {
+    
+    /**
+     * Return current token iff of given type and move to next; 
+     * else return undefined and don't move.
+     * @param args 
+     * @returns 
+     */
+    assert <T>(clazz:Constructor<T>, args:AssertArgs): T|undefined {
+
+        const current = this.peek
+
+        if (current instanceof clazz){
             this.next()
-            return (this.peek as T)
+            return current
         } else if (args.errorOut??true) {
+            console.log(`not a ${clazz.name}`)
             this.croak(args.errorMsg??'')
+            return undefined
         }else{
             return undefined
         }
+
     }
 
 }

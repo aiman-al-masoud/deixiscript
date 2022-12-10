@@ -53,8 +53,12 @@
 ```
 
 ```
-<binary_question> ::= <copula> <subject> <subject>
+<binary_question> ::= <copula_question>
                      |<hverb> <verb_sentence>
+```
+
+```
+<copula_question> :: = <copula> <subject> <subject> 
 ```
 
 ```

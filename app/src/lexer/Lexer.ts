@@ -7,7 +7,7 @@ export default interface Lexer{
     get peek():Token
     get pos():number
     croak(errorMsg:string):void   
-    assert<T extends Token>(args:AssertArgs): T|undefined 
+    assert <T>(clazz:Constructor<T>, args:AssertArgs): T|undefined 
 }
 
 export interface AssertArgs{
@@ -18,3 +18,5 @@ export interface AssertArgs{
 export function getLexer(sourceCode:string){
     return new EagerLexer(sourceCode)
 }
+
+export type Constructor<T> = new (...args: any[]) => T
