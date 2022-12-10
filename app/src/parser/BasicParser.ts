@@ -15,91 +15,102 @@ import CopulaSentence from "../ast/sentences/CopulaSentence";
 import IntransitiveSentence from "../ast/sentences/IntransitiveSentence";
 import MonotransitiveSentence from "../ast/sentences/MonotransitiveSentence";
 import Copula from "../ast/tokens/Copula";
+import FullStop from "../ast/tokens/FullStop";
 import Lexer, { getLexer } from "../lexer/Lexer";
 import Parser from "./Parser";
 
-export default class BasicParser implements Parser{
+export default class BasicParser implements Parser {
 
-    private lx:Lexer
+    private lx: Lexer
 
-    constructor(sourceCode:string){
+    constructor(sourceCode: string) {
         this.lx = getLexer(sourceCode)
     }
-    
-    parse(): Ast {
+
+    private try<T extends Ast>(method: () => T) {
         const memento = this.lx.pos
-        try{ return this.parseDeclaration() }catch{}
-        this.lx.backTo(memento)
-        return this.parseQuestion()
+        try { return method() } catch { this.lx.backTo(memento) }
     }
 
-    protected parseDeclaration():Declaration{
-
+    private errorOut(errorMsg:string){
+        throw new Error(errorMsg)
+        return new FullStop('.')
     }
 
-    protected parseQuestion():Question{
-
+    parse(): Ast {
+        return this.try(this.parseDeclaration)
+            ?? this.try(this.parseQuestion)
+            ?? this.errorOut('FAILED')
     }
 
-    protected parseSimple():SimpleSentence{
-
+    protected parseDeclaration(): Declaration {
+        const memento = this.lx.pos
+        try { return this.parseSimple() } catch { }
     }
 
-    protected parseCompound():CompoundSentence{
-
-    }
-
-    protected parseVerbSentence():VerbSentence{
-
-    }
-
-    protected parseCopulaSentence():CopulaSentence{
+    protected parseQuestion(): Question {
 
     }
 
-    protected parseComplex():ComplexSentence{
+    protected parseSimple(): SimpleSentence {
 
     }
 
-    protected parseConjunctive():ConjunctiveSentence{
+    protected parseCompound(): CompoundSentence {
 
     }
 
-    protected parseCopulaSentence():CopulaSentence{
+    protected parseVerbSentence(): VerbSentence {
 
     }
 
-    protected parseVerbSentence():VerbSentence{
+    protected parseCopulaSentence(): CopulaSentence {
 
     }
 
-    protected parseIntransitiveSentence():IntransitiveSentence{
+    protected parseComplex(): ComplexSentence {
 
     }
 
-    protected parseMonotransitiveSentence():MonotransitiveSentence{
+    protected parseConjunctive(): ConjunctiveSentence {
 
     }
 
-    protected parseBinaryQuestion():BinaryQuestion{
+    protected parseCopulaSentence(): CopulaSentence {
 
     }
 
-    protected parseCopulaQuestion():CopulaQuestion{
+    protected parseVerbSentence(): VerbSentence {
 
     }
 
-    protected parseNounPhrase():NounPhrase{
+    protected parseIntransitiveSentence(): IntransitiveSentence {
 
     }
 
-    protected parseComplement():Complement{
+    protected parseMonotransitiveSentence(): MonotransitiveSentence {
 
     }
 
-    protected parseSubordinateClause():SubordinateClause{
+    protected parseBinaryQuestion(): BinaryQuestion {
 
     }
 
-    
+    protected parseCopulaQuestion(): CopulaQuestion {
+
+    }
+
+    protected parseNounPhrase(): NounPhrase {
+
+    }
+
+    protected parseComplement(): Complement {
+
+    }
+
+    protected parseSubordinateClause(): SubordinateClause {
+
+    }
+
+
 }
