@@ -9,9 +9,9 @@ import SubordinateClause from "./SubordinateClause";
 
 export default class NounPhrase implements Phrase {
 
-    constructor(readonly noun: Noun, 
-                readonly adjectives: Adjective[], 
+    constructor(readonly adjectives: Adjective[], 
                 readonly complements: Complement[], 
+                readonly noun?: Noun, 
                 readonly quantifier?: Quantifier, 
                 readonly article?: Article, 
                 readonly subordClause?: SubordinateClause) {
