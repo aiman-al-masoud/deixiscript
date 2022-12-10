@@ -1,5 +1,6 @@
 import pl from 'tau-prolog'
 import Article from './ast/tokens/Article';
+import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
 import { getLexer } from './lexer/Lexer';
 const session  = pl.create()
@@ -16,9 +17,11 @@ session.consult('capra(webpack). ');
 
 const lexer = getLexer('the cat is a cat.')
 console.log(lexer)
-console.log('token:', lexer.assert(Noun, {errorOut:false}) )
+console.log('is it a noun?', lexer.assert(Noun, {errorOut:false}) )
 console.log(lexer.peek)
-console.log('token:', lexer.assert(Article, {errorOut:false}) )
+console.log('is it a copula?', lexer.assert(Copula, {errorOut:false}) )
+console.log(lexer.peek)
+console.log('is it an article?', lexer.assert(Article, {errorOut:false}) )
 console.log(lexer.peek)
 
 // console.log(lexer.peek)

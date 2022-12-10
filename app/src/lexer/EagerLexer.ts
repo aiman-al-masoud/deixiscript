@@ -54,9 +54,7 @@ export default class EagerLexer implements Lexer{
             this.next()
             return current
         } else if (args.errorOut??true) {
-            console.log(`not a ${clazz.name}`)
             this.croak(args.errorMsg??'')
-            return undefined
         }else{
             return undefined
         }
