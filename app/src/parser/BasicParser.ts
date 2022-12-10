@@ -158,9 +158,7 @@ export default class BasicParser implements Parser {
         }
 
         const noun = this.lx.assert(Noun, { errorOut: false })
-
-        console.debug('parseNounPhrase()', noun)
-
+        
         const subordinateClause = undefined // this.parseSubordinateClause() //TODO
         const complements = this.parseComplements() 
 
