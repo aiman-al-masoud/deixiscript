@@ -22,3 +22,12 @@ red -> css color
 
 > if the button is red, then the ...
 
+
+Verbs -> methods
+Verb Args (including subj, obj, compls) -> method params
+Nouns -> objects
+Adjectives -> object (even nested) attributes
+
+run(predicate, object)
+
+

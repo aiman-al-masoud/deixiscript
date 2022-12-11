@@ -64,8 +64,8 @@ export default class BasicParser implements Parser {
     }
 
     protected parseDeclaration = (): Declaration => {
-        return this.try(this.parseSimple)
-            ?? this.try(this.parseCompound)
+        return this.try(this.parseCompound)
+            ?? this.try(this.parseSimple) 
             ?? this.errorOut('parseDeclaration()')
     }
 
