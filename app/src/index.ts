@@ -7,10 +7,10 @@ import { getParser } from './parser/Parser';
 const session  = pl.create()
 session.consult('capra(webpack). ');
 
-session.query('assertz( red(button) ).');
+session.query('assertz( pressed(button) ).');
 session.answer(a=>{});
 console.log(session.rules)
-session.query('retract( red(button) ). ')
+session.query('retract( pressed(button) ). ')
 session.answer(a=>{});;
 console.log(session.rules);
 
