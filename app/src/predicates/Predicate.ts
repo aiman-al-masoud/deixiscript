@@ -31,9 +31,12 @@ export interface ParamsMap{ // 0-> object, 1-> first method param, 2-> second me
 
 
 export interface PredicateB{
-    adjective:string  // eg: yellow
-    value:any // eg: 'yellow'
+    name:string // eg: color
+    propMap:PropMap // eg: yellow -> 'yellow'
     classes:string[]
-    property:string[] // nested properties, eg: ['style', 'background']
+    property:string[] // if used directly on object, without mentioning name, nested properties, eg: ['style', 'background']
 }
 
+export interface PropMap{
+    string:any
+}
