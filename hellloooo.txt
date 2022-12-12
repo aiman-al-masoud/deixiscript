@@ -1,0 +1,88 @@
+
+Parser: 
+
+	gets: 
+		if the button is pressed the div is red
+		
+	returns:
+		red(div) :- pressed(button)
+
+Brain:
+
+	gets: red(div) :- pressed(button)
+	stores: red(div) :- pressed(button)
+	
+	if executed code is a condition, check if the condition entails listening 
+
+Actuator
+
+	
+	
+	Predicate Resolution Table:
+		What does pressed mean for button?
+		It means you should add a listener.
+	
+
+
+
+
+
+
+SIMPLE CASE: NO DOM EVENTS
+
+
+Input 1:
+first button is black
+second button is black
+second button is red if first button is red
+
+black(button1)
+black(button2)
+red(button2) :- red(button1)
+
+Actuator receives changes and colors both buttons black
+
+Input 2:
+second button is red
+
+Brain should realize that the first button just became red as well, and also that color predicates are mutually exclusive... [1]
+
+Actuator receives changes and repaints
+
+
+OTHER STRATEGY:
+
+1. list known predicates from session.rules()
+2. for each know predicate get all objects that satisfy it
+3. save them
+3. apply change (run assertz)
+4. repeat 1,2
+5. compare with 3, obtain difference 
+
+
+"LOWER LEVEL" PROLOG INTERFACE
+
+assume('red(button).')  // creates a dynamic predicate (assertz)
+retract('red(button).') // retracts the clause of a predicate 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
