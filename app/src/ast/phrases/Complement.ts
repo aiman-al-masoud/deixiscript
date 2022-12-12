@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import Phrase from "../interfaces/Phrase";
 import Preposition from "../tokens/Preposition";
 import NounPhrase from "./NounPhrase";
@@ -9,7 +9,7 @@ export default class Complement implements Phrase{
 
     }
     
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
     

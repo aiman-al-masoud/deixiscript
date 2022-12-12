@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
 import NounPhrase from "../phrases/NounPhrase";
@@ -15,7 +15,7 @@ export default class MonotransitiveSentence implements VerbSentence {
 
     }
 
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
 

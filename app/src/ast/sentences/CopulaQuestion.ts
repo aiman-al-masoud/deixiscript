@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import BinaryQuestion from "../interfaces/BinaryQuestion";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
@@ -9,7 +9,7 @@ export default class CopulaQuestion implements BinaryQuestion{
 
     }
     
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
     

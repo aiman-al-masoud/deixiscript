@@ -1,5 +1,5 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 
 export default interface Ast{
-    exec(universe:Universe):any
+    exec(brain:Brain):any
 }

@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import Phrase from "../interfaces/Phrase";
 import SubordinateClause from "../interfaces/SubordinateClause";
 import Copula from "../tokens/Copula";
@@ -12,7 +12,7 @@ export default class CopulaSubordinateClause implements SubordinateClause{
 
     }
 
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
     

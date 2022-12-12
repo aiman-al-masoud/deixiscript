@@ -1,10 +1,10 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import Token from "../interfaces/Token";
 import AbstractToken from "./AbstractToken";
 
 export default class HVerb extends AbstractToken{
     
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
     

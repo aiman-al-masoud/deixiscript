@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import Phrase from "../interfaces/Phrase";
 import Adjective from "../tokens/Adjective";
 import Article from "../tokens/Article";
@@ -18,7 +18,7 @@ export default class NounPhrase implements Phrase {
 
     }
 
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
 

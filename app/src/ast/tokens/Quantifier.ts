@@ -1,12 +1,12 @@
 import existential_quantifiers from "../../../res/existential_quantifiers";
 import universal_quantifiers from "../../../res/universal_quantifiers";
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import Token from "../interfaces/Token";
 import AbstractToken from "./AbstractToken";
 
 export default class Quantifier extends AbstractToken{
     
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
 

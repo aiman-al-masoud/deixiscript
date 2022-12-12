@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import Token from "../interfaces/Token";
 
 export default abstract class AbstractToken implements Token{
@@ -7,6 +7,6 @@ export default abstract class AbstractToken implements Token{
 
     }
     
-    abstract exec(universe: Universe):any
+    abstract exec(universe: Brain):any
     
 }

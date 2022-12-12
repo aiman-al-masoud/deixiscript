@@ -1,4 +1,4 @@
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import CompoundSentence from "../interfaces/CompoundSentence";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
@@ -9,7 +9,7 @@ export default class ComplexSentence implements CompoundSentence{
 
     }
     
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
     

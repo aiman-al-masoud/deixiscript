@@ -1,10 +1,10 @@
 import definite_articles from "../../../res/definite_articles";
-import Universe from "../../universe/Universe";
+import Brain from "../../brain/Brain";
 import AbstractToken from "./AbstractToken";
 
 export default class Article extends AbstractToken{
     
-    exec(universe: Universe) {
+    exec(universe: Brain) {
         throw new Error("Method not implemented.");
     }
 
