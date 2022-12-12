@@ -53,7 +53,7 @@ Actuator receives changes and repaints
 OTHER STRATEGY:
 
 1. list known predicates from session.rules()
-2. for each know predicate get all objects that satisfy it
+2. for each known predicate get all objects that satisfy it
 3. save them
 3. apply change (run assertz)
 4. repeat 1,2
