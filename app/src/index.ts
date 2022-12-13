@@ -4,7 +4,7 @@ import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
 import { getLexer } from './lexer/Lexer';
 import { getParser } from './parser/Parser';
-import Prolog from './prolog/Prolog';
+import Prolog, { getProlog } from './prolog/Prolog';
 import TauProlog from './prolog/TauProlog';
 // const session  = pl.create()
 // session.consult('capra(webpack). ');
@@ -19,14 +19,18 @@ import TauProlog from './prolog/TauProlog';
 
 // (window as any).session = session;
 
-const pro = new TauProlog() as Prolog
+const pro = getProlog();
 (window as any ).pro = pro
 
-pro.assert('cat(luna)')
+pro.assert('capra(scemo)')
 pro.assert('mammal(peloso)')
 pro.assert('mammal(fido)')
-pro.assert('mammal(X) :- cat(X)')
+pro.assert('mammal(X) :- capra(X)')
 pro.query('mammal(X).').then(a=> console.log(a))
+
+
+// pro.retract('capra(scemo)')
+// pro.query('mammal(X).').then(a=> console.log(a))
 
 // pro.assert('mammal(X) :- cat(X)')
 // pro.assert('cat(luna)')

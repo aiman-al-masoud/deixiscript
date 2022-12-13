@@ -1,3 +1,5 @@
+import TauProlog from "./TauProlog"
+
 export default interface Prolog{
     assert(clause:string, opts?:AssertOpts):void 
     retract(clause:string):void  
@@ -12,4 +14,8 @@ export interface AssertOpts{
 
 export interface PreidcatesOpts{
     arity:number
+}
+
+export function getProlog():Prolog{
+    return new TauProlog()
 }

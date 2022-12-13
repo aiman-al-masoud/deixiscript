@@ -3,7 +3,6 @@ import pl from 'tau-prolog'
 require("tau-prolog/modules/promises.js")(pl);
 
 
-// TODO ALWAYS use PROMISE API!
 export default class TauProlog implements Prolog {
 
     protected session: pl.type.Session
@@ -13,13 +12,8 @@ export default class TauProlog implements Prolog {
     }
 
     assert(clause: string, opts?: AssertOpts): void {
-        // if (clause.includes(':-')){
-            // this.session.consult(`${clause} .`)
-            // this.session.answer(a => { })
-        // }else{
-            this.session.query(`assert${opts?.z ? 'z' : 'a'}( ( ${clause} ) ).`)
-            this.session.answer(a => { console.log('LOG', clause, pl.format_answer(a)) })
-        // }
+        this.session.query(`assert${opts?.z ? 'z' : 'a'}( ( ${clause} ) ).`)
+        this.session.answer(a => { /*console.log('LOG', clause, pl.format_answer(a))*/ })
     }
 
     retract(clause: string): void {
@@ -27,11 +21,12 @@ export default class TauProlog implements Prolog {
         this.session.answer(a => { })
     }
 
-    async query(code: string): Promise<any[]|boolean> {
-        (this.session as any).promiseQuery(code);
-        let answers:any[] = []
+    async query(code: string): Promise<any[] | boolean> {
         
-        for await (let answer of (this.session as any).promiseAnswers()){
+        (this.session as any).promiseQuery(code);
+        let answers: any[] = []
+
+        for await (let answer of (this.session as any).promiseAnswers()) {
             answers.push(answer.links.X.id)
         }
 
