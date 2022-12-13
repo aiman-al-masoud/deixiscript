@@ -2,6 +2,8 @@ import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
 import pl from 'tau-prolog'
 require("tau-prolog/modules/promises.js")(pl);
 
+
+// TODO ALWAYS use PROMISE API!
 export default class TauProlog implements Prolog {
 
     protected session: pl.type.Session
