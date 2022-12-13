@@ -40,3 +40,5 @@ predicates(arity:number):string[]
 Maybe ?:
 
 assume(theme:string, rheme:string):void
+https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
+
