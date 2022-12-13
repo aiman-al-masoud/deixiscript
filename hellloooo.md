@@ -35,7 +35,8 @@ Actuator receives changes and repaints
 assume('red(button).')  // creates a dynamic predicate (assertz)
 retract('red(button).') // retracts the clause of a predicate 
 predicates(arity:number):string[]
-
+isTrue('red(button).')
+query('red(X).')
 
 Maybe ?:
 
