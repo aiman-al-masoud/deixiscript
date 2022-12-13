@@ -30,7 +30,7 @@ Actuator receives changes and repaints
 4. repeat 1,2
 5. compare with 3, obtain difference 
 
-"LOWER LEVEL" PROLOG INTERFACE:
+"LOWER LEVEL" PROLOG INTERFACE: (Maybe not, just code it in implm of Brain)
 
 assume('red(button).')  // creates a dynamic predicate (assertz)
 retract('red(button).') // retracts the clause of a predicate 
