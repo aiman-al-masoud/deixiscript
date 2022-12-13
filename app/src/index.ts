@@ -22,10 +22,16 @@ import TauProlog from './prolog/TauProlog';
 const pro = new TauProlog() as Prolog
 (window as any ).pro = pro
 
-pro.assert('mammal(cat)')
-pro.assert('mammal(dog)')
-pro.assert('mammal(capra)')
+pro.assert('cat(luna)')
+pro.assert('mammal(peloso)')
+pro.assert('mammal(fido)')
+pro.assert('mammal(X) :- cat(X)')
 pro.query('mammal(X).').then(a=> console.log(a))
+
+// pro.assert('mammal(X) :- cat(X)')
+// pro.assert('cat(luna)')
+// pro.query('mammal(X).').then(a=> console.log(a))
+
 
 // pro.assert('mammal(X) :- cat(X)')
 // pro.assert('cat(gattino)')

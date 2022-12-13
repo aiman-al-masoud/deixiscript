@@ -13,8 +13,13 @@ export default class TauProlog implements Prolog {
     }
 
     assert(clause: string, opts?: AssertOpts): void {
-        this.session.query(`assert${opts?.z ? 'z' : 'a'}( ${clause} ).`)
-        this.session.answer(a => { })
+        // if (clause.includes(':-')){
+            // this.session.consult(`${clause} .`)
+            // this.session.answer(a => { })
+        // }else{
+            this.session.query(`assert${opts?.z ? 'z' : 'a'}( ( ${clause} ) ).`)
+            this.session.answer(a => { console.log('LOG', clause, pl.format_answer(a)) })
+        // }
     }
 
     retract(clause: string): void {
