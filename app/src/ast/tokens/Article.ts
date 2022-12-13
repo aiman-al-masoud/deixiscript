@@ -1,4 +1,4 @@
-import definite_articles from "../../../res/definite_articles";
+import definite_articles from "../../../res/tokens/definite_articles";
 import Brain from "../../brain/Brain";
 import AbstractToken from "./AbstractToken";
 

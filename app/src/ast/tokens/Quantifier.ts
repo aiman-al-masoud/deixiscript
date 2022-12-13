@@ -1,5 +1,5 @@
-import existential_quantifiers from "../../../res/existential_quantifiers";
-import universal_quantifiers from "../../../res/universal_quantifiers";
+import existential_quantifiers from "../../../res/tokens/existential_quantifiers";
+import universal_quantifiers from "../../../res/tokens/universal_quantifiers";
 import Brain from "../../brain/Brain";
 import Token from "../interfaces/Token";
 import AbstractToken from "./AbstractToken";
