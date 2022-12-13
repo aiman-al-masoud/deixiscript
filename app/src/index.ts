@@ -4,18 +4,34 @@ import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
 import { getLexer } from './lexer/Lexer';
 import { getParser } from './parser/Parser';
-const session  = pl.create()
-session.consult('capra(webpack). ');
+import Prolog from './prolog/Prolog';
+import TauProlog from './prolog/TauProlog';
+// const session  = pl.create()
+// session.consult('capra(webpack). ');
 
-session.query('assertz( pressed(button) ).');
-session.answer(a=>{});
-console.log(session.rules)
-session.query('retract( pressed(button) ). ')
-session.answer(a=>{});;
-console.log(session.rules);
+// session.query('assertz( pressed(button) ).');
+// session.answer(a=>{});
+// console.log(session.rules)
+// session.query('retract( pressed(button) ). ')
+// session.answer(a=>{});;
+// console.log(session.rules);
 
 
-(window as any).session = session;
+// (window as any).session = session;
+
+const pro = new TauProlog() as Prolog
+(window as any ).pro = pro
+
+pro.assert('mammal(cat)')
+pro.assert('mammal(dog)')
+pro.assert('mammal(capra)')
+pro.query('mammal(X).').then(a=> console.log(a))
+
+// pro.assert('mammal(X) :- cat(X)')
+// pro.assert('cat(gattino)')
+// pro.query('cat(gattino)').then(a=> console.log(a))
+
+
 
 //////////////////////////////////////////////////////////////
 // console.log((tokenOf('a') as Article).isDefinite())
