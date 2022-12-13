@@ -6,4 +6,5 @@ import Predicate from "../predicates/Predicate";
  */
 export default interface Prt{
     get(verb:string, object:any):Predicate
+    getIncompatible(verb:string):Predicate[]
 }
