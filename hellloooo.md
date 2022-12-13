@@ -30,7 +30,7 @@ Actuator receives changes and repaints
 4. repeat 1,2
 5. compare with 3, obtain difference 
 
-"LOWER LEVEL" PROLOG INTERFACE: (Maybe not, just code it in implm of Brain)
+"LOWER LEVEL" PROLOG INTERFACE, make it synchronous and eager:
 
 assume('red(button).')  // creates a dynamic predicate (assertz)
 retract('red(button).') // retracts the clause of a predicate 
@@ -47,6 +47,6 @@ https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
 
 1. Get the predicate from its name
 2. Get the incompatible predicates for that predicate
-3. Remove all (if any) incompatible preidcates from that entity (retract)
+3. Remove all (if any) incompatible predicates from that entity (retract)
 4. Apply the new predicate (assertz)
 
