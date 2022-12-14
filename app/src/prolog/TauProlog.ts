@@ -29,16 +29,20 @@ export default class TauProlog implements Prolog {
         for await (let ans of (this.session as any).promiseAnswers()) {
             
             const fmans = pl.format_answer(ans)
-            // console.log(fmans)
+            
             if(['true', 'false'].includes(fmans)){
                 return fmans==='true'
             }
             
             answers.push(ans.links.X.id)
-
         }
-
-        return answers
+        
+        if( code.split('').find(c=> c.match(/\w+/) && c.toUpperCase()===c) ){ // query contains has var 
+            return answers
+        }else{
+            return false
+        }
+        
     }
 
     predicates(opts?: PreidcatesOpts): string[] {
