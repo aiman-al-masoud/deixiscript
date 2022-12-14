@@ -26,8 +26,15 @@ export default class TauProlog implements Prolog {
         (this.session as any).promiseQuery(code);
         let answers: any[] = []
 
-        for await (let answer of (this.session as any).promiseAnswers()) {
-            answers.push(answer.links.X.id)
+        for await (let ans of (this.session as any).promiseAnswers()) {
+            
+            const fmans = pl.format_answer(ans)
+            if(['true', 'false'].includes(fmans)){
+                return fmans==='true'
+            }
+            
+            answers.push(ans.links.X.id)
+
         }
 
         return answers
