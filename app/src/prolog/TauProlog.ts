@@ -29,7 +29,7 @@ export default class TauProlog implements Prolog {
         for await (let ans of (this.session as any).promiseAnswers()) {
             
             const fmans = pl.format_answer(ans)
-            console.log(fmans)
+            // console.log(fmans)
             if(['true', 'false'].includes(fmans)){
                 return fmans==='true'
             }
