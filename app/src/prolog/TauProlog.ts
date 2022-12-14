@@ -37,7 +37,7 @@ export default class TauProlog implements Prolog {
             answers.push(ans.links.X.id)
         }
         
-        if( code.split('').find(c=> c.match(/\w+/) && c.toUpperCase()===c) ){ // query contains has var 
+        if( code.split('').find(c=> c.match(/\w+/) && c.toUpperCase()===c) ){ // query contains has var  // breaks down if predicate name contains capital letter!
             return answers
         }else{
             return false
