@@ -57,3 +57,4 @@ console.log((window as any).ast = getParser('the color of the button is red').pa
 // console.log(getParser('nodejs is not helpful').parse() )
 // console.log(getParser('if the dog is stupid then the cat is happy').parse() )
 // console.log(getParser('the cat is happy if the dog is stupid').parse() )
+// console.log((window as any).ast = getParser('the color of the button is red').parse())
