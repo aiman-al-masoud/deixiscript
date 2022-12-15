@@ -28,6 +28,6 @@ export interface ParamsMap{ // 0-> object, 1-> first method param, 2-> second me
     to?:number
 }
 
-export interface ValuesMap{
-    string:any
+export interface ValuesMap {
+    [key:string]:any
 }
