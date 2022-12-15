@@ -1,6 +1,6 @@
 ## PROBLEM
 
-DRS that should mean the same thing (and may indeed produce the same side effects) might not be exactly identical.
+DRSs that should mean the same thing (and may indeed produce the same side effects) might not be exactly identical.
 
 This may be a problem.
 
