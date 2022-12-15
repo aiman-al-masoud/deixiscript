@@ -1,6 +1,8 @@
+import { Id } from "./Actuator";
+
 /**
  * Entity Resolution Table
  */
 export default interface Ert{
-    get(id:number):any
+    get(id:Id):any
 }

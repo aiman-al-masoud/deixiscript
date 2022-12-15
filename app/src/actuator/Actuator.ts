@@ -7,7 +7,7 @@ export interface Action {
     args: ActionArgs
 }
 
-type Id = number | string
+export type Id = number | string
 
 export interface ActionArgs {
     subject?: Id
