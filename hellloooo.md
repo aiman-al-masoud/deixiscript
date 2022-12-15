@@ -2,8 +2,7 @@
 
 DRSs that should mean the same thing (and may indeed produce the same side effects) might not be exactly identical.
 
-This may be a problem.
-
+This is a problem, because saying that "a button is red" and saying that "the color of a button is red" won't be considered the same thing, but they SHOULD!
 
 ## SIMPLE CASE: NO DOM EVENTS
 
