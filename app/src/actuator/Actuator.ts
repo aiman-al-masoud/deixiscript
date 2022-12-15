@@ -12,13 +12,20 @@ export interface Action{
 
 export type Id = number | string
 
-export interface ActionArgs {
-    subject: Id
-    predicate?:Id
-    object?: Id
-    on?: Id
-    with?: Id
-    for?: Id
-    by?: Id
-    to?: Id
+
+export interface Args<T> {
+    subject: T
+    predicate?:T
+    object?: T
+    on?: T
+    in?: T
+    of?: T
+    for?: T
+    with?: T
+    by?: T
+    to?: T
 }
+
+export type ActionArgs = Args<Id>
+export type ObjArgs = Args<any>
+
