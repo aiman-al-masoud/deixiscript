@@ -18,8 +18,4 @@ export default class NounPhrase implements Phrase {
 
     }
 
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-
 }

@@ -57,4 +57,4 @@ import TauProlog from './prolog/TauProlog';
 // console.log(getParser('if the dog is stupid then the cat is happy').parse() )
 // console.log(getParser('the cat is happy if the dog is stupid').parse() )
 // console.log((window as any).ast = getParser('the color of the button is red').parse())
-// console.log((window as any).ast = getParser('the color of the button on the black div is red').parse())
+console.log((window as any).ast = getParser('the color of the button on the black div is red').parse())

@@ -8,9 +8,5 @@ export default class Complement implements Phrase{
     constructor(readonly preposition:Preposition, readonly nounPhrase:NounPhrase){
 
     }
-    
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-    
+       
 }

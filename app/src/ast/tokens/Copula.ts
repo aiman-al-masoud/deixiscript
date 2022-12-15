@@ -4,8 +4,4 @@ import AbstractToken from "./AbstractToken";
 
 export default class Copula extends AbstractToken{
     
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-    
 }

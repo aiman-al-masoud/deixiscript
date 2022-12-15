@@ -5,8 +5,5 @@ export default abstract class AbstractToken implements Token{
 
     constructor(readonly string:string){
 
-    }
-    
-    abstract exec(universe: Brain):any
-    
+    }    
 }

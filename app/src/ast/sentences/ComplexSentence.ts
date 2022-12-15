@@ -9,8 +9,4 @@ export default class ComplexSentence implements CompoundSentence{
 
     }
     
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-    
 }

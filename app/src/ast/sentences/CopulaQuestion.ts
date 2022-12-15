@@ -9,8 +9,4 @@ export default class CopulaQuestion implements BinaryQuestion{
 
     }
     
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-    
 }

@@ -3,9 +3,5 @@ import Token from "../interfaces/Token";
 import AbstractToken from "./AbstractToken";
 
 export default class Then extends AbstractToken{
-   
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-    
+     
 }

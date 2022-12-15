@@ -14,9 +14,4 @@ export default class MonotransitiveSentence implements VerbSentence {
                 readonly negation?: Negation) {
 
     }
-
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-
 }

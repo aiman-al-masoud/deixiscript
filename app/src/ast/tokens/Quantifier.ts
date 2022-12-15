@@ -6,10 +6,6 @@ import AbstractToken from "./AbstractToken";
 
 export default class Quantifier extends AbstractToken{
     
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-
     isUniversal(){
         return universal_quantifiers.includes(this.string)
     }

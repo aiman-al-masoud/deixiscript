@@ -11,9 +11,5 @@ export default class CopulaSubordinateClause implements SubordinateClause{
     constructor(readonly relpron:RelativePronoun, readonly predicate:NounPhrase, readonly copula:Copula){
 
     }
-
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
     
 }

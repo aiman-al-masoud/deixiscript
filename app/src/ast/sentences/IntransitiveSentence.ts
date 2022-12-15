@@ -13,9 +13,5 @@ export default class IntransitiveSentence implements VerbSentence {
                 readonly negation?: Negation) {
 
     }
-
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-
+    
 }

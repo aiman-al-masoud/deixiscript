@@ -10,8 +10,4 @@ export default class CopulaSentence implements SimpleSentence{
         
     }
     
-    exec(universe: Brain) {
-        throw new Error("Method not implemented.");
-    }
-    
 }
