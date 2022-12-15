@@ -6,18 +6,6 @@ import { getLexer } from './lexer/Lexer';
 import { getParser } from './parser/Parser';
 import Prolog, { getProlog } from './prolog/Prolog';
 import TauProlog from './prolog/TauProlog';
-// const session  = pl.create()
-// session.consult('capra(webpack). ');
-
-// session.query('assertz( pressed(button) ).');
-// session.answer(a=>{});
-// console.log(session.rules)
-// session.query('retract( pressed(button) ). ')
-// session.answer(a=>{});;
-// console.log(session.rules);
-
-
-// (window as any).session = session;
 
 
 // PROLOG TEST //////////////////////////////////////////
@@ -36,18 +24,6 @@ const pro = getProlog();
 //      //////////////////////////////////////////
 
 
-
-// pro.retract('capra(scemo)')
-// pro.query('mammal(X).').then(a=> console.log(a))
-
-// pro.assert('mammal(X) :- cat(X)')
-// pro.assert('cat(luna)')
-// pro.query('mammal(X).').then(a=> console.log(a))
-
-
-// pro.assert('mammal(X) :- cat(X)')
-// pro.assert('cat(gattino)')
-// pro.query('cat(gattino)').then(a=> console.log(a))
 
 
 
