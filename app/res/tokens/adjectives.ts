@@ -1,5 +1,6 @@
 export default [
     "big",
     "small",
-    "helpful"
+    "helpful",
+    "red"
 ]

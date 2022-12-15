@@ -9,22 +9,23 @@ import TauProlog from './prolog/TauProlog';
 
 
 // PROLOG TEST //////////////////////////////////////////
-const pro = getProlog();
-(window as any).pro = pro;
+// const pro = getProlog();
+// (window as any).pro = pro;
 
-(async () => {
-    await pro.assert('capra(scemo)')
-    await pro.assert('mammal(peloso)')
-    await pro.assert('mammal(fido)')
-    await pro.assert('mammal(X) :- capra(X)')
-    console.log(await pro.query('mammal(X).'))
-    await pro.retract('capra(scemo)')
-    console.log(await pro.query('mammal(X).'))
-})();
-//      //////////////////////////////////////////
+// (async () => {
+//     await pro.assert('capra(scemo)')
+//     await pro.assert('mammal(peloso)')
+//     await pro.assert('mammal(fido)')
+//     await pro.assert('mammal(X) :- capra(X)')
+//     console.log(await pro.query('mammal(X).'))
+//     await pro.retract('capra(scemo)')
+//     console.log(await pro.query('mammal(X).'))
+// })();
+// //      //////////////////////////////////////////
 
 
 
+console.log((window as any).ast = getParser('the color of the button is red').parse())
 
 
 //////////////////////////////////////////////////////////////

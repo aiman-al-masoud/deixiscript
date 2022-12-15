@@ -3,5 +3,7 @@ export default [
     "mat",
     "table",
     "dog",
-    "nodejs"
+    "nodejs",
+    "color",
+    "button"
 ]
