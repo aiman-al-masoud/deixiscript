@@ -1,4 +1,4 @@
-SIMPLE CASE: NO DOM EVENTS
+## SIMPLE CASE: NO DOM EVENTS
 
 Input 1:
 first button is black
@@ -51,3 +51,18 @@ https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
 3. Remove all (if any) incompatible predicates from that entity (retract)
 4. Apply the new predicate (assertz)
 
+
+
+## FOR DOM EVENTS
+
+eg: if the button is pressed the div is red
+
+Brain adds this implication straightaway:
+
+```
+red(div) :- pressed(button)
+```
+
+Brain checks if condition part `pressed(button)` implies listening to an element of the DOM.
+
+If it does, brain adds an onclick listener that asserts/retracts a predicate pressed (aka: clicked) on the id representing the button.
