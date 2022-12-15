@@ -20,6 +20,58 @@ This is a problem, because saying that "a button is red" and saying that "the co
 >
 > false // WTF?!
 
+### Possible Solutions
+
+#### 1 Concepts
+
+Every adjective will point to a concept, eg: (red, green, blue ...) point to "color", (fast, slow ...) point to "speed".
+
+Every concept will also have links to its adjectives.
+
+1 Concept <---> N Adjectives
+
+
+If the adjective is used directly:
+
+> the button is red
+
+```
+red($button)
+```
+
+then the concept can be retrieved, and this can be added:
+
+```
+color(1)
+red(1)
+of($button, 1)
+```
+
+If the concept is mentioned:
+
+> the color of the button is red
+
+this is the initial DRS
+
+```
+color(1)
+red(1)
+of($button, 1)
+```
+
+But this is also added automatically:
+
+```
+red($button)
+```
+
+
+
+
+
+
+
+
 ## SIMPLE CASE: NO DOM EVENTS
 
 Input 1:
