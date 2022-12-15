@@ -1,5 +1,6 @@
 import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
 import pl, { Answer } from 'tau-prolog'
+import { Id } from "../actuator/Actuator";
 require("tau-prolog/modules/promises.js")(pl);
 
 
@@ -21,7 +22,7 @@ export default class TauProlog implements Prolog {
         return await (this.session as any).promiseAnswer()
     }
 
-    async query(code: string): Promise<any[] | boolean> {
+    async query(code: string): Promise<Id[] | boolean> {
         
         (this.session as any).promiseQuery(code);
         let answers: any[] = []

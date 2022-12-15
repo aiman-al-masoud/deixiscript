@@ -1,9 +1,10 @@
+import { Id } from "../actuator/Actuator"
 import TauProlog from "./TauProlog"
 
 export default interface Prolog{
     assert(clause:string, opts?:AssertOpts):Promise<void>  
     retract(clause:string):Promise<void>
-    query(code: string): Promise<any>
+    query(code: string): Promise<Id[] | boolean>
     predicates(opts?:PreidcatesOpts):string[]
 }
 
