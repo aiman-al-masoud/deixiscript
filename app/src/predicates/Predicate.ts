@@ -1,19 +1,18 @@
+import { ActionArgs } from "../actuator/Actuator";
+
 export default interface Predicate{
-    verb:string 
-    method:string
-    classes:string[]
-    paramsMap:ParamsMap
-    apply(args:Args):any
+    apply(args:ActionArgs):any
 }
 
-export interface Args{
-    subject:any
-    object?:any
-    on?:any
-    with?:any
-    for?:any
-    by?:any
-    string:any
+export interface MethodPredicate extends Predicate{
+    methodPath:string[]
+    paramsMap:ParamsMap
+}
+
+export interface AttributePredicate extends Predicate{
+    aliases:string[]
+    propPath:string[]
+    valuesMap:ValuesMap
 }
 
 /**
@@ -26,17 +25,9 @@ export interface ParamsMap{ // 0-> object, 1-> first method param, 2-> second me
     with?:number
     for?:number
     by?:number
-    string:number
+    to?:number
 }
 
-
-export interface PredicateB{
-    name:string // eg: color
-    propMap:PropMap // eg: yellow -> 'yellow'
-    classes:string[]
-    property:string[] // if used directly on object, without mentioning name, nested properties, eg: ['style', 'background']
-}
-
-export interface PropMap{
+export interface ValuesMap{
     string:any
 }

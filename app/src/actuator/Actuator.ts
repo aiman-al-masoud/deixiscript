@@ -10,7 +10,8 @@ export interface Action {
 export type Id = number | string
 
 export interface ActionArgs {
-    subject?: Id
+    subject: Id
+    predicate?:Id
     object?: Id
     on?: Id
     with?: Id
