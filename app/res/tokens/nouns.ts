@@ -5,5 +5,6 @@ export default [
     "dog",
     "nodejs",
     "color",
-    "button"
+    "button",
+    "div"
 ]
