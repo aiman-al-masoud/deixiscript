@@ -4,6 +4,22 @@ DRSs that should mean the same thing (and may indeed produce the same side effec
 
 This is a problem, because saying that "a button is red" and saying that "the color of a button is red" won't have the same meaning, but they SHOULD!
 
+> `>` the button is red
+>
+> `>` is the button red?
+>
+> true
+>
+> `>` is the color of the button red?
+>
+> false // WTF?!
+
+> `>` the color of the button is red
+>
+> `>` is the button red?
+>
+> false // WTF?!
+
 ## SIMPLE CASE: NO DOM EVENTS
 
 Input 1:
