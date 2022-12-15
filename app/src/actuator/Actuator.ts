@@ -1,6 +1,7 @@
 import Ert from "./Ert"
+import Prt from "./Prt"
 
-export default interface Actuator extends Ert{
+export default interface Actuator extends Ert, Prt{
     onStateChanged(...actions: Action[]): void
 }
 
