@@ -30,15 +30,7 @@ Actuator receives changes and repaints
 4. repeat 1,2
 5. compare with 3, obtain difference 
 
-"LOWER LEVEL" PROLOG INTERFACE, make it synchronous and eager:
-
-assume('red(button).')  // creates a dynamic predicate (assertz)
-retract('red(button).') // retracts the clause of a predicate 
-predicates({arity?:number}):string[]
-isTrue('red(button).')
-query('red(X).')
-
-Maybe ?:
+### What about theme-rheme?
 
 assume(theme:string, rheme:string):void
 https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
