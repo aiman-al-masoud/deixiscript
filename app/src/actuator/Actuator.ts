@@ -1,10 +1,10 @@
 import Ert from "./Ert"
 
-export default interface Actuator {
+export default interface Actuator extends Ert{
     onStateChanged(...actions: Action[]): void
 }
 
-export interface Action extends Ert{
+export interface Action{
     verb: string
     args: ActionArgs
 }
