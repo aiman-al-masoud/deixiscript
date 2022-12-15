@@ -1,4 +1,3 @@
-import { Constructor } from "../lexer/Lexer";
 import Predicate from "../predicates/Predicate";
 
 /**
@@ -6,5 +5,5 @@ import Predicate from "../predicates/Predicate";
  */
 export default interface Prt{
     get(verb:string, object:any):Predicate
-    getIncompatible(verb:string):Predicate[]
+    getIncompatible(verb:string, object:any):Predicate[]
 }
