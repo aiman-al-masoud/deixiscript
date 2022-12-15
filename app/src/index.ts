@@ -19,6 +19,8 @@ import TauProlog from './prolog/TauProlog';
 
 // (window as any).session = session;
 
+
+// PROLOG TEST //////////////////////////////////////////
 const pro = getProlog();
 (window as any).pro = pro;
 
@@ -31,6 +33,8 @@ const pro = getProlog();
     await pro.retract('capra(scemo)')
     console.log(await pro.query('mammal(X).'))
 })();
+//      //////////////////////////////////////////
+
 
 
 // pro.retract('capra(scemo)')
