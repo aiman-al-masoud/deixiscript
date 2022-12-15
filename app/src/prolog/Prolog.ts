@@ -1,8 +1,8 @@
 import TauProlog from "./TauProlog"
 
 export default interface Prolog{
-    assert(clause:string, opts?:AssertOpts):void 
-    retract(clause:string):void  
+    assert(clause:string, opts?:AssertOpts):Promise<void>  
+    retract(clause:string):Promise<void>
     query(code: string): Promise<any>
     predicates(opts?:PreidcatesOpts):string[]
 }

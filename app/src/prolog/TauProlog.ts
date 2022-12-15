@@ -1,5 +1,5 @@
 import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
-import pl from 'tau-prolog'
+import pl, { Answer } from 'tau-prolog'
 require("tau-prolog/modules/promises.js")(pl);
 
 
@@ -11,14 +11,14 @@ export default class TauProlog implements Prolog {
         this.session = pl.create()
     }
 
-    assert(clause: string, opts?: AssertOpts): void {
-        this.session.query(`assert${opts?.z ? 'z' : 'a'}( ( ${clause} ) ).`)
-        this.session.answer(a => { /*console.log('LOG', clause, pl.format_answer(a))*/ })
+    async assert(clause: string, opts?: AssertOpts): Promise<void> {
+        await (this.session as any).promiseQuery(`assert${opts?.z ? 'z' : 'a'}( ( ${clause} ) ).`)
+        return await (this.session as any).promiseAnswer()
     }
 
-    retract(clause: string): void {
-        this.session.query(`retract(${clause}).`)
-        this.session.answer(a => { })
+    async retract(clause: string): Promise<void> {
+        await (this.session as any).promiseQuery(`retract(${clause}).`)
+        return await (this.session as any).promiseAnswer()
     }
 
     async query(code: string): Promise<any[] | boolean> {

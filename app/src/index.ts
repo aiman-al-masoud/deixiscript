@@ -20,13 +20,17 @@ import TauProlog from './prolog/TauProlog';
 // (window as any).session = session;
 
 const pro = getProlog();
-(window as any ).pro = pro
+(window as any).pro = pro;
 
-pro.assert('capra(scemo)')
-pro.assert('mammal(peloso)')
-pro.assert('mammal(fido)')
-pro.assert('mammal(X) :- capra(X)')
-pro.query('mammal(X).').then(a=> console.log(a))
+(async () => {
+    await pro.assert('capra(scemo)')
+    await pro.assert('mammal(peloso)')
+    await pro.assert('mammal(fido)')
+    await pro.assert('mammal(X) :- capra(X)')
+    console.log(await pro.query('mammal(X).'))
+    await pro.retract('capra(scemo)')
+    console.log(await pro.query('mammal(X).'))
+})();
 
 
 // pro.retract('capra(scemo)')
