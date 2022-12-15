@@ -1,0 +1,20 @@
+{
+    "string": {},
+    "button": {
+        "attributes": [
+            {
+                "color" : {
+                    "name": "color",
+                    "propPath": ["style", "background"]
+                },
+                "background" : {
+                    "linkto" : "color"
+                }
+            }
+        ],
+        "values" : {
+            "red" : "color",
+            "green" : "color"
+        }
+    }
+}
