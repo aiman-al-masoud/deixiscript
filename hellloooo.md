@@ -1,3 +1,10 @@
+## PROBLEM
+
+DRS that should mean the same thing (and may indeed produce the same side effects) might not be exactly identical.
+
+This may be a problem.
+
+
 ## SIMPLE CASE: NO DOM EVENTS
 
 Input 1:
