@@ -1,9 +1,25 @@
+import { type } from "tau-prolog";
 import Ast from "./Ast";
 
-export default interface Constituent extends Ast{
-    // toProlog(args:ToPrologArgs):string[]
+/**
+ * Some syntactic structure that can be converted to a 
+ * first-order logic formula.
+ */
+export default interface Constituent extends Ast {
+    // toProlog(args?: ToPrologArgs): string[]
 }
 
-// export interface ToPrologArgs{
-//     withVars:boolean
-// }
+export type Id = number | string
+
+export interface Roles {
+    subject?: Id,
+    object?: Id
+}
+
+export interface ToPrologArgs {
+    withVars: boolean,
+    roles: Roles,
+    anaphora: {
+        [predicate: string]: Id
+    }
+}
