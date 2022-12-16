@@ -64,4 +64,5 @@ console.log(getParser('the cat that is red is on the mat').parse().toProlog())
 console.log(getParser('the big cat that is on the mat is black').parse().toProlog())
 console.log(getParser('every cat is red').parse().toProlog())
 console.log(getParser('every red cat is on the mat').parse().toProlog())
+console.log(getParser('the cat exists on the mat').parse().toProlog())
 
