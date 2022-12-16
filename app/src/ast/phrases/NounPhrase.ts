@@ -19,6 +19,10 @@ export default class NounPhrase implements Phrase {
 
     }
 
+    isUniversallyQuantified() {
+        return this.quantifier?.isUniversal() ?? false
+    }
+
     toProlog(args?: ToPrologArgs): Clause[] {
 
         const subjectId = args?.roles?.subject ?? getRandomId()

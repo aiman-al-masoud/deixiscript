@@ -16,8 +16,14 @@ export default class CopulaSentence implements SimpleSentence {
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
 
-        return this.predicate.toProlog(newArgs)
-            .concat(this.subject.toProlog(newArgs))
+        const predicate = this.predicate.toProlog(newArgs)
+        const subject = this.subject.toProlog(newArgs)
+
+        if (this.subject.isUniversallyQuantified()) { // TODO: must return a Horn Clause instead, with most important conclusion on the LHS
+            return [{ string: `${predicate.map(p=>p.string).reduce((a,b)=>`${a}, ${b}`)} :- ${subject.map(p=>p.string).reduce((a,b)=>`${a}, ${b}`)}` }]
+        } else {
+            return predicate.concat(subject)
+        }
 
     }
 
