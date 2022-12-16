@@ -138,4 +138,37 @@ on the table
 
 on(args.subject, Y) + noun_phrase.toProlog({subject:Y})
 
+----------------------------
+
+every cat is smart
+
+# ONE
+
+nounphrase = every cat
+predicate = smart
+
+nounphrase.isUniversallyQuantified() // true
+
+smart(X) :- nounphrase.toProlog({subject:X})
+
+// NB: you have to choose the IMPORTANT part of the predicate to put 
+// on the LHS of the Horn clause!
+
+# TWO
+
+every cat
+
+cat(args.subject)
+
+# RESULT 
+
+smart(X) :- cat(X)
+
+
+
+
+
+
+
+
 
