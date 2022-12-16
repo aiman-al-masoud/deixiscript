@@ -29,6 +29,7 @@ import Lexer, { getLexer } from "../lexer/Lexer";
 import Parser from "./Parser";
 import CopulaSubordinateClause from "../ast/phrases/CopulaSubordinateClause";
 import RelativePronoun from "../ast/tokens/RelativePronoun";
+import Constituent from "../ast/interfaces/Constituent";
 
 export default class BasicParser implements Parser {
 
@@ -51,12 +52,12 @@ export default class BasicParser implements Parser {
 
     }
 
-    protected errorOut(errorMsg: string): Ast {
+    protected errorOut(errorMsg: string): Constituent {
         this.lx.croak(errorMsg)
         throw new Error(errorMsg)
     }
 
-    parse(): Ast {
+    parse(): Constituent {
         return this.try(this.parseDeclaration)
             ?? this.try(this.parseQuestion)
             ?? this.try(this.parseNounPhrase) // for quick topic reference

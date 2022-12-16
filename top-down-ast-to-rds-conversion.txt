@@ -122,3 +122,20 @@ pass down this dictionary to every ast within ToPrologArgs args.
 break(X) :- table(X), cat(Y), jump(Y), table(Z), on(Y, Z)
 
 
+---------------------------------------------
+
+the cat on the table // I am a noun phrase
+
+#ONE 
+
+compl = (on the table)
+cat(X) + compl.toProlog(subject=X)
+
+#TWO
+
+noun_phrase = the table
+on the table
+
+on(args.subject, Y) + noun_phrase.toProlog({subject:Y})
+
+
