@@ -6,5 +6,7 @@ export default [
     "nodejs",
     "color",
     "button",
-    "div"
+    "div",
+    "president",
+    "trump"
 ]

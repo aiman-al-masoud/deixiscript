@@ -69,4 +69,6 @@ test('the cat exists on the mat')
 test('if the cat is on the mat then the cat is red')
 test('the cat is not red')
 test('every cat is not red')
+test('trump is not a great president')
+
 

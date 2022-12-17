@@ -1,4 +1,3 @@
-import Brain from "../../brain/Brain";
 import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
 import { Clause, clauseOf } from "../interfaces/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
@@ -24,7 +23,6 @@ export default class IntransitiveSentence implements VerbSentence {
         return clauseOf(`${this.iverb.string}(${subjectId})`)
             .concat(this.subject.toProlog(newArgs))
             .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2)))
-            //.copy({negated:this.negation?true:false})
     }
 
 }

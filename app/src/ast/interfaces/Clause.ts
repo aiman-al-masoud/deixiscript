@@ -1,34 +1,30 @@
 export interface Clause {
-    clauses: string[];
-    opts?: ClauseOpts;
-    concat(other: Clause): Clause;
-    copy(opts: ClauseOpts): Clause;
+    clauses: string[]
+    concat(other: Clause): Clause
+    negate(): Clause
 }
 
 export class BasicClause implements Clause {
 
-    constructor(readonly clauses: string[], readonly opts?: ClauseOpts) {
+    constructor(readonly clauses: string[]) {
+        
     }
 
     concat(other: Clause): Clause {
-        return new BasicClause(this.clauses.concat(other.clauses));
+        return new BasicClause(this.clauses.concat(other.clauses))
     }
 
-    copy(opts: ClauseOpts): Clause {
-        return new BasicClause(this.clauses, { ...this.opts, ...opts });
+    negate(): Clause {
+        return new BasicClause([`not( (${this.clauses.reduce((c1,c2)=>`${c1}, ${c2}`)}) )`])
     }
 
 }
 
-export interface ClauseOpts {
-    negated: boolean;
+export function clauseOf(string: string | string[]): Clause {
+    return new BasicClause(string instanceof Array ? string : [string])
 }
 
-export function clauseOf(string: string | string[], opts?: ClauseOpts): Clause {
-    return new BasicClause(string instanceof Array ? string : [string], opts);
-}
-
-export const emptyClause = () => clauseOf([]);
+export const emptyClause = () => clauseOf([])
 
 export function makeHornClauses(_conditions: Clause, conclusions: Clause) {
 

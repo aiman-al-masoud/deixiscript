@@ -3,5 +3,6 @@ export default [
     "small",
     "helpful",
     "red",
-    "black"
+    "black",
+    "great"
 ]
