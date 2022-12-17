@@ -11,7 +11,6 @@ import TauProlog from './prolog/TauProlog';
 // PROLOG TEST //////////////////////////////////////////
 // const pro = getProlog();
 // (window as any).pro = pro;
-
 // (async () => {
 //     await pro.assert('capra(scemo)')
 //     await pro.assert('mammal(peloso)')
@@ -22,9 +21,6 @@ import TauProlog from './prolog/TauProlog';
 //     console.log(await pro.query('mammal(X).'))
 // })();
 // //      //////////////////////////////////////////
-
-
-
 
 
 //////////////////////////////////////////////////////////////
@@ -59,11 +55,16 @@ import TauProlog from './prolog/TauProlog';
 // console.log((window as any).ast = getParser('the color of the button is red').parse())
 // console.log((window as any).ast = getParser('the color of the button on the black div is red').parse())
 
-console.log(getParser('the cat is on the mat').parse().toProlog())
-console.log(getParser('the cat that is red is on the mat').parse().toProlog())
-console.log(getParser('the big cat that is on the mat is black').parse().toProlog())
-console.log(getParser('every cat is red').parse().toProlog())
-console.log(getParser('every red cat is on the mat').parse().toProlog())
-console.log(getParser('the cat exists on the mat').parse().toProlog())
-console.log(getParser('if the cat is on the mat then the cat is red').parse().toProlog())
+function test(string:string){
+    console.log(string)
+    console.log(getParser(string).parse().toProlog())
+}
+
+test('the cat is on the mat')
+test('the cat that is red is on the mat')
+test('the big cat that is on the mat is black')
+test('every cat is red')
+test('every red cat is on the mat')
+test('the cat exists on the mat')
+test('if the cat is on the mat then the cat is red')
 

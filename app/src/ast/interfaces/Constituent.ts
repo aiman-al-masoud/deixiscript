@@ -31,3 +31,12 @@ export interface Clause{
 export function getRandomId():Id{
     return parseInt(1000000*Math.random()+"")
 }
+
+export function makeHornClauses(_conditions:Clause[], conclusions:Clause[]){    
+    
+    const conditions = _conditions.map(s => s.string)
+                                  .reduce((a, b) => `${a}, ${b}`)
+
+    return conclusions.map(p => `${p.string} :- ${conditions}`) // one horn clause for every predicate in the conclusion
+                      .map(c => ({ string: c }))
+}

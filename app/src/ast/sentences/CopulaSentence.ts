@@ -1,5 +1,5 @@
 import Brain from "../../brain/Brain";
-import { Clause, getRandomId, ToPrologArgs } from "../interfaces/Constituent";
+import { Clause, getRandomId, makeHornClauses, ToPrologArgs } from "../interfaces/Constituent";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
@@ -11,7 +11,7 @@ export default class CopulaSentence implements SimpleSentence {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause[] { // predicate(X) + subject.toProlog(subject=X)
+    toProlog(args?: ToPrologArgs): Clause[] {
 
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
@@ -19,12 +19,10 @@ export default class CopulaSentence implements SimpleSentence {
         const predicate = this.predicate.toProlog(newArgs)
         const subject = this.subject.toProlog(newArgs)
 
-        if (this.subject.isUniversallyQuantified()) { // TODO: must return a Horn Clause instead, with most important conclusion on the LHS
-            return [{ string: `${predicate.map(p=>p.string).reduce((a,b)=>`${a}, ${b}`)} :- ${subject.map(p=>p.string).reduce((a,b)=>`${a}, ${b}`)}` }]
-        } else {
-            return predicate.concat(subject)
-        }
-
+        return this.subject.isUniversallyQuantified() ?
+                            makeHornClauses(subject, predicate) :
+                            predicate.concat(subject)
+                            
     }
 
 }
