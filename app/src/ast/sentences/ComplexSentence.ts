@@ -1,6 +1,6 @@
-import Brain from "../../brain/Brain";
 import CompoundSentence from "../interfaces/CompoundSentence";
-import { ToPrologArgs, Clause, getRandomId, makeHornClauses } from "../interfaces/Constituent";
+import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
+import { makeHornClauses, Clause } from "../interfaces/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
 
@@ -16,7 +16,7 @@ export default class ComplexSentence implements CompoundSentence {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause[] {
+    toProlog(args?: ToPrologArgs): Clause {
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
 

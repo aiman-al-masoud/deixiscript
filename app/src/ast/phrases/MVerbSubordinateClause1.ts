@@ -1,10 +1,9 @@
-import Brain from "../../brain/Brain";
-import { ToPrologArgs, Clause } from "../interfaces/Constituent";
-import Phrase from "../interfaces/Phrase";
+import { ToPrologArgs } from "../interfaces/Constituent";
+import { Clause } from "../interfaces/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
 
 export default class MVerbSubordinateClause1 implements SubordinateClause{
-    toProlog(args?: ToPrologArgs | undefined): Clause[] {
+    toProlog(args?: ToPrologArgs): Clause {
         throw new Error("Method not implemented.");
     }
     

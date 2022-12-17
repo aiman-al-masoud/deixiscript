@@ -1,5 +1,6 @@
 import Brain from "../../brain/Brain";
-import { ToPrologArgs, Clause, getRandomId } from "../interfaces/Constituent";
+import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
+import { Clause, clauseOf } from "../interfaces/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
 import NounPhrase from "../phrases/NounPhrase";
@@ -15,15 +16,15 @@ export default class IntransitiveSentence implements VerbSentence {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause[] {
+    toProlog(args?: ToPrologArgs): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } };
 
-        return [{ string: `${this.iverb.string}(${subjectId})` }]
+        return clauseOf(`${this.iverb.string}(${subjectId})`)
             .concat(this.subject.toProlog(newArgs))
-            .concat(this.complements.flatMap(c=>c.toProlog(newArgs)))
-
+            .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2)))
+            //.copy({negated:this.negation?true:false})
     }
 
 }

@@ -1,5 +1,6 @@
-import Brain from "../../brain/Brain";
-import { Clause, getRandomId, makeHornClauses, ToPrologArgs } from "../interfaces/Constituent";
+// TODO: problem: need to negate predicate clause ONLY!
+import { getRandomId, ToPrologArgs } from "../interfaces/Constituent";
+import { Clause, makeHornClauses } from "../interfaces/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
@@ -11,7 +12,7 @@ export default class CopulaSentence implements SimpleSentence {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause[] {
+    toProlog(args?: ToPrologArgs): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
@@ -19,10 +20,12 @@ export default class CopulaSentence implements SimpleSentence {
         const predicate = this.predicate.toProlog(newArgs)
         const subject = this.subject.toProlog(newArgs)
 
-        return this.subject.isUniversallyQuantified() ?
-                            makeHornClauses(subject, predicate) :
-                            predicate.concat(subject)
-                            
+        const result = this.subject.isUniversallyQuantified() ?
+            makeHornClauses(subject, predicate) :
+            predicate.concat(subject)
+
+        return result//.copy({ negated: this.negation ? true : false })
+
     }
 
 }

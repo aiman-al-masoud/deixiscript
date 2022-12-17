@@ -1,5 +1,5 @@
-import Brain from "../../brain/Brain";
-import { ToPrologArgs, Clause, getRandomId } from "../interfaces/Constituent";
+import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
+import { Clause, clauseOf } from "../interfaces/Clause";
 import Phrase from "../interfaces/Phrase";
 import Preposition from "../tokens/Preposition";
 import NounPhrase from "./NounPhrase";
@@ -10,11 +10,11 @@ export default class Complement implements Phrase {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause[] { // preposition(args.subject, Y) + nounphrase.toProlog(subject=Y)
+    toProlog(args?: ToPrologArgs): Clause { // preposition(args.subject, Y) + nounphrase.toProlog(subject=Y)
 
-        const newId = getRandomId();
+        const newId = getRandomId()
 
-        return [{ string: `${this.preposition.string}(${args?.roles?.subject}, ${newId})` }]
+        return clauseOf(`${this.preposition.string}(${args?.roles?.subject}, ${newId})`)
             .concat(this.nounPhrase.toProlog({ ...args, roles: { subject: newId } }))
 
     }

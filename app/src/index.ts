@@ -67,4 +67,6 @@ test('every cat is red')
 test('every red cat is on the mat')
 test('the cat exists on the mat')
 test('if the cat is on the mat then the cat is red')
+test('the cat is not red')
+test('every cat is not red')
 
