@@ -72,3 +72,12 @@ test('every cat is not red')
 test('trump is not a great president')
 
 
+// const p = document.createElement('p')
+// document.getElementById('root')?.appendChild(p)
+
+// const textarea = document.createElement('textarea')
+// document.getElementById('root')?.appendChild(textarea)
+
+// textarea.oninput = (e)=>{
+//     p.innerHTML = getParser(textarea.value).parse().toProlog().clauses.reduce((c1,c2)=>`${c1}<br>${c2}`)
+// }
