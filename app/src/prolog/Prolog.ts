@@ -1,4 +1,4 @@
-import { Id } from "../actuator/Actuator"
+import { Id } from "../clauses/Clause"
 import TauProlog from "./TauProlog"
 
 export default interface Prolog{

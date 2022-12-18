@@ -1,6 +1,6 @@
 import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
 import pl, { Answer } from 'tau-prolog'
-import { Id } from "../actuator/Actuator";
+import { Id } from "../clauses/Clause";
 require("tau-prolog/modules/promises.js")(pl);
 
 
