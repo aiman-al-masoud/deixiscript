@@ -19,10 +19,9 @@ export default class CopulaSentence implements SimpleSentence {
         const subject = this.subject.toProlog(newArgs)
         const predicate = this.predicate.toProlog(newArgs).copy({negate:!!this.negation}) 
 
-
         const result = this.subject.isUniversallyQuantified() ?
             makeHornClauses(subject, predicate) :
-            predicate.concat(subject)
+            subject.concat(predicate)
 
         return result
 
