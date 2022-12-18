@@ -1,6 +1,6 @@
 import CompoundSentence from "../interfaces/CompoundSentence";
-import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
-import { makeHornClauses, Clause } from "../../clauses/Clause";
+import { ToPrologArgs } from "../interfaces/Constituent";
+import { makeHornClauses, Clause, getRandomId } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
 

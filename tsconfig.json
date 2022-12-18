@@ -4,6 +4,9 @@
       "noImplicitAny": true,
       "module": "commonjs",
       "target": "es2015",
+      "lib": [
+        "ES2021.String"
+      ],
       "moduleResolution": "node",
       "esModuleInterop" : true,
       "sourceMap": true,                     /* Generates corresponding '.map' file. */

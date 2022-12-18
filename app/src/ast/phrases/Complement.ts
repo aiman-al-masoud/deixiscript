@@ -1,5 +1,5 @@
-import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
-import { Clause, clauseOf } from "../../clauses/Clause";
+import { ToPrologArgs } from "../interfaces/Constituent";
+import { Clause, clauseOf, getRandomId } from "../../clauses/Clause";
 import Phrase from "../interfaces/Phrase";
 import Preposition from "../tokens/Preposition";
 import NounPhrase from "./NounPhrase";

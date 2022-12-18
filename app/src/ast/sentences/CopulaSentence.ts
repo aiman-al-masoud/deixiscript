@@ -1,5 +1,5 @@
-import { getRandomId, ToPrologArgs } from "../interfaces/Constituent";
-import { Clause, makeHornClauses } from "../../clauses/Clause";
+import {  ToPrologArgs } from "../interfaces/Constituent";
+import { Clause, getRandomId, makeHornClauses } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";

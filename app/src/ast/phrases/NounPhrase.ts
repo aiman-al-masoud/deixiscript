@@ -5,8 +5,8 @@ import Noun from "../tokens/Noun";
 import Quantifier from "../tokens/Quantifier";
 import Complement from "./Complement";
 import SubordinateClause from "../interfaces/SubordinateClause";
-import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
-import { Clause, clauseOf, emptyClause } from "../../clauses/Clause";
+import { ToPrologArgs } from "../interfaces/Constituent";
+import { Clause, clauseOf, emptyClause, getRandomId } from "../../clauses/Clause";
 
 export default class NounPhrase implements Phrase {
 
