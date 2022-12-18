@@ -22,7 +22,7 @@ export function clauseOf(predicate:string, ...args:Id[]){
 export const emptyClause = ():Clause => new ListClause([])
 
 export interface CopyOpts{
-    negate? : boolean,
+    negate? : boolean
     withVars? : boolean
 }
 

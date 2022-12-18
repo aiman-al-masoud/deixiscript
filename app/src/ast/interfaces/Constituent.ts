@@ -10,7 +10,7 @@ export default interface Constituent extends Ast {
 }
 
 export interface Roles {
-    subject?: Id,
+    subject?: Id
     object?: Id
 }
 

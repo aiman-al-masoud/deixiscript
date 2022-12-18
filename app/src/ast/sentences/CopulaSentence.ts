@@ -1,4 +1,4 @@
-import {  ToPrologArgs } from "../interfaces/Constituent";
+import { ToPrologArgs } from "../interfaces/Constituent";
 import { Clause, getRandomId, makeHornClauses } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
@@ -17,13 +17,11 @@ export default class CopulaSentence implements SimpleSentence {
         const newArgs = { ...args, roles: { subject: subjectId } }
 
         const subject = this.subject.toProlog(newArgs)
-        const predicate = this.predicate.toProlog(newArgs).copy({negate:!!this.negation}) 
+        const predicate = this.predicate.toProlog(newArgs).copy({ negate: !!this.negation })
 
-        const result = this.subject.isUniversallyQuantified() ?
+        return this.subject.isUniversallyQuantified() ?
             makeHornClauses(subject, predicate) :
             subject.addRheme(predicate)
-
-        return result
 
     }
 
