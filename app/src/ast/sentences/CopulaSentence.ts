@@ -21,7 +21,7 @@ export default class CopulaSentence implements SimpleSentence {
 
         const result = this.subject.isUniversallyQuantified() ?
             makeHornClauses(subject, predicate) :
-            subject.concat(predicate)
+            subject.addRheme(predicate)
 
         return result
 

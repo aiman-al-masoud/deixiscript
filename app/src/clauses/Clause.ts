@@ -11,6 +11,7 @@ export interface Clause {
     concat(other: Clause): Clause
     copy(opts?:CopyOpts):Clause
     toList():Clause[]
+    addRheme(rheme:Clause):Clause
     readonly negated:boolean
 }
 

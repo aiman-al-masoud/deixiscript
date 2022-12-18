@@ -1,3 +1,4 @@
+import AnaClause from "./AnaClause";
 import { Clause, CopyOpts } from "./Clause";
 
 export default class ListClause implements Clause{
@@ -30,4 +31,7 @@ export default class ListClause implements Clause{
         return this.negated? `not(${this.clauses.toString()})` : this.clauses.toString()
     }
     
+    addRheme(rheme: Clause): Clause {
+        return new AnaClause(this.copy(), rheme.copy())        
+    }
 }
