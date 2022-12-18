@@ -1,4 +1,6 @@
 import { BasicClause } from "./BasicClause"
+import { HornClause } from "./HornClause"
+import ListClause from "./ListClause"
 
 export const CONST_PREFIX = 'id'
 export const VAR_PREFIX = 'Id'
@@ -6,32 +8,33 @@ export type Id = number | string
 
 
 export interface Clause {
-    clauses: string[]
     concat(other: Clause): Clause
-    copy(opts:CopyOpts):Clause
-    isImply():boolean
+    copy(opts?:CopyOpts):Clause
+    toList():Clause[]
+    readonly negated:boolean
 }
 
-export function clauseOf(string: string | string[]): Clause {
-    return new BasicClause(string instanceof Array ? string : [string])
+export function clauseOf(predicate:string, ...args:Id[]){
+    return new BasicClause(predicate, args)
 }
+
+export const emptyClause = ():Clause => new ListClause([])
 
 export interface CopyOpts{
     negate? : boolean,
     withVars? : boolean
 }
 
-export const emptyClause = () => clauseOf([])
+export function makeHornClauses(conditions: Clause, conclusions: Clause):Clause {
 
-export function makeHornClauses(_conditions: Clause, conclusions: Clause) {
+    // TODO: this breaks negated ListClauses or ListClauses with negated elements !!!!!!!
 
-    const conditions = _conditions.clauses.map(s => s)
-        .reduce((a, b) => `${a}, ${b}`);
+    const cond = conditions.toList().map(c=> (c as BasicClause))
+    const conc = conclusions.toList().map(c=> (c as BasicClause))
+    const results = conc.map(c => new HornClause(cond, c))
 
-    return conclusions
-        .clauses
-        .map(p => clauseOf(`${p} :- ${conditions}`)) // one horn clause for every predicate in the conclusion
-        .reduce((c1, c2) => c1.concat(c2));
+    return results.length==1 ? results[0] : new ListClause(results)
+
 }
 
 export function getRandomId(): Id {

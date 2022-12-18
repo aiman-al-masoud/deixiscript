@@ -23,7 +23,7 @@ export default class ComplexSentence implements CompoundSentence {
         //TODO: this is WRONG, subject of condition may NOT always be the subject of the outcome
         const condition = this.condition.toProlog(newArgs)
         const outcome = this.outcome.toProlog(newArgs)
-
+        
         return makeHornClauses(condition, outcome)
     }
 

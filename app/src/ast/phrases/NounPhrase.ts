@@ -6,7 +6,7 @@ import Quantifier from "../tokens/Quantifier";
 import Complement from "./Complement";
 import SubordinateClause from "../interfaces/SubordinateClause";
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { Clause, clauseOf, emptyClause, getRandomId } from "../../clauses/Clause";
+import { Clause, getRandomId, clauseOf, emptyClause } from "../../clauses/Clause";
 
 export default class NounPhrase implements Phrase {
 
@@ -32,7 +32,7 @@ export default class NounPhrase implements Phrase {
             .adjectives
             .map(a => a.string)
             .concat(this.noun ? [this.noun.string] : [])
-            .map(p => clauseOf(`${p}(${subjectId})`) )
+            .map(p => clauseOf(p, subjectId))
             .reduce((c1,c2)=>c1.concat(c2), emptyClause())
             .concat(this.complements.map(c=>c.toProlog(newArgs)).reduce((c1, c2)=>c1.concat(c2), emptyClause()))
             .concat(this.subordClause?.toProlog(newArgs) ?? emptyClause())

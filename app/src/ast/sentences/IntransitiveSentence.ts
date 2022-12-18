@@ -20,7 +20,7 @@ export default class IntransitiveSentence implements VerbSentence {
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } };
 
-        return clauseOf(`${this.iverb.string}(${subjectId})`)
+        return clauseOf(this.iverb.string, subjectId)
             .concat(this.subject.toProlog(newArgs))
             .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2)))
     }
