@@ -1,3 +1,37 @@
+## What about theme-rheme?
+
+assume(theme:string, rheme:string):void
+https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
+
+
+
+
+
+theme-rheme is not a good idea at all!
+
+entities in the rheme could be already existing, and entities in the theme may still not exist, as show in the example.
+
+It only works well for very simple cases where the theme contains an entity that already exists and the rheme only contains new stuff...
+
+
+Instead...
+
+
+Create a small prolog sanbox and dump all of the clauses in there.
+
+For each entity, get every rule that concerns it.
+
+Search for that entity in the larger global prolog env.
+
+You should obtain a MAPPING between ids of the entities in the sandbox and ids of the entities in the larger prolog env.
+
+For entities that do not exixst yet in the global prolog env, you will generate a new id.
+
+Ids that are variables should be left untouched.
+
+
+
+
 ## PROBLEM
 
 DRSs that should mean the same thing (and may indeed produce the same side effects) might not be exactly identical.
@@ -104,10 +138,6 @@ Actuator receives changes and repaints
 4. repeat 1,2
 5. compare with 3, obtain difference 
 
-### What about theme-rheme?
-
-assume(theme:string, rheme:string):void
-https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
 
 
 ## Applying a new predicate to an entity:

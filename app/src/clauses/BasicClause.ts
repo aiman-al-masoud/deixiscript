@@ -1,4 +1,3 @@
-import AnaClause from "./AnaClause";
 import { Clause, CONST_PREFIX, CopyOpts, Id, VAR_PREFIX } from "./Clause";
 import ListClause from "./ListClause";
 
@@ -7,10 +6,6 @@ export class BasicClause implements Clause{
 
     constructor(readonly predicate:string, readonly args:Id[], readonly negated=false){
 
-    }
-
-    addRheme(rheme: Clause): Clause {
-        return new AnaClause(this.copy(), rheme.copy())        
     }
 
     concat(other: Clause): Clause {

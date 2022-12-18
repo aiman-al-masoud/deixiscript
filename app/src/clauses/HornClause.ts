@@ -23,10 +23,5 @@ export class HornClause implements Clause{
     toString(){
         return `${this.conclusion.toString()} :- ${this.condition.map(c=>c.toString()).reduce((c1,c2)=>c1+', '+c2)}`
     }
-
-
-    addRheme(other: Clause): Clause {
-        throw new Error('not implemented!')
-    }
     
 }
