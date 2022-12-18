@@ -1,6 +1,6 @@
 import Brain from "../../brain/Brain";
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { Clause } from "../interfaces/Clause";
+import { Clause } from "../../clauses/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
 import NounPhrase from "../phrases/NounPhrase";

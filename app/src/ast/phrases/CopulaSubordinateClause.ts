@@ -1,5 +1,5 @@
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { Clause } from "../interfaces/Clause";
+import { Clause } from "../../clauses/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
 import Copula from "../tokens/Copula";
 import RelativePronoun from "../tokens/RelativePronoun";

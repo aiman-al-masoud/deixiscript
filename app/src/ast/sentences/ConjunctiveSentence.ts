@@ -1,6 +1,6 @@
 import CompoundSentence from "../interfaces/CompoundSentence";
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { Clause } from "../interfaces/Clause";
+import { Clause } from "../../clauses/Clause";
 
 export default class ConjunctiveSentence implements CompoundSentence{
     toProlog(args?: ToPrologArgs | undefined): Clause {

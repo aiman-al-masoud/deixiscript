@@ -1,6 +1,5 @@
-// TODO: problem: need to negate predicate clause ONLY!
 import { getRandomId, ToPrologArgs } from "../interfaces/Constituent";
-import { Clause, makeHornClauses } from "../interfaces/Clause";
+import { Clause, makeHornClauses } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
@@ -17,8 +16,8 @@ export default class CopulaSentence implements SimpleSentence {
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
 
-        const predicate = this.negation? this.predicate.toProlog(newArgs).negate() :  this.predicate.toProlog(newArgs)
         const subject = this.subject.toProlog(newArgs)
+        const predicate = this.predicate.toProlog(newArgs).copy({negate:!!this.negation}) 
 
         const result = this.subject.isUniversallyQuantified() ?
             makeHornClauses(subject, predicate) :

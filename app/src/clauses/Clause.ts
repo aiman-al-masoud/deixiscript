@@ -1,27 +1,17 @@
+import { BasicClause } from "./BasicClause"
+
 export interface Clause {
     clauses: string[]
     concat(other: Clause): Clause
-    negate(): Clause
-}
-
-export class BasicClause implements Clause {
-
-    constructor(readonly clauses: string[]) {
-        
-    }
-
-    concat(other: Clause): Clause {
-        return new BasicClause(this.clauses.concat(other.clauses))
-    }
-
-    negate(): Clause {
-        return new BasicClause([`not( (${this.clauses.reduce((c1,c2)=>`${c1}, ${c2}`)}) )`])
-    }
-
+    copy(opts:CopyOpts):Clause
 }
 
 export function clauseOf(string: string | string[]): Clause {
     return new BasicClause(string instanceof Array ? string : [string])
+}
+
+export interface CopyOpts{
+    negate : boolean
 }
 
 export const emptyClause = () => clauseOf([])

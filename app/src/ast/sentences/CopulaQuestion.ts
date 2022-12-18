@@ -1,7 +1,7 @@
 import Brain from "../../brain/Brain";
 import BinaryQuestion from "../interfaces/BinaryQuestion";
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { Clause } from "../interfaces/Clause";
+import { Clause } from "../../clauses/Clause";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 

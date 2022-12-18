@@ -1,5 +1,5 @@
 import { ToPrologArgs, getRandomId } from "../interfaces/Constituent";
-import { Clause, clauseOf } from "../interfaces/Clause";
+import { Clause, clauseOf } from "../../clauses/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
 import NounPhrase from "../phrases/NounPhrase";
