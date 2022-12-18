@@ -1,11 +1,43 @@
+## Enhancing ISO Prolog
+
+### Parametrizing Predicates
+
+To be able to retrieve all unary and binary relations an object participates in, treat the predicate as an argument:
+
+```
+instanceof(object, classname)
+paratecipatesin(relation, object1, object2)
+```
+
+### Logical Negation
+
+Negation in standard Prolog is negation as failure (aka: "closed-world") negation. To obtain "open-world" (aka: logical) negation:
+
+```
+not(instanceof(object, classname))
+```
+
+|   Q	    |   not(Q)	|   is Q true? |
+------------|-----------|----------------
+|   yes	    |   yes	    |   error!      | 
+|   yes	    |   no	    |   yes         |
+|   no	    |   yes	    |   no          |
+|   no	    |   no	    |   undefined   |
+
+
+### Contraddictions
+
+To check for contraddictions:
+
+```
+error(X) :- not(X), X.
+```
+
 ## What about theme-rheme?
 
 assume(theme:string, rheme:string):void
+
 https://en.wikipedia.org/wiki/Topic_and_comment#Practical_applications
-
-
-
-
 
 theme-rheme is not a good idea at all!
 
@@ -28,8 +60,6 @@ You should obtain a MAPPING between ids of the entities in the sandbox and ids o
 For entities that do not exixst yet in the global prolog env, you will generate a new id.
 
 Ids that are variables should be left untouched.
-
-
 
 
 ## PROBLEM
