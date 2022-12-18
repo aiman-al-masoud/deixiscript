@@ -5,7 +5,8 @@
       "module": "commonjs",
       "target": "es2015",
       "lib": [
-        "ES2021.String"
+        "ES2021.String",
+        "dom"
       ],
       "moduleResolution": "node",
       "esModuleInterop" : true,
