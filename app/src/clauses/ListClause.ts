@@ -1,4 +1,4 @@
-import { Clause, CopyOpts } from "./Clause";
+import { Clause, CopyOpts, Id } from "./Clause";
 
 export default class ListClause implements Clause{
 
@@ -32,5 +32,9 @@ export default class ListClause implements Clause{
 
     toString(){
         return this.negated? `not(${this.clauses.toString()})` : this.clauses.toString()
+    }
+
+    get entities(): Id[] {
+        return Array.from(new Set(this.clauses.flatMap(c=>c.entities))  )
     }
 }

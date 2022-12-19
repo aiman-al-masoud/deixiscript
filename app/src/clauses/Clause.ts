@@ -12,6 +12,7 @@ export interface Clause {
     copy(opts?:CopyOpts):Clause
     toList():Clause[]
     readonly negated:boolean
+    get entities():Id[]
 }
 
 export function clauseOf(predicate:string, ...args:Id[]){
@@ -23,6 +24,7 @@ export const emptyClause = ():Clause => new ListClause([])
 export interface CopyOpts{
     negate? : boolean
     withVars? : boolean
+    map? : Map
 }
 
 export function makeHornClauses(conditions: Clause, conclusions: Clause):Clause {

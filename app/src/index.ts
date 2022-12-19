@@ -57,7 +57,8 @@ import TauProlog from './prolog/TauProlog';
 
 function test(string:string){
     console.log(string)
-    console.log(getParser(string).parse().toProlog())
+    const clause = getParser(string).parse().toProlog()
+    console.log(clause, clause.entities)
 }
 
 test('the cat is on the mat')

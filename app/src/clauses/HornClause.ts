@@ -1,5 +1,5 @@
 import { BasicClause } from "./BasicClause";
-import { Clause, CopyOpts } from "./Clause";
+import { Clause, CopyOpts, Id } from "./Clause";
 import ListClause from "./ListClause";
 
 export class HornClause implements Clause{
@@ -22,6 +22,10 @@ export class HornClause implements Clause{
 
     toString(){
         return `${this.conclusion.toString()} :- ${this.condition.map(c=>c.toString()).reduce((c1,c2)=>c1+', '+c2)}`
+    }
+
+    get entities(): Id[] {
+        return Array.from(new Set(this.condition.flatMap(c=>c.entities).concat(this.conclusion.entities)))
     }
     
 }
