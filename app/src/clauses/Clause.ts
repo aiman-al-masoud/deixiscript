@@ -40,3 +40,9 @@ export function makeHornClauses(conditions: Clause, conclusions: Clause):Clause 
 export function getRandomId(): Id {
     return `${CONST_PREFIX}${parseInt(1000000 * Math.random()+'')}`
 }
+
+/**
+ * Mapping any given id in the sandbox to an id in the 
+ * larger universe.
+ */
+export type Map = { [a: Id]: Id }

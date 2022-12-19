@@ -1,11 +1,5 @@
-import { Clause, Id } from "../clauses/Clause";
+import { Clause, Id, Map } from "../clauses/Clause";
 import Brain from "./Brain";
-
-/**
- * Mapping any given id in the sandbox to an id in the 
- * larger universe.
- */
-export type Map = { [a: Id]: Id }
 
 /**
  * The {@link Brain} should call {@link Sandbox.mapTo()} before asserting the content of a 
