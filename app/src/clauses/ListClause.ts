@@ -8,15 +8,18 @@ export default class ListClause implements Clause{
 
     concat(other: Clause): Clause {
 
-        // TODO: this breaks the other clause if it is negated!
-        // if(!this.negated && !other.negated) ...
+        // TODO: this op is a little bit clumsy, consider using a simplify() method instead.
 
-        if(this.negated){
+        if(this.negated && other.negated){
+            return new ListClause([this.copy(), other.copy()])
+        }else if (this.negated){
             return new ListClause([this.copy(), ...other.toList()])
+        }else if (other.negated){
+            return new ListClause([...this.toList(), other.copy()])
         }else{
-            return new ListClause(this.toList().concat(other.toList()))
+            return new ListClause([...this.toList(), ...other.toList()])
         }
-
+        
     }
 
     copy(opts?: CopyOpts): ListClause {

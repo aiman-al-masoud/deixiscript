@@ -9,17 +9,17 @@ import TauProlog from './prolog/TauProlog';
 
 
 // PROLOG TEST //////////////////////////////////////////
-const pro = getProlog();
-(window as any).pro = pro;
-(async () => {
-    await pro.assert('capra(scemo)')
-    await pro.assert('mammal(peloso)')
-    await pro.assert('mammal(fido)')
-    await pro.assert('mammal(X) :- capra(X)')
-    console.log(await pro.query('mammal(X).'))
-    await pro.retract('capra(scemo)')
-    console.log(await pro.query('mammal(X).'))
-})();
+// const pro = getProlog();
+// (window as any).pro = pro;
+// (async () => {
+//     await pro.assert('capra(scemo)')
+//     await pro.assert('mammal(peloso)')
+//     await pro.assert('mammal(fido)')
+//     await pro.assert('mammal(X) :- capra(X)')
+//     console.log(await pro.query('mammal(X).'))
+//     await pro.retract('capra(scemo)')
+//     console.log(await pro.query('mammal(X).'))
+// })();
 // //      //////////////////////////////////////////
 
 
