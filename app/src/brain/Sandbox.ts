@@ -26,7 +26,7 @@ class BaseSandbox implements Sandbox {
 
         // create a prolog "sandbox"
 
-        // write all contents of clause to the sandbox
+        // write all contents of clause's THEME to the sandbox
         
     }
 
