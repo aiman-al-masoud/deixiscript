@@ -13,7 +13,7 @@ export class HornClause implements Clause{
     }
 
     copy(opts?: CopyOpts): HornClause {
-        return new HornClause(this.condition.map(c=>c.copy()), this.conclusion.copy())
+        return new HornClause(this.condition.map(c=>c.copy(opts)), this.conclusion.copy(opts))
     }
 
     toList(): Clause[] {

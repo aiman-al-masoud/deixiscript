@@ -23,7 +23,6 @@ export const emptyClause = ():Clause => new ListClause([])
 
 export interface CopyOpts{
     negate? : boolean
-    withVars? : boolean
     map? : Map
 }
 
@@ -39,8 +38,8 @@ export function makeHornClauses(conditions: Clause, conclusions: Clause):Clause 
 
 }
 
-export function getRandomId(): Id {
-    return `${CONST_PREFIX}${parseInt(1000000 * Math.random()+'')}`
+export function getRandomId(): Id { // TODO: higher const for production to avoid collisions
+    return `${CONST_PREFIX}${parseInt(10 * Math.random()+'')}`
 }
 
 /**

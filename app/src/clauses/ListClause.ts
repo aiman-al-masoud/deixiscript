@@ -23,7 +23,7 @@ export default class ListClause implements Clause{
     }
 
     copy(opts?: CopyOpts): ListClause {
-        return new ListClause(this.clauses, opts?.negate? !this.negated : this.negated)
+        return new ListClause(this.clauses.map(c=>c.copy(opts)), opts?.negate? !this.negated : this.negated)
     }
 
     toList(): Clause[] {

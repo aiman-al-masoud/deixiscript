@@ -13,7 +13,7 @@ export class BasicClause implements Clause{
     }
 
     copy(opts?: CopyOpts): BasicClause {
-        return new BasicClause(this.predicate, this.args.concat([]), opts?.negate? !this.negated : this.negated)
+        return new BasicClause(this.predicate, this.args.map(a => opts?.map? opts?.map[a]??a : a), opts?.negate? !this.negated : this.negated)
     }
 
     toList(): Clause[] {
