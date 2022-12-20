@@ -17,27 +17,25 @@ export function getSandbox(clause: Clause) {
 class BaseSandbox implements Sandbox {
 
     constructor(readonly clause: Clause) {
-
-        // create a prolog "sandbox"
-
-        // write all contents of clause's THEME to the sandbox
-
-        // Maybe no need for prolog sanbox, just add an about(entity) method
-        // on Clause that returns a list of all subclauses concerned with
-        // that entity. 
+        
     }
 
     mapTo(universe: Brain): Map {
-        
-        // get entities in sandbox
 
-        // map entity in sanbox to its full description 
+        //TODO: what about entities in rheme? TODOOOOOOOOO
+
+        // get entities in sanbox theme, map each to its full description 
+        const descriptions = this.clause.theme.entities.map(e => ({ id: e, description: this.clause.theme.about(e) }))        
 
         // map full description to corresponding id in universe, if any
+        const tuples = descriptions.map(d => {
+            return {sandbox : d.id, universe : universe.find(d.description.map(d=>d.toString()).reduce((a,b)=>a+'. '+b))[0]  }
+        })
+        
+        const mapping = tuples.map(t=> ({ [t.sandbox] : t.universe})).reduce((a,b) => ({...a,...b}))
 
-        // obtain iDInSandbox -> iDInUniversde map
+        return mapping
 
-        throw new Error("Method not implemented.");
     }
 
 }

@@ -35,4 +35,8 @@ export class HornClause implements Clause{
     get rheme(): Clause {
         return this.copy() // dunno what I'm doin'
     }
+
+    about(id: Id): Clause[] {
+        return this.conclusion.about(id).concat(this.condition.flatMap(c=>c.about(id)))
+    }
 }

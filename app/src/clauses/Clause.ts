@@ -15,6 +15,7 @@ export interface Clause {
     get entities():Id[]
     get theme():Clause
     get rheme():Clause
+    about(id:Id):Clause[]
 }
 
 export function clauseOf(predicate:string, ...args:Id[]){

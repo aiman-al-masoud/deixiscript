@@ -62,6 +62,7 @@ function test(string:string){
     console.log('entities', clause.entities)
     console.log('theme', clause.theme)
     console.log('rheme', clause.rheme)
+    console.log(clause.about('id0'))
 }
 
 test('the cat is on the mat')

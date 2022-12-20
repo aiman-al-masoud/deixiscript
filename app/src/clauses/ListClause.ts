@@ -49,4 +49,8 @@ export default class ListClause implements Clause{
     get rheme(): Clause {
         return this.clauses[1]
     }
+
+    about(ids: Id): Clause[] {
+        return this.clauses.flatMap(c=>c.about(ids))
+    }
 }

@@ -36,6 +36,10 @@ export class BasicClause implements Clause {
     get rheme():Clause{
         return emptyClause()
     }
+
+    about(id: Id): Clause[] {        
+        return this.args.includes(id) ? this.toList() : []
+    }
 }
 
 // export class BasicClause implements Clause {
