@@ -21,7 +21,10 @@ class BaseSandbox implements Sandbox {
         // create a prolog "sandbox"
 
         // write all contents of clause's THEME to the sandbox
-        
+
+        // Maybe no need for prolog sanbox, just add an about(entity) method
+        // on Clause that returns a list of all subclauses concerned with
+        // that entity. 
     }
 
     mapTo(universe: Brain): Map {
