@@ -1,9 +1,9 @@
-import { Id } from "../clauses/Clause"
+import { Clause, Id } from "../clauses/Clause"
 
 export default interface Brain{
-    find(query:string):Promise<Id[]>
-    check(query:string):Promise<boolean>
-    assume(code:string):Promise<void>
+    find(query:Clause):Promise<Id[]>
+    check(query:Clause):Promise<boolean>
+    assume(code:Clause):Promise<void>
     
     // clone():Brain
     // addListener(element:number, event:string, callback:(event:Event)=>void):void
