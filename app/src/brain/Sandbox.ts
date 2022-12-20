@@ -6,7 +6,7 @@ import Brain from "./Brain";
  * in the universe (ie: {@link Brain}). {@link Sandbox} resolves the anaphora.
  */
 export interface Sandbox {
-    mapTo(universe: Brain): Map
+    mapTo(universe: Brain): Promise<Map>
 }
 
 export function getSandbox(clause: Clause) {
@@ -19,7 +19,7 @@ class BaseSandbox implements Sandbox {
 
     }
 
-    mapTo(universe: Brain): Map {
+    async mapTo(universe: Brain): Promise<Map> {
 
         //TODO: what about entities in rheme? TODOOOOOOOOO
 
@@ -27,14 +27,14 @@ class BaseSandbox implements Sandbox {
         const descriptions = this.clause.theme.entities.map(e => ({ id: e, description: this.clause.theme.about(e) }))        
 
         // map full description to corresponding id in universe, if any
-        const tuples = descriptions.map(d => {
-            return {sandbox : d.id, universe : universe.find(d.description.map(d=>d.toString()).reduce((a,b)=>a+'. '+b))[0]  }
-        })
+        // const tuples = descriptions.map(async (d) => {
+            // return {sandbox : d.id, universe : (await universe.find(d.description.map(d=>d.toString()).reduce((a,b)=>a+'. '+b)))   [0] }
+        // })
         
-        const mapping = tuples.map(t=> ({ [t.sandbox] : t.universe})).reduce((a,b) => ({...a,...b}))
+        // const mapping = tuples.map(t=> ({ [t.sandbox] : t.universe})).reduce((a,b) => ({...a,...b}))
 
-        return mapping
-
+        // return mapping
+        throw new Error('not implemented!')
     }
 
 }
