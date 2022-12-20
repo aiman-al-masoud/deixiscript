@@ -46,8 +46,12 @@ export function makeHornClauses(conditions: Clause, conclusions: Clause): Clause
 
 }
 
-export function getRandomId(asVar=false): Id { // TODO: higher const for production to avoid collisions
-    return `${asVar ? VAR_PREFIX : CONST_PREFIX}${parseInt(10 * Math.random() + '')}`
+export function getRandomId(opts?: GetRandomIdOpts): Id { // TODO: higher const for production to avoid collisions
+    return `${opts?.asVar ? VAR_PREFIX : CONST_PREFIX}${parseInt(10 * Math.random() + '')}`
+}
+
+export interface GetRandomIdOpts {
+    asVar: boolean
 }
 
 /**

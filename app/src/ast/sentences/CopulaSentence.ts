@@ -13,7 +13,7 @@ export default class CopulaSentence implements SimpleSentence {
 
     toProlog(args?: ToPrologArgs): Clause {
 
-        const subjectId = args?.roles?.subject ?? getRandomId(this.subject.isUniQuant())
+        const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
         const subject = this.subject.toProlog(newArgs)
