@@ -58,7 +58,10 @@ import TauProlog from './prolog/TauProlog';
 function test(string:string){
     console.log(string)
     const clause = getParser(string).parse().toProlog().copy({map:{'id1' : 1000, 'id2':2000}})
-    console.log(clause, clause.entities)
+    console.log(clause)
+    console.log('entities', clause.entities)
+    console.log('theme', clause.theme)
+    console.log('rheme', clause.rheme)
 }
 
 test('the cat is on the mat')

@@ -21,7 +21,7 @@ export default class CopulaSentence implements SimpleSentence {
 
         return this.subject.isUniversallyQuantified() ?
             makeHornClauses(subject, predicate) :
-            predicate.concat(subject)
+            subject.concat(predicate, {asRheme:true})
 
     }
 

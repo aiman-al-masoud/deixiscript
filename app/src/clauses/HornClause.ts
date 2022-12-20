@@ -1,5 +1,5 @@
 import { BasicClause } from "./BasicClause";
-import { Clause, CopyOpts, Id } from "./Clause";
+import { Clause, ConcatOpts, CopyOpts, Id } from "./Clause";
 import ListClause from "./ListClause";
 
 export class HornClause implements Clause{
@@ -8,7 +8,7 @@ export class HornClause implements Clause{
 
     }
 
-    concat(other: Clause): Clause {
+    concat(other: Clause, opts?:ConcatOpts): Clause {
         return new ListClause(this.toList().concat(other.toList()))
     }
 
@@ -27,5 +27,12 @@ export class HornClause implements Clause{
     get entities(): Id[] {
         return Array.from(new Set(this.condition.flatMap(c=>c.entities).concat(this.conclusion.entities)))
     }
+
+    get theme(): Clause {
+        return this.condition.flatMap(c=>c.theme).reduce((c1, c2)=>c2.concat(c2))
+    }
     
+    get rheme(): Clause {
+        return this.copy() // dunno what I'm doin'
+    }
 }

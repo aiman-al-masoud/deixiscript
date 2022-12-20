@@ -8,11 +8,13 @@ export type Id = number | string
 
 
 export interface Clause {
-    concat(other: Clause): Clause
+    concat(other: Clause, opts?:ConcatOpts): Clause
     copy(opts?:CopyOpts):Clause
     toList():Clause[]
     readonly negated:boolean
     get entities():Id[]
+    get theme():Clause
+    get rheme():Clause
 }
 
 export function clauseOf(predicate:string, ...args:Id[]){
@@ -24,6 +26,10 @@ export const emptyClause = ():Clause => new ListClause([])
 export interface CopyOpts{
     negate? : boolean
     map? : Map
+}
+
+export interface ConcatOpts{
+    asRheme?: boolean
 }
 
 export function makeHornClauses(conditions: Clause, conclusions: Clause):Clause {

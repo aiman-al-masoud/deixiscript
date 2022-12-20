@@ -24,7 +24,7 @@ export default class IntransitiveSentence implements VerbSentence {
         const rheme = clauseOf(this.iverb.string, subjectId)
                         .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2)))
 
-        return theme.concat(rheme)
+        return theme.concat(rheme, {asRheme:true})
     }
 
 }

@@ -1,4 +1,4 @@
-import { Clause, CopyOpts, Id } from "./Clause";
+import { Clause, ConcatOpts, CopyOpts, Id } from "./Clause";
 
 export default class ListClause implements Clause{
 
@@ -6,9 +6,13 @@ export default class ListClause implements Clause{
 
     }
 
-    concat(other: Clause): Clause {
+    concat(other: Clause, opts?:ConcatOpts): Clause {
 
         // TODO: this op is a little bit clumsy, consider using a simplify() method instead.
+
+        if(opts?.asRheme){
+            return new ListClause([this.copy(), other.copy()])
+        }
 
         if(this.negated && other.negated){
             return new ListClause([this.copy(), other.copy()])
@@ -36,5 +40,13 @@ export default class ListClause implements Clause{
 
     get entities(): Id[] {
         return Array.from(new Set(this.clauses.flatMap(c=>c.entities))  )
+    }
+
+    get theme(): Clause {
+        return this.clauses[0]
+    }
+
+    get rheme(): Clause {
+        return this.clauses[1]
     }
 }
