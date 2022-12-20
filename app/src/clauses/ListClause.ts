@@ -1,53 +1,53 @@
 import { Clause, ConcatOpts, CopyOpts, Id } from "./Clause";
 
-export default class ListClause implements Clause{
+export default class ListClause implements Clause {
 
-    constructor(readonly clauses:Clause[], readonly negated=false){
+    constructor(readonly clauses: Clause[], readonly negated = false) {
 
     }
 
-    concat(other: Clause, opts?:ConcatOpts): Clause {
+    concat(other: Clause, opts?: ConcatOpts): Clause {
 
         // TODO: this op is a little bit clumsy, consider using a simplify() method instead.
 
-        if(opts?.asRheme){
+        if (opts?.asRheme) {
             return new ListClause([this.copy(), other.copy()])
         }
 
-        if(this.negated && other.negated){
+        if (this.negated && other.negated) {
             return new ListClause([this.copy(), other.copy()])
-        }else if (this.negated){
+        } else if (this.negated) {
             return new ListClause([this.copy(), ...other.toList()])
-        }else if (other.negated){
+        } else if (other.negated) {
             return new ListClause([...this.toList(), other.copy()])
-        }else{
+        } else {
             return new ListClause([...this.toList(), ...other.toList()])
         }
-        
+
     }
 
     copy(opts?: CopyOpts): ListClause {
-        return new ListClause(this.clauses.map(c=>c.copy(opts)), opts?.negate? !this.negated : this.negated)
+        return new ListClause(this.clauses.map(c => c.copy(opts)), opts?.negate ? !this.negated : this.negated)
     }
 
     toList(): Clause[] {
         return this.clauses.concat([])
     }
 
-    toString(){
-        return this.negated? `not(${this.clauses.toString()})` : this.clauses.toString()
+    toString() {
+        return this.negated ? `not(${this.clauses.toString()})` : this.clauses.toString()
     }
-    
+
     about(ids: Id): Clause[] {
-        return this.clauses.flatMap(c=>c.about(ids))
+        return this.clauses.flatMap(c => c.about(ids))
     }
-    
+
     flatList(): Clause[] {
-        return this.clauses.flatMap(c=>c.flatList())
+        return this.clauses.flatMap(c => c.flatList())
     }
 
     get entities(): Id[] {
-        return Array.from(new Set(this.clauses.flatMap(c=>c.entities))  )
+        return Array.from(new Set(this.clauses.flatMap(c => c.entities)))
     }
 
     get theme(): Clause {

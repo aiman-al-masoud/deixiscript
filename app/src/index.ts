@@ -55,10 +55,10 @@ import TauProlog from './prolog/TauProlog';
 // console.log((window as any).ast = getParser('the color of the button is red').parse())
 // console.log((window as any).ast = getParser('the color of the button on the black div is red').parse())
 
-function test(string:string){
+function test(string: string) {
     console.log(string)
-    const clause = getParser(string).parse().toProlog().copy({map:{'id1' : 1000, 'id2':2000}})
-    console.log(clause.flatList().map(c=>c.toString()))
+    const clause = getParser(string).parse().toProlog().copy({ map: { 'id1': 1000, 'id2': 2000 } })
+    console.log(clause.flatList().map(c => c.toString()))
     console.log(clause)
     console.log('entities', clause.entities)
     console.log('theme', clause.theme)

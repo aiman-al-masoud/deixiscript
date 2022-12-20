@@ -4,7 +4,7 @@ import ListClause from "./ListClause";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string, readonly args: Id[], readonly negated=false) {
+    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false) {
 
     }
 
