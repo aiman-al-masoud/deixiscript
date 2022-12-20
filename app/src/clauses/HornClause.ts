@@ -39,4 +39,8 @@ export class HornClause implements Clause{
     about(id: Id): Clause[] {
         return this.conclusion.about(id).concat(this.condition.flatMap(c=>c.about(id)))
     }
+
+    flatList(): Clause[] {
+        return this.toList()
+    }
 }

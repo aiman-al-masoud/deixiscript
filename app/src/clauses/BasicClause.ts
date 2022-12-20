@@ -4,7 +4,7 @@ import ListClause from "./ListClause";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false) {
+    constructor(readonly predicate: string, readonly args: Id[], readonly negated=false) {
 
     }
 
@@ -20,6 +20,14 @@ export class BasicClause implements Clause {
         return [this.copy()]
     }
 
+    about(id: Id): Clause[] {
+        return this.args.includes(id) ? this.toList() : []
+    }
+
+    flatList(): Clause[] {
+        return this.toList()
+    }
+
     toString() {
         const core = `${this.predicate}(${this.args.reduce((a1, a2) => a1 + ', ' + a2)})`
         return this.negated ? `not(${core})` : core
@@ -33,49 +41,8 @@ export class BasicClause implements Clause {
         return this.copy()
     }
 
-    get rheme():Clause{
+    get rheme(): Clause {
         return emptyClause()
     }
 
-    about(id: Id): Clause[] {        
-        return this.args.includes(id) ? this.toList() : []
-    }
 }
-
-// export class BasicClause implements Clause {
-
-//     constructor(readonly clauses: string[]) {
-
-//     }
-
-//     isImply(): boolean {
-//         return this.clauses.some(c=>c.includes(':-'))
-//     }
-
-//     copy(opts?: CopyOpts): Clause {
-
-//         return this.withVars(opts?.withVars ?? false)
-//                    .negate(opts?.negate ?? false)
-
-//     }
-
-//     protected withVars(withVars: boolean) {
-
-//         return new BasicClause(withVars ?
-//             this.clauses.map(c => c.replaceAll(CONST_PREFIX, VAR_PREFIX)) :
-//             this.clauses.map(c => c.replaceAll(VAR_PREFIX, CONST_PREFIX)))
-
-//     }
-
-//     protected negate(negate: boolean) {
-
-//         return negate ?
-//             new BasicClause([`not( (${this.clauses.reduce((c1, c2) => `${c1}, ${c2}`)}) )`]) :
-//             new BasicClause(this.clauses.concat([]))
-//     }
-
-//     concat(other: Clause): Clause {
-//         return new BasicClause(this.clauses.concat(other.clauses))
-//     }
-
-// }

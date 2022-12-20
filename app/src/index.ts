@@ -58,6 +58,7 @@ import TauProlog from './prolog/TauProlog';
 function test(string:string){
     console.log(string)
     const clause = getParser(string).parse().toProlog().copy({map:{'id1' : 1000, 'id2':2000}})
+    console.log(clause.flatList().map(c=>c.toString()))
     console.log(clause)
     console.log('entities', clause.entities)
     console.log('theme', clause.theme)
@@ -74,7 +75,7 @@ test('the cat exists on the mat')
 test('if the cat is on the mat then the cat is red')
 test('the cat is not red')
 test('every cat is not red')
-test('trump is not a great president')
+test('trump is not a great president') // probably need an and predicate
 
 
 // const p = document.createElement('p')

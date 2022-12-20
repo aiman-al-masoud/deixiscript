@@ -11,11 +11,12 @@ export interface Clause {
     concat(other: Clause, opts?:ConcatOpts): Clause
     copy(opts?:CopyOpts):Clause
     toList():Clause[]
+    about(id:Id):Clause[]
+    flatList():Clause[]
     readonly negated:boolean
     get entities():Id[]
     get theme():Clause
     get rheme():Clause
-    about(id:Id):Clause[]
 }
 
 export function clauseOf(predicate:string, ...args:Id[]){

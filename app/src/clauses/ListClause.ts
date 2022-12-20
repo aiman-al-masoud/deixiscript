@@ -37,6 +37,14 @@ export default class ListClause implements Clause{
     toString(){
         return this.negated? `not(${this.clauses.toString()})` : this.clauses.toString()
     }
+    
+    about(ids: Id): Clause[] {
+        return this.clauses.flatMap(c=>c.about(ids))
+    }
+    
+    flatList(): Clause[] {
+        return this.clauses.flatMap(c=>c.flatList())
+    }
 
     get entities(): Id[] {
         return Array.from(new Set(this.clauses.flatMap(c=>c.entities))  )
@@ -48,9 +56,5 @@ export default class ListClause implements Clause{
 
     get rheme(): Clause {
         return this.clauses[1]
-    }
-
-    about(ids: Id): Clause[] {
-        return this.clauses.flatMap(c=>c.about(ids))
     }
 }
