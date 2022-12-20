@@ -32,6 +32,8 @@ class BaseSandbox implements Sandbox {
 
         // map full description to corresponding id in universe, if any
 
+        // obtain iDInSandbox -> iDInUniversde map
+
         throw new Error("Method not implemented.");
     }
 
