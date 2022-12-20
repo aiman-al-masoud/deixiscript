@@ -19,7 +19,7 @@ export default class NounPhrase implements Phrase {
 
     }
 
-    isUniversallyQuantified() {
+    isUniQuant() {
         return this.quantifier?.isUniversal() ?? false
     }
 
@@ -33,8 +33,8 @@ export default class NounPhrase implements Phrase {
             .map(a => a.string)
             .concat(this.noun ? [this.noun.string] : [])
             .map(p => clauseOf(p, subjectId))
-            .reduce((c1,c2)=>c1.concat(c2), emptyClause())
-            .concat(this.complements.map(c=>c.toProlog(newArgs)).reduce((c1, c2)=>c1.concat(c2), emptyClause()))
+            .reduce((c1, c2) => c1.concat(c2), emptyClause())
+            .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2), emptyClause()))
             .concat(this.subordClause?.toProlog(newArgs) ?? emptyClause())
 
     }

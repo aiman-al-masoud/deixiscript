@@ -13,15 +13,15 @@ export default class CopulaSentence implements SimpleSentence {
 
     toProlog(args?: ToPrologArgs): Clause {
 
-        const subjectId = args?.roles?.subject ?? getRandomId()
+        const subjectId = args?.roles?.subject ?? getRandomId(this.subject.isUniQuant())
         const newArgs = { ...args, roles: { subject: subjectId } }
 
         const subject = this.subject.toProlog(newArgs)
         const predicate = this.predicate.toProlog(newArgs).copy({ negate: !!this.negation })
 
-        return this.subject.isUniversallyQuantified() ?
+        return this.subject.isUniQuant() ?
             makeHornClauses(subject, predicate) :
-            subject.concat(predicate, {asRheme:true})
+            subject.concat(predicate, { asRheme: true })
 
     }
 

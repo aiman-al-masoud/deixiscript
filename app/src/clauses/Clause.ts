@@ -8,46 +8,46 @@ export type Id = number | string
 
 
 export interface Clause {
-    concat(other: Clause, opts?:ConcatOpts): Clause
-    copy(opts?:CopyOpts):Clause
-    toList():Clause[]
-    about(id:Id):Clause[]
-    flatList():Clause[]
-    readonly negated:boolean
-    get entities():Id[]
-    get theme():Clause
-    get rheme():Clause
+    concat(other: Clause, opts?: ConcatOpts): Clause
+    copy(opts?: CopyOpts): Clause
+    toList(): Clause[]
+    about(id: Id): Clause[]
+    flatList(): Clause[]
+    readonly negated: boolean
+    get entities(): Id[]
+    get theme(): Clause
+    get rheme(): Clause
 }
 
-export function clauseOf(predicate:string, ...args:Id[]){
+export function clauseOf(predicate: string, ...args: Id[]) {
     return new BasicClause(predicate, args)
 }
 
-export const emptyClause = ():Clause => new ListClause([])
+export const emptyClause = (): Clause => new ListClause([])
 
-export interface CopyOpts{
-    negate? : boolean
-    map? : Map
+export interface CopyOpts {
+    negate?: boolean
+    map?: Map
 }
 
-export interface ConcatOpts{
+export interface ConcatOpts {
     asRheme?: boolean
 }
 
-export function makeHornClauses(conditions: Clause, conclusions: Clause):Clause {
+export function makeHornClauses(conditions: Clause, conclusions: Clause): Clause {
 
     // TODO: this breaks negated ListClauses or ListClauses with negated elements !!!!!!!
 
-    const cond = conditions.toList().map(c=> (c as BasicClause))
-    const conc = conclusions.toList().map(c=> (c as BasicClause))
+    const cond = conditions.toList().map(c => (c as BasicClause))
+    const conc = conclusions.toList().map(c => (c as BasicClause))
     const results = conc.map(c => new HornClause(cond, c))
 
-    return results.length==1 ? results[0] : new ListClause(results)
+    return results.length == 1 ? results[0] : new ListClause(results)
 
 }
 
-export function getRandomId(): Id { // TODO: higher const for production to avoid collisions
-    return `${CONST_PREFIX}${parseInt(10 * Math.random()+'')}`
+export function getRandomId(asVar=false): Id { // TODO: higher const for production to avoid collisions
+    return `${asVar ? VAR_PREFIX : CONST_PREFIX}${parseInt(10 * Math.random() + '')}`
 }
 
 /**
