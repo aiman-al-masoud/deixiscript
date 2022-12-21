@@ -10,6 +10,6 @@ export default interface Brain{
     // addListener(element:number, event:string, callback:(event:Event)=>void):void
 }
 
-export function getBrain():Brain{
+export async function getBrain():Promise<Brain>{ // async due to possible init phase (in the future)
     return new PrologBrain()
 }

@@ -84,10 +84,8 @@ function test(string: string) {
 // END COMPILER TESTS
 
 
-
-const brain = getBrain();
-
 (async () => {
+    const brain = await getBrain();
     const c = clauseOf('capra', 'uno')
         .concat(clauseOf('capra', 2))
         .concat(clauseOf('capra', 3))
