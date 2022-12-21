@@ -87,10 +87,12 @@ function test(string: string) {
 
 const brain = getBrain();
 
-(async () =>{
-    await brain.assert(clauseOf('capra', 'uno'))
-    await brain.assert(clauseOf('capra', 2))
-    await brain.assert(clauseOf('capra', 3))
+(async () => {
+    const c = clauseOf('capra', 'uno')
+        .concat(clauseOf('capra', 2))
+        .concat(clauseOf('capra', 3))
+
+    await brain.assert(c)
     console.log(await brain.query(clauseOf('capra', 'X')))
 })()
 
