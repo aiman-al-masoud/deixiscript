@@ -2,6 +2,9 @@ import pl from 'tau-prolog'
 import Article from './ast/tokens/Article';
 import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
+import { getBrain } from './brain/Brain';
+import { BasicClause } from './clauses/BasicClause';
+import { clauseOf } from './clauses/Clause';
 import { getLexer } from './lexer/Lexer';
 import { getParser } from './parser/Parser';
 import Prolog, { getProlog } from './prolog/Prolog';
@@ -55,6 +58,7 @@ import TauProlog from './prolog/TauProlog';
 // console.log((window as any).ast = getParser('the color of the button is red').parse())
 // console.log((window as any).ast = getParser('the color of the button on the black div is red').parse())
 
+// COMPILER TESTS
 function test(string: string) {
     console.log(string)
     const clause = getParser(string).parse().toProlog().copy({ map: { 'id1': 1000, 'id2': 2000 } })
@@ -66,16 +70,29 @@ function test(string: string) {
     console.log(clause.about('id0'))
 }
 
-test('the cat is on the mat')
-test('the cat that is red is on the mat')
-test('the big cat that is on the mat is black')
-test('every cat is red')
-test('every red cat is on the mat')
-test('the cat exists on the mat')
-test('if the cat is on the mat then the cat is red')
-test('the cat is not red')
-test('every cat is not red')
-test('trump is not a great president') // probably need an and predicate
+// test('the cat is on the mat')
+// test('the cat that is red is on the mat')
+// test('the big cat that is on the mat is black')
+// test('every cat is red')
+// test('every red cat is on the mat')
+// test('the cat exists on the mat')
+// test('if the cat is on the mat then the cat is red')
+// test('the cat is not red')
+// test('every cat is not red')
+// test('trump is not a great president') // probably need an and predicate
+
+// END COMPILER TESTS
+
+
+
+const brain = getBrain();
+
+(async () =>{
+    await brain.assert(clauseOf('capra', 'uno'))
+    await brain.assert(clauseOf('capra', 2))
+    await brain.assert(clauseOf('capra', 3))
+    console.log(await brain.query(clauseOf('capra', 'X')))
+})()
 
 
 // const p = document.createElement('p')
