@@ -4,6 +4,7 @@ import Article from './ast/tokens/Article';
 import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
 import { getBrain } from './brain/Brain';
+import { getSandbox } from './brain/Sandbox';
 import { BasicClause } from './clauses/BasicClause';
 import { clauseOf } from './clauses/Clause';
 import { getLexer } from './lexer/Lexer';
@@ -100,7 +101,11 @@ function test(string: string) {
 
 (async () => {
 
-    const brain = await getBrain()
+    const state = {
+        timer : setTimeout(()=>{},0),
+        brain : await getBrain(),
+        debouncingTime : 0
+    }
 
     const p = document.createElement('p')
     document.getElementById('root')?.appendChild(p)
@@ -111,13 +116,33 @@ function test(string: string) {
 
     document.getElementById('root')?.appendChild(textarea)
 
-    textarea.oninput = e => {
-
+    const onInput = async () => {
         const text = textarea.value
         const ast = getParser(text).parse()
         const clause = ast.toProlog()
 
+        if (!clause){
+            return 
+        }
+
+        const mapping = getSandbox(clause).mapTo(state.brain)
+
+
         p.innerHTML = `${(ast as any).constructor.name}: ${clause.toString()}`
+
+        if (ast instanceof CopulaQuestion){
+            console.log(await state.brain.query(clause))
+        }else{
+            console.log('asserted:', clause.toString())
+        }
+
+    }
+
+    textarea.oninput = e => {
+        clearTimeout(state.timer)
+        state.timer = setTimeout(()=>{
+            onInput()
+        }, state.debouncingTime)
     }
 
 })();

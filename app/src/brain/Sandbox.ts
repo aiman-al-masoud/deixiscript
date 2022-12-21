@@ -21,20 +21,39 @@ class BaseSandbox implements Sandbox {
 
     async mapTo(universe: Brain): Promise<Map> {
 
-        //TODO: what about entities in rheme? TODOOOOOOOOO
+        // get entities (at least once) in theme, entities in theme should 
+        // be looked up in universe without mentioning new info about them in rheme.
+        const themeEntities = this.clause.theme.entities
 
-        // get entities in sanbox theme, map each to its full description 
-        const descriptions = this.clause.theme.entities.map(e => ({ id: e, description: this.clause.theme.about(e) }))        
+        // get entities in rheme and not in theme, entitites in rheme 
+        // should be looked up without mentioning their relationship with entities in theme.
+        const rhemeEntities = this.clause.rheme.entities.filter(e=>!themeEntities.includes(e))
+
+        // map entity each to its full description
+        const descriptions = themeEntities.map(e => ({ [e]: this.clause.theme.about(e).reduce((c1, c2)=> c1.concat(c2)) }))
+                                .concat(rhemeEntities.map(e => ({ [e]: this.clause.rheme.about(e).reduce((c1, c2)=> c1.concat(c2)) })))
+                                .reduce((a, b) => ({ ...a, ...b }))
+                                
+
+        // map entity in sanbox to entity in universe (through description) 
+
+
+        // universe.query()
+
+        console.log(descriptions)
+
+
+        return {}
 
         // map full description to corresponding id in universe, if any
         // const tuples = descriptions.map(async (d) => {
-            // return {sandbox : d.id, universe : (await universe.find(d.description.map(d=>d.toString()).reduce((a,b)=>a+'. '+b)))   [0] }
+        // return {sandbox : d.id, universe : (await universe.find(d.description.map(d=>d.toString()).reduce((a,b)=>a+'. '+b)))   [0] }
         // })
-        
+
         // const mapping = tuples.map(t=> ({ [t.sandbox] : t.universe})).reduce((a,b) => ({...a,...b}))
 
         // return mapping
-        throw new Error('not implemented!')
+        // throw new Error('not implemented!')
     }
 
 }
