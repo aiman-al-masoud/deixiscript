@@ -14,6 +14,7 @@ export default class EagerLexer implements Lexer{
         //TODO: reconstruct "do not" and "does not" tokens
         //TODO: nouns vs adjectives
         this.tokens = sourceCode.split(/\s+|\./).map(e=>!e?'.':e).map(tokenOf)
+        console.debug('tokens', this.tokens)
         this._pos = 0
     }
 

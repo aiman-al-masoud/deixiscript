@@ -1,4 +1,5 @@
 import pl from 'tau-prolog'
+import CopulaQuestion from './ast/sentences/CopulaQuestion';
 import Article from './ast/tokens/Article';
 import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
@@ -79,31 +80,41 @@ function test(string: string) {
 // test('if the cat is on the mat then the cat is red')
 // test('the cat is not red')
 // test('every cat is not red')
-// test('trump is not a great president') // probably need an and predicate
+// test('trump is not a great president'); // probably need an and predicate
 
 // END COMPILER TESTS
 
 
+// (async () => {
+//     const brain = await getBrain();
+//     const c = clauseOf('capra', 'uno')
+//         .concat(clauseOf('capra', 2))
+//         .concat(clauseOf('capra', 3))
+//         .concat(clauseOf('white', 3))
+//         .concat(clauseOf('cat', 4))
+//         .concat(clauseOf('white', 4))
+
+//     await brain.assert(c);
+//     console.log(await brain.query(clauseOf('white', 'X').concat(clauseOf('cat', 'X'))))
+// })()
+
 (async () => {
-    const brain = await getBrain();
-    const c = clauseOf('capra', 'uno')
-        .concat(clauseOf('capra', 2))
-        .concat(clauseOf('capra', 3))
-        .concat(clauseOf('white', 3))
-        .concat(clauseOf('cat', 4))
-        .concat(clauseOf('white', 4))
 
-    await brain.assert(c);
-    console.log(await brain.query(clauseOf('white', 'X').concat(clauseOf('cat', 'X'))))
-})()
+    const brain = await getBrain()
 
+    const p = document.createElement('p')
+    document.getElementById('root')?.appendChild(p)
 
-// const p = document.createElement('p')
-// document.getElementById('root')?.appendChild(p)
+    const textarea = document.createElement('textarea')
+    document.getElementById('root')?.appendChild(textarea)
 
-// const textarea = document.createElement('textarea')
-// document.getElementById('root')?.appendChild(textarea)
+    textarea.oninput = e => {
 
-// textarea.oninput = (e)=>{
-//     p.innerHTML = getParser(textarea.value).parse().toProlog().clauses.reduce((c1,c2)=>`${c1}<br>${c2}`)
-// }
+        const text = textarea.value
+        const ast = getParser(text).parse()
+        const clause = ast.toProlog()
+
+        p.innerHTML = `${((ast as any).constructor.name)}: ${clause.toString()}`
+    }
+
+})();

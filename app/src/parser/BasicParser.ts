@@ -58,8 +58,8 @@ export default class BasicParser implements Parser {
     }
 
     parse(): Constituent {
-        return this.try(this.parseDeclaration)
-            ?? this.try(this.parseQuestion)
+        return this.try(this.parseQuestion) 
+            ?? this.try(this.parseDeclaration)
             ?? this.try(this.parseNounPhrase) // for quick topic reference
             ?? this.errorOut('parse()')
     }
