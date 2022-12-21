@@ -114,7 +114,7 @@ function test(string: string) {
         const ast = getParser(text).parse()
         const clause = ast.toProlog()
 
-        p.innerHTML = `${((ast as any).constructor.name)}: ${clause.toString()}`
+        p.innerHTML = `${(ast as any).constructor.name}: ${clause.toString()}`
     }
 
 })();
