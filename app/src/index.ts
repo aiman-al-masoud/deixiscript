@@ -106,6 +106,9 @@ function test(string: string) {
     document.getElementById('root')?.appendChild(p)
 
     const textarea = document.createElement('textarea')
+    textarea.style.height = '50vh'
+    textarea.style.width = '50vw'
+
     document.getElementById('root')?.appendChild(textarea)
 
     textarea.oninput = e => {
