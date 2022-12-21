@@ -91,9 +91,12 @@ const brain = getBrain();
     const c = clauseOf('capra', 'uno')
         .concat(clauseOf('capra', 2))
         .concat(clauseOf('capra', 3))
+        .concat(clauseOf('white', 3))
+        .concat(clauseOf('cat', 4))
+        .concat(clauseOf('white', 4))
 
-    await brain.assert(c)
-    console.log(await brain.query(clauseOf('capra', 'X')))
+    await brain.assert(c);
+    console.log(await brain.query(clauseOf('white', 'X').concat(clauseOf('cat', 'X'))))
 })()
 
 

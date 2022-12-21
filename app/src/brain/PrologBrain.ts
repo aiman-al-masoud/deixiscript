@@ -5,17 +5,16 @@ import Brain from "./Brain";
 export default class PrologBrain implements Brain {
 
     readonly kb: Prolog
-    
+
     constructor() {
         this.kb = getProlog()
     }
 
     async query(query: Clause): Promise<boolean | Id[]> {
 
-        // TODO: combine list into anded conditions of query
-        // TODO: deal with dot at a lower level
+        // TODO: deal with dot at a lower level ?
 
-        const q = query.flatList().map(c => c.toString())[0] + '.'
+        const q = query.flatList().map(c => c.toString()).reduce((a,b)=>`${a}, ${b}`)+'.'
         // console.log({ q })
         return await this.kb.query(q)
     }
