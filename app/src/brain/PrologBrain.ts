@@ -15,8 +15,8 @@ export default class PrologBrain implements Brain {
         // TODO: deal with dot at a lower level ?
 
         const q = query.flatList().map(c => c.toString()).reduce((a,b)=>`${a}, ${b}`)+'.'
-        // console.log({ q })
         return await this.kb.query(q)
+
     }
 
     async assert(clause: Clause): Promise<void> {

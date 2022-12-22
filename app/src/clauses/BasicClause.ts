@@ -1,4 +1,4 @@
-import { Clause, ConcatOpts, CONST_PREFIX, CopyOpts, emptyClause, Id, VAR_PREFIX } from "./Clause";
+import { Clause, ConcatOpts, CopyOpts, emptyClause, Id } from "./Clause";
 import ListClause from "./ListClause";
 
 

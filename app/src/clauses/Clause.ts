@@ -2,8 +2,8 @@ import { BasicClause } from "./BasicClause"
 import { HornClause } from "./HornClause"
 import ListClause from "./ListClause"
 
-export const CONST_PREFIX = 'id'
-export const VAR_PREFIX = 'Id'
+// export const CONST_PREFIX = 'id'
+// export const VAR_PREFIX = 'Id'
 export type Id = number | string
 
 
@@ -47,7 +47,11 @@ export function makeHornClauses(conditions: Clause, conclusions: Clause): Clause
 }
 
 export function getRandomId(opts?: GetRandomIdOpts): Id { // TODO: higher const for production to avoid collisions
-    return `${opts?.asVar ? VAR_PREFIX : CONST_PREFIX}${parseInt(10 * Math.random() + '')}`
+    return `id${parseInt(10 * Math.random() + '')}`
+}
+
+export function toVar(id:Id):Id{
+    return (id+'').toUpperCase()
 }
 
 export interface GetRandomIdOpts {

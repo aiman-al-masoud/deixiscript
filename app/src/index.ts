@@ -1,4 +1,4 @@
-import pl from 'tau-prolog'
+import pl, { format_answer } from 'tau-prolog'
 import CopulaQuestion from './ast/sentences/CopulaQuestion';
 import Article from './ast/tokens/Article';
 import Copula from './ast/tokens/Copula';
@@ -149,13 +149,14 @@ function test(string: string) {
 
 
 
-(async ()=>{
+(async () => {
 
     const prolog = await getBrain();
     (window as any).prolog = prolog
     await prolog.assert(clauseOf('cat', 'a'))
     await prolog.assert(clauseOf('cat', 'b'))
     await prolog.assert(clauseOf('cat', 'c'))
+    await prolog.assert(clauseOf('white', 'a'))
     await prolog.assert(clauseOf('dog', 'd'))
 
     await prolog.assert(clauseOf('eat', 'a', 'rabbit'))
@@ -163,13 +164,19 @@ function test(string: string) {
     await prolog.assert(clauseOf('eat', 'a', 'birdie'))
     await prolog.assert(clauseOf('eat', 'd', 'bone'))
     
+    await prolog.assert(clauseOf('table', 'tb1'))
+
     // const res = await prolog.query(clauseOf('cat', 'X').concat(clauseOf('eat', 'X', 'Y').concat(clauseOf('dog', 'Z'))))
-    // console.log(res)
+    // const clause = clauseOf('cat', 'id0').concat(clauseOf('dog', 'id1')).concat(clauseOf('capra', 'id55')) 
+    // const clause = getParser('the cat that is black is smart').parse().toProlog()
+    const clause = getParser('the cat that is white is on the table').parse().toProlog()
+    console.log(clause.toString())
 
-    const res = await getSandbox(clauseOf('cat', 'id0').concat(clauseOf('dog', 'id1'))).mapTo(prolog)
+    const res = await getSandbox(clause).mapTo(prolog)
     console.log(res)
+    console.log(clause.rheme.copy({ map: res }).toString())
 
-})();    
+})();
 
 
 

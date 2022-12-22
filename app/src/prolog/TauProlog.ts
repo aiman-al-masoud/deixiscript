@@ -1,5 +1,5 @@
 import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
-import pl, { Answer } from 'tau-prolog'
+import pl, { Answer, format_answer } from 'tau-prolog'
 import { Id } from "../clauses/Clause";
 require("tau-prolog/modules/promises.js")(pl);
 
@@ -22,9 +22,9 @@ export default class TauProlog implements Prolog {
         return await (this.session as any).promiseAnswer()
     }
 
-    async query(code: string): Promise<{ [id: Id]: Id[] } | boolean> {
+    protected async performQuery(code: string): Promise<{ [id: Id]: Id[] } | boolean> {
 
-        (this.session as any).promiseQuery(code)
+        await (this.session as any).promiseQuery(code)
         let answers: any = {}
 
         for await (let ans of (this.session as any).promiseAnswers()) {
@@ -41,13 +41,41 @@ export default class TauProlog implements Prolog {
 
         }
 
-        if (code.split('').find(c => c.match(/\w+/) && c.toUpperCase() === c)) { // cehck if query has a var. breaks down if predicate name contains capital letter!
+        // if (this.queryHasVar(code)) {
             return answers
-        } else {
+        // } else {
+            // return false
+        // }
+
+    }
+
+    async query(code: string): Promise<{ [id: Id]: Id[] } | boolean> {
+
+        try {
+            return await this.performQuery(code)
+        } catch (e) {
+            console.warn(this.parseError(e))
             return false
         }
 
     }
+
+    protected parseError(e: any) {
+
+        const error = (e as any).args[0].args[0].id
+
+        if (error == 'existence_error') {
+            const missingPredicate = (e as any).args[0].args[0].args[1].args[0].id
+            return { error, missingPredicate }
+        }else{
+            return e
+        }
+
+    }
+
+    // protected queryHasVar(code: string) { // check if query has a var. breaks down if predicate name contains capital letter!
+    //     return code.split('').find(c => c.match(/\w+/) && c.toUpperCase() === c)
+    // }
 
     predicates(opts?: PreidcatesOpts): string[] {
 

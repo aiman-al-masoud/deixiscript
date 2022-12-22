@@ -1,5 +1,4 @@
-import { Clause, clauseOf, Id, Map } from "../clauses/Clause";
-import ListClause from "../clauses/ListClause";
+import { Clause, clauseOf, Id, Map, toVar } from "../clauses/Clause";
 import Brain from "./Brain";
 
 /**
@@ -10,7 +9,7 @@ export interface Sandbox {
     mapTo(universe: Brain): Promise<Map>
 }
 
-export function getSandbox(clause: Clause) {
+export function getSandbox(clause: Clause):Sandbox {
     return new BaseSandbox(clause)
 }
 
@@ -35,20 +34,20 @@ class BaseSandbox implements Sandbox {
             .filter(c => themeEnts.every(e => !c.entities.includes(e))) // every theme entity is not included in any rhemedesc
 
         const mapToVar = this.clause.entities
-            .map(e => ({ [e]: `${e}`.toUpperCase() })) // to variable
+            .map(e => ({ [e]: toVar(e) })) 
             .reduce((a, b) => ({ ...a, ...b }))
-
+            
+        const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
+        
         const bigDescClause = themeDescs
             .concat(rhemeDescs).reduce((c1, c2) => c1.concat(c2))
             .copy({ map: mapToVar })
 
-        const res = (await universe.query(bigDescClause)) as { [id: string]: Id[];[id: number]: Id[]; }
-
-        const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
+        const res = (await universe.query(bigDescClause)) as { [id: Id]: Id[] }
 
         return Object.keys(res)
             .map(k => ({ [reverseMapToVar[k]]: res[k][0] ?? reverseMapToVar[k] }))
-            .reduce((a, b) => ({ ...a, ...b }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
 
     }
 
