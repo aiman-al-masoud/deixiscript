@@ -10,7 +10,7 @@ export default class PrologBrain implements Brain {
         this.kb = getProlog()
     }
 
-    async query(query: Clause): Promise<boolean | Id[]> {
+    async query(query: Clause): Promise<{[id:Id] : Id[]} | boolean>{
 
         // TODO: deal with dot at a lower level ?
 

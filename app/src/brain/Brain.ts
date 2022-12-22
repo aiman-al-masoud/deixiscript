@@ -2,7 +2,7 @@ import { Clause, Id } from "../clauses/Clause"
 import PrologBrain from "./PrologBrain"
 
 export default interface Brain{
-    query(query:Clause):Promise<Id[] | boolean>
+    query(query:Clause): Promise<{[id:Id] : Id[]} | boolean>
     assert(code:Clause):Promise<void>
     // find(query:Clause):Promise<Id[]>
     // check(query:Clause):Promise<boolean>

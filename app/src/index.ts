@@ -99,50 +99,76 @@ function test(string: string) {
 //     console.log(await brain.query(clauseOf('white', 'X').concat(clauseOf('cat', 'X'))))
 // })()
 
-(async () => {
+// (async () => {
 
-    const state = {
-        timer : setTimeout(()=>{},0),
-        brain : await getBrain(),
-        debouncingTime : 0
-    }
+//     const state = {
+//         timer : setTimeout(()=>{},0),
+//         brain : await getBrain(),
+//         debouncingTime : 0
+//     }
 
-    const p = document.createElement('p')
-    document.getElementById('root')?.appendChild(p)
+//     const p = document.createElement('p')
+//     document.getElementById('root')?.appendChild(p)
 
-    const textarea = document.createElement('textarea')
-    textarea.style.height = '50vh'
-    textarea.style.width = '50vw'
+//     const textarea = document.createElement('textarea')
+//     textarea.style.height = '50vh'
+//     textarea.style.width = '50vw'
 
-    document.getElementById('root')?.appendChild(textarea)
+//     document.getElementById('root')?.appendChild(textarea)
 
-    const onInput = async () => {
-        const text = textarea.value
-        const ast = getParser(text).parse()
-        const clause = ast.toProlog()
+//     const onInput = async () => {
+//         const text = textarea.value
+//         const ast = getParser(text).parse()
+//         const clause = ast.toProlog()
 
-        if (!clause){
-            return 
-        }
+//         if (!clause){
+//             return 
+//         }
 
-        const mapping = getSandbox(clause).mapTo(state.brain)
+//         const mapping = getSandbox(clause).mapTo(state.brain)
 
 
-        p.innerHTML = `${(ast as any).constructor.name}: ${clause.toString()}`
+//         p.innerHTML = `${(ast as any).constructor.name}: ${clause.toString()}`
 
-        if (ast instanceof CopulaQuestion){
-            console.log(await state.brain.query(clause))
-        }else{
-            console.log('asserted:', clause.toString())
-        }
+//         if (ast instanceof CopulaQuestion){
+//             console.log(await state.brain.query(clause))
+//         }else{
+//             console.log('asserted:', clause.toString())
+//         }
 
-    }
+//     }
 
-    textarea.oninput = e => {
-        clearTimeout(state.timer)
-        state.timer = setTimeout(()=>{
-            onInput()
-        }, state.debouncingTime)
-    }
+//     textarea.oninput = e => {
+//         clearTimeout(state.timer)
+//         state.timer = setTimeout(()=>{
+//             onInput()
+//         }, state.debouncingTime)
+//     }
 
-})();
+// })();
+
+
+
+(async ()=>{
+
+    const prolog = getProlog();
+    (window as any).prolog = prolog
+    await prolog.assert('cat(a)')
+    await prolog.assert('cat(b)')
+    await prolog.assert('cat(c)')
+    await prolog.assert('dog(d)')
+
+
+    await prolog.assert('eat(a, rabbit)')
+    await prolog.assert('eat(a, mouse)')
+    await prolog.assert('eat(a, birdie)')
+    await prolog.assert('eat(d, bone)')
+
+    const res = await prolog.query('cat(X), eat(X, Y), dog(Z).')
+    console.log(res)
+
+})();    
+
+
+
+

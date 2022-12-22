@@ -22,28 +22,31 @@ export default class TauProlog implements Prolog {
         return await (this.session as any).promiseAnswer()
     }
 
-    async query(code: string): Promise<Id[] | boolean> {
-        
-        (this.session as any).promiseQuery(code);
-        let answers: any[] = []
+    async query(code: string): Promise<{ [id: Id]: Id[] } | boolean> {
+
+        (this.session as any).promiseQuery(code)
+        let answers: any = {}
 
         for await (let ans of (this.session as any).promiseAnswers()) {
-            
+
             const fmans = pl.format_answer(ans)
-            
-            if(['true', 'false'].includes(fmans)){
-                return fmans==='true'
+
+            if (['true', 'false'].includes(fmans)) {
+                return fmans === 'true'
             }
-            
-            answers.push(ans.links.X.value??ans.links.X.id)
+
+            Object.keys(ans.links).forEach(k => {
+                answers[k] = (answers[k] ?? []).concat(ans.links[k].value ?? ans.links[k].id)
+            })
+
         }
-        
-        if( code.split('').find(c=> c.match(/\w+/) && c.toUpperCase()===c) ){ // query contains has var  // breaks down if predicate name contains capital letter!
+
+        if (code.split('').find(c => c.match(/\w+/) && c.toUpperCase() === c)) { // cehck if query has a var. breaks down if predicate name contains capital letter!
             return answers
-        }else{
+        } else {
             return false
         }
-        
+
     }
 
     predicates(opts?: PreidcatesOpts): string[] {
