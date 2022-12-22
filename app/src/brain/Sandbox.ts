@@ -1,4 +1,5 @@
-import { Clause, Id, Map } from "../clauses/Clause";
+import { Clause, clauseOf, Id, Map } from "../clauses/Clause";
+import ListClause from "../clauses/ListClause";
 import Brain from "./Brain";
 
 /**
@@ -21,7 +22,6 @@ class BaseSandbox implements Sandbox {
 
     async mapTo(universe: Brain): Promise<Map> {
 
-
         const themeEnts = this.clause.theme.entities
         const rhemeEnts = this.clause.rheme.entities
 
@@ -34,49 +34,22 @@ class BaseSandbox implements Sandbox {
             .flatMap(e => this.clause.rheme.about(e))
             .filter(c => themeEnts.every(e => !c.entities.includes(e))) // every theme entity is not included in any rhemedesc
 
-        const descriptions = themeDescs.concat(rhemeDescs)
-        
+        const mapToVar = this.clause.entities
+            .map(e => ({ [e]: `${e}`.toUpperCase() })) // to variable
+            .reduce((a, b) => ({ ...a, ...b }))
 
-        // .flatMap(e => ({ id: e, desc: this.clause.rheme.about(e) }))
+        const bigDescClause = themeDescs
+            .concat(rhemeDescs).reduce((c1, c2) => c1.concat(c2))
+            .copy({ map: mapToVar })
 
-        // .filter(c => themeEnts.every(e => !c.entities.includes(e))) // every theme-entity shouldn't be included in description
+        const res = (await universe.query(bigDescClause)) as { [id: string]: Id[];[id: number]: Id[]; }
 
+        const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
 
-        // get entities (at least once) in theme, entities in theme should 
-        // be looked up in universe without mentioning new info about them in rheme.
-        // const themeEntities = this.clause.theme.entities
+        return Object.keys(res)
+            .map(k => ({ [reverseMapToVar[k]]: res[k][0] ?? reverseMapToVar[k] }))
+            .reduce((a, b) => ({ ...a, ...b }))
 
-
-
-        // get entities in rheme and not in theme, entitites in rheme 
-        // should be looked up without mentioning their relationship with entities in theme.
-        // const rhemeEntities = this.clause.rheme.entities.filter(e=>!themeEntities.includes(e))
-
-        // // map entity each to its full description
-        // const descriptions = themeEntities.map(e => ({ [e]: this.clause.theme.about(e).reduce((c1, c2)=> c1.concat(c2)) }))
-        //                         .concat(rhemeEntities.map(e => ({ [e]: this.clause.rheme.about(e).reduce((c1, c2)=> c1.concat(c2)) })))
-        //                         .reduce((a, b) => ({ ...a, ...b }))
-
-
-        // map entity in sanbox to entity in universe (through description) 
-
-
-        // universe.query()
-
-        // console.log(descriptions)
-
-
-        return {}
-
-        // map full description to corresponding id in universe, if any
-        // const tuples = descriptions.map(async (d) => {
-        // return {sandbox : d.id, universe : (await universe.find(d.description.map(d=>d.toString()).reduce((a,b)=>a+'. '+b)))   [0] }
-        // })
-
-        // const mapping = tuples.map(t=> ({ [t.sandbox] : t.universe})).reduce((a,b) => ({...a,...b}))
-
-        // return mapping
-        // throw new Error('not implemented!')
     }
 
 }

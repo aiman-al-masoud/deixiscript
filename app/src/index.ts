@@ -151,20 +151,22 @@ function test(string: string) {
 
 (async ()=>{
 
-    const prolog = getProlog();
+    const prolog = await getBrain();
     (window as any).prolog = prolog
-    await prolog.assert('cat(a)')
-    await prolog.assert('cat(b)')
-    await prolog.assert('cat(c)')
-    await prolog.assert('dog(d)')
+    await prolog.assert(clauseOf('cat', 'a'))
+    await prolog.assert(clauseOf('cat', 'b'))
+    await prolog.assert(clauseOf('cat', 'c'))
+    await prolog.assert(clauseOf('dog', 'd'))
 
+    await prolog.assert(clauseOf('eat', 'a', 'rabbit'))
+    await prolog.assert(clauseOf('eat', 'a', 'mouse'))
+    await prolog.assert(clauseOf('eat', 'a', 'birdie'))
+    await prolog.assert(clauseOf('eat', 'd', 'bone'))
+    
+    // const res = await prolog.query(clauseOf('cat', 'X').concat(clauseOf('eat', 'X', 'Y').concat(clauseOf('dog', 'Z'))))
+    // console.log(res)
 
-    await prolog.assert('eat(a, rabbit)')
-    await prolog.assert('eat(a, mouse)')
-    await prolog.assert('eat(a, birdie)')
-    await prolog.assert('eat(d, bone)')
-
-    const res = await prolog.query('cat(X), eat(X, Y), dog(Z).')
+    const res = await getSandbox(clauseOf('cat', 'id0').concat(clauseOf('dog', 'id1'))).mapTo(prolog)
     console.log(res)
 
 })();    
