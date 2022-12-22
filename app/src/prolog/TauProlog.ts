@@ -44,7 +44,7 @@ export default class TauProlog implements Prolog {
         // if (this.queryHasVar(code)) {
             return answers
         // } else {
-            // return false
+        //     return false
         // }
 
     }

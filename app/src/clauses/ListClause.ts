@@ -57,4 +57,8 @@ export default class ListClause implements Clause {
     get rheme(): Clause {
         return this.clauses[1]
     }
+
+    get isImply(): boolean {
+        return this.clauses.some(e=>e.isImply)
+    }
 }

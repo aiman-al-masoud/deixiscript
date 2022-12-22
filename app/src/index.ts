@@ -149,32 +149,67 @@ function test(string: string) {
 
 
 
-(async () => {
+// (async () => {
 
-    const prolog = await getBrain();
-    (window as any).prolog = prolog
-    await prolog.assert(clauseOf('cat', 'a'))
-    await prolog.assert(clauseOf('cat', 'b'))
-    await prolog.assert(clauseOf('cat', 'c'))
-    await prolog.assert(clauseOf('white', 'a'))
-    await prolog.assert(clauseOf('dog', 'd'))
+//     const prolog = await getBrain();
+//     (window as any).prolog = prolog
+//     await prolog.assert(clauseOf('cat', 'a'))
+//     await prolog.assert(clauseOf('cat', 'b'))
+//     await prolog.assert(clauseOf('cat', 'c'))
+//     await prolog.assert(clauseOf('white', 'a'))
+//     await prolog.assert(clauseOf('dog', 'd'))
 
-    await prolog.assert(clauseOf('eat', 'a', 'rabbit'))
-    await prolog.assert(clauseOf('eat', 'a', 'mouse'))
-    await prolog.assert(clauseOf('eat', 'a', 'birdie'))
-    await prolog.assert(clauseOf('eat', 'd', 'bone'))
+//     await prolog.assert(clauseOf('eat', 'a', 'rabbit'))
+//     await prolog.assert(clauseOf('eat', 'a', 'mouse'))
+//     await prolog.assert(clauseOf('eat', 'a', 'birdie'))
+//     await prolog.assert(clauseOf('eat', 'd', 'bone'))
     
-    await prolog.assert(clauseOf('table', 'tb1'))
+//     await prolog.assert(clauseOf('table', 'tb1'))
 
-    // const res = await prolog.query(clauseOf('cat', 'X').concat(clauseOf('eat', 'X', 'Y').concat(clauseOf('dog', 'Z'))))
-    // const clause = clauseOf('cat', 'id0').concat(clauseOf('dog', 'id1')).concat(clauseOf('capra', 'id55')) 
-    // const clause = getParser('the cat that is black is smart').parse().toProlog()
-    const clause = getParser('the cat that is white is on the table').parse().toProlog()
-    console.log(clause.toString())
+//     // const res = await prolog.query(clauseOf('cat', 'X').concat(clauseOf('eat', 'X', 'Y').concat(clauseOf('dog', 'Z'))))
+//     // const clause = clauseOf('cat', 'id0').concat(clauseOf('dog', 'id1')).concat(clauseOf('capra', 'id55')) 
+//     // const clause = getParser('the cat that is black is smart').parse().toProlog()
+//     const clause = getParser('the cat that is white is on the table').parse().toProlog()
+//     console.log(clause.toString())
 
-    const res = await getSandbox(clause).mapTo(prolog)
-    console.log(res)
-    console.log(clause.rheme.copy({ map: res }).toString())
+//     const res = await getSandbox(clause).mapTo(prolog)
+//     console.log(res)
+//     console.log(clause.rheme.copy({ map: res }).toString())
+
+// })();
+
+
+
+(async ()=>{
+    const brain = await getBrain()
+
+    const button = document.createElement('button')
+    button.innerText = 'run'
+    document.getElementById('root')?.appendChild(button)
+
+    const p = document.createElement('p')
+    document.getElementById('root')?.appendChild(p)
+
+    const textarea = document.createElement('textarea')
+    textarea.style.height = '50vh'
+    textarea.style.width = '50vw'
+    document.getElementById('root')?.appendChild(textarea)
+
+
+    button.onclick = async e=>{
+        const ast = getParser(textarea.value).parse()
+
+        if(ast instanceof CopulaQuestion){
+            const query = ast.toProlog()
+            console.log('query', query.toString())
+            const answer = await brain.query(query)
+            // p.innerHTML = answer
+            console.log('answer', answer)
+        }else{
+            brain.assert(ast.toProlog())
+        }
+
+    }
 
 })();
 

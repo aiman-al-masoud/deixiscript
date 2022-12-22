@@ -44,4 +44,8 @@ export class HornClause implements Clause {
         return this.copy() // dunno what I'm doin'
     }
 
+    get isImply(): boolean {
+        return true
+    }
+
 }

@@ -1,4 +1,5 @@
 import { Clause, clauseOf, Id, Map, toVar } from "../clauses/Clause";
+import { HornClause } from "../clauses/HornClause";
 import Brain from "./Brain";
 
 /**
@@ -9,7 +10,7 @@ export interface Sandbox {
     mapTo(universe: Brain): Promise<Map>
 }
 
-export function getSandbox(clause: Clause):Sandbox {
+export function getSandbox(clause: Clause): Sandbox {
     return new BaseSandbox(clause)
 }
 
@@ -26,19 +27,21 @@ class BaseSandbox implements Sandbox {
 
         // get descriptions of entities in theme omitting relations with entities in rheme
         const themeDescs = themeEnts
-            .map(e => this.clause.theme.about(e).reduce((a, b) => a.concat(b))) // get descriptions
+            .flatMap(e => this.clause.theme.about(e)) // get descriptions
+            .filter(e => !(e instanceof HornClause)) // implications already have variables, they would mess up mapping process
 
         // get descriptions of entities in rheme omitting relations with entities in theme
         const rhemeDescs = rhemeEnts
             .flatMap(e => this.clause.rheme.about(e))
-            .filter(c => themeEnts.every(e => !c.entities.includes(e))) // every theme entity is not included in any rhemedesc
+            .filter(e => !(e instanceof HornClause))
+            .filter(c => themeEnts.every(e => !c.entities.includes(e))) // every theme entity is not included in any rheme desc
 
         const mapToVar = this.clause.entities
-            .map(e => ({ [e]: toVar(e) })) 
+            .map(e => ({ [e]: toVar(e) }))
             .reduce((a, b) => ({ ...a, ...b }))
-            
+
         const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
-        
+
         const bigDescClause = themeDescs
             .concat(rhemeDescs).reduce((c1, c2) => c1.concat(c2))
             .copy({ map: mapToVar })

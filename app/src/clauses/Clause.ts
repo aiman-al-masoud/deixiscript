@@ -17,6 +17,7 @@ export interface Clause {
     get entities(): Id[]
     get theme(): Clause
     get rheme(): Clause
+    get isImply():boolean
 }
 
 export function clauseOf(predicate: string, ...args: Id[]) {
@@ -47,7 +48,7 @@ export function makeHornClauses(conditions: Clause, conclusions: Clause): Clause
 }
 
 export function getRandomId(opts?: GetRandomIdOpts): Id { // TODO: higher const for production to avoid collisions
-    return `id${parseInt(10 * Math.random() + '')}`
+    return `${opts?.asVar? 'Id' : 'id'}${parseInt(10 * Math.random() + '')}`
 }
 
 export function toVar(id:Id):Id{

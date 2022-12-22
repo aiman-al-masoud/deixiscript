@@ -45,4 +45,8 @@ export class BasicClause implements Clause {
         return emptyClause()
     }
 
+    get isImply(): boolean {
+        return false
+    }
+
 }
