@@ -15,6 +15,10 @@ export default class IntransitiveSentence implements VerbSentence {
 
     }
 
+    get isSideEffecty(): boolean {
+        return true
+    }
+
     toProlog(args?: ToPrologArgs): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })

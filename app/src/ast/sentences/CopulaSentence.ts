@@ -25,4 +25,8 @@ export default class CopulaSentence implements SimpleSentence {
 
     }
 
+    get isSideEffecty(): boolean {
+        return true
+    }
+
 }

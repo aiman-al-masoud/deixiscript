@@ -20,4 +20,8 @@ export default class Complement implements Phrase {
 
     }
 
+    get isSideEffecty(): boolean {
+        return false
+    }
+
 }

@@ -1,6 +1,3 @@
-import Constituent from "../ast/interfaces/Constituent";
-import NounPhrase from "../ast/phrases/NounPhrase";
-import CopulaQuestion from "../ast/sentences/CopulaQuestion";
 import { Clause, Id, toVar } from "../clauses/Clause";
 import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
@@ -19,12 +16,11 @@ export default class PrologBrain implements Brain {
 
         const ast = getParser(natlang).parse()
 
-        if (ast instanceof CopulaQuestion || ast instanceof NounPhrase) {
-            const query = ast.toProlog()
-            return await this.query(query)
-        } else {
+        if (ast.isSideEffecty) {
             this.assert(ast.toProlog())
             return true
+        } else {
+            return await this.query(ast.toProlog())
         }
     }
 
@@ -44,14 +40,11 @@ export default class PrologBrain implements Brain {
     async assert(clause: Clause): Promise<void> {
 
         const anaphoraMap = await getSandbox(clause).mapTo(this)
-        console.debug({ anaphoraMap })
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })
             .flatList()
             .map(c => c.toString())
-
-        console.debug({ toBeAsserted })
 
         for (const c of toBeAsserted) { // TODO: bug finding one entity multiple times
             await this.kb.assert(c)

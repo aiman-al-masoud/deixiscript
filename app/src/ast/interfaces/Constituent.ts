@@ -7,6 +7,7 @@ import { Clause, Id } from "../../clauses/Clause";
  */
 export default interface Constituent extends Ast {
     toProlog(args?: ToPrologArgs): Clause
+    get isSideEffecty():boolean
 }
 
 export interface Roles {

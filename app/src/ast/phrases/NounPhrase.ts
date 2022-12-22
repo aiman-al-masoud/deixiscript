@@ -39,4 +39,8 @@ export default class NounPhrase implements Phrase {
 
     }
 
+    get isSideEffecty(): boolean {
+        return false
+    }
+
 }

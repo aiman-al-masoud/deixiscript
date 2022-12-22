@@ -27,4 +27,8 @@ export default class ComplexSentence implements CompoundSentence {
         return makeHornClauses(condition, outcome)
     }
 
+    get isSideEffecty(): boolean {
+        return true
+    }
+
 }

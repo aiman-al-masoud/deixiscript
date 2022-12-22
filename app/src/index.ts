@@ -164,7 +164,7 @@ function test(string: string) {
 //     await prolog.assert(clauseOf('eat', 'a', 'mouse'))
 //     await prolog.assert(clauseOf('eat', 'a', 'birdie'))
 //     await prolog.assert(clauseOf('eat', 'd', 'bone'))
-    
+
 //     await prolog.assert(clauseOf('table', 'tb1'))
 
 //     // const res = await prolog.query(clauseOf('cat', 'X').concat(clauseOf('eat', 'X', 'Y').concat(clauseOf('dog', 'Z'))))
@@ -181,7 +181,7 @@ function test(string: string) {
 
 
 
-(async ()=>{
+(async () => {
     const brain = await getBrain()
 
     const button = document.createElement('button')
@@ -196,7 +196,7 @@ function test(string: string) {
     textarea.style.width = '50vw'
     document.getElementById('root')?.appendChild(textarea)
 
-    button.onclick = async e=>{
+    button.onclick = async e => {
         console.log(await brain.execute(textarea.value))
     }
 

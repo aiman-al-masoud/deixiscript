@@ -6,5 +6,9 @@ export default class MVerbSubordinateClause1 implements SubordinateClause{
     toProlog(args?: ToPrologArgs): Clause {
         throw new Error("Method not implemented.");
     }
+
+    get isSideEffecty(): boolean {
+        return true
+    }
     
 }

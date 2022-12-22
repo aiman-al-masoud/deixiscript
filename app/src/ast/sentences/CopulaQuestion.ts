@@ -24,4 +24,8 @@ export default class CopulaQuestion implements BinaryQuestion {
 
     }
 
+    get isSideEffecty(): boolean {
+        return false
+    }
+
 }

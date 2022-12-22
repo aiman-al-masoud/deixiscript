@@ -6,5 +6,9 @@ export default class ConjunctiveSentence implements CompoundSentence{
     toProlog(args?: ToPrologArgs | undefined): Clause {
         throw new Error("Method not implemented.");
     }
+
+    get isSideEffecty(): boolean {
+        return true
+    }
         
 }

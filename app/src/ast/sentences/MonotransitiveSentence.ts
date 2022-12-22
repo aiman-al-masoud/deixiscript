@@ -17,6 +17,10 @@ export default class MonotransitiveSentence implements VerbSentence {
 
     }
     
+    get isSideEffecty(): boolean {
+        return true
+    }
+    
     toProlog(args?: ToPrologArgs | undefined): Clause {
         throw new Error("Method not implemented.");
     }

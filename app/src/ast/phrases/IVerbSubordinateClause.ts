@@ -6,5 +6,9 @@ export default class IVerbSubordinateClause implements SubordinateClause{
     toProlog(args?: ToPrologArgs | undefined): Clause {
         throw new Error("Method not implemented.");
     }
+
+    get isSideEffecty(): boolean {
+        return true
+    }
     
 }
