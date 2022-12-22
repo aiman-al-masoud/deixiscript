@@ -1,4 +1,5 @@
 import pl, { format_answer } from 'tau-prolog'
+import NounPhrase from './ast/phrases/NounPhrase';
 import CopulaQuestion from './ast/sentences/CopulaQuestion';
 import Article from './ast/tokens/Article';
 import Copula from './ast/tokens/Copula';
@@ -199,7 +200,7 @@ function test(string: string) {
     button.onclick = async e=>{
         const ast = getParser(textarea.value).parse()
 
-        if(ast instanceof CopulaQuestion){
+        if(ast instanceof CopulaQuestion || ast instanceof NounPhrase){
             const query = ast.toProlog()
             console.log('query', query.toString())
             const answer = await brain.query(query)

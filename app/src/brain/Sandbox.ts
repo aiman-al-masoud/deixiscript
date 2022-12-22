@@ -1,5 +1,4 @@
-import { Clause, clauseOf, Id, Map, toVar } from "../clauses/Clause";
-import { HornClause } from "../clauses/HornClause";
+import { Clause, Id, Map, toVar } from "../clauses/Clause";
 import Brain from "./Brain";
 
 /**
@@ -26,7 +25,7 @@ class BaseSandbox implements Sandbox {
 
         // get descriptions of entities in theme omitting relations with entities in rheme
         const themeDescs = this.clause.theme.flatList()
-        .filter(e => !e.isImply)
+            .filter(e => !e.isImply)
 
         // get descriptions of entities in rheme omitting relations with entities in theme
         const rhemeDescs = this.clause.rheme.flatList()
