@@ -17,6 +17,9 @@ export default class CopulaQuestion implements BinaryQuestion {
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
+        //TODO: in case of a universally quantified question eg: "are all cats smart?" the prolog
+        // produced should NOT be an implication, but rather a check that all cats are smart.
+
         return new CopulaSentence(this.subject, this.copula, this.predicate).toProlog(newArgs)
 
     }
