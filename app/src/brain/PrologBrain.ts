@@ -35,7 +35,7 @@ export default class PrologBrain implements Brain {
 
         console.debug('asserting', clauses)
 
-        for (const c of clauses) {
+        for (const c of clauses) { // TODO: bug finding one entity multiple times
             await this.kb.assert(c)
         }
 
