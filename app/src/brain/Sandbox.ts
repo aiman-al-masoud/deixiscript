@@ -23,18 +23,15 @@ class BaseSandbox implements Sandbox {
     async mapTo(universe: Brain): Promise<Map> {
 
         const themeEnts = this.clause.theme.entities
-        const rhemeEnts = this.clause.rheme.entities
 
         // get descriptions of entities in theme omitting relations with entities in rheme
-        const themeDescs = themeEnts
-            .flatMap(e => this.clause.theme.about(e)) // get descriptions
-            .filter(e => !(e instanceof HornClause)) // implications already have variables, they would mess up mapping process
+        const themeDescs = this.clause.theme.flatList()
+        .filter(e => !e.isImply)
 
         // get descriptions of entities in rheme omitting relations with entities in theme
-        const rhemeDescs = rhemeEnts
-            .flatMap(e => this.clause.rheme.about(e))
-            .filter(e => !(e instanceof HornClause))
-            .filter(c => themeEnts.every(e => !c.entities.includes(e))) // every theme entity is not included in any rheme desc
+        const rhemeDescs = this.clause.rheme.flatList()
+            .filter(c => themeEnts.every(e => !c.entities.includes(e)))
+            .filter(e => !e.isImply)
 
         const mapToVar = this.clause.entities
             .map(e => ({ [e]: toVar(e) }))
