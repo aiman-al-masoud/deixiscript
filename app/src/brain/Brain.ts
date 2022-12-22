@@ -1,9 +1,11 @@
+import Constituent from "../ast/interfaces/Constituent"
 import { Clause, Id } from "../clauses/Clause"
 import PrologBrain from "./PrologBrain"
 
 export default interface Brain{
     query(query:Clause): Promise<{[id:Id] : Id[]} | boolean>
     assert(code:Clause):Promise<void>
+    execute(natlang:string):Promise<{[id:Id] : Id[]} | boolean>
     // find(query:Clause):Promise<Id[]>
     // check(query:Clause):Promise<boolean>
     // clone():Brain

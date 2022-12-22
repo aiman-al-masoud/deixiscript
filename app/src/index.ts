@@ -188,28 +188,16 @@ function test(string: string) {
     button.innerText = 'run'
     document.getElementById('root')?.appendChild(button)
 
-    const p = document.createElement('p')
-    document.getElementById('root')?.appendChild(p)
+    const parag = document.createElement('p')
+    document.getElementById('root')?.appendChild(parag)
 
     const textarea = document.createElement('textarea')
     textarea.style.height = '50vh'
     textarea.style.width = '50vw'
     document.getElementById('root')?.appendChild(textarea)
 
-
     button.onclick = async e=>{
-        const ast = getParser(textarea.value).parse()
-
-        if(ast instanceof CopulaQuestion || ast instanceof NounPhrase){
-            const query = ast.toProlog()
-            console.log('query', query.toString())
-            const answer = await brain.query(query)
-            // p.innerHTML = answer
-            console.log('answer', answer)
-        }else{
-            brain.assert(ast.toProlog())
-        }
-
+        console.log(await brain.execute(textarea.value))
     }
 
 })();
