@@ -41,11 +41,11 @@ export default class TauProlog implements Prolog {
 
         }
 
-        // if (this.queryHasVar(code)) {
+        if (this.queryHasVar(code)) {
             return answers
-        // } else {
-        //     return false
-        // }
+        } else {
+            return false
+        }
 
     }
 
@@ -73,9 +73,9 @@ export default class TauProlog implements Prolog {
 
     }
 
-    // protected queryHasVar(code: string) { // check if query has a var. breaks down if predicate name contains capital letter!
-    //     return code.split('').find(c => c.match(/\w+/) && c.toUpperCase() === c)
-    // }
+    protected queryHasVar(code: string) { // check if query has a var. breaks down if predicate name contains capital letter!
+        return code.split('').find(c => c.match(/\w+/) && c.toUpperCase() === c)
+    }
 
     predicates(opts?: PreidcatesOpts): string[] {
 
