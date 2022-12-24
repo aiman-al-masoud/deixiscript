@@ -15,7 +15,7 @@ export interface AssertArgs{
     errorOut?:boolean
 }
 
-export function getLexer(sourceCode:string){
+export function getLexer(sourceCode:string):Lexer{
     return new EagerLexer(sourceCode)
 }
 
