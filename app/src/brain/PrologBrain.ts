@@ -34,7 +34,7 @@ export default class PrologBrain implements Brain {
             .toProlog()
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
-        return await this.kb.query(q)
+        return await this.kb.query(q) //TODO: map back to original constants, inverse mapToVar
     }
 
     async assert(clause: Clause): Promise<void> {
