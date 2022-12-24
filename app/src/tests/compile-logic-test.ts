@@ -17,8 +17,8 @@ export default async function compileLogicTest() {
 
     test('the cat is on the mat',
          clauseOf('cat', 0)
-        .concat(clauseOf('mat', 1))
-        .concat(clauseOf('on', 0, 1)))
+        .and(clauseOf('mat', 1))
+        .and(clauseOf('on', 0, 1)))
 
 
     // test('the cat that is red is on the mat')

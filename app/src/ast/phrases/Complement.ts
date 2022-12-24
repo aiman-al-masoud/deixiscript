@@ -16,7 +16,7 @@ export default class Complement implements Phrase {
         const newId = getRandomId()
 
         return clauseOf(this.preposition.string, subjId, newId)
-            .concat(this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
+            .and(this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
 
     }
 

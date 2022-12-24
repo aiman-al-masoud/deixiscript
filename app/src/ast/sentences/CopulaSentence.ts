@@ -21,7 +21,7 @@ export default class CopulaSentence implements SimpleSentence {
 
         return this.subject.isUniQuant() ?
             subject.implies(predicate) :
-            subject.concat(predicate, { asRheme: true })
+            subject.and(predicate, { asRheme: true })
 
     }
 

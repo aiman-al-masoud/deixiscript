@@ -26,9 +26,9 @@ export default class IntransitiveSentence implements VerbSentence {
 
         const theme = this.subject.toClause(newArgs)
         const rheme = clauseOf(this.iverb.string, subjectId)
-            .concat(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.concat(c2)))
+            .and(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.and(c2)))
 
-        return theme.concat(rheme, { asRheme: true })
+        return theme.and(rheme, { asRheme: true })
     }
 
 }

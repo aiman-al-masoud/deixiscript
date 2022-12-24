@@ -33,9 +33,9 @@ export default class NounPhrase implements Phrase {
             .map(a => a.string)
             .concat(this.noun ? [this.noun.string] : [])
             .map(p => clauseOf(p, subjectId))
-            .reduce((c1, c2) => c1.concat(c2), emptyClause())
-            .concat(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.concat(c2), emptyClause()))
-            .concat(this.subordClause?.toClause(newArgs) ?? emptyClause())
+            .reduce((c1, c2) => c1.and(c2), emptyClause())
+            .and(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.and(c2), emptyClause()))
+            .and(this.subordClause?.toClause(newArgs) ?? emptyClause())
 
     }
 

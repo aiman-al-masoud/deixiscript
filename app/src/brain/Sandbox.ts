@@ -39,7 +39,7 @@ class BaseSandbox implements Sandbox {
         const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
 
         const bigDescClause = themeDescs
-            .concat(rhemeDescs).reduce((c1, c2) => c1.concat(c2))
+            .concat(rhemeDescs).reduce((c1, c2) => c1.and(c2))
             .copy({ map: mapToVar })
 
         const res = (await universe.query(bigDescClause)) as { [id: Id]: Id[] }

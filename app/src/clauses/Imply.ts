@@ -1,5 +1,5 @@
-import { Clause, ConcatOpts, CopyOpts, Id } from "./Clause";
-import ListClause from "./ListClause";
+import { Clause, AndOpts, CopyOpts, Id } from "./Clause";
+import AndClause from "./ListClause";
 
 export default class Imply implements Clause {
 
@@ -7,8 +7,8 @@ export default class Imply implements Clause {
 
     }
 
-    concat(other: Clause, opts?: ConcatOpts): Clause {
-        return new ListClause([this.copy(), other.copy()])
+    and(other: Clause, opts?: AndOpts): Clause {
+        return new AndClause([this.copy(), other.copy()])
     }
 
     copy(opts?: CopyOpts): Clause {

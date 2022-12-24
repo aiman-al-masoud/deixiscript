@@ -1,22 +1,22 @@
-import { Clause, ConcatOpts, CopyOpts, Id } from "./Clause";
+import { Clause, AndOpts, CopyOpts, Id } from "./Clause";
 import Imply from "./Imply";
 
-export default class ListClause implements Clause {
+export default class AndClause implements Clause {
 
     constructor(readonly clauses: Clause[], readonly negated = false, readonly isImply = false) {
 
     }
 
-    concat(other: Clause, opts?: ConcatOpts): Clause {
+    and(other: Clause, opts?: AndOpts): Clause {
 
         return opts?.asRheme ?
-            new ListClause([this.copy(), other.copy()]) :
-            new ListClause([...this.flatList(), ...other.flatList()])
+            new AndClause([this.copy(), other.copy()]) :
+            new AndClause([...this.flatList(), ...other.flatList()])
 
     }
 
-    copy(opts?: CopyOpts): ListClause {
-        return new ListClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate ? !this.negated : this.negated)
+    copy(opts?: CopyOpts): AndClause {
+        return new AndClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate ? !this.negated : this.negated)
     }
 
     flatList(): Clause[] {
