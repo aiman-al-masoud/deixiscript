@@ -26,14 +26,13 @@ export default class Imply implements Clause {
      */
     toProlog(): string[] {
 
-        const conditions = this.condition.flatList()
-        const conclusions = this.conclusion.flatList()
-
-        const conditionString = conditions
-            .map(c => c.toString())
+        const conditionString = this.condition
+            .toProlog()
             .reduce((c1, c2) => `${c1}, ${c2}`)
 
-        return conclusions.map(c => `${c.toString()} :- ${conditionString}`)
+        const conclusions = this.conclusion.flatList()
+
+        return conclusions.map(c => `${c.toProlog()[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
 
     }
 

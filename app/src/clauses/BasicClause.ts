@@ -22,12 +22,8 @@ export class BasicClause implements Clause {
     }
 
     toProlog(): string[] {
-        return [this.toString()]
-    }
-
-    toString() {
-        const core = `${this.predicate}(${this.args.reduce((a1, a2) => a1 + ', ' + a2)})`
-        return this.negated ? `not(${core})` : core
+        const core = `${this.predicate}(${this.args.reduce((a, b) => `${a}, ${b}`)})`
+        return this.negated ? [`logicNot(${core})`] : [core]
     }
 
     get entities(): Id[] {

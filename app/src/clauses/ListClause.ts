@@ -16,7 +16,7 @@ export default class ListClause implements Clause {
     }
 
     copy(opts?: CopyOpts): ListClause {
-        return new ListClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate? !this.negated : this.negated)
+        return new ListClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate ? !this.negated : this.negated)
     }
 
     flatList(): Clause[] {
@@ -44,10 +44,13 @@ export default class ListClause implements Clause {
     }
 
     toProlog(): string[] {
-        return this.flatList().map(c => c.toString())
+
+        const prologClauses = this.clauses.flatMap(c => c.toProlog())
+
+        return this.negated ?
+            [`logicNot(${prologClauses.reduce((a, b) => `${a}, ${b}`)})`] :
+            prologClauses
+
     }
 
-    toString() {
-        return this.negated ? `not(${this.clauses.toString()})` : this.clauses.toString()
-    }
 }
