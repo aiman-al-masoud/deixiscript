@@ -17,7 +17,7 @@ export default class PrologBrain implements Brain {
         const ast = getParser(natlang).parse()
 
         if (ast.isSideEffecty) {
-            this.assert(ast.toClause())
+            await this.assert(ast.toClause())
             return true
         } else {
             return await this.query(ast.toClause())
