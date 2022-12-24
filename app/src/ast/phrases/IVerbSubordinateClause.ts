@@ -3,7 +3,7 @@ import { Clause } from "../../clauses/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
 
 export default class IVerbSubordinateClause implements SubordinateClause{
-    toProlog(args?: ToPrologArgs | undefined): Clause {
+    toClause(args?: ToPrologArgs | undefined): Clause {
         throw new Error("Method not implemented.");
     }
 

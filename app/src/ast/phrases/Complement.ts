@@ -10,13 +10,13 @@ export default class Complement implements Phrase {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause { // preposition(args.subject, Y) + nounphrase.toProlog(subject=Y)
+    toClause(args?: ToPrologArgs): Clause { // preposition(args.subject, Y) + nounphrase.toProlog(subject=Y)
 
         const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
         const newId = getRandomId()
 
         return clauseOf(this.preposition.string, subjId, newId)
-            .concat(this.nounPhrase.toProlog({ ...args, roles: { subject: newId } }))
+            .concat(this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
 
     }
 

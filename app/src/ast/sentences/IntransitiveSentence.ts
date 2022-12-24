@@ -19,14 +19,14 @@ export default class IntransitiveSentence implements VerbSentence {
         return true
     }
 
-    toProlog(args?: ToPrologArgs): Clause {
+    toClause(args?: ToPrologArgs): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
-        const theme = this.subject.toProlog(newArgs)
+        const theme = this.subject.toClause(newArgs)
         const rheme = clauseOf(this.iverb.string, subjectId)
-            .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2)))
+            .concat(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.concat(c2)))
 
         return theme.concat(rheme, { asRheme: true })
     }

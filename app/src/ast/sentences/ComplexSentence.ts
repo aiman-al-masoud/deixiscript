@@ -1,6 +1,6 @@
 import CompoundSentence from "../interfaces/CompoundSentence";
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { makeHornClauses, Clause, getRandomId } from "../../clauses/Clause";
+import { Clause, getRandomId } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
 
@@ -16,15 +16,15 @@ export default class ComplexSentence implements CompoundSentence {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause {
+    toClause(args?: ToPrologArgs): Clause {
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
 
         //TODO: this is WRONG, subject of condition may NOT always be the subject of the outcome
-        const condition = this.condition.toProlog(newArgs)
-        const outcome = this.outcome.toProlog(newArgs)
-        
-        return makeHornClauses(condition, outcome)
+        const condition = this.condition.toClause(newArgs)
+        const outcome = this.outcome.toClause(newArgs)
+
+        return condition.implies(outcome)
     }
 
     get isSideEffecty(): boolean {

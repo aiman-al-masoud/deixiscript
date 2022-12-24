@@ -21,7 +21,7 @@ export default class MonotransitiveSentence implements VerbSentence {
         return true
     }
     
-    toProlog(args?: ToPrologArgs | undefined): Clause {
+    toClause(args?: ToPrologArgs | undefined): Clause {
         throw new Error("Method not implemented.");
     }
 }

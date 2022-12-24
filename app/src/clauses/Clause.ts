@@ -1,23 +1,22 @@
 import { BasicClause } from "./BasicClause"
-import { HornClause } from "./HornClause"
 import ListClause from "./ListClause"
 
-// export const CONST_PREFIX = 'id'
-// export const VAR_PREFIX = 'Id'
 export type Id = number | string
 
-
+/**
+ * A 'language-agnostic' first order logic representation.
+ */
 export interface Clause {
     concat(other: Clause, opts?: ConcatOpts): Clause
     copy(opts?: CopyOpts): Clause
-    toList(): Clause[]
-    about(id: Id): Clause[]
     flatList(): Clause[]
     readonly negated: boolean
     get entities(): Id[]
     get theme(): Clause
     get rheme(): Clause
     get isImply():boolean
+    implies(conclusion:Clause):Clause
+    toProlog():string[]
 }
 
 export function clauseOf(predicate: string, ...args: Id[]) {
@@ -35,16 +34,8 @@ export interface ConcatOpts {
     asRheme?: boolean
 }
 
-export function makeHornClauses(conditions: Clause, conclusions: Clause): Clause {
-
-    // TODO: this breaks negated ListClauses or ListClauses with negated elements !!!!!!!
-
-    const cond = conditions.toList().map(c => (c as BasicClause))
-    const conc = conclusions.toList().map(c => (c as BasicClause))
-    const results = conc.map(c => new HornClause(cond, c))
-
-    return results.length == 1 ? results[0] : new ListClause(results)
-
+export interface GetRandomIdOpts {
+    asVar: boolean
 }
 
 export function getRandomId(opts?: GetRandomIdOpts): Id { // TODO: higher const for production to avoid collisions
@@ -53,10 +44,6 @@ export function getRandomId(opts?: GetRandomIdOpts): Id { // TODO: higher const 
 
 export function toVar(id:Id):Id{
     return (id+'').toUpperCase()
-}
-
-export interface GetRandomIdOpts {
-    asVar: boolean
 }
 
 /**

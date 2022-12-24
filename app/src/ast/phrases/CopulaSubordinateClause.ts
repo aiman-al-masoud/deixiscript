@@ -11,8 +11,8 @@ export default class CopulaSubordinateClause implements SubordinateClause {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause {
-        return this.predicate.toProlog({ ...args, roles: { subject: args?.roles?.subject } })
+    toClause(args?: ToPrologArgs): Clause {
+        return this.predicate.toClause({ ...args, roles: { subject: args?.roles?.subject } })
     }
 
     get isSideEffecty(): boolean {

@@ -1,4 +1,5 @@
 import { Clause, ConcatOpts, CopyOpts, emptyClause, Id } from "./Clause";
+import Imply from "./Imply";
 import ListClause from "./ListClause";
 
 
@@ -9,28 +10,24 @@ export class BasicClause implements Clause {
     }
 
     concat(other: Clause, opts?: ConcatOpts): Clause {
-        return new ListClause(this.toList().concat(other.toList()))
+        return new ListClause(this.flatList().concat(other.flatList()))
     }
 
     copy(opts?: CopyOpts): BasicClause {
         return new BasicClause(this.predicate, this.args.map(a => opts?.map ? opts?.map[a] ?? a : a), opts?.negate ? !this.negated : this.negated)
     }
 
-    toList(): Clause[] {
-        return [this.copy()]
-    }
-
-    about(id: Id): Clause[] {
-        return this.args.includes(id) ? this.toList() : []
-    }
-
     flatList(): Clause[] {
-        return this.toList()
+        return [this.copy()]
     }
 
     toString() {
         const core = `${this.predicate}(${this.args.reduce((a1, a2) => a1 + ', ' + a2)})`
         return this.negated ? `not(${core})` : core
+    }
+
+    toProlog(): string[] {
+        return [this.toString()]
     }
 
     get entities(): Id[] {
@@ -47,6 +44,10 @@ export class BasicClause implements Clause {
 
     get isImply(): boolean {
         return false
+    }
+
+    implies(conclusion: Clause): Clause {
+        return new Imply(this.copy(), conclusion.copy())
     }
 
 }

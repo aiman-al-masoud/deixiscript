@@ -23,7 +23,7 @@ export default class NounPhrase implements Phrase {
         return this.quantifier?.isUniversal() ?? false
     }
 
-    toProlog(args?: ToPrologArgs): Clause {
+    toClause(args?: ToPrologArgs): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
@@ -34,8 +34,8 @@ export default class NounPhrase implements Phrase {
             .concat(this.noun ? [this.noun.string] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.concat(c2), emptyClause())
-            .concat(this.complements.map(c => c.toProlog(newArgs)).reduce((c1, c2) => c1.concat(c2), emptyClause()))
-            .concat(this.subordClause?.toProlog(newArgs) ?? emptyClause())
+            .concat(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.concat(c2), emptyClause()))
+            .concat(this.subordClause?.toClause(newArgs) ?? emptyClause())
 
     }
 

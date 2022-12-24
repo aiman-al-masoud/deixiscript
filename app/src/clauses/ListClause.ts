@@ -1,4 +1,5 @@
 import { Clause, ConcatOpts, CopyOpts, Id } from "./Clause";
+import Imply from "./Imply";
 
 export default class ListClause implements Clause {
 
@@ -17,11 +18,11 @@ export default class ListClause implements Clause {
         if (this.negated && other.negated) {
             return new ListClause([this.copy(), other.copy()])
         } else if (this.negated) {
-            return new ListClause([this.copy(), ...other.toList()])
+            return new ListClause([this.copy(), ...other.flatList()])
         } else if (other.negated) {
-            return new ListClause([...this.toList(), other.copy()])
+            return new ListClause([...this.flatList(), other.copy()])
         } else {
-            return new ListClause([...this.toList(), ...other.toList()])
+            return new ListClause([...this.flatList(), ...other.flatList()])
         }
 
     }
@@ -30,19 +31,13 @@ export default class ListClause implements Clause {
         return new ListClause(this.clauses.map(c => c.copy(opts)), opts?.negate ? !this.negated : this.negated)
     }
 
-    toList(): Clause[] {
-        return this.clauses.concat([])
-    }
-
     toString() {
         return this.negated ? `not(${this.clauses.toString()})` : this.clauses.toString()
     }
 
-    about(ids: Id): Clause[] {
-        return this.clauses.flatMap(c => c.about(ids))
-    }
-
     flatList(): Clause[] {
+        // TODO: if I'm negated return copy of myself as a whole in a list
+        // return this.negated ? [this.copy()] : this.clauses.flatMap(c => c.flatList())
         return this.clauses.flatMap(c => c.flatList())
     }
 
@@ -60,5 +55,13 @@ export default class ListClause implements Clause {
 
     get isImply(): boolean {
         return this.clauses.some(e=>e.isImply)
+    }
+
+    implies(conclusion: Clause): Clause {
+        return new Imply(this.copy(), conclusion.copy())
+    }
+
+    toProlog(): string[] {
+        return this.flatList().map(c=>c.toString())
     }
 }

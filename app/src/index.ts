@@ -65,24 +65,25 @@ import prologPlay from './tests/prolog-playground';
 // COMPILER TESTS
 function test(string: string) {
     console.log(string)
-    const clause = getParser(string).parse().toProlog().copy({ map: { 'id1': 1000, 'id2': 2000 } })
-    console.log(clause.flatList().map(c => c.toString()))
-    console.log(clause)
-    console.log('entities', clause.entities)
-    console.log('theme', clause.theme)
-    console.log('rheme', clause.rheme)
-    console.log(clause.about('id0'))
+    const clause = getParser(string).parse().toClause().copy({ map: { 'id1': 1000, 'id2': 2000 } })
+    // console.log(clause.flatList().map(c => c.toString()))
+    console.log(clause.toProlog())
+    // console.log(clause)
+    // console.log('entities', clause.entities)
+    // console.log('theme', clause.theme)
+    // console.log('rheme', clause.rheme)
+    // console.log(clause.about('id0'))
 }
 
-// test('the cat is on the mat')
+test('the cat is on the mat')
 // test('the cat that is red is on the mat')
 // test('the big cat that is on the mat is black')
-// test('every cat is red')
-// test('every red cat is on the mat')
+test('every cat is red')
+test('every red cat is on the mat')
 // test('the cat exists on the mat')
-// test('if the cat is on the mat then the cat is red')
+test('if the cat is on the mat then the cat is red')
 // test('the cat is not red')
-// test('every cat is not red')
+test('every cat is not red')
 // test('trump is not a great president'); // probably need an and predicate
 
 // END COMPILER TESTS
@@ -204,4 +205,4 @@ function test(string: string) {
 // })();
 
 
-prologPlay()
+// prologPlay()

@@ -1,5 +1,5 @@
 import { ToPrologArgs } from "../interfaces/Constituent";
-import { Clause, getRandomId, makeHornClauses } from "../../clauses/Clause";
+import { Clause, getRandomId } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
@@ -11,16 +11,16 @@ export default class CopulaSentence implements SimpleSentence {
 
     }
 
-    toProlog(args?: ToPrologArgs): Clause {
+    toClause(args?: ToPrologArgs): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
-        const subject = this.subject.toProlog(newArgs)
-        const predicate = this.predicate.toProlog(newArgs).copy({ negate: !!this.negation })
+        const subject = this.subject.toClause(newArgs)
+        const predicate = this.predicate.toClause(newArgs).copy({ negate: !!this.negation })
 
         return this.subject.isUniQuant() ?
-            makeHornClauses(subject, predicate) :
+            subject.implies(predicate) :
             subject.concat(predicate, { asRheme: true })
 
     }
