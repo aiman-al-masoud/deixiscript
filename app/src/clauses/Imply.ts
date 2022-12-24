@@ -13,7 +13,7 @@ export default class Imply implements Clause {
     }
 
     copy(opts?: CopyOpts): Clause {
-        return new Imply(this.condition.copy(opts), this.conclusion.copy(opts), this.negated)
+        return new Imply(this.condition.copy(opts), this.conclusion.copy(opts), opts?.negate? !this.negated : this.negated)
     }
 
     flatList(): Clause[] {

@@ -84,7 +84,7 @@ test('every red cat is on the mat')
 test('if the cat is on the mat then the cat is red')
 // test('the cat is not red')
 test('every cat is not red')
-// test('trump is not a great president'); // probably need an and predicate
+test('trump is not a great president'); // probably need an and predicate
 
 // END COMPILER TESTS
 
@@ -183,26 +183,26 @@ test('every cat is not red')
 
 
 
-// (async () => {
-//     const brain = await getBrain()
+(async () => {
+    const brain = await getBrain()
 
-//     const button = document.createElement('button')
-//     button.innerText = 'run'
-//     document.getElementById('root')?.appendChild(button)
+    const button = document.createElement('button')
+    button.innerText = 'run'
+    document.getElementById('root')?.appendChild(button)
 
-//     const parag = document.createElement('p')
-//     document.getElementById('root')?.appendChild(parag)
+    const parag = document.createElement('p')
+    document.getElementById('root')?.appendChild(parag)
 
-//     const textarea = document.createElement('textarea')
-//     textarea.style.height = '50vh'
-//     textarea.style.width = '50vw'
-//     document.getElementById('root')?.appendChild(textarea)
+    const textarea = document.createElement('textarea')
+    textarea.style.height = '50vh'
+    textarea.style.width = '50vw'
+    document.getElementById('root')?.appendChild(textarea)
 
-//     button.onclick = async e => {
-//         console.log(await brain.execute(textarea.value))
-//     }
+    button.onclick = async e => {
+        console.log(await brain.execute(textarea.value))
+    }
 
-// })();
+})();
 
 
 // prologPlay()

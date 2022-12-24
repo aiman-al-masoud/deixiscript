@@ -29,9 +29,9 @@ export default class PrologBrain implements Brain {
         const mapToVar = query.entities.map(e => ({ [e]: toVar(e) }))
             .reduce((a, b) => ({ ...a, ...b }))
 
-        const q = query.copy({ map: mapToVar })
-            .flatList()
-            .map(c => c.toString())
+        const q = query
+            .copy({ map: mapToVar })
+            .toProlog()
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
         return await this.kb.query(q)
@@ -43,8 +43,7 @@ export default class PrologBrain implements Brain {
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })
-            .flatList()
-            .map(c => c.toString())
+            .toProlog()
 
         for (const c of toBeAsserted) { // TODO: bug finding one entity multiple times
             await this.kb.assert(c)

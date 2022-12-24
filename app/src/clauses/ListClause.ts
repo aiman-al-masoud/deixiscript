@@ -13,18 +13,10 @@ export default class ListClause implements Clause {
 
         if (opts?.asRheme) {
             return new ListClause([this.copy(), other.copy()])
-        }
-
-        if (this.negated && other.negated) {
-            return new ListClause([this.copy(), other.copy()])
-        } else if (this.negated) {
-            return new ListClause([this.copy(), ...other.flatList()])
-        } else if (other.negated) {
-            return new ListClause([...this.flatList(), other.copy()])
-        } else {
+        }else{
             return new ListClause([...this.flatList(), ...other.flatList()])
         }
-
+        
     }
 
     copy(opts?: CopyOpts): ListClause {
