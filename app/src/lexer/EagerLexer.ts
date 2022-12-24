@@ -1,19 +1,17 @@
 import Token from "../ast/interfaces/Token";
-import AbstractToken from "../ast/tokens/AbstractToken";
 import Lexer, { AssertArgs, Constructor } from "./Lexer";
 import tokenOf from "./tokenOf";
 
 
+export default class EagerLexer implements Lexer {
 
-export default class EagerLexer implements Lexer{
+    protected readonly tokens: Token[]
+    protected _pos: number
 
-    protected readonly tokens:Token[]
-    protected _pos:number
-
-    constructor(readonly sourceCode:string){ 
+    constructor(readonly sourceCode: string) {
         //TODO: reconstruct "do not" and "does not" tokens
         //TODO: nouns vs adjectives
-        this.tokens = sourceCode.split(/\s+|\./).map(e=>!e?'.':e).map(tokenOf)
+        this.tokens = sourceCode.trim().split(/\s+|\./).map(e => !e ? '.' : e).map(tokenOf)
         console.debug('tokens', this.tokens)
         this._pos = 0
     }
@@ -38,25 +36,22 @@ export default class EagerLexer implements Lexer{
         throw new Error(`${errorMsg} at ${this._pos}`);
     }
 
-
-
-    
     /**
      * Return current token iff of given type and move to next; 
      * else return undefined and don't move.
      * @param args 
      * @returns 
      */
-    assert <T>(clazz:Constructor<T>, args:AssertArgs): T|undefined {
+    assert<T>(clazz: Constructor<T>, args: AssertArgs): T | undefined {
 
         const current = this.peek
 
-        if (current instanceof clazz){
+        if (current instanceof clazz) {
             this.next()
             return current
-        } else if (args.errorOut??true) {
-            this.croak(args.errorMsg??'')
-        }else{
+        } else if (args.errorOut ?? true) {
+            this.croak(args.errorMsg ?? '')
+        } else {
             return undefined
         }
 

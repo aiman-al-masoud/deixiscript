@@ -26,15 +26,22 @@ export default class PrologBrain implements Brain {
 
     async query(query: Clause): Promise<{ [id: Id]: Id[] } | boolean> {
 
-        const mapToVar = query.entities.map(e => ({ [e]: toVar(e) }))
+        const mapToVar = query.entities
+            .map(e => ({ [e]: toVar(e) }))
             .reduce((a, b) => ({ ...a, ...b }))
+
+        const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
 
         const q = query
             .copy({ map: mapToVar })
             .toProlog()
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
-        return await this.kb.query(q) //TODO: map back to original constants, inverse mapToVar
+        const queryRes = await this.kb.query(q) as { [id: Id]: Id[] }
+
+        return Object.keys(queryRes)
+            .map(k => ({ [reverseMapToVar[k]]: queryRes[k] }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
     }
 
     async assert(clause: Clause): Promise<void> {

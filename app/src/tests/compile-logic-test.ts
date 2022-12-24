@@ -5,23 +5,35 @@ import { getParser } from "../parser/Parser"
 
 export default async function compileLogicTest() {
 
-    async function test(string: string, checkClause: Clause) {
-        const clause = getParser(string).parse().toClause()
+    async function test(natlang: string, checkClause: Clause) {
+        
         const brain = await getBrain()
-        console.log('asserting', clause.toProlog())
-        await brain.assert(clause)
-        console.log('checking with', checkClause.toProlog())
+        const sentences = natlang.split('.').filter(s=>s.trim())
+        
+        for (let s of sentences) {
+            const clause = getParser(s).parse().toClause()
+            await brain.assert(clause)
+        }
+        
         const queryResult = await brain.query(checkClause)
-        console.log(queryResult)
+        console.log(natlang)
+        console.log('checked with', checkClause.toProlog())
+        console.log('result', !!queryResult)
     }
 
-    test('the cat is on the mat',
-         clauseOf('cat', 0)
-        .and(clauseOf('mat', 1))
-        .and(clauseOf('on', 0, 1)))
+    await test('the cat is on the mat',
+        clauseOf('cat', 0)
+            .and(clauseOf('mat', 1))
+            .and(clauseOf('on', 0, 1)))
 
+    await test('the cat that is red is on the mat',
+        clauseOf('cat', 33)
+            .and(clauseOf('red', 33))
+            .and(clauseOf('on', 33, 34)))
 
-    // test('the cat that is red is on the mat')
+    await test('a cat is red. every cat is smart. a cat is black.',
+        getParser('is the red cat smart').parse().toClause())
+
     // test('the big cat that is on the mat is black')
     // test('every cat is red')
     // test('every red cat is on the mat')
