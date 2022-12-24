@@ -8,17 +8,15 @@ export default class ListClause implements Clause {
     }
 
     concat(other: Clause, opts?: ConcatOpts): Clause {
-        
-        if (opts?.asRheme) {
-            return new ListClause([this.copy(), other.copy()])
-        }else{
-            return new ListClause([...this.flatList(), ...other.flatList()])
-        }
+
+        return opts?.asRheme ?
+            new ListClause([this.copy(), other.copy()]) :
+            new ListClause([...this.flatList(), ...other.flatList()])
 
     }
 
     copy(opts?: CopyOpts): ListClause {
-        return new ListClause(this.clauses.map(c => c.copy(opts)), opts?.negate ? !this.negated : this.negated)
+        return new ListClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate? !this.negated : this.negated)
     }
 
     toString() {
@@ -26,9 +24,7 @@ export default class ListClause implements Clause {
     }
 
     flatList(): Clause[] {
-        // TODO: if I'm negated return copy of myself as a whole in a list
-        // return this.negated ? [this.copy()] : this.clauses.flatMap(c => c.flatList())
-        return this.clauses.flatMap(c => c.flatList())
+        return this.negated ? [this.copy()] : this.clauses.flatMap(c => c.flatList())
     }
 
     get entities(): Id[] {
@@ -44,7 +40,7 @@ export default class ListClause implements Clause {
     }
 
     get isImply(): boolean {
-        return this.clauses.some(e=>e.isImply)
+        return this.clauses.some(e => e.isImply)
     }
 
     implies(conclusion: Clause): Clause {
@@ -52,6 +48,6 @@ export default class ListClause implements Clause {
     }
 
     toProlog(): string[] {
-        return this.flatList().map(c=>c.toString())
+        return this.flatList().map(c => c.toString())
     }
 }
