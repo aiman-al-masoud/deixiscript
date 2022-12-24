@@ -8,15 +8,13 @@ export default class ListClause implements Clause {
     }
 
     concat(other: Clause, opts?: ConcatOpts): Clause {
-
-        // TODO: this op is a little bit clumsy, consider using a simplify() method instead.
-
+        
         if (opts?.asRheme) {
             return new ListClause([this.copy(), other.copy()])
         }else{
             return new ListClause([...this.flatList(), ...other.flatList()])
         }
-        
+
     }
 
     copy(opts?: CopyOpts): ListClause {
