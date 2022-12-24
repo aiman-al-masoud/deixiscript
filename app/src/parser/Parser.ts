@@ -1,4 +1,3 @@
-import Ast from "../ast/interfaces/Ast";
 import Constituent from "../ast/interfaces/Constituent";
 import BasicParser from "./BasicParser";
 
