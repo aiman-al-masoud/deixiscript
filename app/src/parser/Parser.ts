@@ -1,10 +1,11 @@
 import Ast from "../ast/interfaces/Ast";
+import Constituent from "../ast/interfaces/Constituent";
 import BasicParser from "./BasicParser";
 
 export default interface Parser{
-    parse():Ast   
+    parse():Constituent   
 }
 
-export function getParser(sourceCode:string){
+export function getParser(sourceCode:string):Parser{
     return new BasicParser(sourceCode)
 }
