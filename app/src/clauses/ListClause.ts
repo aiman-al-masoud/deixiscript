@@ -3,7 +3,7 @@ import Imply from "./Imply";
 
 export default class ListClause implements Clause {
 
-    constructor(readonly clauses: Clause[], readonly negated = false) {
+    constructor(readonly clauses: Clause[], readonly negated = false, readonly isImply = false) {
 
     }
 
@@ -33,10 +33,6 @@ export default class ListClause implements Clause {
 
     get rheme(): Clause {
         return this.clauses[1]
-    }
-
-    get isImply(): boolean {
-        return this.clauses.some(e => e.isImply)
     }
 
     implies(conclusion: Clause): Clause {

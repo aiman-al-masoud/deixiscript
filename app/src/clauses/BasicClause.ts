@@ -5,7 +5,7 @@ import ListClause from "./ListClause";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false) {
+    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false, readonly isImply = false) {
 
     }
 
@@ -36,10 +36,6 @@ export class BasicClause implements Clause {
 
     get rheme(): Clause {
         return emptyClause()
-    }
-
-    get isImply(): boolean {
-        return false
     }
 
     implies(conclusion: Clause): Clause {

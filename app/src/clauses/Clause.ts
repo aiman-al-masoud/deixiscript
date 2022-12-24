@@ -8,15 +8,15 @@ export type Id = number | string
  */
 export interface Clause {
     concat(other: Clause, opts?: ConcatOpts): Clause
+    implies(conclusion:Clause):Clause
     copy(opts?: CopyOpts): Clause
     flatList(): Clause[]
+    toProlog():string[]
     readonly negated: boolean
+    readonly isImply : boolean
     get entities(): Id[]
     get theme(): Clause
     get rheme(): Clause
-    get isImply():boolean
-    implies(conclusion:Clause):Clause
-    toProlog():string[]
 }
 
 export function clauseOf(predicate: string, ...args: Id[]) {
