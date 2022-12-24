@@ -19,10 +19,6 @@ export default class ListClause implements Clause {
         return new ListClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate? !this.negated : this.negated)
     }
 
-    toString() {
-        return this.negated ? `not(${this.clauses.toString()})` : this.clauses.toString()
-    }
-
     flatList(): Clause[] {
         return this.negated ? [this.copy()] : this.clauses.flatMap(c => c.flatList())
     }
@@ -49,5 +45,9 @@ export default class ListClause implements Clause {
 
     toProlog(): string[] {
         return this.flatList().map(c => c.toString())
+    }
+
+    toString() {
+        return this.negated ? `not(${this.clauses.toString()})` : this.clauses.toString()
     }
 }

@@ -21,13 +21,13 @@ export class BasicClause implements Clause {
         return [this.copy()]
     }
 
+    toProlog(): string[] {
+        return [this.toString()]
+    }
+
     toString() {
         const core = `${this.predicate}(${this.args.reduce((a1, a2) => a1 + ', ' + a2)})`
         return this.negated ? `not(${core})` : core
-    }
-
-    toProlog(): string[] {
-        return [this.toString()]
     }
 
     get entities(): Id[] {
