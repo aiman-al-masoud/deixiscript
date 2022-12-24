@@ -12,6 +12,7 @@ import { getLexer } from './lexer/Lexer';
 import { getParser } from './parser/Parser';
 import Prolog, { getProlog } from './prolog/Prolog';
 import TauProlog from './prolog/TauProlog';
+import compileLogicTest from './tests/compile-logic-test';
 import playground from './tests/playground';
 import prologPlay from './tests/prolog-playground';
 
@@ -64,28 +65,28 @@ import prologPlay from './tests/prolog-playground';
 // console.log((window as any).ast = getParser('the color of the button on the black div is red').parse())
 
 // COMPILER TESTS
-function test(string: string) {
-    console.log(string)
-    const clause = getParser(string).parse().toClause().copy({ map: { 'id1': 1000, 'id2': 2000 } })
-    // console.log(clause.flatList().map(c => c.toString()))
-    console.log(clause.toProlog())
-    // console.log(clause)
-    // console.log('entities', clause.entities)
-    // console.log('theme', clause.theme)
-    // console.log('rheme', clause.rheme)
-    // console.log(clause.about('id0'))
-}
+// function test(string: string) {
+//     console.log(string)
+//     const clause = getParser(string).parse().toClause().copy({ map: { 'id1': 1000, 'id2': 2000 } })
+//     // console.log(clause.flatList().map(c => c.toString()))
+//     console.log(clause.toProlog())
+//     // console.log(clause)
+//     // console.log('entities', clause.entities)
+//     // console.log('theme', clause.theme)
+//     // console.log('rheme', clause.rheme)
+//     // console.log(clause.about('id0'))
+// }
 
-test('the cat is on the mat')
-// test('the cat that is red is on the mat')
-// test('the big cat that is on the mat is black')
-test('every cat is red')
-test('every red cat is on the mat')
-// test('the cat exists on the mat')
-test('if the cat is on the mat then the cat is red')
-// test('the cat is not red')
-test('every cat is not red')
-test('trump is not a great president'); // probably need an and predicate
+// test('the cat is on the mat')
+// // test('the cat that is red is on the mat')
+// // test('the big cat that is on the mat is black')
+// test('every cat is red')
+// test('every red cat is on the mat')
+// // test('the cat exists on the mat')
+// test('if the cat is on the mat then the cat is red')
+// // test('the cat is not red')
+// test('every cat is not red')
+// test('trump is not a great president'); // probably need an and predicate
 
 // END COMPILER TESTS
 
@@ -184,4 +185,6 @@ test('trump is not a great president'); // probably need an and predicate
 
 
 // prologPlay()
-playground()
+// playground()
+
+compileLogicTest()

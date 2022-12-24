@@ -43,7 +43,7 @@ export function getRandomId(opts?: GetRandomIdOpts): Id { // TODO: higher const 
 }
 
 export function toVar(id:Id):Id{
-    return (id+'').toUpperCase()
+    return (Number(id) !== undefined? `id${id}` : id+'').toUpperCase()
 }
 
 /**
