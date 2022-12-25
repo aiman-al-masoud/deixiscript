@@ -3,6 +3,7 @@ import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
 import { getAnaphora } from "./Anaphora";
+import Constituent from "../ast/interfaces/Constituent";
 
 export default class PrologBrain implements Brain {
 
@@ -13,7 +14,17 @@ export default class PrologBrain implements Brain {
     }
 
     async execute(natlang: string): Promise<boolean | Map[]> {
-        const ast = getParser(natlang).parse()
+
+        let x: boolean | Map[] = false
+
+        for (const ast of getParser(natlang).parseAll()) {
+            x = await this.executeOne(ast)
+        }
+
+        return x
+    }
+
+    protected async executeOne(ast: Constituent) {
 
         if (ast.isSideEffecty) {
             await this.assert(ast.toClause())
@@ -21,6 +32,7 @@ export default class PrologBrain implements Brain {
         } else {
             return await this.query(ast.toClause())
         }
+
     }
 
     async query(query: Clause): Promise<boolean | Map[]> {
@@ -35,11 +47,10 @@ export default class PrologBrain implements Brain {
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
         const queryRes = await this.kb.query(q) as Map[]
-        
+
         return queryRes //TODO: maybe return clause list instead, with query.copy({map:mapToVar}).copy({map:queryRes[i]}) //for each queryRes
 
     }
-
 
     async assert(clause: Clause): Promise<void> {
 

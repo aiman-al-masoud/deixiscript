@@ -58,7 +58,7 @@ export default class EagerLexer implements Lexer {
     }
 
     get isEnd(): boolean {
-        return this.pos >= this.tokens.length -1
+        return this.pos >= this.tokens.length 
     }
 
 }
