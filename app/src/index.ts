@@ -185,5 +185,5 @@ import prologPlay from './tests/prolog-playground';
 
 
 // prologPlay()
-compileLogicTest()
+// compileLogicTest()
 playground()

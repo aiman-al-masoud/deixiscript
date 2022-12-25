@@ -1,4 +1,4 @@
-import { Clause, Id, Map, toVar } from "../clauses/Clause";
+import { Clause, Map, toVar } from "../clauses/Clause";
 import Brain from "./Brain";
 
 /**
@@ -39,17 +39,19 @@ class BaseSandbox implements Sandbox {
         const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
 
         const bigDescClause = themeDescs
-            .concat(rhemeDescs).reduce((c1, c2) => c1.and(c2))
+            .concat(rhemeDescs)
+            .reduce((c1, c2) => c1.and(c2))
             .copy({ map: mapToVar })
 
-        const res = await universe.query(bigDescClause) as Map[]
+        const candidates = await universe.query(bigDescClause) as Map[]
+        const chosen = candidates[0] ?? {} //TODO: better criterion !!!
 
-        // return Object.keys(res)
-        //     .map(k => ({ [reverseMapToVar[k]]: res[k][0] ?? reverseMapToVar[k] }))
-        //     .reduce((a, b) => ({ ...a, ...b }), {})
+        const anaphora = Object
+            .keys(chosen)
+            .map(k => ({ [reverseMapToVar[k]]: chosen[k] ?? reverseMapToVar[k] }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
 
-        return res[0] //TODO: better criterion !!! //TODO: reverseMapToVar
-
+        return anaphora
     }
 
 }

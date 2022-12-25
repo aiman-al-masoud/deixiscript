@@ -1,4 +1,4 @@
-import { Clause, Id, Map, toVar } from "../clauses/Clause";
+import { Clause, Map, toVar } from "../clauses/Clause";
 import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
@@ -25,12 +25,11 @@ export default class PrologBrain implements Brain {
 
     async query(query: Clause): Promise<boolean | Map[]> {
 
-
         const mapToVar = query.entities
             .map(e => ({ [e]: toVar(e) }))
             .reduce((a, b) => ({ ...a, ...b }))
 
-        const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
+        // const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
 
         const q = query
             .copy({ map: mapToVar })
@@ -38,16 +37,8 @@ export default class PrologBrain implements Brain {
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
         const queryRes = await this.kb.query(q) as Map[]
-
-        // return Object.keys(queryRes)
-            // .map(k => ({ [reverseMapToVar[k]]: queryRes[k] }))
-            // .reduce((a, b) => ({ ...a, ...b }), {})
-
-        // const x = queryRes.map(e=> Object.entries(e) )
-        //                   .map(e=>   Object.fromEntries(e.map(e=> ({ [reverseMapToVar[e[0]]] : e[1] })   ))  )
-
-        //TODO: reverse map to original constant used for query
-        return queryRes
+        
+        return queryRes //TODO: reverse map to original constants used for query ??
 
     }
 
