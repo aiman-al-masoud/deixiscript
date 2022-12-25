@@ -3,17 +3,17 @@ import Brain from "./Brain";
 
 /**
  * Entities in a new sentence potentially point to existing entities
- * in the universe (ie: {@link Brain}). {@link Sandbox} resolves the anaphora.
+ * in the universe (ie: {@link Brain}). {@link Anaphora} resolves the anaphora.
  */
-export interface Sandbox {
+export interface Anaphora {
     mapTo(universe: Brain): Promise<Map>
 }
 
-export function getSandbox(clause: Clause): Sandbox {
-    return new BaseSandbox(clause)
+export function getAnaphora(clause: Clause): Anaphora {
+    return new BaseAnaphora(clause)
 }
 
-class BaseSandbox implements Sandbox {
+class BaseAnaphora implements Anaphora {
 
     constructor(readonly clause: Clause) {
 

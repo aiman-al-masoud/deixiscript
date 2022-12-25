@@ -2,7 +2,7 @@ import { Clause, Map, toVar } from "../clauses/Clause";
 import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
-import { getSandbox } from "./Sandbox";
+import { getAnaphora } from "./Sandbox";
 
 export default class PrologBrain implements Brain {
 
@@ -45,7 +45,7 @@ export default class PrologBrain implements Brain {
 
     async assert(clause: Clause): Promise<void> {
 
-        const anaphoraMap = await getSandbox(clause).mapTo(this)
+        const anaphoraMap = await getAnaphora(clause).mapTo(this)
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })
