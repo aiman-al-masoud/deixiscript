@@ -42,11 +42,13 @@ class BaseSandbox implements Sandbox {
             .concat(rhemeDescs).reduce((c1, c2) => c1.and(c2))
             .copy({ map: mapToVar })
 
-        const res = (await universe.query(bigDescClause)) as { [id: Id]: Id[] }
+        const res = await universe.query(bigDescClause) as Map[]
 
-        return Object.keys(res)
-            .map(k => ({ [reverseMapToVar[k]]: res[k][0] ?? reverseMapToVar[k] }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
+        // return Object.keys(res)
+        //     .map(k => ({ [reverseMapToVar[k]]: res[k][0] ?? reverseMapToVar[k] }))
+        //     .reduce((a, b) => ({ ...a, ...b }), {})
+
+        return res[0] //TODO: better criterion !!! //TODO: reverseMapToVar
 
     }
 

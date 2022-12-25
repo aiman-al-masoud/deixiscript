@@ -1,4 +1,4 @@
-import { Clause, Id, toVar } from "../clauses/Clause";
+import { Clause, Id, Map, toVar } from "../clauses/Clause";
 import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
@@ -12,8 +12,7 @@ export default class PrologBrain implements Brain {
         this.kb = getProlog()
     }
 
-    async execute(natlang: string): Promise<boolean | { [id: Id]: Id[] }> {
-
+    async execute(natlang: string): Promise<boolean | Map[]> {
         const ast = getParser(natlang).parse()
 
         if (ast.isSideEffecty) {
@@ -24,7 +23,8 @@ export default class PrologBrain implements Brain {
         }
     }
 
-    async query(query: Clause): Promise<{ [id: Id]: Id[] } | boolean> {
+    async query(query: Clause): Promise<boolean | Map[]> {
+
 
         const mapToVar = query.entities
             .map(e => ({ [e]: toVar(e) }))
@@ -37,12 +37,20 @@ export default class PrologBrain implements Brain {
             .toProlog()
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
-        const queryRes = await this.kb.query(q) as { [id: Id]: Id[] }
+        const queryRes = await this.kb.query(q) as Map[]
 
-        return Object.keys(queryRes)
-            .map(k => ({ [reverseMapToVar[k]]: queryRes[k] }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
+        // return Object.keys(queryRes)
+            // .map(k => ({ [reverseMapToVar[k]]: queryRes[k] }))
+            // .reduce((a, b) => ({ ...a, ...b }), {})
+
+        // const x = queryRes.map(e=> Object.entries(e) )
+        //                   .map(e=>   Object.fromEntries(e.map(e=> ({ [reverseMapToVar[e[0]]] : e[1] })   ))  )
+
+        //TODO: reverse map to original constant used for query
+        return queryRes
+
     }
+
 
     async assert(clause: Clause): Promise<void> {
 

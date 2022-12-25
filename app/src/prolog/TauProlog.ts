@@ -1,6 +1,6 @@
 import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
-import pl, { Answer, format_answer } from 'tau-prolog'
-import { Id } from "../clauses/Clause";
+import pl from 'tau-prolog'
+import { Map } from "../clauses/Clause";
 require("tau-prolog/modules/promises.js")(pl);
 
 
@@ -22,14 +22,12 @@ export default class TauProlog implements Prolog {
         return await (this.session as any).promiseAnswer()
     }
 
-    protected async performQuery(code: string): Promise<{ [id: Id]: Id[] } | boolean> {
+    protected async performQuery(code: string): Promise<Map[] | boolean> {
 
         await (this.session as any).promiseQuery(code)
-        let answers: any = {}
+        let answers: Map[] = []
 
         for await (let ans of (this.session as any).promiseAnswers()) {
-
-            // console.log({ans})
 
             const fmans = pl.format_answer(ans)
 
@@ -37,9 +35,13 @@ export default class TauProlog implements Prolog {
                 return fmans === 'true'
             }
 
-            Object.keys(ans.links).forEach(k => {
-                answers[k] = (answers[k] ?? []).concat(ans.links[k].value ?? ans.links[k].id)
-            })
+            const links = ans.links
+
+            const entry = Object.keys(links)
+                .map(k => ({ [k]: links[k].value ?? links[k].id }))
+                .reduce((a, b) => ({ ...a, ...b }))
+
+            answers.push(entry)
 
         }
 
@@ -51,7 +53,7 @@ export default class TauProlog implements Prolog {
 
     }
 
-    async query(code: string): Promise<{ [id: Id]: Id[] } | boolean> {
+    async query(code: string): Promise<Map[] | boolean> {
 
         try {
             return await this.performQuery(code)
@@ -69,7 +71,7 @@ export default class TauProlog implements Prolog {
         if (error == 'existence_error') {
             const missingPredicate = (e as any).args[0].args[0].args[1].args[0].id
             return { error, missingPredicate }
-        }else{
+        } else {
             return e
         }
 

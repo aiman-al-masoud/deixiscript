@@ -1,10 +1,10 @@
-import { Id } from "../clauses/Clause"
+import { Id, Map } from "../clauses/Clause"
 import TauProlog from "./TauProlog"
 
 export default interface Prolog {
     assert(clause: string, opts?: AssertOpts): Promise<void>
     retract(clause: string): Promise<void>
-    query(code: string): Promise<{ [id: Id]: Id[] } | boolean>
+    query(code: string): Promise< Map[] | boolean>
     predicates(opts?: PreidcatesOpts): string[]
 }
 

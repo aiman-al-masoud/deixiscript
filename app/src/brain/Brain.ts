@@ -1,13 +1,11 @@
 import Constituent from "../ast/interfaces/Constituent"
-import { Clause, Id } from "../clauses/Clause"
+import { Clause, Id, Map } from "../clauses/Clause"
 import PrologBrain from "./PrologBrain"
 
 export default interface Brain{
-    query(query:Clause): Promise<{[id:Id] : Id[]} | boolean>
+    query(query:Clause): Promise<Map[] | boolean>
     assert(code:Clause):Promise<void>
-    execute(natlang:string):Promise<{[id:Id] : Id[]} | boolean>
-    // find(query:Clause):Promise<Id[]>
-    // check(query:Clause):Promise<boolean>
+    execute(natlang:string):Promise<Map[] | boolean>
     // clone():Brain
     // addListener(element:number, event:string, callback:(event:Event)=>void):void
 }
