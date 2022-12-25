@@ -30,6 +30,7 @@ import Parser from "./Parser";
 import CopulaSubordinateClause from "../ast/phrases/CopulaSubordinateClause";
 import RelativePronoun from "../ast/tokens/RelativePronoun";
 import Constituent from "../ast/interfaces/Constituent";
+import FullStop from "../ast/tokens/FullStop";
 
 export default class BasicParser implements Parser {
 
@@ -57,8 +58,20 @@ export default class BasicParser implements Parser {
         throw new Error(errorMsg)
     }
 
+    parseAll(): Constituent[] {
+
+        const results: Constituent[] = []
+
+        while (!this.lx.isEnd) {
+            results.push(this.parse())
+            this.lx.assert(FullStop, { errorOut: false })
+        }
+
+        return results
+    }
+
     parse(): Constituent {
-        return this.try(this.parseQuestion) 
+        return this.try(this.parseQuestion)
             ?? this.try(this.parseDeclaration)
             ?? this.try(this.parseNounPhrase) // for quick topic reference
             ?? this.errorOut('parse()')
@@ -66,7 +79,7 @@ export default class BasicParser implements Parser {
 
     protected parseDeclaration = (): Declaration => {
         return this.try(this.parseCompound)
-            ?? this.try(this.parseSimple) 
+            ?? this.try(this.parseSimple)
             ?? this.errorOut('parseDeclaration()')
     }
 
@@ -162,7 +175,7 @@ export default class BasicParser implements Parser {
 
         const noun = this.lx.assert(Noun, { errorOut: false })
         const subordinateClause = this.try(this.parseSubordinateClause)
-        const complements = this.parseComplements() 
+        const complements = this.parseComplements()
 
         return new NounPhrase(adjectives, complements, noun, quantifier, article, subordinateClause)
     }
@@ -186,13 +199,13 @@ export default class BasicParser implements Parser {
     }
 
     protected parseSubordinateClause = (): SubordinateClause => {
-        return this.try(this.parseCopulaSubordinateClause) 
-        ?? this.errorOut('parseSubordinateClause()')
+        return this.try(this.parseCopulaSubordinateClause)
+            ?? this.errorOut('parseSubordinateClause()')
     }
 
-    protected parseCopulaSubordinateClause = ():CopulaSubordinateClause =>{
-        const relpron = this.lx.assert(RelativePronoun, {errorMsg:'parseCopulaSubordinateClause() expected relative pronoun'})
-        const copula = this.lx.assert(Copula, {errorMsg:'parseCopulaSubordinateClause() expected copula'})
+    protected parseCopulaSubordinateClause = (): CopulaSubordinateClause => {
+        const relpron = this.lx.assert(RelativePronoun, { errorMsg: 'parseCopulaSubordinateClause() expected relative pronoun' })
+        const copula = this.lx.assert(Copula, { errorMsg: 'parseCopulaSubordinateClause() expected copula' })
         const subject = this.parseNounPhrase()
         return new CopulaSubordinateClause(relpron as RelativePronoun, subject, copula as Copula)
     }
