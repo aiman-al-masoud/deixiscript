@@ -29,8 +29,6 @@ export default class PrologBrain implements Brain {
             .map(e => ({ [e]: toVar(e) }))
             .reduce((a, b) => ({ ...a, ...b }))
 
-        // const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
-
         const q = query
             .copy({ map: mapToVar })
             .toProlog()
@@ -38,7 +36,7 @@ export default class PrologBrain implements Brain {
 
         const queryRes = await this.kb.query(q) as Map[]
         
-        return queryRes //TODO: reverse map to original constants used for query ??
+        return queryRes //TODO: maybe return clause list instead, with query.copy({map:mapToVar}).copy({map:queryRes[i]}) //for each queryRes
 
     }
 
