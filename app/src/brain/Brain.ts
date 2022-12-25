@@ -1,5 +1,4 @@
-import Constituent from "../ast/interfaces/Constituent"
-import { Clause, Id, Map } from "../clauses/Clause"
+import { Clause, Map } from "../clauses/Clause"
 import PrologBrain from "./PrologBrain"
 
 export default interface Brain{
