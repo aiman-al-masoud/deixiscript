@@ -185,8 +185,8 @@ import prologPlay from './tests/prolog-playground';
 
 
 // prologPlay()
-// compileLogicTest()
-playground()
+compileLogicTest()
+// playground()
 
 // const x = getParser('the cat is on the mat. the cat is red. the cat is black')
 //         .parseAll()
