@@ -5,7 +5,7 @@ import Article from './ast/tokens/Article';
 import Copula from './ast/tokens/Copula';
 import Noun from './ast/tokens/Noun';
 import { getBrain } from './brain/Brain';
-import { getAnaphora } from './brain/Sandbox';
+import { getAnaphora } from './brain/Anaphora';
 import { BasicClause } from './clauses/BasicClause';
 import { clauseOf } from './clauses/Clause';
 import { getLexer } from './lexer/Lexer';

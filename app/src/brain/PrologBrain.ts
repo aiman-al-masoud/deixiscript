@@ -2,7 +2,7 @@ import { Clause, Map, toVar } from "../clauses/Clause";
 import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
-import { getAnaphora } from "./Sandbox";
+import { getAnaphora } from "./Anaphora";
 
 export default class PrologBrain implements Brain {
 
