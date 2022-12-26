@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, Id } from "./Clause";
+import { Clause, AndOpts, CopyOpts, Id, ToPrologOpts, hashString } from "./Clause";
 import Imply from "./Imply";
 
 export default class And implements Clause {
@@ -39,14 +39,16 @@ export default class And implements Clause {
         return new Imply(this.copy(), conclusion.copy())
     }
 
-    toProlog(): string[] {
+    toProlog(opts: ToPrologOpts): string[] {
 
-        const prologClauses = this.clauses.flatMap(c => c.toProlog())
+        return this.clauses.length === 1 && this.negated ? //TODO: fix this crap
+            this.clauses[0].copy({ negate: true }).toProlog(opts) :
+            this.clauses.flatMap(c => c.toProlog(opts))
+            
+    }
 
-        return this.negated ?
-            [`logicNot(${prologClauses.reduce((a, b) => `${a}, ${b}`)})`] :
-            prologClauses
-
+    get hashCode(): number {
+        return hashString(JSON.stringify(this))
     }
 
 }

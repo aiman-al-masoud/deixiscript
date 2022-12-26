@@ -22,18 +22,12 @@ export default class TauProlog implements Prolog {
         return await (this.session as any).promiseAnswer()
     }
 
-    protected async performQuery(code: string): Promise<Map[] | boolean> {
+    protected async performQuery(code: string): Promise<Map[]> {
 
         await (this.session as any).promiseQuery(code)
         let answers: Map[] = []
 
         for await (let ans of (this.session as any).promiseAnswers()) {
-
-            const fmans = pl.format_answer(ans)
-
-            if (['true', 'false'].includes(fmans)) {
-                return fmans === 'true'
-            }
 
             const links = ans.links
 
@@ -42,24 +36,18 @@ export default class TauProlog implements Prolog {
                 .reduce((a, b) => ({ ...a, ...b }))
 
             answers.push(entry)
-
         }
 
-        if (this.queryHasVar(code)) {
-            return answers
-        } else {
-            return false
-        }
-
+        return answers
     }
 
-    async query(code: string): Promise<Map[] | boolean> {
+    async query(code: string): Promise<Map[]> {
 
         try {
             return await this.performQuery(code)
         } catch (e) {
             console.warn(this.parseError(e))
-            return false
+            return [] //TODO: fix bug if error not finding anything although there could be something!
         }
 
     }
@@ -75,10 +63,6 @@ export default class TauProlog implements Prolog {
             return e
         }
 
-    }
-
-    protected queryHasVar(code: string) { // check if query has a var. breaks down if predicate name contains capital letter!
-        return code.split('').find(c => c.match(/\w+/) && c.toUpperCase() === c)
     }
 
     predicates(opts?: PreidcatesOpts): string[] {

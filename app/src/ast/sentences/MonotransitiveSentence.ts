@@ -1,5 +1,5 @@
 import Brain from "../../brain/Brain";
-import { ToPrologArgs } from "../interfaces/Constituent";
+import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
@@ -21,7 +21,7 @@ export default class MonotransitiveSentence implements VerbSentence {
         return true
     }
     
-    toClause(args?: ToPrologArgs | undefined): Clause {
+    toClause(args?: ToClauseOpts | undefined): Clause {
         throw new Error("Method not implemented.");
     }
 }

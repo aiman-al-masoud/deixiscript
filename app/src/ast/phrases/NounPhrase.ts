@@ -5,7 +5,7 @@ import Noun from "../tokens/Noun";
 import Quantifier from "../tokens/Quantifier";
 import Complement from "./Complement";
 import SubordinateClause from "../interfaces/SubordinateClause";
-import { ToPrologArgs } from "../interfaces/Constituent";
+import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause, getRandomId, clauseOf, emptyClause } from "../../clauses/Clause";
 
 export default class NounPhrase implements Phrase {
@@ -23,7 +23,7 @@ export default class NounPhrase implements Phrase {
         return this.quantifier?.isUniversal() ?? false
     }
 
-    toClause(args?: ToPrologArgs): Clause {
+    toClause(args?: ToClauseOpts): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }

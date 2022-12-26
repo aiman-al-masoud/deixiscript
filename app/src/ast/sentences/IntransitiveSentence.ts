@@ -1,4 +1,4 @@
-import { ToPrologArgs } from "../interfaces/Constituent";
+import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause, clauseOf, getRandomId } from "../../clauses/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
@@ -19,7 +19,7 @@ export default class IntransitiveSentence implements VerbSentence {
         return true
     }
 
-    toClause(args?: ToPrologArgs): Clause {
+    toClause(args?: ToClauseOpts): Clause {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }

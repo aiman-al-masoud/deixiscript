@@ -6,7 +6,7 @@ import { Clause, Id } from "../../clauses/Clause";
  * first-order logic formula.
  */
 export default interface Constituent extends Ast {
-    toClause(args?: ToPrologArgs): Clause
+    toClause(args?: ToClauseOpts): Clause
     get isSideEffecty():boolean
 }
 
@@ -15,7 +15,7 @@ export interface Roles {
     object?: Id
 }
 
-export interface ToPrologArgs {
+export interface ToClauseOpts {
     withVars?: boolean,
     roles?: Roles,
     anaphora?: {

@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, Id } from "./Clause";
+import { Clause, AndOpts, CopyOpts, Id, ToPrologOpts, hashString } from "./Clause";
 import And from "./And";
 
 export default class Imply implements Clause {
@@ -24,15 +24,14 @@ export default class Imply implements Clause {
      * Since prolog only supports that kind of implication.
      * @returns 
      */
-    toProlog(): string[] {
+    toProlog(opts:ToPrologOpts): string[] {
 
         const conditionString = this.condition
-            .toProlog()
+            .toProlog({... opts, anyFactId:true})
             .reduce((c1, c2) => `${c1}, ${c2}`)
 
         const conclusions = this.conclusion.flatList()
-
-        return conclusions.map(c => `${c.toProlog()[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
+        return conclusions.map(c => `${c.toProlog({... opts, anyFactId:true})[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
 
     }
 
@@ -46,6 +45,10 @@ export default class Imply implements Clause {
 
     get rheme(): Clause {
         return this.copy() // dunno what I'm doin'
+    }
+    
+    get hashCode(): number {
+        return hashString(JSON.stringify(this))
     }
 
     implies(conclusion: Clause): Clause {

@@ -4,7 +4,7 @@ import TauProlog from "./TauProlog"
 export default interface Prolog {
     assert(clause: string, opts?: AssertOpts): Promise<void>
     retract(clause: string): Promise<void>
-    query(code: string): Promise< Map[] | boolean>
+    query(code: string): Promise<Map[]>
     predicates(opts?: PreidcatesOpts): string[]
 }
 

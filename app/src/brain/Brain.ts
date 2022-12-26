@@ -2,7 +2,7 @@ import { Clause, Map } from "../clauses/Clause"
 import PrologBrain from "./PrologBrain"
 
 export default interface Brain{
-    query(query:Clause): Promise<Map[] | boolean>
+    query(query:Clause): Promise<Map[]>
     assert(code:Clause):Promise<void>
     execute(natlang:string):Promise<Map[] | boolean>
     // clone():Brain

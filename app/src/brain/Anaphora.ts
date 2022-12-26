@@ -1,4 +1,4 @@
-import { Clause, Map, toVar } from "../clauses/Clause";
+import { Clause, emptyClause, Id, isVar, Map, toVar } from "../clauses/Clause";
 import Brain from "./Brain";
 
 /**
@@ -21,16 +21,18 @@ class BaseAnaphora implements Anaphora {
 
     async mapTo(universe: Brain): Promise<Map> {
 
+        if ( this.clause.entities.every(e=>isVar(e)) ){ // this is a pure implication //TODO: possbile problem: every cat that is on the mat
+            return {}
+        }
+        
         const themeEnts = this.clause.theme.entities
 
         // get descriptions of entities in theme omitting relations with entities in rheme
         const themeDescs = this.clause.theme.flatList()
-            .filter(e => !e.isImply)
 
         // get descriptions of entities in rheme omitting relations with entities in theme
         const rhemeDescs = this.clause.rheme.flatList()
             .filter(c => themeEnts.every(e => !c.entities.includes(e)))
-            .filter(e => !e.isImply)
 
         const mapToVar = this.clause.entities
             .map(e => ({ [e]: toVar(e) }))
@@ -40,18 +42,19 @@ class BaseAnaphora implements Anaphora {
 
         const bigDescClause = themeDescs
             .concat(rhemeDescs)
-            .reduce((c1, c2) => c1.and(c2))
+            .reduce((c1, c2) => c1.and(c2), emptyClause())
             .copy({ map: mapToVar })
 
-        const candidates = await universe.query(bigDescClause) as Map[]
+        const candidates = await universe.query(bigDescClause) 
         const chosen = candidates[0] ?? {} //TODO: better criterion !!!
 
         const anaphora = Object
             .keys(chosen)
             .map(k => ({ [reverseMapToVar[k]]: chosen[k] ?? reverseMapToVar[k] }))
             .reduce((a, b) => ({ ...a, ...b }), {})
-
+        
         return anaphora
     }
 
 }
+

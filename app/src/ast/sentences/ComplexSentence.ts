@@ -1,5 +1,5 @@
 import CompoundSentence from "../interfaces/CompoundSentence";
-import { ToPrologArgs } from "../interfaces/Constituent";
+import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause, getRandomId } from "../../clauses/Clause";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
@@ -16,7 +16,7 @@ export default class ComplexSentence implements CompoundSentence {
 
     }
 
-    toClause(args?: ToPrologArgs): Clause {
+    toClause(args?: ToClauseOpts): Clause {
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
 

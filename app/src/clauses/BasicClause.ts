@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, emptyClause, Id } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause, Id, getRandomId, ToPrologOpts, hashString } from "./Clause";
 import Imply from "./Imply";
 import And from "./And";
 
@@ -21,9 +21,14 @@ export class BasicClause implements Clause {
         return [this.copy()]
     }
 
-    toProlog(): string[] {
-        const core = `${this.predicate}(${this.args.reduce((a, b) => `${a}, ${b}`)})`
-        return this.negated ? [`logicNot(${core})`] : [core]
+    toProlog(opts: ToPrologOpts): string[] {
+
+        if (this.args.length <= 1 ){
+            return [`be(${opts.anyFactId? '_' : getRandomId()}, ${this.args[0]}, ${this.predicate}, ${!this.negated})`]
+        }else{
+            return [`rel(${opts.anyFactId? '_' : getRandomId()}, ${this.args[0]}, ${this.args[1]}, ${this.predicate}, ${!this.negated})`]
+        }
+
     }
 
     get entities(): Id[] {
@@ -40,6 +45,10 @@ export class BasicClause implements Clause {
 
     implies(conclusion: Clause): Clause {
         return new Imply(this.copy(), conclusion.copy())
+    }
+
+    get hashCode(): number {
+        return hashString( JSON.stringify(this))
     }
 
 }

@@ -1,4 +1,4 @@
-import { ToPrologArgs } from "../interfaces/Constituent";
+import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
 import Copula from "../tokens/Copula";
@@ -11,7 +11,7 @@ export default class CopulaSubordinateClause implements SubordinateClause {
 
     }
 
-    toClause(args?: ToPrologArgs): Clause {
+    toClause(args?: ToClauseOpts): Clause {
         return this.predicate.toClause({ ...args, roles: { subject: args?.roles?.subject } })
     }
 

@@ -17,6 +17,8 @@ export default async function compileLogicTest() {
 
     await test('a cat is red. every cat is smart. a cat is black.', 'is the red cat smart')
 
+    // await test('every cat is smart. x is a cat.', 'is x smart')
+
     await test('the dog is stupid', 'is the kettle on the stove') // false
 
     // test('the big cat that is on the mat is black')

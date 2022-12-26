@@ -185,8 +185,14 @@ import prologPlay from './tests/prolog-playground';
 
 
 // prologPlay()
-compileLogicTest()
+// compileLogicTest()
 playground()
+
+// const x = getParser('the cat is black').parse().toClause().toProlog({anyFactId:false})
+// console.log(x)
+
+// const y = getParser('is the cat black').parse().toClause().toProlog({anyFactId :true})
+// console.log(y)
 
 // const x = getParser('the cat is on the mat. the cat is red. the cat is black')
 //         .parseAll()
