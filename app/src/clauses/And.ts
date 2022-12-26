@@ -1,7 +1,7 @@
 import { Clause, AndOpts, CopyOpts, Id } from "./Clause";
 import Imply from "./Imply";
 
-export default class AndClause implements Clause {
+export default class And implements Clause {
 
     constructor(readonly clauses: Clause[], readonly negated = false, readonly isImply = false) {
 
@@ -10,13 +10,13 @@ export default class AndClause implements Clause {
     and(other: Clause, opts?: AndOpts): Clause {
 
         return opts?.asRheme ?
-            new AndClause([this.copy(), other.copy()]) :
-            new AndClause([...this.flatList(), ...other.flatList()])
+            new And([this.copy(), other.copy()]) :
+            new And([...this.flatList(), ...other.flatList()])
 
     }
 
-    copy(opts?: CopyOpts): AndClause {
-        return new AndClause(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate ? !this.negated : this.negated)
+    copy(opts?: CopyOpts): And {
+        return new And(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate ? !this.negated : this.negated)
     }
 
     flatList(): Clause[] {

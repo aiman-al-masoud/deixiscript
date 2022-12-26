@@ -1,6 +1,6 @@
 import { Clause, AndOpts, CopyOpts, emptyClause, Id } from "./Clause";
 import Imply from "./Imply";
-import AndClause from "./ListClause";
+import And from "./And";
 
 
 export class BasicClause implements Clause {
@@ -10,7 +10,7 @@ export class BasicClause implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new AndClause(this.flatList().concat(other.flatList()))
+        return new And(this.flatList().concat(other.flatList()))
     }
 
     copy(opts?: CopyOpts): BasicClause {

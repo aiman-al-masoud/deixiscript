@@ -1,5 +1,5 @@
 import { BasicClause } from "./BasicClause"
-import AndClause from "./ListClause"
+import And from "./And"
 
 export type Id = number | string
 
@@ -23,7 +23,7 @@ export function clauseOf(predicate: string, ...args: Id[]) {
     return new BasicClause(predicate, args)
 }
 
-export const emptyClause = (): Clause => new AndClause([])
+export const emptyClause = (): Clause => new And([])
 
 export interface CopyOpts {
     negate?: boolean

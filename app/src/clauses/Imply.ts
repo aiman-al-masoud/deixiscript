@@ -1,5 +1,5 @@
 import { Clause, AndOpts, CopyOpts, Id } from "./Clause";
-import AndClause from "./ListClause";
+import And from "./And";
 
 export default class Imply implements Clause {
 
@@ -8,7 +8,7 @@ export default class Imply implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new AndClause([this.copy(), other.copy()])
+        return new And([this.copy(), other.copy()])
     }
 
     copy(opts?: CopyOpts): Clause {
