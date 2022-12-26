@@ -24,11 +24,9 @@ export class BasicClause implements Clause {
 
     toProlog(opts: ToPrologOpts): string[] {
 
-        if (this.args.length <= 1) {
-            return [`be(${opts.anyFactId ? '_' : getRandomId()}, ${this.args[0]}, ${this.predicate}, ${!this.negated})`]
-        } else {
-            return [`rel(${opts.anyFactId ? '_' : getRandomId()}, ${this.args[0]}, ${this.args[1]}, ${this.predicate}, ${!this.negated})`]
-        }
+        const pred = this.args.length === 1 ? 'be' : 'rel'
+        const args = [opts.anyFactId ? '_' : getRandomId(), ...this.args.slice(0, 2), this.predicate, !this.negated]
+        return [`${pred}(${args.reduce((a, b) => a + ', ' + b)})`]
 
     }
 
