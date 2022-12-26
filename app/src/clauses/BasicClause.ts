@@ -6,7 +6,7 @@ import And from "./And";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false, readonly isImply = false, readonly hashCode = hashString(JSON.stringify(arguments)) ) {
+    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false, readonly isImply = false, readonly hashCode = hashString(JSON.stringify(arguments)), readonly rheme = emptyClause()) {
 
     }
 
@@ -24,10 +24,10 @@ export class BasicClause implements Clause {
 
     toProlog(opts: ToPrologOpts): string[] {
 
-        if (this.args.length <= 1 ){
-            return [`be(${opts.anyFactId? '_' : getRandomId()}, ${this.args[0]}, ${this.predicate}, ${!this.negated})`]
-        }else{
-            return [`rel(${opts.anyFactId? '_' : getRandomId()}, ${this.args[0]}, ${this.args[1]}, ${this.predicate}, ${!this.negated})`]
+        if (this.args.length <= 1) {
+            return [`be(${opts.anyFactId ? '_' : getRandomId()}, ${this.args[0]}, ${this.predicate}, ${!this.negated})`]
+        } else {
+            return [`rel(${opts.anyFactId ? '_' : getRandomId()}, ${this.args[0]}, ${this.args[1]}, ${this.predicate}, ${!this.negated})`]
         }
 
     }
@@ -38,10 +38,6 @@ export class BasicClause implements Clause {
 
     get theme(): Clause {
         return this
-    }
-
-    get rheme(): Clause {
-        return emptyClause()
     }
 
     implies(conclusion: Clause): Clause {
