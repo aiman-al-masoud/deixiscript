@@ -33,7 +33,7 @@ export class BasicClause implements Clause {
     }
 
     get entities(): Id[] {
-        return Array.from(new Set(this.args.concat([])))
+        return Array.from(new Set(this.args))
     }
 
     get theme(): Clause {
