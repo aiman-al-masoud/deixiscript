@@ -1,9 +1,10 @@
-import { Clause, AndOpts, CopyOpts, Id, ToPrologOpts, hashString } from "./Clause";
+import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString } from "./Clause";
+import { Id } from "./Id";
 import Imply from "./Imply";
 
 export default class And implements Clause {
 
-    constructor(readonly clauses: Clause[], readonly negated = false, readonly isImply = false) {
+    constructor(readonly clauses: Clause[], readonly negated = false, readonly isImply = false, readonly hashCode = hashString(JSON.stringify(arguments)) ) {
 
     }
 
@@ -46,9 +47,5 @@ export default class And implements Clause {
             this.clauses.flatMap(c => c.toProlog(opts))
             
     }
-
-    get hashCode(): number {
-        return hashString(JSON.stringify(this))
-    }
-
+    
 }

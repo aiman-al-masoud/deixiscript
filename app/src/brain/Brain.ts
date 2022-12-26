@@ -1,4 +1,5 @@
-import { Clause, Map } from "../clauses/Clause"
+import { Clause } from "../clauses/Clause"
+import { Map } from "../clauses/Id"
 import PrologBrain from "./PrologBrain"
 
 export default interface Brain{

@@ -1,5 +1,6 @@
 import Ast from "./Ast";
-import { Clause, Id } from "../../clauses/Clause";
+import { Clause } from "../../clauses/Clause";
+import { Id } from "../../clauses/Id";
 
 /**
  * Some syntactic structure that can be converted to a 

@@ -6,7 +6,8 @@ import Quantifier from "../tokens/Quantifier";
 import Complement from "./Complement";
 import SubordinateClause from "../interfaces/SubordinateClause";
 import { ToClauseOpts } from "../interfaces/Constituent";
-import { Clause, getRandomId, clauseOf, emptyClause } from "../../clauses/Clause";
+import { Clause, clauseOf, emptyClause } from "../../clauses/Clause";
+import { getRandomId } from "../../clauses/Id";
 
 export default class NounPhrase implements Phrase {
 

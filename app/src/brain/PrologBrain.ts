@@ -1,4 +1,5 @@
-import { Clause, clauseOf, Map, toVar } from "../clauses/Clause";
+import { Clause, clauseOf } from "../clauses/Clause";
+import { Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";

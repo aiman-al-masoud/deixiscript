@@ -1,10 +1,11 @@
-import { Clause, AndOpts, CopyOpts, Id, ToPrologOpts, hashString } from "./Clause";
+import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString } from "./Clause";
+import { Id } from "./Id";
 import And from "./And";
 
 export default class Imply implements Clause {
 
-    constructor(readonly condition: Clause, readonly conclusion: Clause, readonly negated = false, readonly isImply = true) {
-
+    constructor(readonly condition: Clause, readonly conclusion: Clause, readonly negated = false, readonly isImply = true, readonly hashCode = hashString(JSON.stringify(arguments))  ) {
+        
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
@@ -45,10 +46,6 @@ export default class Imply implements Clause {
 
     get rheme(): Clause {
         return this.copy() // dunno what I'm doin'
-    }
-    
-    get hashCode(): number {
-        return hashString(JSON.stringify(this))
     }
 
     implies(conclusion: Clause): Clause {

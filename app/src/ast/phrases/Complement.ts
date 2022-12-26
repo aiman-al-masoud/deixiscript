@@ -1,5 +1,6 @@
 import { ToClauseOpts } from "../interfaces/Constituent";
-import { Clause, clauseOf, getRandomId, Id } from "../../clauses/Clause";
+import { Clause, clauseOf } from "../../clauses/Clause";
+import { getRandomId, Id } from "../../clauses/Id";
 import Phrase from "../interfaces/Phrase";
 import Preposition from "../tokens/Preposition";
 import NounPhrase from "./NounPhrase";

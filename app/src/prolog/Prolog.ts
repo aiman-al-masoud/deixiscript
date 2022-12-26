@@ -1,4 +1,4 @@
-import { Map } from "../clauses/Clause"
+import { Map } from "../clauses/Id"
 import TauProlog from "./TauProlog"
 
 export default interface Prolog {

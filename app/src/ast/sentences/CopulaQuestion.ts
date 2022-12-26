@@ -1,7 +1,8 @@
 import Brain from "../../brain/Brain";
 import BinaryQuestion from "../interfaces/BinaryQuestion";
 import { ToClauseOpts } from "../interfaces/Constituent";
-import { Clause, getRandomId } from "../../clauses/Clause";
+import { Clause } from "../../clauses/Clause";
+import { getRandomId } from "../../clauses/Id";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 import CopulaSentence from "./CopulaSentence";

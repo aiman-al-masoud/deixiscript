@@ -1,4 +1,5 @@
-import { Clause, emptyClause, Id, isVar, Map, toVar } from "../clauses/Clause";
+import { Clause, emptyClause } from "../clauses/Clause";
+import { Id, isVar, Map, toVar } from "../clauses/Id";
 import Brain from "./Brain";
 
 /**

@@ -1,6 +1,6 @@
 import Prolog, { AssertOpts, PreidcatesOpts } from "./Prolog";
 import pl from 'tau-prolog'
-import { Map } from "../clauses/Clause";
+import { Map } from "../clauses/Id";
 require("tau-prolog/modules/promises.js")(pl);
 
 

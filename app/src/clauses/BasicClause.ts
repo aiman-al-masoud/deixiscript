@@ -1,11 +1,12 @@
-import { Clause, AndOpts, CopyOpts, emptyClause, Id, getRandomId, ToPrologOpts, hashString } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause, ToPrologOpts, hashString } from "./Clause";
+import { Id, getRandomId } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
 
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false, readonly isImply = false) {
+    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false, readonly isImply = false, readonly hashCode = hashString(JSON.stringify(arguments)) ) {
 
     }
 
@@ -45,10 +46,6 @@ export class BasicClause implements Clause {
 
     implies(conclusion: Clause): Clause {
         return new Imply(this.copy(), conclusion.copy())
-    }
-
-    get hashCode(): number {
-        return hashString( JSON.stringify(this))
     }
 
 }
