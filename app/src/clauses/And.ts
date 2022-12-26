@@ -4,14 +4,19 @@ import Imply from "./Imply";
 
 export default class And implements Clause {
 
-    constructor(readonly clauses: Clause[], readonly negated = false, readonly isImply = false, readonly hashCode = hashString(JSON.stringify(arguments)) ) {
+    constructor(readonly clauses: Clause[],
+        readonly negated = false,
+        readonly isImply = false,
+        readonly hashCode = hashString(JSON.stringify(arguments)),
+        readonly theme = clauses[0],
+        readonly rheme = clauses[1]) {
 
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
 
         return opts?.asRheme ?
-            new And([this.copy(), other.copy()]) :
+            new And([this, other]) :
             new And([...this.flatList(), ...other.flatList()])
 
     }
@@ -21,23 +26,15 @@ export default class And implements Clause {
     }
 
     flatList(): Clause[] {
-        return this.negated ? [this.copy()] : this.clauses.flatMap(c => c.flatList())
+        return this.negated ? [this] : this.clauses.flatMap(c => c.flatList())
     }
 
     get entities(): Id[] {
         return Array.from(new Set(this.clauses.flatMap(c => c.entities)))
     }
 
-    get theme(): Clause {
-        return this.clauses[0]
-    }
-
-    get rheme(): Clause {
-        return this.clauses[1]
-    }
-
     implies(conclusion: Clause): Clause {
-        return new Imply(this.copy(), conclusion.copy())
+        return new Imply(this, conclusion)
     }
 
     toProlog(opts: ToPrologOpts): string[] {
@@ -45,7 +42,7 @@ export default class And implements Clause {
         return this.clauses.length === 1 && this.negated ? //TODO: fix this crap
             this.clauses[0].copy({ negate: true }).toProlog(opts) :
             this.clauses.flatMap(c => c.toProlog(opts))
-            
+
     }
-    
+
 }

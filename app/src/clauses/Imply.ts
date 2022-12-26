@@ -4,12 +4,17 @@ import And from "./And";
 
 export default class Imply implements Clause {
 
-    constructor(readonly condition: Clause, readonly conclusion: Clause, readonly negated = false, readonly isImply = true, readonly hashCode = hashString(JSON.stringify(arguments))  ) {
-        
+    constructor(readonly condition: Clause,
+        readonly conclusion: Clause,
+        readonly negated = false,
+        readonly isImply = true,
+        readonly hashCode = hashString(JSON.stringify(arguments)),
+        readonly theme = condition.theme) {
+
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And([this.copy(), other.copy()])
+        return new And([this, other])
     }
 
     copy(opts?: CopyOpts): Clause {
@@ -17,7 +22,7 @@ export default class Imply implements Clause {
     }
 
     flatList(): Clause[] {
-        return [this.copy()]
+        return [this]
     }
 
     /**
@@ -25,14 +30,14 @@ export default class Imply implements Clause {
      * Since prolog only supports that kind of implication.
      * @returns 
      */
-    toProlog(opts:ToPrologOpts): string[] {
+    toProlog(opts: ToPrologOpts): string[] {
 
         const conditionString = this.condition
-            .toProlog({... opts, anyFactId:true})
+            .toProlog({ ...opts, anyFactId: true })
             .reduce((c1, c2) => `${c1}, ${c2}`)
 
         const conclusions = this.conclusion.flatList()
-        return conclusions.map(c => `${c.toProlog({... opts, anyFactId:true})[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
+        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: true })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
 
     }
 
@@ -40,12 +45,8 @@ export default class Imply implements Clause {
         return this.condition.entities.concat(this.conclusion.entities)
     }
 
-    get theme(): Clause {
-        return this.condition.theme
-    }
-
     get rheme(): Clause {
-        return this.copy() // dunno what I'm doin'
+        return this // dunno what I'm doin'
     }
 
     implies(conclusion: Clause): Clause {

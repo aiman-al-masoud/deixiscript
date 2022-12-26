@@ -19,7 +19,7 @@ export class BasicClause implements Clause {
     }
 
     flatList(): Clause[] {
-        return [this.copy()]
+        return [this]
     }
 
     toProlog(opts: ToPrologOpts): string[] {
@@ -37,7 +37,7 @@ export class BasicClause implements Clause {
     }
 
     get theme(): Clause {
-        return this.copy()
+        return this
     }
 
     get rheme(): Clause {
@@ -45,7 +45,7 @@ export class BasicClause implements Clause {
     }
 
     implies(conclusion: Clause): Clause {
-        return new Imply(this.copy(), conclusion.copy())
+        return new Imply(this, conclusion)
     }
 
 }
