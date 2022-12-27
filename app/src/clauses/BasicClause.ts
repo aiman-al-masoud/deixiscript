@@ -22,10 +22,10 @@ export class BasicClause implements Clause {
         return [this]
     }
 
-    toProlog(opts: ToPrologOpts): string[] {
+    toProlog(opts?: ToPrologOpts): string[] {
 
         const pred = this.args.length === 1 ? 'be' : 'rel'
-        const args = [opts.anyFactId ? '_' : getRandomId(), ...this.args.slice(0, 2), this.predicate, !this.negated]
+        const args = [opts?.anyFactId ? '_' : getRandomId(), ...this.args.slice(0, 2), this.predicate, !this.negated]
         return [`${pred}(${args.reduce((a, b) => a + ', ' + b)})`]
 
     }

@@ -5,18 +5,20 @@ import Prolog, { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
 import { getAnaphora } from "./Anaphora";
 import Constituent from "../ast/interfaces/Constituent";
+import getEd from "../actuator/Ed";
+import Actuator, { getActuator } from "../actuator/Actuator";
 
 export default class PrologBrain implements Brain {
 
-    readonly kb: Prolog
+    readonly actuator: Actuator
 
-    constructor() {
-        this.kb = getProlog()
+    constructor(readonly kb = getProlog(), readonly ed = getEd()) {
+        this.actuator = getActuator(this)
     }
 
-    async execute(natlang: string): Promise<boolean | Map[]> {
+    async execute(natlang: string): Promise<Map[]> {
 
-        let x: boolean | Map[] = false
+        let x: Map[] = []
 
         for (const ast of getParser(natlang).parseAll()) {
             x = await this.executeOne(ast)
@@ -29,7 +31,7 @@ export default class PrologBrain implements Brain {
 
         if (ast.isSideEffecty) {
             await this.assert(ast.toClause())
-            return true
+            return []
         } else {
             return await this.query(ast.toClause())
         }
@@ -67,7 +69,7 @@ export default class PrologBrain implements Brain {
         }
 
         const after = await this.snapshot()
-        console.log('changes', (await this.diff(before, after)).flatMap(c => c.toProlog({})))
+        this.actuator.update(await this.diff(before, after))
     }
 
     protected async snapshot(): Promise<State> {

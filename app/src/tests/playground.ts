@@ -1,23 +1,39 @@
 import { getBrain } from "../brain/Brain"
 
-export default async function playground(){
+export default async function playground() {
     
-    const brain = await getBrain()
-
-    const button = document.createElement('button')
-    button.innerText = 'run'
-    document.getElementById('root')?.appendChild(button)
-
-    const parag = document.createElement('p')
-    document.getElementById('root')?.appendChild(parag)
+    const state = {
+        brain : await getBrain(),
+        promptVisible : false
+    }
+    
+    const update = ()=>{
+        console.log(state)
+        textarea.hidden = !state.promptVisible
+        state.promptVisible ? textarea.focus() : 0
+    }
 
     const textarea = document.createElement('textarea')
-    textarea.style.height = '50vh'
     textarea.style.width = '50vw'
-    document.getElementById('root')?.appendChild(textarea)
+    textarea.style.height = '1em'
+    textarea.hidden = true
+    textarea.style.position = 'sticky'
+    textarea.style.top = '0'
+    textarea.style.zIndex = '1000'
+    document.body.appendChild(textarea)
+    document.body.appendChild(document.createElement('br'))
+    document.body.appendChild(document.createElement('br'))
 
-    button.onclick = async e => {
-        console.log(await brain.execute(textarea.value))
-    }
+    
+    document.body.addEventListener('keydown', e=>{
+
+        if(e.ctrlKey && e.code === 'Space'){
+            state.promptVisible = ! state.promptVisible
+        }else if (e.ctrlKey && e.code === 'Enter'){
+            state.brain.execute(textarea.value)
+        }
+
+        update()
+    })
 
 }

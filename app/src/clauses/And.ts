@@ -37,7 +37,7 @@ export default class And implements Clause {
         return new Imply(this, conclusion)
     }
 
-    toProlog(opts: ToPrologOpts): string[] {
+    toProlog(opts?: ToPrologOpts): string[] {
 
         return this.clauses.length === 1 && this.negated ? //TODO: fix this crap
             this.clauses[0].copy({ negate: true }).toProlog(opts) :

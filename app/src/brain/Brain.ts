@@ -1,13 +1,16 @@
+import { Ed } from "../actuator/Ed"
 import { Clause } from "../clauses/Clause"
 import { Map } from "../clauses/Id"
 import PrologBrain from "./PrologBrain"
 
+/**
+ * The main facade controller.
+ */
 export default interface Brain{
+    execute(natlang:string):Promise<Map[]>
     query(query:Clause): Promise<Map[]>
     assert(code:Clause):Promise<void>
-    execute(natlang:string):Promise<Map[] | boolean>
-    // clone():Brain
-    // addListener(element:number, event:string, callback:(event:Event)=>void):void
+    readonly ed:Ed
 }
 
 export async function getBrain():Promise<Brain>{ // async due to possible init phase (in the future)

@@ -30,7 +30,7 @@ export default class Imply implements Clause {
      * Since prolog only supports that kind of implication.
      * @returns 
      */
-    toProlog(opts: ToPrologOpts): string[] {
+    toProlog(opts?: ToPrologOpts): string[] {
 
         const conditionString = this.condition
             .toProlog({ ...opts, anyFactId: true })
