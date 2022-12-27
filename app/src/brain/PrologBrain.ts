@@ -24,6 +24,8 @@ export default class PrologBrain implements Brain {
             x = await this.executeOne(ast)
         }
 
+        console.log(x)
+
         return x
     }
 
