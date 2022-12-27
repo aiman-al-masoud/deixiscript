@@ -1,7 +1,7 @@
 import { Id } from "../../clauses/Id";
 import Actuator from "../Actuator";
 import { Ed } from "../Ed";
-import { makeSensor } from "../Sensor";
+import { makeSensor } from "../sensors/Sensor";
 import Action from "./Action";
 
 export class MakeButton implements Action {
