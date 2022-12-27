@@ -1,14 +1,14 @@
 import { getBrain } from "../brain/Brain"
 
 export default async function playground() {
-    
+
     const state = {
         brain : await getBrain(),
         promptVisible : false
     }
     
     const update = ()=>{
-        console.log(state)
+        // console.log(state)
         textarea.hidden = !state.promptVisible
         state.promptVisible ? textarea.focus() : 0
     }
