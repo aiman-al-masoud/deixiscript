@@ -1,7 +1,7 @@
 import { Clause, clauseOf } from "../clauses/Clause";
 import { Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
-import Prolog, { getProlog } from "../prolog/Prolog";
+import { getProlog } from "../prolog/Prolog";
 import Brain from "./Brain";
 import { getAnaphora } from "./Anaphora";
 import Constituent from "../ast/interfaces/Constituent";
@@ -49,8 +49,10 @@ export default class PrologBrain implements Brain {
             .toProlog({ anyFactId: true })
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
-        return await this.kb.query(q)
-        //TODO: maybe return clause list instead, with query.copy({map:mapToVar}).copy({map:queryRes[i]}) //for each queryRes
+        const results = await this.kb.query(q)
+        const pointedOutIds = results.flatMap(m=>Object.values(m)).filter(id=>id.toString().includes('id'))
+        this.actuator.pointOut(pointedOutIds)
+        return results //TODO: maybe return clause list instead, with query.copy({map:mapToVar}).copy({map:queryRes[i]}) //for each queryRes
 
     }
 
@@ -73,6 +75,7 @@ export default class PrologBrain implements Brain {
     }
 
     protected async snapshot(): Promise<State> {
+
         const is = (await this.query(clauseOf('X', 'Y'))).map(e => clauseOf(e.X as string, e.Y))
         const isNot = (await this.query(clauseOf('X', 'Y').copy({ negate: true }))).map(e => clauseOf(e.X as string, e.Y))
         const does = (await this.query(clauseOf('P', 'A', 'B'))).map(e => clauseOf(e.P as string, e.A, e.B))
