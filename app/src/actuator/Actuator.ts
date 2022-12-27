@@ -8,7 +8,7 @@ export default interface Actuator {
     onUpdate(clauses: Clause[]): Promise<void>
     pointOut(ids: Id[]): Promise<void>
     onSense(clauses: Clause[]): Promise<void>
-    readonly ed : Ed
+    readonly ed: Ed
 }
 
 export function getActuator(brain: Brain): Actuator {
@@ -17,7 +17,7 @@ export function getActuator(brain: Brain): Actuator {
 
 class BaseActuator implements Actuator {
 
-    constructor(readonly brain: Brain) {
+    constructor(readonly brain: Brain, readonly ed = brain.ed) {
 
     }
 
@@ -48,10 +48,6 @@ class BaseActuator implements Actuator {
             this.brain.assert(c)
         }
 
-    }
-
-    get ed():Ed{
-        return this.brain.ed
     }
 
 }
