@@ -73,7 +73,7 @@ export default class PrologBrain implements Brain {
         }
 
         const after = await this.snapshot()
-        this.actuator.update(await this.diff(before, after))
+        this.actuator.onUpdate(await this.diff(before, after))
     }
 
     protected async snapshot(): Promise<State> {

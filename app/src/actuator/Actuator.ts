@@ -2,10 +2,13 @@ import Brain from "../brain/Brain";
 import { Clause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { getAction } from "./actions/Action";
+import { Ed } from "./Ed";
 
 export default interface Actuator {
-    update(clauses: Clause[]): Promise<void>
+    onUpdate(clauses: Clause[]): Promise<void>
     pointOut(ids: Id[]): Promise<void>
+    onSense(clauses: Clause[]): Promise<void>
+    readonly ed : Ed
 }
 
 export function getActuator(brain: Brain): Actuator {
@@ -18,15 +21,15 @@ class BaseActuator implements Actuator {
 
     }
 
-    async update(clauses: Clause[]): Promise<void> {
+    onUpdate = async (clauses: Clause[]): Promise<void> => {
 
         clauses.forEach(c => {
-            getAction(c, this.brain.ed).run()
+            getAction(c, this.brain.ed, this).run()
         })
 
     }
 
-    async pointOut(ids: Id[]): Promise<void> {
+    pointOut = async (ids: Id[]): Promise<void> => {
 
         this.brain.ed.values.forEach(o => {
             o.style.outline = ''
@@ -37,6 +40,18 @@ class BaseActuator implements Actuator {
             elem ? elem.style.outline = '#f00 solid 2px' : 0
         })
 
+    }
+
+    onSense = async (clauses: Clause[]): Promise<void> => {
+
+        for (const c of clauses) {
+            this.brain.assert(c)
+        }
+
+    }
+
+    get ed():Ed{
+        return this.brain.ed
     }
 
 }
