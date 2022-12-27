@@ -1,7 +1,7 @@
 import Brain from "../brain/Brain";
 import { Clause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
-import { getAction } from "./Action";
+import { getAction } from "./actions/Action";
 
 export default interface Actuator {
     update(clauses: Clause[]): Promise<void>
