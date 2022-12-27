@@ -22,7 +22,7 @@ class BaseEd implements Ed {
 
     }
 
-    get(id: Id) {
+    get(id: Id) { //TODO consider making async 
         return this.dictionary[id]
     }
 
