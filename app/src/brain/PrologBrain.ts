@@ -16,6 +16,15 @@ export default class PrologBrain implements Brain {
         this.actuator = getActuator(this)
     }
 
+    async init():Promise<PrologBrain>{
+
+        const id = 'id100'
+        this.assert(clauseOf('body', id))
+        this.ed.set(id, document.body)
+
+        return this
+    }
+
     async execute(natlang: string): Promise<Map[]> {
 
         let x: Map[] = []
