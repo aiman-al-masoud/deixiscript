@@ -366,3 +366,19 @@ retractall(be(f0, _, _)).
 ```
 
 
+
+-----------------------------
+
+What part of ontology.md needs to be translated into prolog?
+
+* Facets of a Slot
+* class hierarchy 
+
+
+
+-------------------------------
+
+Red, Green and Blue are builtin objects in the environment.
+
+ 
+
