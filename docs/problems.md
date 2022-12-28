@@ -380,5 +380,91 @@ What part of ontology.md needs to be translated into prolog?
 
 Red, Green and Blue are builtin objects in the environment.
 
+-------------------
+
+Maybe auto-generate new tokens from ontology.json with rules, for example prop names can be adjectives/nouns, classnames can be nouns etc ...
  
+
+
+Need default values for each slot because when instantiating you could choose not to specify everything in one go.
+
+
+What about translating 
+
+be(factid, entityid, red, true)
+
+to
+
+have(factid, entityid, color, red, true)
+
+
+
+```
+{
+    "classname" : "element",
+    "superclass" : "object",
+
+ {
+    "name" : "background",
+    "type" : "color",
+    "cardinality" : 1
+}
+
+}
+
+```
+
+Superlcass-subclass relation implemented with:
+
+```
+be(_, S, object, true) :- be(_, S, element, true).
+```
+
+Cardinality enforced with:
+
+from Brain, check if:  `be(_, S, X, true), be(_, X, color, true)` returns more than one result for X.
+
+Assuming
+
+```
+be(f, red, color, true).
+```
+
+
+This could be the idea to link speechlang to javascript:
+
+
+**background of style of button === button.style.background**
+
+
+```
+if the button is red then the background of the style of the button is red.
+```
+
+Then you can say:
+
+```
+the button is red.
+```
+
+Or
+
+```
+if the color of the button is red then the background of the style of the button is red. 
+```
+
+To be able to say:
+
+```
+the color of the button is red.
+```
+
+Most of the non-relational properties can be handled like this.
+
+
+a red button is above the green button
+
+
+be(_, posOfStyleOfb1, 'pos value here', true) :- rel(f1, b1, 'above', b2, true)
+
 

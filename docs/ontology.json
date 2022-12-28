@@ -1,0 +1,56 @@
+{
+
+    "classname" : "element",
+    "superclass" : "object",
+    "props" : [
+
+        {
+            "name" : "color",
+            "aliasFor" : "background"
+        },
+
+        {
+            "name" : "background",
+            "type" : "color",
+            "cardinality" : 1
+        },
+
+        {
+            "name" : "foreground",
+            "type" : "color",
+            "cardinality" : 1
+        },
+
+        {
+            "name" : "above",
+            "type" : "Element", 
+            "cardinality" : 1
+        },
+
+        {
+            "name" : "below",
+            "type" : "Element", 
+            "cardinality" : 1
+        },
+
+        {
+            "name" : "children",
+            "type" : "element",
+            "cardinality" : "*"
+        },
+
+        {
+            "name" : "pressed",
+            "aliasFor" : "clicked"
+        },
+
+        {
+            "name" : "clicked",
+            "type" : "boolean",
+            "cardinality" : 1
+        }
+
+    ]
+
+
+}
