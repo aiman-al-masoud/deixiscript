@@ -7,6 +7,7 @@ import { getAnaphora } from "./Anaphora";
 import Constituent from "../ast/interfaces/Constituent";
 import getEd from "../actuator/Ed";
 import Actuator, { getActuator } from "../actuator/Actuator";
+import { Ontology } from "./Ontology";
 
 export default class PrologBrain implements Brain {
 
@@ -15,12 +16,16 @@ export default class PrologBrain implements Brain {
     constructor(readonly kb = getProlog(), readonly ed = getEd()) {
         this.actuator = getActuator(this)
     }
+    
+    async inject(ontology: Ontology): Promise<Brain> {
 
-    async init():Promise<PrologBrain>{
+        for (const c of ontology.clauses) {
+            await this.assert(c)
+        }
 
-        const id = 'id100'
-        this.assert(clauseOf('body', id))
-        this.ed.set(id, document.body)
+        ontology.objects.forEach(o => {
+            this.ed.set(o[0], o[1])
+        })
 
         return this
     }
@@ -61,7 +66,7 @@ export default class PrologBrain implements Brain {
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
         const results = await this.kb.query(q)
-        const pointedOutIds = results.flatMap(m=>Object.values(m)).filter(id=>id.toString().includes('id'))
+        const pointedOutIds = results.flatMap(m => Object.values(m)).filter(id => id.toString().includes('id'))
         this.actuator.pointOut(pointedOutIds)
         return results //TODO: maybe return clause list instead, with query.copy({map:mapToVar}).copy({map:queryRes[i]}) //for each queryRes
 
