@@ -530,10 +530,11 @@ the second button reference should refer to the first!
 
 -------------
 
-quick sanity test
+quick sanity checks
 
 x is a red button. every clicked button is green.
 
+x is a button. y is a button. z is a button. every button is green.
 
 
 ## BUG
