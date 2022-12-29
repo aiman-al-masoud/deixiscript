@@ -539,8 +539,8 @@ x is a red button. every clicked button is green.
 ## BUG
 
 
-every red cat is smart red.
-if a cat id red then the cat is red.
+every red cat is smart red.  
+OR: if a cat id red then the cat is red.
 
 ```
 asserting be(id2, ID365, smart, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
