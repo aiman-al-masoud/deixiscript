@@ -1,6 +1,6 @@
 import { Clause, emptyClause } from "../clauses/Clause";
 import { Id, isVar, Map, toVar } from "../clauses/Id";
-import Brain from "./Brain";
+import Brain, { getBrain } from "./Brain";
 
 /**
  * Entities in a new sentence potentially point to existing entities
@@ -8,6 +8,7 @@ import Brain from "./Brain";
  */
 export interface Anaphora {
     mapTo(universe: Brain): Promise<Map>
+    mapToClause(clause: Clause): Promise<Map>
 }
 
 export function getAnaphora(clause: Clause): Anaphora {
@@ -55,6 +56,12 @@ class BaseAnaphora implements Anaphora {
             .reduce((a, b) => ({ ...a, ...b }), {})
         
         return anaphora
+    }
+
+    async mapToClause(clause: Clause): Promise<Map> {
+        const brain = await getBrain()
+        await brain.assert(clause)
+        return this.mapTo(brain)
     }
 
 }

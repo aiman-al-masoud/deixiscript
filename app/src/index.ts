@@ -186,7 +186,6 @@ import prologPlay from './tests/prolog-playground';
 
 // prologPlay()
 // compileLogicTest()
-playground()
 
 // const x = getParser('the cat is black').parse().toClause().toProlog({anyFactId:false})
 // console.log(x)
@@ -201,3 +200,14 @@ playground()
 // console.log(x)
 
 
+(async ()=>{
+    const map = await getAnaphora(getParser('the black cat').parse().toClause()).mapToClause(getParser('the black cat').parse().toClause())
+    console.log(map)
+
+    const map2 = await getAnaphora(getParser('the red cat').parse().toClause()).mapToClause(getParser('the black cat').parse().toClause())
+    console.log(map2)
+})()
+
+
+
+playground()
