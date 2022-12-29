@@ -12,14 +12,16 @@ export default class TauProlog implements Prolog {
         this.session = pl.create()
     }
 
-    async assert(clause: string, opts?: AssertOpts): Promise<void> {
+    async assert(clause: string, opts?: AssertOpts): Promise<Map[]> {
         await (this.session as any).promiseQuery(`assert${opts?.z ? 'z' : 'a'}( ( ${clause} ) ).`)
-        return await (this.session as any).promiseAnswer()
+        await (this.session as any).promiseAnswer()
+        return []
     }
 
-    async retract(clause: string): Promise<void> {
+    async retract(clause: string): Promise<Map[]> {
         await (this.session as any).promiseQuery(`retract(${clause}).`)
-        return await (this.session as any).promiseAnswer()
+        await (this.session as any).promiseAnswer()
+        return []
     }
 
     protected async performQuery(code: string): Promise<Map[]> {

@@ -200,13 +200,13 @@ import prologPlay from './tests/prolog-playground';
 // console.log(x)
 
 
-(async ()=>{
-    const map = await getAnaphora(getParser('the black cat').parse().toClause()).mapToClause(getParser('the black cat').parse().toClause())
-    console.log(map)
+// (async ()=>{
+//     const map = await getAnaphora(getParser('the black cat').parse().toClause()).mapToClause(getParser('the black cat').parse().toClause())
+//     console.log(map)
 
-    const map2 = await getAnaphora(getParser('the red cat').parse().toClause()).mapToClause(getParser('the black cat').parse().toClause())
-    console.log(map2)
-})()
+//     const map2 = await getAnaphora(getParser('the red cat').parse().toClause()).mapToClause(getParser('the black cat').parse().toClause())
+//     console.log(map2)
+// })()
 
 
 
