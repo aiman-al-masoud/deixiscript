@@ -518,3 +518,18 @@ if a button is red then the button is capra
 
 
 the second button reference should refer to the first!
+
+
+
+
+
+
+
+
+
+
+-------------
+
+quick sanity test
+
+x is a red button. every clicked button is green.

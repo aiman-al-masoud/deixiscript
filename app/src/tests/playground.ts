@@ -3,12 +3,11 @@ import { getBrain } from "../brain/Brain"
 export default async function playground() {
 
     const state = {
-        brain : await getBrain(),
-        promptVisible : false
+        brain: await getBrain({ withActuator: true }),
+        promptVisible: false
     }
-    
-    const update = ()=>{
-        // console.log(state)
+
+    const update = () => {
         textarea.hidden = !state.promptVisible
         state.promptVisible ? textarea.focus() : 0
     }
@@ -24,13 +23,14 @@ export default async function playground() {
     document.body.appendChild(document.createElement('br'))
     document.body.appendChild(document.createElement('br'))
 
-    
-    document.body.addEventListener('keydown', e=>{
 
-        if(e.ctrlKey && e.code === 'Space'){
-            state.promptVisible = ! state.promptVisible
-        }else if (e.ctrlKey && e.code === 'Enter'){
-            state.brain.execute(textarea.value)
+    document.body.addEventListener('keydown', e => {
+
+        if (e.ctrlKey && e.code === 'Space') {
+            state.promptVisible = !state.promptVisible
+        } else if (e.ctrlKey && e.code === 'Enter') {
+            const result = state.brain.execute(textarea.value)
+            console.log(result)
         }
 
         update()

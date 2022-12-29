@@ -23,10 +23,10 @@ class BaseAnaphora implements Anaphora {
 
     async mapTo(universe: Brain): Promise<Map> {
 
-        if ( this.clause.entities.every(e=>isVar(e)) ){ // this is a pure implication //TODO: possbile problem: every cat that is on the mat
+        if (this.clause.entities.every(e => isVar(e))) { // this is a pure implication //TODO: possbile problem: every cat that is on the mat
             return {}
         }
-        
+
         const themeEnts = this.clause.theme.entities
 
         // get descriptions of entities in theme omitting relations with entities in rheme
@@ -47,19 +47,19 @@ class BaseAnaphora implements Anaphora {
             .reduce((c1, c2) => c1.and(c2), emptyClause())
             .copy({ map: mapToVar })
 
-        const candidates = await universe.query(bigDescClause) 
+        const candidates = await universe.query(bigDescClause)
         const chosen = candidates[0] ?? {} //TODO: better criterion !!!
 
         const anaphora = Object
             .keys(chosen)
             .map(k => ({ [reverseMapToVar[k]]: chosen[k] ?? reverseMapToVar[k] }))
             .reduce((a, b) => ({ ...a, ...b }), {})
-        
+
         return anaphora
     }
 
     async mapToClause(clause: Clause): Promise<Map> {
-        const brain = await getBrain()
+        const brain = await getBrain({ withActuator: false })
         await brain.assert(clause)
         return this.mapTo(brain)
     }
