@@ -544,8 +544,8 @@ every red cat is smart red.
 OR: if a cat id red then the cat is red.
 
 ```
-asserting be(id2, ID365, smart, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
-asserting be(id182, ID365, red, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
+be(id2, ID365, smart, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
+be(id182, ID365, red, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
 ```
 
 then
