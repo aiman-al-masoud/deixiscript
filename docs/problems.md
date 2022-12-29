@@ -509,3 +509,12 @@ conclusion:
 be(_, B, red, true), be(_, B, background, true), rel(_, 'of', B, C, true), be(_, C, 'style', true), rel(_, 'of', C, X). 
 ```
 
+--------------
+
+
+GOAL 1
+
+if a button is red then the button is capra
+
+
+the second button reference should refer to the first!
