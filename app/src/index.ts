@@ -209,5 +209,15 @@ import prologPlay from './tests/prolog-playground';
 // })()
 
 
+(async ()=>{
+    // if the button is red then the button is green
 
-playground()
+    const small = getParser('the button is red').parse().toClause()
+    const universe = getParser('the stupid button is green').parse().toClause()
+
+    const map = await getAnaphora(small).mapToClause(universe)
+    console.log(map)
+})()
+
+
+// playground()
