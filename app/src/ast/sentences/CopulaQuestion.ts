@@ -13,7 +13,7 @@ export default class CopulaQuestion implements BinaryQuestion {
 
     }
 
-    toClause(args?: ToClauseOpts): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }

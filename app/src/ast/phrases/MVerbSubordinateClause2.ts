@@ -3,7 +3,7 @@ import { Clause } from "../../clauses/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
 
 export default class MVerbSubordinateClause2 implements SubordinateClause{
-    toClause(args?: ToClauseOpts): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
         throw new Error("Method not implemented.");
     }
 

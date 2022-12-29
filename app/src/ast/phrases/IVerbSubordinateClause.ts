@@ -3,7 +3,8 @@ import { Clause } from "../../clauses/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
 
 export default class IVerbSubordinateClause implements SubordinateClause{
-    toClause(args?: ToClauseOpts | undefined): Clause {
+    
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
         throw new Error("Method not implemented.");
     }
 

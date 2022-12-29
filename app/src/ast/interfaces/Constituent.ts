@@ -7,7 +7,7 @@ import { Id } from "../../clauses/Id";
  * first-order logic formula.
  */
 export default interface Constituent extends Ast {
-    toClause(args?: ToClauseOpts): Clause
+    toClause(args?: ToClauseOpts): Promise<Clause>
     get isSideEffecty():boolean
 }
 

@@ -20,15 +20,15 @@ export default class IntransitiveSentence implements VerbSentence {
         return true
     }
 
-    toClause(args?: ToClauseOpts): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
-        const theme = this.subject.toClause(newArgs)
-        const rheme = clauseOf(this.iverb.string, subjectId)
-            .and(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.and(c2)))
-
+        const theme = await this.subject.toClause(newArgs)
+        
+        const rheme = clauseOf(this.iverb.string, subjectId).and((await Promise.all(this.complements.map( c => c.toClause(newArgs)))).reduce( (c1, c2) => c1.and(c2)))
+        
         return theme.and(rheme, { asRheme: true })
     }
 

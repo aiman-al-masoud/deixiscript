@@ -11,13 +11,13 @@ export default class Complement implements Phrase {
 
     }
 
-    toClause(args?: ToClauseOpts): Clause { // preposition(args.subject, Y) + nounphrase.toProlog(subject=Y)
+    async toClause(args?: ToClauseOpts): Promise<Clause> { // preposition(args.subject, Y) + nounphrase.toProlog(subject=Y)
 
         const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
         const newId = getRandomId()
 
         return clauseOf(this.preposition.string, subjId, newId)
-            .and(this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
+            .and(await this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
 
     }
 

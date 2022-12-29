@@ -3,7 +3,7 @@ import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
 
 export default class ConjunctiveSentence implements CompoundSentence{
-    toClause(args?: ToClauseOpts | undefined): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
         throw new Error("Method not implemented.");
     }
 

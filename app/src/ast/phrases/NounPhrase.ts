@@ -24,10 +24,11 @@ export default class NounPhrase implements Phrase {
         return this.quantifier?.isUniversal() ?? false
     }
 
-    toClause(args?: ToClauseOpts): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
 
         const subjectId = args?.roles?.subject ?? getRandomId()
         const newArgs = { ...args, roles: { subject: subjectId } }
+
 
         return this
             .adjectives
@@ -35,8 +36,8 @@ export default class NounPhrase implements Phrase {
             .concat(this.noun ? [this.noun.string] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause())
-            .and(this.complements.map(c => c.toClause(newArgs)).reduce((c1, c2) => c1.and(c2), emptyClause()))
-            .and(this.subordClause?.toClause(newArgs) ?? emptyClause())
+            .and((await Promise.all(this.complements.map(c => c.toClause(newArgs)))).reduce((c1, c2) => c1.and(c2), emptyClause()))
+            .and(await this.subordClause?.toClause(newArgs) ?? emptyClause())
 
     }
 

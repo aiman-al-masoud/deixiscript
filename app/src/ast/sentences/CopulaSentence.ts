@@ -12,13 +12,13 @@ export default class CopulaSentence implements SimpleSentence {
 
     }
 
-    toClause(args?: ToClauseOpts): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
-        const subject = this.subject.toClause(newArgs)
-        const predicate = this.predicate.toClause(newArgs).copy({ negate: !!this.negation })
+        const subject = await this.subject.toClause(newArgs)
+        const predicate = (await this.predicate.toClause(newArgs)).copy({ negate: !!this.negation })
 
         return this.subject.isUniQuant() ?
             subject.implies(predicate) :

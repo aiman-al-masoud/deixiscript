@@ -31,7 +31,8 @@ export default class PrologBrain implements Brain {
         let x: Map[] = []
 
         for (const ast of getParser(natlang).parseAll()) {
-            x = await (ast.isSideEffecty ? this.assert(ast.toClause()) : this.query(ast.toClause()))
+            const clause = await ast.toClause()
+            x = await (ast.isSideEffecty ? this.assert(clause) : this.query(clause))
         }
 
         console.log(x)

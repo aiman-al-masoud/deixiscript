@@ -21,7 +21,7 @@ export default class MonotransitiveSentence implements VerbSentence {
         return true
     }
     
-    toClause(args?: ToClauseOpts | undefined): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
         throw new Error("Method not implemented.");
     }
 }

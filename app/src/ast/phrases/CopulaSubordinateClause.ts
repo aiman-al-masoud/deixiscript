@@ -11,7 +11,7 @@ export default class CopulaSubordinateClause implements SubordinateClause {
 
     }
 
-    toClause(args?: ToClauseOpts): Clause {
+    async toClause(args?: ToClauseOpts): Promise<Clause> {
         return this.predicate.toClause({ ...args, roles: { subject: args?.roles?.subject } })
     }
 
