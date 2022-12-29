@@ -468,3 +468,16 @@ a red button is above the green button
 be(_, posOfStyleOfb1, 'pos value here', true) :- rel(f1, b1, 'above', b2, true)
 
 
+
+
+
+if x is a green button then the background of the style of x is green
+
+
+the background of the style of x is green 
+
+be(_, bgOfStyleOfXId, green, true)
+
+
+new DefaultSetterAction(bgOfStyleOfXId,  green).run()
+

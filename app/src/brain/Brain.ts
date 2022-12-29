@@ -10,11 +10,15 @@ import PrologBrain from "./PrologBrain"
 export default interface Brain {
     execute(natlang: string): Promise<Map[]>
     query(query: Clause): Promise<Map[]>
-    assert(code: Clause): Promise<void>
+    assert(code: Clause, opts?:AssertOpts): Promise<void>
     inject(ontology: Ontology): Promise<Brain>
     readonly ed: Ed
 }
 
 export async function getBrain(): Promise<Brain> { 
     return await new PrologBrain().inject(getOntology())
+}
+
+export interface AssertOpts{
+    noAnaphora : boolean
 }

@@ -2,7 +2,7 @@ import { Clause, clauseOf } from "../clauses/Clause";
 import { Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import { getProlog } from "../prolog/Prolog";
-import Brain from "./Brain";
+import Brain, { AssertOpts } from "./Brain";
 import { getAnaphora } from "./Anaphora";
 import Constituent from "../ast/interfaces/Constituent";
 import getEd from "../actuator/Ed";
@@ -16,7 +16,7 @@ export default class PrologBrain implements Brain {
     constructor(readonly kb = getProlog(), readonly ed = getEd()) {
         this.actuator = getActuator(this)
     }
-    
+
     async inject(ontology: Ontology): Promise<Brain> {
 
         for (const c of ontology.clauses) {
@@ -38,6 +38,7 @@ export default class PrologBrain implements Brain {
             x = await this.executeOne(ast)
         }
 
+        // console.log( x.map( y => Object.values(y).map(z =>  this.ed.get(z) )  ))
         console.log(x)
 
         return x
@@ -72,17 +73,18 @@ export default class PrologBrain implements Brain {
 
     }
 
-    async assert(clause: Clause): Promise<void> {
+    async assert(clause: Clause, opts?: AssertOpts): Promise<void> {
 
         const before = await this.snapshot()
 
-        const anaphoraMap = await getAnaphora(clause).mapTo(this)
+        const anaphoraMap = opts?.noAnaphora ? {} : await getAnaphora(clause).mapTo(this)
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })
             .toProlog({ anyFactId: false })
 
         for (const c of toBeAsserted) { // TODO: bug finding one entity multiple times
+            console.log('asserting', c)
             await this.kb.assert(c)
         }
 

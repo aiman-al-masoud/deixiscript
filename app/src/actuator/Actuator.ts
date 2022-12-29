@@ -1,13 +1,13 @@
-import Brain from "../brain/Brain";
+import Brain, { AssertOpts } from "../brain/Brain";
 import { Clause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { getAction } from "./actions/Action";
 import { Ed } from "./Ed";
 
 export default interface Actuator {
-    onUpdate(clauses: Clause[]): Promise<void>
+    onUpdate(clauses: Clause[]): Promise<void> // update from top (Brain)
     pointOut(ids: Id[]): Promise<void>
-    onSense(clauses: Clause[]): Promise<void>
+    onSense(clauses: Clause[], opts?:AssertOpts): Promise<void> // update from bottom (Action, Sensor ...)
     readonly ed: Ed
 }
 
@@ -32,20 +32,20 @@ class BaseActuator implements Actuator {
     pointOut = async (ids: Id[]): Promise<void> => {
 
         this.brain.ed.values.forEach(o => {
-            o.style.outline = ''
+            o.style? o.style.outline = '' : 0
         })
 
         ids.forEach(id => {
             const elem = this.brain.ed.get(id)
-            elem ? elem.style.outline = '#f00 solid 2px' : 0
+            elem && elem.style ? elem.style.outline = '#f00 solid 2px' : 0
         })
 
     }
 
-    onSense = async (clauses: Clause[]): Promise<void> => {
+    onSense = async (clauses: Clause[], opts?:AssertOpts): Promise<void> => {
 
         for (const c of clauses) {
-            this.brain.assert(c)
+            await this.brain.assert(c, opts)
         }
 
     }
