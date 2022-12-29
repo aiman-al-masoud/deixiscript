@@ -18,7 +18,5 @@ export interface Roles {
 
 export interface ToClauseOpts {
     roles?: Roles,
-    anaphora?: {
-        [predicate: string]: Id
-    }
+    anaphora?: Clause
 }
