@@ -18,12 +18,14 @@ export default class ComplexSentence implements CompoundSentence {
     }
 
     toClause(args?: ToClauseOpts): Clause {
-        const subjectId = args?.roles?.subject ?? getRandomId()
-        const newArgs = { ...args, roles: { subject: subjectId } }
 
-        //TODO: this is WRONG, subject of condition may NOT always be the subject of the outcome
-        const condition = this.condition.toClause(newArgs)
-        const outcome = this.outcome.toClause(newArgs)
+        // TODO: sometimes the condition and outcome have the SAME subject
+        const subjectId = args?.roles?.subject ?? getRandomId()
+        const newArgs1 = { ...args, roles: { subject: subjectId } }
+        const newArgs2 = { ...args, roles: { subject: getRandomId() } }
+
+        const condition = this.condition.toClause(newArgs1)
+        const outcome = this.outcome.toClause(newArgs2)
 
         return condition.implies(outcome)
     }
