@@ -481,3 +481,12 @@ be(_, bgOfStyleOfXId, green, true)
 
 new DefaultSetterAction(bgOfStyleOfXId,  green).run()
 
+
+
+if x is any cat then trump is stupid
+
+be(_, X, cat, true)  ----> 
+
+if x is any red button then the background of the style of x is red.
+
+every red button has a red background of style
