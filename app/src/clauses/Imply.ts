@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString } from "./Clause";
+import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import And from "./And";
 
@@ -36,9 +36,11 @@ export default class Imply implements Clause {
             .toProlog({ ...opts, anyFactId: true })
             .reduce((c1, c2) => `${c1}, ${c2}`)
 
-        const conclusions = this.conclusion.flatList()
-        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: false /* or true?*/ })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
+        const conclusions = this.conclusion
+            .flatList()
+            .filter(c => !this.condition.flatList().map(c => c.hashCode).includes(c.hashCode)) // filter out conclusions that are also premises, very important to avoid PROLOG INFINITE LOOPS in querying!
 
+        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: false /* or true?*/ })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
     }
 
     get entities(): Id[] {

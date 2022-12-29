@@ -537,11 +537,10 @@ x is a red button. every clicked button is green.
 x is a button. y is a button. z is a button. every button is green.
 
 
-## BUG
-
+## BUG FIIIIIIIIIIIIIXED :-)
 
 every red cat is smart red.  
-OR: if a cat id red then the cat is red.
+OR: if a cat is red then the cat is red.
 
 ```
 be(id2, ID365, smart, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
