@@ -5,7 +5,6 @@ import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 import Negation from "../tokens/Negation";
-import And from "../../clauses/And";
 
 export default class CopulaSentence implements SimpleSentence {
 
