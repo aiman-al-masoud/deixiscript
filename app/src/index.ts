@@ -221,3 +221,12 @@ import prologPlay from './tests/prolog-playground';
 
 
 playground()
+
+// prologPlay()
+
+// (async ()=>{
+//     const clause = await getParser('if the cat is red then the cat is smart').parse().toClause()
+//     console.log(clause.toProlog())
+// })()
+
+

@@ -65,7 +65,7 @@ export default class PrologBrain implements Brain {
             console.log('asserting', c)
             await this.kb.assert(c)
         }
-
+        
         return []
     }
 

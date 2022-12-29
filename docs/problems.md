@@ -533,3 +533,25 @@ the second button reference should refer to the first!
 quick sanity test
 
 x is a red button. every clicked button is green.
+
+
+
+## BUG
+
+
+every red cat is smart red.
+if a cat id red then the cat is red.
+
+```
+asserting be(id2, ID365, smart, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
+asserting be(id182, ID365, red, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
+```
+
+then
+
+```
+be(_, X, Y, true).
+```
+
+
+sends prolog into an infinite loop!

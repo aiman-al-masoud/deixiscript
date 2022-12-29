@@ -1,10 +1,11 @@
 import { ToClauseOpts } from "../interfaces/Constituent";
-import { Clause } from "../../clauses/Clause";
+import { Clause, emptyClause } from "../../clauses/Clause";
 import { getRandomId } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 import Negation from "../tokens/Negation";
+import { getAnaphora } from "../../brain/Anaphora";
 
 export default class CopulaSentence implements SimpleSentence {
 
@@ -14,16 +15,21 @@ export default class CopulaSentence implements SimpleSentence {
 
     async toClause(args?: ToClauseOpts): Promise<Clause> {
 
+
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
         const subject = await this.subject.toClause(newArgs)
         const predicate = (await this.predicate.toClause(newArgs)).copy({ negate: !!this.negation })
 
-        return this.subject.isUniQuant() ?
+        const result = this.subject.isUniQuant() ?
             subject.implies(predicate) :
             subject.and(predicate, { asRheme: true })
 
+        const resolvedAnaphora = await getAnaphora(result).mapToClause(args?.anaphora ?? emptyClause())
+        console.log({resolvedAnaphora})
+
+        return result.copy({map: resolvedAnaphora})
     }
 
     get isSideEffecty(): boolean {

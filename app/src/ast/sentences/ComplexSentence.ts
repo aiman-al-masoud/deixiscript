@@ -19,13 +19,10 @@ export default class ComplexSentence implements CompoundSentence {
 
     async toClause(args?: ToClauseOpts): Promise<Clause> {
 
-        // TODO: sometimes the condition and outcome have the SAME subject
         const newArgs1 = { ...args, roles: { subject: getRandomId() } }
-        const newArgs2 = { ...args, roles: { subject: getRandomId() } }
 
         const condition = await this.condition.toClause(newArgs1)
-        const outcome = await this.outcome.toClause(newArgs2)
-
+        const outcome = await this.outcome.toClause({ ...args, anaphora: condition })
         return condition.implies(outcome)
     }
 

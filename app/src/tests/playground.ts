@@ -24,12 +24,12 @@ export default async function playground() {
     document.body.appendChild(document.createElement('br'))
 
 
-    document.body.addEventListener('keydown', e => {
+    document.body.addEventListener('keydown', async e => {
 
         if (e.ctrlKey && e.code === 'Space') {
             state.promptVisible = !state.promptVisible
         } else if (e.ctrlKey && e.code === 'Enter') {
-            const result = state.brain.execute(textarea.value)
+            const result = await state.brain.execute(textarea.value)
             console.log(result)
         }
 

@@ -37,7 +37,7 @@ export default class Imply implements Clause {
             .reduce((c1, c2) => `${c1}, ${c2}`)
 
         const conclusions = this.conclusion.flatList()
-        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: true })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
+        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: false /* or true?*/ })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
 
     }
 
