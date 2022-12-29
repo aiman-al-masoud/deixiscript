@@ -1,5 +1,6 @@
 export default [
     "every",
     "all",
-    "each"
+    "each",
+    "any"
 ]
