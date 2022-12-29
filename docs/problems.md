@@ -554,5 +554,12 @@ then
 be(_, X, Y, true).
 ```
 
-
 sends prolog into an infinite loop!
+
+the problem seems to be:
+
+```
+be(id182, ID365, red, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
+```
+
+the part where a premise "is also a conclusion".
