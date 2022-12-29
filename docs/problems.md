@@ -490,3 +490,9 @@ be(_, X, cat, true)  ---->
 if x is any red button then the background of the style of x is red.
 
 every red button has a red background of style
+
+
+
+
+
+if any button is red then the background of the style of the button is red
