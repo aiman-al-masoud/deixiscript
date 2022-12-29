@@ -496,3 +496,16 @@ every red button has a red background of style
 
 
 if any button is red then the background of the style of the button is red
+
+condition:
+
+```
+be(_, A, red, true), be(_, A, button, true).
+```
+
+conclusion:
+
+```
+be(_, B, red, true), be(_, B, background, true), rel(_, 'of', B, C, true), be(_, C, 'style', true), rel(_, 'of', C, X). 
+```
+
