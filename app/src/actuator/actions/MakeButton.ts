@@ -13,6 +13,10 @@ export class MakeButton implements Action {
 
     async run(): Promise<void> {
 
+        if (document.getElementById(this.id.toString())){
+            return
+        }
+
         const button = document.createElement('button')
         button.innerText = 'button'
         button.id = this.id.toString()
