@@ -538,6 +538,8 @@ x is a button. y is a button. z is a button. every button is green.
 
 x is a button. if the button is clicked then the button is red.
 
+a button is red.
+
 ## BUG FIIIIIIIIIIIIIXED :-)
 
 every red cat is smart red.  

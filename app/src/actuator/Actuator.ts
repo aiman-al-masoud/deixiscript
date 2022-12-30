@@ -35,10 +35,10 @@ class BaseActuator implements Actuator {
             o.style? o.style.outline = '' : 0
         })
 
-        ids.forEach(id => {
-            const elem = this.brain.ed.get(id)
+        for (const id of ids){
+            const elem = await this.brain.ed.get(id)
             elem && elem.style ? elem.style.outline = '#f00 solid 2px' : 0
-        })
+        }
 
     }
 

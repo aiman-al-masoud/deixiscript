@@ -10,7 +10,7 @@ export class ChangeColor implements Action {
 
     async run(): Promise<void> {
 
-        const object: HTMLElement = this.ed.get(this.id)
+        const object = await this.ed.get(this.id)
         object.style.background = this.color
 
     }
