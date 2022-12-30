@@ -573,3 +573,6 @@ the part where a premise "is also a conclusion".
 if x is any color, 
 and any button is x, 
 then the background of the style of the button is x. 
+
+the background of the style of any button is x,
+if x is a color and the button is x.    (requires cataphora)
