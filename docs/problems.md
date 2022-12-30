@@ -565,3 +565,11 @@ be(id182, ID365, red, true) :- be(_, ID365, red, true), be(_, ID365, cat, true)
 ```
 
 the part where a premise "is also a conclusion".
+
+
+
+## Would be cool:
+
+if x is any color, 
+and any button is x, 
+then the background of the style of the button is x. 
