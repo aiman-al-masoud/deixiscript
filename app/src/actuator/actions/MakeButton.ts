@@ -25,7 +25,6 @@ export class MakeButton implements Action {
 
         // adding a style-of-button entity
         const styleId = getRandomId()
-        console.log(button.id, styleId)
         const clauses = [clauseOf('style', styleId), clauseOf('of', styleId, this.id)]
         this.ed.set(styleId, button.style)
         this.actuator.onSense(clauses, { noAnaphora: true })
