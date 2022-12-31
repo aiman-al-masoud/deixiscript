@@ -29,6 +29,12 @@ export class MakeButton implements Action {
         this.ed.set(styleId, button.style)
         this.actuator.onSense(clauses, { noAnaphora: true })
 
+        // adding a background of style "entity"
+        const bgId = getRandomId()
+        const clauses2 = [clauseOf('background', bgId), clauseOf('of', bgId, styleId)]
+        this.actuator.onSense(clauses2, { noAnaphora: true })
+        
+
         makeSensor(this.actuator, this.id, button)
 
     }
