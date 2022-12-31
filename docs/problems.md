@@ -600,3 +600,18 @@ works only when executing the two statements separately!!!!!!!!!!!!!!!!!!
 tried lengthening timeout in Ed.get and Ed.getJsName ... to no avail
 
 Problem seems to be that id of object x is created twice. Could be due to theme, but why is this working when exec "one at a time"????
+
+
+## ANOTHER BUGGG
+
+```
+x is a button. y is a button. z is a button.
+```
+
+not running the third instruction!!!!!!!!!!!!!!!!
+
+Although this works perfectly fine, WTF!!!!!!!!!!!!
+
+```
+x is a button. y is a button.
+```

@@ -6,6 +6,7 @@ export default class And implements Clause {
 
     constructor(readonly clauses: Clause[],
         readonly negated = false,
+        readonly noAnaphora = false,
         readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments)),
         readonly theme = clauses[0],
@@ -22,7 +23,9 @@ export default class And implements Clause {
     }
 
     copy(opts?: CopyOpts): And {
-        return new And(this.clauses.map(c => c.copy({ ...opts, negate: false })), opts?.negate ? !this.negated : this.negated)
+        return new And(this.clauses.map(c => c.copy({ ...opts, negate: false })),
+            opts?.negate ? !this.negated : this.negated,
+            opts?.noAnaphora ?? this.noAnaphora)
     }
 
     flatList(): Clause[] {

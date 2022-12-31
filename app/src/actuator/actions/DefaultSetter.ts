@@ -23,8 +23,8 @@ export default class DefaultSetter implements Action {
         console.log('start DefaultSetter')
         let jsProp = await this.actuator.ed.getJsName(this.prop)
 
-        const clause = clauseOf('of', this.prop, 'X')
-        const owners = await this.actuator.brain.query(clause, { noAnaphora: true })
+        const clause = clauseOf('of', this.prop, 'X').copy({noAnaphora:true})
+        const owners = await this.actuator.brain.query(clause)
 
         const owner: Id = (owners[0] ?? {}).X
         const ownerObject = await this.actuator.ed.get(owner)

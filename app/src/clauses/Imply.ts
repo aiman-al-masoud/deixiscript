@@ -7,6 +7,7 @@ export default class Imply implements Clause {
     constructor(readonly condition: Clause,
         readonly conclusion: Clause,
         readonly negated = false,
+        readonly noAnaphora = false,
         readonly isImply = true,
         readonly hashCode = hashString(JSON.stringify(arguments)),
         readonly theme = condition.theme) {
@@ -18,7 +19,12 @@ export default class Imply implements Clause {
     }
 
     copy(opts?: CopyOpts): Clause {
-        return new Imply(this.condition.copy(opts), this.conclusion.copy(opts), opts?.negate ? !this.negated : this.negated)
+
+        return new Imply(this.condition.copy(opts),
+            this.conclusion.copy(opts),
+            opts?.negate ? !this.negated : this.negated,
+            opts?.noAnaphora ?? this.noAnaphora)
+
     }
 
     flatList(): Clause[] {

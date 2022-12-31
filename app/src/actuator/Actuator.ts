@@ -1,4 +1,4 @@
-import Brain, { AssertOpts } from "../brain/Brain";
+import Brain from "../brain/Brain";
 import { Clause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { getAction } from "./actions/Action";
@@ -7,7 +7,7 @@ import { Ed } from "./Ed";
 export default interface Actuator {
     onUpdate(clauses: Clause[]): Promise<void> // update from top (Brain)
     pointOut(ids: Id[]): Promise<void>
-    onSense(clauses: Clause[], opts?: AssertOpts): Promise<void> // update from bottom (Action, Sensor ...)
+    onSense(clauses: Clause[]): Promise<void> // update from bottom (Action, Sensor ...)
     readonly ed: Ed
     readonly brain: Brain
 }
@@ -43,10 +43,10 @@ class BaseActuator implements Actuator {
 
     }
 
-    onSense = async (clauses: Clause[], opts?: AssertOpts): Promise<void> => {
+    onSense = async (clauses: Clause[]): Promise<void> => {
 
         clauses.forEach(c => {
-            this.brain.assert(c, opts)
+            this.brain.assert(c)
         })
 
     }

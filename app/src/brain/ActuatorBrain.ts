@@ -1,7 +1,6 @@
 import Actuator, { getActuator } from "../actuator/Actuator";
 import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
-import { AssertOpts } from "./Brain";
 import PrologBrain from "./PrologBrain";
 
 export default class ActuatorBrain extends PrologBrain {
@@ -22,10 +21,10 @@ export default class ActuatorBrain extends PrologBrain {
         return results
     }
 
-    override async assert(clause: Clause, opts?: AssertOpts): Promise<Map[]> {
+    override async assert(clause: Clause): Promise<Map[]> {
 
         const before = await this.snapshot()
-        const results = await super.assert(clause, opts)
+        const results = await super.assert(clause)
         this.actuator.onUpdate(await this.diff(before))
 
         return results

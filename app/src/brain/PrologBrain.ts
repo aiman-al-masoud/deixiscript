@@ -2,7 +2,7 @@ import { Clause, clauseOf } from "../clauses/Clause";
 import { Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import { getProlog } from "../prolog/Prolog";
-import Brain, { AssertOpts, BrainState, QueryOpts } from "./Brain";
+import Brain, {  BrainState } from "./Brain";
 import { getAnaphora } from "./Anaphora";
 import getEd from "../actuator/Ed";
 import { Ontology } from "./Ontology";
@@ -38,9 +38,9 @@ export default class PrologBrain implements Brain {
         return x
     }
 
-    async query(query: Clause, opts?:QueryOpts): Promise<Map[]> {
+    async query(query: Clause): Promise<Map[]> {
 
-        const mapToVar = opts?.noAnaphora ? {} : query.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
+        const mapToVar = query.noAnaphora ? {} : query.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
 
         const q = query
             .copy({ map: mapToVar })
@@ -50,9 +50,9 @@ export default class PrologBrain implements Brain {
         return await this.kb.query(q)
     }
 
-    async assert(clause: Clause, opts?: AssertOpts): Promise<Map[]> {
+    async assert(clause: Clause): Promise<Map[]> {
 
-        const anaphoraMap = opts?.noAnaphora ? {} : await getAnaphora(clause).mapTo(this)
+        const anaphoraMap = clause.noAnaphora ? {} : await getAnaphora(clause).mapTo(this)
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })

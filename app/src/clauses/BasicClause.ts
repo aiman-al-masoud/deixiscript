@@ -6,7 +6,13 @@ import And from "./And";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string, readonly args: Id[], readonly negated = false, readonly isImply = false, readonly hashCode = hashString(JSON.stringify(arguments)), readonly rheme = emptyClause()) {
+    constructor(readonly predicate: string,
+        readonly args: Id[],
+        readonly negated = false,
+        readonly noAnaphora = false,
+        readonly isImply = false,
+        readonly hashCode = hashString(JSON.stringify(arguments)),
+        readonly rheme = emptyClause()) {
 
     }
 
@@ -15,7 +21,10 @@ export class BasicClause implements Clause {
     }
 
     copy(opts?: CopyOpts): BasicClause {
-        return new BasicClause(this.predicate, this.args.map(a => opts?.map ? opts?.map[a] ?? a : a), opts?.negate ? !this.negated : this.negated)
+        return new BasicClause(this.predicate,
+            this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
+            opts?.negate ? !this.negated : this.negated,
+            opts?.noAnaphora ?? this.noAnaphora)
     }
 
     flatList(): Clause[] {
