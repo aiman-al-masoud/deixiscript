@@ -7,7 +7,7 @@ import { Ed } from "./Ed";
 export default interface Actuator {
     onUpdate(clauses: Clause[]): Promise<void> // update from top (Brain)
     pointOut(ids: Id[]): Promise<void>
-    onSense(clauses: Clause[]): Promise<void> // update from bottom (Action, Sensor ...)
+    onPushAbove(clauses: Clause[]): Promise<void> // push update to Brain
     readonly ed: Ed
     readonly brain: Brain
 }
@@ -43,7 +43,7 @@ class BaseActuator implements Actuator {
 
     }
 
-    onSense = async (clauses: Clause[]): Promise<void> => {
+    onPushAbove = async (clauses: Clause[]): Promise<void> => {
 
         clauses.forEach(c => {
             this.brain.assert(c, {fromBelow:true})

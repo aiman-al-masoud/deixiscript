@@ -39,7 +39,7 @@ export class MakeButton implements Action {
                         .and(clauseOf('of', bgId, styleId))
                         .copy({noAnaphora:true})
 
-        await this.actuator.onSense([clause])
+        await this.actuator.onPushAbove([clause])
         console.log('DONE MakeButton, made button!!!!')
 
         makeSensor(this.actuator, this.id, button)
