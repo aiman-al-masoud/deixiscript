@@ -576,3 +576,14 @@ then the background of the style of the button is x.
 
 the background of the style of any button is x,
 if x is a color and the button is x.    (requires cataphora)
+
+
+## DefaultSetterAction
+
+The default setter Action will do this:
+
+1. take the name of the predicate, P.
+1. take the "canonical" name of the subject, S.
+1. take the object the subject belongs to, O.
+1. set the value of S to P on O.
+
