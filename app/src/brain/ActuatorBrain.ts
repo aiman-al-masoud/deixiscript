@@ -1,6 +1,8 @@
 import Actuator, { getActuator } from "../actuator/Actuator";
 import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
+import Brain from "./Brain";
+import { Ontology } from "./Ontology";
 import PrologBrain from "./PrologBrain";
 
 export default class ActuatorBrain extends PrologBrain {
@@ -28,6 +30,19 @@ export default class ActuatorBrain extends PrologBrain {
         this.actuator.onUpdate(await this.diff(before))
 
         return results
+    }
+
+    override async inject(ontology: Ontology): Promise<Brain> {
+
+        for (const c of ontology.clauses) {
+            await this.assert(c)
+        }
+        
+        ontology.objects.forEach(o => {
+            this.ed.set(o[0], o[1])
+        })
+
+        return this
     }
 
 }

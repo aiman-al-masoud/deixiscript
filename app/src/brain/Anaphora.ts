@@ -47,8 +47,13 @@ class BaseAnaphora implements Anaphora {
             .reduce((c1, c2) => c1.and(c2), emptyClause())
             .copy({ map: mapToVar })
 
+
+        console.log(bigDescClause.toProlog({anyFactId:true}))
+
         const candidates = await universe.query(bigDescClause)
         const chosen = candidates[0] ?? {} //TODO: better criterion !!!
+
+        console.log('anaphora', chosen)
 
         const anaphora = Object
             .keys(chosen)

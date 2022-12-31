@@ -615,3 +615,21 @@ Although this works perfectly fine, WTF!!!!!!!!!!!!
 ```
 x is a button. y is a button.
 ```
+
+
+## MAYBE THIS IS THE PROBLEM
+the entities that aren't related to any one else in the Anaphora query are still being searched for and the whole query fails if they're not there (AND) although the other entities ARE there.
+
+background is messing up lookup of x and style of x
+```
+ await brain.execute('a style is of x.')
+ await brain.execute('a background is of style of x.') 
+```
+
+### Solution
+Maybe: in Anaphora, if more than one entity, get all of the entities in the bigClause that aren't related to any other entity and remove them?
+
+Or
+
+Clause.about(entity:Id)
+

@@ -14,15 +14,6 @@ export default class PrologBrain implements Brain {
     }
 
     async inject(ontology: Ontology): Promise<Brain> {
-
-        for (const c of ontology.clauses) {
-            await this.assert(c)
-        }
-
-        ontology.objects.forEach(o => {
-            this.ed.set(o[0], o[1])
-        })
-
         return this
     }
 
@@ -59,6 +50,7 @@ export default class PrologBrain implements Brain {
             .toProlog({ anyFactId: false })
 
         for (const c of toBeAsserted) { // TODO: bug finding one entity multiple times
+            console.info('asserting', c)
             await this.kb.assert(c)
         }
         
