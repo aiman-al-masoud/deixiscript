@@ -27,7 +27,6 @@ export default class CopulaSentence implements SimpleSentence {
             subject.and(predicate, { asRheme: true })
 
         const resolvedAnaphora = await getAnaphora(result).mapToClause(args?.anaphora ?? emptyClause())
-        console.log({resolvedAnaphora})
 
         return result.copy({map: resolvedAnaphora})
     }

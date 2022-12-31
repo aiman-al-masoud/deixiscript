@@ -10,7 +10,7 @@ import PrologBrain from "./PrologBrain"
  */
 export default interface Brain {
     execute(natlang: string): Promise<Map[]>
-    query(query: Clause): Promise<Map[]>
+    query(query: Clause, opts?: QueryOpts): Promise<Map[]>
     assert(code: Clause, opts?: AssertOpts): Promise<Map[]>
     inject(ontology: Ontology): Promise<Brain>
     snapshot(): Promise<BrainState>
@@ -25,9 +25,18 @@ export async function getBrain(opts?: GetBrainOpts): Promise<Brain> {
 
 }
 
+
+// TODO: just make this a prop of Clause !-----------
 export interface AssertOpts {
     noAnaphora: boolean
 }
+
+export interface QueryOpts {
+    noAnaphora: boolean
+}
+// ------------
+
+
 
 export interface GetBrainOpts {
     withActuator: boolean

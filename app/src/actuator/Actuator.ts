@@ -7,8 +7,9 @@ import { Ed } from "./Ed";
 export default interface Actuator {
     onUpdate(clauses: Clause[]): Promise<void> // update from top (Brain)
     pointOut(ids: Id[]): Promise<void>
-    onSense(clauses: Clause[], opts?:AssertOpts): Promise<void> // update from bottom (Action, Sensor ...)
+    onSense(clauses: Clause[], opts?: AssertOpts): Promise<void> // update from bottom (Action, Sensor ...)
     readonly ed: Ed
+    readonly brain: Brain
 }
 
 export function getActuator(brain: Brain): Actuator {
@@ -24,7 +25,7 @@ class BaseActuator implements Actuator {
     onUpdate = async (clauses: Clause[]): Promise<void> => {
 
         clauses.forEach(c => {
-            getAction(c, this.brain.ed, this).run()
+            getAction(c, this).run() // out of order execution, with auto-await for id mechanism
         })
 
     }
@@ -32,21 +33,21 @@ class BaseActuator implements Actuator {
     pointOut = async (ids: Id[]): Promise<void> => {
 
         this.brain.ed.values.forEach(o => {
-            o.style? o.style.outline = '' : 0
+            o.style ? o.style.outline = '' : 0
         })
 
-        for (const id of ids){
+        for (const id of ids) {
             const elem = await this.brain.ed.get(id)
             elem && elem.style ? elem.style.outline = '#f00 solid 2px' : 0
         }
 
     }
 
-    onSense = async (clauses: Clause[], opts?:AssertOpts): Promise<void> => {
+    onSense = async (clauses: Clause[], opts?: AssertOpts): Promise<void> => {
 
-        for (const c of clauses) {
-            await this.brain.assert(c, opts)
-        }
+        clauses.forEach(c => {
+            this.brain.assert(c, opts)
+        })
 
     }
 

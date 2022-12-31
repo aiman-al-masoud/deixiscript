@@ -7,13 +7,13 @@ import Action from "./Action";
 
 export class MakeButton implements Action {
 
-    constructor(readonly id: Id, readonly ed: Ed, readonly actuator: Actuator) {
+    constructor(readonly id: Id, readonly actuator: Actuator) {
 
     }
 
     async run(): Promise<void> {
 
-        if (document.getElementById(this.id.toString())){
+        if (document.getElementById(this.id.toString())) {
             return
         }
 
@@ -21,19 +21,21 @@ export class MakeButton implements Action {
         button.innerText = 'button'
         button.id = this.id.toString()
         document.body.appendChild(button)
-        this.ed.set(this.id, button)
+        this.actuator.ed.set(this.id, button)
 
         // adding a style-of-button entity
         const styleId = getRandomId()
         const clauses = [clauseOf('style', styleId), clauseOf('of', styleId, this.id)]
-        this.ed.set(styleId, button.style)
-        this.actuator.onSense(clauses, { noAnaphora: true })
-
+        this.actuator.ed.set(styleId, button.style)
+        
         // adding a background of style "entity"
         const bgId = getRandomId()
         const clauses2 = [clauseOf('background', bgId), clauseOf('of', bgId, styleId)]
-        this.actuator.onSense(clauses2, { noAnaphora: true })
+        this.actuator.ed.set(bgId, '', { jsName: 'background' })
         
+
+        await this.actuator.onSense(clauses.concat(clauses2), { noAnaphora: true })        
+        console.log('DONE MakeButton, made button!!!!')
 
         makeSensor(this.actuator, this.id, button)
 

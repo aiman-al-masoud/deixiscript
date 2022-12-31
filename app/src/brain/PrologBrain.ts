@@ -2,7 +2,7 @@ import { Clause, clauseOf } from "../clauses/Clause";
 import { Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import { getProlog } from "../prolog/Prolog";
-import Brain, { AssertOpts, BrainState } from "./Brain";
+import Brain, { AssertOpts, BrainState, QueryOpts } from "./Brain";
 import { getAnaphora } from "./Anaphora";
 import getEd from "../actuator/Ed";
 import { Ontology } from "./Ontology";
@@ -35,15 +35,12 @@ export default class PrologBrain implements Brain {
             x = await (ast.isSideEffecty ? this.assert(clause) : this.query(clause))
         }
 
-        console.log(x)
         return x
     }
 
-    async query(query: Clause): Promise<Map[]> {
+    async query(query: Clause, opts?:QueryOpts): Promise<Map[]> {
 
-        const mapToVar = query.entities
-            .map(e => ({ [e]: toVar(e) }))
-            .reduce((a, b) => ({ ...a, ...b }))
+        const mapToVar = opts?.noAnaphora ? {} : query.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
 
         const q = query
             .copy({ map: mapToVar })
@@ -62,7 +59,6 @@ export default class PrologBrain implements Brain {
             .toProlog({ anyFactId: false })
 
         for (const c of toBeAsserted) { // TODO: bug finding one entity multiple times
-            console.log('asserting', c)
             await this.kb.assert(c)
         }
         

@@ -587,3 +587,16 @@ The default setter Action will do this:
 1. take the object the subject belongs to, O.
 1. set the value of S to P on O.
 
+
+
+## WTF BUG
+
+```
+x is a button. background of style of x is blue.
+```
+
+works only when executing the two statements separately!!!!!!!!!!!!!!!!!!
+
+tried lengthening timeout in Ed.get and Ed.getJsName ... to no avail
+
+Problem seems to be that id of object x is created twice. Could be due to theme, but why is this working when exec "one at a time"????
