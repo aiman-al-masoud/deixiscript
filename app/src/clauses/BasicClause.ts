@@ -51,4 +51,8 @@ export class BasicClause implements Clause {
         return new Imply(this, conclusion)
     }
 
+    about(id: Id): Clause {
+        return this.args.includes(id) ? this : emptyClause()
+    }
+
 }

@@ -61,4 +61,8 @@ export default class Imply implements Clause {
         throw new Error('not implemented!')
     }
 
+    about(id: Id): Clause {
+        return emptyClause() ///TODO!!!!!!!!
+    }
+
 }

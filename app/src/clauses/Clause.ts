@@ -19,6 +19,7 @@ export interface Clause {
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
     toProlog(opts?: ToPrologOpts): string[]
+    about(id:Id):Clause
 }
 
 export function clauseOf(predicate: string, ...args: Id[]): Clause {

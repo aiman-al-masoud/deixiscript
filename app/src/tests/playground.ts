@@ -32,7 +32,7 @@ export default async function playground() {
             state.promptVisible = !state.promptVisible
         } else if (e.ctrlKey && e.code === 'Enter') {
             const result = await state.brain.execute(textarea.value)
-            // console.log(result)
+            console.log(result)
         }
 
         update()

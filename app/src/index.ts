@@ -220,13 +220,13 @@ import prologPlay from './tests/prolog-playground';
 // })()
 
 
-// playground()
+playground()
 // prologPlay()
 
-(async ()=>{
-    const brain = await getBrain({withActuator:false});
-    await brain.execute('a style is of x.')
-    await brain.execute('a background is of style of x.') // background is messing up lookup of x and style of x
-})()
+// (async ()=>{
+//     const brain = await getBrain({withActuator:false});
+//     await brain.execute('a style is of x.')
+//     await brain.execute('a background is of style of x.') // background is messing up lookup of x and style of x
+// })()
 
 

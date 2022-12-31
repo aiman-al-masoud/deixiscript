@@ -45,15 +45,17 @@ class BaseAnaphora implements Anaphora {
         const bigDescClause = themeDescs
             .concat(rhemeDescs)
             .reduce((c1, c2) => c1.and(c2), emptyClause())
-            .copy({ map: mapToVar })
 
+        const entities = themeEnts.concat(this.clause.rheme.entities)
 
-        console.log(bigDescClause.toProlog({anyFactId:true}))
+        // to avoid that one single standalone entity break all of the query by preventing the other entities from being found
+        const separatedDescs = entities.map(e => bigDescClause.about(e))
 
-        const candidates = await universe.query(bigDescClause)
-        const chosen = candidates[0] ?? {} //TODO: better criterion !!!
+        const forEachEntity = await Promise.all(separatedDescs.map(c => universe.query(c.copy({ map: mapToVar }))))
 
-        console.log('anaphora', chosen)
+        const candidates = forEachEntity.map(m => m[0] ?? {}) //TODO: better choice criterion !!!
+        
+        const chosen = candidates.reduce((a,b)=>({...a,...b}))
 
         const anaphora = Object
             .keys(chosen)
