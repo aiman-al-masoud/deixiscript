@@ -633,3 +633,4 @@ Or
 
 Clause.about(entity:Id)
 
+then for each entity do a separate query
