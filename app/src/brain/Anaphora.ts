@@ -46,10 +46,15 @@ class BaseAnaphora implements Anaphora {
             .concat(rhemeDescs)
             .reduce((c1, c2) => c1.and(c2), emptyClause())
 
-        const entities = themeEnts.concat(this.clause.rheme.entities)
+        const entities = bigDescClause.entities 
 
         // to avoid that one single standalone entity break all of the query by preventing the other entities from being found
         const separatedDescs = entities.map(e => bigDescClause.about(e))
+
+        console.log('searching for anaphora x')
+        separatedDescs.forEach(c=>{
+            console.info(c.copy({map:mapToVar}).toProlog({anyFactId:true}))
+        })
 
         const forEachEntity = await Promise.all(separatedDescs.map(c => universe.query(c.copy({ map: mapToVar }))))
 

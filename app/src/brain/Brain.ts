@@ -11,7 +11,7 @@ import PrologBrain from "./PrologBrain"
 export default interface Brain {
     execute(natlang: string): Promise<Map[]>
     query(query: Clause): Promise<Map[]>
-    assert(code: Clause): Promise<Map[]>
+    assert(code: Clause, opts? : AssertOpts): Promise<Map[]>
     inject(ontology: Ontology): Promise<Brain>
     snapshot(): Promise<BrainState>
     diff(before: BrainState): Promise<Clause[]>
@@ -23,6 +23,11 @@ export async function getBrain(opts?: GetBrainOpts): Promise<Brain> {
     const cons = opts?.withActuator ? ActuatorBrain : PrologBrain
     return new cons().inject(getOntology())
 
+}
+
+
+export interface AssertOpts{
+    fromBelow : boolean
 }
 
 export interface GetBrainOpts {

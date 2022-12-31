@@ -46,7 +46,7 @@ class BaseActuator implements Actuator {
     onSense = async (clauses: Clause[]): Promise<void> => {
 
         clauses.forEach(c => {
-            this.brain.assert(c)
+            this.brain.assert(c, {fromBelow:true})
         })
 
     }

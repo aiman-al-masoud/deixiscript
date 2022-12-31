@@ -1,7 +1,7 @@
 import Actuator, { getActuator } from "../actuator/Actuator";
 import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
-import Brain from "./Brain";
+import Brain, { AssertOpts } from "./Brain";
 import { Ontology } from "./Ontology";
 import PrologBrain from "./PrologBrain";
 
@@ -23,11 +23,17 @@ export default class ActuatorBrain extends PrologBrain {
         return results
     }
 
-    override async assert(clause: Clause): Promise<Map[]> {
+    override async assert(clause: Clause, opts?: AssertOpts): Promise<Map[]> {
 
         const before = await this.snapshot()
         const results = await super.assert(clause)
-        this.actuator.onUpdate(await this.diff(before))
+        const diff = await this.diff(before)
+
+        if (!opts?.fromBelow) { // don't tell Actuator what it knows!
+            this.actuator.onUpdate(diff.filter(c=>c.hashCode != clause.hashCode))
+        }else{
+            this.actuator.onUpdate(diff)
+        }
 
         return results
     }
@@ -37,7 +43,7 @@ export default class ActuatorBrain extends PrologBrain {
         for (const c of ontology.clauses) {
             await this.assert(c)
         }
-        
+
         ontology.objects.forEach(o => {
             this.ed.set(o[0], o[1])
         })

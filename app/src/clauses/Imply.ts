@@ -46,7 +46,7 @@ export default class Imply implements Clause {
             .flatList()
             .filter(c => !this.condition.flatList().map(c => c.hashCode).includes(c.hashCode)) // filter out conclusions that are also premises, very important to avoid PROLOG INFINITE LOOPS in querying!
 
-        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: false /* or true?*/ })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
+        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: true /* or opposite?*/ })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
     }
 
     get entities(): Id[] {

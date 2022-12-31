@@ -59,7 +59,7 @@ export default class PrologBrain implements Brain {
                 const realAssert = isImply ? c : c.replace('_', getRandomId().toString())
                 
                 await this.kb.assert(realAssert)
-                console.log('asserted', realAssert)
+                console.info('asserted', realAssert)
             }
 
         }

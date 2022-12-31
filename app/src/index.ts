@@ -230,3 +230,10 @@ playground()
 // })()
 
 
+// (async ()=>{
+//     const brain = await getBrain({withActuator:false});
+//     (window as any).brain = brain;
+//     // await brain.execute('x is a button. background of style of x is blue.')
+//     await brain.execute('x is a button. style is of x. background is of style of x')
+//     await brain.execute('background of style of x is blue')
+// })()
