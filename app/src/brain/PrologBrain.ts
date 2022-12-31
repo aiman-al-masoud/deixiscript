@@ -1,8 +1,8 @@
 import { Clause, clauseOf } from "../clauses/Clause";
-import { Map, toVar } from "../clauses/Id";
+import { getRandomId, Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import { getProlog } from "../prolog/Prolog";
-import Brain, {  BrainState } from "./Brain";
+import Brain, { BrainState } from "./Brain";
 import { getAnaphora } from "./Anaphora";
 import getEd from "../actuator/Ed";
 import { Ontology } from "./Ontology";
@@ -47,13 +47,23 @@ export default class PrologBrain implements Brain {
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })
-            .toProlog({ anyFactId: false })
+            .toProlog({ anyFactId: true })
 
-        for (const c of toBeAsserted) { // TODO: bug finding one entity multiple times
-            console.info('asserting', c)
-            await this.kb.assert(c)
+        for (const c of toBeAsserted) {
+
+            const q = await this.kb.query(c + '.')
+
+            if (q.length === 0) {
+
+                const isImply = c.includes(':-')
+                const realAssert = isImply ? c : c.replace('_', getRandomId().toString())
+                
+                await this.kb.assert(realAssert)
+                console.log('asserted', realAssert)
+            }
+
         }
-        
+
         return []
     }
 
@@ -81,7 +91,7 @@ export default class PrologBrain implements Brain {
         const relDiff = now.rel.filter(c => !(before.rel.map(c => c.hashCode)).includes(c.hashCode))
         const res = beDiff.concat(relDiff)
 
-        return res.filter((e, i) => res.map(c => c.hashCode).indexOf(e.hashCode) === i) //TODO: de-uglify deduplication
+        return res  // return res.filter((e, i) => res.map(c => c.hashCode).indexOf(e.hashCode) === i) //TODO: de-uglify deduplication
     }
 
 }
