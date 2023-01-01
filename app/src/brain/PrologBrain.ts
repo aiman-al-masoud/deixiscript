@@ -33,14 +33,12 @@ export default class PrologBrain implements Brain {
 
         const mapToVar = query.noAnaphora ? {} : query.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
 
-        const q = query
-            .copy({ map: mapToVar })
+        const q = query.copy({ map: mapToVar })
             .toProlog()
-            .map(c => c.copy({ anyFact: true }))
-            .map(c => c.toString())
-            .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
+            .copy({anyFact:true})
 
         return await this.kb.query(q)
+
     }
 
     async assert(clause: Clause): Promise<Map[]> {
@@ -51,19 +49,7 @@ export default class PrologBrain implements Brain {
             .copy({ map: anaphoraMap })
             .toProlog()
 
-        for (const c of toBeAsserted) {
-
-            const q = await this.kb.query(c.copy({ anyFact: true }).toString() + '.')
-
-            if (q.length === 0) {
-                const proassert = c.copy({ anyFact: false }).toString()
-                await this.kb.assert(proassert)
-                console.log('asserted', proassert)
-            }
-
-        }
-
-        return []
+        return await this.kb.assert(toBeAsserted)   
     }
 
     async snapshot(): Promise<BrainState> {

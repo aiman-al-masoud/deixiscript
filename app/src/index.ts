@@ -14,7 +14,7 @@ import Prolog, { getProlog } from './prolog/Prolog';
 import TauProlog from './prolog/TauProlog';
 import compileLogicTest from './tests/compile-logic-test';
 import playground from './tests/playground';
-import prologPlay from './tests/prolog-playground';
+// import prologPlay from './tests/prolog-playground';
 
 
 // PROLOG TEST //////////////////////////////////////////

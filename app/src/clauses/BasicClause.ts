@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, emptyClause, ToPrologOpts, hashString } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause, hashString } from "./Clause";
 import { Id, getRandomId } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
@@ -32,8 +32,8 @@ export class BasicClause implements Clause {
         return [this]
     }
 
-    toProlog(opts?: ToPrologOpts): PrologClause[] {
-        return [new BasicPrologClause(this.predicate, this.args, this.negated)]
+    toProlog(): PrologClause {
+        return new BasicPrologClause(this.predicate, this.args, this.negated)
     }
 
     get entities(): Id[] {

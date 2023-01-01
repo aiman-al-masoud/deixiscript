@@ -3,7 +3,6 @@ import And from "./And"
 import { Id, Map } from "./Id"
 import { PrologClause } from "./PrologClause"
 
-
 /**
  * A 'language-agnostic' first order logic representation.
 */
@@ -19,7 +18,7 @@ export interface Clause {
     and(other: Clause, opts?: AndOpts): Clause
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
-    toProlog(opts?: ToPrologOpts): PrologClause[]
+    toProlog(): PrologClause
     about(id:Id):Clause
 }
 
@@ -37,10 +36,6 @@ export interface CopyOpts {
 
 export interface AndOpts {
     asRheme?: boolean
-}
-
-export interface ToPrologOpts {
-    anyFactId?: boolean
 }
 
 export function hashString(string: string) {

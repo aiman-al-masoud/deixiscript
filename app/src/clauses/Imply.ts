@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString, emptyClause } from "./Clause";
+import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import And from "./And";
 import { BasicPrologClause, HornClause, PrologClause } from "./PrologClause";
@@ -37,16 +37,19 @@ export default class Imply implements Clause {
      * Since prolog only supports that kind of implication.
      * @returns 
      */
-    toProlog(opts?: ToPrologOpts): PrologClause[] {
+    toProlog(): PrologClause{
 
         const conditions = this.condition.toProlog()
-        
+
         const conclusions = this.conclusion
             .flatList()
             .filter(c => !this.condition.flatList().map(c => c.hashCode).includes(c.hashCode)) // filter out conclusions that are also premises, very important to avoid PROLOG INFINITE LOOPS in querying!
             .flatMap(c=>c.toProlog())
 
-        return conclusions.map(c=> new HornClause(c as BasicPrologClause, conditions as BasicPrologClause[]) )
+        return conclusions
+                .map(c=> new HornClause(c as BasicPrologClause, conditions) )
+                .map(c=> c as PrologClause)
+                .reduce((c1, c2)=>c1.and(c2))
     }
 
     get entities(): Id[] {
