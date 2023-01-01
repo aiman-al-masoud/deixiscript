@@ -50,7 +50,7 @@ export class BasicClause implements Clause {
     }
 
     get entities(): Id[] {
-        return Array.from(new Set(this.args)) // filter out variables ???
+        return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
     }
 
 }

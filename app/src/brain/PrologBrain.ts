@@ -31,11 +31,11 @@ export default class PrologBrain implements Brain {
 
     async query(query: Clause): Promise<Map[]> {
 
-        const mapToVar = query.noAnaphora ? {} : query.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
+        const mapToVar = query.noAnaphora ? {} : query.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }), {})
 
         const q = query.copy({ map: mapToVar })
             .toProlog()
-            .copy({anyFact:true})
+            .copy({ anyFact: true })
 
         return await this.kb.query(q)
 
@@ -49,7 +49,8 @@ export default class PrologBrain implements Brain {
             .copy({ map: anaphoraMap })
             .toProlog()
 
-        return await this.kb.assert(toBeAsserted)   
+        return await this.kb.assert(toBeAsserted)
+        
     }
 
     async snapshot(): Promise<BrainState> {

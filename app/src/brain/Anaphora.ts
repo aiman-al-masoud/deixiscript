@@ -1,5 +1,5 @@
 import { Clause, emptyClause } from "../clauses/Clause";
-import { isVar, Map, toVar } from "../clauses/Id";
+import { Map, toVar } from "../clauses/Id";
 import Brain, { getBrain } from "./Brain";
 
 /**
@@ -23,7 +23,7 @@ class BaseAnaphora implements Anaphora {
 
     async mapTo(universe: Brain): Promise<Map> {
 
-        if (this.clause.entities.every(e => isVar(e))) { // this is a pure implication //TODO: possbile problem: every cat that is on the mat
+        if (this.clause.entities.length === 0){ // no entities --> no anaphora
             return {}
         }
 
