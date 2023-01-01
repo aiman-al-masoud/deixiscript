@@ -23,7 +23,7 @@ export default class TauProlog implements Prolog {
                 const toBeAsserted = c.copy({ anyFact: false }).toString()
                 await (this.session as any).promiseQuery(`assert${opts?.z ? 'z' : 'a'}( ( ${toBeAsserted} ) ).`)
                 await (this.session as any).promiseAnswer()
-                console.info('asserted', toBeAsserted)
+                // console.info('asserted', toBeAsserted)
             }
         }
 
@@ -44,7 +44,7 @@ export default class TauProlog implements Prolog {
             // console.info('checked', check)
             return q
         } catch (e) {
-            console.warn(this.parseError(e))
+            // console.warn(this.parseError(e))
             return [] //TODO: fix bug if error not finding anything although there could be something!
         }
 

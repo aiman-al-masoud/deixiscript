@@ -658,3 +658,7 @@ Now, this works:
 ```
 background of style of x is blue. x is a button.
 ```
+
+Problem solved, you need to set ontology related attributes of new entities in Brain, before calling Actuator. Actuator will only be responsible for binding ids to newly initialized actual javascript objects.
+
+NEEDS refactoring!!!!!!!!

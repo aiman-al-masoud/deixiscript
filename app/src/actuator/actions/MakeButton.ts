@@ -21,18 +21,8 @@ export class MakeButton implements Action {
         document.body.appendChild(button)
         button.innerText = 'button'
 
-        const styleId = (await this.actuator.brain.query(clauseOf('style', 'X').and(clauseOf('of', 'X', this.id))))[0]?.X ?? getRandomId()
-        const bgId = (await this.actuator.brain.query(clauseOf('background', 'X').and(clauseOf('of', 'X', styleId))))[0]?.X ?? getRandomId()
-        
-        console.log(`CREATING STYLE ${styleId} FOR`, this.id)
-        await this.actuator.onPushAbove([clauseOf('style', styleId)
-            .and(clauseOf('of', styleId, this.id))
-            .copy({ noAnaphora: true })])
-
-        console.log(`CREATING BG ${bgId} FOR STYLE ${styleId} OF`, this.id)
-        await this.actuator.onPushAbove([clauseOf('background', bgId)
-            .and(clauseOf('of', bgId, styleId))
-            .copy({ noAnaphora: true })])
+        const styleId = (await this.actuator.brain.query(clauseOf('style', 'X').and(clauseOf('of', 'X', this.id))))[0]?.X
+        const bgId = (await this.actuator.brain.query(clauseOf('background', 'X').and(clauseOf('of', 'X', styleId))))[0]?.X
 
         // adding objects to entity dictionary
         this.actuator.ed.set(styleId, button.style)

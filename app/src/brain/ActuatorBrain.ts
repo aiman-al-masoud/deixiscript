@@ -1,6 +1,7 @@
 import Actuator, { getActuator } from "../actuator/Actuator";
-import { Clause } from "../clauses/Clause";
-import { Map } from "../clauses/Id";
+import { BasicClause } from "../clauses/BasicClause";
+import { Clause, clauseOf } from "../clauses/Clause";
+import { getRandomId, Map } from "../clauses/Id";
 import Brain, { AssertOpts } from "./Brain";
 import { Ontology } from "./Ontology";
 import PrologBrain from "./PrologBrain";
@@ -29,6 +30,10 @@ export default class ActuatorBrain extends PrologBrain {
         const results = await super.assert(clause)
         const diff = await this.diff(before)
 
+        for (const c of diff) {
+            await this.doOntologyStuff(c)
+        }
+
         // if (opts?.fromBelow) { // don't tell Actuator what it knows!
         // this.actuator.onUpdate(diff.filter(c=>c.hashCode != clause.hashCode))
         // }else{
@@ -49,6 +54,28 @@ export default class ActuatorBrain extends PrologBrain {
         })
 
         return this
+    }
+
+    async doOntologyStuff(clause: Clause) {
+
+        const c = clause as BasicClause
+
+        if (c.predicate === 'button') {
+
+            const buttonId = c.args[0]
+            const styleId = (await this.actuator.brain.query(clauseOf('style', 'X').and(clauseOf('of', 'X', buttonId))))[0]?.X ?? getRandomId()
+            const bgId = (await this.actuator.brain.query(clauseOf('background', 'X').and(clauseOf('of', 'X', styleId))))[0]?.X ?? getRandomId()
+
+            await this.assert(clauseOf('style', styleId)
+                .and(clauseOf('of', styleId, buttonId))
+                .copy({ noAnaphora: true }))
+
+            await this.assert(clauseOf('background', bgId)
+                .and(clauseOf('of', bgId, styleId))
+                .copy({ noAnaphora: true }))
+
+        }
+
     }
 
 }
