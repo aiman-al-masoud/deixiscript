@@ -23,8 +23,8 @@ class BaseAnaphora implements Anaphora {
 
     async mapTo(universe: Brain): Promise<Map> {
 
-        if (this.clause.entities.length === 0){ // no entities --> no anaphora
-            return {}
+        if (this.clause.entities.length === 0){ 
+            return {} // no entities --> no anaphora
         }
 
         const themeEnts = this.clause.theme.entities
