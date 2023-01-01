@@ -1,5 +1,5 @@
 import { Clause, emptyClause } from "../clauses/Clause";
-import { Id, isVar, Map, toVar } from "../clauses/Id";
+import { isVar, Map, toVar } from "../clauses/Id";
 import Brain, { getBrain } from "./Brain";
 
 /**

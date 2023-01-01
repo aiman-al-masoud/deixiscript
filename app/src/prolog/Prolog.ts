@@ -1,5 +1,5 @@
 import { Map } from "../clauses/Id"
-import { PrologClause } from "../clauses/PrologClause"
+import { PrologClause } from "../prologclause/PrologClause"
 import TauProlog from "./TauProlog"
 
 export default interface Prolog {

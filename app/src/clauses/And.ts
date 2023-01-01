@@ -1,7 +1,7 @@
 import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import Imply from "./Imply";
-import { emptyPrologClause, PrologClause } from "./PrologClause";
+import { emptyPrologClause, PrologClause } from "../prologclause/PrologClause";
 
 export default class And implements Clause {
 

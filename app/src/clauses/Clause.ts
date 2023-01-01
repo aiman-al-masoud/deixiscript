@@ -1,7 +1,7 @@
 import { BasicClause } from "./BasicClause"
 import And from "./And"
 import { Id, Map } from "./Id"
-import { PrologClause } from "./PrologClause"
+import { PrologClause } from "../prologclause/PrologClause"
 
 /**
  * A 'language-agnostic' first order logic representation.

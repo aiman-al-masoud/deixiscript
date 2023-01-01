@@ -1,7 +1,9 @@
 import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import And from "./And";
-import { BasicPrologClause, HornClause, PrologClause } from "./PrologClause";
+import { PrologClause } from "../prologclause/PrologClause";
+import { HornClause } from "../prologclause/HornClause";
+import { BasicPrologClause } from "../prologclause/BasicPrologClause";
 
 export default class Imply implements Clause {
 
