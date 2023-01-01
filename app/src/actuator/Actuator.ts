@@ -45,9 +45,9 @@ class BaseActuator implements Actuator {
 
     onPushAbove = async (clauses: Clause[]): Promise<void> => {
 
-        for (const c of clauses) {
-            await this.brain.assert(c, { fromBelow: true }) //TODO await?????? NOPE
-        }
+        clauses.forEach(c => {
+            this.brain.assert(c, { fromBelow: true })
+        })
 
     }
 
