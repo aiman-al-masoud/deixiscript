@@ -41,7 +41,7 @@ export default class TauProlog implements Prolog {
         try {
             const check = clause.toString() + '.'
             const q = await this.performQuery(check)
-            console.info('checked', check)
+            // console.info('checked', check)
             return q
         } catch (e) {
             console.warn(this.parseError(e))

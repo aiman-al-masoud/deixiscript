@@ -636,3 +636,19 @@ Clause.about(entity:Id)
 then for each entity do a separate query
 
 fixed THIS, but problems above persist!!!!
+
+## Irritating Bug: maybe found anwer
+
+```
+x is a button. x is a button. background of style of x is blue
+```
+
+Works. 
+
+```
+x is a button. background of style of x is blue
+```
+
+This doesn't.
+
+It's a coordination problem. Before MakeButton can terminate, a new group of objects (background, style and x) is created!
