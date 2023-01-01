@@ -21,46 +21,27 @@ class BaseAnaphora implements Anaphora {
 
     }
 
-    async mapTo(universe: Brain): Promise<Map> {
+    async mapTo(universe: Brain): Promise<Map> { // nothing 'new' should be said about any entity // to "not say anything new" about theme entities -> get their desc only from theme // to "not say anything new" about rheme entities -> don't mention anything about their relation to theme entities // rheme entities should NOT include any entities in rheme BUT ALSO IN THEME.
 
-        if (this.clause.entities.length === 0){ 
+        if (this.clause.entities.length === 0) {
             return {} // no entities --> no anaphora
         }
 
-        const themeEnts = this.clause.theme.entities
+        const themeDesc = this.clause.theme
+        const themeEntities = this.clause.theme.entities
 
-        // get descriptions of entities in theme omitting relations with entities in rheme
-        const themeDescs = this.clause.theme.flatList()
+        const rhemeDesc = this.clause.rheme
+            .flatList()
+            .filter(c => !themeEntities.every(e => c.entities.includes(e)))
+            .reduce((a, b) => a.and(b), emptyClause())
 
-        // get descriptions of entities in rheme omitting relations with entities in theme
-        const rhemeDescs = this.clause.rheme.flatList()
-            .filter(c => themeEnts.every(e => !c.entities.includes(e)))
-
-        const mapToVar = this.clause.entities
-            .map(e => ({ [e]: toVar(e) }))
-            .reduce((a, b) => ({ ...a, ...b }))
-
+        const heyDesc = themeDesc.and(rhemeDesc)
+        const mapToVar = heyDesc.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
         const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
-
-        const bigDescClause = themeDescs
-            .concat(rhemeDescs)
-            .reduce((c1, c2) => c1.and(c2), emptyClause())
-
-        const entities = bigDescClause.entities 
-
-        // to avoid that one single standalone entity break all of the query by preventing the other entities from being found
-        const separatedDescs = entities.map(e => bigDescClause.about(e))
-
-        // console.log('searching for anaphora x')
-        // separatedDescs.forEach(c=>{
-            // console.info(c.copy({map:mapToVar}).toProlog({anyFactId:true}))
-        // })
-
-        const forEachEntity = await Promise.all(separatedDescs.map(c => universe.query(c.copy({ map: mapToVar }))))
-
-        const candidates = forEachEntity.map(m => m[0] ?? {}) //TODO: better choice criterion !!!
-        
-        const chosen = candidates.reduce((a,b)=>({...a,...b}))
+        const separatedDescs = heyDesc.entities.map(e => heyDesc.about(e))
+        const separatedRes = await Promise.all(separatedDescs.map(c => universe.query(c.copy({ map: mapToVar }))))
+        const candidates = separatedRes.map(m => m[0] ?? {}) //TODO: better choice criterion !!!
+        const chosen = candidates.reduce((a, b) => ({ ...a, ...b }))
 
         const anaphora = Object
             .keys(chosen)
@@ -77,4 +58,3 @@ class BaseAnaphora implements Anaphora {
     }
 
 }
-
