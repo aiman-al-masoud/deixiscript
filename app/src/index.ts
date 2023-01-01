@@ -220,7 +220,7 @@ import playground from './tests/playground';
 // })()
 
 
-playground()
+// playground()
 // prologPlay()
 
 // (async ()=>{
@@ -237,3 +237,10 @@ playground()
 //     await brain.execute('x is a button. style is of x. background is of style of x')
 //     await brain.execute('background of style of x is blue')
 // })()
+
+
+(async ()=>{ // WORKS idk why
+    const brain = await getBrain({withActuator:false});
+    (window as any).brain = brain
+    await brain.execute('x is a button. style is of x. background of style of x is blue')
+})()
