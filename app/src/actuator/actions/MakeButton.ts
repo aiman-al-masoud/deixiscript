@@ -20,9 +20,9 @@ export class MakeButton implements Action {
         button.id = this.id.toString()
         document.body.appendChild(button)
         button.innerText = 'button'
-        
-        const styleId = getRandomId()
-        const bgId = getRandomId()
+
+        const styleId = (await this.actuator.brain.query(clauseOf('style', 'X').and(clauseOf('of', 'X', this.id))))[0]?.X ?? getRandomId()
+        const bgId = (await this.actuator.brain.query(clauseOf('background', 'X').and(clauseOf('of', 'X', styleId))))[0]?.X ?? getRandomId()
         
         console.log(`CREATING STYLE ${styleId} FOR`, this.id)
         await this.actuator.onPushAbove([clauseOf('style', styleId)

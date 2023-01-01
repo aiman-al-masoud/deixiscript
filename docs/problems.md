@@ -652,3 +652,9 @@ x is a button. background of style of x is blue
 This doesn't.
 
 It's a coordination problem. Before MakeButton can terminate, a new group of objects (background, style and x) is created!
+
+Now, this works:
+
+```
+background of style of x is blue. x is a button.
+```
