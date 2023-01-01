@@ -8,7 +8,7 @@ export interface Ed {
     get(id: Id): Promise<Wrapper>
     set(id: Id, object: any, opts?: WrapOpts): void
     get keys(): Id[]
-    get values(): any[]
+    get values(): Wrapper[]
 }
 
 export default function getEd(): Ed {

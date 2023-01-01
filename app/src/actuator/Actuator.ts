@@ -33,7 +33,7 @@ class BaseActuator implements Actuator {
     pointOut = async (ids: Id[]): Promise<void> => {
 
         this.brain.ed.values.forEach(o => {
-            o.style ? o.style.outline = '' : 0
+            o.object.style ? o.object.style.outline = '' : 0
         })
 
         for (const id of ids) {
