@@ -1,11 +1,10 @@
-import { BasicPrologClause } from "./BasicPrologClause";
 import { PrologClause, CopyPrologClauseOpts } from "./PrologClause";
 import { AndPrologClause } from "./AndPrologClause";
 
-
 export class HornClause implements PrologClause {
 
-    constructor(readonly conclusion: BasicPrologClause, readonly conditions: PrologClause, readonly anyFact = false) {
+    constructor(readonly conclusion: PrologClause, readonly conditions: PrologClause, readonly anyFact = false) {
+        
     }
 
     toString(): string {

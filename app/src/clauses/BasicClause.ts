@@ -1,5 +1,5 @@
 import { Clause, AndOpts, CopyOpts, emptyClause, hashString } from "./Clause";
-import { Id, getRandomId } from "./Id";
+import { Id, isVar } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
 import { PrologClause } from "../prologclause/PrologClause";
@@ -19,7 +19,7 @@ export class BasicClause implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And(this.flatList().concat(other.flatList()))
+        return new And([this, ...other.flatList()])
     }
 
     copy(opts?: CopyOpts): BasicClause {
@@ -37,20 +37,20 @@ export class BasicClause implements Clause {
         return new BasicPrologClause(this.predicate, this.args, this.negated)
     }
 
-    get entities(): Id[] {
-        return Array.from(new Set(this.args))
+    implies(conclusion: Clause): Clause {
+        return new Imply(this, conclusion)
+    }
+
+    about(id: Id): Clause {
+        return this.entities.includes(id) ? this : emptyClause()
     }
 
     get theme(): Clause {
         return this
     }
 
-    implies(conclusion: Clause): Clause {
-        return new Imply(this, conclusion)
-    }
-
-    about(id: Id): Clause {
-        return this.args.includes(id) ? this : emptyClause()
+    get entities(): Id[] {
+        return Array.from(new Set(this.args)) // filter out variables ???
     }
 
 }

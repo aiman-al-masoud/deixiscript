@@ -3,7 +3,6 @@ import { Id } from "./Id";
 import And from "./And";
 import { PrologClause } from "../prologclause/PrologClause";
 import { HornClause } from "../prologclause/HornClause";
-import { BasicPrologClause } from "../prologclause/BasicPrologClause";
 
 export default class Imply implements Clause {
 
@@ -39,19 +38,18 @@ export default class Imply implements Clause {
      * Since prolog only supports that kind of implication.
      * @returns 
      */
-    toProlog(): PrologClause{
+    toProlog(): PrologClause {
 
         const conditions = this.condition.toProlog()
 
         const conclusions = this.conclusion
             .flatList()
             .filter(c => !this.condition.flatList().map(c => c.hashCode).includes(c.hashCode)) // filter out conclusions that are also premises, very important to avoid PROLOG INFINITE LOOPS in querying!
-            .flatMap(c=>c.toProlog())
+            .flatMap(c => c.toProlog())
 
         return conclusions
-                .map(c=> new HornClause(c as BasicPrologClause, conditions) )
-                .map(c=> c as PrologClause)
-                .reduce((c1, c2)=>c1.and(c2))
+            .map(c => new HornClause(c, conditions) as PrologClause)
+            .reduce((c1, c2) => c1.and(c2))
     }
 
     get entities(): Id[] {
