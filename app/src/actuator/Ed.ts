@@ -1,12 +1,12 @@
 import { Id } from "../clauses/Id";
+import { wrap, WrapOpts, Wrapper } from "./Wrapper";
 
 /**
  * Entity Dictionary... (or Everett Ducklair)
  */
 export interface Ed {
-    get(id: Id): Promise<any>
-    set(id: Id, object: any, opts?: SetOpts): void
-    getJsName(id: Id): Promise<string | undefined>
+    get(id: Id): Promise<Wrapper>
+    set(id: Id, object: any, opts?: WrapOpts): void
     get keys(): Id[]
     get values(): any[]
 }
@@ -15,18 +15,14 @@ export default function getEd(): Ed {
     return new BaseEd()
 }
 
-export interface SetOpts {
-    jsName: string
-}
-
 class BaseEd implements Ed {
 
-    constructor(readonly dictionary: { [id: Id]: any } = {},
+    constructor(readonly dictionary: { [id: Id]: Wrapper } = {},
         readonly jsNames: { [id: Id]: string | undefined } = {}) {
 
     }
 
-    async get(id: Id) {
+    async get(id: Id): Promise<Wrapper> {
 
         return new Promise((ok, err) => {
 
@@ -44,33 +40,16 @@ class BaseEd implements Ed {
 
     }
 
-    set(id: Id, object: any, opts?: SetOpts): void {
-        this.dictionary[id] = object
-        this.jsNames[id] = opts?.jsName
+    set(id: Id, object: any, opts?: WrapOpts): void {
+        this.dictionary[id] = wrap(object, opts)
     }
 
     get keys(): Id[] {
         return Object.keys(this.dictionary)
     }
 
-    get values(): Id[] {
+    get values(): Wrapper[] {
         return Object.values(this.dictionary)
-    }
-
-    async getJsName(id: Id): Promise<string | undefined> {
-
-        const object = this.jsNames[id]
-
-        if (object) {
-            return object // in case id is available immediately
-        }
-
-        return new Promise((ok, err) => {
-            setTimeout(() => {
-                ok(this.jsNames[id])
-            }, 3000) // wait some ms for id to be populated
-        })
-
     }
 
 }

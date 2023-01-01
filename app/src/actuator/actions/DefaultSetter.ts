@@ -1,7 +1,6 @@
 import { clauseOf } from "../../clauses/Clause";
 import { Id } from "../../clauses/Id";
 import Actuator from "../Actuator";
-import { Ed } from "../Ed";
 import Action from "./Action";
 
 export default class DefaultSetter implements Action {
@@ -12,27 +11,21 @@ export default class DefaultSetter implements Action {
 
     async run(): Promise<void> {
 
-        // if(jsProp === this.val){
-        //     return 
-        // }
-
-        if (this.val !== 'blue') {
+        if (this.val !== 'blue') { // TODO jsProp === this.val
             return
         }
 
-        console.log('start DefaultSetter')
-        let jsProp = await this.actuator.ed.getJsName(this.prop)
-
-        const clause = clauseOf('of', this.prop, 'X').copy({noAnaphora:true})
+        const clause = clauseOf('of', this.prop, 'X').copy({ noAnaphora: true })
         const owners = await this.actuator.brain.query(clause)
 
         const owner: Id = (owners[0] ?? {}).X
         const ownerObject = await this.actuator.ed.get(owner)
+        const jsProp = 'background'
 
-        console.log(ownerObject, '.', jsProp, '=', this.val, { owner })
+        console.log(ownerObject.object, '.', jsProp, '=', this.val, { owner })
 
         if (this.val && jsProp && ownerObject) {
-            ownerObject[jsProp] = this.val
+            ownerObject.object[jsProp] = this.val
         }
 
     }

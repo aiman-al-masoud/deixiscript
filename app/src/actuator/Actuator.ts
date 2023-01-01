@@ -38,7 +38,8 @@ class BaseActuator implements Actuator {
 
         for (const id of ids) {
             const elem = await this.brain.ed.get(id)
-            elem && elem.style ? elem.style.outline = '#f00 solid 2px' : 0
+            elem.object && elem.object.style ? elem.object.style.outline = '#f00 solid 2px' : 0
+            // elem && elem.style ? elem.style.outline = '#f00 solid 2px' : 0
         }
 
     }

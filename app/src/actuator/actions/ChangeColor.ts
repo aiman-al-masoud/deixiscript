@@ -14,7 +14,7 @@ export class ChangeColor implements Action {
         console.log('start Change COlor!')
         
         const object = await this.actuator.ed.get(this.id)
-        object.style.background = this.color
+        object.object.style.background = this.color
 
     }
 }
