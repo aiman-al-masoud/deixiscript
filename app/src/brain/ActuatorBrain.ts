@@ -29,11 +29,11 @@ export default class ActuatorBrain extends PrologBrain {
         const results = await super.assert(clause)
         const diff = await this.diff(before)
 
-        if (!opts?.fromBelow) { // don't tell Actuator what it knows!
-            this.actuator.onUpdate(diff.filter(c=>c.hashCode != clause.hashCode))
-        }else{
-            this.actuator.onUpdate(diff)
-        }
+        // if (opts?.fromBelow) { // don't tell Actuator what it knows!
+        // this.actuator.onUpdate(diff.filter(c=>c.hashCode != clause.hashCode))
+        // }else{
+        this.actuator.onUpdate(diff)
+        // }
 
         return results
     }
