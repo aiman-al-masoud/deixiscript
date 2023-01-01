@@ -33,7 +33,7 @@ export class BasicClause implements Clause {
     }
 
     toProlog(opts?: ToPrologOpts): PrologClause[] {
-        return [new BasicPrologClause(this.args.length === 1 ? 'be' : 'rel', [...this.args, this.predicate, !this.negated]   )]
+        return [new BasicPrologClause(this.predicate, this.args, this.negated)]
     }
 
     get entities(): Id[] {
