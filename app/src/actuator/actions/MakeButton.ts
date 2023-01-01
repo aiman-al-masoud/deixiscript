@@ -29,13 +29,7 @@ export class MakeButton implements Action {
         // adding a background of style "entity"
         const bgId = getRandomId()
         this.actuator.ed.set(bgId, '', { jsName: 'background' })
-
-        // const clause = clauseOf('style', styleId)
-        // .and(clauseOf('of', styleId, this.id))
-        // .and(clauseOf('background', bgId))
-        // .and(clauseOf('of', bgId, styleId))
-        // .copy({ noAnaphora: true })
-
+        
         await this.actuator.onPushAbove([clauseOf('style', styleId)
             .and(clauseOf('of', styleId, this.id))
             .copy({ noAnaphora: true })])
