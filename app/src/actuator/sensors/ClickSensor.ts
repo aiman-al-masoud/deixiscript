@@ -8,7 +8,7 @@ export class ClickSensor implements Sensor {
     constructor(readonly id: Id, readonly object: Element, readonly actuator: Actuator) {
 
         object.addEventListener('click', () => {
-            actuator.onPushAbove([clauseOf('clicked', id)]);
+            actuator.onPushAbove([clauseOf('clicked', id).copy({ noAnaphora: true })]);
         });
 
     }
