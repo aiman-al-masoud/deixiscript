@@ -1,6 +1,7 @@
 import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import And from "./And";
+import { BasicPrologClause, HornClause, PrologClause } from "./PrologClause";
 
 export default class Imply implements Clause {
 
@@ -36,17 +37,16 @@ export default class Imply implements Clause {
      * Since prolog only supports that kind of implication.
      * @returns 
      */
-    toProlog(opts?: ToPrologOpts): string[] {
+    toProlog(opts?: ToPrologOpts): PrologClause[] {
 
-        const conditionString = this.condition
-            .toProlog({ ...opts, anyFactId: true })
-            .reduce((c1, c2) => `${c1}, ${c2}`)
-
+        const conditions = this.condition.toProlog()
+        
         const conclusions = this.conclusion
             .flatList()
             .filter(c => !this.condition.flatList().map(c => c.hashCode).includes(c.hashCode)) // filter out conclusions that are also premises, very important to avoid PROLOG INFINITE LOOPS in querying!
+            .flatMap(c=>c.toProlog())
 
-        return conclusions.map(c => `${c.toProlog({ ...opts, anyFactId: true /* or opposite?*/ })[0]} :- ${conditionString}`) //TODO: [0] is to be dealt with better
+        return conclusions.map(c=> new HornClause(c as BasicPrologClause, conditions as BasicPrologClause[]) )
     }
 
     get entities(): Id[] {

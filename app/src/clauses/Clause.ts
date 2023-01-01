@@ -1,6 +1,7 @@
 import { BasicClause } from "./BasicClause"
 import And from "./And"
 import { Id, Map } from "./Id"
+import { PrologClause } from "./PrologClause"
 
 
 /**
@@ -18,7 +19,7 @@ export interface Clause {
     and(other: Clause, opts?: AndOpts): Clause
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
-    toProlog(opts?: ToPrologOpts): string[]
+    toProlog(opts?: ToPrologOpts): PrologClause[]
     about(id:Id):Clause
 }
 

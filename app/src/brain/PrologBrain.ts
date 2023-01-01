@@ -1,5 +1,5 @@
 import { Clause, clauseOf } from "../clauses/Clause";
-import { getRandomId, Map, toVar } from "../clauses/Id";
+import { Map, toVar } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import { getProlog } from "../prolog/Prolog";
 import Brain, { BrainState } from "./Brain";
@@ -35,7 +35,9 @@ export default class PrologBrain implements Brain {
 
         const q = query
             .copy({ map: mapToVar })
-            .toProlog({ anyFactId: true })
+            .toProlog()
+            .map(c => c.copy({ anyFact: true }))
+            .map(c => c.toString())
             .reduce((a, b) => `${a}, ${b}`) + '.' // TODO: deal with dot at a lower level ?
 
         return await this.kb.query(q)
@@ -47,19 +49,16 @@ export default class PrologBrain implements Brain {
 
         const toBeAsserted = clause
             .copy({ map: anaphoraMap })
-            .toProlog({ anyFactId: true })
+            .toProlog()
 
         for (const c of toBeAsserted) {
 
-            const q = await this.kb.query(c + '.')
+            const q = await this.kb.query(c.copy({ anyFact: true }).toString() + '.')
 
             if (q.length === 0) {
-
-                const isImply = c.includes(':-')
-                const realAssert = isImply ? c : c.replace('_', getRandomId().toString())
-                
-                await this.kb.assert(realAssert)
-                console.info('asserted', realAssert)
+                const proassert = c.copy({ anyFact: false }).toString()
+                await this.kb.assert(proassert)
+                console.log('asserted', proassert)
             }
 
         }

@@ -1,6 +1,7 @@
 import { Clause, AndOpts, CopyOpts, ToPrologOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import Imply from "./Imply";
+import { PrologClause } from "./PrologClause";
 
 export default class And implements Clause {
 
@@ -40,8 +41,7 @@ export default class And implements Clause {
         return new Imply(this, conclusion)
     }
 
-
-    toProlog(opts?: ToPrologOpts): string[] {
+    toProlog(opts?: ToPrologOpts): PrologClause[] {
 
         return this.clauses.length === 1 && this.negated ? //TODO: fix this crap
             this.clauses[0].copy({ negate: true }).toProlog(opts) :
@@ -51,10 +51,10 @@ export default class And implements Clause {
 
     about(id: Id): Clause {
 
-        if(this.negated){
+        if (this.negated) {
             return emptyClause() // TODO!!!!!!!!!
-        }else{
-            return this.clauses.flatMap(c=>c.about(id)).reduce((c1,c2)=>c1.and(c2), emptyClause())
+        } else {
+            return this.clauses.flatMap(c => c.about(id)).reduce((c1, c2) => c1.and(c2), emptyClause())
         }
 
     }

@@ -2,6 +2,7 @@ import { Clause, AndOpts, CopyOpts, emptyClause, ToPrologOpts, hashString } from
 import { Id, getRandomId } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
+import { BasicPrologClause, PrologClause } from "./PrologClause";
 
 
 export class BasicClause implements Clause {
@@ -31,12 +32,8 @@ export class BasicClause implements Clause {
         return [this]
     }
 
-    toProlog(opts?: ToPrologOpts): string[] {
-
-        const pred = this.args.length === 1 ? 'be' : 'rel'
-        const args = [opts?.anyFactId ? '_' : getRandomId(), ...this.args.slice(0, 2), this.predicate, !this.negated]
-        return [`${pred}(${args.reduce((a, b) => a + ', ' + b)})`]
-
+    toProlog(opts?: ToPrologOpts): PrologClause[] {
+        return [new BasicPrologClause(this.args.length === 1 ? 'be' : 'rel', [...this.args, this.predicate, !this.negated]   )]
     }
 
     get entities(): Id[] {
