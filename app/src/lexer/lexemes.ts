@@ -11,7 +11,8 @@ export const lexemes: Lexeme[] = [
 
     {
         name: 'button',
-        type: 'noun'
+        type: 'noun',
+        regular : true
     },
 
     {
