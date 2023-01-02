@@ -1,17 +1,25 @@
-import existential_quantifiers from "../../../res/tokens/existential_quantifiers";
-import universal_quantifiers from "../../../res/tokens/universal_quantifiers";
-import Brain from "../../brain/Brain";
-import Token from "../interfaces/Token";
+import { formsOf } from "../../lexer/Lexeme";
+import { lexemes } from "../../lexer/lexemes";
 import AbstractToken from "./AbstractToken";
 
-export default class Quantifier extends AbstractToken{
-    
-    isUniversal(){
-        return universal_quantifiers.includes(this.string)
+export default class Quantifier extends AbstractToken {
+
+    isUniversal() {
+
+        return lexemes
+            .filter(x => x.type === 'uniquant')
+            .flatMap(x => formsOf(x))
+            .includes(this.string)
+
     }
 
-    isExistential(){
-        return existential_quantifiers.includes(this.string)
+    isExistential() {
+
+        return lexemes
+            .filter(x => x.type === 'existquant')
+            .flatMap(x => formsOf(x))
+            .includes(this.string)
+
     }
-    
+
 }

@@ -1,14 +1,18 @@
-import definite_articles from "../../../res/tokens/definite_articles";
-import Brain from "../../brain/Brain";
+import { formsOf } from "../../lexer/Lexeme";
+import { lexemes } from "../../lexer/lexemes";
 import AbstractToken from "./AbstractToken";
 
-export default class Article extends AbstractToken{
+export default class Article extends AbstractToken {
 
-    isDefinite(){
-        return definite_articles.includes(this.string)
+    isDefinite() {
+
+        return lexemes
+            .filter(x => x.type === 'defart')
+            .flatMap(x => formsOf(x))
+            .includes(this.string)
     }
 
-    toString(){
+    toString() {
         return `Article(${this.string}, isDefinite=${this.isDefinite()})`
     }
 

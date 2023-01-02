@@ -14,6 +14,7 @@ import Prolog, { getProlog } from './prolog/Prolog';
 import TauProlog from './prolog/TauProlog';
 import compileLogicTest from './tests/compile-logic-test';
 import playground from './tests/playground';
+import autotester from './tests/autotester';
 // import prologPlay from './tests/prolog-playground';
 
 
@@ -220,8 +221,10 @@ import playground from './tests/playground';
 // })()
 
 
-playground()
+// playground()
 // prologPlay()
+
+autotester()
 
 // (async ()=>{
 //     const brain = await getBrain({withActuator:false});
