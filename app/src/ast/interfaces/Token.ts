@@ -20,11 +20,31 @@ export default interface Token extends Ast {
 
 }
 
-export function getTokenCons(type: string): Constructor<Token> {
+export function getTokenCons(type: TokenType): Constructor<Token> {
     return constructors[type]
 }
 
-const constructors: { [x: string]: Constructor<Token> } = {
+export type TokenType =
+    'noun'
+    | 'iverb'
+    | 'mverb'
+    | 'hverb'
+    | 'copula'
+    | 'then'
+    | 'adj'
+    | 'existquant'
+    | 'uniquant'
+    | 'preposition'
+    | 'subconj'
+    | 'relpron'
+    | 'defart'
+    | 'indefart'
+    | 'fullstop'
+    | 'nonsubconj'
+    | 'negation'
+    | 'contraction'
+
+const constructors: { [x in TokenType]: Constructor<Token> } = {
     'noun': Noun,
     'iverb': IVerb,
     'mverb': MVerb,
@@ -41,5 +61,6 @@ const constructors: { [x: string]: Constructor<Token> } = {
     'indefart': Article,
     'fullstop': FullStop,
     'nonsubconj': NonSubordinatingConjunction,
-    'negation': Negation
+    'negation': Negation,
+    'contraction': Negation //TODO: fix this crap  
 }
