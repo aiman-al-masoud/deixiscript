@@ -2,13 +2,13 @@ import { TokenType } from "../ast/interfaces/Token"
 import { lexemes } from "./lexemes"
 
 export interface Lexeme {
-    readonly name: string
-    readonly type: TokenType
-    readonly forms?: string[]
-    readonly regular?: boolean
-    readonly derivedFrom?: string
-    readonly aliasFor?: string
-    readonly contractionFor?: string[]
+    /**usually root form*/ readonly name: string
+    /**token type*/ readonly type: TokenType
+    /**useful for irregular stuff*/ readonly forms?: string[]
+    /**refers to verb conjugations or plural forms*/ readonly regular?: boolean
+    /**semantical dependece*/ readonly derivedFrom?: string
+    /**semantical equivalence*/ readonly aliasFor?: string
+    /**made up of more lexemes*/ readonly contractionFor?: string[]
 }
 
 export function formsOf(lexeme: Lexeme) {
