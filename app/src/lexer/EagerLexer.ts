@@ -9,9 +9,13 @@ export default class EagerLexer implements Lexer {
     protected _pos: number
 
     constructor(readonly sourceCode: string) {
-        //TODO: reconstruct "do not" and "does not" tokens
-        //TODO: nouns vs adjectives
-        this.tokens = sourceCode.trim().split(/\s+|\./).map(e => !e ? '.' : e).map(tokenOf)
+
+        this.tokens = sourceCode
+            .trim()
+            .split(/\s+|\./)
+            .map(e => !e ? '.' : e)
+            .flatMap(tokenOf)
+
         console.debug('tokens', this.tokens)
         this._pos = 0
     }
@@ -58,7 +62,7 @@ export default class EagerLexer implements Lexer {
     }
 
     get isEnd(): boolean {
-        return this.pos >= this.tokens.length 
+        return this.pos >= this.tokens.length
     }
 
 }
