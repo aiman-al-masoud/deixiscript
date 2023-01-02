@@ -28,8 +28,6 @@ class BaseEd implements Ed {
 
             const interval = setInterval(() => {
 
-                console.log('interval running for id:', id)
-
                 if (this.dictionary[id]) {
                     clearInterval(interval)
                     ok(this.dictionary[id])

@@ -47,7 +47,7 @@ export default class BasicParser implements Parser {
         try {
             return method()
         } catch (error) {
-            console.debug((error as Error).message)
+            // console.debug((error as Error).message)
             this.lx.backTo(memento)
         }
 

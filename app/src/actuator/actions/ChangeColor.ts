@@ -9,12 +9,8 @@ export class ChangeColor implements Action {
 
     }
 
-    async run(): Promise<void> {
-
-        console.log('start Change COlor!')
-        
+    async run(): Promise<void> {        
         const object = await this.actuator.ed.get(this.id)
         object.object.style.background = this.color
-
     }
 }
