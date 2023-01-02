@@ -85,23 +85,7 @@ export default class ActuatorBrain extends PrologBrain {
                 bgId = getRandomId()
                 await this.assert(bgDesc.copy({ map: { 'X': bgId } }));
             }
-
-            // const styleId = (await this.query(clauseOf('style', 'X')
-            //     .and(clauseOf('of', 'X', buttonId))
-            //     .copy({ noAnaphora: true })))[0]?.X ?? getRandomId()
-
-            // await this.assert(clauseOf('style', styleId)
-            //     .and(clauseOf('of', styleId, buttonId))
-            //     .copy({ noAnaphora: true }))
-
-            // const bgId = (await this.query(clauseOf('background', 'X')
-            //     .and(clauseOf('of', 'X', styleId))
-            //     .copy({ noAnaphora: true })))[0]?.X ?? getRandomId()
-
-            // await this.assert(clauseOf('background', bgId)
-            //     .and(clauseOf('of', bgId, styleId))
-            //     .copy({ noAnaphora: true }))
-
+            
         }
 
     }
