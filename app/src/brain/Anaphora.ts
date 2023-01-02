@@ -27,49 +27,49 @@ class BaseAnaphora implements Anaphora {
             return {} // no entities --> no anaphora
         }
 
-        console.log('entities', this.clause.entities)
+        // console.log('entities', this.clause.entities)
 
         const themeDesc = this.clause.theme
         const themeEntities = this.clause.theme.entities
 
-        console.log({ themeEntities })
+        // console.log({ themeEntities })
 
         const rhemeDesc = this.clause.rheme
             .flatList()
             .filter(c => !themeEntities.some(e => c.entities.includes(e)))
             .reduce((a, b) => a.and(b), emptyClause())
 
-        console.log({ rhemeDesc })
+        // console.log({ rhemeDesc })
 
         const heyDesc = themeDesc.and(rhemeDesc)
 
-        console.log({ heyDesc })
+        // console.log({ heyDesc })
 
         const mapToVar = heyDesc.entities.map(e => ({ [e]: toVar(e) })).reduce((a, b) => ({ ...a, ...b }))
 
-        console.log({ mapToVar })
+        // console.log({ mapToVar })
 
         const reverseMapToVar = Object.fromEntries(Object.entries(mapToVar).map(e => [e[1], e[0]]))
 
-        console.log({ reverseMapToVar })
+        // console.log({ reverseMapToVar })
 
         const brainState = (await universe.snapshot()).be
         
-        console.log({brainState})
+        // console.log({brainState})
 
         // ----------------
         const candidates = await universe.query(heyDesc.copy({ map: mapToVar }))
 
         const chosen = candidates[0] ?? {}
 
-        console.log({ chosen })
+        // console.log({ chosen })
 
         const anaphora = Object
             .keys(chosen)
             .map(k => ({ [reverseMapToVar[k]]: chosen[k] ?? reverseMapToVar[k] }))
             .reduce((a, b) => ({ ...a, ...b }), {})
 
-        console.log({ anaphora })
+        // console.log({ anaphora })
         return anaphora
         // --------------------------------
 

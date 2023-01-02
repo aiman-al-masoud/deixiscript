@@ -43,7 +43,7 @@ export default class PrologBrain implements Brain {
 
     async assert(clause: Clause): Promise<Map[]> {
 
-        console.log(clause)
+        // console.log(clause)
 
         const anaphoraMap = clause.noAnaphora ? {} : await getAnaphora(clause).mapTo(this)
 
