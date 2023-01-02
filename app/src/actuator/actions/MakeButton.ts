@@ -27,8 +27,8 @@ export class MakeButton implements Action {
         // console.log('MakeButton', 'button id=', this.id, { styleId }, { bgId })
 
         // adding objects to entity dictionary
-        this.actuator.ed.set(styleId, button.style)
         this.actuator.ed.set(this.id, button)
+        this.actuator.ed.set(styleId, button.style)
         this.actuator.ed.set(bgId, 'xxxxxxxx')
 
         makeSensor(this.actuator, this.id, button)
