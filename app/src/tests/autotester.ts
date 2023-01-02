@@ -1,4 +1,5 @@
 import Brain, { getBrain } from "../brain/Brain";
+import { BasicClause } from "../clauses/BasicClause";
 
 const tests = [
     test1,
@@ -6,7 +7,8 @@ const tests = [
     test3,
     test4,
     test5,
-    test6
+    test6,
+    test7,
 ]
 
 /**
@@ -15,14 +17,15 @@ const tests = [
 export default async function autotester() {
 
     for (const test of tests) {
-        console.log(await test())
+        console.log(await test() ? 'success' : 'fail', test.name)
         clearDom()
     }
 
 }
 
 async function test1() {
-    const brain = await getBrain({ withActuator: true })
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
     await brain.execute('x is a red button.')
     const object = await getObject('x', brain)
     const assert1 = object.style.background === 'red'
@@ -35,7 +38,8 @@ async function test1() {
 }
 
 async function test2() {
-    const brain = await getBrain({ withActuator: true })
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
     await brain.execute('x is a button. y is a button. z is a button.')
     const x = await getObject('x', brain)
     const y = await getObject('y', brain)
@@ -48,7 +52,8 @@ async function test2() {
 }
 
 async function test3() {
-    const brain = await getBrain({ withActuator: true })
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
     await brain.execute('x is a button. if the button is clicked then the button is red.')
     const x = await getObject('x', brain)
     const assert1 = !x.style.background
@@ -59,25 +64,40 @@ async function test3() {
 }
 
 async function test4() {
-    const brain = await getBrain({ withActuator: true })
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
     await brain.execute('a button is red')
     const x = await getObject('button', brain)
     return x.style.background === 'red'
 }
 
 async function test5() {
-    const brain = await getBrain({ withActuator: true })
-    await brain.execute('x is a button. background of style of x is blue ')
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
+    await brain.execute('x is a button. background of style of x is blue.')
     const x = await getObject('button', brain)
+    await sleep(100)
     return x.style.background === 'blue'
 }
 
 
 async function test6() {
-    const brain = await getBrain({ withActuator: true })
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
     await brain.execute('body is red')
     await sleep(100)
     return document.body.style.background === 'red'
+}
+
+async function test7(){
+    const brain = await getBrain({ withActuator: true });
+    (window as any).brain = brain
+    await brain.execute('x is a button. background of style of x is blue.')
+    await sleep(1000)
+    const snapshot = await brain.snapshot()
+    const bgObjects = snapshot.be.filter(x=>(x as BasicClause).predicate === 'background')
+    const assert1 = bgObjects.length === 1
+    return assert1
 }
 
 async function getObject(description: string, brain: Brain) {
@@ -87,6 +107,8 @@ async function getObject(description: string, brain: Brain) {
     const wrapper = await brain.ed.get(id)
     return wrapper.object as HTMLElement
 }
+
+
 
 
 async function sleep(millisecs: number) {
@@ -99,5 +121,5 @@ async function sleep(millisecs: number) {
 
 function clearDom() {
     document.body.innerHTML = ''
-    // document.body.style.
+    document.body.style.background = 'white'
 }

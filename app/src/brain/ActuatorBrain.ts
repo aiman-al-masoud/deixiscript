@@ -63,16 +63,44 @@ export default class ActuatorBrain extends PrologBrain {
         if (c.predicate === 'button') {
 
             const buttonId = c.args[0]
-            const styleId = (await this.actuator.brain.query(clauseOf('style', 'X').and(clauseOf('of', 'X', buttonId))))[0]?.X ?? getRandomId()
-            const bgId = (await this.actuator.brain.query(clauseOf('background', 'X').and(clauseOf('of', 'X', styleId))))[0]?.X ?? getRandomId()
 
-            await this.assert(clauseOf('style', styleId)
-                .and(clauseOf('of', styleId, buttonId))
-                .copy({ noAnaphora: true }))
+            const styleDesc = clauseOf('style', 'X')
+                .and(clauseOf('of', 'X', buttonId))
+                .copy({ noAnaphora: true })
 
-            await this.assert(clauseOf('background', bgId)
-                .and(clauseOf('of', bgId, styleId))
-                .copy({ noAnaphora: true }))
+            let styleId = (await this.query(styleDesc))[0]?.X
+
+            if (!styleId) {
+                styleId = getRandomId()
+                await this.assert(styleDesc.copy({ map: { 'X': styleId } }));
+            }
+
+            const bgDesc = clauseOf('background', 'X')
+                .and(clauseOf('of', 'X', styleId))
+                .copy({ noAnaphora: true })
+
+            let bgId = (await this.query(bgDesc))[0]?.X
+
+            if (!bgId) {
+                bgId = getRandomId()
+                await this.assert(bgDesc.copy({ map: { 'X': bgId } }));
+            }
+
+            // const styleId = (await this.query(clauseOf('style', 'X')
+            //     .and(clauseOf('of', 'X', buttonId))
+            //     .copy({ noAnaphora: true })))[0]?.X ?? getRandomId()
+
+            // await this.assert(clauseOf('style', styleId)
+            //     .and(clauseOf('of', styleId, buttonId))
+            //     .copy({ noAnaphora: true }))
+
+            // const bgId = (await this.query(clauseOf('background', 'X')
+            //     .and(clauseOf('of', 'X', styleId))
+            //     .copy({ noAnaphora: true })))[0]?.X ?? getRandomId()
+
+            // await this.assert(clauseOf('background', bgId)
+            //     .and(clauseOf('of', bgId, styleId))
+            //     .copy({ noAnaphora: true }))
 
         }
 

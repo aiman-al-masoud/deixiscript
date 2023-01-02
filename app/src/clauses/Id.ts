@@ -8,8 +8,23 @@ export type Id = number | string
  */
 export type Map = { [a: Id]: Id }
 
+
+function* getIdGenerator() {
+    let x = 0
+    while (true) {
+        x++
+        yield x
+    }
+}
+
+const idGenerator = getIdGenerator()
+
 export function getRandomId(opts?: GetRandomIdOpts): Id {
-    const newId = `id${parseInt(1000 * Math.random() + '')}`
+    
+    // const newId = `id${parseInt(1000 * Math.random() + '')}`
+
+    const newId = `id${idGenerator.next().value}`
+
     return opts?.asVar ? toVar(newId) : newId
 }
 

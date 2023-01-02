@@ -1,6 +1,7 @@
 import { clauseOf } from "../../clauses/Clause";
 import { Id } from "../../clauses/Id";
 import Actuator from "../Actuator";
+import getEd from "../Ed";
 import Action from "./Action";
 
 export default class DefaultSetter implements Action {
@@ -25,7 +26,8 @@ export default class DefaultSetter implements Action {
 
         // console.log('OWNER', 'OWNER', ownerObject.object)
 
-        const jsProp = 'background'
+        // const jsProp = 'background'
+        const jsProp = (await this.actuator.ed.get(this.prop)).jsName
 
         // console.log(ownerObject.object, '.', jsProp, '=', this.val, { owner })
 

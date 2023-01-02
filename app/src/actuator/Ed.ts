@@ -26,7 +26,10 @@ class BaseEd implements Ed {
 
         return new Promise((ok, err) => {
 
+            
             const interval = setInterval(() => {
+                
+                // console.log('cisdsd', id)
 
                 if (this.dictionary[id]) {
                     clearInterval(interval)
