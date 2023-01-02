@@ -662,3 +662,13 @@ background of style of x is blue. x is a button.
 Problem solved, you need to set ontology related attributes of new entities in Brain, before calling Actuator. Actuator will only be responsible for binding ids to newly initialized actual javascript objects.
 
 NEEDS refactoring!!!!!!!!
+
+## "Binding" Issue (not a pun)
+
+fontFamily of style of x is serif. x is a button
+
+Problem is: each attrib-pointing-entity must be bound to the js object it represents:
+
+this.actuator.ed.set(styleId, button.style)
+
+This is currently done in MakeButton, manually for each property. Try making this as automatic as possible.
