@@ -34,11 +34,11 @@ export default class ActuatorBrain extends PrologBrain {
             await this.doOntologyStuff(c)
         }
 
-        // if (opts?.fromBelow) { // don't tell Actuator what it knows!
-        // this.actuator.onUpdate(diff.filter(c=>c.hashCode != clause.hashCode))
-        // }else{
-        this.actuator.onUpdate(diff)
-        // }
+        if (opts?.fromBelow) { // don't tell Actuator what it knows!
+            this.actuator.onUpdate(diff.filter(c => c.hashCode != clause.hashCode))
+        } else {
+            this.actuator.onUpdate(diff)
+        }
 
         return results
     }
