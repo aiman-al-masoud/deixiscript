@@ -19,15 +19,15 @@ export default class DefaultSetter implements Action {
         const owners = await this.actuator.brain.query(clause)
 
         const owner = owners.filter(o => Object.values(o).length <= 2)[0]?.X
-        console.log('OWNERID', owner)
+        // console.log('OWNERID', owner)
 
         const ownerObject = await this.actuator.ed.get(owner)
 
-        console.log('OWNER', 'OWNER', ownerObject.object)
+        // console.log('OWNER', 'OWNER', ownerObject.object)
 
         const jsProp = 'background'
 
-        console.log(ownerObject.object, '.', jsProp, '=', this.val, { owner })
+        // console.log(ownerObject.object, '.', jsProp, '=', this.val, { owner })
 
         if (this.val && jsProp && ownerObject) {
             ownerObject.object[jsProp] = this.val

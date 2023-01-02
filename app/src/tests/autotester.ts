@@ -4,7 +4,9 @@ const tests = [
     test1,
     test2,
     test3,
-    test4
+    test4,
+    test5,
+    test6
 ]
 
 /**
@@ -63,6 +65,21 @@ async function test4() {
     return x.style.background === 'red'
 }
 
+async function test5() {
+    const brain = await getBrain({ withActuator: true })
+    await brain.execute('x is a button. background of style of x is blue ')
+    const x = await getObject('button', brain)
+    return x.style.background === 'blue'
+}
+
+
+async function test6() {
+    const brain = await getBrain({ withActuator: true })
+    await brain.execute('body is red')
+    await sleep(100)
+    return document.body.style.background === 'red'
+}
+
 async function getObject(description: string, brain: Brain) {
     const candidates = await brain.execute(description)
     const firstCandidate = candidates[0]
@@ -70,6 +87,7 @@ async function getObject(description: string, brain: Brain) {
     const wrapper = await brain.ed.get(id)
     return wrapper.object as HTMLElement
 }
+
 
 async function sleep(millisecs: number) {
     return new Promise((ok, err) => {
@@ -81,4 +99,5 @@ async function sleep(millisecs: number) {
 
 function clearDom() {
     document.body.innerHTML = ''
+    // document.body.style.
 }
