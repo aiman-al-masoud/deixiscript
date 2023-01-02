@@ -76,7 +76,7 @@ async function test5() {
     (window as any).brain = brain
     await brain.execute('x is a button. background of style of x is blue.')
     const x = await getObject('button', brain)
-    await sleep(100)
+    await sleep(1000)
     return x.style.background === 'blue'
 }
 

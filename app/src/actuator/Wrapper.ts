@@ -1,19 +1,18 @@
 export interface Wrapper {
     readonly object: any
-    readonly jsName: string
 }
 
 export function wrap(object: any, opts?: WrapOpts) {
-    return new BaseWrapper(object, opts?.jsName ?? '')
+    return new BaseWrapper(object, opts)
 }
 
 export interface WrapOpts {
-    jsName: string
+
 }
 
 class BaseWrapper implements Wrapper {
 
-    constructor(readonly object: any, readonly jsName = '') {
+    constructor(readonly object: any, readonly opts?: WrapOpts) {
 
     }
 

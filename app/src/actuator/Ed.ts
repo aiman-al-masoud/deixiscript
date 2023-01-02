@@ -17,8 +17,7 @@ export default function getEd(): Ed {
 
 class BaseEd implements Ed {
 
-    constructor(readonly dictionary: { [id: Id]: Wrapper } = {},
-        readonly jsNames: { [id: Id]: string | undefined } = {}) {
+    constructor(readonly dictionary: { [id: Id]: Wrapper } = {}) {
 
     }
 
@@ -26,10 +25,7 @@ class BaseEd implements Ed {
 
         return new Promise((ok, err) => {
 
-            
             const interval = setInterval(() => {
-                
-                // console.log('cisdsd', id)
 
                 if (this.dictionary[id]) {
                     clearInterval(interval)

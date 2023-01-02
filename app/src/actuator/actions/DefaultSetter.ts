@@ -17,12 +17,9 @@ export default class DefaultSetter implements Action {
 
     async run(): Promise<void> {
 
-        const jsProp = (await this.actuator.ed.get(this.prop)).jsName
+        await this.actuator.ed.get(this.prop)
 
-        if (!jsProp || jsProp === this.val) {
-            return
-        }
-
+        const maybeJsNames = (await this.actuator.brain.query(clauseOf('X', this.prop).copy({ noAnaphora: true }))).map(m => m.X)
         const clause = clauseOf('of', this.prop, 'X').copy({ noAnaphora: true })
         const owners = await this.actuator.brain.query(clause)
 
@@ -32,9 +29,15 @@ export default class DefaultSetter implements Action {
 
         const owner = owners.filter(o => Object.values(o).length <= 2)[0]?.X
         const ownerObject = await this.actuator.ed.get(owner)
+        const jsNames = maybeJsNames.filter(n => ownerObject.object[n] !== undefined)
+        const jsName = jsNames[0]
 
-        // console.log(ownerObject.object, '.', jsProp, '=', this.val, { owner })
-        ownerObject.object[jsProp] = this.val
+        if (!jsName || jsName === this.val) {
+            return
+        }
+
+        ownerObject.object[jsName] = this.val
+
     }
 
 }
