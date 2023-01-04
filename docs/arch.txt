@@ -1,0 +1,38 @@
+Clause.toAction(ed:Ed)
+
+example 1
+
+'the button is red' ---toAst--> 
+
+CopulaSentence(subj=button, pred=red) ----toClause--->
+
+AndClause(button(id1), red(id1))   ----getAnaphora--->
+
+AndClause(button(id33), red(id33))  ---toAction(ed)--->
+
+() => set(ed.get('id33'), 'red')
+
+example 2
+
+
+'is the button red' ---toAst--> 
+
+CopulaQuestion(subj=button, pred=red) ----toClause--->
+
+AndClause(button(X), red(X))  ---toAction(ed)--->
+
+() => ed.values.filter(x => is(x, 'button') && is(x, 'red'))
+
+
+example 3
+
+'every button is red' ---toAst-->
+
+CopulaSentence(subj=every button, pred=red) ----toClause--->
+
+Imply( red(X) :- button(X) ) ---toAction(ed)--->
+
+() => set(prototypeOf('button'), 'red')
+
+
+

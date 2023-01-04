@@ -1,3 +1,7 @@
-import main from "./main/main";
+// import main from "./main/main";
 
-main()
+import { testConcepts } from "./tests/testConcepts";
+
+// main()
+
+testConcepts()
