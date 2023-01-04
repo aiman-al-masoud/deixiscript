@@ -11,9 +11,7 @@ export function is(object: any, prop: any, ...args: any[]) {
     const matchingConcepts = propConcepts
         .filter(x => objectConcepts.includes(x))
 
-    return matchingConcepts.some(x => {
-        const getter = object[getGetterName(x)].bind(object)
-        return getter(prop)
-    })
+    return matchingConcepts
+        .some(x => object[getGetterName(x)].bind(object)(prop))
 
 }
