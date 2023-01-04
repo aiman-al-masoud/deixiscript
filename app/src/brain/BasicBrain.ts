@@ -1,7 +1,7 @@
 import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
-import Brain, { AssertOpts, BrainState } from "./Brain";
+import Brain, { AssertOpts } from "./Brain";
 import getEd from "./Ed";
 
 export default class BasicBrain implements Brain {

@@ -26,10 +26,3 @@ export interface AssertOpts {
 export interface GetBrainOpts {
     withActuator: boolean
 }
-
-export interface BrainState {
-    be: Clause[]
-    rel: Clause[]
-    beNot: Clause[]
-    relNot: Clause[]
-}
