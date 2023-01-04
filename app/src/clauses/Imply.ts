@@ -56,7 +56,8 @@ export default class Imply implements Clause {
     }
 
     toString() {
-        return `${this.condition.toString()} ---> ${this.conclusion.toString()}`
+        const yes = `${this.condition.toString()} ---> ${this.conclusion.toString()}`
+        return this.negated ? `not(${yes})` : yes
     }
 
 }

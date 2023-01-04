@@ -59,7 +59,8 @@ export default class And implements Clause {
     }
 
     toString() {
-        return this.clauses.map(x => x.toString()).toString()
+        const yes = this.clauses.map(x => x.toString()).toString()
+        return this.negated ? `not(${yes})` : yes
     }
 
 }

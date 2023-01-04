@@ -55,7 +55,8 @@ export class BasicClause implements Clause {
     }
 
     toString() {
-        return `${this.predicate}(${this.args})`
+        const yes = `${this.predicate}(${this.args})`
+        return this.negated ? `not(${yes})` : yes
     }
 
 }
