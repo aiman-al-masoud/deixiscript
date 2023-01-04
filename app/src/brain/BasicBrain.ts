@@ -10,7 +10,7 @@ export default class BasicBrain implements Brain {
 
     }
 
-    async execute(natlang: string): Promise<Map[]> {
+    async execute(natlang: string): Promise<any[]> {
 
         for (const ast of getParser(natlang).parseAll()) {
             const clause = await ast.toClause()

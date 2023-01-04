@@ -8,7 +8,7 @@ import BasicBrain from "./BasicBrain"
  */
 export default interface Brain {
     readonly ed: Ed
-    execute(natlang: string): Promise<Map[]>
+    execute(natlang: string): Promise<any[]>
     query(query: Clause): Promise<Map[]>
     assert(code: Clause, opts?: AssertOpts): Promise<Map[]>
 }
