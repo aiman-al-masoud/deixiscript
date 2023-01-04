@@ -54,7 +54,7 @@ export default class And implements Clause {
 
     }
 
-    toAction(brain: Brain): Action {
+    async toAction(brain: Brain): Promise<Action> {
         throw new Error('unimplemented!')
     }
 
