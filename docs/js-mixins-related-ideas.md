@@ -389,6 +389,12 @@ Classes can be created on the fly. Any class can be modified and extended dynami
 
 
 
+```
+the background of the style of the button is red if the button is red
+```
+
+interpret this as a double implication, aka iff, or definition.
+
 
 
 

@@ -54,4 +54,8 @@ export class BasicClause implements Clause {
         throw new Error('unimplemented!')
     }
 
+    toString() {
+        return `${this.predicate}(${this.args})`
+    }
+
 }

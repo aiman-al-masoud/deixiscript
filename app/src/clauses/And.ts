@@ -28,7 +28,7 @@ export default class And implements Clause {
     copy(opts?: CopyOpts): And {
         return new And(this.clauses.map(c => c.copy({ ...opts, negate: false })),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora, 
+            opts?.noAnaphora ?? this.noAnaphora,
             opts?.sideEffecty ?? this.isSideEffecty)
     }
 
@@ -56,6 +56,10 @@ export default class And implements Clause {
 
     toAction(brain: Brain): Action {
         throw new Error('unimplemented!')
+    }
+
+    toString() {
+        return this.clauses.map(x => x.toString()).toString()
     }
 
 }

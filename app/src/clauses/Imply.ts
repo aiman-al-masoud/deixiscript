@@ -34,7 +34,7 @@ export default class Imply implements Clause {
     flatList(): Clause[] {
         return [this]
     }
-    
+
     get entities(): Id[] {
         return this.condition.entities.concat(this.conclusion.entities)
     }
@@ -53,6 +53,10 @@ export default class Imply implements Clause {
 
     toAction(brain: Brain): Action {
         throw new Error('unimplemented!')
+    }
+
+    toString() {
+        return `${this.condition.toString()} ---> ${this.conclusion.toString()}`
     }
 
 }
