@@ -12,11 +12,8 @@ export default class CopulaSubordinateClause implements SubordinateClause {
     }
 
     async toClause(args?: ToClauseOpts): Promise<Clause> {
-        return this.predicate.toClause({ ...args, roles: { subject: args?.roles?.subject } })
-    }
-
-    get isSideEffecty(): boolean {
-        return false
+        return (await this.predicate.toClause({ ...args, roles: { subject: args?.roles?.subject } }))
+        .copy({sideEffecty : false})
     }
 
 }

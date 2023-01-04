@@ -28,11 +28,7 @@ export default class CopulaSentence implements SimpleSentence {
 
         const resolvedAnaphora = await getAnaphora(result).mapToClause(args?.anaphora ?? emptyClause())
 
-        return result.copy({map: resolvedAnaphora})
+        return result.copy({map: resolvedAnaphora, sideEffecty : true})
     }
-
-    get isSideEffecty(): boolean {
-        return true
-    }
-
+    
 }

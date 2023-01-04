@@ -1,33 +1,26 @@
-import { Ed } from "../actuator/Ed"
+import { Ed } from "./Ed"
 import { Clause } from "../clauses/Clause"
 import { Map } from "../clauses/Id"
-import ActuatorBrain from "./ActuatorBrain"
-import { getOntology, Ontology } from "./Ontology"
-import PrologBrain from "./PrologBrain"
+import BasicBrain from "./BasicBrain"
 
 /**
  * The main facade controller.
  */
 export default interface Brain {
+    readonly ed: Ed
     execute(natlang: string): Promise<Map[]>
     query(query: Clause): Promise<Map[]>
-    assert(code: Clause, opts? : AssertOpts): Promise<Map[]>
-    inject(ontology: Ontology): Promise<Brain>
-    snapshot(): Promise<BrainState>
-    diff(before: BrainState): Promise<Clause[]>
-    readonly ed: Ed
+    assert(code: Clause, opts?: AssertOpts): Promise<Map[]>
 }
+
+//TODO: where to put pointOut(id[])? (formerly in Actuator)
 
 export async function getBrain(opts?: GetBrainOpts): Promise<Brain> {
-
-    const cons = opts?.withActuator ? ActuatorBrain : PrologBrain
-    return new cons().inject(getOntology())
-
+    return new BasicBrain()
 }
 
-
-export interface AssertOpts{
-    fromBelow : boolean
+export interface AssertOpts {
+    fromBelow: boolean
 }
 
 export interface GetBrainOpts {

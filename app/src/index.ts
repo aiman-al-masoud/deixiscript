@@ -1,5 +1,3 @@
-import autotester from "./tests/autotester";
-import playground from "./tests/playground";
+import main from "./main/main";
 
-autotester()
-// playground()
+main()

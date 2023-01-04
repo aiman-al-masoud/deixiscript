@@ -23,11 +23,7 @@ export default class ComplexSentence implements CompoundSentence {
 
         const condition = await this.condition.toClause(newArgs1)
         const outcome = await this.outcome.toClause({ ...args, anaphora: condition })
-        return condition.implies(outcome)
-    }
-
-    get isSideEffecty(): boolean {
-        return true
+        return condition.implies(outcome).copy({ sideEffecty: true })
     }
 
 }

@@ -17,10 +17,6 @@ export default class MonotransitiveSentence implements VerbSentence {
 
     }
     
-    get isSideEffecty(): boolean {
-        return true
-    }
-    
     async toClause(args?: ToClauseOpts): Promise<Clause> {
         throw new Error("Method not implemented.");
     }

@@ -2,9 +2,8 @@ import { Clause, AndOpts, CopyOpts, emptyClause, hashString } from "./Clause";
 import { Id, isVar } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
-import { PrologClause } from "../prologclause/PrologClause";
-import { BasicPrologClause } from "../prologclause/BasicPrologClause";
-
+import Action from "../action/Action";
+import Brain from "../brain/Brain";
 
 export class BasicClause implements Clause {
 
@@ -12,6 +11,7 @@ export class BasicClause implements Clause {
         readonly args: Id[],
         readonly negated = false,
         readonly noAnaphora = false,
+        readonly isSideEffecty = false,
         readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments)),
         readonly rheme = emptyClause()) {
@@ -26,15 +26,12 @@ export class BasicClause implements Clause {
         return new BasicClause(this.predicate,
             this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora)
+            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.sideEffecty ?? this.isSideEffecty)
     }
 
     flatList(): Clause[] {
         return [this]
-    }
-
-    toProlog(): PrologClause {
-        return new BasicPrologClause(this.predicate, this.args, this.negated)
     }
 
     implies(conclusion: Clause): Clause {
@@ -51,6 +48,10 @@ export class BasicClause implements Clause {
 
     get entities(): Id[] {
         return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
+    }
+
+    toAction(brain: Brain): Action {
+        throw new Error('unimplemented!')
     }
 
 }

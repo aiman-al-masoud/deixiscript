@@ -1,7 +1,8 @@
 import { BasicClause } from "./BasicClause"
 import And from "./And"
 import { Id, Map } from "./Id"
-import { PrologClause } from "../prologclause/PrologClause"
+import Action from "../action/Action"
+import Brain from "../brain/Brain"
 
 /**
  * A 'language-agnostic' first order logic representation.
@@ -10,16 +11,17 @@ export interface Clause {
     readonly negated: boolean
     readonly isImply: boolean
     readonly hashCode: number
-    readonly entities:Id[]
+    readonly entities: Id[]
     readonly theme: Clause
     readonly rheme: Clause
-    readonly noAnaphora : boolean
+    readonly isSideEffecty:boolean
+    readonly noAnaphora: boolean
     copy(opts?: CopyOpts): Clause
     and(other: Clause, opts?: AndOpts): Clause
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
-    toProlog(): PrologClause
-    about(id:Id):Clause
+    about(id: Id): Clause
+    toAction(brain: Brain): Action
 }
 
 export function clauseOf(predicate: string, ...args: Id[]): Clause {
@@ -31,7 +33,8 @@ export const emptyClause = (): Clause => new And([])
 export interface CopyOpts {
     negate?: boolean
     map?: Map
-    noAnaphora? : boolean // interpret every id as exact
+    noAnaphora?: boolean // interpret every id as exact
+    sideEffecty?:boolean
 }
 
 export interface AndOpts {

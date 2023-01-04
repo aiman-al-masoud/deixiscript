@@ -6,9 +6,5 @@ export default class ConjunctiveSentence implements CompoundSentence{
     async toClause(args?: ToClauseOpts): Promise<Clause> {
         throw new Error("Method not implemented.");
     }
-
-    get isSideEffecty(): boolean {
-        return true
-    }
         
 }

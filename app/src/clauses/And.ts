@@ -1,13 +1,15 @@
+import Action from "../action/Action";
+import Brain from "../brain/Brain";
 import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import Imply from "./Imply";
-import { emptyPrologClause, PrologClause } from "../prologclause/PrologClause";
 
 export default class And implements Clause {
 
     constructor(readonly clauses: Clause[],
         readonly negated = false,
         readonly noAnaphora = false,
+        readonly isSideEffecty = false,
         readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments)),
         readonly theme = clauses[0],
@@ -26,7 +28,8 @@ export default class And implements Clause {
     copy(opts?: CopyOpts): And {
         return new And(this.clauses.map(c => c.copy({ ...opts, negate: false })),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora)
+            opts?.noAnaphora ?? this.noAnaphora, 
+            opts?.sideEffecty ?? this.isSideEffecty)
     }
 
     flatList(): Clause[] {
@@ -41,14 +44,6 @@ export default class And implements Clause {
         return new Imply(this, conclusion)
     }
 
-    toProlog(): PrologClause {
-
-        return this.clauses.length === 1 && this.negated ? //TODO: fix this crap
-            this.clauses[0].copy({ negate: true }).toProlog() :
-            this.clauses.flatMap(c => c.toProlog()).reduce((c1, c2) => c1.and(c2), emptyPrologClause())
-
-    }
-
     about(id: Id): Clause {
 
         if (this.negated) {
@@ -57,6 +52,10 @@ export default class And implements Clause {
             return this.clauses.flatMap(c => c.about(id)).reduce((c1, c2) => c1.and(c2), emptyClause())
         }
 
+    }
+
+    toAction(brain: Brain): Action {
+        throw new Error('unimplemented!')
     }
 
 }

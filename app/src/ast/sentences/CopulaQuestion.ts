@@ -21,12 +21,10 @@ export default class CopulaQuestion implements BinaryQuestion {
         //TODO: in case of a universally quantified question eg: "are all cats smart?" the prolog
         // produced should NOT be an implication, but rather a check that all cats are smart.
 
-        return new CopulaSentence(this.subject, this.copula, this.predicate).toClause(newArgs)
+        const clause = await new CopulaSentence(this.subject, this.copula, this.predicate).toClause(newArgs)
 
-    }
+        return clause.copy({sideEffecty : false})
 
-    get isSideEffecty(): boolean {
-        return false
     }
 
 }

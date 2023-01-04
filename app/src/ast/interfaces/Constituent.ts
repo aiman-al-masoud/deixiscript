@@ -8,7 +8,7 @@ import { Id } from "../../clauses/Id";
  */
 export default interface Constituent extends Ast {
     toClause(args?: ToClauseOpts): Promise<Clause>
-    get isSideEffecty():boolean
+    // get isSideEffecty():boolean
 }
 
 export interface Roles {

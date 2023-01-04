@@ -18,11 +18,8 @@ export default class Complement implements Phrase {
 
         return clauseOf(this.preposition.string, subjId, newId)
             .and(await this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
+            .copy({sideEffecty : false})
 
-    }
-
-    get isSideEffecty(): boolean {
-        return false
     }
 
 }

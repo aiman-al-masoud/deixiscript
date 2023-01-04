@@ -38,11 +38,8 @@ export default class NounPhrase implements Phrase {
             .reduce((c1, c2) => c1.and(c2), emptyClause())
             .and((await Promise.all(this.complements.map(c => c.toClause(newArgs)))).reduce((c1, c2) => c1.and(c2), emptyClause()))
             .and(await this.subordClause?.toClause(newArgs) ?? emptyClause())
+            .copy({sideEffecty : false})
 
-    }
-
-    get isSideEffecty(): boolean {
-        return false
     }
 
 }

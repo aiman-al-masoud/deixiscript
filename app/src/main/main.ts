@@ -1,6 +1,6 @@
 import { getBrain } from "../brain/Brain"
 
-export default async function playground() {
+export default async function main() {
 
     const state = {
         brain: await getBrain({ withActuator: true }),

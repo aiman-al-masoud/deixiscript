@@ -1,8 +1,8 @@
 import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import And from "./And";
-import { PrologClause } from "../prologclause/PrologClause";
-import { HornClause } from "../prologclause/HornClause";
+import Action from "../action/Action";
+import Brain from "../brain/Brain";
 
 export default class Imply implements Clause {
 
@@ -10,6 +10,7 @@ export default class Imply implements Clause {
         readonly conclusion: Clause,
         readonly negated = false,
         readonly noAnaphora = false,
+        readonly isSideEffecty = false,
         readonly isImply = true,
         readonly hashCode = hashString(JSON.stringify(arguments)),
         readonly theme = condition.theme) {
@@ -25,33 +26,15 @@ export default class Imply implements Clause {
         return new Imply(this.condition.copy(opts),
             this.conclusion.copy(opts),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora)
+            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.sideEffecty ?? this.isSideEffecty)
 
     }
 
     flatList(): Clause[] {
         return [this]
     }
-
-    /**
-     * Generates horn clauses, one for each conclusion. 
-     * Since prolog only supports that kind of implication.
-     * @returns 
-     */
-    toProlog(): PrologClause {
-
-        const conditions = this.condition.toProlog()
-
-        const conclusions = this.conclusion
-            .flatList()
-            .filter(c => !this.condition.flatList().map(c => c.hashCode).includes(c.hashCode)) // filter out conclusions that are also premises, very important to avoid PROLOG INFINITE LOOPS in querying!
-            .flatMap(c => c.toProlog())
-
-        return conclusions
-            .map(c => new HornClause(c, conditions) as PrologClause)
-            .reduce((c1, c2) => c1.and(c2))
-    }
-
+    
     get entities(): Id[] {
         return this.condition.entities.concat(this.conclusion.entities)
     }
@@ -66,6 +49,10 @@ export default class Imply implements Clause {
 
     about(id: Id): Clause {
         return emptyClause() ///TODO!!!!!!!!
+    }
+
+    toAction(brain: Brain): Action {
+        throw new Error('unimplemented!')
     }
 
 }

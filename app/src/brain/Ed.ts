@@ -1,14 +1,16 @@
-import { Id } from "../clauses/Id";
-import { wrap, WrapOpts, Wrapper } from "./Wrapper";
+import { Clause } from "../clauses/Clause";
+import { Id, Map } from "../clauses/Id";
+
 
 /**
  * Entity Dictionary... (or Everett Ducklair)
  */
 export interface Ed {
-    get(id: Id): Promise<Wrapper>
-    set(id: Id, object: any, opts?: WrapOpts): void
+    get(id: Id): Promise<any>
+    set(id: Id, object: any): void
+    query(clause: Clause): Promise<Map[]>
     get keys(): Id[]
-    get values(): Wrapper[]
+    get values(): any[]
 }
 
 export default function getEd(): Ed {
@@ -17,11 +19,16 @@ export default function getEd(): Ed {
 
 class BaseEd implements Ed {
 
-    constructor(readonly dictionary: { [id: Id]: Wrapper } = {}) {
-
+    constructor(readonly dictionary: { [id: Id]: any } = {}) {
+        
+    }
+    
+    async query(clause: Clause): Promise<Map[]> {
+        // throw new Error("Method not implemented.");
+        return []
     }
 
-    async get(id: Id): Promise<Wrapper> {
+    async get(id: Id): Promise<any> {
 
         return new Promise((ok, err) => {
 
@@ -37,15 +44,15 @@ class BaseEd implements Ed {
 
     }
 
-    set(id: Id, object: any, opts?: WrapOpts): void {
-        this.dictionary[id] = wrap(object, opts)
+    set(id: Id, object: any): void {
+        this.dictionary[id] = object
     }
 
     get keys(): Id[] {
         return Object.keys(this.dictionary)
     }
 
-    get values(): Wrapper[] {
+    get values(): any[] {
         return Object.values(this.dictionary)
     }
 

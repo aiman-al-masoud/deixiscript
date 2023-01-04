@@ -15,11 +15,7 @@ export default class IntransitiveSentence implements VerbSentence {
         readonly negation?: Negation) {
 
     }
-
-    get isSideEffecty(): boolean {
-        return true
-    }
-
+    
     async toClause(args?: ToClauseOpts): Promise<Clause> {
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
@@ -29,7 +25,7 @@ export default class IntransitiveSentence implements VerbSentence {
         
         const rheme = clauseOf(this.iverb.string, subjectId).and((await Promise.all(this.complements.map( c => c.toClause(newArgs)))).reduce( (c1, c2) => c1.and(c2)))
         
-        return theme.and(rheme, { asRheme: true })
+        return theme.and(rheme, { asRheme: true }).copy({sideEffecty:true})
     }
 
 }
