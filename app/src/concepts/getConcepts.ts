@@ -5,7 +5,7 @@ export function getConcepts(object: any) {
 
     // TODO: try getting a concept from a string object with a 
     // special dictionary, like {red:color, green:color, blue:color}
-    const stringConcepts: { [x: string]: string } = { 'green': 'color', 'red': 'color', 'blue' : 'color', 'black' : 'color' }
+    const stringConcepts: { [x: string]: string } = { 'green': 'color', 'red': 'color', 'blue': 'color', 'black': 'color' }
     const maybeConcept: string | undefined = stringConcepts[object.toString()]
 
     if (maybeConcept) {

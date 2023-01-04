@@ -9,7 +9,6 @@ export function set(object: any, prop: any) {
         .filter(x => objectConcepts.includes(x))
 
     matchingConcepts.forEach(x => {
-        const setter = object[getSetterName(x)].bind(object)
-        setter(prop)
+        object[getSetterName(x)].bind(object)(prop)
     })
 }
