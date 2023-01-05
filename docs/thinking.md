@@ -56,6 +56,8 @@ They can take multiple args, if the predicate in question has arguments ("on the
 
 
 
+A predicate can be associated to a Concept or to a constructor.
+
 
 
 
