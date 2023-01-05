@@ -150,6 +150,8 @@ in case of "x is red"
 
 
 
+.appendChild can MOVE an element within another element (MOVE not copy!) ok great
+
 
 
 
