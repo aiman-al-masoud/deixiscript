@@ -82,5 +82,14 @@ the button is on the div
 
 
 
+Would be cool:
+
+
+if any button is big then
+	its width is 100vw and
+	its height is 100vh and
+	its font size is 100em
+
+
 
 
