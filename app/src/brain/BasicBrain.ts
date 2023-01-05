@@ -14,7 +14,7 @@ export default class BasicBrain implements Brain {
 
         for (const ast of getParser(natlang).parseAll()) {
             const clause = await ast.toClause()
-            console.log(clause.toString())
+            console.log(clause, clause.toString(), 'side-effetcs:', clause.isSideEffecty)
         }
 
         return []
