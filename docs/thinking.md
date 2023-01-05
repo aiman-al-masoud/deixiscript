@@ -70,6 +70,8 @@ A predicate must be associated to a Concept, as well as a value for that concept
 
 
 
+WHEN the button is red ... WHEN the counter is 10 // express TIMES! times as first citizes...
+
 
 
 
