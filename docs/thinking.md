@@ -37,7 +37,7 @@ Allows the end user to do stuff like asserting that a button is **`red, big and 
 
 A Concept is associated to a `setter()` a `getter()` and an `is()` method, implanted by the user on an object or prototype.
 
-The appropriate setter or getter is retrieved from an object, based on the predicate that is being asserted about the object (a predicate can be associated to a concept, otherwise it's just treated as a name/description).
+The appropriate setter or getter is retrieved from an object, based on the predicate that is being asserted about the object (a predicate can be associated to a concept (independenly of any object), otherwise it's just treated as a name/description).
 
 For example "red" is associated to the Concept of color, "big" is associated to the Concept of size, etc...
 
