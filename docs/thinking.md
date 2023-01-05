@@ -19,6 +19,8 @@ What can a language statement do?
     1. Setting the slot(s) of an existing concept
     1. Creating a concept associated to the var
     1. Setting a property
+1. Associate a predicate to a Concept
+    1. "big is a size", "red is a color"
 1. Modify a class
     1. Setting the slot(s) of an existing concept
     1. Creating a concept associated to the class
@@ -33,11 +35,13 @@ What can a language statement do?
 
 The "cool new abstraction" of the language. 
 
-Allows the end user to do stuff like asserting that a button is **`red, big and round`**, or even **`on this or that div`** without having to specify style.background=..., style.width=..., style.height=... or style.borderRadius=..., or whatever ...
+Allows the end user to do stuff like asserting that a button is **`red, big and round`** (Color, Size, Roundness), or even **`on this or that div`** (Position) without having to specify style.background=..., style.width=..., style.height=... or style.borderRadius=..., or whatever ...
 
 A Concept is associated to a `setter()` a `getter()` and an `is()` method, implanted by the user on an object or prototype.
 
-The appropriate setter or getter is retrieved from an object, based on the predicate that is being asserted about the object (a predicate can be associated to a concept (independenly of any object), otherwise it's just treated as a name/description).
+A predicate can be associated to a Concept (independently of any object).
+
+The appropriate setter or getter is retrieved from an object, based on the predicate that is being applied on the object. 
 
 For example "red" is associated to the Concept of color, "big" is associated to the Concept of size, etc...
 
@@ -46,7 +50,16 @@ If the object in question isn't associated to that concept, the predicate is tre
 
 ### The `setter()`
 
-For example `setColor()` or `setSize()` or `setRoundness()` ... they will take a value 
+For example `setColor()` or `setSize()` or `setRoundness()` ... they will take a predicate (red, big, round ...) as an argument and do something to the object they're invoked on.
+
+They can take multiple args, if the predicate in question has arguments ("on the div") where the predicate is "on".
+
+
+
+
+
+
+
 
 
 
