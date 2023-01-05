@@ -105,6 +105,79 @@ INTERMEDIATE LEVEL
 
 the width of x is 100vw.
 
+Simple Aliasing could come handy in this case, you could do something like:
+
+the width of any button is the width of its style. ---> defines alias
+
+
+Other example:
+
+the background of the style of x is red.
+
+the color of any button is the background of its style. ---> define alias
+
+the color of x is red.
+
+But in this case we also wanna be able to say:
+
+x is red.
+
+red belongs to at least one concept ("color"), the fact that red belongs to the color concept allows x to pick the right property/alias.
+
+
+Mechanisms:
+
+* property aliasing (eg: 'style.width' is simply 'width').
+* concept-grouping of predicates, where a concept relative to an object is simply mapped to a single property or an alias (let's start simple).
+* A predicate may be mapped to more than one concept.
+
+This mechanism can be later incorporated into a more general setter/getter logic.
+
+Algo:
+
+"the color of x is red"
+
+1. check if x has a property 'color'.
+1. else check if x has an alias 'color'.
+
+in case of "x is red"
+
+1. get the concept of 'red' and use it to set the relevant prop/alias
+
+"the background of the style of x is red"
+
+1. check if x has the style.background property
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
