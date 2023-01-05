@@ -6,11 +6,11 @@ example 1
 
 CopulaSentence(subj=button, pred=red) ----toClause--->
 
-AndClause(button(id1), red(id1))   ----getAnaphora--->
+AndClause(theme=button(id1), rheme=red(id1))   ----toAction--->
 
-AndClause(button(id33), red(id33))  ---toAction(ed)--->
+() => set(ed.get('id1'), 'red')
 
-() => set(ed.get('id33'), 'red')
+
 
 example 2
 
