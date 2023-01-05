@@ -1,5 +1,5 @@
 export const setterPrefix = 'set'
-export const getterPrefix = 'is'
+export const isPrefix = 'is'
 
 export function getConcepts(object: any) {
 
@@ -15,7 +15,7 @@ export function getConcepts(object: any) {
     return Object
         .getOwnPropertyNames(object)
         .concat(Object.getOwnPropertyNames(object.__proto__))
-        .filter(x => x.includes(setterPrefix) || x.includes(getterPrefix))
+        .filter(x => x.includes(setterPrefix) || x.includes(isPrefix))
         .map(x => getConceptName(x))
 
 }
@@ -24,13 +24,13 @@ export function getSetterName(concept: string) {
     return `${setterPrefix}_${concept}`
 }
 
-export function getGetterName(concept: string) {
-    return `${getterPrefix}_${concept}`
+export function getIsName(concept: string) {
+    return `${isPrefix}_${concept}`
 }
 
 export function getConceptName(method: string) {
     return method
-        .replace(getterPrefix, '')
+        .replace(isPrefix, '')
         .replace(setterPrefix, '')
         .replace('_', '')
 }

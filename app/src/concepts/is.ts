@@ -1,4 +1,4 @@
-import { getConcepts, getGetterName } from "./getConcepts"
+import { getConcepts, getIsName } from "./getConcepts"
 
 /**
  * Corresponds to prop(object)
@@ -12,6 +12,6 @@ export function is(object: any, prop: any, ...args: any[]) {
         .filter(x => objectConcepts.includes(x))
 
     return matchingConcepts
-        .some(x => object[getGetterName(x)].bind(object)(prop))
+        .some(x => object[getIsName(x)].bind(object)(prop))
 
 }

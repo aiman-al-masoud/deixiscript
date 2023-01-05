@@ -1,12 +1,12 @@
-import { getGetterName, getSetterName } from "./getConcepts"
+import { getIsName, getSetterName } from "./getConcepts"
 
 export function setConcept(
     object: any,
     concept: string,
     setter: (...args: any) => void,
-    getter: (...args: any) => boolean) {
+    is: (...args: any) => boolean) {
 
     Object.defineProperty(object, getSetterName(concept), { value: setter })
-    Object.defineProperty(object, getGetterName(concept), { value: getter })
+    Object.defineProperty(object, getIsName(concept), { value: is })
 
 }
