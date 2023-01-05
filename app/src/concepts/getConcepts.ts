@@ -37,5 +37,6 @@ export function getConceptName(method: string) {
     return method
         .replace(isPrefix, '')
         .replace(setterPrefix, '')
+        .replace(getterPrefix, '')
         .replace('_', '')
 }
