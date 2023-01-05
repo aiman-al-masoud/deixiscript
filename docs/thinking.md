@@ -24,11 +24,11 @@ What can a language statement do?
 1. Modify a class
     1. Setting the slot(s) of an existing concept
     1. Creating a concept associated to the class
-1. Create a class
-    1. idk ...
 1. Return a variable
     1. Getting a concept
     1. Getting a property
+1. Create a class
+    1. idk ...
 
 
 ## Concept
