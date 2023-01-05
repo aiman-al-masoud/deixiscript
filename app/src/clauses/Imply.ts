@@ -51,7 +51,7 @@ export default class Imply implements Clause {
         return emptyClause() ///TODO!!!!!!!!
     }
 
-    async toAction(brain: Brain): Promise<Action> {
+    async toAction(): Promise<Action> {
         throw new Error('unimplemented!')
     }
 

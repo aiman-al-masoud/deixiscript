@@ -50,7 +50,7 @@ export class BasicClause implements Clause {
         return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
     }
 
-    async toAction(brain: Brain): Promise<Action> {
+    async toAction(): Promise<Action> {
         throw new Error('unimplemented!')
     }
 

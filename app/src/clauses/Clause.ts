@@ -21,7 +21,7 @@ export interface Clause {
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
     about(id: Id): Clause
-    toAction(brain: Brain): Promise<Action>
+    toAction(): Promise<Action>
 }
 
 export function clauseOf(predicate: string, ...args: Id[]): Clause {
