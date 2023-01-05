@@ -2,11 +2,11 @@ import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import Brain, { AssertOpts } from "./Brain";
-import getEd from "./Ed";
+import getEnviro from "./Ed";
 
 export default class BasicBrain implements Brain {
 
-    constructor(readonly ed = getEd()) {
+    constructor(readonly ed = getEnviro()) {
 
     }
 
@@ -21,13 +21,11 @@ export default class BasicBrain implements Brain {
     }
 
     async query(query: Clause): Promise<Map[]> {
-        return this.ed.query(query)
+        throw new Error('not implemented!')
     }
 
     async assert(code: Clause, opts?: AssertOpts): Promise<Map[]> {
-        // throw new Error("Method not implemented.");
-
-        return []
+        throw new Error('not implemented!')
     }
 
 }

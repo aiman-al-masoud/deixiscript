@@ -5,7 +5,7 @@ import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 import Negation from "../tokens/Negation";
-import { getAnaphora } from "../../brain/Anaphora";
+// import { getAnaphora } from "../../brain/Anaphora";
 
 export default class CopulaSentence implements SimpleSentence {
 
@@ -26,9 +26,10 @@ export default class CopulaSentence implements SimpleSentence {
             subject.implies(predicate) :
             subject.and(predicate, { asRheme: true })
 
-        const resolvedAnaphora = await getAnaphora(result).mapToClause(args?.anaphora ?? emptyClause())
+        // const resolvedAnaphora = await getAnaphora(result).mapToClause(args?.anaphora ?? emptyClause())
+        // return result.copy({map: resolvedAnaphora, sideEffecty : true})
+        return result.copy({ sideEffecty: true })
 
-        return result.copy({map: resolvedAnaphora, sideEffecty : true})
     }
-    
+
 }
