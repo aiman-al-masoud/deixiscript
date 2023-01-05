@@ -92,4 +92,19 @@ if any button is big then
 
 
 
+VARIABLE LEVELS OF ABSTRACTION
+
+VERY 'LOW LEVEL', FOR RAW JS-INTEROP
+
+the background of the style of x is red.
+
+the width of the style of x is 100vw.
+
+
+INTERMEDIATE LEVEL
+
+the width of x is 100vw.
+
+
+
 
