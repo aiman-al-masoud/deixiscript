@@ -2,7 +2,7 @@ import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import Brain, { AssertOpts } from "./Brain";
-import getEnviro from "./Ed";
+import getEnviro from "./Enviro";
 
 export default class BasicBrain implements Brain {
 
