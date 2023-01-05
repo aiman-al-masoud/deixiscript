@@ -2,6 +2,7 @@ import { getConcepts } from "../concepts/getConcepts";
 import { is } from "../concepts/is";
 import { setConcept } from "../concepts/setConcept";
 import { set } from "../concepts/set";
+import { get } from "../concepts/get";
 
 export function testConcepts() {
 
@@ -20,6 +21,7 @@ export function testConcepts() {
 
     (window as any).is = is;
     (window as any).set = set;
+    (window as any).get = get;
 
 
     setConcept(HTMLButtonElement.prototype,
@@ -30,6 +32,9 @@ export function testConcepts() {
         ,
         function (this: any, color) {
             return this.style.background === color
+        },
+        function (this: any) {
+            return this.style.background
         });
 
     const b = document.createElement('button')

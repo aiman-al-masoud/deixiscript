@@ -1,5 +1,6 @@
 export const setterPrefix = 'set'
 export const isPrefix = 'is'
+export const getterPrefix = 'get'
 
 export function getConcepts(object: any) {
 
@@ -26,6 +27,10 @@ export function getSetterName(concept: string) {
 
 export function getIsName(concept: string) {
     return `${isPrefix}_${concept}`
+}
+
+export function getGetterName(concept: string) {
+    return `${getterPrefix}_${concept}`
 }
 
 export function getConceptName(method: string) {
