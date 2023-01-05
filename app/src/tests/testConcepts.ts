@@ -36,6 +36,19 @@ export function testConcepts() {
             return this.style.background
         });
 
+
+    setConcept(HTMLButtonElement.prototype,
+        'size',
+        function (this: HTMLButtonElement, size) {
+            this.style.width = size
+        },
+        function (this: any, size) {
+            return  this.style.width === size
+        },
+        function (this: any) {
+            return this.style.width
+        });
+
     const b = document.createElement('button')
     b.textContent = 'capra'
     document.body.appendChild(b);
