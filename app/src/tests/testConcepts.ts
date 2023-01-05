@@ -28,8 +28,7 @@ export function testConcepts() {
         'color',
         function (this: any, color) {
             this.style.background = color
-        }
-        ,
+        },
         function (this: any, color) {
             return this.style.background === color
         },
