@@ -66,6 +66,8 @@ the button is big.
 
 
 
+A predicate must be associated to a Concept, as well as a value for that concept sometimes.???
+
 
 
 
