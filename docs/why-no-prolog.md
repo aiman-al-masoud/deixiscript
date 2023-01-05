@@ -8,5 +8,5 @@
 
 * Also, making sure these are all paraphrases of each other: "the color of the button is red", "the button is red", "the background of the style of the button is red" would be a nightmare with prolog, probably easier to accomplish with a dynamic dispatch/distributed approach.
 
-* Js is very much capable of using mixins and injecting new behavior to objects and prototypes on the fly, it's also got timers, intervals, event handlers, first order functions etc... 
+* Js is very much capable of using mixins and injecting new behavior into objects and prototypes on the fly, it's also got timers, intervals, event handlers, first order functions etc... 
 
