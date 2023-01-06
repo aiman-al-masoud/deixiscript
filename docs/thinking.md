@@ -153,6 +153,8 @@ in case of "x is red"
 .appendChild can MOVE an element within another element (MOVE not copy!) ok great
 
 
+IDEA: owned properties have no say in anaphora resulution
+
 
 
 
