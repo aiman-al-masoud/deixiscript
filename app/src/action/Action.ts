@@ -11,12 +11,13 @@ export function getAction(clause: Clause) {
     const ownershipChain = getOwnershipChain(clause)
     console.log({ ownershipChain })
 
-    // get the top-level object T, from Enviro, as a Wrapper object
+    // DON'T do any of the following immediately, just prepare code for later!
 
-    // if T doesn't exist, create it with the first available constructor action, (put the other actions on hold??)
+    //1 get the top-level object T, from an Enviro, as a Wrapper object
 
-    // tell T it has to apply a predicate, on ownershipChain[1:] props if any
+    //2 if T doesn't exist, create it with the first available constructor action, (put the other actions involving T on hold??)
 
+    //3 when T is ready, tell it that it has to apply a predicate, on ownershipChain[1:] props if any
 
 
 }

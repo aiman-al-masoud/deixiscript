@@ -1,4 +1,4 @@
-import { Enviro } from "./Enviro"
+import { Enviro } from "../enviro/Enviro"
 import { Clause } from "../clauses/Clause"
 import { Map } from "../clauses/Id"
 import BasicBrain from "./BasicBrain"
