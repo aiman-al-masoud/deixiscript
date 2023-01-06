@@ -1,6 +1,6 @@
 import { BasicClause } from "../clauses/BasicClause";
 import { Clause, clauseOf } from "../clauses/Clause";
-import { Id, Map } from "../clauses/Id";
+import { Map } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import Brain, { AssertOpts } from "./Brain";
 import getEnviro from "./Enviro";
@@ -27,8 +27,10 @@ export default class BasicBrain implements Brain {
             const thridLevelEntities = clause.ownedBy(secondLevelEntities[0])
 
             const ownershipChain = [topLevel[0], secondLevelEntities[0], thridLevelEntities[0]]
+            const descriptions = ownershipChain.map(e => clause.about(e).flatList().filter(c => (c as BasicClause).args.length === 1).map(c => (c as BasicClause).predicate))
 
-            console.log(ownershipChain)
+            console.log({ ownershipChain })
+            console.log({ descriptions })
         }
 
         return []
