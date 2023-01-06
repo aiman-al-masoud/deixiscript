@@ -70,4 +70,9 @@ export default class And implements Clause {
     ownersOf(id: Id): Id[] {
         return this.clauses.flatMap(x=>x.ownersOf(id))
     }
+
+    describe(id: Id): string[] {
+        return this.clauses.flatMap(x=>x.describe(id))
+    }
+
 }

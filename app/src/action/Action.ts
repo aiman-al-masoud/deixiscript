@@ -33,6 +33,9 @@ function getOwnershipChain(clause: Clause) { //TODO: generalize
     const secondLevelEntities = clause.ownedBy(topLevel[0])
     const thridLevelEntities = clause.ownedBy(secondLevelEntities[0])
 
+    const descs = clause.entities.map(e=>clause.describe(e))
+    console.log({descs})
+
     return [topLevel[0], secondLevelEntities[0], thridLevelEntities[0]]
 }
 
