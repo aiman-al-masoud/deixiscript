@@ -1,5 +1,5 @@
-import { BasicClause } from "../clauses/BasicClause";
-import { Clause, clauseOf } from "../clauses/Clause";
+import { getAction } from "../action/Action";
+import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import Brain, { AssertOpts } from "./Brain";
@@ -15,23 +15,8 @@ export default class BasicBrain implements Brain {
 
         for (const ast of getParser(natlang).parseAll()) {
             const clause = await ast.toClause()
-
-            console.log(clause, clause.toString(), 'side-effetcs:', clause.isSideEffecty)
-
-            const topLevel = clause.entities
-                .map(x => ({ x, owners: clause.ownersOf(x) }))
-                .filter(x => x.owners.length === 0)
-                .map(x => x.x)
-
-            const secondLevelEntities = clause.ownedBy(topLevel[0])
-            const thridLevelEntities = clause.ownedBy(secondLevelEntities[0])
-
-            const ownershipChain = [topLevel[0], secondLevelEntities[0], thridLevelEntities[0]]
-            const descriptions = ownershipChain.map(e => clause.about(e).flatList().filter(c => (c as BasicClause).args.length === 1).map(c => (c as BasicClause).predicate))
-
-
-            console.log({ ownershipChain })
-            console.log({ descriptions })
+            console.log(clause.toString(), 'side-effetcs:', clause.isSideEffecty)
+            getAction(clause)
         }
 
         return []
