@@ -29,6 +29,8 @@ export default class BasicBrain implements Brain {
             const ownershipChain = [topLevel[0], secondLevelEntities[0], thridLevelEntities[0]]
             const descriptions = ownershipChain.map(e => clause.about(e).flatList().filter(c => (c as BasicClause).args.length === 1).map(c => (c as BasicClause).predicate))
 
+            // IDEA: owned properties have no say in anaphora resulution
+
             console.log({ ownershipChain })
             console.log({ descriptions })
         }
