@@ -26,10 +26,9 @@ export default class BasicBrain implements Brain {
             const secondLevelEntities = clause.ownedBy(topLevel[0])
             const thridLevelEntities = clause.ownedBy(secondLevelEntities[0])
 
-            console.log({ topLevel })
-            console.log({ secondLevelEntities })
-            console.log({ thridLevelEntities })
+            const ownershipChain = [topLevel[0], secondLevelEntities[0], thridLevelEntities[0]]
 
+            console.log(ownershipChain)
         }
 
         return []
