@@ -14,7 +14,7 @@ export interface Clause {
     readonly entities: Id[]
     readonly theme: Clause
     readonly rheme: Clause
-    readonly isSideEffecty:boolean
+    readonly isSideEffecty: boolean
     readonly noAnaphora: boolean
     copy(opts?: CopyOpts): Clause
     and(other: Clause, opts?: AndOpts): Clause
@@ -22,6 +22,8 @@ export interface Clause {
     flatList(): Clause[]
     about(id: Id): Clause
     toAction(): Promise<Action>
+    ownedBy(id: Id): Id[]
+    ownersOf(id: Id): Id[]
 }
 
 export function clauseOf(predicate: string, ...args: Id[]): Clause {
@@ -34,7 +36,7 @@ export interface CopyOpts {
     negate?: boolean
     map?: Map
     noAnaphora?: boolean // interpret every id as exact
-    sideEffecty?:boolean
+    sideEffecty?: boolean
 }
 
 export interface AndOpts {

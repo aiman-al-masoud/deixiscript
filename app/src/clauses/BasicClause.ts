@@ -54,6 +54,15 @@ export class BasicClause implements Clause {
         throw new Error('unimplemented!')
     }
 
+
+    ownedBy(id: Id): Id[] {
+        return this.predicate === 'of' && this.args[1] === id ? [this.args[0]] : []
+    }
+
+    ownersOf(id: Id): Id[] {
+        return this.predicate === 'of' && this.args[0] === id ? [this.args[1]] : []
+    }
+
     toString() {
         const yes = `${this.predicate}(${this.args})`
         return this.negated ? `not(${yes})` : yes

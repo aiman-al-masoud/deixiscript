@@ -60,4 +60,12 @@ export default class Imply implements Clause {
         return this.negated ? `not(${yes})` : yes
     }
 
+    ownedBy(id: Id): Id[] {
+        return this.condition.ownedBy(id).concat(this.conclusion.ownedBy(id))
+    }
+
+    ownersOf(id: Id): Id[] {
+        return this.condition.ownersOf(id).concat(this.conclusion.ownersOf(id))
+    }
+
 }

@@ -63,4 +63,11 @@ export default class And implements Clause {
         return this.negated ? `not(${yes})` : yes
     }
 
+    ownedBy(id: Id): Id[] {
+        return this.clauses.flatMap(x=>x.ownedBy(id))
+    }
+
+    ownersOf(id: Id): Id[] {
+        return this.clauses.flatMap(x=>x.ownersOf(id))
+    }
 }

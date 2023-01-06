@@ -18,34 +18,17 @@ export default class BasicBrain implements Brain {
 
             console.log(clause, clause.toString(), 'side-effetcs:', clause.isSideEffecty)
 
+            const topLevel = clause.entities
+                .map(x => ({ x, owners: clause.ownersOf(x) }))
+                .filter(x => x.owners.length === 0)
+                .map(x => x.x)
 
-            const topLevelEntities =
-                clause.
-                    entities
-                    .map(e => ({ e, c: clause.about(e) }))
-                    .filter(x => !x.c.flatList().some(i =>
-                        (i as BasicClause).predicate === 'of'
-                        && (i as BasicClause).args[0] === x.e))
-                    .map(x => x.e)
+            const secondLevelEntities = clause.ownedBy(topLevel[0])
+            const thridLevelEntities = clause.ownedBy(secondLevelEntities[0])
 
-            const ownedBy = (owner: Id) =>
-                clause
-                    .entities
-                    .map(e => ({ e, c: clause.about(e) }))
-                    .filter(x => x.c.flatList().some(i =>
-                        (i as BasicClause).predicate === 'of'
-                        && (i as BasicClause).args[0] === x.e
-                        && (i as BasicClause).args[1] === owner
-                    ))
-                    .map(x => x.e)
-
-            const secondLevelEntities = ownedBy(topLevelEntities[0])
-            const thridLevelEntities = ownedBy(secondLevelEntities[0])
-
-            console.log({ topLevelEntities })
+            console.log({ topLevel })
             console.log({ secondLevelEntities })
             console.log({ thridLevelEntities })
-
 
         }
 
