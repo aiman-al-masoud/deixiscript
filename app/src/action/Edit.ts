@@ -5,7 +5,7 @@ import Action from "./Action";
 export default class Edit implements Action {
 
     constructor(readonly id: Id, readonly predicate: string, readonly props?: string[]) {
-
+        
     }
 
     async run(enviro: Enviro): Promise<any> {

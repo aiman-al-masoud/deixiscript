@@ -20,7 +20,7 @@ export async function takeAction(clause: Clause, enviro: Enviro) {
         enviro.setPlaceholder(id = getRandomId())
     }
 
-    const props = ownershipChain.slice(1).map(e=>clause.theme.describe(e)[0]) // inner props of top level entity
+    const props = ownershipChain.slice(1).map(e=>clause.theme.describe(e)[0]).filter(x=>x!==undefined) // inner props of top level entity
 
     //2 determine kind of action (creator or non-creator)
     //3 distribute the id to every action (one action per predicate)
