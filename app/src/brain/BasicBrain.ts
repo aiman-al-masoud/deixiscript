@@ -1,4 +1,4 @@
-import { getAction } from "../action/Action";
+import { takeAction } from "../action/Action";
 import { getParser } from "../parser/Parser";
 import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
@@ -16,19 +16,16 @@ export default class BasicBrain implements Brain {
 
             const clause = await ast.toClause()
             console.log(clause.toString(), 'side-effetcs:', clause.isSideEffecty)
-            getAction(clause, this.enviro)
+
+            if (clause.isSideEffecty) {
+                takeAction(clause, this.enviro)
+            } else {
+                // TODO: highlight ("point out") element
+            }
 
         }
 
         return []
     }
-
-    // async query(query: Clause): Promise<Map[]> {
-    //     throw new Error('not implemented!')
-    // }
-
-    // async assert(code: Clause, opts?: AssertOpts): Promise<Map[]> {
-    //     throw new Error('not implemented!')
-    // }
 
 }

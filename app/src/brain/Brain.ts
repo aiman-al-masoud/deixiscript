@@ -9,20 +9,8 @@ import BasicBrain from "./BasicBrain"
 export default interface Brain {
     readonly enviro: Enviro
     execute(natlang: string): Promise<any[]>
-    // query(query: Clause): Promise<Map[]>
-    // assert(code: Clause, opts?: AssertOpts): Promise<Map[]>
 }
 
-//TODO: where to put pointOut(id[])? (formerly in Actuator)
-
-export async function getBrain(opts?: GetBrainOpts): Promise<Brain> {
+export async function getBrain(): Promise<Brain> {
     return new BasicBrain()
-}
-
-// export interface AssertOpts {
-//     fromBelow: boolean
-// }
-
-export interface GetBrainOpts {
-    withActuator: boolean
 }

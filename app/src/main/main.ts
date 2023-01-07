@@ -3,7 +3,7 @@ import { getBrain } from "../brain/Brain"
 export default async function main() {
 
     const state = {
-        brain: await getBrain({ withActuator: true }),
+        brain: await getBrain(),
         promptVisible: false
     };
 

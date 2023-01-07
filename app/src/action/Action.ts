@@ -10,7 +10,7 @@ export default interface Action {
 }
 
 
-export async function getAction(clause: Clause, enviro: Enviro) {
+export async function takeAction(clause: Clause, enviro: Enviro) {
 
     const ownershipChain = getOwnershipChain(clause)
     // console.log({ ownershipChain })
