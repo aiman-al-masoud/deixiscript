@@ -5,11 +5,13 @@ import { Enviro } from "./Enviro";
 
 export default class BaseEnviro implements Enviro {
 
-    constructor(readonly dictionary: { [id: Id]: Wrapper | undefined } = {}) {
+    constructor(readonly dictionary: { [id: Id]: Wrapper } = {}) {
 
     }
 
     async get(id: Id): Promise<Wrapper> {
+
+        // return this.dictionary[id] // TODO: could be undefined!
 
         return new Promise((ok, err) => {
 
@@ -26,7 +28,19 @@ export default class BaseEnviro implements Enviro {
     }
 
     set(id: Id, object: Wrapper): void {
-        this.dictionary[id] = object
+        // this.dictionary[id] = object
+
+        const placeholder = this.dictionary[id]
+
+        if (placeholder && placeholder instanceof Placeholder) {
+
+            placeholder.predicates.forEach(p => {
+                object.set(p)
+            })
+
+            this.dictionary[id] = object
+        }
+
     }
 
     async query(clause: Clause): Promise<{ [id: Id]: Id | undefined }> {
@@ -37,29 +51,45 @@ export default class BaseEnviro implements Enviro {
         const universe = Object
             .entries(this.dictionary)
 
-        console.log({universe})
+        console.log({ universe })
 
         const query = clause
             .entities
             .map(e => ({ e, d: clause.theme.describe(e) }))
 
-        console.log({query})
+        console.log({ query })
 
         const res = query
             .map(q => ({ [q.e]: universe.find(u => q.d.every(s => u[1]?.is(s)))?.[0] }))
             .reduce((a, b) => ({ ...a, ...b }))
 
-        console.log({res})
+        console.log({ res })
 
         return res
     }
 
     setPlaceholder(id: Id): void {
-        this.dictionary[id] = undefined
+        this.dictionary[id] = new Placeholder()
     }
 
     exists(id: Id): boolean {
-        return this.dictionary[id] !== undefined
+        return this.dictionary[id] && !(this.dictionary[id] instanceof Placeholder)
+    }
+
+}
+
+class Placeholder implements Wrapper {
+
+    constructor(readonly predicates: string[] = []) {
+
+    }
+
+    set(predicate: string, ...args: Wrapper[]): void {
+        this.predicates.push(predicate)
+    }
+
+    is(predicate: string, ...args: Wrapper[]): boolean {
+        return this.predicates.includes(predicate)
     }
 
 }
