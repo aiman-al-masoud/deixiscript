@@ -4,6 +4,7 @@ import { Map } from "../clauses/Id";
 import { getParser } from "../parser/Parser";
 import Brain, { AssertOpts } from "./Brain";
 import getEnviro from "../enviro/Enviro";
+import { wrap } from "../concepts/Wrapper";
 
 export default class BasicBrain implements Brain {
 
@@ -17,6 +18,7 @@ export default class BasicBrain implements Brain {
             const clause = await ast.toClause()
             console.log(clause.toString(), 'side-effetcs:', clause.isSideEffecty)
             getAction(clause)
+
         }
 
         return []

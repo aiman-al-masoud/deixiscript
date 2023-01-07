@@ -24,7 +24,7 @@ export interface Clause {
     toAction(): Promise<Action>
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
-    describe(id:Id) : string[] // tmp solution
+    describe(id:Id) : string[] 
 }
 
 export function clauseOf(predicate: string, ...args: Id[]): Clause {

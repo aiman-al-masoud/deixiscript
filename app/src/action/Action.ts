@@ -13,12 +13,15 @@ export function getAction(clause: Clause) {
 
     // DON'T do any of the following immediately, just prepare code for later!
 
-    //1 get the top-level object T, from an Enviro, as a Wrapper object
+    //1 get the top-level object's ID from an Enviro
 
-    //2 if T doesn't exist, create it with the first available constructor action, (put the other actions involving T on hold??)
+    //2 distribute the id to every action (one action per predicate)
 
-    //3 when T is ready, tell it that it has to apply a predicate, on ownershipChain[1:] props if any
+    //3 creator actions create the object if it doesn't exist yet
 
+    //4 non-creator actions WAIT if the object doesn't exist yet.
+
+    // (wait is handled by Enviro's get())
 
 }
 
@@ -33,8 +36,8 @@ function getOwnershipChain(clause: Clause) { //TODO: generalize
     const secondLevelEntities = clause.ownedBy(topLevel[0])
     const thridLevelEntities = clause.ownedBy(secondLevelEntities[0])
 
-    const descs = clause.entities.map(e=>clause.describe(e))
-    console.log({descs})
+    const descs = clause.entities.map(e => clause.describe(e))
+    console.log({ descs })
 
     return [topLevel[0], secondLevelEntities[0], thridLevelEntities[0]]
 }
