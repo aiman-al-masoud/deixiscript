@@ -13,7 +13,7 @@ export function getAction(clause: Clause) {
 
     // DON'T do any of the following immediately, just prepare code for later!
 
-    //1 get the top-level object's ID from an Enviro
+    //1 get the top-level object's ID from an Enviro, if none create it
 
     //2 distribute the id to every action (one action per predicate)
 
