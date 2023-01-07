@@ -8,7 +8,7 @@ export default class ConcreteWrapper implements Wrapper {
 
     set(predicate: string, props?: string[]): void {
 
-        (this.o as any)[predicate] = true
+        (this.o as any)[predicate] = true // TODO: remove
 
         if(props){
             console.log('props', {props})
@@ -21,7 +21,7 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     is(predicate: string, ...args: Wrapper[]): boolean {
-        return (this.o as any)[predicate] !== undefined
+        return (this.o as any)[predicate] !== undefined // TODO: remove
     }
 
 

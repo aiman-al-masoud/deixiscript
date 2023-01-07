@@ -20,7 +20,7 @@ export default class BasicBrain implements Brain {
             if (clause.isSideEffecty) {
                 takeAction(clause, this.enviro)
             } else {
-                // TODO: highlight ("point out") element
+                // TODO: highlight ("point out") element(s)
             }
 
         }
