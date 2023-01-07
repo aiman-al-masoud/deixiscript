@@ -50,20 +50,14 @@ export default class BaseEnviro implements Enviro {
 
         const universe = Object
             .entries(this.dictionary)
-
-        console.log({ universe })
-
+            
         const query = clause
             .entities
             .map(e => ({ e, d: clause.theme.describe(e) }))
 
-        console.log({ query })
-
         const res = query
             .map(q => ({ [q.e]: universe.find(u => q.d.every(s => u[1]?.is(s)))?.[0] }))
             .reduce((a, b) => ({ ...a, ...b }))
-
-        console.log({ res })
 
         return res
     }
@@ -84,7 +78,8 @@ class Placeholder implements Wrapper {
 
     }
 
-    set(predicate: string, ...args: Wrapper[]): void {
+    set(predicate: string, props: string[]): void {
+        console.log({props})
         this.predicates.push(predicate)
     }
 

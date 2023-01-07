@@ -20,13 +20,15 @@ export async function takeAction(clause: Clause, enviro: Enviro) {
         enviro.setPlaceholder(id = getRandomId())
     }
 
+    const props = ownershipChain.slice(1).map(e=>clause.theme.describe(e)[0]) // inner props of top level entity
+
     //2 determine kind of action (creator or non-creator)
     //3 distribute the id to every action (one action per predicate)
 
     const actions = clause
         .flatList()
         .map(c => (c as BasicClause))
-        .map(c => isCreatorAction(c.predicate) ? new Create(id as Id, c.predicate) : new Edit(id as Id, c.predicate))
+        .map(c => isCreatorAction(c.predicate) ? new Create(id as Id, c.predicate) : new Edit(id as Id, c.predicate, props))
 
     //4 creator actions create the object if it doesn't exist yet
     //5 non-creator actions WAIT if the object doesn't exist yet.

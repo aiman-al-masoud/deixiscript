@@ -6,8 +6,13 @@ export default class ConcreteWrapper implements Wrapper {
 
     }
 
-    set(predicate: string, ...args: Wrapper[]): void {
+    set(predicate: string, props?: string[]): void {
+
         (this.o as any)[predicate] = true
+
+        if(props){
+            console.log('props', {props})
+        }
 
         if (this.o instanceof HTMLElement) { //TODO: use polymorphism
             this.o.style.background = predicate
