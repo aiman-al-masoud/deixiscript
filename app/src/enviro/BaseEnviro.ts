@@ -50,7 +50,7 @@ export default class BaseEnviro implements Enviro {
 
         const universe = Object
             .entries(this.dictionary)
-            
+
         const query = clause
             .entities
             .map(e => ({ e, d: clause.theme.describe(e) }))
@@ -85,6 +85,10 @@ class Placeholder implements Wrapper {
 
     is(predicate: string, ...args: Wrapper[]): boolean {
         return this.predicates.includes(predicate)
+    }
+
+    setAlias(conceptName: string, propOrSynonConcept: string | string[]): void {
+        
     }
 
 }

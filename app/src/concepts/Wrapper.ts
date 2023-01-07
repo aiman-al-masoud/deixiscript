@@ -4,8 +4,9 @@ import ConcreteWrapper from "./ConcreteWrapper"
 
 export default interface Wrapper {
 
-    set(predicate: string, props?:string[]): void // obj.set('red'), obj.set('on', obj2) ...
+    set(predicate: string, props?: string[]): void // obj.set('red'), obj.set('on', obj2) ...
     is(predicate: string, ...args: Wrapper[]): boolean
+    setAlias(conceptName: string, propOrSynonConcept: string[] | string): void
     // get(predicate: string): any
     // getProp(path: string[]): any
     // setProp(path: string[], value: any): void

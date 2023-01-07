@@ -3,8 +3,9 @@ import Wrapper from "./Wrapper";
 
 export default class ConcreteWrapper implements Wrapper {
 
-    constructor(readonly o: any) {
-
+    constructor(readonly o: any,
+        readonly simpleConcepts: { [conceptName: string]: string[] } = {}) {
+        this.setAlias('color', ['style', 'background']) // do this only once and only for HTMLElement's prototype
     }
 
     set(predicate: string, props?: string[]): void {
@@ -12,15 +13,7 @@ export default class ConcreteWrapper implements Wrapper {
         (this.o as any)[predicate] = true // TODO: remove
 
         if (props && props.length > 1) { // set the pedicate on the path
-
-            let x = this.o[props[0]]
-
-            props.slice(1, -2).forEach(p => {
-                x = this.o[p]
-            });
-
-            x[props[props.length - 1]] = predicate
-
+            this.setNested(props, predicate)
             return
         }
 
@@ -29,9 +22,11 @@ export default class ConcreteWrapper implements Wrapper {
 
         const concepts = getConcepts(predicate)
 
-        if (this.o instanceof HTMLElement && concepts[0] === 'color') {
-            this.o.style.background = predicate
+        if (concepts.length === 0) {
+            return
         }
+
+        this.setNested(this.simpleConcepts[concepts[0]], predicate)
 
     }
 
@@ -39,5 +34,20 @@ export default class ConcreteWrapper implements Wrapper {
         return (this.o as any)[predicate] !== undefined // TODO: remove
     }
 
+    setAlias(conceptName: string, propOrSynonConcept: string[]): void {
+        this.simpleConcepts[conceptName] = propOrSynonConcept
+    }
+
+    protected setNested(path: string[], value: string) {
+
+        let x = this.o[path[0]]
+
+        path.slice(1, -2).forEach(p => {
+            x = this.o[p]
+        });
+
+        x[path[path.length - 1]] = value
+
+    }
 
 }
