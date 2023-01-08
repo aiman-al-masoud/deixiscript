@@ -5,7 +5,8 @@ export default class ConcreteWrapper implements Wrapper {
 
     constructor(readonly o: any,
         readonly simpleConcepts: { [conceptName: string]: string[] } = {}) {
-        this.setAlias('color', ['style', 'background']) 
+        this.setAlias('color', ['style', 'background'])
+        this.setAlias('width', ['style', 'width'])
         //TODO do this only once and only for HTMLElement's prototype
         //TODO put it ON the prototype object so it can be retrieved as "this.o.simpleConcepts" from any instance of the prototype
     }
@@ -19,9 +20,19 @@ export default class ConcreteWrapper implements Wrapper {
             return
         }
 
-        //1 if len(props) == 1 use it as a concept (TODO or at least check if concept agrees with predicate)
-        //2 if len(props) == 0 get the concept from the predicate (eg: red is a 'color')
+        //1 if len(props) == 1 use it as a concept
+        if (props && props.length === 1) {
 
+            if (Object.keys(this.simpleConcepts).includes(props[0])) { // is concept
+                this.setNested(this.simpleConcepts[props[0]], predicate)
+            } else {
+                this.setNested(props, predicate)
+            }
+
+            return
+        }
+
+        //2 if len(props) == 0 get the concept from the predicate (eg: red is a 'color')
         const concepts = getConcepts(predicate)
 
         if (concepts.length === 0) {
@@ -36,8 +47,8 @@ export default class ConcreteWrapper implements Wrapper {
         return (this.o as any)[predicate] !== undefined // TODO: remove
     }
 
-    setAlias(conceptName: string, propOrSynonConcept: string[]): void {
-        this.simpleConcepts[conceptName] = propOrSynonConcept
+    setAlias(conceptName: string, propPath: string[]): void {
+        this.simpleConcepts[conceptName] = propPath
     }
 
     protected setNested(path: string[], value: string) {
