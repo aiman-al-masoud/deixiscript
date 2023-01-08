@@ -18,7 +18,7 @@ export default class BasicBrain implements Brain {
             console.log(clause.toString(), 'side-effetcs:', clause.isSideEffecty)
 
             if (clause.isSideEffecty) {
-                takeAction(clause, this.enviro)
+                await takeAction(clause, this.enviro) // TODO: make this async-safe
             } else {
                 // TODO: highlight ("point out") element(s)
             }

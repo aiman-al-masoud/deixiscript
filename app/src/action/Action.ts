@@ -33,9 +33,9 @@ export async function takeAction(clause: Clause, enviro: Enviro) {
     //4 creator actions create the object if it doesn't exist yet
     //5 non-creator actions WAIT if the object doesn't exist yet.
 
-    actions.forEach(a => {
-        a.run(enviro)
-    })
+    for (const a of actions){
+        await a.run(enviro) // TODO: make this async-safe
+    }
 
 }
 
