@@ -1,6 +1,6 @@
 import main from "./main/main";
-import { wrapperTest } from "./tests/wrapperTest";
+import autotester from "./tests/autotester";
 
-// testConcepts()
-// wrapperTest()
-main()
+
+autotester()
+// main()

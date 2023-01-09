@@ -6,7 +6,6 @@ export class Placeholder implements Wrapper {
     }
 
     set(predicate: string, props: string[]): void {
-        console.log({ props });
         this.predicates.push(predicate);
     }
 
@@ -18,6 +17,6 @@ export class Placeholder implements Wrapper {
     }
 
     pointOut(opts: { turnOff: boolean; }): void {
-        
+
     }
 }
