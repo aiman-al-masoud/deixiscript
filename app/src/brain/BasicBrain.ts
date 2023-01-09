@@ -1,14 +1,14 @@
-import { takeAction } from "../action/Action";
 import { getParser } from "../parser/Parser";
 import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { Id } from "../clauses/Id";
 import { wrap } from "../enviro/Wrapper";
+import { getActuator } from "../action/Actuator";
 
 
 export default class BasicBrain implements Brain {
 
-    constructor(readonly enviro = getEnviro()) {
+    constructor(readonly enviro = getEnviro(), readonly actuator = getActuator()) {
 
         wrap(HTMLButtonElement.prototype).setAlias('color', ['style', 'background'])
         // wrap(HTMLButtonElement.prototype).setAlias('width', ['style', 'width'])
@@ -23,7 +23,7 @@ export default class BasicBrain implements Brain {
             console.log(clause.toString(), 'side-effetcs:', clause.isSideEffecty)
 
             if (clause.isSideEffecty) {
-                await takeAction(clause, this.enviro) // TODO: make this async-safe
+                await this.actuator.takeAction(clause, this.enviro) // TODO: make this async-safe
             } else {
 
                 const ids = Object.values(await this.enviro.query(clause))

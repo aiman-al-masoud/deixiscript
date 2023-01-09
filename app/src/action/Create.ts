@@ -11,8 +11,8 @@ export default class Create implements Action {
 
     async run(enviro: Enviro): Promise<any> {
 
-        if(enviro.exists(this.id)){ //  existence check prior to creating
-            return 
+        if (enviro.exists(this.id)) { //  existence check prior to creating
+            return
         }
 
         if (isDomElem(this.predicate)) {
@@ -24,7 +24,7 @@ export default class Create implements Action {
             const newObj = wrap(o)
             newObj.set(this.predicate)
             enviro.set(this.id, newObj)
-            
+
         }
 
     }

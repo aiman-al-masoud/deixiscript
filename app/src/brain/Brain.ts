@@ -7,7 +7,6 @@ import BasicBrain from "./BasicBrain"
  * The main facade controller.
  */
 export default interface Brain {
-    readonly enviro: Enviro
     execute(natlang: string): Promise<any[]>
 }
 
