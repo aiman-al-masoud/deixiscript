@@ -4,16 +4,10 @@ import Wrapper from "./Wrapper";
 export default class ConcreteWrapper implements Wrapper {
 
     constructor(readonly object: any,
-        readonly simpleConcepts: { [conceptName: string]: string[] } =  object.simpleConcepts ?? {}  ) {
-
-        this.setAlias('color', ['style', 'background']);
-        this.setAlias('width', ['style', 'width']);
+        readonly simpleConcepts: { [conceptName: string]: string[] } = object.simpleConcepts ?? {}) {
 
         object.simpleConcepts = simpleConcepts
-        //TODO do this only once and only for HTMLElement's prototype
-        //TODO put it ON the prototype object so it can be retrieved as "this.o.simpleConcepts" from any instance of the prototype
     }
-
 
     set(predicate: string, props?: string[]): void {
 

@@ -3,11 +3,15 @@ import { getParser } from "../parser/Parser";
 import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { Id } from "../clauses/Id";
+import { wrap } from "../enviro/Wrapper";
 
 
 export default class BasicBrain implements Brain {
 
     constructor(readonly enviro = getEnviro()) {
+
+        wrap(HTMLButtonElement.prototype).setAlias('color', ['style', 'background'])
+        // wrap(HTMLButtonElement.prototype).setAlias('width', ['style', 'width'])
 
     }
 
