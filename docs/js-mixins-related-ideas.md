@@ -400,3 +400,7 @@ interpret this as a double implication, aka iff, or definition.
 
 
 
+
+SETTING PROPERTY ON PROTOTYPE DYNAMICALLY JAVASCRIPT
+
+Object.defineProperty(HTMLButtonElement.prototype, 'color', {value: ['style', 'background']}) 
