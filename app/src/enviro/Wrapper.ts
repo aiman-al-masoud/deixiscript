@@ -6,6 +6,7 @@ export default interface Wrapper {
     is(predicate: string, ...args: Wrapper[]): boolean
     setAlias(conceptName: string, propPath: string[]): void
     readonly object: any
+    pointOut(opts?: { turnOff: boolean }): void
     // get(predicate: string): any
     // getProp(path: string[]): any
     // setProp(path: string[], value: any): void

@@ -11,6 +11,7 @@ export default class ConcreteWrapper implements Wrapper {
         //TODO put it ON the prototype object so it can be retrieved as "this.o.simpleConcepts" from any instance of the prototype
     }
 
+
     set(predicate: string, props?: string[]): void {
 
         (this.object as any)[predicate] = true // TODO: remove
@@ -60,6 +61,14 @@ export default class ConcreteWrapper implements Wrapper {
         });
 
         x[path[path.length - 1]] = value
+
+    }
+
+    pointOut(opts?: { turnOff: boolean; }): void {
+
+        if (this.object instanceof HTMLElement) {
+            this.object.style.outline = opts?.turnOff ? '' : '#f00 solid 2px'
+        }
 
     }
 

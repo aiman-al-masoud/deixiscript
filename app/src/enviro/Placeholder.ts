@@ -16,4 +16,8 @@ export class Placeholder implements Wrapper {
 
     setAlias(conceptName: string, propOrSynonConcept: string | string[]): void {
     }
+
+    pointOut(opts: { turnOff: boolean; }): void {
+        
+    }
 }

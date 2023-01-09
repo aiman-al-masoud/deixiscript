@@ -27,32 +27,13 @@ export default class BasicBrain implements Brain {
                     .map(e => e as Id)
 
                 const objects = await Promise.all(ids.map(e => this.enviro.get(e)))
-                objects.forEach(o => this.pointOut(o.object))
+                this.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
+                objects.forEach(o => o.pointOut())
             }
 
         }
 
         return []
-    }
-
-    protected setColoredOutline(object: any, opts?: { turnOff: boolean }) {
-
-        if (object instanceof HTMLElement) {
-            object.style.outline = opts?.turnOff ? '' : '#f00 solid 2px'
-        }
-
-    }
-
-    protected pointOut(object: any) {
-
-        console.log(object)
-
-        this.enviro.values.forEach(o => {
-            this.setColoredOutline(o.object, { turnOff: true })
-        })
-
-        this.setColoredOutline(object)
-
     }
 
 }
