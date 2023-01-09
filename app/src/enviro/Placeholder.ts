@@ -2,7 +2,7 @@ import Wrapper from "./Wrapper";
 
 export class Placeholder implements Wrapper {
 
-    constructor(readonly predicates: string[] = []) {
+    constructor(readonly predicates: string[] = [], readonly object: any = {}) {
     }
 
     set(predicate: string, props: string[]): void {

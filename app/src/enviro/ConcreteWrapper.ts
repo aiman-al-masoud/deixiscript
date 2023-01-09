@@ -3,7 +3,7 @@ import Wrapper from "./Wrapper";
 
 export default class ConcreteWrapper implements Wrapper {
 
-    constructor(readonly o: any,
+    constructor(readonly object: any,
         readonly simpleConcepts: { [conceptName: string]: string[] } = {}) {
         this.setAlias('color', ['style', 'background'])
         this.setAlias('width', ['style', 'width'])
@@ -13,7 +13,7 @@ export default class ConcreteWrapper implements Wrapper {
 
     set(predicate: string, props?: string[]): void {
 
-        (this.o as any)[predicate] = true // TODO: remove
+        (this.object as any)[predicate] = true // TODO: remove
 
         if (props && props.length > 1) { // set the pedicate on the path
             this.setNested(props, predicate)
@@ -44,7 +44,7 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     is(predicate: string, ...args: Wrapper[]): boolean {
-        return (this.o as any)[predicate] !== undefined // TODO: remove
+        return (this.object as any)[predicate] !== undefined // TODO: remove
     }
 
     setAlias(conceptName: string, propPath: string[]): void {
@@ -53,10 +53,10 @@ export default class ConcreteWrapper implements Wrapper {
 
     protected setNested(path: string[], value: string) {
 
-        let x = this.o[path[0]]
+        let x = this.object[path[0]]
 
         path.slice(1, -2).forEach(p => {
-            x = this.o[p]
+            x = this.object[p]
         });
 
         x[path[path.length - 1]] = value

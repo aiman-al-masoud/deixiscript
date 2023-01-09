@@ -7,11 +7,10 @@ export interface Enviro {
     get(id: Id): Promise<Wrapper>
     set(id: Id, object: Wrapper): void
     setPlaceholder(id: Id): void
-    query(clause: Clause): Promise<{ [id: Id]: Id | undefined }>
+    query(clause: Clause): Promise<{ [id: Id]: Id | undefined }> //TODO: return a list of maps, Map[], when mutliple elements match query!
     exists(id: Id): boolean
-    // query(clause: Clause): Promise<Map[]> //TODO!!!!!!!!!    
+    get values(): Wrapper[]
     // get keys(): Id[]
-    // get values(): any[]
 }
 
 export default function getEnviro(): Enviro {

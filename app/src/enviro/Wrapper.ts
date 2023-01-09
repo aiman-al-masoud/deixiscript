@@ -5,6 +5,7 @@ export default interface Wrapper {
     set(predicate: string, props?: string[]): void // obj.set('red'), obj.set('on', obj2) ...
     is(predicate: string, ...args: Wrapper[]): boolean
     setAlias(conceptName: string, propPath: string[]): void
+    readonly object: any
     // get(predicate: string): any
     // getProp(path: string[]): any
     // setProp(path: string[], value: any): void

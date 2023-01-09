@@ -71,5 +71,9 @@ export default class BaseEnviro implements Enviro {
         return this.dictionary[id] && !(this.dictionary[id] instanceof Placeholder)
     }
 
+    get values(): Wrapper[] {
+        return Object.values(this.dictionary)
+    }
+
 }
 
