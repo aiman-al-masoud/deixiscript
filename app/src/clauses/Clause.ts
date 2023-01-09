@@ -1,7 +1,7 @@
 import { BasicClause } from "./BasicClause"
 import And from "./And"
 import { Id, Map } from "./Id"
-import Action from "../action/Action"
+import Action from "../actuator/Action"
 import Brain from "../brain/Brain"
 
 /**

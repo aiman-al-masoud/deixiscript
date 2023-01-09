@@ -2,7 +2,7 @@ import { Clause, AndOpts, CopyOpts, emptyClause, hashString } from "./Clause";
 import { Id, isVar } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
-import Action from "../action/Action";
+import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
 
 export class BasicClause implements Clause {

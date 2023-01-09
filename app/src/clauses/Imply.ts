@@ -1,7 +1,7 @@
 import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";
 import And from "./And";
-import Action from "../action/Action";
+import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
 
 export default class Imply implements Clause {

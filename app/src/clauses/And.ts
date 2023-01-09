@@ -1,4 +1,4 @@
-import Action from "../action/Action";
+import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
 import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
 import { Id } from "./Id";

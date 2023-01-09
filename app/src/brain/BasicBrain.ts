@@ -3,7 +3,7 @@ import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { Id } from "../clauses/Id";
 import { wrap } from "../enviro/Wrapper";
-import { getActuator } from "../action/Actuator";
+import { getActuator } from "../actuator/Actuator";
 
 
 export default class BasicBrain implements Brain {
