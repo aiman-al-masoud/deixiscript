@@ -1,5 +1,5 @@
 import { clauseOf } from "../clauses/Clause";
-import { wrap } from "../concepts/Wrapper";
+import { wrap } from "../enviro/Wrapper";
 import getEnviro from "../enviro/Enviro";
 
 export async function wrapperTest() {

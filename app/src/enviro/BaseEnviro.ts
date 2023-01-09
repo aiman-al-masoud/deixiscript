@@ -1,7 +1,8 @@
 import { Clause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
-import Wrapper from "../concepts/Wrapper";
+import Wrapper from "./Wrapper";
 import { Enviro } from "./Enviro";
+import { Placeholder } from "./Placeholder";
 
 export default class BaseEnviro implements Enviro {
 
@@ -72,23 +73,3 @@ export default class BaseEnviro implements Enviro {
 
 }
 
-class Placeholder implements Wrapper {
-
-    constructor(readonly predicates: string[] = []) {
-
-    }
-
-    set(predicate: string, props: string[]): void {
-        console.log({props})
-        this.predicates.push(predicate)
-    }
-
-    is(predicate: string, ...args: Wrapper[]): boolean {
-        return this.predicates.includes(predicate)
-    }
-
-    setAlias(conceptName: string, propOrSynonConcept: string | string[]): void {
-        
-    }
-
-}

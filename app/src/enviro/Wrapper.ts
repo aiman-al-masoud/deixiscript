@@ -1,5 +1,3 @@
-import { Clause } from "../clauses/Clause"
-import { Id } from "../clauses/Id"
 import ConcreteWrapper from "./ConcreteWrapper"
 
 export default interface Wrapper {

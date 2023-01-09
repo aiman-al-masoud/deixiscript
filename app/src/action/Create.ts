@@ -1,5 +1,5 @@
 import { Id } from "../clauses/Id";
-import { wrap } from "../concepts/Wrapper";
+import { wrap } from "../enviro/Wrapper";
 import { Enviro } from "../enviro/Enviro";
 import Action from "./Action";
 

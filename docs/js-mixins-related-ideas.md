@@ -403,4 +403,11 @@ interpret this as a double implication, aka iff, or definition.
 
 SETTING PROPERTY ON PROTOTYPE DYNAMICALLY JAVASCRIPT
 
+```javascript
 Object.defineProperty(HTMLButtonElement.prototype, 'color', {value: ['style', 'background']}) 
+```
+BINDING FUNCTION TO OBJECT AND INVOKING IT
+
+```javascript
+object[getSetterName(x)].bind(object)(prop)
+```
