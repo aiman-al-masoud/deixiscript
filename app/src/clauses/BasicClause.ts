@@ -1,9 +1,11 @@
-import { Clause, AndOpts, CopyOpts, emptyClause, hashString } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { hashString } from "./hashString";
 import { Id, isVar } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
 import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
+import { topLevel } from "./topLevel";
 
 export class BasicClause implements Clause {
 
@@ -70,6 +72,10 @@ export class BasicClause implements Clause {
 
     describe(id: Id): string[] {
         return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
+    }
+
+    topLevel(): Id[] {
+        return topLevel(this)        
     }
 
 }

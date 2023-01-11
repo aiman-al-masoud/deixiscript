@@ -1,8 +1,10 @@
-import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { hashString } from "./hashString";
 import { Id } from "./Id";
 import And from "./And";
 import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
+import { topLevel } from "./topLevel";
 
 export default class Imply implements Clause {
 
@@ -70,6 +72,10 @@ export default class Imply implements Clause {
 
     describe(id: Id): string[] {
         return this.conclusion.describe(id).concat(this.condition.describe(id))
+    }
+
+    topLevel(): Id[] {
+        return topLevel(this)
     }
 
 }

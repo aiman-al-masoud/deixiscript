@@ -1,8 +1,10 @@
 import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
-import { Clause, AndOpts, CopyOpts, hashString, emptyClause } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { hashString } from "./hashString";
 import { Id } from "./Id";
 import Imply from "./Imply";
+import { topLevel } from "./topLevel";
 
 export default class And implements Clause {
 
@@ -73,6 +75,10 @@ export default class And implements Clause {
 
     describe(id: Id): string[] {
         return this.clauses.flatMap(x=>x.describe(id))
+    }
+
+    topLevel(): Id[] {
+        return topLevel(this)
     }
 
 }
