@@ -1,0 +1,25 @@
+import { getParser } from "../parser/Parser";
+
+export async function toclausetests() {
+
+    const tests = [
+        'every button is a button',
+        'the color of a button is the background of the style of the button'
+    ]
+
+    for (const t of tests) {
+        console.log(t)
+        // console.log(await run(t))
+        const clause = await getParser(t).parse().toClause()
+        const stringRepr = clause.toString()
+        console.log({stringRepr})
+        const topLevel = clause.topLevel()
+        console.log({topLevel})
+        const ownershipChains = topLevel.map(e=>clause.getOwnershipChain(e))
+        console.log({ownershipChains})
+        const ownershipChainsWithNames = ownershipChains.map(e=>e.flatMap(e=>clause.describe(e)[0]))
+        console.log({ownershipChainsWithNames})
+    }
+
+}
+
