@@ -11,19 +11,7 @@ export default class BaseEnviro implements Enviro {
     }
 
     async get(id: Id): Promise<Wrapper> {
-
-        return new Promise((ok, err) => {
-
-            const interval = setInterval(() => {
-
-                if (this.dictionary[id]) {
-                    clearInterval(interval)
-                    ok(this.dictionary[id] as Wrapper)
-                }
-
-            }, 10)
-        })
-
+        return this.dictionary[id] //TODO: could be undefined!
     }
 
     set(id: Id, object: Wrapper): void {

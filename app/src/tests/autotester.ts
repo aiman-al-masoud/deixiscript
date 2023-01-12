@@ -1,7 +1,7 @@
 import BasicBrain from "../brain/BasicBrain";
 import { getBrain } from "../brain/Brain";
 
-const tests = [test1, test2, test3]
+const tests = [test1, test2, test3, test4]
 
 /**
  * Integration tests
@@ -10,6 +10,7 @@ export default async function autotester() {
 
     for (const test of tests) {
         console.log(await test() ? 'success' : 'fail', test.name)
+        await wait(200)
         clearDom()
     }
 
@@ -37,6 +38,19 @@ async function test3() {
     const assert2 = (await brain.execute('a green button'))[0].style.background === 'green'
     const assert3 = (await brain.execute('a black button'))[0].style.background === 'black'
     return assert1 && assert2 && assert3
+}
+
+async function test4() {
+    const brain = await getBrain()
+    await brain.execute('a button is a button.');
+    const button = await brain.execute('button')
+    return button !== undefined
+}
+
+async function wait(millisecs: number) {
+    return new Promise((ok, err) => {
+        setTimeout(() => ok(true), millisecs)
+    })
 }
 
 function clearDom() {
