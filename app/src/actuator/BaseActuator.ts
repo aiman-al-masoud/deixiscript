@@ -11,7 +11,7 @@ export default class BaseActuator implements Actuator {
 
     async takeAction(clause: Clause, enviro: Enviro): Promise<void> {
 
-        const ownershipChain = getOwnershipChain(clause, clause.topLevel()[0])
+        const ownershipChain = clause.getOwnershipChain(clause.topLevel()[0])
 
         //1 get the top-level object's ID from an Enviro, if none create it
         let id = (await enviro.query(clause))[ownershipChain[0]]
@@ -20,10 +20,11 @@ export default class BaseActuator implements Actuator {
             enviro.setPlaceholder(id = getRandomId())
         }
 
-        const props = ownershipChain // inner props of top level entity
-            .slice(1)
-            .map(e => clause.theme.describe(e)[0])
-            .filter(x => x !== undefined)
+        const props =  // inner props of top level entity
+            ownershipChain
+                .slice(1)
+                .map(e => clause.theme.describe(e)[0])
+                .filter(x => x !== undefined)
 
         //2 determine kind of action (creator or non-creator)
         //3 distribute the id to every action (one action per predicate)
@@ -40,16 +41,6 @@ export default class BaseActuator implements Actuator {
             await a.run(enviro) // TODO: make this async-safe
         }
     }
-
-}
-
-function getOwnershipChain(clause: Clause, entity: Id): Id[] {
-
-    const ownedEntities = clause.ownedBy(entity)
-
-    return ownedEntities.length === 0 ?
-        [entity] :
-        [entity].concat(getOwnershipChain(clause, ownedEntities[0]))
 
 }
 

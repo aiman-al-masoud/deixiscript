@@ -1,6 +1,7 @@
 import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { getOwnershipChain } from "./getOwnershipChain";
 import { hashString } from "./hashString";
 import { Id } from "./Id";
 import Imply from "./Imply";
@@ -79,6 +80,10 @@ export default class And implements Clause {
 
     topLevel(): Id[] {
         return topLevel(this)
+    }
+
+    getOwnershipChain(entity: Id): Id[] {
+        return getOwnershipChain(this, entity)
     }
 
 }

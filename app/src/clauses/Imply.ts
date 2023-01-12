@@ -5,6 +5,7 @@ import And from "./And";
 import Action from "../actuator/Action";
 import Brain from "../brain/Brain";
 import { topLevel } from "./topLevel";
+import { getOwnershipChain } from "./getOwnershipChain";
 
 export default class Imply implements Clause {
 
@@ -76,6 +77,10 @@ export default class Imply implements Clause {
 
     topLevel(): Id[] {
         return topLevel(this)
+    }
+
+    getOwnershipChain(entity: Id): Id[] {
+        return getOwnershipChain(this, entity)
     }
 
 }

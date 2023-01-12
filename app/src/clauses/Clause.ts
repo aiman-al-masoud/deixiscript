@@ -25,6 +25,7 @@ export interface Clause {
     ownersOf(id: Id): Id[]
     describe(id: Id): string[]
     topLevel(): Id[]
+    getOwnershipChain(entity: Id): Id[]
 }
 
 export function clauseOf(predicate: string, ...args: Id[]): Clause {
