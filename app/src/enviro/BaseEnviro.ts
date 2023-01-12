@@ -1,5 +1,5 @@
 import { Clause } from "../clauses/Clause";
-import { Id } from "../clauses/Id";
+import { Id, Map } from "../clauses/Id";
 import Wrapper from "./Wrapper";
 import { Enviro } from "./Enviro";
 import { Placeholder } from "./Placeholder";
@@ -12,8 +12,6 @@ export default class BaseEnviro implements Enviro {
 
     async get(id: Id): Promise<Wrapper> {
 
-        // return this.dictionary[id] // TODO: could be undefined!
-
         return new Promise((ok, err) => {
 
             const interval = setInterval(() => {
@@ -23,13 +21,12 @@ export default class BaseEnviro implements Enviro {
                     ok(this.dictionary[id] as Wrapper)
                 }
 
-            }, 100)
+            }, 10)
         })
 
     }
 
     set(id: Id, object: Wrapper): void {
-        // this.dictionary[id] = object
 
         const placeholder = this.dictionary[id]
 
@@ -44,23 +41,25 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    async query(clause: Clause): Promise<{ [id: Id]: Id | undefined }> {
+    async query(clause: Clause): Promise<Map> {
 
-        // for each entity in the clause, get the entities that match its description in the dictionary
-        //TODO tmp solution, for anaphora resolution, but without taking (multi-entity) relationships into account
+        //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
 
         const universe = Object
             .entries(this.dictionary)
+            .map(x => ({ e: x[0], w: x[1] }))
 
         const query = clause
             .entities
-            .map(e => ({ e, d: clause.theme.describe(e) }))
+            .map(e => ({ e, desc: clause.theme.describe(e) }))
 
         const res = query
-            .map(q => ({ [q.e]: universe.find(u => q.d.every(s => u[1]?.is(s)))?.[0] }))
-            .reduce((a, b) => ({ ...a, ...b }))
+            .map(q => ({ from: q.e, to: universe.find(u => q.desc.every(d => u.w.is(d))) }))
+            .filter(x => x.to !== undefined)
+            .map(x => ({ [x.from]: x.to?.e }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
 
-        return res
+        return res as Map
     }
 
     setPlaceholder(id: Id): void {
@@ -76,4 +75,3 @@ export default class BaseEnviro implements Enviro {
     }
 
 }
-
