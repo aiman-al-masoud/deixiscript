@@ -17,6 +17,7 @@ export default class CopulaSentence implements SimpleSentence {
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
+        // TODO: pass down anaphora from subject to predicate and resolve them in noun phrases, maybe recycle code from Enviro but avoid too much coupling
         const subject = await this.subject.toClause(newArgs)
         const predicate = (await this.predicate.toClause(newArgs)).copy({ negate: !!this.negation })
 
