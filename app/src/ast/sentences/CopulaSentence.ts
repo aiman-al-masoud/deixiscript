@@ -15,7 +15,6 @@ export default class CopulaSentence implements SimpleSentence {
 
     async toClause(args?: ToClauseOpts): Promise<Clause> {
 
-
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
         const newArgs = { ...args, roles: { subject: subjectId } }
 
@@ -26,8 +25,6 @@ export default class CopulaSentence implements SimpleSentence {
             subject.implies(predicate) :
             subject.and(predicate, { asRheme: true })
 
-        // const resolvedAnaphora = await getAnaphora(result).mapToClause(args?.anaphora ?? emptyClause())
-        // return result.copy({map: resolvedAnaphora, sideEffecty : true})
         return result.copy({ sideEffecty: true })
 
     }
