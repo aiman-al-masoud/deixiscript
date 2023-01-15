@@ -1,11 +1,10 @@
 import { ToClauseOpts } from "../interfaces/Constituent";
-import { Clause, emptyClause } from "../../clauses/Clause";
+import { Clause } from "../../clauses/Clause";
 import { getRandomId } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 import Negation from "../tokens/Negation";
-// import { getAnaphora } from "../../brain/Anaphora";
 
 export default class CopulaSentence implements SimpleSentence {
 
