@@ -50,7 +50,8 @@ export class BasicClause implements Clause {
     }
 
     get entities(): Id[] {
-        return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
+        // return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
+        return Array.from(new Set(this.args)) 
     }
 
     async toAction(): Promise<Action> {

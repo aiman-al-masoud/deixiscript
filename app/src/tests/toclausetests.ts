@@ -14,12 +14,12 @@ export async function toclausetests() {
         const clause = await getParser(t).parse().toClause()
         const stringRepr = clause.toString()
         console.log({ stringRepr })
-        const topLevel = clause.topLevel()
-        console.log({ topLevel })
-        const ownershipChains = topLevel.map(e => clause.getOwnershipChain(e))
-        console.log({ ownershipChains })
-        const ownershipChainsWithNames = ownershipChains.map(e => e.flatMap(e => clause.describe(e)[0]))
-        console.log({ ownershipChainsWithNames })
+        // const topLevel = clause.topLevel()
+        // console.log({ topLevel })
+        // const ownershipChains = topLevel.map(e => clause.getOwnershipChain(e))
+        // console.log({ ownershipChains })
+        // const ownershipChainsWithNames = ownershipChains.map(e => e.flatMap(e => clause.describe(e)[0]))
+        // console.log({ ownershipChainsWithNames })
     }
 
 }

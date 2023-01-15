@@ -1,6 +1,6 @@
 import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
-import { getRandomId } from "../../clauses/Id";
+import { getRandomId, isVar, toVar } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
@@ -20,12 +20,19 @@ export default class CopulaSentence implements SimpleSentence {
         const subject = await this.subject.toClause(newArgs)
         const predicate = (await this.predicate.toClause(newArgs)).copy({ negate: !!this.negation })
 
-        const result = this.subject.isUniQuant() ?
+        const entities = subject.entities.concat(predicate.entities)
+
+        const result = entities.some(e => isVar(e)) ? // assume any sentence with any var is an implication
             subject.implies(predicate) :
             subject.and(predicate, { asRheme: true })
 
-        return result.copy({ sideEffecty: true })
+        const x = entities // assume anything owned by a variable is also a variable
+            .filter(e => isVar(e))
+            .flatMap(e => subject.and(predicate).ownedBy(e))
+            .map(e => ({ [e]: toVar(e) }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
 
+        return result.copy({ sideEffecty: true, map: x })
     }
 
 }

@@ -40,3 +40,6 @@ export function isVar(e: Id) {
     return Number.isNaN(Number(e)) && (e.toString()[0] === e.toString()[0].toUpperCase())
 }
 
+export function toConst(id: Id): Id {
+    return (!Number.isNaN(Number(id)) ? `id${id}` : id + '').toLowerCase()
+}
