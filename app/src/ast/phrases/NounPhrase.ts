@@ -7,7 +7,7 @@ import Complement from "./Complement";
 import SubordinateClause from "../interfaces/SubordinateClause";
 import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause, clauseOf, emptyClause } from "../../clauses/Clause";
-import { getRandomId, Id, isVar, toVar, toConst } from "../../clauses/Id";
+import { getRandomId, toVar } from "../../clauses/Id";
 
 export default class NounPhrase implements Phrase {
 
@@ -40,12 +40,7 @@ export default class NounPhrase implements Phrase {
             .and(await this.subordClause?.toClause(newArgs) ?? emptyClause())
             .copy({ sideEffecty: false })
 
-        const x = res.entities // assume ids are case insensitive, assume if IDX is var all idx are var
-            .filter(x => isVar(x))
-            .map(e => ({ [toConst(e)]: e }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
-
-        return res.copy({ map: x })
+        return res
     }
 
 }
