@@ -1,0 +1,22 @@
+Resolve anaphora within the same sentence
+
+
+pass down the clause of a previously converted ast to the toClause() of the next ast.
+
+use Enviro to get a Map?
+
+
+
+
+PROBLEMS:
+
+And has an erratic behavior when it comes to theme-rheme, theme is less than it should be 
+
+BasicClause didn't care about theme-rheme in and() method
+
+Neither does Imply 
+
+
+PROPOSED SOLUTION:
+
+remove list inner structure from And, just rely on theme and rheme, re-implement flatList and the rest
