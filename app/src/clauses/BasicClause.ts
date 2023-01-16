@@ -22,7 +22,14 @@ export class BasicClause implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And([this, ...other.flatList()])
+        // console.log( 'As rheme?', opts?.asRheme, 'I am the problem', 'theme will be:', this.toString(), 'rheme will be:',other.toString())
+        if (opts?.asRheme) {
+            return new And([this, ...other.flatList()])
+        } else {
+            const a = new And([new And([this, other])])
+            // console.log('NO RHEME', a.theme.toString() === a.toString())
+            return a
+        }
     }
 
     copy(opts?: CopyOpts): BasicClause {
@@ -51,7 +58,7 @@ export class BasicClause implements Clause {
 
     get entities(): Id[] {
         // return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
-        return Array.from(new Set(this.args)) 
+        return Array.from(new Set(this.args))
     }
 
     async toAction(): Promise<Action> {
@@ -77,7 +84,7 @@ export class BasicClause implements Clause {
     }
 
     topLevel(): Id[] {
-        return topLevel(this)        
+        return topLevel(this)
     }
 
     getOwnershipChain(entity: Id): Id[] {

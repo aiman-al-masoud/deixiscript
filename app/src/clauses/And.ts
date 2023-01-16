@@ -15,8 +15,7 @@ export default class And implements Clause {
         readonly isSideEffecty = false,
         readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments)),
-        readonly theme = clauses[0],
-        readonly rheme = clauses[1]) {
+        readonly theme = clauses[0]) {
 
     }
 
@@ -24,7 +23,7 @@ export default class And implements Clause {
 
         return opts?.asRheme ?
             new And([this, other]) :
-            new And([...this.flatList(), ...other.flatList()])
+            new And([...this.flatList(), ...other.flatList(), emptyClause()])
 
     }
 
@@ -84,6 +83,10 @@ export default class And implements Clause {
 
     getOwnershipChain(entity: Id): Id[] {
         return getOwnershipChain(this, entity)
+    }
+
+    get rheme(){
+        return this.clauses.slice(1).reduce((a,b)=>a.and(b), emptyClause())
     }
 
 }

@@ -5,6 +5,7 @@ import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
 import Copula from "../tokens/Copula";
 import Negation from "../tokens/Negation";
+import { getAnaphora } from "../../Anaphora";
 
 export default class CopulaSentence implements SimpleSentence {
 
@@ -33,6 +34,12 @@ export default class CopulaSentence implements SimpleSentence {
             .flatMap(e => subject.and(predicate).ownedBy(e))
             .map(e => ({ [e]: toVar(e) }))
             .reduce((a, b) => ({ ...a, ...b }), {})
+
+
+        const a = getAnaphora()
+        await a.assert(subject)
+        const m = await a.query(predicate)
+        // console.log({m})
 
         return result.copy({ sideEffecty: true, map: x })
     }

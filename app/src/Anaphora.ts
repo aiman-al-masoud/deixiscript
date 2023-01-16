@@ -30,7 +30,7 @@ class EnviroAnaphora implements Anaphora {
 
                 this.enviro.setPlaceholder(c.args[0])
                 const x = await this.enviro.get(c.args[0])
-                console.log(c.args[0], ' is a ', c.predicate)
+                // console.log(c.args[0], ' is a ', c.predicate)
                 x.set(c.predicate)
 
             }

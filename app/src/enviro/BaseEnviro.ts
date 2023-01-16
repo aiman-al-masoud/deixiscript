@@ -36,16 +36,24 @@ export default class BaseEnviro implements Enviro {
         const universe = Object
             .entries(this.dictionary)
             .map(x => ({ e: x[0], w: x[1] }))
+    
+
+        // console.log('clause.toString()', clause.toString())
+        // console.log('clause.theme.toString()', clause.theme.toString())
+        // console.log('clause.rheme.toString()', clause.rheme.toString())
 
         const query = clause
-            .entities
-            .map(e => ({ e, desc: clause.theme.describe(e) }))
+        .entities
+        .map(e => ({ e, desc: clause.theme.describe(e) }))
+        
+        // console.log({query})
 
         const res = query
             .map(q => ({ from: q.e, to: universe.find(u => q.desc.every(d => u.w.is(d))) }))
             .filter(x => x.to !== undefined)
             .map(x => ({ [x.from]: x.to?.e }))
             .reduce((a, b) => ({ ...a, ...b }), {})
+
 
         return res as Map
     }
