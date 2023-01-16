@@ -1,5 +1,4 @@
 import Action from "../actuator/Action";
-import Brain from "../brain/Brain";
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { hashString } from "./hashString";
@@ -9,51 +8,55 @@ import { topLevel } from "./topLevel";
 
 export default class And implements Clause {
 
-    constructor(readonly clauses: Clause[],
+    constructor(readonly clause1: Clause,
+        readonly clause2: Clause,
+        readonly clause2IsRheme: boolean,
         readonly negated = false,
         readonly noAnaphora = false,
         readonly isSideEffecty = false,
         readonly isImply = false,
-        readonly hashCode = hashString(JSON.stringify(arguments)),
-        readonly theme = clauses[0]) {
+        readonly hashCode = hashString(JSON.stringify(arguments))) {
 
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-
-        return opts?.asRheme ?
-            new And([this, other]) :
-            new And([...this.flatList(), ...other.flatList(), emptyClause()])
-
+        return new And(this, other, opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): And {
-        return new And(this.clauses.map(c => c.copy({ ...opts, negate: false })),
+
+        return new And(this.clause1.copy({ map: opts?.map }),
+            this.clause2.copy({ map: opts?.map }),
+            this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
             opts?.noAnaphora ?? this.noAnaphora,
             opts?.sideEffecty ?? this.isSideEffecty)
+
     }
 
     flatList(): Clause[] {
-        return this.negated ? [this] : this.clauses.flatMap(c => c.flatList())
+
+        return this.negated ? [this] :
+            [...this.clause1.flatList(), ...this.clause2.flatList()]
+
     }
 
     get entities(): Id[] {
-        return Array.from(new Set(this.clauses.flatMap(c => c.entities)))
+
+        return Array.from(
+            new Set(
+                this.clause1.entities.concat(this.clause2.entities)
+            )
+        )
+
     }
 
     implies(conclusion: Clause): Clause {
         return new Imply(this, conclusion)
     }
 
-    about(id: Id): Clause {
-
-        if (this.negated) {
-            return emptyClause() // TODO!!!!!!!!!
-        } else {
-            return this.clauses.flatMap(c => c.about(id)).reduce((c1, c2) => c1.and(c2), emptyClause())
-        }
-
+    about(id: Id): Clause { //TODO: if this is negated!
+        return this.clause1.about(id).and(this.clause2.about(id))
     }
 
     async toAction(): Promise<Action> {
@@ -61,20 +64,20 @@ export default class And implements Clause {
     }
 
     toString() {
-        const yes = this.clauses.map(x => x.toString()).toString()
+        const yes = this.clause1.toString() + ',' + this.clause2.toString()
         return this.negated ? `not(${yes})` : yes
     }
 
     ownedBy(id: Id): Id[] {
-        return this.clauses.flatMap(x=>x.ownedBy(id))
+        return this.clause1.ownedBy(id).concat(this.clause2.ownedBy(id))
     }
 
     ownersOf(id: Id): Id[] {
-        return this.clauses.flatMap(x=>x.ownersOf(id))
+        return this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
     }
 
     describe(id: Id): string[] {
-        return this.clauses.flatMap(x=>x.describe(id))
+        return this.clause1.describe(id).concat(this.clause2.describe(id))
     }
 
     topLevel(): Id[] {
@@ -85,8 +88,12 @@ export default class And implements Clause {
         return getOwnershipChain(this, entity)
     }
 
-    get rheme(){
-        return this.clauses.slice(1).reduce((a,b)=>a.and(b), emptyClause())
+    get theme(): Clause {
+        return this.clause2IsRheme ? this.clause1 : this
+    }
+
+    get rheme() {
+        return this.clause2IsRheme ? this.clause2 : emptyClause()
     }
 
 }

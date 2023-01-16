@@ -1,10 +1,9 @@
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "./hashString";
-import { Id, isVar } from "./Id";
+import { Id } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
 import Action from "../actuator/Action";
-import Brain from "../brain/Brain";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 
@@ -22,14 +21,7 @@ export class BasicClause implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        // console.log( 'As rheme?', opts?.asRheme, 'I am the problem', 'theme will be:', this.toString(), 'rheme will be:',other.toString())
-        if (opts?.asRheme) {
-            return new And([this, ...other.flatList()])
-        } else {
-            const a = new And([new And([this, other])])
-            // console.log('NO RHEME', a.theme.toString() === a.toString())
-            return a
-        }
+        return new And(this, other, opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): BasicClause {
@@ -57,14 +49,12 @@ export class BasicClause implements Clause {
     }
 
     get entities(): Id[] {
-        // return Array.from(new Set(this.args.filter(a => !isVar(a)))) // variable ids are NOT entities
         return Array.from(new Set(this.args))
     }
 
     async toAction(): Promise<Action> {
         throw new Error('unimplemented!')
     }
-
 
     ownedBy(id: Id): Id[] {
         return this.predicate === 'of' && this.args[1] === id ? [this.args[0]] : []

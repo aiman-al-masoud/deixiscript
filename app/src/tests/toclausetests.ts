@@ -3,10 +3,11 @@ import { getParser } from "../parser/Parser";
 export async function toclausetests() {
 
     const tests = [
-        // 'the color of any button is red',
-        // 'every button is red',
-        // 'every button is a button',
-        'the color of any button is the background of the style of the button'
+        'the color of any button is red',
+        'every button is red',
+        'every button is a button',
+        'the color of any button is the background of the style of the button',
+        'width of any button is width of style of button'
     ]
 
     for (const t of tests) {

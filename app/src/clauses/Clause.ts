@@ -2,6 +2,7 @@ import { BasicClause } from "./BasicClause"
 import And from "./And"
 import { Id, Map } from "./Id"
 import Action from "../actuator/Action"
+import { EmptyClause } from "./EmptyClause"
 
 /**
  * A 'language-agnostic' first order logic representation.
@@ -32,7 +33,9 @@ export function clauseOf(predicate: string, ...args: Id[]): Clause {
     return new BasicClause(predicate, args)
 }
 
-export const emptyClause = (): Clause => new And([])
+// export const emptyClause = (): Clause => new And([])
+export const emptyClause = (): Clause => new EmptyClause()
+
 
 export interface CopyOpts {
     negate?: boolean

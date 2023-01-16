@@ -3,7 +3,6 @@ import { hashString } from "./hashString";
 import { Id } from "./Id";
 import And from "./And";
 import Action from "../actuator/Action";
-import Brain from "../brain/Brain";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 
@@ -21,7 +20,8 @@ export default class Imply implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And([this, other])
+        // return new And([this, other])
+        return new And(this, other, opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): Clause {

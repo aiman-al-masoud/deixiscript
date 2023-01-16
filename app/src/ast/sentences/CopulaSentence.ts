@@ -20,7 +20,7 @@ export default class CopulaSentence implements SimpleSentence {
 
         const newArgs = { ...args, roles: { subject: subjectId } }
         const subject = await this.subject.toClause(newArgs)
-        const newArgs2 = {...newArgs, anaphora: (newArgs.anaphora??emptyClause()).and(subject)  }
+        const newArgs2 = { ...newArgs, anaphora: (newArgs.anaphora ?? emptyClause()).and(subject) }
         const predicate = (await this.predicate.toClause(newArgs2)).copy({ negate: !!this.negation })
 
         const entities = subject.entities.concat(predicate.entities)
@@ -29,19 +29,24 @@ export default class CopulaSentence implements SimpleSentence {
             subject.implies(predicate) :
             subject.and(predicate, { asRheme: true })
 
-        const x = entities // assume anything owned by a variable is also a variable
-            .filter(e => isVar(e))
-            .flatMap(e => subject.and(predicate).ownedBy(e))
-            .map(e => ({ [e]: toVar(e) }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
-
-
+        // get anaphora
         const a = getAnaphora()
         await a.assert(subject)
-        const m = await a.query(predicate)
-        // console.log({m})
+        const m1 = (await a.query(predicate) )[0]
+        // console.log({ m1 })
 
-        return result.copy({ sideEffecty: true, map: x })
+        // return result.copy({ sideEffecty: true, map: x })
+        const result2 = result.copy({ sideEffecty: true, map: m1 })
+        
+        const m2 = result2.entities // assume anything owned by a variable is also a variable
+            .filter(e => isVar(e))
+            .flatMap(e => result2.ownedBy(e))
+            .map(e => ({ [e]: toVar(e) }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
+        
+        // console.log({m2})
+
+        return result2.copy({ map: m2 })
     }
 
 }
