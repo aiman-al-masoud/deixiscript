@@ -40,7 +40,7 @@ class EnviroAnaphora implements Anaphora {
     }
 
     async query(clause: Clause): Promise<Map[]> {
-        return [await this.enviro.query(clause)]
+        return this.enviro.query(clause)
     }
 
 }

@@ -29,33 +29,31 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    async query(clause: Clause): Promise<Map> {
-
-        //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
+    async query(clause: Clause): Promise<Map[]> { //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
 
         const universe = Object
             .entries(this.dictionary)
             .map(x => ({ e: x[0], w: x[1] }))
-    
 
-        // console.log('clause.toString()', clause.toString())
-        // console.log('clause.theme.toString()', clause.theme.toString())
-        // console.log('clause.rheme.toString()', clause.rheme.toString())
-
-        const query = clause
-        .entities
-        .map(e => ({ e, desc: clause.theme.describe(e) }))
-        
-        // console.log({query})
+        const query = clause // described entities
+            .entities
+            .map(e => ({ e, desc: clause.theme.describe(e) }))
 
         const res = query
-            .map(q => ({ from: q.e, to: universe.find(u => q.desc.every(d => u.w.is(d))) }))
-            .filter(x => x.to !== undefined)
-            .map(x => ({ [x.from]: x.to?.e }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
+            .flatMap(q => ({ from: q.e, to: universe.filter(u => q.desc.every(d => u.w.is(d))) }))
 
+        const resSize = Math.max(...res.map(q => q.to.length));
+        const fromToTo = (from: Id) => res.filter(x => x.from === from)[0].to.map(x => x.e);
+        const range = (n: number) => [...new Array(n).keys()]
 
-        return res as Map
+        const res2 = range(resSize).map(i =>
+            clause
+                .entities
+                .filter(from => fromToTo(from).length > 0)
+                .map(from => ({ [from]: fromToTo(from)[i] ?? fromToTo(from)[0] }))
+                .reduce((a, b) => ({ ...a, ...b })))
+
+        return res2 // return list of maps, where each map should should have ALL ids from clause in its keys, eg: [{id2:id1, id4:id3}, {id2:1, id4:3}].
     }
 
     setPlaceholder(id: Id): void {

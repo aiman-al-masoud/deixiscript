@@ -11,10 +11,11 @@ export default class BaseActuator implements Actuator {
 
     async takeAction(clause: Clause, enviro: Enviro): Promise<void> {
 
-        const ownershipChain = clause.getOwnershipChain(clause.topLevel()[0])
-
         //1 get the top-level object's ID from an Enviro, if none create it
-        let id = (await enviro.query(clause))[ownershipChain[0]]
+        
+        const map = (await enviro.query(clause))[0] ?? {}
+        const ownershipChain = clause.getOwnershipChain(clause.topLevel()[0])
+        let id = map[ownershipChain[0]]
 
         if (!id) {
             enviro.setPlaceholder(id = getRandomId())

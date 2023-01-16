@@ -35,7 +35,8 @@ export default class CopulaSentence implements SimpleSentence {
 
         const a = getAnaphora() // get anaphora
         await a.assert(subject)
-        const m1 = (await a.query(predicate))[0]
+        const m1 = (await a.query(predicate))[0] ?? {}
+        // console.log({m1})
 
         const result2 = result.copy({ map: m0 }).copy({ sideEffecty: true, map: m1 })
 

@@ -28,7 +28,7 @@ export default class BasicBrain implements Brain {
                 await this.actuator.takeAction(clause, this.enviro) // TODO: make this async-safe
             } else {
 
-                const ids = Object.values(await this.enviro.query(clause))
+                const ids = Object.values((await this.enviro.query(clause))[0] ??{})
                     .filter(e => e !== undefined)
                     .map(e => e as Id)
 
