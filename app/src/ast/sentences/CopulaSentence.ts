@@ -1,5 +1,5 @@
 import { ToClauseOpts } from "../interfaces/Constituent";
-import { Clause } from "../../clauses/Clause";
+import { Clause, emptyClause } from "../../clauses/Clause";
 import { getRandomId, isVar, toVar } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
@@ -13,13 +13,14 @@ export default class CopulaSentence implements SimpleSentence {
     }
 
     async toClause(args?: ToClauseOpts): Promise<Clause> {
+        // TODO: resolve them in noun phrases, maybe recycle code from Enviro but avoid too much coupling
 
         const subjectId = args?.roles?.subject ?? getRandomId({ asVar: this.subject.isUniQuant() })
-        const newArgs = { ...args, roles: { subject: subjectId } }
 
-        // TODO: pass down anaphora from subject to predicate and resolve them in noun phrases, maybe recycle code from Enviro but avoid too much coupling
+        const newArgs = { ...args, roles: { subject: subjectId } }
         const subject = await this.subject.toClause(newArgs)
-        const predicate = (await this.predicate.toClause(newArgs)).copy({ negate: !!this.negation })
+        const newArgs2 = {...newArgs, anaphora: (newArgs.anaphora??emptyClause()).and(subject)  }
+        const predicate = (await this.predicate.toClause(newArgs2)).copy({ negate: !!this.negation })
 
         const entities = subject.entities.concat(predicate.entities)
 
