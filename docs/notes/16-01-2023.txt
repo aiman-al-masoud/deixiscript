@@ -19,4 +19,6 @@ Neither does Imply
 
 PROPOSED SOLUTION:
 
-remove list inner structure from And, just rely on theme and rheme, re-implement flatList and the rest
+remove list inner structure from And, just rely on two clauses not a list. 
+And started out as as "ListClause", now it's not a list anymore it's an And.
+
