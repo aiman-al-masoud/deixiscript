@@ -10,7 +10,7 @@ export default class Edit implements Action {
 
     async run(enviro: Enviro): Promise<any> {
         const obj = await enviro.get(this.id)
-        obj.set(this.predicate, this.props)
+        obj?.set(this.predicate, this.props)
     }
 
 

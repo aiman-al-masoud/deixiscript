@@ -34,8 +34,8 @@ export default class BasicBrain implements Brain {
 
                 const objects = await Promise.all(ids.map(e => this.enviro.get(e)))
                 this.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
-                objects.forEach(o => o.pointOut())
-                results = [...results, ...objects.map(o => o.object)]
+                objects.forEach(o => o?.pointOut())
+                results = [...results, ...objects.map(o => o?.object)]
             }
 
         }

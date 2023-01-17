@@ -59,10 +59,6 @@ export default class And implements Clause {
         return this.clause1.about(id).and(this.clause2.about(id))
     }
 
-    async toAction(): Promise<Action> {
-        throw new Error('unimplemented!')
-    }
-
     toString() {
         const yes = this.clause1.toString() + ',' + this.clause2.toString()
         return this.negated ? `not(${yes})` : yes
@@ -94,6 +90,10 @@ export default class And implements Clause {
 
     get rheme() {
         return this.clause2IsRheme ? this.clause2 : emptyClause()
+    }
+
+    async toAction(topLevel: Clause): Promise<Action[]> {
+        return (await this.clause1.toAction(topLevel)).concat(await this.clause2.toAction(topLevel))
     }
 
 }

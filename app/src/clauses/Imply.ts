@@ -54,10 +54,6 @@ export default class Imply implements Clause {
         return emptyClause() ///TODO!!!!!!!!
     }
 
-    async toAction(): Promise<Action> {
-        throw new Error('unimplemented!')
-    }
-
     toString() {
         const yes = `${this.condition.toString()} ---> ${this.conclusion.toString()}`
         return this.negated ? `not(${yes})` : yes
@@ -81,6 +77,10 @@ export default class Imply implements Clause {
 
     getOwnershipChain(entity: Id): Id[] {
         return getOwnershipChain(this, entity)
+    }
+
+    async toAction(topLevel:Clause): Promise<Action[]> {
+        throw new Error("Method not implemented.");
     }
 
 }

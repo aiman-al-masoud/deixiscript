@@ -6,6 +6,7 @@ import And from "./And";
 import Action from "../actuator/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
+import BasicAction from "../actuator/BasicAction";
 
 export class BasicClause implements Clause {
 
@@ -52,10 +53,6 @@ export class BasicClause implements Clause {
         return Array.from(new Set(this.args))
     }
 
-    async toAction(): Promise<Action> {
-        throw new Error('unimplemented!')
-    }
-
     ownedBy(id: Id): Id[] {
         return this.predicate === 'of' && this.args[1] === id ? [this.args[0]] : []
     }
@@ -79,6 +76,10 @@ export class BasicClause implements Clause {
 
     getOwnershipChain(entity: Id): Id[] {
         return getOwnershipChain(this, entity)
+    }
+
+    async toAction(topLevel: Clause): Promise<Action[]> {
+        return [new BasicAction(this, topLevel)]
     }
 
 }

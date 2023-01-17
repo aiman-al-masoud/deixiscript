@@ -1,5 +1,4 @@
 import { BasicClause } from "./BasicClause"
-import And from "./And"
 import { Id, Map } from "./Id"
 import Action from "../actuator/Action"
 import { EmptyClause } from "./EmptyClause"
@@ -21,7 +20,7 @@ export interface Clause {
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
     about(id: Id): Clause
-    toAction(): Promise<Action>
+    toAction(topLevel: Clause): Promise<Action[]>
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
     describe(id: Id): string[]
@@ -33,9 +32,7 @@ export function clauseOf(predicate: string, ...args: Id[]): Clause {
     return new BasicClause(predicate, args)
 }
 
-// export const emptyClause = (): Clause => new And([])
 export const emptyClause = (): Clause => new EmptyClause()
-
 
 export interface CopyOpts {
     negate?: boolean

@@ -41,10 +41,6 @@ export class EmptyClause implements Clause {
         return this
     }
 
-    toAction(): Promise<Action> {
-        throw new Error("Method not implemented.");
-    }
-
     ownedBy(id: Id): Id[] {
         return []
     }
@@ -56,7 +52,7 @@ export class EmptyClause implements Clause {
     describe(id: Id): string[] {
         return []
     }
-    
+
     topLevel(): Id[] {
         return []
     }
@@ -64,9 +60,13 @@ export class EmptyClause implements Clause {
         return []
     }
 
-    toString(){
-        // return '(empty clause)'
+    toString() {
         return ''
+    }
+
+    async toAction(topLevel: Clause): Promise<Action[]> {
+        // throw new Error("Method not implemented.");
+        return []
     }
 
 }

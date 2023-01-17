@@ -10,8 +10,20 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    async get(id: Id): Promise<Wrapper> {
-        return this.dictionary[id] //TODO: could be undefined!
+    async get(id: Id): Promise<Wrapper | undefined> {
+        return this.dictionary[id]
+    }
+
+    get values(): Wrapper[] {
+        return Object.values(this.dictionary)
+    }
+
+    setPlaceholder(id: Id): void {
+        this.dictionary[id] = new Placeholder()
+    }
+
+    exists(id: Id): boolean {
+        return this.dictionary[id] && !(this.dictionary[id] instanceof Placeholder)
     }
 
     set(id: Id, object: Wrapper): void {
@@ -54,18 +66,6 @@ export default class BaseEnviro implements Enviro {
                 .reduce((a, b) => ({ ...a, ...b })))
 
         return res2 // return list of maps, where each map should should have ALL ids from clause in its keys, eg: [{id2:id1, id4:id3}, {id2:1, id4:3}].
-    }
-
-    setPlaceholder(id: Id): void {
-        this.dictionary[id] = new Placeholder()
-    }
-
-    exists(id: Id): boolean {
-        return this.dictionary[id] && !(this.dictionary[id] instanceof Placeholder)
-    }
-
-    get values(): Wrapper[] {
-        return Object.values(this.dictionary)
     }
 
 }
