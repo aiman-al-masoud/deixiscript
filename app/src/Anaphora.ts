@@ -19,7 +19,7 @@ class EnviroAnaphora implements Anaphora {
     }
 
     async assert(clause: Clause): Promise<void> {
-        await getActuator().takeAction(clause.copy({ exactIds: true }), this.enviro)
+        await getActuator().takeAction(clause.copy({ noAnaphora: true }), this.enviro)
     }
 
     async query(clause: Clause): Promise<Map[]> {
