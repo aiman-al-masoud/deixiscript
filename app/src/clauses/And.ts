@@ -25,8 +25,8 @@ export default class And implements Clause {
 
     copy(opts?: CopyOpts): And {
 
-        return new And(this.clause1.copy(opts), //{ map: opts?.map }
-            this.clause2.copy(opts), //{ map: opts?.map }
+        return new And(this.clause1.copy(opts),
+            this.clause2.copy(opts),
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
             opts?.exactIds ?? this.exactIds,

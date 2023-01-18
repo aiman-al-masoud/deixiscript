@@ -20,7 +20,6 @@ export default class Imply implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        // return new And([this, other])
         return new And(this, other, opts?.asRheme ?? false)
     }
 
@@ -79,7 +78,7 @@ export default class Imply implements Clause {
         return getOwnershipChain(this, entity)
     }
 
-    async toAction(topLevel:Clause): Promise<Action[]> {
+    async toAction(topLevel: Clause): Promise<Action[]> {
         throw new Error("Method not implemented.");
     }
 
