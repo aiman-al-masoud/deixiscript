@@ -37,7 +37,7 @@ export const emptyClause = (): Clause => new EmptyClause()
 export interface CopyOpts {
     negate?: boolean
     map?: Map
-    noAnaphora?: boolean // interpret every id as exact
+    exactIds?: boolean
     sideEffecty?: boolean
 }
 

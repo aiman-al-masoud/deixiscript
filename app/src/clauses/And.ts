@@ -29,7 +29,7 @@ export default class And implements Clause {
             this.clause2.copy(opts), //{ map: opts?.map }
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.exactIds ?? this.noAnaphora,
             opts?.sideEffecty ?? this.isSideEffecty)
 
     }

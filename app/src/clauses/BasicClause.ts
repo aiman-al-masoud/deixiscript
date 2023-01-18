@@ -29,7 +29,7 @@ export class BasicClause implements Clause {
         return new BasicClause(this.predicate,
             this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.exactIds ?? this.noAnaphora,
             opts?.sideEffecty ?? this.isSideEffecty)
     }
 

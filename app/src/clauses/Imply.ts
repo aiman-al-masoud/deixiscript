@@ -29,7 +29,7 @@ export default class Imply implements Clause {
         return new Imply(this.condition.copy(opts),
             this.conclusion.copy(opts),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.exactIds ?? this.noAnaphora,
             opts?.sideEffecty ?? this.isSideEffecty)
 
     }
