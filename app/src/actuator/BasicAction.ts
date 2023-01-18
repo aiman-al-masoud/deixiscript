@@ -14,6 +14,10 @@ export default class BasicAction implements Action {
 
     async run(enviro: Enviro): Promise<any> {
 
+        if (this.clause.noAnaphora) {
+            return await new Edit(this.clause.args[0], this.clause.predicate, []).run(enviro)
+        }
+
         if (!this.topLevel.topLevel().includes(this.clause.args[0])) { // avoid NON top-level entities
             return
         }
