@@ -1,7 +1,9 @@
-import { Clause } from "../clauses/Clause";
+import { BasicClause } from "../clauses/BasicClause";
+import { Clause, clauseOf } from "../clauses/Clause";
 import { Enviro } from "../enviro/Enviro";
 import { wrap } from "../enviro/Wrapper";
 import Action from "./Action";
+import Edit from "./Edit";
 
 export default class ImplyAction implements Action {
 
@@ -10,29 +12,42 @@ export default class ImplyAction implements Action {
     }
 
     async run(enviro: Enviro): Promise<any> {
+
         // console.log('ImplyAction.run()', this.condition.toString(), '--->', this.conclusion.toString())
 
-        const top = this.condition.topLevel()[0] //TODO (!ASSUME!) same as top in conclusion
+        const isSetAliasCall =  // assume if at least one owned entity that it's a set alias call
+            this.condition.getOwnershipChain(this.condition.topLevel()[0]).slice(1).length
+            || this.conclusion.getOwnershipChain(this.conclusion.topLevel()[0]).slice(1).length
 
+        if (isSetAliasCall) {
+            this.setAliasCall()
+        } else {
+            this.other(enviro)
+        }
+
+
+    }
+
+    setAliasCall() {
+
+        const top = this.condition.topLevel()[0] //TODO (!ASSUME!) same as top in conclusion
         const alias = this.condition.getOwnershipChain(top).slice(1)
         const props = this.conclusion.getOwnershipChain(top).slice(1)
-
-        // console.log(alias, '--->', props)
-        // console.log(this.condition.describe(top), this.conclusion.describe(top))
-
-
         const conceptName = alias.map(x => this.condition.describe(x)[0]) // assume at least one name
         const propsNames = props.map(x => this.conclusion.describe(x)[0]) // same ...
-
-        // console.log({ conceptName }, { propsNames })
-
         const protoName = this.condition.describe(top)[0] // assume one 
         const proto = getProto(protoName)
-
-        // wrap(HTMLButtonElement.prototype).setAlias('color', ['style', 'background'])
         wrap(proto).setAlias(conceptName[0], propsNames)
         // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
+    }
 
+    async other(enviro: Enviro) {
+        const top = this.condition.topLevel()[0]
+        const protoName = this.condition.describe(top)[0] // assume one 
+        const predicate = this.conclusion.describe(top)[0]
+        const y = await enviro.query(clauseOf(protoName, 'X'))
+        const ids = y.map(m => m['X'])
+        ids.forEach(id => new Edit(id, predicate).run(enviro))
     }
 
 }

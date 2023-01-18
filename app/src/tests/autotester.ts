@@ -8,6 +8,7 @@ const tests = [
     test4,
     test5,
     test6,
+    test7
 ]
 
 /**
@@ -68,6 +69,17 @@ async function test6() {
     const assert1 = (await brain.execute('x'))[0].style.background === 'green'
     return assert1
 }
+
+
+async function test7() {
+    const brain = await getBrain()
+    await brain.execute('x is a button. y is a button. z is a button. every button is red.')
+    const assert1 = (await brain.execute('x'))[0].style.background === 'red'
+    const assert2 = (await brain.execute('y'))[0].style.background === 'red'
+    const assert3 = (await brain.execute('z'))[0].style.background === 'red'
+    return assert1 && assert2 && assert3
+}
+
 
 async function wait(millisecs: number) {
     return new Promise((ok, err) => {
