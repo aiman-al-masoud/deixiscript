@@ -18,12 +18,13 @@ export default class Create implements Action {
         if (isDomElem(this.predicate)) {
 
             const o = document.createElement(this.predicate)
-            document.body.appendChild(o)
             o.id = this.id + ''
             o.textContent = 'default'
             const newObj = wrap(o)
             newObj.set(this.predicate)
             enviro.set(this.id, newObj)
+            enviro.root?.appendChild(o)
+            // console.log('Create runs!')
 
         }
 

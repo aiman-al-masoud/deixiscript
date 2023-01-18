@@ -1,3 +1,5 @@
+import { getActuator } from "./actuator/Actuator";
+import Edit from "./actuator/Edit";
 import { BasicClause } from "./clauses/BasicClause";
 import { Clause } from "./clauses/Clause";
 import { getRandomId, Map } from "./clauses/Id"
@@ -14,28 +16,30 @@ export function getAnaphora() {
 
 class EnviroAnaphora implements Anaphora {
 
-    constructor(protected readonly enviro = getEnviro()) {
+    constructor(protected readonly enviro = getEnviro({ root: undefined })) {
 
     }
 
     async assert(clause: Clause): Promise<void> {
 
-        const clauses = clause
-            .flatList()
-            .map(c => c as BasicClause)
+        for (const c of clause.flatList().map(c => c as BasicClause)) {
 
-        for (const c of clauses) {
-
-            if (c.args.length == 1) {
-
-                this.enviro.setPlaceholder(c.args[0])
-                const x = await this.enviro.get(c.args[0])
-                // console.log(c.args[0], ' is a ', c.predicate)
-                x?.set(c.predicate)
-
+            if (c.args.length === 1) {
+                await new Edit(c.args[0], c.predicate, []).run(this.enviro)
             }
 
         }
+
+        // for (const a of await clause.toAction(clause)) {
+
+        //     if((a as any).clause.args.length === 1){
+        //         // console.log((a as any).clause.toString())
+        //         await a.run(this.enviro)
+        //     }
+
+        // }
+
+        // getActuator().takeAction(clause, this.enviro)
 
     }
 

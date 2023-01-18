@@ -6,7 +6,7 @@ import { Placeholder } from "./Placeholder";
 
 export default class BaseEnviro implements Enviro {
 
-    constructor(readonly dictionary: { [id: Id]: Wrapper } = {}) {
+    constructor(readonly root?: HTMLElement, readonly dictionary: { [id: Id]: Wrapper } = {}) {
 
     }
 
@@ -18,8 +18,9 @@ export default class BaseEnviro implements Enviro {
         return Object.values(this.dictionary)
     }
 
-    setPlaceholder(id: Id): void {
+    setPlaceholder(id: Id): Wrapper {
         this.dictionary[id] = new Placeholder()
+        return this.dictionary[id]
     }
 
     exists(id: Id): boolean {

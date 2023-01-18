@@ -8,7 +8,7 @@ import { getActuator } from "../actuator/Actuator";
 
 export default class BasicBrain implements Brain {
 
-    constructor(readonly enviro = getEnviro(), readonly actuator = getActuator()) {
+    constructor(readonly enviro = getEnviro({ root: document.body }), readonly actuator = getActuator()) {
 
         wrap(HTMLButtonElement.prototype).setAlias('color', ['style', 'background'])
         // wrap(HTMLButtonElement.prototype).setAlias('width', ['style', 'width'])
@@ -28,7 +28,7 @@ export default class BasicBrain implements Brain {
                 await this.actuator.takeAction(clause, this.enviro) // TODO: make this async-safe
             } else {
 
-                const ids = Object.values((await this.enviro.query(clause))[0] ??{})
+                const ids = Object.values((await this.enviro.query(clause))[0] ?? {})
                     .filter(e => e !== undefined)
                     .map(e => e as Id)
 

@@ -6,13 +6,18 @@ import BaseEnviro from "./BaseEnviro";
 export interface Enviro {
     get(id: Id): Promise<Wrapper | undefined>
     set(id: Id, object: Wrapper): void
-    setPlaceholder(id: Id): void
+    setPlaceholder(id: Id): Wrapper
     query(clause: Clause): Promise<Map[]>
     exists(id: Id): boolean
     get values(): Wrapper[]
+    readonly root?: HTMLElement
     // get keys(): Id[]
 }
 
-export default function getEnviro(): Enviro {
-    return new BaseEnviro()
+export default function getEnviro(opts?: GetEnviroOps): Enviro {
+    return new BaseEnviro(opts?.root)
+}
+
+export interface GetEnviroOps {
+    root?: HTMLElement
 }
