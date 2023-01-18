@@ -8,5 +8,8 @@ export default interface Brain {
 }
 
 export async function getBrain(): Promise<Brain> {
-    return new BasicBrain()
+
+    const b = new BasicBrain()
+    await b.init()
+    return b
 }

@@ -1,7 +1,14 @@
 import BasicBrain from "../brain/BasicBrain";
 import { getBrain } from "../brain/Brain";
 
-const tests = [test1, test2, test3, test4]
+const tests = [
+    test1,
+    test2,
+    test3,
+    test4,
+    test5,
+    test6,
+]
 
 /**
  * Integration tests
@@ -45,6 +52,21 @@ async function test4() {
     await brain.execute('a button is a button.');
     const button = await brain.execute('button')
     return button !== undefined
+}
+
+
+async function test5() {
+    const brain = await getBrain()
+    await brain.execute('x is a button. the color of x is red.');
+    const assert1 = (await brain.execute('x'))[0].style.background === 'red'
+    return assert1
+}
+
+async function test6() {
+    const brain = await getBrain()
+    await brain.execute('x is a button. the background of style of x is green.');
+    const assert1 = (await brain.execute('x'))[0].style.background === 'green'
+    return assert1
 }
 
 async function wait(millisecs: number) {

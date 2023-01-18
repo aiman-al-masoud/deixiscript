@@ -10,7 +10,7 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     set(predicate: string, props?: string[]): void {
-
+        
         (this.object as any)[predicate] = true // TODO: remove
 
         if (props && props.length > 1) { // set the pedicate on the path

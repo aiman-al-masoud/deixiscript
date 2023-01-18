@@ -5,6 +5,7 @@ import And from "./And";
 import Action from "../actuator/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
+import ImplyAction from "../actuator/ImplyAction";
 
 export default class Imply implements Clause {
 
@@ -79,7 +80,7 @@ export default class Imply implements Clause {
     }
 
     async toAction(topLevel: Clause): Promise<Action[]> {
-        throw new Error("Method not implemented.");
+        return [new ImplyAction(this.condition, this.conclusion)]
     }
 
 }
