@@ -12,7 +12,7 @@ export default class And implements Clause {
         readonly clause2: Clause,
         readonly clause2IsRheme: boolean,
         readonly negated = false,
-        readonly noAnaphora = false,
+        readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments))) {
@@ -29,7 +29,7 @@ export default class And implements Clause {
             this.clause2.copy(opts), //{ map: opts?.map }
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty)
 
     }

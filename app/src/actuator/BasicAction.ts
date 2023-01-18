@@ -14,7 +14,7 @@ export default class BasicAction implements Action {
 
     async run(enviro: Enviro): Promise<any> {
 
-        if (this.clause.noAnaphora) {
+        if (this.clause.exactIds) {
             return await new Edit(this.clause.args[0], this.clause.predicate, []).run(enviro)
         }
 

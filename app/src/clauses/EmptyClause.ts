@@ -9,7 +9,7 @@ export class EmptyClause implements Clause {
         readonly hashCode = 99999999,
         readonly entities = [],
         readonly isSideEffecty = false,
-        readonly noAnaphora = false) {
+        readonly exactIds = false) {
 
     }
 

@@ -11,7 +11,7 @@ export default class Imply implements Clause {
     constructor(readonly condition: Clause,
         readonly conclusion: Clause,
         readonly negated = false,
-        readonly noAnaphora = false,
+        readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly isImply = true,
         readonly hashCode = hashString(JSON.stringify(arguments)),
@@ -29,7 +29,7 @@ export default class Imply implements Clause {
         return new Imply(this.condition.copy(opts),
             this.conclusion.copy(opts),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty)
 
     }

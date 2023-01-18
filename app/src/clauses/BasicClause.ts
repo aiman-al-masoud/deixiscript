@@ -13,7 +13,7 @@ export class BasicClause implements Clause {
     constructor(readonly predicate: string,
         readonly args: Id[],
         readonly negated = false,
-        readonly noAnaphora = false,
+        readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments)),
@@ -29,7 +29,7 @@ export class BasicClause implements Clause {
         return new BasicClause(this.predicate,
             this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
             opts?.negate ? !this.negated : this.negated,
-            opts?.noAnaphora ?? this.noAnaphora,
+            opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty)
     }
 

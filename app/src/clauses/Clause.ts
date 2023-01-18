@@ -14,7 +14,7 @@ export interface Clause {
     readonly theme: Clause
     readonly rheme: Clause
     readonly isSideEffecty: boolean
-    readonly noAnaphora: boolean
+    readonly exactIds: boolean
     copy(opts?: CopyOpts): Clause
     and(other: Clause, opts?: AndOpts): Clause
     implies(conclusion: Clause): Clause
@@ -37,7 +37,7 @@ export const emptyClause = (): Clause => new EmptyClause()
 export interface CopyOpts {
     negate?: boolean
     map?: Map
-    noAnaphora?: boolean // interpret every id as exact
+    exactIds?: boolean
     sideEffecty?: boolean
 }
 
