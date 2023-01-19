@@ -3,6 +3,7 @@ import Wrapper from "./Wrapper";
 export class Placeholder implements Wrapper {
 
     constructor(readonly predicates: string[] = [], readonly object: any = {}) {
+
     }
 
     set(predicate: string, props: string[]): void {
@@ -13,10 +14,7 @@ export class Placeholder implements Wrapper {
         return this.predicates.includes(predicate);
     }
 
-    setAlias(conceptName: string, propOrSynonConcept: string | string[]): void {
-    }
+    setAlias(conceptName: string, propPath: string[]): void { }
+    pointOut(opts?: { turnOff: boolean }): void { }
 
-    pointOut(opts: { turnOff: boolean; }): void {
-
-    }
 }
