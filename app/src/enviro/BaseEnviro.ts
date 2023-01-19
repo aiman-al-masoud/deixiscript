@@ -6,6 +6,8 @@ import { Placeholder } from "./Placeholder";
 
 export default class BaseEnviro implements Enviro {
 
+    protected lastReferenced?: Id
+
     constructor(readonly root?: HTMLElement, readonly dictionary: { [id: Id]: Wrapper } = {}) {
 
     }
@@ -40,6 +42,8 @@ export default class BaseEnviro implements Enviro {
             this.dictionary[id] = object
         }
 
+        this.lastReferenced = id
+
     }
 
     async query(clause: Clause): Promise<Map[]> { //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
@@ -52,8 +56,19 @@ export default class BaseEnviro implements Enviro {
             .entities
             .map(e => ({ e, desc: clause.theme.describe(e) }))
 
+        const getIt = () => this.lastReferenced ? [{ e: this.lastReferenced as string, w: this.dictionary[this.lastReferenced] }] : []
+
         const res = query
-            .flatMap(q => ({ from: q.e, to: universe.filter(u => q.desc.every(d => u.w.is(d))) }))
+            .flatMap(q => {
+
+                const to = universe
+                    .filter(u => q.desc.every(d => u.w.is(d)))
+                    .concat(q.desc.includes('it') ? getIt() : []) //TODO: hardcoded bad
+                //TODO: after "every ..." sentence, "it" should be undefined
+
+                return { from: q.e, to: to }
+
+            })
 
         const resSize = Math.max(...res.map(q => q.to.length));
         const fromToTo = (from: Id) => res.filter(x => x.from === from)[0].to.map(x => x.e);
@@ -65,6 +80,8 @@ export default class BaseEnviro implements Enviro {
                 .filter(from => fromToTo(from).length > 0)
                 .map(from => ({ [from]: fromToTo(from)[i] ?? fromToTo(from)[0] }))
                 .reduce((a, b) => ({ ...a, ...b })))
+
+        this.lastReferenced = res2.flatMap(x => Object.values(x)).at(-1) ?? this.lastReferenced
 
         return res2 // return list of maps, where each map should should have ALL ids from clause in its keys, eg: [{id2:id1, id4:id3}, {id2:1, id4:3}].
     }
