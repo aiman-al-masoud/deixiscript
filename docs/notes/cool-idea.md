@@ -1,3 +1,5 @@
+# CSS-like Classes
+
 ```
 any dangerous button is
 	red,
@@ -14,3 +16,11 @@ if any button is dangerous then
 
 You need to implement "and", treat a comma as an "and", implement pronoun anaphora such as "it" in the Enviro, check if-then (Complex clauses), ImplyAction.
 
+# Associating a predicate to a Concept
+
+```
+red is a color.
+yellow is a color.
+
+red, yellow, green are colors.
+```
