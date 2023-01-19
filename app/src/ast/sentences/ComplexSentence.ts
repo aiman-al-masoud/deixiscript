@@ -3,7 +3,7 @@ import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
 import { getRandomId } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
-import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
+import { Lexeme } from "../../lexer/Lexeme";
 
 /**
  * A sentence that relates two simple sentences hypotactically, in a 
@@ -13,7 +13,7 @@ export default class ComplexSentence implements CompoundSentence {
 
     constructor(readonly condition: SimpleSentence,
         readonly outcome: SimpleSentence,
-        readonly subconj: SubordinatingConjunction) {
+        readonly subconj: Lexeme<'subconj'>) {
 
     }
 

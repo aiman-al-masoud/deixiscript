@@ -4,12 +4,12 @@ import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
 import { getRandomId } from "../../clauses/Id";
 import NounPhrase from "../phrases/NounPhrase";
-import Copula from "../tokens/Copula";
 import CopulaSentence from "./CopulaSentence";
+import { Lexeme } from "../../lexer/Lexeme";
 
 export default class CopulaQuestion implements BinaryQuestion {
 
-    constructor(readonly subject: NounPhrase, readonly predicate: NounPhrase, readonly copula: Copula) {
+    constructor(readonly subject: NounPhrase, readonly predicate: NounPhrase, readonly copula: Lexeme<'copula'>) {
 
     }
 

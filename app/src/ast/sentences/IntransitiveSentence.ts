@@ -4,15 +4,14 @@ import { getRandomId } from "../../clauses/Id";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
 import NounPhrase from "../phrases/NounPhrase";
-import IVerb from "../tokens/IVerb";
-import Negation from "../tokens/Negation";
+import { Lexeme } from "../../lexer/Lexeme";
 
 export default class IntransitiveSentence implements VerbSentence {
 
     constructor(readonly subject: NounPhrase,
-        readonly iverb: IVerb,
+        readonly iverb: Lexeme<'iverb'>,
         readonly complements: Complement[],
-        readonly negation?: Negation) {
+        readonly negation?: Lexeme<'negation'>) {
 
     }
     
@@ -23,7 +22,7 @@ export default class IntransitiveSentence implements VerbSentence {
 
         const theme = await this.subject.toClause(newArgs)
         
-        const rheme = clauseOf(this.iverb.string, subjectId).and((await Promise.all(this.complements.map( c => c.toClause(newArgs)))).reduce( (c1, c2) => c1.and(c2)))
+        const rheme = clauseOf(this.iverb.root, subjectId).and((await Promise.all(this.complements.map( c => c.toClause(newArgs)))).reduce( (c1, c2) => c1.and(c2)))
         
         return theme.and(rheme, { asRheme: true }).copy({sideEffecty:true})
     }

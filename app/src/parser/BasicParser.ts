@@ -14,23 +14,11 @@ import CopulaQuestion from "../ast/sentences/CopulaQuestion";
 import CopulaSentence from "../ast/sentences/CopulaSentence";
 import IntransitiveSentence from "../ast/sentences/IntransitiveSentence";
 import MonotransitiveSentence from "../ast/sentences/MonotransitiveSentence";
-import Adjective from "../ast/tokens/Adjective";
-import Article from "../ast/tokens/Article";
-import Copula from "../ast/tokens/Copula";
-import IVerb from "../ast/tokens/IVerb";
-import MVerb from "../ast/tokens/MVerb";
-import Negation from "../ast/tokens/Negation";
-import Noun from "../ast/tokens/Noun";
-import Preposition from "../ast/tokens/Preposition";
-import Quantifier from "../ast/tokens/Quantifier";
-import SubordinatingConjunction from "../ast/tokens/SubordinatingConjunction";
-import Then from "../ast/tokens/Then";
 import Lexer, { getLexer } from "../lexer/Lexer";
 import Parser from "./Parser";
 import CopulaSubordinateClause from "../ast/phrases/CopulaSubordinateClause";
-import RelativePronoun from "../ast/tokens/RelativePronoun";
 import Constituent from "../ast/interfaces/Constituent";
-import FullStop from "../ast/tokens/FullStop";
+import { Lexeme } from "../lexer/Lexeme";
 
 export default class BasicParser implements Parser {
 
@@ -47,7 +35,6 @@ export default class BasicParser implements Parser {
         try {
             return method()
         } catch (error) {
-            // console.debug((error as Error).message)
             this.lx.backTo(memento)
         }
 
@@ -64,7 +51,7 @@ export default class BasicParser implements Parser {
 
         while (!this.lx.isEnd) {
             results.push(this.parse())
-            this.lx.assert(FullStop, { errorOut: false })
+            this.lx.assert('fullstop', { errorOut: false })
         }
 
         return results
@@ -108,46 +95,46 @@ export default class BasicParser implements Parser {
 
     protected parseCopulaSentence = (): CopulaSentence => {
         const subject = this.parseNounPhrase()
-        const copula = this.lx.assert(Copula, { errorMsg: 'parseCopulaSentence(), expected copula' })
-        const negation = this.lx.assert(Negation, { errorOut: false })
+        const copula = this.lx.assert('copula', { errorMsg: 'parseCopulaSentence(), expected copula' })
+        const negation = this.lx.assert('negation', { errorOut: false })
         const predicate = this.parseNounPhrase()
-        return new CopulaSentence(subject, copula as Copula, predicate, negation)
+        return new CopulaSentence(subject, copula as Lexeme<'copula'>, predicate, negation)
     }
 
     protected parseComplex = (): ComplexSentence => {
 
-        const subconj = this.lx.assert(SubordinatingConjunction, { errorOut: false })
+        const subconj = this.lx.assert('subconj', { errorOut: false })
 
         if (subconj) {
             const condition = this.parseSimple()
-            this.lx.assert(Then, { errorOut: false })
+            this.lx.assert('then', { errorOut: false })
             const outcome = this.parseSimple()
-            return new ComplexSentence(condition, outcome, subconj)
+            return new ComplexSentence(condition, outcome, subconj as Lexeme<'subconj'>)
         } else {
             const outcome = this.parseSimple()
-            const subconj = this.lx.assert(SubordinatingConjunction, { errorOut: true, errorMsg: 'expected subordinating conjunction' })
+            const subconj = this.lx.assert('subconj', { errorOut: true, errorMsg: 'expected subordinating conjunction' })
             const condition = this.parseSimple()
-            return new ComplexSentence(condition, outcome, subconj as SubordinatingConjunction)
+            return new ComplexSentence(condition, outcome, subconj as Lexeme<'subconj'>)
         }
 
     }
 
     protected parseIntransitiveSentence = (): IntransitiveSentence => {
         const subject = this.parseNounPhrase()
-        const negation = this.lx.assert(Negation, { errorOut: false })
-        const iverb = this.lx.assert(IVerb, { errorMsg: 'parseIntransitiveSentence(), expected i-verb' })
+        const negation = this.lx.assert('negation', { errorOut: false })
+        const iverb = this.lx.assert('iverb', { errorMsg: 'parseIntransitiveSentence(), expected i-verb' })
         const complements = this.parseComplements()
-        return new IntransitiveSentence(subject, iverb as IVerb, complements, negation)
+        return new IntransitiveSentence(subject, iverb as Lexeme<'iverb'>, complements, negation as Lexeme<'negation'>)
     }
 
     protected parseMonotransitiveSentence = (): MonotransitiveSentence => {
         const subject = this.parseNounPhrase()
-        const negation = this.lx.assert(Negation, { errorOut: false })
-        const mverb = this.lx.assert(MVerb, { errorMsg: 'parseMonotransitiveSentence(), expected i-verb' })
+        const negation = this.lx.assert('negation', { errorOut: false })
+        const mverb = this.lx.assert('mverb', { errorMsg: 'parseMonotransitiveSentence(), expected i-verb' })
         const cs1 = this.parseComplements()
         const object = this.parseNounPhrase()
         const cs2 = this.parseComplements()
-        return new MonotransitiveSentence(subject, mverb as MVerb, object, cs1.concat(cs2), negation)
+        return new MonotransitiveSentence(subject, mverb as Lexeme<'mverb'>, object, cs1.concat(cs2), negation as Lexeme<'negation'>)
     }
 
     protected parseBinaryQuestion = (): BinaryQuestion => {
@@ -156,24 +143,30 @@ export default class BasicParser implements Parser {
     }
 
     protected parseCopulaQuestion = (): CopulaQuestion => {
-        const copula = this.lx.assert(Copula, { errorMsg: 'parseCopulaQuestion(), expected copula' })
+        const copula = this.lx.assert('copula', { errorMsg: 'parseCopulaQuestion(), expected copula' })
         const subject = this.parseNounPhrase()
         const predicate = this.parseNounPhrase()
-        return new CopulaQuestion(subject, predicate, copula as Copula)
+        return new CopulaQuestion(subject, predicate, copula as Lexeme<'copula'>)
     }
 
     protected parseNounPhrase = (): NounPhrase => {
-        const quantifier = this.lx.assert(Quantifier, { errorOut: false })
-        const article = this.lx.assert(Article, { errorOut: false })
+        const quantifier = this.lx.assert('uniquant', { errorOut: false });
+
+        let article: Lexeme<'indefart'> | Lexeme<'defart'> | undefined
+
+        if (['defart', 'indefart'].includes(this.lx.peek.type)) {
+            article = this.lx.peek as (Lexeme<'indefart'> | Lexeme<'defart'>)
+            this.lx.next()
+        }
 
         let adjectives = []
         let adj
 
-        while (adj = this.lx.assert(Adjective, { errorOut: false })) {
+        while (adj = this.lx.assert('adj', { errorOut: false })) {
             adjectives.push(adj)
         }
 
-        const noun = this.lx.assert(Noun, { errorOut: false })
+        const noun = this.lx.assert('noun', { errorOut: false })
         const subordinateClause = this.try(this.parseSubordinateClause)
         const complements = this.parseComplements()
 
@@ -193,9 +186,9 @@ export default class BasicParser implements Parser {
     }
 
     protected parseComplement = (): Complement => {
-        const preposition = this.lx.assert(Preposition, { errorMsg: 'parseComplement() expected preposition' })
+        const preposition = this.lx.assert('preposition', { errorMsg: 'parseComplement() expected preposition' })
         const nounPhrase = this.parseNounPhrase()
-        return new Complement(preposition as Preposition, nounPhrase)
+        return new Complement(preposition as Lexeme<'preposition'>, nounPhrase)
     }
 
     protected parseSubordinateClause = (): SubordinateClause => {
@@ -204,10 +197,10 @@ export default class BasicParser implements Parser {
     }
 
     protected parseCopulaSubordinateClause = (): CopulaSubordinateClause => {
-        const relpron = this.lx.assert(RelativePronoun, { errorMsg: 'parseCopulaSubordinateClause() expected relative pronoun' })
-        const copula = this.lx.assert(Copula, { errorMsg: 'parseCopulaSubordinateClause() expected copula' })
+        const relpron = this.lx.assert('relpron', { errorMsg: 'parseCopulaSubordinateClause() expected relative pronoun' })
+        const copula = this.lx.assert('copula', { errorMsg: 'parseCopulaSubordinateClause() expected copula' })
         const subject = this.parseNounPhrase()
-        return new CopulaSubordinateClause(relpron as RelativePronoun, subject, copula as Copula)
+        return new CopulaSubordinateClause(relpron as Lexeme<'relpron'>, subject, copula as Lexeme<'copula'>)
     }
 
     protected parseConjunctive = (): ConjunctiveSentence => {

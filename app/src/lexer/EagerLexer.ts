@@ -1,10 +1,10 @@
-import Token, { getToken } from "../ast/interfaces/Token";
-import { getLexemes } from "./Lexeme";
-import Lexer, { AssertArgs, Constructor } from "./Lexer";
+import { LexemeType } from "../ast/interfaces/LexemeType";
+import { getLexemes, Lexeme } from "./Lexeme";
+import Lexer, { AssertArgs } from "./Lexer";
 
 export default class EagerLexer implements Lexer {
 
-    protected readonly tokens: Token[]
+    protected readonly tokens: Lexeme<LexemeType>[]
     protected _pos: number
 
     constructor(readonly sourceCode: string) {
@@ -14,7 +14,6 @@ export default class EagerLexer implements Lexer {
             .split(/\s+|\./)
             .map(s => !s ? '.' : s)
             .flatMap(s => getLexemes(s))
-            .map(l => getToken(l))
 
         this._pos = 0
     }
@@ -31,7 +30,7 @@ export default class EagerLexer implements Lexer {
         this._pos = pos
     }
 
-    get peek(): Token {
+    get peek(): Lexeme<LexemeType> {
         return this.tokens[this._pos]
     }
 
@@ -45,13 +44,13 @@ export default class EagerLexer implements Lexer {
      * @param args 
      * @returns 
      */
-    assert<T>(clazz: Constructor<T>, args: AssertArgs): T | undefined {
+    assert<T extends LexemeType>(type: T, args: AssertArgs): Lexeme<T> | undefined {
 
         const current = this.peek
 
-        if (current instanceof clazz) {
+        if (current && current.type === type) {
             this.next()
-            return current
+            return current as Lexeme<T>
         } else if (args.errorOut ?? true) {
             this.croak(args.errorMsg ?? '')
         } else {

@@ -1,7 +1,8 @@
+import { LexemeType } from "../ast/interfaces/LexemeType";
 import { Lexeme } from "./Lexeme";
 
 
-export const lexemes: Lexeme[] = [
+export const lexemes: Lexeme<LexemeType>[] = [
     {
         root: 'have',
         type: 'mverb',
@@ -12,7 +13,7 @@ export const lexemes: Lexeme[] = [
     {
         root: 'button',
         type: 'noun',
-        regular : true
+        regular: true
     },
 
     {

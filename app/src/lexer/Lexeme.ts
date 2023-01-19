@@ -1,9 +1,9 @@
 import { LexemeType } from "../ast/interfaces/LexemeType"
 import { lexemes } from "./lexemes"
 
-export interface Lexeme {
+export interface Lexeme<T extends LexemeType> {
     /**canonical form*/ readonly root: string
-    /**token type*/ readonly type: LexemeType
+    /**token type*/ readonly type: T
     /**useful for irregular stuff*/ readonly forms?: string[]
     /**refers to verb conjugations or plural forms*/ readonly regular?: boolean
     /**semantical dependece*/ readonly derivedFrom?: string
@@ -12,20 +12,20 @@ export interface Lexeme {
     /**form of this instance*/readonly token?: string
 }
 
-export function formsOf(lexeme: Lexeme) {
+export function formsOf(lexeme: Lexeme<LexemeType>) {
 
     return [lexeme.root].concat(lexeme?.forms ?? [])
         .concat(lexeme.regular ? [`${lexeme.root}s`] : [])
 
 }
 
-export function getLexemes(word: string): Lexeme[] {
+export function getLexemes(word: string): Lexeme<LexemeType>[] {
 
-    const lexeme: Lexeme =
+    const lexeme: Lexeme<LexemeType> =
         lexemes.filter(x => formsOf(x).includes(word)).at(0)
         ?? { root: word, type: 'adj' }
 
-    const lexeme2: Lexeme = { ...lexeme, token: word }
+    const lexeme2: Lexeme<LexemeType> = { ...lexeme, token: word }
 
     return lexeme2.contractionFor ?
         lexeme2.contractionFor.flatMap(x => getLexemes(x)) :

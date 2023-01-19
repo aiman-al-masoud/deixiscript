@@ -4,16 +4,15 @@ import { Clause } from "../../clauses/Clause";
 import VerbSentence from "../interfaces/VerbSentence";
 import Complement from "../phrases/Complement";
 import NounPhrase from "../phrases/NounPhrase";
-import MVerb from "../tokens/MVerb";
-import Negation from "../tokens/Negation";
+import { Lexeme } from "../../lexer/Lexeme";
 
 export default class MonotransitiveSentence implements VerbSentence {
 
     constructor(readonly subject: NounPhrase,
-                readonly mverb: MVerb,
+                readonly mverb: Lexeme<'mverb'>,
                 readonly object: NounPhrase,
                 readonly complements: Complement[],
-                readonly negation?: Negation) {
+                readonly negation?: Lexeme<'negation'>) {
 
     }
     

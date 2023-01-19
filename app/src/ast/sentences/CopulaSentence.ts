@@ -3,13 +3,12 @@ import { Clause } from "../../clauses/Clause";
 import { getRandomId, isVar, toConst, toVar } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
-import Copula from "../tokens/Copula";
-import Negation from "../tokens/Negation";
 import { getAnaphora } from "../../Anaphora";
+import { Lexeme } from "../../lexer/Lexeme";
 
 export default class CopulaSentence implements SimpleSentence {
 
-    constructor(readonly subject: NounPhrase, readonly copula: Copula, readonly predicate: NounPhrase, readonly negation?: Negation) {
+    constructor(readonly subject: NounPhrase, readonly copula: Lexeme<'copula'>, readonly predicate: NounPhrase, readonly negation?: Lexeme<'negation'>) {
 
     }
 

@@ -1,13 +1,12 @@
 import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause } from "../../clauses/Clause";
 import SubordinateClause from "../interfaces/SubordinateClause";
-import Copula from "../tokens/Copula";
-import RelativePronoun from "../tokens/RelativePronoun";
 import NounPhrase from "./NounPhrase";
+import { Lexeme } from "../../lexer/Lexeme";
 
 export default class CopulaSubordinateClause implements SubordinateClause {
 
-    constructor(readonly relpron: RelativePronoun, readonly predicate: NounPhrase, readonly copula: Copula) {
+    constructor(readonly relpron: Lexeme<'relpron'>, readonly predicate: NounPhrase, readonly copula: Lexeme<'copula'>) {
 
     }
 
