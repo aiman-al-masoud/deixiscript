@@ -1,4 +1,4 @@
-import Token, { getTokenCons } from "../ast/interfaces/Token";
+import Token, { getTokenCons as getToken } from "../ast/interfaces/Token";
 import { getLexemes } from "./Lexeme";
 import Lexer, { AssertArgs, Constructor } from "./Lexer";
 
@@ -12,11 +12,10 @@ export default class EagerLexer implements Lexer {
         this.tokens = sourceCode
             .trim()
             .split(/\s+|\./)
-            .map(e => !e ? '.' : e)
-            .flatMap(string => getLexemes(string)
-                .map(l => new (getTokenCons(l.type))(l.name)))
+            .map(s => !s ? '.' : s)
+            .flatMap(s => getLexemes(s))
+            .map(l => getToken(l))
 
-        console.debug('tokens', this.tokens)
         this._pos = 0
     }
 

@@ -1,3 +1,4 @@
+import { Lexeme } from "../../lexer/Lexeme";
 import { Constructor } from "../../lexer/Lexer";
 import Adjective from "../tokens/Adjective";
 import Article from "../tokens/Article";
@@ -15,36 +16,17 @@ import RelativePronoun from "../tokens/RelativePronoun";
 import SubordinatingConjunction from "../tokens/SubordinatingConjunction";
 import Then from "../tokens/Then";
 import Ast from "./Ast";
+import { LexemeType } from "./LexemeType";
 
 export default interface Token extends Ast {
-
+    readonly lexeme: Lexeme
 }
 
-export function getTokenCons(type: TokenType): Constructor<Token> {
-    return constructors[type]
+export function getTokenCons(lexeme: Lexeme): Token {
+    return new constructors[lexeme.type](lexeme)
 }
 
-export type TokenType =
-    'noun'
-    | 'iverb'
-    | 'mverb'
-    | 'hverb'
-    | 'copula'
-    | 'then'
-    | 'adj'
-    | 'existquant'
-    | 'uniquant'
-    | 'preposition'
-    | 'subconj'
-    | 'relpron'
-    | 'defart'
-    | 'indefart'
-    | 'fullstop'
-    | 'nonsubconj'
-    | 'negation'
-    | 'contraction'
-
-const constructors: { [x in TokenType]: Constructor<Token> } = {
+const constructors: { [x in LexemeType]: Constructor<Token> } = {
     'noun': Noun,
     'iverb': IVerb,
     'mverb': MVerb,
@@ -52,12 +34,12 @@ const constructors: { [x in TokenType]: Constructor<Token> } = {
     'copula': Copula,
     'then': Then,
     'adj': Adjective,
-    'existquant': Quantifier,
+    'existquant': Quantifier, //
     'uniquant': Quantifier,
     'preposition': Preposition,
     'subconj': SubordinatingConjunction,
     'relpron': RelativePronoun,
-    'defart': Article,
+    'defart': Article, //
     'indefart': Article,
     'fullstop': FullStop,
     'nonsubconj': NonSubordinatingConjunction,

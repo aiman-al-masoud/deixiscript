@@ -3,190 +3,190 @@ import { Lexeme } from "./Lexeme";
 
 export const lexemes: Lexeme[] = [
     {
-        name: 'have',
+        root: 'have',
         type: 'mverb',
         forms: ['have', 'has'],
         regular: false
     },
 
     {
-        name: 'button',
+        root: 'button',
         type: 'noun',
         regular : true
     },
 
     {
-        name: 'click',
+        root: 'click',
         type: 'mverb',
         forms: ['click'],
         regular: true
     },
 
     {
-        name: 'clicked',
+        root: 'clicked',
         type: 'adj',
         derivedFrom: 'click'
     },
 
     {
-        name: 'pressed',
+        root: 'pressed',
         type: 'adj',
         aliasFor: 'clicked'
     },
 
     {
-        name: 'cat',
+        root: 'cat',
         type: 'noun'
     },
 
     {
-        name: 'be',
+        root: 'be',
         type: 'copula',
         forms: ['is', 'are'],
         regular: false
     },
 
     {
-        name: "isn't",
+        root: "isn't",
         type: 'contraction',
         contractionFor: ['is', 'not']
     },
 
     {
-        name: "red",
+        root: "red",
         type: "adj"
     },
 
     {
-        name: "green",
+        root: "green",
         type: "adj"
     },
 
     {
-        name: "exist",
+        root: "exist",
         type: "iverb",
         regular: true
     },
 
     {
-        name: 'do',
+        root: 'do',
         type: 'hverb',
         regular: false,
         forms: ['do', 'does']
     },
 
     {
-        name: 'some',
+        root: 'some',
         type: 'existquant'
     },
 
     {
-        name: 'every',
+        root: 'every',
         type: 'uniquant'
     },
 
     {
-        name: 'all',
+        root: 'all',
         type: 'uniquant'
     },
 
     {
-        name: 'any',
+        root: 'any',
         type: 'uniquant'
     },
 
     {
-        name: 'to',
+        root: 'to',
         type: 'preposition'
     },
 
     {
-        name: 'with',
+        root: 'with',
         type: 'preposition'
     },
 
     {
-        name: 'from',
+        root: 'from',
         type: 'preposition'
     },
 
     {
-        name: 'of',
+        root: 'of',
         type: 'preposition'
     },
 
     {
-        name: 'over',
+        root: 'over',
         type: 'preposition'
     },
 
     {
-        name: 'on',
+        root: 'on',
         type: 'preposition'
     },
 
     {
-        name: 'at',
+        root: 'at',
         type: 'preposition'
     },
 
     {
-        name: 'then',
+        root: 'then',
         type: 'then' // filler word
     },
 
     {
-        name: 'if',
+        root: 'if',
         type: 'subconj'
     },
 
     {
-        name: 'when',
+        root: 'when',
         type: 'subconj'
     },
 
     {
-        name: 'because',
+        root: 'because',
         type: 'subconj'
     },
 
     {
-        name: 'while',
+        root: 'while',
         type: 'subconj'
     },
 
     {
-        name: 'that',
+        root: 'that',
         type: 'relpron'
     },
 
     {
-        name: 'not',
+        root: 'not',
         type: 'negation'
     },
 
     {
-        name: 'the',
+        root: 'the',
         type: 'defart'
     },
 
     {
-        name: 'a',
+        root: 'a',
         type: 'indefart'
     },
 
     {
-        name: 'an',
+        root: 'an',
         type: 'indefart'
     },
 
     {
-        name: '.',
+        root: '.',
         type: 'fullstop'
     },
 
     {
-        name: 'and',
+        root: 'and',
         type: 'nonsubconj'
     }
 ]
