@@ -18,7 +18,7 @@ export default async function autotester() {
 
     for (const test of tests) {
         console.log(await test() ? 'success' : 'fail', test.name)
-        await wait(200)
+        await sleep(200)
         clearDom()
     }
 
@@ -81,7 +81,7 @@ async function test7() {
 }
 
 
-async function wait(millisecs: number) {
+async function sleep(millisecs: number) {
     return new Promise((ok, err) => {
         setTimeout(() => ok(true), millisecs)
     })
