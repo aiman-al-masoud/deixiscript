@@ -7,7 +7,7 @@ export default class BaseActuator implements Actuator {
     async takeAction(clause: Clause, enviro: Enviro): Promise<void> {
 
         for (const a of await clause.toAction(clause)) {
-            await a.run(enviro) // TODO: make this async-safe
+            await a.run(enviro)
         }
 
     }
