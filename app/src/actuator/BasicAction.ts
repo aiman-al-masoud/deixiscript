@@ -1,6 +1,6 @@
 import { BasicClause } from "../clauses/BasicClause";
 import { Clause } from "../clauses/Clause";
-import { getRandomId } from "../clauses/Id";
+import { getRandomId, Id } from "../clauses/Id";
 import { Enviro } from "../enviro/Enviro";
 import Action from "./Action";
 import Create from "./Create";
@@ -14,54 +14,30 @@ export default class BasicAction implements Action {
 
     async run(enviro: Enviro): Promise<any> {
 
-        if (this.clause.exactIds) {
-            return await new Edit(this.clause.args[0], this.clause.predicate, []).run(enviro)
-        }
-
         if (this.clause.args.length > 1) { // not handling relations yet
             return
         }
 
-        if (!this.topLevel.topLevel().includes(this.clause.args[0])) { // non top level entities
+        if (this.clause.exactIds) {
+            return await new Edit(this.clause.args[0], this.clause.predicate, []).run(enviro)
+        }
 
-            // console.log('non top level handler', this.clause.predicate)
+        if (this.topLevel.topLevel().includes(this.clause.args[0])) {
+            await this.forTopLevel(enviro)
+        } else {
+            await this.forNonTopLevel(enviro)
+        }
 
-            // assuming max x.y.z nesting
-            const owners = this.topLevel.ownersOf(this.clause.args[0])
+    }
 
-            const hasTopLevel = owners.filter(x=>this.topLevel.topLevel().includes(x))[0]
-
-            const topLevelOwner =  hasTopLevel? hasTopLevel: this.topLevel.ownersOf(owners[0])[0]
-
-            // const topLevelOwner = this.topLevel.ownersOf(owners[0])[0] 
-                        
-            const props = this.topLevel
-            .getOwnershipChain(topLevelOwner)
+    protected getProps(topLevelEntity: Id) {
+        return this.topLevel
+            .getOwnershipChain(topLevelEntity)
             .slice(1)
             .map(e => this.topLevel.theme.describe(e)[0])
+    }
 
-            
-            if (topLevelOwner === undefined) {
-                return
-            }
-
-            
-            const nameOfThis = this.topLevel.theme.describe(this.clause.args[0])
-            const nameOfTopLevelOwner = this.topLevel.describe(topLevelOwner) 
-            
-            if (this.clause.predicate === nameOfThis[0]) {
-                return
-            }
-            
-            // console.log(this.clause.predicate, {props}, {topLevelOwner})
-            // console.log(nameOfThis, 'is', this.clause.predicate, 'and is owned by', nameOfTopLevelOwner)
-            
-            const q = this.topLevel.theme.about(topLevelOwner)
-            const maps = await enviro.query(q)
-            const id = maps?.[0]?.[topLevelOwner] //?? getRandomId()
-
-            return new Edit(id, this.clause.predicate, props).run(enviro)
-        }
+    protected async forTopLevel(enviro: Enviro) {
 
         const q = this.topLevel.theme.about(this.clause.args[0])
         const maps = await enviro.query(q)
@@ -72,19 +48,34 @@ export default class BasicAction implements Action {
         }
 
         if (isCreatorAction(this.clause.predicate)) {
-
             new Create(id, this.clause.predicate).run(enviro)
+        } else {
+            new Edit(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(enviro)
+        }
+    }
 
-        } else { // Edit Action
+    protected async forNonTopLevel(enviro: Enviro) {
 
-            const props = this.topLevel
-                .getOwnershipChain(this.clause.args[0])
-                .slice(1)
-                .map(e => this.topLevel.theme.describe(e)[0])
+        // assuming max x.y.z nesting
+        const owners = this.topLevel.ownersOf(this.clause.args[0])
+        const hasTopLevel = owners.filter(x => this.topLevel.topLevel().includes(x))[0]
+        const topLevelOwner = hasTopLevel ? hasTopLevel : this.topLevel.ownersOf(owners[0])[0]
 
-            new Edit(id, this.clause.predicate, props).run(enviro)
+        if (topLevelOwner === undefined) {
+            return
         }
 
+        const nameOfThis = this.topLevel.theme.describe(this.clause.args[0])
+
+        if (this.clause.predicate === nameOfThis[0]) {
+            return
+        }
+
+        const q = this.topLevel.theme.about(topLevelOwner)
+        const maps = await enviro.query(q)
+        const id = maps?.[0]?.[topLevelOwner] //?? getRandomId()
+
+        return new Edit(id, this.clause.predicate, this.getProps(topLevelOwner)).run(enviro)
     }
 
 }
