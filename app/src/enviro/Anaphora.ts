@@ -1,7 +1,7 @@
-import { getActuator } from "./actuator/Actuator";
-import { Clause } from "./clauses/Clause";
-import { Map } from "./clauses/Id"
-import getEnviro from "./enviro/Enviro";
+import { getActuator } from "../actuator/Actuator";
+import { Clause } from "../clauses/Clause";
+import { Map } from "../clauses/Id"
+import getEnviro from "./Enviro";
 
 export interface Anaphora {
     assert(clause: Clause): Promise<void>

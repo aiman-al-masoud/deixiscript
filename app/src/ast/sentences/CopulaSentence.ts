@@ -3,7 +3,7 @@ import { Clause } from "../../clauses/Clause";
 import { getRandomId, isVar, toConst, toVar } from "../../clauses/Id";
 import SimpleSentence from "../interfaces/SimpleSentence";
 import NounPhrase from "../phrases/NounPhrase";
-import { getAnaphora } from "../../Anaphora";
+import { getAnaphora } from "../../enviro/Anaphora";
 import { Lexeme } from "../../lexer/Lexeme";
 
 export default class CopulaSentence implements SimpleSentence {

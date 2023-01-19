@@ -1,4 +1,4 @@
-import { getAnaphora } from "../Anaphora";
+import { getAnaphora } from "../enviro/Anaphora";
 import { clauseOf } from "../clauses/Clause";
 import { getParser } from "../parser/Parser";
 
