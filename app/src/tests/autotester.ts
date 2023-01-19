@@ -9,7 +9,8 @@ const tests = [
     test5,
     test6,
     test7,
-    test8
+    test8,
+    test9,
 ]
 
 /**
@@ -86,6 +87,14 @@ async function test8() {
     await brain.execute('x is a button. text of x is capra.')
     const assert1 = (await brain.execute('button'))[0].textContent === 'capra'
     return assert1
+}
+
+async function test9() {
+    const brain = await getBrain()
+    await brain.execute('x is a red button. x is green.')
+    const assert1 = (await brain.execute('red')).length === 0
+    const assert2 = (await brain.execute('green')).length === 1
+    return assert1 && assert2
 }
 
 

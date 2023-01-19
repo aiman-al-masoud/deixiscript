@@ -42,7 +42,13 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     is(predicate: string, ...args: Wrapper[]): boolean {
-        return (this.object as any)[predicate] !== undefined // TODO: remove
+
+        const concept = getConcepts(predicate).at(0)
+
+        return concept ?
+            this.getNested(this.simpleConcepts[concept]) === predicate :
+            (this.object as any)[predicate] !== undefined
+
     }
 
     setAlias(conceptName: string, propPath: string[]): void {
@@ -59,10 +65,22 @@ export default class ConcreteWrapper implements Wrapper {
         let x = this.object[path[0]]
 
         path.slice(1, -2).forEach(p => {
-            x = this.object[p]
+            x = x[p]
         })
 
         x[path.at(-1) as string] = value
+    }
+
+    protected getNested(path: string[]) {
+
+        let x = this.object[path[0]] // assume at least one
+
+        path.slice(1).forEach(p => {
+            x = x[p]
+        })
+
+        return x
+
     }
 
     pointOut(opts?: { turnOff: boolean; }): void {
