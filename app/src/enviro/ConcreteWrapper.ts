@@ -11,33 +11,28 @@ export default class ConcreteWrapper implements Wrapper {
 
     set(predicate: string, props?: string[]): void {
 
-        (this.object as any)[predicate] = true // TODO: remove
+        if (props && props.length > 1) { // assume > 1 props are a path
 
-        if (props && props.length > 1) { // set the pedicate on the path
             this.setNested(props, predicate)
-            return
-        }
 
-        //1 if len(props) == 1 use it as a concept
-        if (props && props.length === 1) {
+        } else if (props && props.length === 1) { // single prop
 
-            if (Object.keys(this.simpleConcepts).includes(props[0])) { // is concept
+            if (Object.keys(this.simpleConcepts).includes(props[0])) { // is concept 
                 this.setNested(this.simpleConcepts[props[0]], predicate)
-            } else {
+            } else { // ... not concept, just prop
                 this.setNested(props, predicate)
             }
 
-            return
+        } else if (!props || props.length === 0) { // no props
+
+            const concepts = getConcepts(predicate)
+
+            if (concepts.length === 0) {
+                (this.object as any)[predicate] = true
+            } else {
+                this.setNested(this.simpleConcepts[concepts[0]], predicate)
+            }
         }
-
-        //2 if len(props) == 0 get the concept from the predicate (eg: red is a 'color')
-        const concepts = getConcepts(predicate)
-
-        if (concepts.length === 0) {
-            return
-        }
-
-        this.setNested(this.simpleConcepts[concepts[0]], predicate)
 
     }
 
