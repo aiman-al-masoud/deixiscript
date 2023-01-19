@@ -1,4 +1,4 @@
-import Token, { getTokenCons as getToken } from "../ast/interfaces/Token";
+import Token, { getToken } from "../ast/interfaces/Token";
 import { getLexemes } from "./Lexeme";
 import Lexer, { AssertArgs, Constructor } from "./Lexer";
 

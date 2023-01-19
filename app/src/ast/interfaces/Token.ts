@@ -22,7 +22,7 @@ export default interface Token extends Ast {
     readonly lexeme: Lexeme
 }
 
-export function getTokenCons(lexeme: Lexeme): Token {
+export function getToken(lexeme: Lexeme): Token {
     return new constructors[lexeme.type](lexeme)
 }
 
