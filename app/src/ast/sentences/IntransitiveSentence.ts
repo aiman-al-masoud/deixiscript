@@ -22,7 +22,7 @@ export default class IntransitiveSentence implements VerbSentence {
 
         const theme = await this.subject.toClause(newArgs)
         
-        const rheme = clauseOf(this.iverb.root, subjectId).and((await Promise.all(this.complements.map( c => c.toClause(newArgs)))).reduce( (c1, c2) => c1.and(c2)))
+        const rheme = clauseOf(this.iverb, subjectId).and((await Promise.all(this.complements.map( c => c.toClause(newArgs)))).reduce( (c1, c2) => c1.and(c2)))
         
         return theme.and(rheme, { asRheme: true }).copy({sideEffecty:true})
     }

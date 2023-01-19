@@ -19,7 +19,7 @@ export default class BasicAction implements Action {
         }
 
         if (this.clause.exactIds) {
-            return await new Edit(this.clause.args[0], this.clause.predicate, []).run(enviro)
+            return await new Edit(this.clause.args[0], this.clause.predicate.root, []).run(enviro)
         }
 
         if (this.topLevel.topLevel().includes(this.clause.args[0])) {
@@ -47,10 +47,10 @@ export default class BasicAction implements Action {
             enviro.setPlaceholder(id)
         }
 
-        if (isCreatorAction(this.clause.predicate)) {
-            new Create(id, this.clause.predicate).run(enviro)
+        if (isCreatorAction(this.clause.predicate.root)) {
+            new Create(id, this.clause.predicate.root).run(enviro)
         } else {
-            new Edit(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(enviro)
+            new Edit(id, this.clause.predicate.root, this.getProps(this.clause.args[0])).run(enviro)
         }
     }
 
@@ -67,7 +67,7 @@ export default class BasicAction implements Action {
 
         const nameOfThis = this.topLevel.theme.describe(this.clause.args[0])
 
-        if (this.clause.predicate === nameOfThis[0]) {
+        if (this.clause.predicate.root === nameOfThis[0]) {
             return
         }
 
@@ -75,7 +75,7 @@ export default class BasicAction implements Action {
         const maps = await enviro.query(q)
         const id = maps?.[0]?.[topLevelOwner] //?? getRandomId()
 
-        return new Edit(id, this.clause.predicate, this.getProps(topLevelOwner)).run(enviro)
+        return new Edit(id, this.clause.predicate.root, this.getProps(topLevelOwner)).run(enviro)
     }
 
 }

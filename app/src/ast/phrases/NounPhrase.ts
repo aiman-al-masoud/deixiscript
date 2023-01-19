@@ -5,6 +5,7 @@ import { ToClauseOpts } from "../interfaces/Constituent";
 import { Clause, clauseOf, emptyClause } from "../../clauses/Clause";
 import { getRandomId, toVar } from "../../clauses/Id";
 import { Lexeme } from "../../lexer/Lexeme";
+import { LexemeType } from "../interfaces/LexemeType";
 
 export default class NounPhrase implements Phrase {
 
@@ -29,8 +30,8 @@ export default class NounPhrase implements Phrase {
 
         const res = this
             .adjectives
-            .map(a => a.root)
-            .concat(this.noun ? [this.noun.root] : [])
+            .map(a => a as Lexeme<LexemeType>)
+            .concat(this.noun ? [this.noun] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause())
             .and((await Promise.all(this.complements.map(c => c.toClause(newArgs)))).reduce((c1, c2) => c1.and(c2), emptyClause()))

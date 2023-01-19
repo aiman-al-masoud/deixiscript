@@ -16,7 +16,7 @@ export default class Complement implements Phrase {
         const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
         const newId = getRandomId()
 
-        return clauseOf(this.preposition.root, subjId, newId)
+        return clauseOf(this.preposition, subjId, newId)
             .and(await this.nounPhrase.toClause({ ...args, roles: { subject: newId } }))
             .copy({sideEffecty : false})
 

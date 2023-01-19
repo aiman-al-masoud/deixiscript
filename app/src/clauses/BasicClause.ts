@@ -7,10 +7,12 @@ import Action from "../actuator/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import BasicAction from "../actuator/BasicAction";
+import { Lexeme } from "../lexer/Lexeme";
+import { LexemeType } from "../ast/interfaces/LexemeType";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: string,
+    constructor(readonly predicate: Lexeme<LexemeType>,
         readonly args: Id[],
         readonly negated = false,
         readonly exactIds = false,
@@ -45,20 +47,12 @@ export class BasicClause implements Clause {
         return this.entities.includes(id) ? this : emptyClause()
     }
 
-    get theme(): Clause {
-        return this
-    }
-
-    get entities(): Id[] {
-        return Array.from(new Set(this.args))
-    }
-
     ownedBy(id: Id): Id[] {
-        return this.predicate === 'of' && this.args[1] === id ? [this.args[0]] : []
+        return this.predicate.root === 'of' && this.args[1] === id ? [this.args[0]] : []
     }
 
     ownersOf(id: Id): Id[] {
-        return this.predicate === 'of' && this.args[0] === id ? [this.args[1]] : []
+        return this.predicate.root === 'of' && this.args[0] === id ? [this.args[1]] : []
     }
 
     toString() {
@@ -67,7 +61,7 @@ export class BasicClause implements Clause {
     }
 
     describe(id: Id): string[] {
-        return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
+        return this.entities.includes(id) && this.args.length === 1 ? [this.predicate.root] : []
     }
 
     topLevel(): Id[] {
@@ -80,6 +74,14 @@ export class BasicClause implements Clause {
 
     async toAction(topLevel: Clause): Promise<Action[]> {
         return [new BasicAction(this, topLevel)]
+    }
+
+    get theme(): Clause {
+        return this
+    }
+
+    get entities(): Id[] {
+        return Array.from(new Set(this.args))
     }
 
 }

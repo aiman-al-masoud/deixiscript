@@ -45,7 +45,7 @@ export default class ImplyAction implements Action {
         const top = this.condition.topLevel()[0]
         const protoName = this.condition.describe(top)[0] // assume one 
         const predicate = this.conclusion.describe(top)[0]
-        const y = await enviro.query(clauseOf(protoName, 'X'))
+        const y = await enviro.query(clauseOf({ type: 'noun', root: protoName }, 'X'))
         const ids = y.map(m => m['X'])
         ids.forEach(id => new Edit(id, predicate).run(enviro))
     }

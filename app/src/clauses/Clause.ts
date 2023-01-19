@@ -2,6 +2,9 @@ import { BasicClause } from "./BasicClause"
 import { Id, Map } from "./Id"
 import Action from "../actuator/Action"
 import { EmptyClause } from "./EmptyClause"
+import { Lexeme } from "../lexer/Lexeme"
+import { LexemeType } from "../ast/interfaces/LexemeType"
+import { lexemes } from "../lexer/lexemes"
 
 /**
  * A 'language-agnostic' first order logic representation.
@@ -28,7 +31,7 @@ export interface Clause {
     getOwnershipChain(entity: Id): Id[]
 }
 
-export function clauseOf(predicate: string, ...args: Id[]): Clause {
+export function clauseOf(predicate: Lexeme<LexemeType>, ...args: Id[]): Clause {
     return new BasicClause(predicate, args)
 }
 
