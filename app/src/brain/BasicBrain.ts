@@ -12,6 +12,7 @@ export default class BasicBrain implements Brain {
 
     async init() {
         await this.execute('color of any button is background of style of button')
+        await this.execute('text of any button is textContent of button')
     }
 
     async execute(natlang: string): Promise<any[]> {

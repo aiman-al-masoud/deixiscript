@@ -10,7 +10,7 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     set(predicate: string, props?: string[]): void {
-        
+
         (this.object as any)[predicate] = true // TODO: remove
 
         if (props && props.length > 1) { // set the pedicate on the path
@@ -51,14 +51,18 @@ export default class ConcreteWrapper implements Wrapper {
 
     protected setNested(path: string[], value: string) {
 
+        if (path.length === 1) {
+            this.object[path[0]] = value
+            return
+        }
+
         let x = this.object[path[0]]
 
         path.slice(1, -2).forEach(p => {
             x = this.object[p]
-        });
+        })
 
-        x[path[path.length - 1]] = value
-
+        x[path.at(-1) as string] = value
     }
 
     pointOut(opts?: { turnOff: boolean; }): void {
