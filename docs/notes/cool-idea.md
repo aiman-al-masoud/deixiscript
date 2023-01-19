@@ -12,5 +12,5 @@ if any button is dangerous then
 	the height of it is 10vh
 ```
 
-You need to implement "and", treat a comma as an "and", implement pronoun anaphora such as "it" in the Enviro, check if-then (Complex clauses).
+You need to implement "and", treat a comma as an "and", implement pronoun anaphora such as "it" in the Enviro, check if-then (Complex clauses), ImplyAction.
 
