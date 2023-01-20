@@ -16,22 +16,20 @@ export type Role = 'subject'
     | 'consequence'
 
 export type Member = {
-    type: AstType[]
-    number?: Cardinality
-    role?: Role
+    readonly type: AstType[]
+    readonly number?: Cardinality
+    readonly role?: Role
 }
 
 export interface AstNode<T extends AstType> {
-    type: T
-    name?: string
+    readonly type: T
 }
 
-export interface AtomNode extends AstNode<LexemeType> {
-    lexeme: Lexeme<LexemeType>
+export interface AtomNode<T extends LexemeType> extends AstNode<T> {
+    readonly lexeme: Lexeme<LexemeType>
 }
 
-export interface CompositeNode extends AstNode<ConstituentType> {
-    links: (AstNode<AstType> | undefined)[]
-    role? : Role
+export interface CompositeNode<T extends ConstituentType> extends AstNode<T> {
+    readonly links: (AstNode<AstType> | undefined)[]
+    readonly role?: Role
 }
-

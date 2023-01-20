@@ -2,6 +2,7 @@ import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode } 
 import { ConstituentType, getBlueprint, isAtom, isNecessary } from "./blueprints";
 import { getLexer } from "../../lexer/Lexer";
 import { Parser } from "./Parser";
+import { LexemeType } from "../../ast/interfaces/LexemeType";
 
 export class KoolParser implements Parser {
 
@@ -54,9 +55,9 @@ export class KoolParser implements Parser {
 
     };
 
-    protected parseAtom = (m: Member, number?: Cardinality): AtomNode | CompositeNode | undefined => {
+    protected parseAtom = (m: Member, number?: Cardinality): AtomNode<LexemeType> | CompositeNode<ConstituentType> | undefined => {
 
-        const atoms: AtomNode[] = [];
+        const atoms: AtomNode<LexemeType>[] = [];
 
         while (!this.lexer.isEnd && m.type.includes(this.lexer.peek.type)) {
 
@@ -69,24 +70,14 @@ export class KoolParser implements Parser {
             atoms.push({ type: x.type, lexeme: x });
         }
 
-        switch (atoms.length) {
-            case 0:
-                return undefined;
-            case 1:
-                return atoms[0];
-            default:
+        return number === '*' ? ({
+            type: 'lexemelist',
+            links: atoms
+        }) : atoms[0]
 
-                const x: CompositeNode = {
-                    type: 'lexemelist',
-                    links: atoms
-                }
+    }
 
-                return x;
-        }
-
-    };
-
-    protected parseComposite = (name: ConstituentType, number?: Cardinality, role?: Role): CompositeNode | undefined => {
+    protected parseComposite = (name: ConstituentType, number?: Cardinality, role?: Role): CompositeNode<ConstituentType> | undefined => {
 
         const links: (AstNode<AstType> | undefined)[] = [];
 
