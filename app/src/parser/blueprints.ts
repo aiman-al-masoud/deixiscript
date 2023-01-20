@@ -1,5 +1,7 @@
-import { LexemeType } from "../../ast/interfaces/LexemeType";
+// import { LexemeType } from "../../ast/interfaces/LexemeType";
+// import { LexemeType } from "../ast/interfaces/LexemeType";
 import { Member, AstType } from "./ast-types";
+import { LexemeType } from "../lexer/LexemeType";
 
 export type ConstituentType = 'nounphrase'
     | 'complement'

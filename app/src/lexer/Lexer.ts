@@ -1,6 +1,6 @@
-import { LexemeType } from "../ast/interfaces/LexemeType"
 import EagerLexer from "./EagerLexer"
 import { Lexeme } from "./Lexeme"
+import { LexemeType } from "./LexemeType"
 
 export default interface Lexer {
     get peek(): Lexeme<LexemeType>

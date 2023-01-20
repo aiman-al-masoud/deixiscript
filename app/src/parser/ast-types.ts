@@ -1,6 +1,6 @@
 
-import { LexemeType } from "../../ast/interfaces/LexemeType"
-import { Lexeme } from "../../lexer/Lexeme"
+import { Lexeme } from "../lexer/Lexeme"
+import { LexemeType } from "../lexer/LexemeType"
 import { ConstituentType } from "./blueprints"
 
 export type AstType = LexemeType | ConstituentType

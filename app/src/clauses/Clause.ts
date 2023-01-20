@@ -3,8 +3,8 @@ import { Id, Map } from "./Id"
 import Action from "../actuator/Action"
 import { EmptyClause } from "./EmptyClause"
 import { Lexeme } from "../lexer/Lexeme"
-import { LexemeType } from "../ast/interfaces/LexemeType"
 import { lexemes } from "../lexer/lexemes"
+import { LexemeType } from "../lexer/LexemeType"
 
 /**
  * A 'language-agnostic' first order logic representation.

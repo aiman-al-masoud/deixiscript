@@ -1,6 +1,6 @@
-import { LexemeType } from "../ast/interfaces/LexemeType";
 import { getLexemes, Lexeme } from "./Lexeme";
 import Lexer, { AssertArgs } from "./Lexer";
+import { LexemeType } from "./LexemeType";
 
 export default class EagerLexer implements Lexer {
 

@@ -2,6 +2,7 @@ import { getParser } from "../parser/Parser";
 import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { getActuator } from "../actuator/Actuator";
+import { toClause } from "../parser/toClause";
 
 
 export default class BasicBrain implements Brain {
@@ -21,7 +22,11 @@ export default class BasicBrain implements Brain {
 
         for (const ast of getParser(natlang).parseAll()) {
 
-            const clause = await ast.toClause()
+            if (!ast) {
+                continue
+            }
+
+            const clause = await toClause(ast)
 
             if (clause.isSideEffecty) {
 

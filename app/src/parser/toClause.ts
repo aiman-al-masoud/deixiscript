@@ -1,14 +1,22 @@
-import { ToClauseOpts } from "../../ast/interfaces/Constituent";
-import { LexemeType } from "../../ast/interfaces/LexemeType";
-import { Clause, clauseOf, emptyClause } from "../../clauses/Clause";
-import { getRandomId, Id, isVar, toConst, toVar } from "../../clauses/Id";
-import { getAnaphora } from "../../enviro/Anaphora";
-import { Lexeme } from "../../lexer/Lexeme";
+// import { LexemeType } from "../../ast/interfaces/LexemeType";
+import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
+import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
+import { getAnaphora } from "../enviro/Anaphora";
 import { AstNode, AstType, AtomNode, CompositeNode } from "./ast-types";
-import { ConstituentType } from "./blueprints";
+import { LexemeType } from "../lexer/LexemeType";
 
 // start simple by assuming hardcoded types, then try to depend solely on role (semantic role)
 
+
+export interface Roles {
+    subject?: Id
+    object?: Id
+}
+
+export interface ToClauseOpts {
+    roles?: Roles,
+    anaphora?: Clause
+}
 
 export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Promise<Clause> {
 

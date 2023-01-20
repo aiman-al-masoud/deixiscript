@@ -1,5 +1,5 @@
-import { LexemeType } from "../ast/interfaces/LexemeType";
 import { Lexeme } from "./Lexeme";
+import { LexemeType } from "./LexemeType";
 
 
 export const lexemes: Lexeme<LexemeType>[] = [

@@ -1,5 +1,6 @@
-import { getParser } from "./Parser";
-import { toClause } from "./toClause";
+// import { getParser } from "./Parser";
+import { getParser } from "../parser/Parser";
+import { toClause } from "../parser/toClause";
 
 export default async function testNewXParser() {
 

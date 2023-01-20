@@ -1,8 +1,13 @@
 import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode } from "./ast-types";
 import { ConstituentType, getBlueprint, isAtom, isNecessary } from "./blueprints";
-import { getLexer } from "../../lexer/Lexer";
+// import { getLexer } from "../../lexer/Lexer";
 import { Parser } from "./Parser";
-import { LexemeType } from "../../ast/interfaces/LexemeType";
+// import { LexemeType } from "../../ast/interfaces/LexemeType";
+
+import { getLexer } from "../lexer/Lexer";
+// import { LexemeType } from "../ast/interfaces/LexemeType";
+import { LexemeType } from "../lexer/LexemeType";
+
 
 export class KoolParser implements Parser {
 

@@ -1,11 +1,16 @@
-import Constituent from "../ast/interfaces/Constituent";
-import BasicParser from "./BasicParser";
+// import { getLexer } from "../lexer/Lexer";
+// import { LexemeType } from "../ast/interfaces/LexemeType";
+import { AstNode, AstType } from "./ast-types";
+// import { LexemeType } from "../../ast/interfaces/LexemeType";
+import { KoolParser } from "./KoolParser";
 
-export default interface Parser{
-    parse():Constituent   
-    parseAll():Constituent[]
+export interface Parser {
+    parse(): AstNode<AstType> | undefined;
+    parseAll(): (AstNode<AstType> | undefined)[]
 }
 
-export function getParser(sourceCode:string):Parser{
-    return new BasicParser(sourceCode)
+export function getParser(sourceCode: string): Parser {
+    return new KoolParser(sourceCode);
 }
+
+

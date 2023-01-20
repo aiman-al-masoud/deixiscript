@@ -1,5 +1,5 @@
-import { LexemeType } from "../ast/interfaces/LexemeType"
 import { lexemes } from "./lexemes"
+import { LexemeType } from "./LexemeType"
 
 export interface Lexeme<T extends LexemeType> {
     /**canonical form*/ readonly root: string
