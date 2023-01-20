@@ -72,7 +72,7 @@ export class KoolParser implements Parser {
 
         return number === '*' ? ({
             type: 'lexemelist',
-            links: ({ list: atoms } as any) //TODO!!!!
+            links: (atoms as any) //TODO!!!!
         }) : atoms[0]
 
     }

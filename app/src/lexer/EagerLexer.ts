@@ -10,6 +10,7 @@ export default class EagerLexer implements Lexer {
     constructor(readonly sourceCode: string) {
 
         this.tokens = sourceCode
+            // .toLowerCase()
             .trim()
             .split(/\s+|\./)
             .map(s => !s ? '.' : s)

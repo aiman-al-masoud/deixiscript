@@ -1,12 +1,16 @@
 import { getParser } from "./Parser";
+import { toClause } from "./toClause";
 
-//////////////////////////////////////
+export default async function testNewXParser() {
 
-export default function testNewXParser() {
-    // const x = new KoolParser().parseAll()
-    const x = getParser('the red green black cat is black. the cat that is black is red. cat is red if cat is green').parseAll();
-    // const x = parse('copulasentence', getLexer('the cat that is black is red'))
-    // const x = parse('complexsentence1', getLexer('if the cat is red then the cat is black'))
-    console.log(x);
+    const asts = getParser('every cat is red. a cat is green. color of button is red. color of any button is red. color of any button is background of style of button').parseAll()
+
+    for (const ast of asts) {
+
+        if (ast) {
+            const clause = await toClause(ast)
+            console.log(clause.toString())
+        }
+    }
 
 }
