@@ -72,14 +72,14 @@ export class KoolParser implements Parser {
 
         return number === '*' ? ({
             type: 'lexemelist',
-            links: atoms
+            links: ({ list: atoms } as any) //TODO!!!!
         }) : atoms[0]
 
     }
 
     protected parseComposite = (name: ConstituentType, number?: Cardinality, role?: Role): CompositeNode<ConstituentType> | undefined => {
 
-        const links: (AstNode<AstType> | undefined)[] = [];
+        const links: any = {}
 
         for (const m of getBlueprint(name)) {
 
@@ -89,7 +89,10 @@ export class KoolParser implements Parser {
                 return undefined;
             }
 
-            links.push(ast);
+            if (ast) {
+                links[m.role ?? ast.type] = ast
+            }
+
         }
 
         return {

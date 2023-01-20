@@ -30,6 +30,6 @@ export interface AtomNode<T extends LexemeType> extends AstNode<T> {
 }
 
 export interface CompositeNode<T extends ConstituentType> extends AstNode<T> {
-    readonly links: (AstNode<AstType> | undefined)[]
+    readonly links: { [index in AstType | Role]?: AstNode<AstType> }
     readonly role?: Role
 }
