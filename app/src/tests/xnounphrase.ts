@@ -98,6 +98,7 @@ interface AtomNode extends AstNode<LexemeType> {
 
 interface CompositeNode extends AstNode<ConstituentType> {
     links: (AstNode<AstType> | undefined)[]
+    role? : Role
 }
 
 function getBlueprint(name: AstType): Member[] {
@@ -151,14 +152,14 @@ class KoolParser implements Parser {
             ?? this.try(this.topParse, 'nounphrase')
     }
 
-    protected topParse = (name: AstType, number?: Cardinality): AstNode<AstType> | undefined => {
+    protected topParse = (name: AstType, number?: Cardinality, role?:Role): AstNode<AstType> | undefined => {
 
         const members = getBlueprint(name)
 
         if (members.length === 1 && members[0].type.every(t => this.isAtom(t))) {
             return this.parseAtom(members[0], number)
         } else {
-            return this.parseComposite(name as ConstituentType, number)
+            return this.parseComposite(name as ConstituentType, number, role)
         }
 
     }
@@ -202,7 +203,7 @@ class KoolParser implements Parser {
         return lexemeTypes.includes(name as LexemeType)
     }
 
-    protected parseComposite = (name: ConstituentType, number?: Cardinality): CompositeNode | undefined => {
+    protected parseComposite = (name: ConstituentType, number?: Cardinality, role?:Role): CompositeNode | undefined => {
 
         const links: (AstNode<AstType> | undefined)[] = []
 
@@ -219,17 +220,18 @@ class KoolParser implements Parser {
 
         return {
             type: name,
+            role : role,
             links: links
         }
     }
 
-    protected parseMember = (m: Member): AstNode<AstType> | undefined => {
+    protected parseMember = (m: Member, role?:Role): AstNode<AstType> | undefined => {
 
         let x
 
         for (const t of m.type) {
 
-            x = this.topParse(t, m.number)
+            x = this.topParse(t, m.number, m.role)
 
             if (x) {
                 break
