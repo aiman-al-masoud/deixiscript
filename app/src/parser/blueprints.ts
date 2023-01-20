@@ -1,22 +1,26 @@
-// import { LexemeType } from "../../ast/interfaces/LexemeType";
-// import { LexemeType } from "../ast/interfaces/LexemeType";
 import { Member, AstType } from "./ast-types";
 import { LexemeType } from "../lexer/LexemeType";
 
-export type ConstituentType = 'nounphrase'
-    | 'complement'
-    | 'copulasubclause'
-    | 'complexsentence1'
-    | 'complexsentence2'
-    | 'copulasentence'
-    | 'iverbsentence'
-    | 'mverbsentence'
-    | 'lexemelist'
+function stringLiterals<T extends string>(...args: T[]): T[] { return args; }
+type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<infer ElementType> ? ElementType : never;
+
+const values = stringLiterals(
+    'nounphrase',
+    'complement',
+    'copulasubclause',
+    'complexsentence1',
+    'complexsentence2',
+    'copulasentence',
+    'iverbsentence',
+    'mverbsentence',
+    'lexemelist')
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
 // | 'mverbsubclause2'
 // | 'conjsentece'
 // | 'copulaquestion'
+
+export type ConstituentType = ElementType<typeof values>;
 
 const blueprints: { [name in ConstituentType]: Member[] } = {
     'nounphrase': [
