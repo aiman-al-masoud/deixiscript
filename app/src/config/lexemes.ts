@@ -1,6 +1,5 @@
-import { Lexeme } from "./Lexeme";
 import { LexemeType } from "./LexemeType";
-
+import { Lexeme } from "../lexer/Lexeme";
 
 export const lexemes: Lexeme<LexemeType>[] = [
     {

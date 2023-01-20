@@ -1,5 +1,5 @@
-import { Member, AstType } from "./ast-types";
-import { LexemeType } from "../lexer/LexemeType";
+import { Member, AstType } from "../parser/ast-types";
+import { LexemeType } from "./LexemeType";
 
 function stringLiterals<T extends string>(...args: T[]): T[] { return args; }
 type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<infer ElementType> ? ElementType : never;
@@ -22,7 +22,7 @@ const values = stringLiterals(
 
 export type ConstituentType = ElementType<typeof values>;
 
-const blueprints: { [name in ConstituentType]: Member[] } = {
+const syntaxes: { [name in ConstituentType]: Member[] } = {
     'nounphrase': [
         { type: ['uniquant', 'existquant'], number: '1|0' },
         { type: ['indefart', 'defart'], number: '1|0' },
@@ -76,8 +76,8 @@ const blueprints: { [name in ConstituentType]: Member[] } = {
     ]
 }
 
-export function getBlueprint(name: AstType): Member[] {
-    return blueprints[name as ConstituentType] ?? [{ type: [name], number: 1 }]; // TODO: problem, adj is not always 1 !!!!!!
+export const getSyntax = (name: AstType): Member[] => {
+    return syntaxes[name as ConstituentType] ?? [{ type: [name], number: 1 }]; // TODO: problem, adj is not always 1 !!!!!!
 }
 
 export const isAtom = (name: AstType) => {

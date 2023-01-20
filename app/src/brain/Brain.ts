@@ -1,3 +1,4 @@
+import { getConfig } from "../config/Config"
 import BasicBrain from "./BasicBrain"
 
 /**
@@ -9,7 +10,7 @@ export default interface Brain {
 
 export async function getBrain(): Promise<Brain> {
 
-    const b = new BasicBrain()
+    const b = new BasicBrain(getConfig())
     await b.init()
     return b
 }

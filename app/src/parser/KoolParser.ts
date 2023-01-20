@@ -1,17 +1,15 @@
 import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode } from "./ast-types";
-import { ConstituentType, getBlueprint, isAtom, isNecessary } from "./blueprints";
-// import { getLexer } from "../../lexer/Lexer";
+import { ConstituentType, isAtom, isNecessary } from "../config/syntaxes";
 import { Parser } from "./Parser";
-// import { LexemeType } from "../../ast/interfaces/LexemeType";
-
 import { getLexer } from "../lexer/Lexer";
-// import { LexemeType } from "../ast/interfaces/LexemeType";
-import { LexemeType } from "../lexer/LexemeType";
+import { LexemeType } from "../config/LexemeType";
+import { Lexeme } from "../lexer/Lexeme";
+import { Config } from "../config/Config";
 
 
 export class KoolParser implements Parser {
 
-    constructor(readonly sourceCode: string, readonly lexer = getLexer(sourceCode)) {
+    constructor(readonly sourceCode: string, readonly config: Config, readonly lexer = getLexer(sourceCode, config)) {
     }
 
     protected try(method: (args: any) => AstNode<AstType> | undefined, ...args: AstType[]) {
@@ -50,7 +48,9 @@ export class KoolParser implements Parser {
 
     protected topParse = (name: AstType, number?: Cardinality, role?: Role): AstNode<AstType> | undefined => {
 
-        const members = getBlueprint(name);
+
+
+        const members = this.config.getSyntax(name);
 
         if (members.length === 1 && members[0].type.every(t => isAtom(t))) {
             return this.parseAtom(members[0], number);
@@ -86,7 +86,7 @@ export class KoolParser implements Parser {
 
         const links: any = {}
 
-        for (const m of getBlueprint(name)) {
+        for (const m of this.config.getSyntax(name)) {
 
             const ast = this.parseMember(m);
 

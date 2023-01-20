@@ -1,20 +1,21 @@
 import { getLexemes, Lexeme } from "./Lexeme";
 import Lexer, { AssertArgs } from "./Lexer";
-import { LexemeType } from "./LexemeType";
+import { LexemeType } from "../config/LexemeType";
+import { Config } from "../config/Config";
 
 export default class EagerLexer implements Lexer {
 
     protected readonly tokens: Lexeme<LexemeType>[]
     protected _pos: number
 
-    constructor(readonly sourceCode: string) {
+    constructor(readonly sourceCode: string, readonly config: Config) {
 
         this.tokens = sourceCode
             // .toLowerCase()
             .trim()
             .split(/\s+|\./)
             .map(s => !s ? '.' : s)
-            .flatMap(s => getLexemes(s))
+            .flatMap(s => getLexemes(s, config.lexemes))
 
         this._pos = 0
     }

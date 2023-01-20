@@ -3,24 +3,26 @@ import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { getActuator } from "../actuator/Actuator";
 import { toClause } from "../parser/toClause";
+import { Config } from "../config/Config";
 
 
 export default class BasicBrain implements Brain {
 
-    constructor(readonly enviro = getEnviro({ root: document.body }), readonly actuator = getActuator()) {
+    constructor(readonly config: Config, readonly enviro = getEnviro({ root: document.body }), readonly actuator = getActuator()) {
 
     }
 
     async init() {
-        await this.execute('color of any button is background of style of button')
-        await this.execute('text of any button is textContent of button')
+        for (const s of this.config.startupCommands) {
+            await this.execute(s)
+        }
     }
 
     async execute(natlang: string): Promise<any[]> {
 
         const results: any[] = []
 
-        for (const ast of getParser(natlang).parseAll()) {
+        for (const ast of getParser(natlang, this.config).parseAll()) {
 
             if (!ast) {
                 continue

@@ -1,5 +1,5 @@
-import { lexemes } from "./lexemes"
-import { LexemeType } from "./LexemeType"
+import { LexemeType } from "../config/LexemeType"
+
 
 export interface Lexeme<T extends LexemeType> {
     /**canonical form*/ readonly root: string
@@ -19,7 +19,7 @@ export function formsOf(lexeme: Lexeme<LexemeType>) {
 
 }
 
-export function getLexemes(word: string): Lexeme<LexemeType>[] {
+export function getLexemes(word: string, lexemes: Lexeme<LexemeType>[]): Lexeme<LexemeType>[] {
 
     const lexeme: Lexeme<LexemeType> =
         lexemes.filter(x => formsOf(x).includes(word)).at(0)
@@ -28,7 +28,7 @@ export function getLexemes(word: string): Lexeme<LexemeType>[] {
     const lexeme2: Lexeme<LexemeType> = { ...lexeme, token: word }
 
     return lexeme2.contractionFor ?
-        lexeme2.contractionFor.flatMap(x => getLexemes(x)) :
+        lexeme2.contractionFor.flatMap(x => getLexemes(x, lexemes)) :
         [lexeme2]
 
 }

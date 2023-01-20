@@ -1,6 +1,7 @@
 import EagerLexer from "./EagerLexer"
 import { Lexeme } from "./Lexeme"
-import { LexemeType } from "./LexemeType"
+import { LexemeType } from "../config/LexemeType"
+import { Config } from "../config/Config"
 
 export default interface Lexer {
     get peek(): Lexeme<LexemeType>
@@ -17,8 +18,8 @@ export interface AssertArgs {
     errorOut?: boolean
 }
 
-export function getLexer(sourceCode: string): Lexer {
-    return new EagerLexer(sourceCode)
+export function getLexer(sourceCode: string, config:Config): Lexer {
+    return new EagerLexer(sourceCode, config)
 }
 
 export type Constructor<T> = new (...args: any[]) => T
