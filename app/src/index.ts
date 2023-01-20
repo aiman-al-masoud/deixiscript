@@ -5,11 +5,11 @@ import testNewXParser from "./tests/xnounphrase";
 // import xparsertest from "./tests/xparsertest";
 // await toclausetests()
 
-(async ()=>{
-    await autotester()
-})()
+// (async ()=>{
+//     await autotester()
+// })()
 
-// testNewXParser()
+testNewXParser()
 
 // main()
 
