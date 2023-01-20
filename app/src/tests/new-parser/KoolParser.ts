@@ -54,7 +54,7 @@ export class KoolParser implements Parser {
 
     };
 
-    protected parseAtom = (m: Member, number?: Cardinality): AtomNode | AstNode<AstType> | undefined => {
+    protected parseAtom = (m: Member, number?: Cardinality): AtomNode | CompositeNode | undefined => {
 
         const atoms: AtomNode[] = [];
 
@@ -76,10 +76,12 @@ export class KoolParser implements Parser {
                 return atoms[0];
             default:
 
-                const x: any = {
+                const x: CompositeNode = {
+                    type: 'lexemelist',
                     links: atoms
-                };
-                return x as AstNode<AstType>;
+                }
+
+                return x;
         }
 
     };

@@ -9,6 +9,7 @@ export type ConstituentType = 'nounphrase'
     | 'copulasentence'
     | 'iverbsentence'
     | 'mverbsentence'
+    | 'lexemelist'
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
 // | 'mverbsubclause2'
@@ -63,6 +64,9 @@ const blueprints: { [name in ConstituentType]: Member[] } = {
         { type: ['complement'], number: '*' },
         { type: ['nounphrase'], number: 1, role: 'object' },
         { type: ['complement'], number: '*' },
+    ],
+    'lexemelist': [
+        { type: ['adj', 'noun'], number: '*' }
     ]
 }
 
