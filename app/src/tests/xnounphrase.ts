@@ -105,7 +105,13 @@ function getBlueprint(name: AstType): Member[] {
 }
 
 
-class KoolParser {
+interface Parser {
+    parse(): AstNode<AstType> | undefined
+    parseAll(): (AstNode<AstType> | undefined)[]
+
+}
+
+class KoolParser implements Parser {
 
     constructor(readonly sourceCode: string, readonly lexer = getLexer(sourceCode)) {
 
@@ -238,6 +244,11 @@ class KoolParser {
 }
 
 
+function getParser(sourceCode:string):Parser{
+    return new KoolParser(sourceCode)
+}
+
+
 
 
 //////////////////////////////////////
@@ -245,7 +256,8 @@ class KoolParser {
 export default function testNewXParser() {
 
 
-    const x = new KoolParser('the cat that is black is red. cat is red if cat is green').parseAll()
+    // const x = new KoolParser().parseAll()
+    const x = getParser('the cat that is black is red. cat is red if cat is green').parseAll()
     // const x = parse('copulasentence', getLexer('the cat that is black is red'))
     // const x = parse('complexsentence1', getLexer('if the cat is red then the cat is black'))
     console.log(x)
