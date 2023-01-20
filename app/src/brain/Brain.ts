@@ -8,9 +8,9 @@ export default interface Brain {
     execute(natlang: string): Promise<any[]>
 }
 
-export async function getBrain(): Promise<Brain> {
+export async function getBrain(config = getConfig()): Promise<Brain> {
 
-    const b = new BasicBrain(getConfig())
+    const b = new BasicBrain(config)
     await b.init()
     return b
 }
