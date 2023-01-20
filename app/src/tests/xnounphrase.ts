@@ -104,108 +104,138 @@ function getBlueprint(name: AstType): Member[] {
     return blueprints[name as ConstituentType] ?? [{ type: [name], number: 1 }] // TODO: problem, adj is not always 1 !!!!!!
 }
 
-function isAtom(name: AstType) {
-    const lexemeTypes: LexemeType[] = ['adj', 'contraction', 'copula', 'defart', 'indefart', 'fullstop', 'hverb', 'iverb', 'mverb', 'negation', 'nonsubconj', 'existquant', 'uniquant', 'then', 'relpron', 'negation', 'noun', 'preposition', 'subconj']
-    return lexemeTypes.includes(name as LexemeType)
-}
 
-export function parse(name: AstType, lexer: Lexer, number?: Cardinality): AstNode<AstType> | undefined {
+class KoolParser {
 
-    const members = getBlueprint(name)
+    constructor(readonly sourceCode: string, readonly lexer = getLexer(sourceCode)) {
 
-    if (members.length === 1 && members[0].type.every(t => isAtom(t))) {
-        return parseAtom(members[0], lexer, number)
-    } else {
-        return parseComposite(name as ConstituentType, lexer, number)
     }
 
-}
+    protected try(method: (args: any) => AstNode<AstType> | undefined, ...args: AstType[]) {
 
-function parseAtom(m: Member, lexer: Lexer, number?: Cardinality): AtomNode | AstNode<AstType> | undefined {
+        const memento = this.lexer.pos
+        const x = method(args)
 
-    const atoms: AtomNode[] = []
-
-    while (!lexer.isEnd && m.type.includes(lexer.peek.type)) {
-
-        if (number !== '*' && atoms.length >= 1) {
-            break
+        if (!x) {
+            this.lexer.backTo(memento)
         }
 
-        const x = lexer.peek
-        lexer.next()
-        atoms.push({ type: x.type, lexeme: x })
+        return x
     }
 
-    switch (atoms.length) {
-        case 0:
-            return undefined
-        case 1:
-            return atoms[0]
-        default:
+    parseAll() {
 
-            const x: any = {
-                links: atoms
-            }
-            return x as AstNode<AstType>
-    }
+        const results: (AstNode<AstType> | undefined)[] = []
 
-}
-
-function isNecessary(m: Member) {
-    return m.number === 1
-}
-
-function parseComposite(name: ConstituentType, lexer: Lexer, number?: Cardinality): CompositeNode | undefined {
-
-    const links: (AstNode<AstType> | undefined)[] = []
-
-    for (const m of getBlueprint(name)) {
-
-        const ast = parseMember(m, lexer)
-
-        if (!ast && isNecessary(m)) {
-            return undefined
+        while (!this.lexer.isEnd) {
+            results.push(this.parse())
+            this.lexer.assert('fullstop', { errorOut: false })
         }
 
-        links.push(ast)
+        return results
     }
 
-    return {
-        type: name,
-        links: links
+    parse() {
+
+        return this.try(this.topParse, 'complexsentence1')
+            ?? this.try(this.topParse, 'complexsentence2')
+            ?? this.try(this.topParse, 'copulasentence')
+            ?? this.try(this.topParse, 'iverbsentence')
+            ?? this.try(this.topParse, 'mverbsentence')
+            ?? this.try(this.topParse, 'nounphrase')
     }
-}
 
-function parseMember(m: Member, lexer: Lexer): AstNode<AstType> | undefined {
+    protected topParse = (name: AstType, number?: Cardinality): AstNode<AstType> | undefined => {
 
-    let x
-    const memento = lexer.pos
+        const members = getBlueprint(name)
 
-    for (const t of m.type) {
-
-        x = parse(t, lexer, m.number)
-
-        if (x) {
-            break
+        if (members.length === 1 && members[0].type.every(t => this.isAtom(t))) {
+            return this.parseAtom(members[0], number)
         } else {
-            lexer.backTo(memento)
+            return this.parseComposite(name as ConstituentType, number)
         }
 
     }
 
-    return x
+    protected parseAtom = (m: Member, number?: Cardinality): AtomNode | AstNode<AstType> | undefined => {
+
+        const atoms: AtomNode[] = []
+
+        while (!this.lexer.isEnd && m.type.includes(this.lexer.peek.type)) {
+
+            if (number !== '*' && atoms.length >= 1) {
+                break
+            }
+
+            const x = this.lexer.peek
+            this.lexer.next()
+            atoms.push({ type: x.type, lexeme: x })
+        }
+
+        switch (atoms.length) {
+            case 0:
+                return undefined
+            case 1:
+                return atoms[0]
+            default:
+
+                const x: any = {
+                    links: atoms
+                }
+                return x as AstNode<AstType>
+        }
+
+    }
+
+    protected isNecessary = (m: Member) => {
+        return m.number === 1
+    }
+
+    protected isAtom = (name: AstType) => {
+        const lexemeTypes: LexemeType[] = ['adj', 'contraction', 'copula', 'defart', 'indefart', 'fullstop', 'hverb', 'iverb', 'mverb', 'negation', 'nonsubconj', 'existquant', 'uniquant', 'then', 'relpron', 'negation', 'noun', 'preposition', 'subconj']
+        return lexemeTypes.includes(name as LexemeType)
+    }
+
+    protected parseComposite = (name: ConstituentType, number?: Cardinality): CompositeNode | undefined => {
+
+        const links: (AstNode<AstType> | undefined)[] = []
+
+        for (const m of getBlueprint(name)) {
+
+            const ast = this.parseMember(m)
+
+            if (!ast && this.isNecessary(m)) {
+                return undefined
+            }
+
+            links.push(ast)
+        }
+
+        return {
+            type: name,
+            links: links
+        }
+    }
+
+    protected parseMember = (m: Member): AstNode<AstType> | undefined => {
+
+        let x
+
+        for (const t of m.type) {
+
+            x = this.topParse(t, m.number)
+
+            if (x) {
+                break
+            }
+
+        }
+
+        return x
+    }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -214,7 +244,8 @@ function parseMember(m: Member, lexer: Lexer): AstNode<AstType> | undefined {
 
 export default function testNewXParser() {
 
-    const x = parse('copulasentence', getLexer('the black red cat is green'))
+
+    const x = new KoolParser('the cat that is black is red. cat is red if cat is green').parseAll()
     // const x = parse('copulasentence', getLexer('the cat that is black is red'))
     // const x = parse('complexsentence1', getLexer('if the cat is red then the cat is black'))
     console.log(x)
