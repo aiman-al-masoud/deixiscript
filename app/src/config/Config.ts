@@ -11,7 +11,7 @@ export interface Config {
     readonly startupCommands: string[]
 }
 
-export function getConfig() {
+export function getConfig(): Config {
     return {
         lexemes,
         getSyntax,
