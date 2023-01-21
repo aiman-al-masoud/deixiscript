@@ -220,7 +220,7 @@ export const lexemes: Lexeme<LexemeType>[] = [
     },
 
     {
-        root : 'nounphrase',
+        root : 'noun-phrase',
         type : 'grammar'
     }
 
