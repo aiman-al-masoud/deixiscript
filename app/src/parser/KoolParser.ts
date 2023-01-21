@@ -75,7 +75,7 @@ export class KoolParser implements Parser {
             }
 
             if (ast) {
-                const astType = ast.type != 'lexemelist' ? ast.type : Object.values((ast as CompositeNode<'lexemelist'>).links).at(0)?.type ?? 'lexemelist';
+                const astType = ast.type != 'array' ? ast.type : Object.values((ast as CompositeNode<'array'>).links).at(0)?.type ?? 'array';
                 links[m.role ?? astType] = ast
             }
 
@@ -116,7 +116,7 @@ export class KoolParser implements Parser {
         }
 
         return isRepeatable(m.number) ? ({
-            type: 'lexemelist',
+            type: 'array',
             links: (list as any) //TODO!!!!
         }) : list[0]
 

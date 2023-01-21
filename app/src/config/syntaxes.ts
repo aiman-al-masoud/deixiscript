@@ -13,7 +13,7 @@ export const constituentTypes = stringLiterals(
     'nounphrase',
     'complement',
     'copulasubclause',
-    'lexemelist', //TODO: rename to astlist
+    'array', // an array of consecutive asts (tied to '*')
 )
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
@@ -72,8 +72,8 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         { type: ['nounphrase'], number: 1, role: 'object' },
         { type: ['complement'], number: '*' },
     ],
-    'lexemelist': [
-        // { type: ['adj', 'noun'], number: '*' }
+    'array': [
+
     ],
     'macro': [
         { type: ['noun'], number: 1 },
