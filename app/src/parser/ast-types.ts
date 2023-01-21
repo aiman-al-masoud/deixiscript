@@ -37,3 +37,7 @@ export interface CompositeNode<T extends ConstituentType> extends AstNode<T> {
 export const isNecessary = (m: Member) => {
     return m.number === 1 || m.number == '+';
 }
+
+export const isRepeatable = (m: Member) => {   
+    return  m.number? (m.number == '+' || m.number == '*' ): false
+}

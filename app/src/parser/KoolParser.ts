@@ -1,4 +1,4 @@
-import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode, isNecessary } from "./ast-types"
+import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
 import { ConstituentType } from "../config/syntaxes"
 import { Parser } from "./Parser"
 import { getLexer } from "../lexer/Lexer"
@@ -52,25 +52,13 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseAtom = (m: Member, number?: Cardinality): AtomNode<LexemeType> | CompositeNode<ConstituentType> | undefined => {
+    protected parseAtom = (m: Member, number?: Cardinality): AtomNode<LexemeType> | undefined => {
 
-        const atoms: AtomNode<LexemeType>[] = []
-
-        while (!this.lexer.isEnd && m.type.includes(this.lexer.peek.type)) {
-
-            if (number != '*' && atoms.length >= 1) {
-                break
-            }
-
+        if (m.type.includes(this.lexer.peek.type)) {
             const x = this.lexer.peek
             this.lexer.next()
-            atoms.push({ type: x.type, lexeme: x })
+            return { type: x.type, lexeme: x }
         }
-
-        return number == '*' ? ({
-            type: 'lexemelist',
-            links: (atoms as any) //TODO!!!!
-        }) : atoms[0]
 
     }
 
@@ -101,21 +89,59 @@ export class KoolParser implements Parser {
 
     protected parseMember = (m: Member, role?: Role): AstNode<AstType> | undefined => {
 
-        // TODO: if m.number == '+' or '*' try getting more of the same kind of ast
+        const list: any[] = []
 
-        for (const t of m.type) {
+        while (!this.lexer.isEnd) {
 
-            const x = this.topParse(t, m.number, m.role)
+            if (!isRepeatable(m) && list.length >= 1) {
+                break
+            }
+
+            // const x = this.try(this.parseOneMember, m.type, m.number, m.role) // --------
+            const memento = this.lexer.pos
+            const x = this.parseOneMember(m.type, m.number, m.role)
+            if (!x) { this.lexer.backTo(memento) }
+            // ----------
+
+            if (!x) {
+                break
+            }
+
+            list.push(x)
+        }
+
+        // const res = isRepeatable(m) ? ({
+        //     type: 'lexemelist',
+        //     links: (list as any) //TODO!!!!
+        // }) : list[0]
+
+        if (list.length === 0 && isNecessary(m)) {
+            return undefined
+        }
+
+        const res = ['macropart', 'adj'].some(x => m.type.includes(x as AstType)) ?
+            ({
+                type: 'lexemelist',
+                links: (list as any) //TODO!!!!
+            }) : list[0]
+
+        return res
+    }
+
+    protected parseOneMember = (types: AstType[], number?: Cardinality, role?: Role) => {
+
+        for (const t of types) {
+
+            const x = this.topParse(t, number, role)
 
             if (x) {
                 return x
             }
 
         }
-
     }
 
-    protected try(method: (args: any) => AstNode<AstType> | undefined, ...args: AstType[]) {
+    protected try = (method: (args: any) => AstNode<AstType> | undefined, ...args: any[]) => {
 
         const memento = this.lexer.pos
         const x = method(args)

@@ -13,7 +13,7 @@ export const constituentTypes = stringLiterals(
     'nounphrase',
     'complement',
     'copulasubclause',
-    'lexemelist',
+    'lexemelist', //TODO: rename to astlist
 )
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
