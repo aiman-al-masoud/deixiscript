@@ -1,5 +1,4 @@
 import { Member, AstType } from "../parser/ast-types";
-import { LexemeType } from "./LexemeType";
 import { ElementType, stringLiterals } from "./utils";
 
 
@@ -85,11 +84,6 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
 export const getSyntax = (name: AstType): Member[] => {
     return syntaxes[name as ConstituentType] ?? [{ type: [name], number: 1 }]; // TODO: problem, adj is not always 1 !!!!!!
 }
-
-// export const isAtom = (name: AstType) => {
-//     const lexemeTypes: LexemeType[] = ['adj', 'contraction', 'copula', 'defart', 'indefart', 'fullstop', 'hverb', 'iverb', 'mverb', 'negation', 'nonsubconj', 'existquant', 'uniquant', 'then', 'relpron', 'negation', 'noun', 'preposition', 'subconj', 'grammar'];
-//     return lexemeTypes.includes(name as LexemeType);
-// }
 
 export const isNecessary = (m: Member) => {
     return m.number === 1;
