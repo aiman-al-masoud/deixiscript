@@ -1,46 +1,36 @@
-import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode, isNecessary } from "./ast-types";
-import { ConstituentType } from "../config/syntaxes";
-import { Parser } from "./Parser";
-import { getLexer } from "../lexer/Lexer";
-import { LexemeType } from "../config/LexemeType";
-import { Config } from "../config/Config";
+import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode, isNecessary } from "./ast-types"
+import { ConstituentType } from "../config/syntaxes"
+import { Parser } from "./Parser"
+import { getLexer } from "../lexer/Lexer"
+import { LexemeType } from "../config/LexemeType"
+import { Config } from "../config/Config"
 
 
 export class KoolParser implements Parser {
 
     constructor(readonly sourceCode: string, readonly config: Config, readonly lexer = getLexer(sourceCode, config)) {
-    }
 
-    protected try(method: (args: any) => AstNode<AstType> | undefined, ...args: AstType[]) {
-
-        const memento = this.lexer.pos;
-        const x = method(args);
-
-        if (!x) {
-            this.lexer.backTo(memento);
-        }
-
-        return x;
     }
 
     parseAll() {
 
-        const results: (AstNode<AstType> | undefined)[] = [];
+        const results: (AstNode<AstType> | undefined)[] = []
 
         while (!this.lexer.isEnd) {
 
             const ast = this.parse()
 
-            results.push(ast);
-            this.lexer.assert('fullstop', { errorOut: false });
+            results.push(ast)
+            this.lexer.assert('fullstop', { errorOut: false })
         }
 
-        return results;
+        return results
     }
 
     parse() {
 
         for (const t of this.config.constituentTypes) {
+
             const x = this.try(this.topParse, t)
 
             if (x) {
@@ -52,29 +42,29 @@ export class KoolParser implements Parser {
 
     protected topParse = (name: AstType, number?: Cardinality, role?: Role): AstNode<AstType> | undefined => {
 
-        const members = this.config.getSyntax(name);
+        const members = this.config.getSyntax(name)
 
-        if (members.length === 1 && members[0].type.every(t => this.config.lexemeTypes.includes(t as LexemeType))) {
-            return this.parseAtom(members[0], number);
+        if (members.length === 1 && members[0].type.every(t => this.isAtom(t))) {
+            return this.parseAtom(members[0], number)
         } else {
-            return this.parseComposite(name as ConstituentType, number, role);
+            return this.parseComposite(name as ConstituentType, number, role)
         }
 
     }
 
     protected parseAtom = (m: Member, number?: Cardinality): AtomNode<LexemeType> | CompositeNode<ConstituentType> | undefined => {
 
-        const atoms: AtomNode<LexemeType>[] = [];
+        const atoms: AtomNode<LexemeType>[] = []
 
         while (!this.lexer.isEnd && m.type.includes(this.lexer.peek.type)) {
 
             if (number != '*' && atoms.length >= 1) {
-                break;
+                break
             }
 
-            const x = this.lexer.peek;
-            this.lexer.next();
-            atoms.push({ type: x.type, lexeme: x });
+            const x = this.lexer.peek
+            this.lexer.next()
+            atoms.push({ type: x.type, lexeme: x })
         }
 
         return number == '*' ? ({
@@ -90,10 +80,10 @@ export class KoolParser implements Parser {
 
         for (const m of this.config.getSyntax(name)) {
 
-            const ast = this.parseMember(m);
+            const ast = this.parseMember(m)
 
             if (!ast && isNecessary(m)) {
-                return undefined;
+                return undefined
             }
 
             if (ast) {
@@ -102,30 +92,42 @@ export class KoolParser implements Parser {
 
             // TODO: if m.number == '+' or '*' try getting more of the same kind of ast
 
-
         }
 
         return {
             type: name,
             role: role,
             links: links
-        };
+        }
     }
 
     protected parseMember = (m: Member, role?: Role): AstNode<AstType> | undefined => {
 
-        let x;
-
         for (const t of m.type) {
 
-            x = this.topParse(t, m.number, m.role);
+            const x = this.topParse(t, m.number, m.role)
 
             if (x) {
-                break;
+                return x
             }
 
         }
 
-        return x;
+    }
+
+    protected try(method: (args: any) => AstNode<AstType> | undefined, ...args: AstType[]) {
+
+        const memento = this.lexer.pos
+        const x = method(args)
+
+        if (!x) {
+            this.lexer.backTo(memento)
+        }
+
+        return x
+    }
+
+    protected isAtom = (t: AstType) => {
+        return this.config.lexemeTypes.includes(t as LexemeType)
     }
 }
