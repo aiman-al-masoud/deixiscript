@@ -19,9 +19,9 @@ export class KoolParser implements Parser {
         while (!this.lexer.isEnd) {
 
             const ast = this.parse()
-
             results.push(ast)
             this.lexer.assert('fullstop', { errorOut: false })
+
         }
 
         return results
@@ -90,8 +90,6 @@ export class KoolParser implements Parser {
                 links[m.role ?? ast.type] = ast
             }
 
-            // TODO: if m.number == '+' or '*' try getting more of the same kind of ast
-
         }
 
         return {
@@ -102,6 +100,8 @@ export class KoolParser implements Parser {
     }
 
     protected parseMember = (m: Member, role?: Role): AstNode<AstType> | undefined => {
+
+        // TODO: if m.number == '+' or '*' try getting more of the same kind of ast
 
         for (const t of m.type) {
 
