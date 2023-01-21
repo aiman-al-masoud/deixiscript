@@ -1,14 +1,13 @@
 import { Member, AstType } from "../parser/ast-types";
 import { LexemeType } from "./LexemeType";
+import { ElementType, stringLiterals } from "./utils";
 
-function stringLiterals<T extends string>(...args: T[]): T[] { return args; }
-type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<infer ElementType> ? ElementType : never;
 
 export const constituentTypes = stringLiterals(
+    'macro',
     'complexsentence1',
     'complexsentence2',
     'copulasentence',
-    'macro',
     'iverbsentence',
     'mverbsentence',
     'nounphrase',
@@ -79,12 +78,6 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
     'macro': [
         { type: ['noun'], number: 1 },
         { type: ['copula'], number: 1 },
-        { type: ['adj'], number: '1|0' },
-        { type: ['grammar'], number: 1 },
-        { type: ['then'], number: 1 },
-        { type: ['adj'], number: '1|0' },
-        { type: ['grammar'], number: 1 },
-        { type: ['adj'], number: '1|0' },
         { type: ['grammar'], number: 1 },
     ]
 }
@@ -93,10 +86,10 @@ export const getSyntax = (name: AstType): Member[] => {
     return syntaxes[name as ConstituentType] ?? [{ type: [name], number: 1 }]; // TODO: problem, adj is not always 1 !!!!!!
 }
 
-export const isAtom = (name: AstType) => {
-    const lexemeTypes: LexemeType[] = ['adj', 'contraction', 'copula', 'defart', 'indefart', 'fullstop', 'hverb', 'iverb', 'mverb', 'negation', 'nonsubconj', 'existquant', 'uniquant', 'then', 'relpron', 'negation', 'noun', 'preposition', 'subconj'];
-    return lexemeTypes.includes(name as LexemeType);
-}
+// export const isAtom = (name: AstType) => {
+//     const lexemeTypes: LexemeType[] = ['adj', 'contraction', 'copula', 'defart', 'indefart', 'fullstop', 'hverb', 'iverb', 'mverb', 'negation', 'nonsubconj', 'existquant', 'uniquant', 'then', 'relpron', 'negation', 'noun', 'preposition', 'subconj', 'grammar'];
+//     return lexemeTypes.includes(name as LexemeType);
+// }
 
 export const isNecessary = (m: Member) => {
     return m.number === 1;

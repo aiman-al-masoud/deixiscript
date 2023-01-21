@@ -5,12 +5,14 @@ import { lexemes } from "./lexemes"
 import { getSyntax } from "./syntaxes"
 import { startupCommands } from "./startupCommands"
 import { constituentTypes, ConstituentType } from "./syntaxes"
+import { lexemeTypes } from "./LexemeType"
 
 export interface Config {
     readonly lexemes: Lexeme<LexemeType>[]
     getSyntax(name: AstType): Member[]
     readonly startupCommands: string[]
     readonly constituentTypes: ConstituentType[]
+    readonly lexemeTypes : LexemeType[]
 }
 
 export function getConfig(): Config {
@@ -18,6 +20,7 @@ export function getConfig(): Config {
         lexemes,
         getSyntax,
         startupCommands,
-        constituentTypes
+        constituentTypes,
+        lexemeTypes
     }
 }

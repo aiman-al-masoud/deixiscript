@@ -1,5 +1,5 @@
 import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode } from "./ast-types";
-import { ConstituentType, isAtom, isNecessary } from "../config/syntaxes";
+import { ConstituentType, isNecessary } from "../config/syntaxes";
 import { Parser } from "./Parser";
 import { getLexer } from "../lexer/Lexer";
 import { LexemeType } from "../config/LexemeType";
@@ -29,7 +29,10 @@ export class KoolParser implements Parser {
         const results: (AstNode<AstType> | undefined)[] = [];
 
         while (!this.lexer.isEnd) {
-            results.push(this.parse());
+
+            const ast = this.parse()
+
+            results.push(ast);
             this.lexer.assert('fullstop', { errorOut: false });
         }
 
@@ -38,10 +41,10 @@ export class KoolParser implements Parser {
 
     parse() {
 
-        for (const t of this.config.constituentTypes){
+        for (const t of this.config.constituentTypes) {
             const x = this.try(this.topParse, t)
 
-            if(x){
+            if (x) {
                 return x
             }
         }
@@ -54,7 +57,7 @@ export class KoolParser implements Parser {
 
         const members = this.config.getSyntax(name);
 
-        if (members.length === 1 && members[0].type.every(t => isAtom(t))) {
+        if (members.length === 1 && members[0].type.every(t => this.config.lexemeTypes.includes(t as LexemeType))) {
             return this.parseAtom(members[0], number);
         } else {
             return this.parseComposite(name as ConstituentType, number, role);
