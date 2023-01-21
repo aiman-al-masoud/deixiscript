@@ -192,5 +192,36 @@ export const lexemes: Lexeme<LexemeType>[] = [
     {
         root: 'black',
         type: 'adj'
+    },
+
+    {
+        root: 'iverb',
+        type: 'grammar'
+    },
+
+    {
+        root: 'noun',
+        type: 'grammar'
+    },
+
+    {
+        root : 'subject',
+        type : 'adj'
+    },
+
+    {
+        root : 'predicate',
+        type : 'adj'
+    },
+
+    {
+        root : 'copula',
+        type : 'grammar'
+    },
+
+    {
+        root : 'nounphrase',
+        type : 'grammar'
     }
+
 ]

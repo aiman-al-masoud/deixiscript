@@ -17,3 +17,5 @@ export type LexemeType =
     | 'nonsubconj'
     | 'negation'
     | 'contraction'
+    | 'grammar'
+    // | 'semantics' //?

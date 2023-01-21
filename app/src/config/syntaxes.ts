@@ -4,23 +4,25 @@ import { LexemeType } from "./LexemeType";
 function stringLiterals<T extends string>(...args: T[]): T[] { return args; }
 type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<infer ElementType> ? ElementType : never;
 
-const values = stringLiterals(
-    'nounphrase',
-    'complement',
-    'copulasubclause',
+export const constituentTypes = stringLiterals(
     'complexsentence1',
     'complexsentence2',
     'copulasentence',
+    'macro',
     'iverbsentence',
     'mverbsentence',
-    'lexemelist')
+    'nounphrase',
+    'complement',
+    'copulasubclause',
+    'lexemelist',
+)
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
 // | 'mverbsubclause2'
 // | 'conjsentece'
 // | 'copulaquestion'
 
-export type ConstituentType = ElementType<typeof values>;
+export type ConstituentType = ElementType<typeof constituentTypes>;
 
 const syntaxes: { [name in ConstituentType]: Member[] } = {
     'nounphrase': [
@@ -73,6 +75,17 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
     ],
     'lexemelist': [
         { type: ['adj', 'noun'], number: '*' }
+    ],
+    'macro': [
+        { type: ['noun'], number: 1 },
+        { type: ['copula'], number: 1 },
+        { type: ['adj'], number: '1|0' },
+        { type: ['grammar'], number: 1 },
+        { type: ['then'], number: 1 },
+        { type: ['adj'], number: '1|0' },
+        { type: ['grammar'], number: 1 },
+        { type: ['adj'], number: '1|0' },
+        { type: ['grammar'], number: 1 },
     ]
 }
 

@@ -38,12 +38,14 @@ export class KoolParser implements Parser {
 
     parse() {
 
-        return this.try(this.topParse, 'complexsentence1')
-            ?? this.try(this.topParse, 'complexsentence2')
-            ?? this.try(this.topParse, 'copulasentence')
-            ?? this.try(this.topParse, 'iverbsentence')
-            ?? this.try(this.topParse, 'mverbsentence')
-            ?? this.try(this.topParse, 'nounphrase');
+        for (const t of this.config.constituentTypes){
+            const x = this.try(this.topParse, t)
+
+            if(x){
+                return x
+            }
+        }
+
     }
 
     protected topParse = (name: AstType, number?: Cardinality, role?: Role): AstNode<AstType> | undefined => {
