@@ -7,7 +7,7 @@ export type AstType = LexemeType | ConstituentType
 export type Cardinality = '*' // zero or more
     | '1|0' // one or zero
     | '+' // one or more
-    | number
+    | number // currently only supports =1
 
 export type Role = 'subject'
     | 'object'
@@ -34,10 +34,11 @@ export interface CompositeNode<T extends ConstituentType> extends AstNode<T> {
     readonly role?: Role
 }
 
-export const isNecessary = (m: Member) => {
-    return m.number === 1 || m.number == '+';
-}
+export const isNecessary = (c?: Cardinality) =>
+    c === undefined // necessary by default
+    || c == '+'
+    || +c >= 1
 
-export const isRepeatable = (m: Member) => {   
-    return  m.number? (m.number == '+' || m.number == '*' ): false
-}
+export const isRepeatable = (c?: Cardinality) =>
+    c == '+'
+    || c == '*'

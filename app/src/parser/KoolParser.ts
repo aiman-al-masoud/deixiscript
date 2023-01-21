@@ -70,7 +70,7 @@ export class KoolParser implements Parser {
 
             const ast = this.parseMember(m)
 
-            if (!ast && isNecessary(m)) {
+            if (!ast && isNecessary(m.number)) {
                 return undefined
             }
 
@@ -93,7 +93,7 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd) {
 
-            if (!isRepeatable(m) && list.length >= 1) {
+            if (!isRepeatable(m.number) && list.length >= 1) {
                 break
             }
 
@@ -110,14 +110,14 @@ export class KoolParser implements Parser {
             list.push(x)
         }
 
+        if (list.length === 0 && isNecessary(m.number)) {
+            return undefined
+        }
+
         // const res = isRepeatable(m) ? ({
         //     type: 'lexemelist',
         //     links: (list as any) //TODO!!!!
         // }) : list[0]
-
-        if (list.length === 0 && isNecessary(m)) {
-            return undefined
-        }
 
         const res = ['macropart', 'adj'].some(x => m.type.includes(x as AstType)) ?
             ({
