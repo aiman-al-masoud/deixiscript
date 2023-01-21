@@ -75,7 +75,8 @@ export class KoolParser implements Parser {
             }
 
             if (ast) {
-                links[m.role ?? ast.type] = ast
+                const astType = ast.type != 'lexemelist' ? ast.type : Object.values((ast as CompositeNode<'lexemelist'>).links).at(0)?.type ?? 'lexemelist';
+                links[m.role ?? astType] = ast
             }
 
         }
@@ -114,18 +115,11 @@ export class KoolParser implements Parser {
             return undefined
         }
 
-        // const res = isRepeatable(m) ? ({
-        //     type: 'lexemelist',
-        //     links: (list as any) //TODO!!!!
-        // }) : list[0]
+        return isRepeatable(m.number) ? ({
+            type: 'lexemelist',
+            links: (list as any) //TODO!!!!
+        }) : list[0]
 
-        const res = ['macropart', 'adj'].some(x => m.type.includes(x as AstType)) ?
-            ({
-                type: 'lexemelist',
-                links: (list as any) //TODO!!!!
-            }) : list[0]
-
-        return res
     }
 
     protected parseOneMember = (types: AstType[], role?: Role) => {

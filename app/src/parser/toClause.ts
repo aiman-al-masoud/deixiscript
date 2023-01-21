@@ -6,7 +6,6 @@ import { LexemeType } from "../config/LexemeType";
 
 // start simple by assuming hardcoded types, then try to depend solely on role (semantic role)
 
-
 export interface Roles {
     subject?: Id
     object?: Id
@@ -36,17 +35,12 @@ export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Prom
 
 async function copulaSentenceToClause(copulaSentence: CompositeNode<'copulasentence'>, args?: ToClauseOpts): Promise<Clause> {
 
-
     const subjectAst = copulaSentence.links.subject as CompositeNode<'nounphrase'>
     const predicateAst = copulaSentence.links.predicate as CompositeNode<'nounphrase'>
-
     const subjectId = args?.roles?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
     const newArgs = { ...args, roles: { subject: subjectId } }
-
-
     const subject = await toClause(subjectAst, newArgs)
     const predicate = (await toClause(predicateAst, newArgs)).copy({ negate: !!copulaSentence.links.negation })
-
     const entities = subject.entities.concat(predicate.entities)
 
     const result = entities// assume any sentence with any var is an implication
@@ -62,8 +56,6 @@ async function copulaSentenceToClause(copulaSentence: CompositeNode<'copulasente
     const a = getAnaphora() // get anaphora
     await a.assert(subject)
     const m1 = (await a.query(predicate))[0] ?? {}
-    // console.log({m1})
-
     const result2 = result.copy({ map: m0 }).copy({ sideEffecty: true, map: m1 })
 
     const m2 = result2.entities // assume anything owned by a variable is also a variable
@@ -73,8 +65,6 @@ async function copulaSentenceToClause(copulaSentence: CompositeNode<'copulasente
         .reduce((a, b) => ({ ...a, ...b }), {})
 
     return result2.copy({ map: m2 })
-
-
 
 }
 
@@ -106,9 +96,9 @@ async function nounPhraseToClause(nounPhrase: CompositeNode<'nounphrase'>, args?
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
     const newArgs = { ...args, roles: { subject: subjectId } };
 
-    const adjectives: AtomNode<LexemeType>[] = (nounPhrase.links.lexemelist as any).links
+    const adjectives: AtomNode<LexemeType>[] = (nounPhrase?.links?.adj as any)?.links ?? []
     const noun = nounPhrase.links.noun as AtomNode<LexemeType> | undefined
-    const complements = [nounPhrase.links.complement] //TODO: in parser MORE than one complement !!!!
+    const complements: AtomNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
     const subClause = nounPhrase.links.copulasubclause
 
     const res =
@@ -122,5 +112,3 @@ async function nounPhraseToClause(nounPhrase: CompositeNode<'nounphrase'>, args?
 
     return res
 }
-
-
