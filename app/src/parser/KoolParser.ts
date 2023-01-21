@@ -1,9 +1,8 @@
-import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode } from "./ast-types";
-import { ConstituentType, isNecessary } from "../config/syntaxes";
+import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode, isNecessary } from "./ast-types";
+import { ConstituentType } from "../config/syntaxes";
 import { Parser } from "./Parser";
 import { getLexer } from "../lexer/Lexer";
 import { LexemeType } from "../config/LexemeType";
-import { Lexeme } from "../lexer/Lexeme";
 import { Config } from "../config/Config";
 
 
@@ -53,8 +52,6 @@ export class KoolParser implements Parser {
 
     protected topParse = (name: AstType, number?: Cardinality, role?: Role): AstNode<AstType> | undefined => {
 
-
-
         const members = this.config.getSyntax(name);
 
         if (members.length === 1 && members[0].type.every(t => this.config.lexemeTypes.includes(t as LexemeType))) {
@@ -63,7 +60,7 @@ export class KoolParser implements Parser {
             return this.parseComposite(name as ConstituentType, number, role);
         }
 
-    };
+    }
 
     protected parseAtom = (m: Member, number?: Cardinality): AtomNode<LexemeType> | CompositeNode<ConstituentType> | undefined => {
 
@@ -71,7 +68,7 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd && m.type.includes(this.lexer.peek.type)) {
 
-            if (number !== '*' && atoms.length >= 1) {
+            if (number != '*' && atoms.length >= 1) {
                 break;
             }
 
@@ -80,7 +77,7 @@ export class KoolParser implements Parser {
             atoms.push({ type: x.type, lexeme: x });
         }
 
-        return number === '*' ? ({
+        return number == '*' ? ({
             type: 'lexemelist',
             links: (atoms as any) //TODO!!!!
         }) : atoms[0]
@@ -103,6 +100,9 @@ export class KoolParser implements Parser {
                 links[m.role ?? ast.type] = ast
             }
 
+            // TODO: if m.number == '+' or '*' try getting more of the same kind of ast
+
+
         }
 
         return {
@@ -110,7 +110,7 @@ export class KoolParser implements Parser {
             role: role,
             links: links
         };
-    };
+    }
 
     protected parseMember = (m: Member, role?: Role): AstNode<AstType> | undefined => {
 
@@ -127,5 +127,5 @@ export class KoolParser implements Parser {
         }
 
         return x;
-    };
+    }
 }

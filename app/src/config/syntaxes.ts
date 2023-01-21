@@ -4,6 +4,7 @@ import { ElementType, stringLiterals } from "./utils";
 
 export const constituentTypes = stringLiterals(
     'macro',
+    'macropart',
     'complexsentence1',
     'complexsentence2',
     'copulasentence',
@@ -77,14 +78,15 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
     'macro': [
         { type: ['noun'], number: 1 },
         { type: ['copula'], number: 1 },
+        { type: ['macropart'], number: '+'}
+    ],
+    'macropart': [
+        { type: ['adj'], number: '*' },
         { type: ['grammar'], number: 1 },
+        { type: ['then'], number: '*' }
     ]
 }
 
 export const getSyntax = (name: AstType): Member[] => {
     return syntaxes[name as ConstituentType] ?? [{ type: [name], number: 1 }]; // TODO: problem, adj is not always 1 !!!!!!
-}
-
-export const isNecessary = (m: Member) => {
-    return m.number === 1;
 }

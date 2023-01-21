@@ -1,4 +1,3 @@
-// import { LexemeType } from "../../ast/interfaces/LexemeType";
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
@@ -30,6 +29,7 @@ export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Prom
         return copulaSentenceToClause(ast as any, args)
     }
 
+    console.log({ ast })
     throw new Error(`Idk what to do with ${ast.type}!`)
 
 }
@@ -112,7 +112,7 @@ async function nounPhraseToClause(nounPhrase: CompositeNode<'nounphrase'>, args?
     const subClause = nounPhrase.links.copulasubclause
 
     const res =
-        adjectives.map(a=>a.lexeme)
+        adjectives.map(a => a.lexeme)
             .concat(noun?.lexeme ? [noun.lexeme] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause())
