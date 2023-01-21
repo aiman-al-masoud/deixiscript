@@ -40,19 +40,19 @@ export class KoolParser implements Parser {
 
     }
 
-    protected topParse = (name: AstType, number?: Cardinality, role?: Role): AstNode<AstType> | undefined => {
+    protected topParse = (name: AstType, role?: Role): AstNode<AstType> | undefined => {
 
         const members = this.config.getSyntax(name)
 
         if (members.length === 1 && members[0].type.every(t => this.isAtom(t))) {
-            return this.parseAtom(members[0], number)
+            return this.parseAtom(members[0])
         } else {
-            return this.parseComposite(name as ConstituentType, number, role)
+            return this.parseComposite(name as ConstituentType, role)
         }
 
     }
 
-    protected parseAtom = (m: Member, number?: Cardinality): AtomNode<LexemeType> | undefined => {
+    protected parseAtom = (m: Member): AtomNode<LexemeType> | undefined => {
 
         if (m.type.includes(this.lexer.peek.type)) {
             const x = this.lexer.peek
@@ -62,7 +62,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: ConstituentType, number?: Cardinality, role?: Role): CompositeNode<ConstituentType> | undefined => {
+    protected parseComposite = (name: ConstituentType, role?: Role): CompositeNode<ConstituentType> | undefined => {
 
         const links: any = {}
 
@@ -99,7 +99,7 @@ export class KoolParser implements Parser {
 
             // const x = this.try(this.parseOneMember, m.type, m.number, m.role) // --------
             const memento = this.lexer.pos
-            const x = this.parseOneMember(m.type, m.number, m.role)
+            const x = this.parseOneMember(m.type, m.role)
             if (!x) { this.lexer.backTo(memento) }
             // ----------
 
@@ -128,11 +128,11 @@ export class KoolParser implements Parser {
         return res
     }
 
-    protected parseOneMember = (types: AstType[], number?: Cardinality, role?: Role) => {
+    protected parseOneMember = (types: AstType[], role?: Role) => {
 
         for (const t of types) {
 
-            const x = this.topParse(t, number, role)
+            const x = this.topParse(t, role)
 
             if (x) {
                 return x
