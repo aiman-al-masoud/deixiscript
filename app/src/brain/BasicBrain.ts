@@ -3,7 +3,7 @@ import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { getActuator } from "../actuator/Actuator";
 import { toClause } from "../parser/toClause";
-import { Config } from "../config/Config";
+import { Config, handleMacro } from "../config/Config";
 
 
 export default class BasicBrain implements Brain {
@@ -25,6 +25,11 @@ export default class BasicBrain implements Brain {
         for (const ast of getParser(natlang, this.config).parseAll()) {
 
             if (!ast) {
+                continue
+            }
+
+            if (ast.type == 'macro') {
+                handleMacro(ast as any, this.config)
                 continue
             }
 

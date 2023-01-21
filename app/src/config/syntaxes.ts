@@ -41,11 +41,14 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         { type: ['copula'], number: 1 },
         { type: ['nounphrase'], number: 1 }
     ],
+    // 'copulasentence': [
+    //     { type: ['nounphrase'], number: 1, role: 'subject' },
+    //     { type: ['copula'], number: 1 },
+    //     { type: ['negation'], number: '1|0' },
+    //     { type: ['nounphrase'], number: 1, role: 'predicate' }
+    // ],
     'copulasentence': [
-        { type: ['nounphrase'], number: 1, role: 'subject' },
-        { type: ['copula'], number: 1 },
-        { type: ['negation'], number: '1|0' },
-        { type: ['nounphrase'], number: 1, role: 'predicate' }
+
     ],
     'iverbsentence': [
         { type: ['nounphrase'], number: 1, role: 'subject' },
@@ -89,4 +92,8 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
 
 export const getSyntax = (name: AstType): Member[] => {
     return syntaxes[name as ConstituentType] ?? [{ type: [name], number: 1 }]; // TODO: problem, adj is not always 1 !!!!!!
+}
+
+export const setSyntax = (name: string, members: Member[]) => {
+    syntaxes[name as ConstituentType] = members
 }

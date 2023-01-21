@@ -205,23 +205,38 @@ export const lexemes: Lexeme<LexemeType>[] = [
     },
 
     {
-        root : 'subject',
-        type : 'adj'
+        root: 'subject',
+        type: 'adj'
     },
 
     {
-        root : 'predicate',
-        type : 'adj'
+        root: 'predicate',
+        type: 'adj'
     },
 
     {
-        root : 'copula',
-        type : 'grammar'
+        root: 'copula',
+        type: 'grammar'
     },
 
     {
-        root : 'noun-phrase',
-        type : 'grammar'
+        root: 'noun-phrase',
+        type: 'grammar'
+    },
+
+    {
+        root: 'nounphrase',
+        type: 'grammar'
+    },
+
+    {
+        root: 'optional',
+        type: 'adj'
+    },
+
+    {
+        root: 'negation',
+        type: 'grammar'
     }
 
 ]
