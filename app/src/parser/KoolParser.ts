@@ -1,4 +1,4 @@
-import { AstNode, AstType, Cardinality, Role, Member, AtomNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
+import { AstNode, AstType, Role, Member, AtomNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
 import { ConstituentType } from "../config/syntaxes"
 import { Parser } from "./Parser"
 import { getLexer } from "../lexer/Lexer"
