@@ -23,7 +23,7 @@ export function getLexemes(word: string, lexemes: Lexeme<LexemeType>[]): Lexeme<
 
     const lexeme: Lexeme<LexemeType> =
         lexemes.filter(x => formsOf(x).includes(word)).at(0)
-        ?? { root: word, type: 'adj' }
+        ?? { root: word, type: 'noun' }
 
     const lexeme2: Lexeme<LexemeType> = { ...lexeme, token: word }
 

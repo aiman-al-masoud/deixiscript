@@ -188,5 +188,9 @@ export const lexemes: Lexeme<LexemeType>[] = [
     {
         root: 'and',
         type: 'nonsubconj'
+    },
+    {
+        root: 'black',
+        type: 'adj'
     }
 ]
