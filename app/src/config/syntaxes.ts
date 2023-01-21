@@ -29,7 +29,7 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         { type: ['indefart', 'defart'], number: '1|0' },
         { type: ['adj'], number: '*' },
         { type: ['noun'], number: '1|0' },
-        { type: ['copulasubclause', /*'iverbsubclause', 'mverbsubclause1', 'mverbsubclause2'*/], number: '*' },
+        { type: ['copulasubclause', /*'iverbsubclause', 'mverbsubclause1', 'mverbsubclause2'*/], number: '1|0' },
         { type: ['complement'], number: '*' },
     ],
     'complement': [
@@ -73,12 +73,12 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         { type: ['complement'], number: '*' },
     ],
     'lexemelist': [
-        { type: ['adj', 'noun'], number: '*' }
+        // { type: ['adj', 'noun'], number: '*' }
     ],
     'macro': [
         { type: ['noun'], number: 1 },
         { type: ['copula'], number: 1 },
-        { type: ['macropart'], number: '+'}
+        { type: ['macropart'], number: '+' }
     ],
     'macropart': [
         { type: ['adj'], number: '*' },
