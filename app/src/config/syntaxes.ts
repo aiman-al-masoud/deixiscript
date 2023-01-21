@@ -83,7 +83,7 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
     'macropart': [
         { type: ['adj'], number: '*' },
         { type: ['grammar'], number: 1 },
-        { type: ['then'], number: '*' }
+        { type: ['then'], number: '1|0' }
     ]
 }
 
