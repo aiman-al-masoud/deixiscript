@@ -3,7 +3,7 @@ import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { getActuator } from "../actuator/Actuator";
 import { toClause } from "../parser/toClause";
-import { Config, handleMacro } from "../config/Config";
+import { Config } from "../config/Config";
 
 
 export default class BasicBrain implements Brain {
@@ -29,7 +29,7 @@ export default class BasicBrain implements Brain {
             }
 
             if (ast.type == 'macro') {
-                handleMacro(ast as any, this.config)
+                this.config.setSyntax(ast as any)
                 continue
             }
 

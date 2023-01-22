@@ -1,5 +1,5 @@
 import { AstNode, AstType, Role, Member, AtomNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
-import { ConstituentType, maxPrecedence } from "../config/syntaxes"
+import { ConstituentType } from "../config/syntaxes"
 import { Parser } from "./Parser"
 import { getLexer } from "../lexer/Lexer"
 import { LexemeType } from "../config/LexemeType"
@@ -29,9 +29,9 @@ export class KoolParser implements Parser {
 
     parse() {
 
-        const sortedConstituentTypes = this.config.constituentTypes.slice().sort((a, b) => maxPrecedence(b, a))
+        // const sortedConstituentTypes = this.config.constituentTypes.slice().sort((a, b) => maxPrecedence(b, a))
 
-        for (const t of sortedConstituentTypes) {
+        for (const t of this.config.constituentTypes) {
 
             const x = this.try(this.topParse, t)
 
