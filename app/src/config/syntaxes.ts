@@ -14,7 +14,6 @@ export const constituentTypes = stringLiterals(
     'copulasentence',
     'nounphrase',
     'complement',
-    'copulasubclause',
     'subclause',
 
 )
@@ -52,9 +51,7 @@ export const syntaxes: { [name in ConstituentType]: Member[] } = {
     'complement': [
 
     ],
-    'copulasubclause': [
 
-    ],
     'copulasentence': [
 
     ],

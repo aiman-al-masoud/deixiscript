@@ -93,7 +93,7 @@ function complementToClause(complement: any, args?: ToClauseOpts): Clause {
 }
 
 
-function nounPhraseToClause(nounPhrase: any, args?: ToClauseOpts): Clause {
+function nounPhraseToClause(nounPhrase: CompositeNode<ConstituentType>, args?: ToClauseOpts): Clause {
 
     const maybeId = args?.roles?.subject ?? getRandomId()
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
@@ -102,7 +102,7 @@ function nounPhraseToClause(nounPhrase: any, args?: ToClauseOpts): Clause {
     const adjectives: AtomNode<LexemeType>[] = (nounPhrase?.links?.adj as any)?.links ?? []
     const noun = nounPhrase.links.noun as AtomNode<LexemeType> | undefined
     const complements: AtomNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
-    const subClause = nounPhrase.links.copulasubclause
+    const subClause = nounPhrase.links.subclause
 
     const res =
         adjectives.map(a => a.lexeme)
