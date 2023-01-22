@@ -4,15 +4,18 @@ import { ElementType, stringLiterals } from "./utils";
 
 export const constituentTypes = stringLiterals(
 
-    'macro',
+    // permanent
+    'taggedunion',
+    'array', // an array of consecutive asts (tied to '*')
     'macropart',
+    'macro',
+
+    // to be removed
     'copulasentence',
     'nounphrase',
     'complement',
     'copulasubclause',
-    'array', // an array of consecutive asts (tied to '*')
-    'taggedunion',
-    'subclause', //subordinate clause
+    'subclause',
 
 )
 
@@ -71,7 +74,7 @@ export function dependencies(a: AstType): AstType[] {
 
 function staticPrecedence(a: AstType, b: AstType) {
 
-    const ascendingPrecedence: AstType[] = ['taggedunion', 'array', 'macropart', 'macro']
+    const ascendingPrecedence = constituentTypes.slice(0, 3) as any
 
     const pa = ascendingPrecedence.indexOf(a)
     const pb = ascendingPrecedence.indexOf(b)
