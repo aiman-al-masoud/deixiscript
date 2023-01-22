@@ -9,7 +9,7 @@ export default class Edit implements Action {
     }
 
     async run(enviro: Enviro): Promise<any> {
-        const obj = await enviro.get(this.id) ?? enviro.setPlaceholder(this.id)
+        const obj = enviro.get(this.id) ?? enviro.setPlaceholder(this.id)
         obj.set(this.predicate, this.props)
     }
 

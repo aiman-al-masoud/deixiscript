@@ -1,4 +1,3 @@
-import { BasicClause } from "../clauses/BasicClause";
 import { Clause, clauseOf } from "../clauses/Clause";
 import { Enviro } from "../enviro/Enviro";
 import { wrap } from "../enviro/Wrapper";
@@ -11,7 +10,7 @@ export default class ImplyAction implements Action {
 
     }
 
-    async run(enviro: Enviro): Promise<any> {
+    run(enviro: Enviro): any {
 
         // console.log('ImplyAction.run()', this.condition.toString(), '--->', this.conclusion.toString())
 
@@ -41,11 +40,11 @@ export default class ImplyAction implements Action {
         // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
     }
 
-    async other(enviro: Enviro) {
+    other(enviro: Enviro) {
         const top = this.condition.topLevel()[0]
         const protoName = this.condition.describe(top)[0] // assume one 
         const predicate = this.conclusion.describe(top)[0]
-        const y = await enviro.query(clauseOf({ type: 'noun', root: protoName }, 'X'))
+        const y = enviro.query(clauseOf({ type: 'noun', root: protoName }, 'X'))
         const ids = y.map(m => m['X'])
         ids.forEach(id => new Edit(id, predicate).run(enviro))
     }

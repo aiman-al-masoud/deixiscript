@@ -4,10 +4,10 @@ import { Actuator } from "./Actuator";
 
 export default class BaseActuator implements Actuator {
 
-    async takeAction(clause: Clause, enviro: Enviro): Promise<void> {
+    takeAction(clause: Clause, enviro: Enviro): void {
 
-        for (const a of await clause.toAction(clause)) {
-            await a.run(enviro)
+        for (const a of clause.toAction(clause)) {
+            a.run(enviro)
         }
 
     }

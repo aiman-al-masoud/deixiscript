@@ -4,8 +4,8 @@ import { Map } from "../clauses/Id"
 import getEnviro from "./Enviro";
 
 export interface Anaphora {
-    assert(clause: Clause): Promise<void>
-    query(clause: Clause): Promise<Map[]>
+    assert(clause: Clause): void
+    query(clause: Clause): Map[]
 }
 
 export function getAnaphora() {
@@ -18,11 +18,11 @@ class EnviroAnaphora implements Anaphora {
 
     }
 
-    async assert(clause: Clause): Promise<void> {
-        await getActuator().takeAction(clause.copy({ exactIds: true }), this.enviro)
+    assert(clause: Clause) {
+        getActuator().takeAction(clause.copy({ exactIds: true }), this.enviro)
     }
 
-    async query(clause: Clause): Promise<Map[]> {
+    query(clause: Clause): Map[] {
         return this.enviro.query(clause)
     }
 

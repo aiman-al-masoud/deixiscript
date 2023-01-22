@@ -12,20 +12,20 @@ export default class BasicAction implements Action {
 
     }
 
-    async run(enviro: Enviro): Promise<any> {
+    run(enviro: Enviro): any {
 
         if (this.clause.args.length > 1) { // not handling relations yet
             return
         }
 
         if (this.clause.exactIds) {
-            return await new Edit(this.clause.args[0], this.clause.predicate.root, []).run(enviro)
+            return new Edit(this.clause.args[0], this.clause.predicate.root, []).run(enviro)
         }
 
         if (this.topLevel.topLevel().includes(this.clause.args[0])) {
-            await this.forTopLevel(enviro)
+            this.forTopLevel(enviro)
         } else {
-            await this.forNonTopLevel(enviro)
+            this.forNonTopLevel(enviro)
         }
 
     }
@@ -37,13 +37,13 @@ export default class BasicAction implements Action {
             .map(e => this.topLevel.theme.describe(e)[0])
     }
 
-    protected async forTopLevel(enviro: Enviro) {
+    protected forTopLevel(enviro: Enviro) {
 
         const q = this.topLevel.theme.about(this.clause.args[0])
-        const maps = await enviro.query(q)
+        const maps = enviro.query(q)
         const id = maps?.[0]?.[this.clause.args[0]] ?? getRandomId()
 
-        if (!await enviro.get(id)) {
+        if (!enviro.get(id)) {
             enviro.setPlaceholder(id)
         }
 
@@ -54,7 +54,7 @@ export default class BasicAction implements Action {
         }
     }
 
-    protected async forNonTopLevel(enviro: Enviro) {
+    protected forNonTopLevel(enviro: Enviro) {
 
         // assuming max x.y.z nesting
         const owners = this.topLevel.ownersOf(this.clause.args[0])
@@ -72,7 +72,7 @@ export default class BasicAction implements Action {
         }
 
         const q = this.topLevel.theme.about(topLevelOwner)
-        const maps = await enviro.query(q)
+        const maps = enviro.query(q)
         const id = maps?.[0]?.[topLevelOwner] //?? getRandomId()
 
         return new Edit(id, this.clause.predicate.root, this.getProps(topLevelOwner)).run(enviro)

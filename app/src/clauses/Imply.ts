@@ -79,7 +79,7 @@ export default class Imply implements Clause {
         return getOwnershipChain(this, entity)
     }
 
-    async toAction(topLevel: Clause): Promise<Action[]> {
+    toAction(topLevel: Clause): Action[] {
         return [new ImplyAction(this.condition, this.conclusion)]
     }
 

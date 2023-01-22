@@ -4,10 +4,10 @@ import Wrapper from "./Wrapper";
 import BaseEnviro from "./BaseEnviro";
 
 export interface Enviro {
-    get(id: Id): Promise<Wrapper | undefined>
+    get(id: Id): Wrapper | undefined
     set(id: Id, object: Wrapper): void
     setPlaceholder(id: Id): Wrapper
-    query(clause: Clause): Promise<Map[]>
+    query(clause: Clause): Map[]
     exists(id: Id): boolean
     get values(): Wrapper[]
     readonly root?: HTMLElement

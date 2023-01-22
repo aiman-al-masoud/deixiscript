@@ -1,18 +1,18 @@
 import { getBrain } from "../brain/Brain"
 
-export default async function main() {
+export default function main() {
 
     const state = {
-        brain: await getBrain(),
+        brain: getBrain(),
         promptVisible: false
-    };
-
-    (window as any).brain = state.brain
+    }
 
     const update = () => {
         textarea.hidden = !state.promptVisible
         state.promptVisible ? textarea.focus() : 0
     }
+
+    (window as any).brain = state.brain
 
     const textarea = document.createElement('textarea')
     textarea.style.width = '50vw'
@@ -26,12 +26,12 @@ export default async function main() {
     document.body.appendChild(document.createElement('br'))
 
 
-    document.body.addEventListener('keydown', async e => {
+    document.body.addEventListener('keydown', e => {
 
         if (e.ctrlKey && e.code === 'Space') {
             state.promptVisible = !state.promptVisible
         } else if (e.ctrlKey && e.code === 'Enter') {
-            const result = await state.brain.execute(textarea.value)
+            const result = state.brain.execute(textarea.value)
             console.log(result)
         }
 

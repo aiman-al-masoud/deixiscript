@@ -5,11 +5,11 @@ import Action from "./Action";
 
 export default class Create implements Action {
 
-    constructor(readonly id: Id, readonly predicate: string, ...args: any[]) {
+    constructor(readonly id: Id, readonly predicate: string) {
 
     }
 
-    async run(enviro: Enviro): Promise<any> {
+    run(enviro: Enviro): any {
 
         if (enviro.exists(this.id)) { //  existence check prior to creating
             return
@@ -24,7 +24,6 @@ export default class Create implements Action {
             newObj.set(this.predicate)
             enviro.set(this.id, newObj)
             enviro.root?.appendChild(o)
-            // console.log('Create runs!')
 
         }
 
@@ -33,7 +32,5 @@ export default class Create implements Action {
 }
 
 function isDomElem(predicate: string) {
-
     return ['button'].includes(predicate)
-
 }

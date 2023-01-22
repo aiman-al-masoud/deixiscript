@@ -12,7 +12,7 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    async get(id: Id): Promise<Wrapper | undefined> {
+    get(id: Id): Wrapper | undefined {
         return this.dictionary[id]
     }
 
@@ -46,7 +46,7 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    async query(clause: Clause): Promise<Map[]> { //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
+    query(clause: Clause): Map[] { //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
 
         const universe = Object
             .entries(this.dictionary)

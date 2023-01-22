@@ -17,7 +17,7 @@ export interface ToClauseOpts {
     anaphora?: Clause
 }
 
-export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Promise<Clause> {
+export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
     const cast = ast as CompositeNode<ConstituentType>
 
@@ -36,14 +36,14 @@ export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Prom
 
 }
 
-async function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Promise<Clause> {
+function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Clause {
 
     const subjectAst = copulaSentence.links.subject as CompositeNode<ConstituentType>
     const predicateAst = copulaSentence.links.predicate as CompositeNode<ConstituentType>
     const subjectId = args?.roles?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
     const newArgs = { ...args, roles: { subject: subjectId } }
-    const subject = await toClause(subjectAst, newArgs)
-    const predicate = (await toClause(predicateAst, newArgs)).copy({ negate: !!copulaSentence.links.negation })
+    const subject = toClause(subjectAst, newArgs)
+    const predicate = toClause(predicateAst, newArgs).copy({ negate: !!copulaSentence.links.negation })
     const entities = subject.entities.concat(predicate.entities)
 
     const result = entities// assume any sentence with any var is an implication
@@ -57,8 +57,8 @@ async function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts):
         .reduce((a, b) => ({ ...a, ...b }), {})
 
     const a = getAnaphora() // get anaphora
-    await a.assert(subject)
-    const m1 = (await a.query(predicate))[0] ?? {}
+    a.assert(subject)
+    const m1 = (a.query(predicate))[0] ?? {}
     const result2 = result.copy({ map: m0 }).copy({ sideEffecty: true, map: m1 })
 
     const m2 = result2.entities // assume anything owned by a variable is also a variable
@@ -71,15 +71,15 @@ async function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts):
 
 }
 
-async function copulaSubClauseToClause(copulaSubClause: any, args?: ToClauseOpts): Promise<Clause> {
+function copulaSubClauseToClause(copulaSubClause: any, args?: ToClauseOpts): Clause {
 
     const predicate = copulaSubClause.links.predicate as CompositeNode<ConstituentType>
 
-    return (await toClause(predicate, { ...args, roles: { subject: args?.roles?.subject } }))
+    return (toClause(predicate, { ...args, roles: { subject: args?.roles?.subject } }))
         .copy({ sideEffecty: false })
 }
 
-async function complementToClause(complement: any, args?: ToClauseOpts): Promise<Clause> {
+function complementToClause(complement: any, args?: ToClauseOpts): Clause {
     const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
     const newId = getRandomId()
 
@@ -87,13 +87,13 @@ async function complementToClause(complement: any, args?: ToClauseOpts): Promise
     const nounPhrase = complement.links.nounphrase as CompositeNode<ConstituentType>
 
     return clauseOf(preposition.lexeme, subjId, newId)
-        .and(await toClause(nounPhrase, { ...args, roles: { subject: newId } }))
+        .and(toClause(nounPhrase, { ...args, roles: { subject: newId } }))
         .copy({ sideEffecty: false })
 
 }
 
 
-async function nounPhraseToClause(nounPhrase: any, args?: ToClauseOpts): Promise<Clause> {
+function nounPhraseToClause(nounPhrase: any, args?: ToClauseOpts): Clause {
 
     const maybeId = args?.roles?.subject ?? getRandomId()
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
@@ -109,8 +109,8 @@ async function nounPhraseToClause(nounPhrase: any, args?: ToClauseOpts): Promise
             .concat(noun?.lexeme ? [noun.lexeme] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause())
-            .and((await Promise.all(complements.map(c => c ? toClause(c, newArgs) : emptyClause()))).reduce((c1, c2) => c1.and(c2), emptyClause()))
-            .and(subClause ? await toClause(subClause, newArgs) : emptyClause())
+            .and(complements.map(c => c ? toClause(c, newArgs) : emptyClause()).reduce((c1, c2) => c1.and(c2), emptyClause()))
+            .and(subClause ? toClause(subClause, newArgs) : emptyClause())
             .copy({ sideEffecty: false })
 
     return res

@@ -12,13 +12,13 @@ export default class BasicBrain implements Brain {
 
     }
 
-    async init() {
+    init() {
         for (const s of this.config.startupCommands) {
-            await this.execute(s)
+            this.execute(s)
         }
     }
 
-    async execute(natlang: string): Promise<any[]> {
+    execute(natlang: string): any[] {
 
         const results: any[] = []
 
@@ -33,22 +33,18 @@ export default class BasicBrain implements Brain {
                 continue
             }
 
-            const clause = await toClause(ast)
+            const clause = toClause(ast)
 
             if (clause.isSideEffecty) {
-
-                await this.actuator.takeAction(clause, this.enviro)
-
+                this.actuator.takeAction(clause, this.enviro)
             } else {
-
-                const maps = await this.enviro.query(clause)
+                const maps = this.enviro.query(clause)
                 const ids = maps.flatMap(m => Object.values(m))
-                const objects = await Promise.all(ids.map(id => this.enviro.get(id)))
+                const objects = ids.map(id => this.enviro.get(id))
 
                 this.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
                 objects.forEach(o => o?.pointOut())
                 objects.map(o => o?.object).forEach(o => results.push(o))
-
             }
 
         }

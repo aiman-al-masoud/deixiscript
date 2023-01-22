@@ -5,12 +5,12 @@ import BasicBrain from "./BasicBrain"
  * The main facade controller.
  */
 export default interface Brain {
-    execute(natlang: string): Promise<any[]>
+    execute(natlang: string): any[]
 }
 
-export async function getBrain(config = getConfig()): Promise<Brain> {
+export function getBrain(config = getConfig()): Brain {
 
     const b = new BasicBrain(config)
-    await b.init()
+    b.init()
     return b
 }

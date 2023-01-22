@@ -92,8 +92,8 @@ export default class And implements Clause {
         return this.clause2IsRheme ? this.clause2 : emptyClause()
     }
 
-    async toAction(topLevel: Clause): Promise<Action[]> {
-        return (await this.clause1.toAction(topLevel)).concat(await this.clause2.toAction(topLevel))
+    toAction(topLevel: Clause): Action[] {
+        return this.clause1.toAction(topLevel).concat(this.clause2.toAction(topLevel))
     }
 
 }

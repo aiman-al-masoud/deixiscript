@@ -64,8 +64,7 @@ export class EmptyClause implements Clause {
         return ''
     }
 
-    async toAction(topLevel: Clause): Promise<Action[]> {
-        // throw new Error("Method not implemented.");
+    toAction(topLevel: Clause): Action[] {
         return []
     }
 

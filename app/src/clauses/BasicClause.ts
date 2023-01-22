@@ -72,7 +72,7 @@ export class BasicClause implements Clause {
         return getOwnershipChain(this, entity)
     }
 
-    async toAction(topLevel: Clause): Promise<Action[]> {
+    toAction(topLevel: Clause): Action[] {
         return [new BasicAction(this, topLevel)]
     }
 
