@@ -1,5 +1,4 @@
 import { Member, AstType, Role } from "../parser/ast-types";
-import { LexemeType } from "./LexemeType";
 import { ElementType, stringLiterals } from "./utils";
 
 
@@ -30,12 +29,6 @@ export type ConstituentType = ElementType<typeof constituentTypes>;
 
 const syntaxes: { [name in ConstituentType]: Member[] } = {
 
-    // 'quantifier': [
-    //     // { type: ['uniquant', 'existquant'], number: 1 }
-    // ],
-    // 'article': [
-    //     // { type: ['indefart', 'defart'], number: 1 }
-    // ],
     'subclause': [
         { type: ['copulasubclause', /*'iverbsubclause', 'mverbsubclause1', 'mverbsubclause2'*/], number: 1 }
     ],
@@ -91,7 +84,7 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
 
     ],
     'macro': [
-        { type: ['noun' ,'grammar' ], number: 1 , role : 'noun' as Role },
+        { type: ['noun', 'grammar'], number: 1, role: 'noun' as Role },
         { type: ['copula'], number: 1 },
         { type: ['macropart'], number: '+' }
     ],
@@ -112,4 +105,22 @@ export const getSyntax = (name: AstType): Member[] => {
 
 export const setSyntax = (name: string, members: Member[]) => {
     syntaxes[name as ConstituentType] = members
+}
+
+export function dependencies(a: AstType): AstType[] {
+    return getSyntax(a).flatMap(m => m.type)
+}
+
+export function maxPrecedence(a: AstType, b: AstType) {
+
+    const aDependsOnB = dependencies(a).includes(b)
+    const bDependsOnA = dependencies(b).includes(a)
+
+    if (aDependsOnB && bDependsOnA) {
+        const aLength = getSyntax(a).length
+        const bLength = getSyntax(b).length
+        return aLength > bLength ? a : b // TODO: what if also same legth here?
+    }
+
+    return bDependsOnA ? a : b
 }
