@@ -14,6 +14,8 @@ export const constituentTypes = stringLiterals(
     'complement',
     'copulasubclause',
     'array', // an array of consecutive asts (tied to '*')
+    'quantifier',
+    'article',
 )
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
@@ -24,9 +26,16 @@ export const constituentTypes = stringLiterals(
 export type ConstituentType = ElementType<typeof constituentTypes>;
 
 const syntaxes: { [name in ConstituentType]: Member[] } = {
+
+    'quantifier': [
+        { type: ['uniquant', 'existquant'], number: 1 }
+    ],
+    'article': [
+        { type: ['indefart', 'defart'], number: 1 }
+    ],
     'nounphrase': [
-        { type: ['uniquant', 'existquant'], number: '1|0' },
-        { type: ['indefart', 'defart'], number: '1|0' },
+        { type: ['quantifier'], number: '1|0' },
+        { type: ['article'], number: '1|0' },
         { type: ['adj'], number: '*' },
         { type: ['noun'], number: '1|0' },
         { type: ['copulasubclause', /*'iverbsubclause', 'mverbsubclause1', 'mverbsubclause2'*/], number: '1|0' },
