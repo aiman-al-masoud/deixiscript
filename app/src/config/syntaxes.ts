@@ -33,8 +33,8 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         { type: ['complement'], number: '*' },
     ],
     'complement': [
-        { type: ['preposition'], number: 1 },
-        { type: ['nounphrase'], number: 1 }
+        // { type: ['preposition'], number: 1 },
+        // { type: ['nounphrase'], number: 1 }
     ],
     'copulasubclause': [
         { type: ['relpron'], number: 1 },

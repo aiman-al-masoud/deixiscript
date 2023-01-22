@@ -193,17 +193,6 @@ export const lexemes: Lexeme<LexemeType>[] = [
         root: 'black',
         type: 'adj'
     },
-
-    {
-        root: 'iverb',
-        type: 'grammar'
-    },
-
-    {
-        root: 'noun',
-        type: 'grammar'
-    },
-
     {
         root: 'subject',
         type: 'adj'
@@ -212,21 +201,6 @@ export const lexemes: Lexeme<LexemeType>[] = [
     {
         root: 'predicate',
         type: 'adj'
-    },
-
-    {
-        root: 'copula',
-        type: 'grammar'
-    },
-
-    {
-        root: 'noun-phrase',
-        type: 'grammar'
-    },
-
-    {
-        root: 'nounphrase',
-        type: 'grammar'
     },
 
     {
@@ -241,9 +215,36 @@ export const lexemes: Lexeme<LexemeType>[] = [
         cardinality: '+'
     },
 
+    // grammar
+
     {
         root: 'negation',
         type: 'grammar'
-    }
+    },
+
+    {
+        root: 'iverb',
+        type: 'grammar'
+    },
+
+    {
+        root: 'noun',
+        type: 'grammar'
+    },
+
+    {
+        root: 'nounphrase', //or noun-phrase?
+        type: 'grammar'
+    },
+
+    {
+        root: 'copula',
+        type: 'grammar'
+    },
+
+    {
+        root: 'preposition',
+        type: 'grammar'
+    },
 
 ]
