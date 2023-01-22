@@ -38,10 +38,10 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
     'array': [
 
     ],
-    
+
     // to be removed
     'subclause': [
-        { type: ['copulasubclause'], number: 1 }
+
     ],
     'nounphrase': [
 
