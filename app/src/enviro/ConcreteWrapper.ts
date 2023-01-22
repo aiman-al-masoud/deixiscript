@@ -1,4 +1,5 @@
-import { getConcepts } from "./getConcepts";
+import { LexemeType } from "../config/LexemeType";
+import { Lexeme } from "../lexer/Lexeme";
 import Wrapper from "./Wrapper";
 
 export default class ConcreteWrapper implements Wrapper {
@@ -9,45 +10,44 @@ export default class ConcreteWrapper implements Wrapper {
         object.simpleConcepts = simpleConcepts
     }
 
-    set(predicate: string, props?: string[]): void {
+    set(predicate: Lexeme<LexemeType>, props?: Lexeme<LexemeType>[]): void {
 
         if (props && props.length > 1) { // assume > 1 props are a path
 
-            this.setNested(props, predicate)
+            this.setNested(props.map(x => x.token ?? x.root), predicate.root)
 
         } else if (props && props.length === 1) { // single prop
 
-            if (Object.keys(this.simpleConcepts).includes(props[0])) { // is concept 
-                this.setNested(this.simpleConcepts[props[0]], predicate)
+            if (Object.keys(this.simpleConcepts).includes(props[0].root)) { // is concept 
+                this.setNested(this.simpleConcepts[props[0].root], predicate.root)
             } else { // ... not concept, just prop
-                this.setNested(props, predicate)
+                this.setNested(props.map(x => x.token ?? x.root), predicate.root)
             }
 
         } else if (!props || props.length === 0) { // no props
 
-            const concepts = getConcepts(predicate)
-
-            if (concepts.length === 0) {
-                (this.object as any)[predicate] = true
+            if (predicate.concepts && predicate.concepts.length > 0) {
+                this.setNested(this.simpleConcepts[predicate.concepts[0]], predicate.root)
             } else {
-                this.setNested(this.simpleConcepts[concepts[0]], predicate)
+                (this.object as any)[predicate.root] = true // fallback
             }
+
         }
 
     }
 
-    is(predicate: string, ...args: Wrapper[]): boolean {
+    is(predicate: Lexeme<LexemeType>): boolean {
 
-        const concept = getConcepts(predicate).at(0)
+        const concept = predicate.concepts?.at(0)
 
         return concept ?
-            this.getNested(this.simpleConcepts[concept]) === predicate :
-            (this.object as any)[predicate] !== undefined
+            this.getNested(this.simpleConcepts[concept]) === predicate.root :
+            (this.object as any)[predicate.root] !== undefined
 
     }
 
-    setAlias(conceptName: string, propPath: string[]): void {
-        this.simpleConcepts[conceptName] = propPath
+    setAlias(conceptName: Lexeme<LexemeType>, propPath: Lexeme<LexemeType>[]): void {
+        this.simpleConcepts[conceptName.root] = propPath.map(x => x.root)
     }
 
     protected setNested(path: string[], value: string) {

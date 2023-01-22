@@ -11,6 +11,7 @@ const tests = [
     test7,
     test8,
     test9,
+    test10
 ]
 
 /**
@@ -19,86 +20,95 @@ const tests = [
 export default async function autotester() {
 
     for (const test of tests) {
-        console.log(await test() ? 'success' : 'fail', test.name)
-        await sleep(200)
+        console.log(test() ? 'success' : 'fail', test.name)
+        await sleep(100)
         clearDom()
     }
 
 }
 
-async function test1() {
-    const brain = await getBrain()
-    await brain.execute('x is red. x is a button. y is a green button.');
-    const assert1 = (await brain.execute('a green button'))[0].style.background === 'green'
-    const assert2 = (await brain.execute('a red button'))[0].style.background === 'red'
+function test1() {
+    const brain = getBrain()
+    brain.execute('x is red. x is a button. y is a green button.');
+    const assert1 = (brain.execute('a green button'))[0].style.background === 'green'
+    const assert2 = (brain.execute('a red button'))[0].style.background === 'red'
     return assert1 && assert2
 }
 
-async function test2() {
-    const brain = await getBrain()
-    await brain.execute('x is red. x is a button. x is a button. x is a button. x is red.');
+function test2() {
+    const brain = getBrain()
+    brain.execute('x is red. x is a button. x is a button. x is a button. x is red.');
     const assert1 = (brain as BasicBrain).enviro.values.length === 1
     return assert1
 }
 
-async function test3() {
-    const brain = await getBrain()
-    await brain.execute('y is a button. x is red. y is a green button. x is a button. z is a black button.');
-    const assert1 = (await brain.execute('a red button'))[0].style.background === 'red'
-    const assert2 = (await brain.execute('a green button'))[0].style.background === 'green'
-    const assert3 = (await brain.execute('a black button'))[0].style.background === 'black'
+function test3() {
+    const brain = getBrain()
+    brain.execute('y is a button. x is red. y is a green button. x is a button. z is a black button.');
+    const assert1 = (brain.execute('a red button'))[0].style.background === 'red'
+    const assert2 = (brain.execute('a green button'))[0].style.background === 'green'
+    const assert3 = (brain.execute('a black button'))[0].style.background === 'black'
     return assert1 && assert2 && assert3
 }
 
-async function test4() {
-    const brain = await getBrain()
-    await brain.execute('a button is a button.');
-    const button = await brain.execute('button')
+function test4() {
+    const brain = getBrain()
+    brain.execute('a button is a button.');
+    const button = brain.execute('button')
     return button !== undefined
 }
 
 
-async function test5() {
-    const brain = await getBrain()
-    await brain.execute('x is a button. the color of x is red.');
-    const assert1 = (await brain.execute('x'))[0].style.background === 'red'
+function test5() {
+    const brain = getBrain()
+    brain.execute('x is a button. the color of x is red.');
+    const assert1 = (brain.execute('x'))[0].style.background === 'red'
     return assert1
 }
 
-async function test6() {
-    const brain = await getBrain()
-    await brain.execute('x is a button. the background of style of x is green.');
-    const assert1 = (await brain.execute('x'))[0].style.background === 'green'
+function test6() {
+    const brain = getBrain()
+    brain.execute('x is a button. the background of style of x is green.');
+    const assert1 = (brain.execute('x'))[0].style.background === 'green'
     return assert1
 }
 
 
-async function test7() {
-    const brain = await getBrain()
-    await brain.execute('x is a button. y is a button. z is a button. every button is red.')
-    const assert1 = (await brain.execute('x'))[0].style.background === 'red'
-    const assert2 = (await brain.execute('y'))[0].style.background === 'red'
-    const assert3 = (await brain.execute('z'))[0].style.background === 'red'
+function test7() {
+    const brain = getBrain()
+    brain.execute('x is a button. y is a button. z is a button. every button is red.')
+    const assert1 = (brain.execute('x'))[0].style.background === 'red'
+    const assert2 = (brain.execute('y'))[0].style.background === 'red'
+    const assert3 = (brain.execute('z'))[0].style.background === 'red'
     return assert1 && assert2 && assert3
 }
 
-async function test8() {
-    const brain = await getBrain()
-    await brain.execute('x is a button. text of x is capra.')
-    const assert1 = (await brain.execute('button'))[0].textContent === 'capra'
+function test8() {
+    const brain = getBrain()
+    brain.execute('x is a button. text of x is capra.')
+    const assert1 = (brain.execute('button'))[0].textContent === 'capra'
     return assert1
 }
 
-async function test9() {
-    const brain = await getBrain()
-    await brain.execute('x is a red button. x is green.')
-    const assert1 = (await brain.execute('red')).length === 0
-    const assert2 = (await brain.execute('green')).length === 1
+function test9() {
+    const brain = getBrain()
+    brain.execute('x is a red button. x is green.')
+    const assert1 = (brain.execute('red')).length === 0
+    const assert2 = (brain.execute('green')).length === 1
     return assert1 && assert2
 }
 
+function test10() {
+    const brain = getBrain()
+    brain.execute('x is a red button. y is a green button. z is a blue button. the red button. it is black.')
+    const assert1 = brain.execute('x').at(0).style.background == 'black'
+    const assert2 = brain.execute('y').at(0).style.background == 'green'
+    const assert3 = brain.execute('z').at(0).style.background == 'blue'
+    return assert1 && assert2 && assert3
+}
 
-async function sleep(millisecs: number) {
+
+function sleep(millisecs: number) {
     return new Promise((ok, err) => {
         setTimeout(() => ok(true), millisecs)
     })

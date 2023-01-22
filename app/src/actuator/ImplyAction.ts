@@ -35,7 +35,7 @@ export default class ImplyAction implements Action {
         const conceptName = alias.map(x => this.condition.describe(x)[0]) // assume at least one name
         const propsNames = props.map(x => this.conclusion.describe(x)[0]) // same ...
         const protoName = this.condition.describe(top)[0] // assume one 
-        const proto = getProto(protoName)
+        const proto = getProto(protoName.root)
         wrap(proto).setAlias(conceptName[0], propsNames)
         // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
     }
@@ -44,7 +44,7 @@ export default class ImplyAction implements Action {
         const top = this.condition.topLevel()[0]
         const protoName = this.condition.describe(top)[0] // assume one 
         const predicate = this.conclusion.describe(top)[0]
-        const y = enviro.query(clauseOf({ type: 'noun', root: protoName }, 'X'))
+        const y = enviro.query(clauseOf({ type: 'noun', root: protoName.root }, 'X'))
         const ids = y.map(m => m['X'])
         ids.forEach(id => new Edit(id, predicate).run(enviro))
     }

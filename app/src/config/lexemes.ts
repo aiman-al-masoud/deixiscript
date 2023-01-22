@@ -52,12 +52,16 @@ export const lexemes: Lexeme<LexemeType>[] = [
 
     {
         root: "red",
-        type: "adj"
+        type: "adj",
+        concepts: ['color']
+
     },
 
     {
         root: "green",
-        type: "adj"
+        type: "adj",
+        concepts: ['color']
+
     },
 
     {
@@ -188,8 +192,18 @@ export const lexemes: Lexeme<LexemeType>[] = [
     },
     {
         root: 'black',
-        type: 'adj'
+        type: 'adj',
+        concepts: ['color']
     },
+
+    {
+        root: 'blue',
+        type: 'adj',
+        concepts: ['color']
+
+    },
+
+
     {
         root: 'subject',
         type: 'adj'
@@ -221,6 +235,11 @@ export const lexemes: Lexeme<LexemeType>[] = [
     {
         root: 'or',
         type: 'disjunc'
+    },
+
+    {
+        root: 'it',
+        type: 'pronoun'
     },
 
     // grammar
@@ -287,6 +306,11 @@ export const lexemes: Lexeme<LexemeType>[] = [
 
     {
         root: 'nounphrase', // TODO: remove!
+        type: 'grammar'
+    },
+
+    {
+        root: 'pronoun',
         type: 'grammar'
     },
 

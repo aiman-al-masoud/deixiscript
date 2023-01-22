@@ -1,4 +1,6 @@
 import Action from "../actuator/Action";
+import { LexemeType } from "../config/LexemeType";
+import { Lexeme } from "../lexer/Lexeme";
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { hashString } from "./hashString";
@@ -72,7 +74,7 @@ export default class And implements Clause {
         return this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
     }
 
-    describe(id: Id): string[] {
+    describe(id: Id): Lexeme<LexemeType>[] {
         return this.clause1.describe(id).concat(this.clause2.describe(id))
     }
 

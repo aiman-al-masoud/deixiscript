@@ -22,7 +22,8 @@ export const lexemeTypes = stringLiterals(
   'subconj',
   'grammar',
   // 'quantadj',
-  'disjunc' // or, but, however ...
+  'disjunc', // or, but, however ...
+  'pronoun'
 )
 // 'semantics' //?
 

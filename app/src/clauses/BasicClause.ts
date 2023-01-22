@@ -60,8 +60,8 @@ export class BasicClause implements Clause {
         return this.negated ? `not(${yes})` : yes
     }
 
-    describe(id: Id): string[] {
-        return this.entities.includes(id) && this.args.length === 1 ? [this.predicate.root] : []
+    describe(id: Id): Lexeme<LexemeType>[] {
+        return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
     }
 
     topLevel(): Id[] {

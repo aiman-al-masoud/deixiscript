@@ -12,6 +12,7 @@ export interface Lexeme<T extends LexemeType> {
     /**made up of more lexemes*/ readonly contractionFor?: string[]
     /**form of this instance*/readonly token?: string
     /**for quantadj */ readonly cardinality?: Cardinality
+    readonly concepts?: string[]
 }
 
 export function formsOf(lexeme: Lexeme<LexemeType>) {
@@ -26,7 +27,7 @@ export function getLexemes(word: string, lexemes: Lexeme<LexemeType>[]): Lexeme<
     const lexeme: Lexeme<LexemeType> =
         lexemes.filter(x => formsOf(x).includes(word)).at(0)
         ?? { root: word, type: 'noun' }
-    
+
     const lexeme2: Lexeme<LexemeType> = { ...lexeme, token: word }
 
     return lexeme2.contractionFor ?

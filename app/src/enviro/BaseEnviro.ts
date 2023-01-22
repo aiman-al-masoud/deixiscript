@@ -63,7 +63,10 @@ export default class BaseEnviro implements Enviro {
 
                 const to = universe
                     .filter(u => q.desc.every(d => u.w.is(d)))
-                    .concat(q.desc.includes('it') ? getIt() : []) //TODO: hardcoded bad
+                    // .concat(q.desc.includes('it') ? getIt() : []) //TODO: hardcoded bad
+                    .concat(q.desc.find(x => x.type == 'pronoun') ? getIt() : [])
+
+
                 //TODO: after "every ..." sentence, "it" should be undefined
 
                 return { from: q.e, to: to }

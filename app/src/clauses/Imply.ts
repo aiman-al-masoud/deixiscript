@@ -6,6 +6,8 @@ import Action from "../actuator/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import ImplyAction from "../actuator/ImplyAction";
+import { Lexeme } from "../lexer/Lexeme";
+import { LexemeType } from "../config/LexemeType";
 
 export default class Imply implements Clause {
 
@@ -67,7 +69,7 @@ export default class Imply implements Clause {
         return this.condition.ownersOf(id).concat(this.conclusion.ownersOf(id))
     }
 
-    describe(id: Id): string[] {
+    describe(id: Id): Lexeme<LexemeType>[] {
         return this.conclusion.describe(id).concat(this.condition.describe(id))
     }
 

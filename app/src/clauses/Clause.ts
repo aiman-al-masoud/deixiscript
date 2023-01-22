@@ -25,7 +25,7 @@ export interface Clause {
     toAction(topLevel: Clause): Action[]
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
-    describe(id: Id): string[]
+    describe(id: Id): Lexeme<LexemeType>[]
     topLevel(): Id[]
     getOwnershipChain(entity: Id): Id[]
 }
