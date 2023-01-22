@@ -246,11 +246,6 @@ export const lexemes: Lexeme<LexemeType>[] = [
     },
 
     {
-        root: 'nounphrase', //or noun-phrase?
-        type: 'grammar'
-    },
-
-    {
         root: 'copula',
         type: 'grammar'
     },
@@ -285,14 +280,14 @@ export const lexemes: Lexeme<LexemeType>[] = [
         type: 'grammar'
     },
 
-    // {
-    //     root :'article', //TODO: auto-add!
-    //     type :'grammar' 
-    // }
+    {
+        root: 'subclause', // TODO: remove!
+        type: 'grammar'
+    },
 
     {
-        root: 'subclause',
+        root: 'nounphrase', // TODO: remove!
         type: 'grammar'
-    }
+    },
 
 ]
