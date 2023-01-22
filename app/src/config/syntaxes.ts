@@ -52,9 +52,9 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         // { type: ['nounphrase'], number: 1 }
     ],
     'copulasubclause': [
-        { type: ['relpron'], number: 1 },
-        { type: ['copula'], number: 1 },
-        { type: ['nounphrase'], number: 1 }
+        // { type: ['relpron'], number: 1 },
+        // { type: ['copula'], number: 1 },
+        // { type: ['nounphrase'], number: 1 }
     ],
     'copulasentence': [
         //     { type: ['nounphrase'], number: 1, role: 'subject' },
