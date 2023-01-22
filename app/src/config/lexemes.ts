@@ -216,6 +216,12 @@ export const lexemes: Lexeme<LexemeType>[] = [
     },
 
     {
+        root: 'zero-or-more',
+        type: 'adj',
+        cardinality: '*'
+    },
+
+    {
         root: 'or',
         type: 'disjunc'
     },
@@ -234,6 +240,11 @@ export const lexemes: Lexeme<LexemeType>[] = [
 
     {
         root: 'noun',
+        type: 'grammar'
+    },
+
+    {
+        root: 'adj',
         type: 'grammar'
     },
 
@@ -269,6 +280,21 @@ export const lexemes: Lexeme<LexemeType>[] = [
 
     {
         root: 'indefart',
+        type: 'grammar'
+    },
+
+    {
+        root: 'relpron',
+        type: 'grammar'
+    },
+
+    // {
+    //     root :'article', //TODO: auto-add!
+    //     type :'grammar' 
+    // }
+
+    {
+        root: 'subclause',
         type: 'grammar'
     }
 

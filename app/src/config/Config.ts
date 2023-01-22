@@ -36,8 +36,9 @@ export function handleMacro(macro: CompositeNode<'macro'>, config: Config) {
     const members = macroparts.map(m => handleMacroPart(m))
     const name = (noun as any).lexeme.root
 
-    // console.log({ members, name })
-    // config.lexemes.push({ type: 'grammar', root: name })
+    name == 'caprascema' ? console.log({ members, name }) : 0
+    config.lexemes.push({ type: 'grammar', root: name }) //TODO: not working, also may need to remove old if reassigning!
+
     // config.constituentTypes.push(name)
     config.setSyntax(name, members)
 
