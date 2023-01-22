@@ -52,5 +52,9 @@ function handleMacroPart(macroPart: CompositeNode<'macropart'>): Member {
     const quantadjs = adjectives.filter(a => a.cardinality)
     const qualadjs = adjectives.filter(a => !a.cardinality)
 
-    return { type: [grammar.lexeme.token as LexemeType], role: qualadjs.at(0)?.root as Role, number: quantadjs.at(0)?.cardinality }
+    return {
+        type: [grammar.lexeme.token as LexemeType],
+        role: qualadjs.at(0)?.root as Role,
+        number: quantadjs.at(0)?.cardinality
+    }
 }
