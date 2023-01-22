@@ -215,6 +215,11 @@ export const lexemes: Lexeme<LexemeType>[] = [
         cardinality: '+'
     },
 
+    {
+        root: 'or',
+        type: 'disjunc'
+    },
+
     // grammar
 
     {
@@ -246,5 +251,25 @@ export const lexemes: Lexeme<LexemeType>[] = [
         root: 'preposition',
         type: 'grammar'
     },
+
+    {
+        root: 'uniquant',
+        type: 'grammar'
+    },
+
+    {
+        root: 'existquant',
+        type: 'grammar'
+    },
+
+    {
+        root: 'defart',
+        type: 'grammar'
+    },
+
+    {
+        root: 'indefart',
+        type: 'grammar'
+    }
 
 ]

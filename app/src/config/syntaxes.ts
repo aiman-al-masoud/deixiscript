@@ -1,4 +1,5 @@
 import { Member, AstType } from "../parser/ast-types";
+import { LexemeType } from "./LexemeType";
 import { ElementType, stringLiterals } from "./utils";
 
 
@@ -16,6 +17,7 @@ export const constituentTypes = stringLiterals(
     'array', // an array of consecutive asts (tied to '*')
     'quantifier',
     'article',
+    'taggedunion',
 )
 // | 'iverbsubclause'
 // | 'mverbsubclause1'
@@ -28,10 +30,10 @@ export type ConstituentType = ElementType<typeof constituentTypes>;
 const syntaxes: { [name in ConstituentType]: Member[] } = {
 
     'quantifier': [
-        { type: ['uniquant', 'existquant'], number: 1 }
+        // { type: ['uniquant', 'existquant'], number: 1 }
     ],
     'article': [
-        { type: ['indefart', 'defart'], number: 1 }
+        // { type: ['indefart', 'defart'], number: 1 }
     ],
     'nounphrase': [
         { type: ['quantifier'], number: '1|0' },
@@ -50,14 +52,11 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
         { type: ['copula'], number: 1 },
         { type: ['nounphrase'], number: 1 }
     ],
-    // 'copulasentence': [
-    //     { type: ['nounphrase'], number: 1, role: 'subject' },
-    //     { type: ['copula'], number: 1 },
-    //     { type: ['negation'], number: '1|0' },
-    //     { type: ['nounphrase'], number: 1, role: 'predicate' }
-    // ],
     'copulasentence': [
-
+        //     { type: ['nounphrase'], number: 1, role: 'subject' },
+        //     { type: ['copula'], number: 1 },
+        //     { type: ['negation'], number: '1|0' },
+        //     { type: ['nounphrase'], number: 1, role: 'predicate' }
     ],
     'iverbsentence': [
         { type: ['nounphrase'], number: 1, role: 'subject' },
@@ -94,8 +93,12 @@ const syntaxes: { [name in ConstituentType]: Member[] } = {
     ],
     'macropart': [
         { type: ['adj'], number: '*' },
-        { type: ['grammar'], number: 1 },
+        { type: ['taggedunion'], number: '+' },
         { type: ['then'], number: '1|0' }
+    ],
+    'taggedunion': [
+        { type: ['grammar'], number: 1 },
+        { type: ['disjunc'], number: '1|0' }
     ]
 }
 
