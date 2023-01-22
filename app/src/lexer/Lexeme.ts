@@ -1,4 +1,5 @@
 import { LexemeType } from "../config/LexemeType"
+import { Cardinality } from "../parser/ast-types"
 
 
 export interface Lexeme<T extends LexemeType> {
@@ -10,6 +11,7 @@ export interface Lexeme<T extends LexemeType> {
     /**semantical equivalence*/ readonly aliasFor?: string
     /**made up of more lexemes*/ readonly contractionFor?: string[]
     /**form of this instance*/readonly token?: string
+    /**for quantadj */ readonly cardinality?: Cardinality
 }
 
 export function formsOf(lexeme: Lexeme<LexemeType>) {

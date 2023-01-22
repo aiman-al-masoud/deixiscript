@@ -1,5 +1,5 @@
 import { Lexeme } from "../lexer/Lexeme"
-import { AstType, AtomNode, CompositeNode, Member } from "../parser/ast-types"
+import { AstType, AtomNode, CompositeNode, Member, Role } from "../parser/ast-types"
 import { LexemeType } from "./LexemeType"
 import { lexemes } from "./lexemes"
 import { getSyntax, setSyntax } from "./syntaxes"
@@ -46,9 +46,11 @@ export function handleMacro(macro: CompositeNode<'macro'>, config: Config) {
 function handleMacroPart(macroPart: CompositeNode<'macropart'>): Member {
 
     //TODO: decide how to hint at "multiple possible types". 
-    //TODO: refactor hardcoded 'optional' string
-    const adjectives = (macroPart.links?.adj as any)?.links?.map((a: any) => a.lexeme.root) ?? []
+    const adjectives: Lexeme<LexemeType>[] = (macroPart.links?.adj as any)?.links?.map((a: any) => a.lexeme) ?? []
     const grammar = macroPart.links?.grammar as AtomNode<'grammar'>
-    return { type: [grammar.lexeme.token as LexemeType], role: adjectives.filter((x: any) => x != 'optional').at(0), number: adjectives.includes('optional') ? '1|0' : 1 }
 
+    const quantadjs = adjectives.filter(a => a.cardinality)
+    const qualadjs = adjectives.filter(a => !a.cardinality)
+
+    return { type: [grammar.lexeme.token as LexemeType], role: qualadjs.at(0)?.root as Role, number: quantadjs.at(0)?.cardinality }
 }

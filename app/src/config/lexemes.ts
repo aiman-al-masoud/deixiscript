@@ -231,7 +231,14 @@ export const lexemes: Lexeme<LexemeType>[] = [
 
     {
         root: 'optional',
-        type: 'adj'
+        type: 'adj',
+        cardinality: '1|0'
+    },
+
+    {
+        root: 'one-or-more',
+        type: 'adj',
+        cardinality: '+'
     },
 
     {

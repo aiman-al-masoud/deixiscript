@@ -20,7 +20,8 @@ export const lexemeTypes = stringLiterals(
   'noun',
   'preposition',
   'subconj',
-  'grammar'
+  'grammar',
+  // 'quantadj'
 )
 // 'semantics' //?
 
