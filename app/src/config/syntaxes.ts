@@ -72,7 +72,7 @@ export function dependencies(a: AstType): AstType[] {
     return (syntaxes[a as ConstituentType] ?? []).flatMap(m => m.type)
 }
 
-function staticPrecedence(a: AstType, b: AstType) {
+function staticCompare(a: AstType, b: AstType) {
 
     const ascendingPrecedence = constituentTypes.slice(0, 4) as any
 
@@ -80,38 +80,40 @@ function staticPrecedence(a: AstType, b: AstType) {
     const pb = ascendingPrecedence.indexOf(b)
 
     if (pa === -1 || pb === -1) { // either one is custom
-        return 0
+        return undefined
     }
 
     return pa - pb
 }
 
 function lenCompare(a: AstType, b: AstType) {
-
-    const aLength = dependencies(a).length
-    const bLength = dependencies(b).length
-
-    if (aLength === bLength) {
-        return 0
-    }
-
-    return aLength > bLength ? 1 : -1
+    return dependencies(a).length - dependencies(b).length
 }
 
-export function maxPrecedence(a: AstType, b: AstType) {
+function idCompare(a: AstType, b: AstType) {
+    return a == b ? 0 : undefined
+}
 
-    const sp = staticPrecedence(a, b)
-
-    if (sp !== 0) {
-        return sp
-    }
+function dependencyCompare(a: AstType, b: AstType) {
 
     const aDependsOnB = dependencies(a).includes(b)
     const bDependsOnA = dependencies(b).includes(a)
 
     if (aDependsOnB === bDependsOnA) {
-        return lenCompare(a, b)
+        return undefined
     }
 
     return aDependsOnB ? 1 : -1
+
+}
+
+export function maxPrecedence(a: AstType, b: AstType) {
+
+    const sp = idCompare(a, b) ??
+        staticCompare(a, b) ??
+        dependencyCompare(a, b) ??
+        lenCompare(a, b)
+
+    return sp
+
 }
