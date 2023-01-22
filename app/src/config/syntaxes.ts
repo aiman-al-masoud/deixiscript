@@ -74,12 +74,12 @@ export function dependencies(a: AstType): AstType[] {
 
 function staticPrecedence(a: AstType, b: AstType) {
 
-    const ascendingPrecedence = constituentTypes.slice(0, 3) as any
+    const ascendingPrecedence = constituentTypes.slice(0, 4) as any
 
     const pa = ascendingPrecedence.indexOf(a)
     const pb = ascendingPrecedence.indexOf(b)
 
-    if (pa === -1 || pb === -1) {
+    if (pa === -1 || pb === -1) { // either one is custom
         return 0
     }
 
