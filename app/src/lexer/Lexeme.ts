@@ -6,7 +6,7 @@ export interface Lexeme<T extends LexemeType> {
     /**canonical form*/ readonly root: string
     /**token type*/ readonly type: T
     /**useful for irregular stuff*/ readonly forms?: string[]
-    /**refers to verb conjugations or plural forms*/ readonly regular?: boolean
+    /**refers to verb conjugations or plural forms, assume regularity*/ readonly irregular?: boolean
     /**semantical dependece*/ readonly derivedFrom?: string
     /**semantical equivalence*/ readonly aliasFor?: string
     /**made up of more lexemes*/ readonly contractionFor?: string[]
@@ -17,7 +17,7 @@ export interface Lexeme<T extends LexemeType> {
 export function formsOf(lexeme: Lexeme<LexemeType>) {
 
     return [lexeme.root].concat(lexeme?.forms ?? [])
-        .concat(lexeme.regular ? [`${lexeme.root}s`] : [])
+        .concat(!lexeme.irregular ? [`${lexeme.root}s`] : [])
 
 }
 

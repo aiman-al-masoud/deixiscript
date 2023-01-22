@@ -6,20 +6,18 @@ export const lexemes: Lexeme<LexemeType>[] = [
         root: 'have',
         type: 'mverb',
         forms: ['have', 'has'],
-        regular: false
+        irregular: true
     },
 
     {
         root: 'button',
         type: 'noun',
-        regular: true
     },
 
     {
         root: 'click',
         type: 'mverb',
-        forms: ['click'],
-        regular: true
+        forms: ['click']
     },
 
     {
@@ -43,7 +41,7 @@ export const lexemes: Lexeme<LexemeType>[] = [
         root: 'be',
         type: 'copula',
         forms: ['is', 'are'],
-        regular: false
+        irregular: true
     },
 
     {
@@ -65,13 +63,12 @@ export const lexemes: Lexeme<LexemeType>[] = [
     {
         root: "exist",
         type: "iverb",
-        regular: true
     },
 
     {
         root: 'do',
         type: 'hverb',
-        regular: false,
+        irregular: true,
         forms: ['do', 'does']
     },
 
