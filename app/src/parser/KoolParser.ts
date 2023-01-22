@@ -29,8 +29,6 @@ export class KoolParser implements Parser {
 
     parse() {
 
-        // const sortedConstituentTypes = this.config.constituentTypes.slice().sort((a, b) => maxPrecedence(b, a))
-
         for (const t of this.config.constituentTypes) {
 
             const x = this.try(this.topParse, t)
