@@ -1,9 +1,9 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
-import { AstNode, AstType, AtomNode, CompositeNode, Member } from "./ast-types";
+import { AstNode, AstType, AtomNode, CompositeNode } from "./ast-types";
 import { LexemeType } from "../config/LexemeType";
-import { Config } from "../config/Config";
+import { ConstituentType } from "../config/syntaxes";
 
 // start simple by assuming hardcoded types, then try to depend solely on role (semantic role)
 
@@ -19,13 +19,15 @@ export interface ToClauseOpts {
 
 export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Promise<Clause> {
 
-    if (ast.type == 'nounphrase') {
+    const cast = ast as CompositeNode<ConstituentType>
+
+    if (cast.links.noun || cast.links.adj) {
         return nounPhraseToClause(ast as any, args)
-    } else if (ast.type == 'copulasubclause') {
+    } else if (cast.links.relpron) {
         return copulaSubClauseToClause(ast as any, args)
-    } else if (ast.type == 'complement') {
+    } else if (cast.links.preposition) {
         return complementToClause(ast as any, args)
-    } else if (ast.type == 'copulasentence') {
+    } else if (cast.links.subject && cast.links.predicate) {
         return copulaSentenceToClause(ast as any, args)
     }
 
@@ -34,10 +36,10 @@ export async function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Prom
 
 }
 
-async function copulaSentenceToClause(copulaSentence: CompositeNode<'copulasentence'>, args?: ToClauseOpts): Promise<Clause> {
+async function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Promise<Clause> {
 
-    const subjectAst = copulaSentence.links.subject as CompositeNode<'nounphrase'>
-    const predicateAst = copulaSentence.links.predicate as CompositeNode<'nounphrase'>
+    const subjectAst = copulaSentence.links.subject as CompositeNode<ConstituentType>
+    const predicateAst = copulaSentence.links.predicate as CompositeNode<ConstituentType>
     const subjectId = args?.roles?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
     const newArgs = { ...args, roles: { subject: subjectId } }
     const subject = await toClause(subjectAst, newArgs)
@@ -69,20 +71,20 @@ async function copulaSentenceToClause(copulaSentence: CompositeNode<'copulasente
 
 }
 
-async function copulaSubClauseToClause(copulaSubClause: CompositeNode<'copulasubclause'>, args?: ToClauseOpts): Promise<Clause> {
+async function copulaSubClauseToClause(copulaSubClause: any, args?: ToClauseOpts): Promise<Clause> {
 
-    const predicate = copulaSubClause.links.predicate as CompositeNode<'nounphrase'>
+    const predicate = copulaSubClause.links.predicate as CompositeNode<ConstituentType>
 
     return (await toClause(predicate, { ...args, roles: { subject: args?.roles?.subject } }))
         .copy({ sideEffecty: false })
 }
 
-async function complementToClause(complement: CompositeNode<'complement'>, args?: ToClauseOpts): Promise<Clause> {
+async function complementToClause(complement: any, args?: ToClauseOpts): Promise<Clause> {
     const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
     const newId = getRandomId()
 
     const preposition = complement.links.preposition as AtomNode<'preposition'>
-    const nounPhrase = complement.links.nounphrase as CompositeNode<'nounphrase'>
+    const nounPhrase = complement.links.nounphrase as CompositeNode<ConstituentType>
 
     return clauseOf(preposition.lexeme, subjId, newId)
         .and(await toClause(nounPhrase, { ...args, roles: { subject: newId } }))
@@ -91,7 +93,7 @@ async function complementToClause(complement: CompositeNode<'complement'>, args?
 }
 
 
-async function nounPhraseToClause(nounPhrase: CompositeNode<'nounphrase'>, args?: ToClauseOpts): Promise<Clause> {
+async function nounPhraseToClause(nounPhrase: any, args?: ToClauseOpts): Promise<Clause> {
 
     const maybeId = args?.roles?.subject ?? getRandomId()
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
