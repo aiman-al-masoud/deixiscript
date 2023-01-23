@@ -3,8 +3,8 @@ import autotester from "./tests/autotester"
 
 
 (async () => {
-    autotester()
+    await autotester()
+    main()
 })()
 
-// main()
 // 
