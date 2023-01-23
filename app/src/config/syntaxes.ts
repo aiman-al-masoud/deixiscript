@@ -2,6 +2,7 @@ import { Role } from "../parser/interfaces/AstNode";
 import { SyntaxMap } from "../parser/interfaces/Syntax";
 import { ElementType, stringLiterals } from "./utils";
 
+
 export type CompositeType = ElementType<typeof constituentTypes>;
 
 export const constituentTypes = stringLiterals(
@@ -19,6 +20,12 @@ export const constituentTypes = stringLiterals(
     'subclause',
 
 )
+
+export const staticAscendingPrecedence: CompositeType[] = [
+    'taggedunion',
+    'array',
+    'macropart',
+    'macro']
 
 export const syntaxes: SyntaxMap = {
 

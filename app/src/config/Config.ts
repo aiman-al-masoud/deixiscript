@@ -5,7 +5,7 @@ import { BasicConfig } from "./BasicConfig"
 import { lexemes } from "./lexemes"
 import { LexemeType, lexemeTypes } from "./LexemeType"
 import { startupCommands } from "./startupCommands"
-import { CompositeType, constituentTypes, syntaxes } from "./syntaxes"
+import { CompositeType, constituentTypes, staticAscendingPrecedence, syntaxes } from "./syntaxes"
 
 export interface Config {
     readonly lexemes: Lexeme[]
@@ -14,6 +14,7 @@ export interface Config {
     readonly lexemeTypes: LexemeType[]
     getSyntax(name: AstType): Syntax
     setSyntax(macro: CompositeNode<'macro'>): void
+    setLexeme(lexeme: Lexeme): void
 }
 
 export function getConfig(): Config {
@@ -22,6 +23,7 @@ export function getConfig(): Config {
         lexemeTypes,
         constituentTypes,
         syntaxes,
-        startupCommands)
+        startupCommands,
+        staticAscendingPrecedence)
 }
 
