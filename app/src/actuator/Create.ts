@@ -3,11 +3,10 @@ import { wrap } from "../enviro/Wrapper";
 import { Enviro } from "../enviro/Enviro";
 import Action from "./Action";
 import { Lexeme } from "../lexer/Lexeme";
-import { LexemeType } from "../config/LexemeType";
 
 export default class Create implements Action {
 
-    constructor(readonly id: Id, readonly predicate: Lexeme<LexemeType>) {
+    constructor(readonly id: Id, readonly predicate: Lexeme) {
 
     }
 

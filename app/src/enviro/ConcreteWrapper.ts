@@ -10,7 +10,7 @@ export default class ConcreteWrapper implements Wrapper {
         object.simpleConcepts = simpleConcepts
     }
 
-    set(predicate: Lexeme<LexemeType>, props?: Lexeme<LexemeType>[]): void {
+    set(predicate: Lexeme, props?: Lexeme[]): void {
 
         if (props && props.length > 1) { // assume > 1 props are a path
 
@@ -36,7 +36,7 @@ export default class ConcreteWrapper implements Wrapper {
 
     }
 
-    is(predicate: Lexeme<LexemeType>): boolean {
+    is(predicate: Lexeme): boolean {
 
         const concept = predicate.concepts?.at(0)
 
@@ -46,7 +46,7 @@ export default class ConcreteWrapper implements Wrapper {
 
     }
 
-    setAlias(conceptName: Lexeme<LexemeType>, propPath: Lexeme<LexemeType>[]): void {
+    setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
         this.simpleConcepts[conceptName.root] = propPath.map(x => x.root)
     }
 

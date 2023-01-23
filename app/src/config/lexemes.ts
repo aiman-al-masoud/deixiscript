@@ -1,7 +1,7 @@
 import { LexemeType } from "./LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
 
-export const lexemes: Lexeme<LexemeType>[] = [
+export const lexemes: Lexeme[] = [
     {
         root: 'have',
         type: 'mverb',

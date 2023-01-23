@@ -7,7 +7,7 @@ import { startupCommands } from "./startupCommands"
 import { ConstituentType, constituentTypes, syntaxes } from "./syntaxes"
 
 export interface Config {
-    readonly lexemes: Lexeme<LexemeType>[]
+    readonly lexemes: Lexeme[]
     readonly startupCommands: string[]
     readonly constituentTypes: ConstituentType[]
     readonly lexemeTypes: LexemeType[]

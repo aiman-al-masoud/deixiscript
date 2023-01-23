@@ -1,11 +1,10 @@
 import { getLexemes, Lexeme } from "./Lexeme";
-import Lexer, { AssertArgs } from "./Lexer";
-import { LexemeType } from "../config/LexemeType";
+import Lexer from "./Lexer";
 import { Config } from "../config/Config";
 
 export default class EagerLexer implements Lexer {
 
-    protected readonly tokens: Lexeme<LexemeType>[]
+    protected readonly tokens: Lexeme[]
     protected _pos: number
 
     constructor(readonly sourceCode: string, readonly config: Config) {
@@ -32,33 +31,12 @@ export default class EagerLexer implements Lexer {
         this._pos = pos
     }
 
-    get peek(): Lexeme<LexemeType> {
+    get peek(): Lexeme {
         return this.tokens[this._pos]
     }
 
     croak(errorMsg: string): void {
         throw new Error(`${errorMsg} at ${this._pos}`);
-    }
-
-    /**
-     * Return current token iff of given type and move to next; 
-     * else return undefined and don't move.
-     * @param args 
-     * @returns 
-     */
-    assert<T extends LexemeType>(type: T, args: AssertArgs): Lexeme<T> | undefined {
-
-        const current = this.peek
-
-        if (current && current.type === type) {
-            this.next()
-            return current as Lexeme<T>
-        } else if (args.errorOut ?? true) {
-            this.croak(args.errorMsg ?? '')
-        } else {
-            return undefined
-        }
-
     }
 
     get isEnd(): boolean {

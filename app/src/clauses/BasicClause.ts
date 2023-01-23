@@ -12,7 +12,7 @@ import { LexemeType } from "../config/LexemeType";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: Lexeme<LexemeType>,
+    constructor(readonly predicate: Lexeme,
         readonly args: Id[],
         readonly negated = false,
         readonly exactIds = false,
@@ -60,7 +60,7 @@ export class BasicClause implements Clause {
         return this.negated ? `not(${yes})` : yes
     }
 
-    describe(id: Id): Lexeme<LexemeType>[] {
+    describe(id: Id): Lexeme[] {
         return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
     }
 

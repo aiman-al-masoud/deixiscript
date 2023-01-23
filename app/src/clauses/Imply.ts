@@ -69,7 +69,7 @@ export default class Imply implements Clause {
         return this.condition.ownersOf(id).concat(this.conclusion.ownersOf(id))
     }
 
-    describe(id: Id): Lexeme<LexemeType>[] {
+    describe(id: Id): Lexeme[] {
         return this.conclusion.describe(id).concat(this.condition.describe(id))
     }
 

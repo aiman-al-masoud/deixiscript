@@ -7,7 +7,7 @@ import { Config } from "./Config"
 export class BasicConfig implements Config {
 
     constructor(
-        readonly lexemes: Lexeme<LexemeType>[],
+        readonly lexemes: Lexeme[],
         readonly lexemeTypes: LexemeType[],
         readonly _constituentTypes: ConstituentType[],
         readonly syntaxes: { [name in ConstituentType]: Member[] },
@@ -89,7 +89,7 @@ export class BasicConfig implements Config {
 
 function macroPartToMember(macroPart: CompositeNode<'macropart'>): Member {
 
-    const adjectives: Lexeme<LexemeType>[] = (macroPart.links?.adj as any)?.links?.map((a: any) => a.lexeme) ?? []
+    const adjectives: Lexeme[] = (macroPart.links?.adj as any)?.links?.map((a: any) => a.lexeme) ?? []
     const taggedUnions = (macroPart.links.taggedunion as any).links as CompositeNode<'taggedunion'>[]
     const grammars = taggedUnions.map(x => x.links.grammar)
 

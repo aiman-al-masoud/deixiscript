@@ -26,7 +26,7 @@ export interface AstNode<T extends AstType> {
 }
 
 export interface AtomNode<T extends LexemeType> extends AstNode<T> {
-    readonly lexeme: Lexeme<LexemeType>
+    readonly lexeme: Lexeme
 }
 
 export interface CompositeNode<T extends ConstituentType> extends AstNode<T> {

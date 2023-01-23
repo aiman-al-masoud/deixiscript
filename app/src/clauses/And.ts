@@ -74,7 +74,7 @@ export default class And implements Clause {
         return this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
     }
 
-    describe(id: Id): Lexeme<LexemeType>[] {
+    describe(id: Id): Lexeme[] {
         return this.clause1.describe(id).concat(this.clause2.describe(id))
     }
 

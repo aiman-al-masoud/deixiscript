@@ -51,7 +51,7 @@ export class EmptyClause implements Clause {
         return []
     }
 
-    describe(id: Id): Lexeme<LexemeType>[] {
+    describe(id: Id): Lexeme[] {
         return []
     }
 

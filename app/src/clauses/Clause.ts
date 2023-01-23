@@ -25,12 +25,12 @@ export interface Clause {
     toAction(topLevel: Clause): Action[]
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
-    describe(id: Id): Lexeme<LexemeType>[]
+    describe(id: Id): Lexeme[]
     topLevel(): Id[]
     getOwnershipChain(entity: Id): Id[]
 }
 
-export function clauseOf(predicate: Lexeme<LexemeType>, ...args: Id[]): Clause {
+export function clauseOf(predicate: Lexeme, ...args: Id[]): Clause {
     return new BasicClause(predicate, args)
 }
 

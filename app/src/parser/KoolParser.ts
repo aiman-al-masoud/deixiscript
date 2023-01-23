@@ -20,7 +20,10 @@ export class KoolParser implements Parser {
 
             const ast = this.parse()
             results.push(ast)
-            this.lexer.assert('fullstop', { errorOut: false })
+
+            if (this.lexer.peek && this.lexer.peek.type == 'fullstop') {
+                this.lexer.next()
+            }
 
         }
 

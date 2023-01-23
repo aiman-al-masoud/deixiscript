@@ -5,9 +5,9 @@ import ConcreteWrapper from "./ConcreteWrapper"
 export default interface Wrapper {
 
     readonly object: any
-    set(predicate: Lexeme<LexemeType>, props?: Lexeme<LexemeType>[]): void
-    is(predicate: Lexeme<LexemeType>): boolean // TODO args
-    setAlias(conceptName: Lexeme<LexemeType>, propPath: Lexeme<LexemeType>[]): void
+    set(predicate: Lexeme, props?: Lexeme[]): void
+    is(predicate: Lexeme): boolean // TODO args
+    setAlias(conceptName: Lexeme, propPath: Lexeme[]): void
     pointOut(opts?: { turnOff: boolean }): void
     // get(predicate: string): any
 
