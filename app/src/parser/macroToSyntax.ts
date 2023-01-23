@@ -1,5 +1,6 @@
 import { Lexeme } from "../lexer/Lexeme"
-import { CompositeNode, Member, Role, Syntax } from "./ast-types"
+import { CompositeNode, Role } from "./interfaces/AstNode"
+import { Syntax, Member } from "./interfaces/Syntax"
 
 export function macroToSyntax(macro: CompositeNode<'macro'>): { name: string, syntax: Syntax } {
     const macroparts = (macro.links.macropart as any).links as CompositeNode<'macropart'>[]

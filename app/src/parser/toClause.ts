@@ -1,9 +1,10 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
-import { AstNode, AstType, LeafNode, CompositeNode } from "./ast-types";
+import { AstNode, LeafNode, CompositeNode } from "./interfaces/AstNode";
 import { LexemeType } from "../config/LexemeType";
 import { CompositeType } from "../config/syntaxes";
+import { AstType } from "./interfaces/Syntax";
 
 // start simple by assuming hardcoded types, then try to depend solely on role (semantic role)
 

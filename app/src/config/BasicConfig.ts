@@ -1,10 +1,11 @@
 import { Lexeme } from "../lexer/Lexeme"
-import { SyntaxMap, AstType, CompositeNode, Syntax } from "../parser/ast-types"
+import { CompositeNode } from "../parser/interfaces/AstNode"
 import { LexemeType } from "./LexemeType"
 import { CompositeType } from "./syntaxes"
 import { Config } from "./Config"
 import { macroToSyntax } from "../parser/macroToSyntax"
 import { maxPrecedence } from "../parser/maxPrecedence"
+import { SyntaxMap, AstType, Syntax } from "../parser/interfaces/Syntax"
 
 export class BasicConfig implements Config {
 

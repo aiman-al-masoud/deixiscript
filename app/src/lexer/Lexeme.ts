@@ -1,5 +1,5 @@
 import { LexemeType } from "../config/LexemeType"
-import { Cardinality } from "../parser/ast-types"
+import { Cardinality } from "../parser/interfaces/Cardinality"
 
 
 export interface Lexeme {

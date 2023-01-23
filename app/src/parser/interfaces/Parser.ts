@@ -1,6 +1,7 @@
-import { Config } from "../config/Config"
-import { AstNode, AstType } from "./ast-types"
-import { KoolParser } from "./KoolParser"
+import { Config } from "../../config/Config"
+import { KoolParser } from "../KoolParser"
+import { AstNode } from "./AstNode"
+import { AstType } from "./Syntax"
 
 export interface Parser {
     parse(): AstNode<AstType> | undefined

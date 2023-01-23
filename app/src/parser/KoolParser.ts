@@ -1,9 +1,11 @@
-import { AstNode, AstType, Role, Member, LeafNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
+import { AstNode, Role, LeafNode, CompositeNode } from "./interfaces/AstNode"
 import { CompositeType } from "../config/syntaxes"
-import { Parser } from "./Parser"
 import { getLexer } from "../lexer/Lexer"
 import { LexemeType } from "../config/LexemeType"
 import { Config } from "../config/Config"
+import { Parser } from "./interfaces/Parser"
+import { isNecessary, isRepeatable } from "./interfaces/Cardinality"
+import { AstType, Member } from "./interfaces/Syntax"
 
 
 export class KoolParser implements Parser {

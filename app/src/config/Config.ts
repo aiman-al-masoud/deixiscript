@@ -1,5 +1,6 @@
 import { Lexeme } from "../lexer/Lexeme"
-import { AstType, CompositeNode, Member } from "../parser/ast-types"
+import { CompositeNode } from "../parser/interfaces/AstNode"
+import { AstType, Syntax } from "../parser/interfaces/Syntax"
 import { BasicConfig } from "./BasicConfig"
 import { lexemes } from "./lexemes"
 import { LexemeType, lexemeTypes } from "./LexemeType"
@@ -11,7 +12,7 @@ export interface Config {
     readonly startupCommands: string[]
     readonly syntaxList: CompositeType[]
     readonly lexemeTypes: LexemeType[]
-    getSyntax(name: AstType): Member[]
+    getSyntax(name: AstType): Syntax
     setSyntax(macro: CompositeNode<'macro'>): void
 }
 

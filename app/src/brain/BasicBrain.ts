@@ -1,9 +1,9 @@
-import { getParser } from "../parser/Parser";
 import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
 import { getActuator } from "../actuator/Actuator";
 import { toClause } from "../parser/toClause";
 import { Config } from "../config/Config";
+import { getParser } from "../parser/interfaces/Parser";
 
 
 export default class BasicBrain implements Brain {
