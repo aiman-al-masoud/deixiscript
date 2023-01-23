@@ -2,7 +2,7 @@ import { Id } from "../clauses/Id";
 import { wrap } from "../enviro/Wrapper";
 import { Enviro } from "../enviro/Enviro";
 import Action from "./Action";
-import { Lexeme } from "../lexer/Lexeme";
+import { getProto, Lexeme } from "../lexer/Lexeme";
 
 export default class Create implements Action {
 
@@ -16,7 +16,7 @@ export default class Create implements Action {
             return
         }
 
-        if (isDomElem(this.predicate.root)) {
+        if (getProto(this.predicate) instanceof HTMLElement) {
 
             const o = document.createElement(this.predicate.root)
             o.id = this.id + ''
@@ -30,8 +30,4 @@ export default class Create implements Action {
 
     }
 
-}
-
-function isDomElem(predicate: string) {
-    return ['button'].includes(predicate)
 }

@@ -1,6 +1,7 @@
 import { Clause, clauseOf } from "../clauses/Clause";
 import { Enviro } from "../enviro/Enviro";
 import { wrap } from "../enviro/Wrapper";
+import { getProto } from "../lexer/Lexeme";
 import Action from "./Action";
 import Edit from "./Edit";
 
@@ -11,8 +12,6 @@ export default class ImplyAction implements Action {
     }
 
     run(enviro: Enviro): any {
-
-        // console.log('ImplyAction.run()', this.condition.toString(), '--->', this.conclusion.toString())
 
         const isSetAliasCall =  // assume if at least one owned entity that it's a set alias call
             this.condition.getOwnershipChain(this.condition.topLevel()[0]).slice(1).length
@@ -35,7 +34,7 @@ export default class ImplyAction implements Action {
         const conceptName = alias.map(x => this.condition.describe(x)[0]) // assume at least one name
         const propsNames = props.map(x => this.conclusion.describe(x)[0]) // same ...
         const protoName = this.condition.describe(top)[0] // assume one 
-        const proto = getProto(protoName.root)
+        const proto = getProto(protoName)
         wrap(proto).setAlias(conceptName[0], propsNames)
         // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
     }
@@ -51,8 +50,3 @@ export default class ImplyAction implements Action {
 
 }
 
-
-const getProto = (name: string) =>
-({
-    'button': HTMLButtonElement.prototype
-}[name])

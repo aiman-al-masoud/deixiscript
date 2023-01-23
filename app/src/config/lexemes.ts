@@ -12,6 +12,7 @@ export const lexemes: Lexeme[] = [
     {
         root: 'button',
         type: 'noun',
+        proto : 'HTMLButtonElement'
     },
 
     {

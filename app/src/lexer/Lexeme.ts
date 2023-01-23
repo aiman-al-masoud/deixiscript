@@ -13,6 +13,7 @@ export interface Lexeme {
     /**form of this instance*/readonly token?: string
     /**for quantadj */ readonly cardinality?: Cardinality
     readonly concepts?: string[]
+    readonly proto?: string
 }
 
 export function formsOf(lexeme: Lexeme) {
@@ -34,4 +35,8 @@ export function getLexemes(word: string, lexemes: Lexeme[]): Lexeme[] {
         lexeme2.contractionFor.flatMap(x => getLexemes(x, lexemes)) :
         [lexeme2]
 
+}
+
+export function getProto(lexeme: Lexeme) {
+    return (window as any)?.[lexeme.proto as any]?.prototype
 }
