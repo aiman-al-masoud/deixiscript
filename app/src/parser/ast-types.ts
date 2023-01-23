@@ -1,8 +1,18 @@
 import { Lexeme } from "../lexer/Lexeme"
 import { LexemeType } from "../config/LexemeType"
-import { ConstituentType } from "../config/syntaxes"
+import { CompositeType } from "../config/syntaxes"
 
-export type AstType = LexemeType | ConstituentType
+export type SyntaxMap = { [name in CompositeType]: Syntax }
+
+export type Syntax = Member[]
+
+export type Member = {
+    readonly type: AstType[]
+    readonly number?: Cardinality
+    readonly role?: Role
+}
+
+export type AstType = LexemeType | CompositeType
 
 export type Cardinality = '*' // zero or more
     | '1|0' // one or zero
@@ -15,24 +25,24 @@ export type Role = 'subject'
     | 'condition'
     | 'consequence'
 
-export type Member = {
-    readonly type: AstType[]
-    readonly number?: Cardinality
-    readonly role?: Role
-}
-
 export interface AstNode<T extends AstType> {
     readonly type: T
 }
 
-export interface AtomNode<T extends LexemeType> extends AstNode<T> {
+export interface LeafNode<T extends LexemeType> extends AstNode<T> {
     readonly lexeme: Lexeme
 }
 
-export interface CompositeNode<T extends ConstituentType> extends AstNode<T> {
+export interface CompositeNode<T extends CompositeType> extends AstNode<T> {
     readonly links: { [index in AstType | Role]?: AstNode<AstType> }
     readonly role?: Role
 }
+
+// export interface Macro extends CompositeNode<'macro'>{
+//     readonly links : {
+        
+//     }
+// }
 
 export const isNecessary = (c?: Cardinality) =>
     c === undefined // necessary by default

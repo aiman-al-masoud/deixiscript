@@ -1,7 +1,7 @@
-import { Member, Role } from "../parser/ast-types";
+import { SyntaxMap, Role } from "../parser/ast-types";
 import { ElementType, stringLiterals } from "./utils";
 
-export type ConstituentType = ElementType<typeof constituentTypes>;
+export type CompositeType = ElementType<typeof constituentTypes>;
 
 export const constituentTypes = stringLiterals(
 
@@ -19,7 +19,7 @@ export const constituentTypes = stringLiterals(
 
 )
 
-export const syntaxes: { [name in ConstituentType]: Member[] } = {
+export const syntaxes: SyntaxMap = {
 
     // permanent
     'macro': [

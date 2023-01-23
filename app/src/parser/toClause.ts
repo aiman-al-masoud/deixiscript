@@ -1,9 +1,9 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
-import { AstNode, AstType, AtomNode, CompositeNode } from "./ast-types";
+import { AstNode, AstType, LeafNode, CompositeNode } from "./ast-types";
 import { LexemeType } from "../config/LexemeType";
-import { ConstituentType } from "../config/syntaxes";
+import { CompositeType } from "../config/syntaxes";
 
 // start simple by assuming hardcoded types, then try to depend solely on role (semantic role)
 
@@ -19,7 +19,7 @@ export interface ToClauseOpts {
 
 export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
-    const cast = ast as CompositeNode<ConstituentType>
+    const cast = ast as CompositeNode<CompositeType>
 
     if (cast.links.pronoun || cast.links.noun || cast.links.adj) {
         return nounPhraseToClause(ast as any, args)
@@ -38,8 +38,8 @@ export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
 function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Clause {
 
-    const subjectAst = copulaSentence.links.subject as CompositeNode<ConstituentType>
-    const predicateAst = copulaSentence.links.predicate as CompositeNode<ConstituentType>
+    const subjectAst = copulaSentence.links.subject as CompositeNode<CompositeType>
+    const predicateAst = copulaSentence.links.predicate as CompositeNode<CompositeType>
     const subjectId = args?.roles?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
     const newArgs = { ...args, roles: { subject: subjectId } }
     const subject = toClause(subjectAst, newArgs)
@@ -73,7 +73,7 @@ function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Claus
 
 function copulaSubClauseToClause(copulaSubClause: any, args?: ToClauseOpts): Clause {
 
-    const predicate = copulaSubClause.links.predicate as CompositeNode<ConstituentType>
+    const predicate = copulaSubClause.links.predicate as CompositeNode<CompositeType>
 
     return (toClause(predicate, { ...args, roles: { subject: args?.roles?.subject } }))
         .copy({ sideEffecty: false })
@@ -83,8 +83,8 @@ function complementToClause(complement: any, args?: ToClauseOpts): Clause {
     const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
     const newId = getRandomId()
 
-    const preposition = complement.links.preposition as AtomNode<'preposition'>
-    const nounPhrase = complement.links.nounphrase as CompositeNode<ConstituentType>
+    const preposition = complement.links.preposition as LeafNode<'preposition'>
+    const nounPhrase = complement.links.nounphrase as CompositeNode<CompositeType>
 
     return clauseOf(preposition.lexeme, subjId, newId)
         .and(toClause(nounPhrase, { ...args, roles: { subject: newId } }))
@@ -93,15 +93,15 @@ function complementToClause(complement: any, args?: ToClauseOpts): Clause {
 }
 
 
-function nounPhraseToClause(nounPhrase: CompositeNode<ConstituentType>, args?: ToClauseOpts): Clause {
+function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToClauseOpts): Clause {
 
     const maybeId = args?.roles?.subject ?? getRandomId()
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
     const newArgs = { ...args, roles: { subject: subjectId } };
 
-    const adjectives: AtomNode<LexemeType>[] = (nounPhrase?.links?.adj as any)?.links ?? []
-    const noun = (nounPhrase.links.noun ?? nounPhrase.links.pronoun) as AtomNode<LexemeType> | undefined
-    const complements: AtomNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
+    const adjectives: LeafNode<LexemeType>[] = (nounPhrase?.links?.adj as any)?.links ?? []
+    const noun = (nounPhrase.links.noun ?? nounPhrase.links.pronoun) as LeafNode<LexemeType> | undefined
+    const complements: LeafNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
     const subClause = nounPhrase.links.subclause
 
     const res =

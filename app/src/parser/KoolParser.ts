@@ -1,5 +1,5 @@
-import { AstNode, AstType, Role, Member, AtomNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
-import { ConstituentType } from "../config/syntaxes"
+import { AstNode, AstType, Role, Member, LeafNode, CompositeNode, isNecessary, isRepeatable } from "./ast-types"
+import { CompositeType } from "../config/syntaxes"
 import { Parser } from "./Parser"
 import { getLexer } from "../lexer/Lexer"
 import { LexemeType } from "../config/LexemeType"
@@ -32,7 +32,7 @@ export class KoolParser implements Parser {
 
     parse() {
 
-        for (const t of this.config.constituentTypes) {
+        for (const t of this.config.syntaxList) {
 
             const x = this.try(this.topParse, t)
 
@@ -50,12 +50,12 @@ export class KoolParser implements Parser {
         if (members.length === 1 && members[0].type.every(t => this.isAtom(t))) {
             return this.parseAtom(members[0])
         } else {
-            return this.parseComposite(name as ConstituentType, role)
+            return this.parseComposite(name as CompositeType, role)
         }
 
     }
 
-    protected parseAtom = (m: Member): AtomNode<LexemeType> | undefined => {
+    protected parseAtom = (m: Member): LeafNode<LexemeType> | undefined => {
 
         if (m.type.includes(this.lexer.peek.type)) {
             const x = this.lexer.peek
@@ -65,7 +65,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: ConstituentType, role?: Role): CompositeNode<ConstituentType> | undefined => {
+    protected parseComposite = (name: CompositeType, role?: Role): CompositeNode<CompositeType> | undefined => {
 
         const links: any = {}
 

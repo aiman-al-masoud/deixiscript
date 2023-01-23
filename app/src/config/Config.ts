@@ -4,12 +4,12 @@ import { BasicConfig } from "./BasicConfig"
 import { lexemes } from "./lexemes"
 import { LexemeType, lexemeTypes } from "./LexemeType"
 import { startupCommands } from "./startupCommands"
-import { ConstituentType, constituentTypes, syntaxes } from "./syntaxes"
+import { CompositeType, constituentTypes, syntaxes } from "./syntaxes"
 
 export interface Config {
     readonly lexemes: Lexeme[]
     readonly startupCommands: string[]
-    readonly constituentTypes: ConstituentType[]
+    readonly syntaxList: CompositeType[]
     readonly lexemeTypes: LexemeType[]
     getSyntax(name: AstType): Member[]
     setSyntax(macro: CompositeNode<'macro'>): void
