@@ -19,9 +19,10 @@ export interface Config {
 
 export function getConfig(): Config {
 
-    return new BasicConfig(lexemes,
+    return new BasicConfig(
         lexemeTypes,
         constituentTypes,
+        lexemes,
         syntaxes,
         startupCommands,
         staticAscendingPrecedence)

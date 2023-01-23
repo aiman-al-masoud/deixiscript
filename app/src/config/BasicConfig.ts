@@ -10,9 +10,9 @@ import { SyntaxMap, AstType } from "../parser/interfaces/Syntax"
 export class BasicConfig implements Config {
 
     constructor(
-        protected _lexemes: Lexeme[],
         readonly lexemeTypes: LexemeType[],
-        readonly _syntaxList: CompositeType[],
+        protected _syntaxList: CompositeType[],
+        protected _lexemes: Lexeme[],
         readonly syntaxMap: SyntaxMap,
         readonly startupCommands: string[],
         readonly staticAscendingPrecedence: CompositeType[]) {

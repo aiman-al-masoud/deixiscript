@@ -1,10 +1,10 @@
 import { CompositeType } from "../config/syntaxes"
 import { SyntaxMap, AstType } from "./interfaces/Syntax"
 
-export const maxPrecedence = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap, staticByAscPrecedence: AstType[]) => {
+export const maxPrecedence = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap, staticAscendingPrecedence: AstType[]) => {
 
     return idCompare(a, b) ??
-        staticCompare(a, b, staticByAscPrecedence) ??
+        staticCompare(a, b, staticAscendingPrecedence) ??
         dependencyCompare(a, b, syntaxes) ??
         lenCompare(a, b, syntaxes)
 
