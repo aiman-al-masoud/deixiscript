@@ -16,11 +16,16 @@ export class KoolParser implements Parser {
 
     parseAll() {
 
-        const results: (AstNode<AstType> | undefined)[] = []
+        const results: AstNode<AstType>[] = []
 
         while (!this.lexer.isEnd) {
 
             const ast = this.parse()
+
+            if (!ast) {
+                return results
+            }
+
             results.push(ast)
 
             if (this.lexer.peek && this.lexer.peek.type == 'fullstop') {
@@ -32,7 +37,7 @@ export class KoolParser implements Parser {
         return results
     }
 
-    parse() {
+    protected parse() {
 
         for (const t of this.config.syntaxList) {
 
@@ -49,15 +54,15 @@ export class KoolParser implements Parser {
 
         const members = this.config.getSyntax(name)
 
-        if (members.length === 1 && members[0].type.every(t => this.isAtom(t))) {
-            return this.parseAtom(members[0])
+        if (members.length === 1 && members[0].type.every(t => this.isLeaf(t))) {
+            return this.parseLeaf(members[0])
         } else {
             return this.parseComposite(name as CompositeType, role)
         }
 
     }
 
-    protected parseAtom = (m: Member): LeafNode<LexemeType> | undefined => {
+    protected parseLeaf = (m: Member): LeafNode<LexemeType> | undefined => {
 
         if (m.type.includes(this.lexer.peek.type)) {
             const x = this.lexer.peek
@@ -152,7 +157,7 @@ export class KoolParser implements Parser {
         return x
     }
 
-    protected isAtom = (t: AstType) => {
+    protected isLeaf = (t: AstType) => {
         return this.config.lexemeTypes.includes(t as LexemeType)
     }
 }

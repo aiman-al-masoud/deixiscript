@@ -8,14 +8,12 @@ import { getParser } from "../parser/interfaces/Parser";
 
 export default class BasicBrain implements Brain {
 
-    constructor(readonly config: Config, readonly enviro = getEnviro({ root: document.body }), readonly actuator = getActuator()) {
+    constructor(
+        readonly config: Config,
+        readonly enviro = getEnviro({ root: document.body }),
+        readonly actuator = getActuator()) {
 
-    }
-
-    init() {
-        for (const s of this.config.startupCommands) {
-            this.execute(s)
-        }
+        this.config.startupCommands.forEach(c => this.execute(c))
     }
 
     execute(natlang: string): any[] {
@@ -23,10 +21,6 @@ export default class BasicBrain implements Brain {
         const results: any[] = []
 
         for (const ast of getParser(natlang, this.config).parseAll()) {
-
-            if (!ast) {
-                continue
-            }
 
             if (ast.type == 'macro') {
                 this.config.setSyntax(ast as any)

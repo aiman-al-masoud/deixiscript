@@ -9,8 +9,5 @@ export default interface Brain {
 }
 
 export function getBrain(config = getConfig()): Brain {
-
-    const b = new BasicBrain(config)
-    b.init()
-    return b
+    return new BasicBrain(config)
 }
