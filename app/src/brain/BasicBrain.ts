@@ -18,32 +18,32 @@ export default class BasicBrain implements Brain {
 
     execute(natlang: string): any[] {
 
-        const results: any[] = []
-
-        for (const ast of getParser(natlang, this.config).parseAll()) {
+        return getParser(natlang, this.config).parseAll().map(ast => {
 
             if (ast.type == 'macro') {
                 this.config.setSyntax(ast as any)
-                continue
+                return []
             }
 
             const clause = toClause(ast)
 
             if (clause.isSideEffecty) {
+
                 this.actuator.takeAction(clause, this.enviro)
+                return []
+
             } else {
+
                 const maps = this.enviro.query(clause)
                 const ids = maps.flatMap(m => Object.values(m))
                 const objects = ids.map(id => this.enviro.get(id))
 
                 this.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
                 objects.forEach(o => o?.pointOut())
-                objects.map(o => o?.object).forEach(o => results.push(o))
+                return objects.map(o => o?.object)
             }
 
-        }
-
-        return results
+        }).flat()
     }
 
 }
