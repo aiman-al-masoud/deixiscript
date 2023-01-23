@@ -1,4 +1,4 @@
-import { getActuator } from "../actuator/Actuator";
+import { getActuator } from "../actuator/actuator/Actuator";
 import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id"
 import getEnviro from "./Enviro";

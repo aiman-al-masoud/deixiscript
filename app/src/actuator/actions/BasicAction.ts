@@ -1,10 +1,10 @@
-import { BasicClause } from "../clauses/BasicClause";
-import { Clause } from "../clauses/Clause";
-import { getRandomId, Id } from "../clauses/Id";
-import { Enviro } from "../enviro/Enviro";
+import { BasicClause } from "../../clauses/BasicClause";
+import { Clause } from "../../clauses/Clause";
+import { Id, getRandomId } from "../../clauses/Id";
+import { Enviro } from "../../enviro/Enviro";
 import Action from "./Action";
-import Create from "./Create";
-import Edit from "./Edit";
+import CreateAction from "./CreateAction";
+import EditAction from "./EditAction";
 
 export default class BasicAction implements Action {
 
@@ -19,7 +19,7 @@ export default class BasicAction implements Action {
         }
 
         if (this.clause.exactIds) {
-            return new Edit(this.clause.args[0], this.clause.predicate, []).run(enviro)
+            return new EditAction(this.clause.args[0], this.clause.predicate, []).run(enviro)
         }
 
         if (this.topLevel.topLevel().includes(this.clause.args[0])) {
@@ -48,9 +48,9 @@ export default class BasicAction implements Action {
         }
 
         if (this.clause.predicate.proto) {
-            new Create(id, this.clause.predicate).run(enviro)
+            new CreateAction(id, this.clause.predicate).run(enviro)
         } else {
-            new Edit(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(enviro)
+            new EditAction(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(enviro)
         }
     }
 
@@ -75,7 +75,7 @@ export default class BasicAction implements Action {
         const maps = enviro.query(q)
         const id = maps?.[0]?.[topLevelOwner] //?? getRandomId()
 
-        return new Edit(id, this.clause.predicate, this.getProps(topLevelOwner)).run(enviro)
+        return new EditAction(id, this.clause.predicate, this.getProps(topLevelOwner)).run(enviro)
     }
 
 }

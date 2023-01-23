@@ -1,9 +1,9 @@
-import { Id } from "../clauses/Id";
-import { Enviro } from "../enviro/Enviro";
-import { Lexeme } from "../lexer/Lexeme";
+import { Id } from "../../clauses/Id";
+import { Enviro } from "../../enviro/Enviro";
+import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 
-export default class Edit implements Action {
+export default class EditAction implements Action {
 
     constructor(readonly id: Id, readonly predicate: Lexeme, readonly props?: Lexeme[]) {
 

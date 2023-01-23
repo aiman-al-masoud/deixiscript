@@ -1,9 +1,10 @@
-import { Clause, clauseOf } from "../clauses/Clause";
-import { Enviro } from "../enviro/Enviro";
-import { wrap } from "../enviro/Wrapper";
-import { getProto } from "../lexer/Lexeme";
+
+import { Clause, clauseOf } from "../../clauses/Clause";
+import { Enviro } from "../../enviro/Enviro";
+import { wrap } from "../../enviro/Wrapper";
+import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
-import Edit from "./Edit";
+import EditAction from "./EditAction";
 
 export default class ImplyAction implements Action {
 
@@ -45,7 +46,7 @@ export default class ImplyAction implements Action {
         const predicate = this.conclusion.describe(top)[0]
         const y = enviro.query(clauseOf(protoName, 'X'))
         const ids = y.map(m => m['X'])
-        ids.forEach(id => new Edit(id, predicate).run(enviro))
+        ids.forEach(id => new EditAction(id, predicate).run(enviro))
     }
 
 }

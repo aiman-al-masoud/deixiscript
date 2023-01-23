@@ -1,5 +1,5 @@
-import { Clause } from "../clauses/Clause";
-import { Enviro } from "../enviro/Enviro";
+import { Clause } from "../../clauses/Clause";
+import { Enviro } from "../../enviro/Enviro";
 import { Actuator } from "./Actuator";
 
 export default class BaseActuator implements Actuator {

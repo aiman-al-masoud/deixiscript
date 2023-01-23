@@ -1,4 +1,4 @@
-import Action from "../actuator/Action";
+import Action from "../actuator/actions/Action";
 import { Lexeme } from "../lexer/Lexeme";
 import { AndOpts, Clause, CopyOpts } from "./Clause";
 import { Id } from "./Id";

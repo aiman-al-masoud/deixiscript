@@ -3,11 +3,11 @@ import { hashString } from "./hashString";
 import { Id } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
-import Action from "../actuator/Action";
+import Action from "../actuator/actions/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
-import BasicAction from "../actuator/BasicAction";
 import { Lexeme } from "../lexer/Lexeme";
+import BasicAction from "../actuator/actions/BasicAction";
 
 export class BasicClause implements Clause {
 

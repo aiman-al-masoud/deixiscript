@@ -1,10 +1,10 @@
-import { Id } from "../clauses/Id";
-import { wrap } from "../enviro/Wrapper";
-import { Enviro } from "../enviro/Enviro";
+import { Id } from "../../clauses/Id";
+import { Enviro } from "../../enviro/Enviro";
+import { wrap } from "../../enviro/Wrapper";
+import { Lexeme, getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
-import { getProto, Lexeme } from "../lexer/Lexeme";
 
-export default class Create implements Action {
+export default class CreateAction implements Action {
 
     constructor(readonly id: Id, readonly predicate: Lexeme) {
 

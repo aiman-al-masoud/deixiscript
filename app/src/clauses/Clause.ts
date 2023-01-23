@@ -1,6 +1,6 @@
 import { BasicClause } from "./BasicClause"
 import { Id, Map } from "./Id"
-import Action from "../actuator/Action"
+import Action from "../actuator/actions/Action"
 import { EmptyClause } from "./EmptyClause"
 import { Lexeme } from "../lexer/Lexeme"
 import { LexemeType } from "../config/LexemeType"

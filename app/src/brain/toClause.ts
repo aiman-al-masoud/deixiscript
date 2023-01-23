@@ -1,14 +1,13 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
-import { AstNode, LeafNode, CompositeNode } from "./interfaces/AstNode";
+import { AstNode, LeafNode, CompositeNode } from "../parser/interfaces/AstNode";
 import { LexemeType } from "../config/LexemeType";
 import { CompositeType } from "../config/syntaxes";
-import { AstType } from "./interfaces/Syntax";
+import { AstType } from "../parser/interfaces/Syntax";
 
-// start simple by assuming hardcoded types, then try to depend solely on role (semantic role)
 
-export interface Roles {
+interface Roles {
     subject?: Id
     object?: Id
 }
@@ -92,7 +91,6 @@ function complementToClause(complement: any, args?: ToClauseOpts): Clause {
         .copy({ sideEffecty: false })
 
 }
-
 
 function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToClauseOpts): Clause {
 

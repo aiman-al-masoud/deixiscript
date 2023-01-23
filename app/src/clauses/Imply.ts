@@ -2,12 +2,12 @@ import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "./hashString";
 import { Id } from "./Id";
 import And from "./And";
-import Action from "../actuator/Action";
+import Action from "../actuator/actions/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
-import ImplyAction from "../actuator/ImplyAction";
 import { Lexeme } from "../lexer/Lexeme";
 import { LexemeType } from "../config/LexemeType";
+import ImplyAction from "../actuator/actions/ImplyAction";
 
 export default class Imply implements Clause {
 

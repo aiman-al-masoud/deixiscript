@@ -1,5 +1,5 @@
-import { Clause } from "../clauses/Clause";
-import { Enviro } from "../enviro/Enviro";
+import { Clause } from "../../clauses/Clause";
+import { Enviro } from "../../enviro/Enviro";
 import BaseActuator from "./BaseActuator";
 
 export interface Actuator {

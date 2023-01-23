@@ -1,7 +1,7 @@
 import Brain from "./Brain";
 import getEnviro from "../enviro/Enviro";
-import { getActuator } from "../actuator/Actuator";
-import { toClause } from "../parser/toClause";
+import { getActuator } from "../actuator/actuator/Actuator";
+import { toClause } from "./toClause";
 import { Config } from "../config/Config";
 import { getParser } from "../parser/interfaces/Parser";
 
