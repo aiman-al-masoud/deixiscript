@@ -1,24 +1,23 @@
-import { Member, AstType, Role } from "../parser/ast-types";
+import { Member, Role } from "../parser/ast-types";
 import { ElementType, stringLiterals } from "./utils";
 
+export type ConstituentType = ElementType<typeof constituentTypes>;
 
 export const constituentTypes = stringLiterals(
 
     // permanent
     'taggedunion',
-    'array', // an array of consecutive asts (tied to '*')
+    'array', // consecutive asts
     'macropart',
     'macro',
 
-    // to be removed
+    // extendible
     'copulasentence',
     'nounphrase',
     'complement',
     'subclause',
 
 )
-
-export type ConstituentType = ElementType<typeof constituentTypes>;
 
 export const syntaxes: { [name in ConstituentType]: Member[] } = {
 
@@ -41,7 +40,7 @@ export const syntaxes: { [name in ConstituentType]: Member[] } = {
 
     ],
 
-    // to be removed
+    // extendible
     'subclause': [
 
     ],

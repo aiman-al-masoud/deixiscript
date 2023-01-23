@@ -1,5 +1,7 @@
 import { ElementType, stringLiterals } from "./utils"
 
+export type LexemeType = ElementType<typeof lexemeTypes>
+
 export const lexemeTypes = stringLiterals(
   'adj',
   'contraction',
@@ -11,7 +13,6 @@ export const lexemeTypes = stringLiterals(
   'iverb',
   'mverb',
   'negation',
-  'nonsubconj',
   'existquant',
   'uniquant',
   'then',
@@ -21,10 +22,9 @@ export const lexemeTypes = stringLiterals(
   'preposition',
   'subconj',
   'grammar',
-  // 'quantadj',
+  'nonsubconj', // and ...
   'disjunc', // or, but, however ...
   'pronoun'
 )
+// 'quantadj',
 // 'semantics' //?
-
-export type LexemeType = ElementType<typeof lexemeTypes>

@@ -1,5 +1,5 @@
-import { getLexemes, Lexeme } from "./Lexeme";
 import Lexer from "./Lexer";
+import { getLexemes, Lexeme } from "./Lexeme";
 import { Config } from "../config/Config";
 
 export default class EagerLexer implements Lexer {
