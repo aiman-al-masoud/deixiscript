@@ -47,7 +47,7 @@ export default class BasicAction implements Action {
             enviro.setPlaceholder(id)
         }
 
-        if (isCreatorAction(this.clause.predicate.root)) {
+        if (this.clause.predicate.proto) {
             new Create(id, this.clause.predicate).run(enviro)
         } else {
             new Edit(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(enviro)
@@ -78,8 +78,4 @@ export default class BasicAction implements Action {
         return new Edit(id, this.clause.predicate, this.getProps(topLevelOwner)).run(enviro)
     }
 
-}
-
-function isCreatorAction(predicate: string) {
-    return predicate === 'button'
 }

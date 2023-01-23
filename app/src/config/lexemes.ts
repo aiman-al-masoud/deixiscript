@@ -12,7 +12,13 @@ export const lexemes: Lexeme[] = [
     {
         root: 'button',
         type: 'noun',
-        proto : 'HTMLButtonElement'
+        proto: 'HTMLButtonElement'
+    },
+
+    {
+        root: 'list',
+        type: 'noun',
+        proto: 'Array'
     },
 
     {
@@ -314,5 +320,6 @@ export const lexemes: Lexeme[] = [
         root: 'pronoun',
         type: 'grammar'
     },
+
 
 ]

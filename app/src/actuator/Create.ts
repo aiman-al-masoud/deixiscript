@@ -29,6 +29,13 @@ export default class Create implements Action {
             enviro.set(this.id, newObj)
             enviro.root?.appendChild(o)
 
+        } else {
+
+            const o = new (proto as any).constructor()
+            const newObj = wrap(o)
+            newObj.set(this.predicate)
+            enviro.set(this.id, newObj)
+
         }
 
     }
