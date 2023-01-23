@@ -16,9 +16,12 @@ export default class Create implements Action {
             return
         }
 
-        if (getProto(this.predicate) instanceof HTMLElement) {
+        const proto = getProto(this.predicate)
 
-            const o = document.createElement(this.predicate.root)
+        if (proto instanceof HTMLElement) {
+
+            const tagNameFromProto = (x: Object) => x.constructor.name.replace('HTML', '').replace('Element', '').toLowerCase()
+            const o = document.createElement(tagNameFromProto(proto))
             o.id = this.id + ''
             o.textContent = 'default'
             const newObj = wrap(o)
