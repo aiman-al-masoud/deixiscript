@@ -66,7 +66,7 @@ export const syntaxes: SyntaxMap = {
     'andsentence': [
         { type: ['copulasentence', 'nounphrase'], number: 1, role: 'one' as Role },
         { type: ['nonsubconj'], number: 1 },
-        { type: ['andsentence', 'copulasentence', 'nounphrase'], number: '+' /* or '*' ?*/, role: 'two' as Role }
+        { type: ['andsentence', 'copulasentence', 'nounphrase'], number: '+', role: 'two' as Role }
     ],
 }
 
