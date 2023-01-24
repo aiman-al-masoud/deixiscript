@@ -10,7 +10,10 @@ import { AstType, Member } from "./interfaces/Syntax"
 
 export class KoolParser implements Parser {
 
-    constructor(readonly sourceCode: string, readonly config: Config, readonly lexer = getLexer(sourceCode, config)) {
+    constructor(
+        protected readonly sourceCode: string,
+        protected readonly config: Config,
+        protected readonly lexer = getLexer(sourceCode, config)) {
 
     }
 
@@ -20,15 +23,15 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd) {
 
-            const ast = this.parse()
+            const ast = this.tryParse(this.config.syntaxList)
 
             if (!ast) {
-                return results
+                break
             }
 
             results.push(ast)
 
-            if (this.lexer.peek && this.lexer.peek.type == 'fullstop') {
+            if (this.lexer.peek?.type === 'fullstop') {
                 this.lexer.next()
             }
 
@@ -37,20 +40,24 @@ export class KoolParser implements Parser {
         return results
     }
 
-    protected parse() {
 
-        for (const t of this.config.syntaxList) {
+    protected tryParse(types: AstType[], role?: Role) {
 
-            const x = this.try(this.topParse, t)
+        for (const t of types) {
+
+            const memento = this.lexer.pos
+            const x = this.knownParse(t, role)
 
             if (x) {
                 return x
             }
+
+            this.lexer.backTo(memento)
         }
 
     }
 
-    protected topParse = (name: AstType, role?: Role): AstNode<AstType> | undefined => {
+    protected knownParse = (name: AstType, role?: Role): AstNode<AstType> | undefined => {
 
         const members = this.config.getSyntax(name)
 
@@ -84,14 +91,14 @@ export class KoolParser implements Parser {
                 return undefined
             }
 
-            if (ast) {
+            if (!ast) {
+                continue
+            }
 
-                const astType = ast.type != 'array' ? ast.type : Object.values((ast as CompositeNode<'array'>).links).at(0)?.type
+            const astType = ast.type !== 'array' ? ast.type : Object.values((ast as CompositeNode<'array'>).links).at(0)?.type
 
-                if (astType) {
-                    links[m.role ?? astType] = ast
-                }
-
+            if (astType) {
+                links[m.role ?? astType] = ast
             }
 
         }
@@ -117,11 +124,7 @@ export class KoolParser implements Parser {
                 break
             }
 
-            // const x = this.try(this.parseOneMember, m.type, m.role) // --------
-            const memento = this.lexer.pos
-            const x = this.parseOneMember(m.type, m.role)
-            if (!x) { this.lexer.backTo(memento) }
-            // ----------
+            const x = this.tryParse(m.type, m.role)
 
             if (!x) {
                 break
@@ -141,32 +144,8 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseOneMember = (types: AstType[], role?: Role) => {
-
-        for (const t of types) {
-
-            const x = this.topParse(t, role)
-
-            if (x) {
-                return x
-            }
-
-        }
-    }
-
-    protected try = (method: (args: any) => AstNode<AstType> | undefined, ...args: any[]) => {
-
-        const memento = this.lexer.pos
-        const x = method(args)
-
-        if (!x) {
-            this.lexer.backTo(memento)
-        }
-
-        return x
-    }
-
     protected isLeaf = (t: AstType) => {
         return this.config.lexemeTypes.includes(t as LexemeType)
     }
+
 }
