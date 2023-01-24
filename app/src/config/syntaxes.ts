@@ -14,7 +14,7 @@ export const constituentTypes = stringLiterals(
     'macro',
 
     // extendible
-    'copulasentence',
+    'copula sentence',
     'nounphrase',
     'complement',
     'subclause',
@@ -59,14 +59,14 @@ export const syntaxes: SyntaxMap = {
 
     ],
 
-    'copulasentence': [
+    'copula sentence': [
 
     ],
 
     'andsentence': [
-        { type: ['copulasentence', 'nounphrase'], number: 1, role: 'one' as Role },
+        { type: ['copula sentence', 'nounphrase'], number: 1, role: 'one' as Role },
         { type: ['nonsubconj'], number: 1 },
-        { type: ['andsentence', 'copulasentence', 'nounphrase'], number: '+', role: 'two' as Role }
+        { type: ['andsentence', 'copula sentence', 'nounphrase'], number: '+', role: 'two' as Role }
     ],
 }
 

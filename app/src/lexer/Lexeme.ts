@@ -44,3 +44,19 @@ export function getProto(lexeme: Lexeme): Object | undefined {
 export function isConcept(lexeme: Lexeme) {
     return lexeme.concepts?.includes('concept')
 }
+
+export function isMultiWord(lexeme: Lexeme) {
+    return lexeme.root.includes(' ')
+}
+
+export function unspace(string: string) {
+    return string.replaceAll(' ', '-')
+}
+
+export function respace(string: string) {
+    return string.replaceAll('-', ' ')
+}
+
+export function stdspace(string: string) {
+    return string.replaceAll(/\s+/g, ' ')
+}

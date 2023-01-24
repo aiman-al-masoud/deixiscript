@@ -1,5 +1,5 @@
 import Lexer from "./Lexer";
-import { getLexemes, Lexeme } from "./Lexeme";
+import { getLexemes, isMultiWord, Lexeme, respace, stdspace, unspace } from "./Lexeme";
 import { Config } from "../config/Config";
 
 export default class EagerLexer implements Lexer {
@@ -9,12 +9,16 @@ export default class EagerLexer implements Lexer {
 
     constructor(readonly sourceCode: string, readonly config: Config) {
 
-        this.tokens = sourceCode
-            // .toLowerCase()
-            .trim()
-            .split(/\s+|\./)
-            .map(s => !s ? '.' : s)
-            .flatMap(s => getLexemes(s, config.lexemes))
+
+
+        this.tokens =
+            this.joinMultiWordLexemes(stdspace(sourceCode), config.lexemes)
+                // .toLowerCase()
+                .trim()
+                .split(/\s+|\./)
+                .map(s => !s ? '.' : s)
+                .map(s => respace(s))
+                .flatMap(s => getLexemes(s, config.lexemes))
 
         this._pos = 0
     }
@@ -41,6 +45,20 @@ export default class EagerLexer implements Lexer {
 
     get isEnd(): boolean {
         return this.pos >= this.tokens.length
+    }
+
+    protected joinMultiWordLexemes(sourceCode: string, lexemes: Lexeme[]) {
+
+        let newSource = sourceCode
+
+        lexemes
+            .filter(x => isMultiWord(x))
+            .forEach(x => {
+                const lexeme = stdspace(x.root)
+                newSource = newSource.replaceAll(lexeme, unspace(lexeme))
+            })
+
+        return newSource
     }
 
 }

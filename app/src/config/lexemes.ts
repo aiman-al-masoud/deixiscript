@@ -203,13 +203,13 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: 'one-or-more',
+        root: 'one or more',
         type: 'adj',
         cardinality: '+'
     },
 
     {
-        root: 'zero-or-more',
+        root: 'zero or more',
         type: 'adj',
         cardinality: '*'
     },
