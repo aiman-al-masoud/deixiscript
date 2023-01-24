@@ -19,21 +19,23 @@ export class BasicConfig implements Config {
     }
 
     get syntaxList(): CompositeType[] {
-        // return this._syntaxList
-        //     .slice()
-        //     .sort((a, b) => maxPrecedence(b, a, this.syntaxMap, this.staticAscendingPrecedence))
 
-        // const syntaxes = new Set(this.config.syntaxList.filter(x=>x!=='array'))
+        const sl = this._syntaxList
+            .slice()
+            .sort((a, b) => maxPrecedence(b, a, this.syntaxMap, this.staticAscendingPrecedence))
+            .filter(x => x !== 'array')
 
-        return [
-            'macro',
-            'macropart',
-            'taggedunion',
-            'andsentence',
-            'copulasentence',
-            'complement',
-            'subclause',
-            'nounphrase']
+        return [...new Set(sl)]
+
+        // return [
+        //     'macro',
+        //     'macropart',
+        //     'taggedunion',
+        //     'andsentence',
+        //     'copulasentence',
+        //     'complement',
+        //     'subclause',
+        //     'nounphrase']
     }
 
     get lexemes() {
