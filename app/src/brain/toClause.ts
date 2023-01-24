@@ -32,7 +32,7 @@ export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
     }
 
     console.log({ ast })
-    throw new Error(`Idk what to do with ${ast.type}!`)
+    throw new Error(`Idk what to do with '${ast.type}'!`)
 
 }
 
