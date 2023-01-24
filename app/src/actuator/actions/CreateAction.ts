@@ -1,4 +1,5 @@
 import { Id } from "../../clauses/Id";
+import { Context } from "../../Context";
 import { Enviro } from "../../enviro/Enviro";
 import { wrap } from "../../enviro/Wrapper";
 import { Lexeme, getProto } from "../../lexer/Lexeme";
@@ -10,9 +11,9 @@ export default class CreateAction implements Action {
 
     }
 
-    run(enviro: Enviro): any {
+    run(context: Context): any {
 
-        if (enviro.exists(this.id)) { //  existence check prior to creating
+        if (context.enviro.exists(this.id)) { //  existence check prior to creating
             return
         }
 
@@ -26,15 +27,15 @@ export default class CreateAction implements Action {
             o.textContent = 'default'
             const newObj = wrap(o)
             newObj.set(this.predicate)
-            enviro.set(this.id, newObj)
-            enviro.root?.appendChild(o)
+            context.enviro.set(this.id, newObj)
+            context.enviro.root?.appendChild(o)
 
         } else {
 
             const o = new (proto as any).constructor()
             const newObj = wrap(o)
             newObj.set(this.predicate)
-            enviro.set(this.id, newObj)
+            context.enviro.set(this.id, newObj)
 
         }
 

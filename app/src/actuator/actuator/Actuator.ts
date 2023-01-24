@@ -1,9 +1,9 @@
 import { Clause } from "../../clauses/Clause";
-import { Enviro } from "../../enviro/Enviro";
+import { Context } from "../../Context";
 import BaseActuator from "./BaseActuator";
 
 export interface Actuator {
-    takeAction(clause: Clause, enviro: Enviro): void
+    takeAction(clause: Clause, context: Context): void
 }
 
 export function getActuator(): Actuator {

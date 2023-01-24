@@ -19,7 +19,7 @@ class EnviroAnaphora implements Anaphora {
     }
 
     assert(clause: Clause) {
-        getActuator().takeAction(clause.copy({ exactIds: true }), this.enviro)
+        getActuator().takeAction(clause.copy({ exactIds: true }), { enviro: this.enviro, config: {/* TODO assuming anaphora dont care about lexeme and syntaxes config*/ } as any })
     }
 
     query(clause: Clause): Map[] {
@@ -27,4 +27,3 @@ class EnviroAnaphora implements Anaphora {
     }
 
 }
-

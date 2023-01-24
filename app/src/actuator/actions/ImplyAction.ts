@@ -1,5 +1,6 @@
 
 import { Clause, clauseOf } from "../../clauses/Clause";
+import { Context } from "../../Context";
 import { Enviro } from "../../enviro/Enviro";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";
@@ -12,7 +13,7 @@ export default class ImplyAction implements Action {
 
     }
 
-    run(enviro: Enviro): any {
+    run(context: Context): any {
 
         const isSetAliasCall =  // assume if at least one owned entity that it's a set alias call
             this.condition.getOwnershipChain(this.condition.topLevel()[0]).slice(1).length
@@ -21,7 +22,7 @@ export default class ImplyAction implements Action {
         if (isSetAliasCall) {
             this.setAliasCall()
         } else {
-            this.other(enviro)
+            this.other(context)
         }
 
 
@@ -40,13 +41,13 @@ export default class ImplyAction implements Action {
         // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
     }
 
-    other(enviro: Enviro) {
+    other(context: Context) {
         const top = this.condition.topLevel()[0]
         const protoName = this.condition.describe(top)[0] // assume one 
         const predicate = this.conclusion.describe(top)[0]
-        const y = enviro.query(clauseOf(protoName, 'X'))
+        const y = context.enviro.query(clauseOf(protoName, 'X'))
         const ids = y.map(m => m['X'])
-        ids.forEach(id => new EditAction(id, predicate).run(enviro))
+        ids.forEach(id => new EditAction(id, predicate).run(context))
     }
 
 }

@@ -1,7 +1,7 @@
 import { BasicClause } from "../../clauses/BasicClause";
 import { Clause } from "../../clauses/Clause";
 import { Id, getRandomId } from "../../clauses/Id";
-import { Enviro } from "../../enviro/Enviro";
+import { Context } from "../../Context";
 import Action from "./Action";
 import CreateAction from "./CreateAction";
 import EditAction from "./EditAction";
@@ -12,20 +12,20 @@ export default class RootAction implements Action {
 
     }
 
-    run(enviro: Enviro): any {
+    run(context: Context): any {
 
         if (this.clause.args.length > 1) { // not handling relations yet
             return
         }
 
         if (this.clause.exactIds) {
-            return new EditAction(this.clause.args[0], this.clause.predicate, []).run(enviro)
+            return new EditAction(this.clause.args[0], this.clause.predicate, []).run(context)
         }
 
         if (this.topLevel.topLevel().includes(this.clause.args[0])) {
-            this.forTopLevel(enviro)
+            this.forTopLevel(context)
         } else {
-            this.forNonTopLevel(enviro)
+            this.forNonTopLevel(context)
         }
 
     }
@@ -37,14 +37,14 @@ export default class RootAction implements Action {
             .map(e => this.topLevel.theme.describe(e)[0]) // ASSUME at least one
     }
 
-    protected forTopLevel(enviro: Enviro) { // this id is TL entity
+    protected forTopLevel(context: Context) { // this id is TL entity
 
         const q = this.topLevel.theme.about(this.clause.args[0])
-        const maps = enviro.query(q)
+        const maps = context.enviro.query(q)
         const id = maps?.[0]?.[this.clause.args[0]] ?? getRandomId()
 
-        if (!enviro.get(id)) {
-            enviro.setPlaceholder(id)
+        if (!context.enviro.get(id)) {
+            context.enviro.setPlaceholder(id)
         }
 
         // if (this.clause.predicate.isConcept) {
@@ -56,13 +56,13 @@ export default class RootAction implements Action {
         // }
 
         if (this.clause.predicate.proto) {
-            new CreateAction(id, this.clause.predicate).run(enviro)
+            new CreateAction(id, this.clause.predicate).run(context)
         } else {
-            new EditAction(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(enviro)
+            new EditAction(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(context)
         }
     }
 
-    protected forNonTopLevel(enviro: Enviro) {
+    protected forNonTopLevel(context: Context) {
 
         const tLOwner = this.getTopLevelOwnerOf(this.clause.args[0], this.topLevel)
 
@@ -77,10 +77,10 @@ export default class RootAction implements Action {
         }
 
         const q = this.topLevel.theme.about(tLOwner)
-        const maps = enviro.query(q)
+        const maps = context.enviro.query(q)
         const tLOwnerId = maps?.[0]?.[tLOwner] //?? getRandomId()
 
-        return new EditAction(tLOwnerId, this.clause.predicate, this.getProps(tLOwner)).run(enviro)
+        return new EditAction(tLOwnerId, this.clause.predicate, this.getProps(tLOwner)).run(context)
     }
 
     protected getTopLevelOwnerOf(id: Id, topLevel: Clause): Id | undefined {
