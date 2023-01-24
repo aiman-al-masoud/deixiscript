@@ -18,10 +18,22 @@ export class BasicConfig implements Config {
         readonly staticAscendingPrecedence: CompositeType[]) {
     }
 
-    get syntaxList() {
-        return this._syntaxList
-            .slice()
-            .sort((a, b) => maxPrecedence(b, a, this.syntaxMap, this.staticAscendingPrecedence))
+    get syntaxList(): CompositeType[] {
+        // return this._syntaxList
+        //     .slice()
+        //     .sort((a, b) => maxPrecedence(b, a, this.syntaxMap, this.staticAscendingPrecedence))
+
+        // const syntaxes = new Set(this.config.syntaxList.filter(x=>x!=='array'))
+
+        return [
+            'macro',
+            'macropart',
+            'taggedunion',
+            'andsentence',
+            'copulasentence',
+            'complement',
+            'subclause',
+            'nounphrase']
     }
 
     get lexemes() {

@@ -18,7 +18,7 @@ export const constituentTypes = stringLiterals(
     'nounphrase',
     'complement',
     'subclause',
-
+    'andsentence',
 )
 
 export const staticAscendingPrecedence: CompositeType[] = [
@@ -61,6 +61,12 @@ export const syntaxes: SyntaxMap = {
 
     'copulasentence': [
 
+    ],
+
+    'andsentence': [
+        { type: ['copulasentence'], number: 1, role: 'one' as Role },
+        { type: ['nonsubconj'], number: 1 },
+        { type: ['andsentence', 'copulasentence'], number: '+' /* or '*' ?*/, role: 'two' as Role }
     ],
 }
 

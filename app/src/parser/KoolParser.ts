@@ -85,10 +85,19 @@ export class KoolParser implements Parser {
             }
 
             if (ast) {
-                const astType = ast.type != 'array' ? ast.type : Object.values((ast as CompositeNode<'array'>).links).at(0)?.type ?? 'array';
-                links[m.role ?? astType] = ast
+
+                const astType = ast.type != 'array' ? ast.type : Object.values((ast as CompositeNode<'array'>).links).at(0)?.type
+
+                if (astType) {
+                    links[m.role ?? astType] = ast
+                }
+
             }
 
+        }
+
+        if (Object.keys(links).length <= 0) {
+            return undefined
         }
 
         return {
@@ -108,7 +117,7 @@ export class KoolParser implements Parser {
                 break
             }
 
-            // const x = this.try(this.parseOneMember, m.type, m.number, m.role) // --------
+            // const x = this.try(this.parseOneMember, m.type, m.role) // --------
             const memento = this.lexer.pos
             const x = this.parseOneMember(m.type, m.role)
             if (!x) { this.lexer.backTo(memento) }
