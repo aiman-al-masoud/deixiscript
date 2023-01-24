@@ -38,7 +38,7 @@ function test1() {
 function test2() {
     const brain = getBrain()
     brain.execute('x is red. x is a button. x is a button. x is a button. x is red.');
-    const assert1 = (brain as BasicBrain).enviro.values.length === 1
+    const assert1 = (brain as BasicBrain).context.enviro.values.length === 1
     return assert1
 }
 

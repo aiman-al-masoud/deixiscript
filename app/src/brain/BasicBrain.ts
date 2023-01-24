@@ -1,27 +1,25 @@
 import Brain from "./Brain";
-import getEnviro from "../enviro/Enviro";
 import { getActuator } from "../actuator/actuator/Actuator";
 import { toClause } from "./toClause";
-import { Config } from "../config/Config";
 import { getParser } from "../parser/interfaces/Parser";
+import { Context } from "../Context";
 
 
 export default class BasicBrain implements Brain {
 
     constructor(
-        readonly config: Config,
-        readonly enviro = getEnviro({ root: document.body }),
+        readonly context: Context,
         readonly actuator = getActuator()) {
 
-        this.config.startupCommands.forEach(c => this.execute(c))
+        this.context.config.startupCommands.forEach(c => this.execute(c))
     }
 
     execute(natlang: string): any[] {
 
-        return getParser(natlang, this.config).parseAll().map(ast => {
+        return getParser(natlang, this.context.config).parseAll().map(ast => {
 
             if (ast.type == 'macro') {
-                this.config.setSyntax(ast as any)
+                this.context.config.setSyntax(ast as any)
                 return []
             }
 
@@ -29,16 +27,16 @@ export default class BasicBrain implements Brain {
 
             if (clause.isSideEffecty) {
 
-                this.actuator.takeAction(clause, this.enviro)
+                this.actuator.takeAction(clause, this.context.enviro)
                 return []
 
             } else {
 
-                const maps = this.enviro.query(clause)
+                const maps = this.context.enviro.query(clause)
                 const ids = maps.flatMap(m => Object.values(m))
-                const objects = ids.map(id => this.enviro.get(id))
+                const objects = ids.map(id => this.context.enviro.get(id))
 
-                this.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
+                this.context.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
                 objects.forEach(o => o?.pointOut())
                 return objects.map(o => o?.object)
             }

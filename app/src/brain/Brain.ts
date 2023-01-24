@@ -1,4 +1,5 @@
 import { getConfig } from "../config/Config"
+import { getNewContext } from "../Context"
 import BasicBrain from "./BasicBrain"
 
 /**
@@ -8,6 +9,6 @@ export default interface Brain {
     execute(natlang: string): any[]
 }
 
-export function getBrain(config = getConfig()): Brain {
-    return new BasicBrain(config)
+export function getBrain(): Brain {
+    return new BasicBrain(getNewContext())
 }
