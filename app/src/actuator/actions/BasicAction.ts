@@ -37,7 +37,7 @@ export default class BasicAction implements Action {
             .map(e => this.topLevel.theme.describe(e)[0]) // ASSUME at least one
     }
 
-    protected forTopLevel(enviro: Enviro) {
+    protected forTopLevel(enviro: Enviro) { // this id is TL entity
 
         const q = this.topLevel.theme.about(this.clause.args[0])
         const maps = enviro.query(q)
@@ -64,12 +64,9 @@ export default class BasicAction implements Action {
 
     protected forNonTopLevel(enviro: Enviro) {
 
-        // assuming max x.y.z nesting
-        const owners = this.topLevel.ownersOf(this.clause.args[0])
-        const hasTopLevel = owners.filter(x => this.topLevel.topLevel().includes(x))[0]
-        const topLevelOwner = hasTopLevel ? hasTopLevel : this.topLevel.ownersOf(owners[0])[0]
+        const tLOwner = this.getTopLevelOwnerOf(this.clause.args[0], this.topLevel)
 
-        if (topLevelOwner === undefined) {
+        if (!tLOwner) {
             return
         }
 
@@ -79,11 +76,26 @@ export default class BasicAction implements Action {
             return
         }
 
-        const q = this.topLevel.theme.about(topLevelOwner)
+        const q = this.topLevel.theme.about(tLOwner)
         const maps = enviro.query(q)
-        const id = maps?.[0]?.[topLevelOwner] //?? getRandomId()
+        const tLOwnerId = maps?.[0]?.[tLOwner] //?? getRandomId()
 
-        return new EditAction(id, this.clause.predicate, this.getProps(topLevelOwner)).run(enviro)
+        return new EditAction(tLOwnerId, this.clause.predicate, this.getProps(tLOwner)).run(enviro)
+    }
+
+    protected getTopLevelOwnerOf(id: Id, topLevel: Clause): Id | undefined {
+
+        const owners = topLevel.ownersOf(id)
+
+        const maybe = owners
+            .filter(o => topLevel.topLevel().includes(o)).at(0)
+
+        if (!maybe && owners.length > 0) {
+            return this.getTopLevelOwnerOf(owners[0], topLevel)
+        } else {
+            return maybe
+        }
+
     }
 
 }
