@@ -18,12 +18,7 @@ export default class ConceptAction implements Action {
             root: inst,
             type: 'adj',
             concepts: [this.concept.root],
-            isConcept : this.concept.root === 'concept'
         })
-
-        // if (this.clause.predicate.root === 'concept') {
-        //     console.log('new concept:', this.topLevel.theme.describe(this.clause.args[0])[0].root.toUpperCase())
-        // }
 
     }
 

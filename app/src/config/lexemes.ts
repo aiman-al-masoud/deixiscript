@@ -227,7 +227,7 @@ export const lexemes: Lexeme[] = [
     {
         root: 'concept',
         type: 'noun',
-        isConcept: true
+        concepts: ['concept']
     },
 ]
 

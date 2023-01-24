@@ -14,8 +14,6 @@ export interface Lexeme {
     /**for quantadj */ readonly cardinality?: Cardinality
     readonly concepts?: string[]
     readonly proto?: string
-
-    readonly isConcept?:boolean
 }
 
 export function formsOf(lexeme: Lexeme) {
@@ -41,4 +39,8 @@ export function getLexemes(word: string, lexemes: Lexeme[]): Lexeme[] {
 
 export function getProto(lexeme: Lexeme): Object | undefined {
     return (window as any)?.[lexeme.proto as any]?.prototype
+}
+
+export function isConcept(lexeme: Lexeme) {
+    return lexeme.concepts?.includes('concept')
 }

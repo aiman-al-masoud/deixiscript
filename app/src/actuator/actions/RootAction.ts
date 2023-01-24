@@ -2,7 +2,7 @@ import { BasicClause } from "../../clauses/BasicClause";
 import { Clause } from "../../clauses/Clause";
 import { Id, getRandomId } from "../../clauses/Id";
 import { Context } from "../../Context";
-import { Lexeme } from "../../lexer/Lexeme";
+import { isConcept, Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 import ConceptAction from "./ConceptAction";
 import CreateAction from "./CreateAction";
@@ -24,7 +24,7 @@ export default class RootAction implements Action {
             return new EditAction(this.clause.args[0], this.clause.predicate, []).run(context)
         }
 
-        if (this.topLevel.rheme.describe(this.clause.args[0]).some(x => x.isConcept)) { // 
+        if (this.topLevel.rheme.describe(this.clause.args[0]).some(x => isConcept(x))) { // 
             return new ConceptAction(this.clause.args[0],
                 this.clause.predicate,
                 this.topLevel).run(context)
@@ -56,9 +56,11 @@ export default class RootAction implements Action {
         }
 
         if (this.clause.predicate.proto) {
-            new CreateAction(id, this.clause.predicate).run(context)
+            return new CreateAction(id,
+                this.clause.predicate).run(context)
         } else {
-            new EditAction(id, this.clause.predicate, this.getProps(this.clause.args[0])).run(context)
+            return new EditAction(id, this.clause.predicate,
+                this.getProps(this.clause.args[0])).run(context)
         }
     }
 
@@ -80,7 +82,8 @@ export default class RootAction implements Action {
         const maps = context.enviro.query(q)
         const tLOwnerId = maps?.[0]?.[tLOwner] //?? getRandomId()
 
-        return new EditAction(tLOwnerId, this.clause.predicate, this.getProps(tLOwner)).run(context)
+        return new EditAction(tLOwnerId,
+            this.clause.predicate, this.getProps(tLOwner)).run(context)
     }
 
     protected getTopLevelOwnerOf(id: Id, topLevel: Clause): Id | undefined {
