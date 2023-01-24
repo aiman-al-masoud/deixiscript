@@ -31,13 +31,13 @@ export const lexemes: Lexeme[] = [
 
     {
         root: 'clicked',
-        type: 'adj',
+        type: 'adjective',
         derivedFrom: 'click'
     },
 
     {
         root: 'pressed',
-        type: 'adj',
+        type: 'adjective',
         aliasFor: 'clicked'
     },
 
@@ -188,29 +188,29 @@ export const lexemes: Lexeme[] = [
 
     {
         root: 'subject',
-        type: 'adj'
+        type: 'adjective'
     },
 
     {
         root: 'predicate',
-        type: 'adj'
+        type: 'adjective'
     },
 
     {
         root: 'optional',
-        type: 'adj',
+        type: 'adjective',
         cardinality: '1|0'
     },
 
     {
         root: 'one or more',
-        type: 'adj',
+        type: 'adjective',
         cardinality: '+'
     },
 
     {
         root: 'zero or more',
-        type: 'adj',
+        type: 'adjective',
         cardinality: '*'
     },
 

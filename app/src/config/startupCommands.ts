@@ -5,7 +5,7 @@ export const startupCommands: string[] = [
     'article is indefart or defart',
     'complement is preposition then noun phrase',
     'copula sentence is subject noun phrase then copula then optional negation then predicate noun phrase',
-    'noun phrase is optional quantifier then optional article then zero  or  more adjs then optional noun or pronoun then optional subclause then zero or more complements ',
+    'noun phrase is optional quantifier then optional article then zero  or  more adjectives then optional noun or pronoun then optional subclause then zero or more complements ',
     'copulasubclause is relpron then copula then noun phrase',
     'subclause is copulasubclause',
 

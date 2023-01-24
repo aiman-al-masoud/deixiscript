@@ -21,7 +21,7 @@ export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
     const cast = ast as CompositeNode<CompositeType>
 
-    if (cast.links.pronoun || cast.links.noun || cast.links.adj) {
+    if (cast.links.pronoun || cast.links.noun || cast.links.adjective) {
         return nounPhraseToClause(ast as any, args)
     } else if (cast.links.relpron) {
         return copulaSubClauseToClause(ast as any, args)
@@ -98,7 +98,7 @@ function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToC
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
     const newArgs = { ...args, roles: { subject: subjectId } };
 
-    const adjectives: LeafNode<LexemeType>[] = (nounPhrase?.links?.adj as any)?.links ?? []
+    const adjectives: LeafNode<LexemeType>[] = (nounPhrase?.links?.adjective as any)?.links ?? []
     const noun = (nounPhrase.links.noun ?? nounPhrase.links.pronoun) as LeafNode<LexemeType> | undefined
     const complements: LeafNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
     const subClause = nounPhrase.links.subclause

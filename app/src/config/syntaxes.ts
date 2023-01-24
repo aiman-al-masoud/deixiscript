@@ -36,7 +36,7 @@ export const syntaxes: SyntaxMap = {
         { type: ['macropart'], number: '+' }
     ],
     'macropart': [
-        { type: ['adj'], number: '*' },
+        { type: ['adjective'], number: '*' },
         { type: ['taggedunion'], number: '+' },
         { type: ['then'], number: '1|0' }
     ],

@@ -11,7 +11,7 @@ export function macroToSyntax(macro: CompositeNode<'macro'>): { name: string, sy
 
 function macroPartToMember(macroPart: CompositeNode<'macropart'>): Member {
 
-    const adjectives: Lexeme[] = (macroPart.links?.adj as any)?.links?.map((a: any) => a.lexeme) ?? []
+    const adjectives: Lexeme[] = (macroPart.links?.adjective as any)?.links?.map((a: any) => a.lexeme) ?? []
     const taggedUnions = (macroPart.links.taggedunion as any).links as CompositeNode<'taggedunion'>[]
     const grammars = taggedUnions.map(x => x.links.grammar)
 
