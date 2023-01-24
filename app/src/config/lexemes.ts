@@ -1,6 +1,9 @@
 import { Lexeme } from "../lexer/Lexeme";
+import { lexemeTypes } from "./LexemeType";
+import { constituentTypes } from "./syntaxes";
 
 export const lexemes: Lexeme[] = [
+
     {
         root: 'have',
         type: 'mverb',
@@ -209,7 +212,6 @@ export const lexemes: Lexeme[] = [
 
     },
 
-
     {
         root: 'subject',
         type: 'adj'
@@ -248,77 +250,25 @@ export const lexemes: Lexeme[] = [
         type: 'pronoun'
     },
 
-    // grammar
-
     {
-        root: 'negation',
-        type: 'grammar'
+        root: 'color',
+        type: 'noun',
+        isConcept: true
     },
 
     {
-        root: 'iverb',
-        type: 'grammar'
+        root: 'concept',
+        type: 'noun',
+        isConcept: true
     },
-
-    {
-        root: 'noun',
-        type: 'grammar'
-    },
-
-    {
-        root: 'adj',
-        type: 'grammar'
-    },
-
-    {
-        root: 'copula',
-        type: 'grammar'
-    },
-
-    {
-        root: 'preposition',
-        type: 'grammar'
-    },
-
-    {
-        root: 'uniquant',
-        type: 'grammar'
-    },
-
-    {
-        root: 'existquant',
-        type: 'grammar'
-    },
-
-    {
-        root: 'defart',
-        type: 'grammar'
-    },
-
-    {
-        root: 'indefart',
-        type: 'grammar'
-    },
-
-    {
-        root: 'relpron',
-        type: 'grammar'
-    },
-
-    {
-        root: 'subclause', // TODO: remove!
-        type: 'grammar'
-    },
-
-    {
-        root: 'nounphrase', // TODO: remove!
-        type: 'grammar'
-    },
-
-    {
-        root: 'pronoun',
-        type: 'grammar'
-    },
-
-
 ]
+
+/**
+ * Grammar
+ */
+constituentTypes.concat(lexemeTypes as any).forEach(g => {
+    lexemes.push({
+        root: g,
+        type: 'grammar'
+    })
+})

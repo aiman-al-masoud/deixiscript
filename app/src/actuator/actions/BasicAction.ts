@@ -47,6 +47,14 @@ export default class BasicAction implements Action {
             enviro.setPlaceholder(id)
         }
 
+        // if (this.clause.predicate.isConcept) {
+        //     console.log('new instance of concept:', this.topLevel.theme.describe(this.clause.args[0])[0].root.toUpperCase(), 'is a', this.clause.predicate.root.toUpperCase())
+        // }
+
+        // if (this.clause.predicate.root === 'concept') {
+        //     console.log('new concept:', this.topLevel.theme.describe(this.clause.args[0])[0].root.toUpperCase())
+        // }
+
         if (this.clause.predicate.proto) {
             new CreateAction(id, this.clause.predicate).run(enviro)
         } else {

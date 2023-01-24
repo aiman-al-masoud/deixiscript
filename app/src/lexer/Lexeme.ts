@@ -14,6 +14,8 @@ export interface Lexeme {
     /**for quantadj */ readonly cardinality?: Cardinality
     readonly concepts?: string[]
     readonly proto?: string
+
+    readonly isConcept?:boolean
 }
 
 export function formsOf(lexeme: Lexeme) {
