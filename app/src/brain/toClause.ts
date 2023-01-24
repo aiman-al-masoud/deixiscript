@@ -84,7 +84,7 @@ function complementToClause(complement: any, args?: ToClauseOpts): Clause {
     const newId = getRandomId()
 
     const preposition = complement.links.preposition as LeafNode<'preposition'>
-    const nounPhrase = complement.links.nounphrase as CompositeNode<CompositeType>
+    const nounPhrase = complement.links['noun phrase'] as CompositeNode<CompositeType>
 
     return clauseOf(preposition.lexeme, subjId, newId)
         .and(toClause(nounPhrase, { ...args, roles: { subject: newId } }))

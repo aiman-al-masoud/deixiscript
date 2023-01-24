@@ -15,10 +15,10 @@ export const constituentTypes = stringLiterals(
 
     // extendible
     'copula sentence',
-    'nounphrase',
+    'noun phrase',
     'complement',
     'subclause',
-    'andsentence',
+    'and sentence',
 )
 
 export const staticAscendingPrecedence: CompositeType[] = [
@@ -52,7 +52,7 @@ export const syntaxes: SyntaxMap = {
     'subclause': [
 
     ],
-    'nounphrase': [
+    'noun phrase': [
 
     ],
     'complement': [
@@ -63,10 +63,10 @@ export const syntaxes: SyntaxMap = {
 
     ],
 
-    'andsentence': [
-        { type: ['copula sentence', 'nounphrase'], number: 1, role: 'one' as Role },
+    'and sentence': [
+        { type: ['copula sentence', 'noun phrase'], number: 1, role: 'one' as Role },
         { type: ['nonsubconj'], number: 1 },
-        { type: ['andsentence', 'copula sentence', 'nounphrase'], number: '+', role: 'two' as Role }
+        { type: ['and sentence', 'copula sentence', 'noun phrase'], number: '+', role: 'two' as Role }
     ],
 }
 
