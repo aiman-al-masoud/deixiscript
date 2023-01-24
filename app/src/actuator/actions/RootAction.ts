@@ -6,7 +6,7 @@ import Action from "./Action";
 import CreateAction from "./CreateAction";
 import EditAction from "./EditAction";
 
-export default class BasicAction implements Action {
+export default class RootAction implements Action {
 
     constructor(readonly clause: BasicClause, readonly topLevel: Clause) {
 
