@@ -60,20 +60,6 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: "red",
-        type: "adj",
-        concepts: ['color']
-
-    },
-
-    {
-        root: "green",
-        type: "adj",
-        concepts: ['color']
-
-    },
-
-    {
         root: "exist",
         type: "iverb",
     },
@@ -199,18 +185,6 @@ export const lexemes: Lexeme[] = [
         root: 'and',
         type: 'nonsubconj'
     },
-    {
-        root: 'black',
-        type: 'adj',
-        concepts: ['color']
-    },
-
-    {
-        root: 'blue',
-        type: 'adj',
-        concepts: ['color']
-
-    },
 
     {
         root: 'subject',
@@ -248,12 +222,6 @@ export const lexemes: Lexeme[] = [
     {
         root: 'it',
         type: 'pronoun'
-    },
-
-    {
-        root: 'color',
-        type: 'noun',
-        isConcept: true
     },
 
     {

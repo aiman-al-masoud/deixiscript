@@ -2,7 +2,9 @@ import { BasicClause } from "../../clauses/BasicClause";
 import { Clause } from "../../clauses/Clause";
 import { Id, getRandomId } from "../../clauses/Id";
 import { Context } from "../../Context";
+import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
+import ConceptAction from "./ConceptAction";
 import CreateAction from "./CreateAction";
 import EditAction from "./EditAction";
 
@@ -20,6 +22,12 @@ export default class RootAction implements Action {
 
         if (this.clause.exactIds) {
             return new EditAction(this.clause.args[0], this.clause.predicate, []).run(context)
+        }
+
+        if (this.topLevel.rheme.describe(this.clause.args[0]).some(x => x.isConcept)) { // 
+            return new ConceptAction(this.clause.args[0],
+                this.clause.predicate,
+                this.topLevel).run(context)
         }
 
         if (this.topLevel.topLevel().includes(this.clause.args[0])) {
@@ -46,14 +54,6 @@ export default class RootAction implements Action {
         if (!context.enviro.get(id)) {
             context.enviro.setPlaceholder(id)
         }
-
-        // if (this.clause.predicate.isConcept) {
-        //     console.log('new instance of concept:', this.topLevel.theme.describe(this.clause.args[0])[0].root.toUpperCase(), 'is a', this.clause.predicate.root.toUpperCase())
-        // }
-
-        // if (this.clause.predicate.root === 'concept') {
-        //     console.log('new concept:', this.topLevel.theme.describe(this.clause.args[0])[0].root.toUpperCase())
-        // }
 
         if (this.clause.predicate.proto) {
             new CreateAction(id, this.clause.predicate).run(context)
