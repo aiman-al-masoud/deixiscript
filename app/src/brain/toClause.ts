@@ -7,28 +7,28 @@ import { CompositeType } from "../config/syntaxes";
 import { AstType } from "../parser/interfaces/Syntax";
 
 
-interface Roles {
-    subject?: Id
-    object?: Id
-}
 
-export interface ToClauseOpts {
-    roles?: Roles,
-    anaphora?: Clause
+interface ToClauseOpts {
+    subject?: Id
 }
 
 export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
     const cast = ast as CompositeNode<CompositeType>
+    let result
 
     if (cast.links.pronoun || cast.links.noun || cast.links.adjective) {
-        return nounPhraseToClause(ast as any, args)
+        result = nounPhraseToClause(ast as any, args)
     } else if (cast.links.relpron) {
-        return copulaSubClauseToClause(ast as any, args)
+        result = copulaSubClauseToClause(ast as any, args)
     } else if (cast.links.preposition) {
-        return complementToClause(ast as any, args)
+        result = complementToClause(ast as any, args)
     } else if (cast.links.subject && cast.links.predicate) {
-        return copulaSentenceToClause(ast as any, args)
+        result = copulaSentenceToClause(ast as any, args)
+    }
+
+    if (result) {
+        return propagateVarsOwned(resolveAnaphora(makeAllVars(result)))
     }
 
     console.log({ ast })
@@ -40,34 +40,17 @@ function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Claus
 
     const subjectAst = copulaSentence.links.subject as CompositeNode<CompositeType>
     const predicateAst = copulaSentence.links.predicate as CompositeNode<CompositeType>
-    const subjectId = args?.roles?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
-    const newArgs = { ...args, roles: { subject: subjectId } }
+    const subjectId = args?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
+    const newArgs = { ...args, subject: subjectId }
     const subject = toClause(subjectAst, newArgs)
     const predicate = toClause(predicateAst, newArgs).copy({ negate: !!copulaSentence.links.negation })
     const entities = subject.entities.concat(predicate.entities)
 
-    const result = entities// assume any sentence with any var is an implication
-        .some(e => isVar(e)) ?
+    const result = entities.some(e => isVar(e)) ?  // assume any sentence with any var is an implication
         subject.implies(predicate) :
         subject.and(predicate, { asRheme: true })
 
-    const m0 = result.entities // assume ids are case insensitive, assume if IDX is var all idx are var
-        .filter(x => isVar(x))
-        .map(e => ({ [toConst(e)]: e }))
-        .reduce((a, b) => ({ ...a, ...b }), {})
-
-    const a = getAnaphora() // get anaphora
-    a.assert(subject)
-    const m1 = (a.query(predicate))[0] ?? {}
-    const result2 = result.copy({ map: m0 }).copy({ sideEffecty: true, map: m1 })
-
-    const m2 = result2.entities // assume anything owned by a variable is also a variable
-        .filter(e => isVar(e))
-        .flatMap(e => result2.ownedBy(e))
-        .map(e => ({ [e]: toVar(e) }))
-        .reduce((a, b) => ({ ...a, ...b }), {})
-
-    return result2.copy({ map: m2 })
+    return result.copy({ sideEffecty: true })
 
 }
 
@@ -75,26 +58,27 @@ function copulaSubClauseToClause(copulaSubClause: any, args?: ToClauseOpts): Cla
 
     const predicate = copulaSubClause.links.predicate as CompositeNode<CompositeType>
 
-    return (toClause(predicate, { ...args, roles: { subject: args?.roles?.subject } }))
+    return toClause(predicate, { ...args, subject: args?.subject })
         .copy({ sideEffecty: false })
 }
 
 function complementToClause(complement: any, args?: ToClauseOpts): Clause {
-    const subjId = args?.roles?.subject ?? ((): Id => { throw new Error('undefined subject id') })()
+
+    const subjId = args?.subject ?? getRandomId() //?? ((): Id => { throw new Error('undefined subject id') })()
     const newId = getRandomId()
 
     const preposition = complement.links.preposition as LeafNode<'preposition'>
     const nounPhrase = complement.links['noun phrase'] as CompositeNode<CompositeType>
 
     return clauseOf(preposition.lexeme, subjId, newId)
-        .and(toClause(nounPhrase, { ...args, roles: { subject: newId } }))
+        .and(toClause(nounPhrase, { ...args, subject: newId }))
         .copy({ sideEffecty: false })
 
 }
 
 function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToClauseOpts): Clause {
 
-    const maybeId = args?.roles?.subject ?? getRandomId()
+    const maybeId = args?.subject ?? getRandomId()
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
     const newArgs = { ...args, roles: { subject: subjectId } };
 
@@ -113,4 +97,37 @@ function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToC
             .copy({ sideEffecty: false })
 
     return res
+}
+
+function makeAllVars(clause: Clause): Clause { // assume ids are case insensitive, assume if IDX is var all idx are var
+
+    const m = clause.entities
+        .filter(x => isVar(x))
+        .map(e => ({ [toConst(e)]: e }))
+        .reduce((a, b) => ({ ...a, ...b }), {})
+    return clause.copy({ map: m })
+
+}
+
+function resolveAnaphora(clause: Clause): Clause {
+
+    if (clause.rheme.hashCode === emptyClause().hashCode) {
+        return clause
+    }
+
+    const a = getAnaphora()
+    a.assert(clause.theme)
+    return clause.copy({ map: a.query(clause.rheme)[0] ?? {} })
+}
+
+function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by a variable is also a variable
+
+    const m = clause.entities
+        .filter(e => isVar(e))
+        .flatMap(e => clause.ownedBy(e))
+        .map(e => ({ [e]: toVar(e) }))
+        .reduce((a, b) => ({ ...a, ...b }), {})
+
+    return clause.copy({ map: m })
+
 }

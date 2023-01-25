@@ -6,19 +6,20 @@ import Action from "../actuator/actions/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
-import { LexemeType } from "../config/LexemeType";
 import ImplyAction from "../actuator/actions/ImplyAction";
 
 export default class Imply implements Clause {
 
-    constructor(readonly condition: Clause,
-        readonly conclusion: Clause,
+    constructor(
+        readonly condition: Clause,
+        readonly consequence: Clause,
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly isImply = true,
         readonly hashCode = hashString(JSON.stringify(arguments)),
-        readonly theme = condition.theme) {
+        readonly theme = condition,
+        readonly rheme = consequence) {
 
     }
 
@@ -29,7 +30,7 @@ export default class Imply implements Clause {
     copy(opts?: CopyOpts): Clause {
 
         return new Imply(this.condition.copy(opts),
-            this.conclusion.copy(opts),
+            this.consequence.copy(opts),
             opts?.negate ? !this.negated : this.negated,
             opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty)
@@ -41,11 +42,7 @@ export default class Imply implements Clause {
     }
 
     get entities(): Id[] {
-        return this.condition.entities.concat(this.conclusion.entities)
-    }
-
-    get rheme(): Clause {
-        return this // dunno what I'm doin'
+        return this.condition.entities.concat(this.consequence.entities)
     }
 
     implies(conclusion: Clause): Clause {
@@ -57,20 +54,20 @@ export default class Imply implements Clause {
     }
 
     toString() {
-        const yes = `${this.condition.toString()} ---> ${this.conclusion.toString()}`
+        const yes = `${this.condition.toString()} ---> ${this.consequence.toString()}`
         return this.negated ? `not(${yes})` : yes
     }
 
     ownedBy(id: Id): Id[] {
-        return this.condition.ownedBy(id).concat(this.conclusion.ownedBy(id))
+        return this.condition.ownedBy(id).concat(this.consequence.ownedBy(id))
     }
 
     ownersOf(id: Id): Id[] {
-        return this.condition.ownersOf(id).concat(this.conclusion.ownersOf(id))
+        return this.condition.ownersOf(id).concat(this.consequence.ownersOf(id))
     }
 
     describe(id: Id): Lexeme[] {
-        return this.conclusion.describe(id).concat(this.condition.describe(id))
+        return this.consequence.describe(id).concat(this.condition.describe(id))
     }
 
     topLevel(): Id[] {
@@ -82,7 +79,7 @@ export default class Imply implements Clause {
     }
 
     toAction(topLevel: Clause): Action[] {
-        return [new ImplyAction(this.condition, this.conclusion)]
+        return [new ImplyAction(this.condition, this.consequence)]
     }
 
 }
