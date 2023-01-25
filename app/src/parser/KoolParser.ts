@@ -95,11 +95,7 @@ export class KoolParser implements Parser {
                 continue
             }
 
-            const astType = !ast.list ? ast.type : ast?.list?.at(0)?.type
-
-            if (astType) {
-                links[m.role ?? astType] = ast
-            }
+            links[m.role ?? ast.type] = ast
 
         }
 
@@ -133,12 +129,12 @@ export class KoolParser implements Parser {
             list.push(x)
         }
 
-        if (list.length === 0 && isNecessary(m.number)) {
+        if (list.length === 0) {
             return undefined
         }
 
         return isRepeatable(m.number) ? ({
-            type: 'array',
+            type: list[0].type,
             list: list
         }) : list[0]
 
