@@ -95,7 +95,7 @@ export class KoolParser implements Parser {
                 continue
             }
 
-            const astType = ast.type !== 'array' ? ast.type : Object.values((ast as CompositeNode<'array'>).links).at(0)?.type
+            const astType = !ast.list ? ast.type : ast?.list?.at(0)?.type
 
             if (astType) {
                 links[m.role ?? astType] = ast
@@ -116,7 +116,7 @@ export class KoolParser implements Parser {
 
     protected parseMember = (m: Member, role?: Role): AstNode<AstType> | undefined => {
 
-        const list: any[] = []
+        const list: AstNode<AstType>[] = []
 
         while (!this.lexer.isEnd) {
 
@@ -139,7 +139,8 @@ export class KoolParser implements Parser {
 
         return isRepeatable(m.number) ? ({
             type: 'array',
-            links: (list as any) //TODO!!!!
+            // links: (list as any) //TODO!!!!
+            list: list
         }) : list[0]
 
     }

@@ -7,6 +7,7 @@ export interface AstNode<T extends AstType> {
     readonly type: T
     readonly links?: Links
     readonly lexeme?: Lexeme
+    readonly list? : AstNode<AstType>[]
 }
 
 export interface LeafNode<T extends LexemeType> extends AstNode<T> {

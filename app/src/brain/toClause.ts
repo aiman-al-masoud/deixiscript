@@ -1,9 +1,7 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
-import { AstNode, LeafNode, CompositeNode } from "../parser/interfaces/AstNode";
-import { LexemeType } from "../config/LexemeType";
-import { CompositeType } from "../config/syntaxes";
+import { AstNode } from "../parser/interfaces/AstNode";
 import { AstType } from "../parser/interfaces/Syntax";
 
 
@@ -21,11 +19,11 @@ export function toClause(ast?: AstNode<AstType>, args?: ToClauseOpts): Clause {
     let result
 
     if (ast?.links?.pronoun || ast?.links?.noun || ast?.links?.adjective) {
-        result = nounPhraseToClause(ast as any, args)
+        result = nounPhraseToClause(ast, args)
     } else if (ast?.links?.relpron) {
-        result = copulaSubClauseToClause(ast as any, args)
+        result = copulaSubClauseToClause(ast, args)
     } else if (ast?.links?.preposition) {
-        result = complementToClause(ast as any, args)
+        result = complementToClause(ast, args)
     } else if (ast?.links?.subject && ast?.links.predicate) {
         result = copulaSentenceToClause(ast, args)
     }
@@ -83,18 +81,18 @@ function complementToClause(complement: AstNode<AstType>, args?: ToClauseOpts): 
 
 }
 
-function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToClauseOpts): Clause {
+function nounPhraseToClause(nounPhrase: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
     const maybeId = args?.subject ?? getRandomId()
-    const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
+    const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
 
-    const adjectives: LeafNode<LexemeType>[] = (nounPhrase?.links?.adjective as any)?.links ?? []
-    const noun = nounPhrase.links.noun ?? nounPhrase.links.pronoun
-    const complements: LeafNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
-    const subClause = nounPhrase.links.subclause
+    const adjectives = nounPhrase?.links?.adjective?.list ?? []
+    const noun = nounPhrase?.links?.noun ?? nounPhrase?.links?.pronoun
+    const complements = nounPhrase?.links?.complement?.list ?? []
+    const subClause = nounPhrase?.links?.subclause
 
     const res =
-        adjectives.map(a => a.lexeme)
+        adjectives.flatMap(a => a.lexeme ?? [])
             .concat(noun?.lexeme ? [noun.lexeme] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause())
