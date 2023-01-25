@@ -1,7 +1,6 @@
 import Action from "../actuator/actions/Action";
-import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
-import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { Clause, AndOpts, CopyOpts } from "./Clause";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { hashString } from "./hashString";
 import { Id } from "./Id";
