@@ -139,7 +139,6 @@ export class KoolParser implements Parser {
 
         return isRepeatable(m.number) ? ({
             type: 'array',
-            // links: (list as any) //TODO!!!!
             list: list
         }) : list[0]
 
