@@ -11,7 +11,8 @@ const tests = [
     test7,
     test8,
     test9,
-    test10
+    test10,
+    test11
 ]
 
 /**
@@ -105,6 +106,20 @@ function test10() {
     const assert2 = brain.execute('y').at(0).style.background == 'green'
     const assert3 = brain.execute('z').at(0).style.background == 'blue'
     return assert1 && assert2 && assert3
+}
+
+function test11() {
+    const brain = getBrain()
+    brain.execute('x and y and z and w are buttons')
+    brain.execute('x and y are red')
+    brain.execute('w and z are black')
+
+    const assert1 = brain.execute('x').at(0).style.background === brain.execute('y').at(0).style.background
+    const assert2 = brain.execute('w').at(0).style.background === brain.execute('z').at(0).style.background
+    const assert3 = brain.execute('x').at(0).style.background === 'red'
+    const assert4 = brain.execute('w').at(0).style.background === 'black'
+    return assert1 && assert2 && assert3 && assert4
+
 }
 
 
