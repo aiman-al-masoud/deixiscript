@@ -5,7 +5,7 @@ import { BasicConfig } from "./BasicConfig"
 import { lexemes } from "./lexemes"
 import { LexemeType, lexemeTypes } from "./LexemeType"
 import { startupCommands } from "./startupCommands"
-import { CompositeType, constituentTypes, staticAscendingPrecedence, syntaxes } from "./syntaxes"
+import { CompositeType, constituentTypes, staticDescPrecedence, syntaxes } from "./syntaxes"
 
 export interface Config {
     readonly lexemes: Lexeme[]
@@ -25,6 +25,6 @@ export function getConfig(): Config {
         lexemes,
         syntaxes,
         startupCommands,
-        staticAscendingPrecedence)
+        staticDescPrecedence)
 }
 

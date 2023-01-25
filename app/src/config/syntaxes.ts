@@ -9,7 +9,6 @@ export const constituentTypes = stringLiterals(
 
     // permanent
     'taggedunion',
-    'array', // consecutive asts
     'macropart',
     'macro',
 
@@ -21,11 +20,11 @@ export const constituentTypes = stringLiterals(
     'and sentence',
 )
 
-export const staticAscendingPrecedence: CompositeType[] = [
-    'taggedunion',
-    'array',
+export const staticDescPrecedence: CompositeType[] = [
+    'macro',
     'macropart',
-    'macro']
+    'taggedunion',
+]
 
 export const syntaxes: SyntaxMap = {
 
@@ -44,17 +43,16 @@ export const syntaxes: SyntaxMap = {
         { type: ['grammar'], number: 1 },
         { type: ['disjunc'], number: '1|0' }
     ],
-    'array': [
-
-    ],
 
     // extendible
     'subclause': [
 
     ],
+
     'noun phrase': [
 
     ],
+
     'complement': [
 
     ],

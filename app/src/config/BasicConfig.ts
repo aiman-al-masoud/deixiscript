@@ -15,27 +15,28 @@ export class BasicConfig implements Config {
         protected _lexemes: Lexeme[],
         readonly syntaxMap: SyntaxMap,
         readonly startupCommands: string[],
-        readonly staticAscendingPrecedence: CompositeType[]) {
+        readonly staticDescPrecedence: CompositeType[]) {
     }
 
     get syntaxList(): CompositeType[] {
 
-        const sl = this._syntaxList
-            .slice()
-            .sort((a, b) => maxPrecedence(b, a, this.syntaxMap, this.staticAscendingPrecedence))
-            .filter(x => x !== 'array')
+        const sy1 =
+            this._syntaxList.filter(x => !this.staticDescPrecedence.includes(x))
+                .sort((a, b) => maxPrecedence(b, a, this.syntaxMap))
 
-        return [...new Set(sl)]
+        const sy2 = [...new Set(sy1)]
 
-        // return [
-        //     'macro',
-        //     'macropart',
-        //     'taggedunion',
-        //     'andsentence',
-        //     'copulasentence',
-        //     'complement',
-        //     'subclause',
-        //     'nounphrase']
+        return this.staticDescPrecedence.slice().concat(sy2)
+
+        return [
+            'macro',
+            'macropart',
+            'taggedunion',
+            'and sentence',
+            'copula sentence',
+            'complement',
+            'subclause',
+            'noun phrase']
     }
 
     get lexemes() {

@@ -1,10 +1,9 @@
 import { CompositeType } from "../config/syntaxes"
 import { SyntaxMap, AstType } from "./interfaces/Syntax"
 
-export const maxPrecedence = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap, staticAscendingPrecedence: AstType[]) => {
+export const maxPrecedence = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap) => {
 
     return idCompare(a, b) ??
-        staticCompare(a, b, staticAscendingPrecedence) ??
         dependencyCompare(a, b, syntaxes) ??
         lenCompare(a, b, syntaxes)
 
@@ -12,18 +11,6 @@ export const maxPrecedence = (a: CompositeType, b: CompositeType, syntaxes: Synt
 
 const idCompare = (a: AstType, b: AstType) => {
     return a == b ? 0 : undefined
-}
-
-function staticCompare(a: AstType, b: AstType, staticByAscPrecedence: AstType[]) {
-
-    const pa = staticByAscPrecedence.indexOf(a)
-    const pb = staticByAscPrecedence.indexOf(b)
-
-    if (pa === -1 || pb === -1) { // either one is custom
-        return undefined
-    }
-
-    return pa - pb
 }
 
 const dependencyCompare = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap) => {
@@ -40,7 +27,9 @@ const dependencyCompare = (a: CompositeType, b: CompositeType, syntaxes: SyntaxM
 }
 
 function dependencies(a: CompositeType, syntaxes: SyntaxMap): AstType[] {
-    return (syntaxes[a] ?? []).flatMap(m => m.type)
+
+    const x = (syntaxes[a] ?? []).flatMap(m => m.type)
+    return x
 }
 
 const lenCompare = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap) => {
