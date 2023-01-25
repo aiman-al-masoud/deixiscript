@@ -21,7 +21,6 @@ export function getConfig(): Config {
 
     return new BasicConfig(
         lexemeTypes,
-        new Set(constituentTypes),
         lexemes,
         syntaxes,
         startupCommands,

@@ -1,5 +1,5 @@
 import { Lexeme } from "../lexer/Lexeme"
-import { CompositeNode } from "../parser/interfaces/AstNode"
+import { AstNode } from "../parser/interfaces/AstNode"
 import { LexemeType } from "./LexemeType"
 import { CompositeType } from "./syntaxes"
 import { Config } from "./Config"
@@ -11,7 +11,6 @@ export class BasicConfig implements Config {
 
     constructor(
         readonly lexemeTypes: LexemeType[],
-        protected syntaxSet: Set<CompositeType>,
         protected _lexemes: Lexeme[],
         readonly syntaxMap: SyntaxMap,
         readonly startupCommands: string[],
@@ -20,7 +19,7 @@ export class BasicConfig implements Config {
 
     get syntaxList(): CompositeType[] {
 
-        const x = [...this.syntaxSet]
+        const x = Object.keys(this.syntaxMap) as CompositeType[]
         const y = x.filter(e => !this.staticDescPrecedence.includes(e))
         const z = y.sort((a, b) => maxPrecedence(b, a, this.syntaxMap))
         return this.staticDescPrecedence.concat(z)
@@ -40,13 +39,10 @@ export class BasicConfig implements Config {
         return this._lexemes
     }
 
-    setSyntax = (macro: CompositeNode<"macro">) => {
-
+    setSyntax = (macro: AstNode<AstType>) => {
         const syntax = macroToSyntax(macro)
         this.setLexeme({ type: 'grammar', root: syntax.name })
-        this.syntaxSet.add(syntax.name as CompositeType)
         this.syntaxMap[syntax.name as CompositeType] = syntax.syntax
-
     }
 
     getSyntax = (name: AstType) => {
