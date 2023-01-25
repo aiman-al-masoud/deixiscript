@@ -2,15 +2,14 @@ import { Role } from "../parser/interfaces/AstNode";
 import { SyntaxMap } from "../parser/interfaces/Syntax";
 import { ElementType, stringLiterals } from "./utils";
 
-
 export type CompositeType = ElementType<typeof constituentTypes>;
 
 export const constituentTypes = stringLiterals(
 
     // permanent
-    'taggedunion',
-    'macropart',
     'macro',
+    'macropart',
+    'taggedunion',
 
     // extendible
     'copula sentence',
