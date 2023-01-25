@@ -1,5 +1,5 @@
 import { Clause } from "../../clauses/Clause";
-import { Context } from "../../Context";
+import { Context } from "../../brain/Context";
 import BaseActuator from "./BaseActuator";
 
 export interface Actuator {

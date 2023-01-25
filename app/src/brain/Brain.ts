@@ -1,5 +1,5 @@
 import { getConfig } from "../config/Config"
-import { getNewContext } from "../Context"
+import { getNewContext } from "./Context"
 import BasicBrain from "./BasicBrain"
 
 /**

@@ -1,4 +1,4 @@
-import { Context } from "../../Context"
+import { Context } from "../../brain/Context"
 import { Enviro } from "../../enviro/Enviro"
 
 export default interface Action {

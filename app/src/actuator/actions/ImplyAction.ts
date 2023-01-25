@@ -1,6 +1,6 @@
 
 import { Clause, clauseOf } from "../../clauses/Clause";
-import { Context } from "../../Context";
+import { Context } from "../../brain/Context";
 import { Enviro } from "../../enviro/Enviro";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";

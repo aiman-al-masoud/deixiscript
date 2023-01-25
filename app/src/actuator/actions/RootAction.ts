@@ -1,7 +1,7 @@
 import { BasicClause } from "../../clauses/BasicClause";
 import { Clause } from "../../clauses/Clause";
 import { Id, getRandomId } from "../../clauses/Id";
-import { Context } from "../../Context";
+import { Context } from "../../brain/Context";
 import { isConcept, Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 import ConceptAction from "./ConceptAction";

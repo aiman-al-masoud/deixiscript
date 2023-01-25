@@ -1,6 +1,6 @@
 import { Clause } from "../../clauses/Clause";
 import { Id } from "../../clauses/Id";
-import { Context } from "../../Context";
+import { Context } from "../../brain/Context";
 import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 

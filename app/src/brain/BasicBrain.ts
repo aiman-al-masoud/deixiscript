@@ -2,7 +2,7 @@ import Brain from "./Brain";
 import { getActuator } from "../actuator/actuator/Actuator";
 import { toClause } from "./toClause";
 import { getParser } from "../parser/interfaces/Parser";
-import { Context } from "../Context";
+import { Context } from "./Context";
 
 
 export default class BasicBrain implements Brain {

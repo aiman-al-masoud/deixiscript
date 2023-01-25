@@ -1,5 +1,5 @@
 import { Id } from "../../clauses/Id";
-import { Context } from "../../Context";
+import { Context } from "../../brain/Context";
 import { Enviro } from "../../enviro/Enviro";
 import { wrap } from "../../enviro/Wrapper";
 import { Lexeme, getProto } from "../../lexer/Lexeme";

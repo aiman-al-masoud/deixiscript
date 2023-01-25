@@ -1,5 +1,5 @@
-import { Config, getConfig } from "./config/Config";
-import getEnviro, { Enviro } from "./enviro/Enviro";
+import { Config, getConfig } from "../config/Config";
+import getEnviro, { Enviro } from "../enviro/Enviro";
 
 export interface Context {
     readonly enviro: Enviro
