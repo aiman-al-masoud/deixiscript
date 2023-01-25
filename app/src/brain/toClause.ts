@@ -40,7 +40,7 @@ function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Claus
 
     const subjectAst = copulaSentence.links.subject as CompositeNode<CompositeType>
     const predicateAst = copulaSentence.links.predicate as CompositeNode<CompositeType>
-    const subjectId = args?.subject ?? getRandomId({ asVar: subjectAst.links.uniquant !== undefined })
+    const subjectId = args?.subject ?? getRandomId()
     const newArgs = { ...args, subject: subjectId }
     const subject = toClause(subjectAst, newArgs)
     const predicate = toClause(predicateAst, newArgs).copy({ negate: !!copulaSentence.links.negation })
