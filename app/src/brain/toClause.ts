@@ -12,19 +12,22 @@ interface ToClauseOpts {
     subject?: Id
 }
 
-export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
+export function toClause(ast?: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
-    const cast = ast as CompositeNode<CompositeType>
+    if (!ast) {
+        throw new Error(`Ast is undefined!`)
+    }
+
     let result
 
-    if (cast.links.pronoun || cast.links.noun || cast.links.adjective) {
+    if (ast?.links?.pronoun || ast?.links?.noun || ast?.links?.adjective) {
         result = nounPhraseToClause(ast as any, args)
-    } else if (cast.links.relpron) {
+    } else if (ast?.links?.relpron) {
         result = copulaSubClauseToClause(ast as any, args)
-    } else if (cast.links.preposition) {
+    } else if (ast?.links?.preposition) {
         result = complementToClause(ast as any, args)
-    } else if (cast.links.subject && cast.links.predicate) {
-        result = copulaSentenceToClause(ast as any, args)
+    } else if (ast?.links?.subject && ast?.links.predicate) {
+        result = copulaSentenceToClause(ast, args)
     }
 
     if (result) {
@@ -36,13 +39,13 @@ export function toClause(ast: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
 }
 
-function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Clause {
+function copulaSentenceToClause(copulaSentence: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
-    const subjectAst = copulaSentence.links.subject as CompositeNode<CompositeType>
-    const predicateAst = copulaSentence.links.predicate as CompositeNode<CompositeType>
+    const subjectAst = copulaSentence?.links?.subject
+    const predicateAst = copulaSentence?.links?.predicate
     const subjectId = args?.subject ?? getRandomId()
     const subject = toClause(subjectAst, { subject: subjectId })
-    const predicate = toClause(predicateAst, { subject: subjectId }).copy({ negate: !!copulaSentence.links.negation })
+    const predicate = toClause(predicateAst, { subject: subjectId }).copy({ negate: !!copulaSentence?.links?.negation })
     const entities = subject.entities.concat(predicate.entities)
 
     const result = entities.some(e => isVar(e)) ?  // assume any sentence with any var is an implication
@@ -53,24 +56,29 @@ function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Claus
 
 }
 
-function copulaSubClauseToClause(copulaSubClause: any, args?: ToClauseOpts): Clause {
+function copulaSubClauseToClause(copulaSubClause: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
-    const predicate = copulaSubClause.links.predicate as CompositeNode<CompositeType>
+    const predicate = copulaSubClause?.links?.predicate //as CompositeNode<CompositeType>
 
-    return toClause(predicate, { ...args, subject: args?.subject })
+    return toClause(predicate, { subject: args?.subject })
         .copy({ sideEffecty: false })
 }
 
-function complementToClause(complement: any, args?: ToClauseOpts): Clause {
+function complementToClause(complement: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
     const subjId = args?.subject ?? getRandomId() //?? ((): Id => { throw new Error('undefined subject id') })()
     const newId = getRandomId()
 
-    const preposition = complement.links.preposition as LeafNode<'preposition'>
-    const nounPhrase = complement.links['noun phrase'] as CompositeNode<CompositeType>
+    const preposition = complement?.links?.preposition?.lexeme
 
-    return clauseOf(preposition.lexeme, subjId, newId)
-        .and(toClause(nounPhrase, { ...args, subject: newId }))
+    if (!preposition) {
+        throw new Error('No preposition!')
+    }
+
+    const nounPhrase = complement?.links?.['noun phrase']
+
+    return clauseOf(preposition, subjId, newId)
+        .and(toClause(nounPhrase, { subject: newId }))
         .copy({ sideEffecty: false })
 
 }
@@ -79,10 +87,9 @@ function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToC
 
     const maybeId = args?.subject ?? getRandomId()
     const subjectId = nounPhrase.links.uniquant ? toVar(maybeId) : maybeId
-    const newArgs = { ...args, roles: { subject: subjectId } };
 
     const adjectives: LeafNode<LexemeType>[] = (nounPhrase?.links?.adjective as any)?.links ?? []
-    const noun = (nounPhrase.links.noun ?? nounPhrase.links.pronoun) as LeafNode<LexemeType> | undefined
+    const noun = nounPhrase.links.noun ?? nounPhrase.links.pronoun
     const complements: LeafNode<LexemeType>[] = (nounPhrase?.links?.complement as any)?.links ?? []
     const subClause = nounPhrase.links.subclause
 
@@ -91,8 +98,8 @@ function nounPhraseToClause(nounPhrase: CompositeNode<CompositeType>, args?: ToC
             .concat(noun?.lexeme ? [noun.lexeme] : [])
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause())
-            .and(complements.map(c => c ? toClause(c, newArgs) : emptyClause()).reduce((c1, c2) => c1.and(c2), emptyClause()))
-            .and(subClause ? toClause(subClause, newArgs) : emptyClause())
+            .and(complements.map(c => c ? toClause(c, { subject: subjectId }) : emptyClause()).reduce((c1, c2) => c1.and(c2), emptyClause()))
+            .and(subClause ? toClause(subClause, { subject: subjectId }) : emptyClause())
             .copy({ sideEffecty: false })
 
     return res

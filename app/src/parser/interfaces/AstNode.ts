@@ -5,6 +5,8 @@ import { AstType } from "./Syntax"
 
 export interface AstNode<T extends AstType> {
     readonly type: T
+    readonly links?: Links
+    readonly lexeme?: Lexeme
 }
 
 export interface LeafNode<T extends LexemeType> extends AstNode<T> {
@@ -12,9 +14,11 @@ export interface LeafNode<T extends LexemeType> extends AstNode<T> {
 }
 
 export interface CompositeNode<T extends CompositeType> extends AstNode<T> {
-    readonly links: { [index in AstType | Role]?: AstNode<AstType> }
+    readonly links: Links
     readonly role?: Role
 }
+
+export type Links = { [index in AstType | Role]?: AstNode<AstType> } //| AstNode<AstType>[]
 
 export type Role = 'subject'
     | 'object'
