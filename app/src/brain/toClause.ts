@@ -2,7 +2,6 @@ import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { getAnaphora } from "../enviro/Anaphora";
 import { AstNode } from "../parser/interfaces/AstNode";
-import { AstType } from "../parser/interfaces/Syntax";
 
 
 
@@ -39,11 +38,9 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
 function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
-    const subjectAst = copulaSentence?.links?.subject
-    const predicateAst = copulaSentence?.links?.predicate
     const subjectId = args?.subject ?? getRandomId()
-    const subject = toClause(subjectAst, { subject: subjectId })
-    const predicate = toClause(predicateAst, { subject: subjectId }).copy({ negate: !!copulaSentence?.links?.negation })
+    const subject = toClause(copulaSentence?.links?.subject, { subject: subjectId })
+    const predicate = toClause(copulaSentence?.links?.predicate, { subject: subjectId }).copy({ negate: !!copulaSentence?.links?.negation })
     const entities = subject.entities.concat(predicate.entities)
 
     const result = entities.some(e => isVar(e)) ?  // assume any sentence with any var is an implication
