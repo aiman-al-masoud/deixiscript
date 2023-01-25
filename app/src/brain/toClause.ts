@@ -25,6 +25,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = complementToClause(ast, args)
     } else if (ast?.links?.subject && ast?.links.predicate) {
         result = copulaSentenceToClause(ast, args)
+    } else if (ast.type === 'and sentence') {
+        result = andSentenceToClause(ast, args)
     }
 
     if (result) {
@@ -130,5 +132,22 @@ function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by
         .reduce((a, b) => ({ ...a, ...b }), {})
 
     return clause.copy({ map: m })
+
+}
+
+
+function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+
+    const left = toClause(ast.links?.left)
+    const right = toClause(ast?.links?.right?.list?.[0])
+
+    if (ast.links?.left?.type === 'copula sentence') {
+        return left.and(right).copy({ sideEffecty: true })
+    } else {
+        const m = { [right.entities[0]]: left.entities[0] }
+        const theme = left.theme.and(right.theme)
+        const rheme = right.rheme.and(right.rheme.copy({ map: m }))
+        return theme.and(rheme, { asRheme: true }).copy({ sideEffecty: true })
+    }
 
 }

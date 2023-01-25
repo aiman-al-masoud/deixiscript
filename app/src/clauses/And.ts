@@ -87,11 +87,11 @@ export default class And implements Clause {
     }
 
     get theme(): Clause {
-        return this.clause2IsRheme ? this.clause1 : this
+        return this.clause2IsRheme ? this.clause1 : this.clause1.theme.and(this.clause2.theme)
     }
 
     get rheme() {
-        return this.clause2IsRheme ? this.clause2 : emptyClause()
+        return this.clause2IsRheme ? this.clause2 : this.clause1.rheme.and(this.clause2.rheme)
     }
 
     toAction(topLevel: Clause): Action[] {

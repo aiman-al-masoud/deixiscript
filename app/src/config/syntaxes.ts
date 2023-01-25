@@ -61,9 +61,9 @@ export const syntaxes: SyntaxMap = {
     ],
 
     'and sentence': [
-        { type: ['copula sentence', 'noun phrase'], number: 1, role: 'one' as Role },
+        { type: ['copula sentence', 'noun phrase'], number: 1, role: 'left' },
         { type: ['nonsubconj'], number: 1 },
-        { type: ['and sentence', 'copula sentence', 'noun phrase'], number: '+', role: 'two' as Role }
+        { type: ['and sentence', 'copula sentence', 'noun phrase'], number: '+', role: 'right' }
     ],
 }
 
