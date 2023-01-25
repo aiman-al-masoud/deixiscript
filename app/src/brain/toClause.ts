@@ -41,9 +41,8 @@ function copulaSentenceToClause(copulaSentence: any, args?: ToClauseOpts): Claus
     const subjectAst = copulaSentence.links.subject as CompositeNode<CompositeType>
     const predicateAst = copulaSentence.links.predicate as CompositeNode<CompositeType>
     const subjectId = args?.subject ?? getRandomId()
-    const newArgs = { ...args, subject: subjectId }
-    const subject = toClause(subjectAst, newArgs)
-    const predicate = toClause(predicateAst, newArgs).copy({ negate: !!copulaSentence.links.negation })
+    const subject = toClause(subjectAst, { subject: subjectId })
+    const predicate = toClause(predicateAst, { subject: subjectId }).copy({ negate: !!copulaSentence.links.negation })
     const entities = subject.entities.concat(predicate.entities)
 
     const result = entities.some(e => isVar(e)) ?  // assume any sentence with any var is an implication
