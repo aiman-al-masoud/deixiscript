@@ -39,7 +39,7 @@ export class BasicConfig implements Config {
         return this._lexemes
     }
 
-    setSyntax = (macro: AstNode<AstType>) => {
+    setSyntax = (macro: AstNode) => {
         const syntax = macroToSyntax(macro)
         this.setLexeme({ type: 'grammar', root: syntax.name })
         this.syntaxMap[syntax.name as CompositeType] = syntax.syntax

@@ -10,7 +10,7 @@ interface ToClauseOpts {
     subject?: Id
 }
 
-export function toClause(ast?: AstNode<AstType>, args?: ToClauseOpts): Clause {
+export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     if (!ast) {
         throw new Error(`Ast is undefined!`)
@@ -37,7 +37,7 @@ export function toClause(ast?: AstNode<AstType>, args?: ToClauseOpts): Clause {
 
 }
 
-function copulaSentenceToClause(copulaSentence: AstNode<AstType>, args?: ToClauseOpts): Clause {
+function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
     const subjectAst = copulaSentence?.links?.subject
     const predicateAst = copulaSentence?.links?.predicate
@@ -54,7 +54,7 @@ function copulaSentenceToClause(copulaSentence: AstNode<AstType>, args?: ToClaus
 
 }
 
-function copulaSubClauseToClause(copulaSubClause: AstNode<AstType>, args?: ToClauseOpts): Clause {
+function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
 
     const predicate = copulaSubClause?.links?.predicate //as CompositeNode<CompositeType>
 
@@ -62,7 +62,7 @@ function copulaSubClauseToClause(copulaSubClause: AstNode<AstType>, args?: ToCla
         .copy({ sideEffecty: false })
 }
 
-function complementToClause(complement: AstNode<AstType>, args?: ToClauseOpts): Clause {
+function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
 
     const subjId = args?.subject ?? getRandomId() //?? ((): Id => { throw new Error('undefined subject id') })()
     const newId = getRandomId()
@@ -81,7 +81,7 @@ function complementToClause(complement: AstNode<AstType>, args?: ToClauseOpts): 
 
 }
 
-function nounPhraseToClause(nounPhrase: AstNode<AstType>, args?: ToClauseOpts): Clause {
+function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
 
     const maybeId = args?.subject ?? getRandomId()
     const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId

@@ -13,7 +13,7 @@ export interface Config {
     readonly syntaxList: CompositeType[]
     readonly lexemeTypes: LexemeType[]
     getSyntax(name: AstType): Syntax
-    setSyntax(macro: AstNode<AstType>): void
+    setSyntax(macro: AstNode): void
     setLexeme(lexeme: Lexeme): void
 }
 

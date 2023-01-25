@@ -1,35 +1,16 @@
 import { Lexeme } from "../../lexer/Lexeme"
-import { LexemeType } from "../../config/LexemeType"
-import { CompositeType } from "../../config/syntaxes"
 import { AstType } from "./Syntax"
 
-export interface AstNode<T extends AstType> {
-    readonly type: T
-    readonly links?: Links
+export interface AstNode {
+    readonly type: AstType
+    readonly links?: { [index in AstType | Role]?: AstNode }
     readonly lexeme?: Lexeme
-    readonly list? : AstNode<AstType>[]
-}
-
-export interface LeafNode<T extends LexemeType> extends AstNode<T> {
-    readonly lexeme: Lexeme
-}
-
-export interface CompositeNode<T extends CompositeType> extends AstNode<T> {
-    readonly links: Links
+    readonly list?: AstNode[]
     readonly role?: Role
 }
-
-export type Links = { [index in AstType | Role]?: AstNode<AstType> } //| AstNode<AstType>[]
 
 export type Role = 'subject'
     | 'object'
     | 'predicate'
     | 'condition'
     | 'consequence'
-
-// export interface Macro extends CompositeNode<'macro'>{
-//     readonly links : {
-        
-//     }
-// }
-

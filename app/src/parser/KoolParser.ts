@@ -1,4 +1,4 @@
-import { AstNode, Role, LeafNode, CompositeNode } from "./interfaces/AstNode"
+import { AstNode, Role } from "./interfaces/AstNode"
 import { CompositeType } from "../config/syntaxes"
 import { getLexer } from "../lexer/Lexer"
 import { LexemeType } from "../config/LexemeType"
@@ -19,7 +19,7 @@ export class KoolParser implements Parser {
 
     parseAll() {
 
-        const results: AstNode<AstType>[] = []
+        const results: AstNode[] = []
 
         while (!this.lexer.isEnd) {
 
@@ -57,7 +57,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected knownParse = (name: AstType, role?: Role): AstNode<AstType> | undefined => {
+    protected knownParse = (name: AstType, role?: Role): AstNode | undefined => {
 
         const members = this.config.getSyntax(name)
 
@@ -69,7 +69,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseLeaf = (m: Member): LeafNode<LexemeType> | undefined => {
+    protected parseLeaf = (m: Member): AstNode | undefined => {
 
         if (m.type.includes(this.lexer.peek.type)) {
             const x = this.lexer.peek
@@ -79,7 +79,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: CompositeType, role?: Role): CompositeNode<CompositeType> | undefined => {
+    protected parseComposite = (name: CompositeType, role?: Role): AstNode | undefined => {
 
         const links: any = {}
 
@@ -110,9 +110,9 @@ export class KoolParser implements Parser {
         }
     }
 
-    protected parseMember = (m: Member, role?: Role): AstNode<AstType> | undefined => {
+    protected parseMember = (m: Member, role?: Role): AstNode | undefined => {
 
-        const list: AstNode<AstType>[] = []
+        const list: AstNode[] = []
 
         while (!this.lexer.isEnd) {
 

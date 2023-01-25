@@ -4,7 +4,7 @@ import { AstNode } from "./AstNode"
 import { AstType } from "./Syntax"
 
 export interface Parser {
-    parseAll(): AstNode<AstType>[]
+    parseAll(): AstNode[]
 }
 
 export function getParser(sourceCode: string, config: Config): Parser {
