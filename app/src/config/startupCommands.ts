@@ -20,6 +20,10 @@ export const startupCommands: string[] = [
     'copulasubclause is relpron then copula then noun phrase',
     'subclause is copulasubclause',
 
+    `and sentence is left copula sentence or noun phrase 
+        then nonsubconj
+        then one or more right and sentence or copula sentence or noun phrase`,
+
     // domain
     'color is a concept',
     'red and blue and black and green are colors',

@@ -24,15 +24,15 @@ export class BasicConfig implements Config {
         const z = y.sort((a, b) => maxPrecedence(b, a, this.syntaxMap))
         return this.staticDescPrecedence.concat(z)
 
-        return [
-            'macro',
-            'macropart',
-            'taggedunion',
-            'and sentence',
-            'copula sentence',
-            'complement',
-            'subclause',
-            'noun phrase']
+        // return [
+        //     'macro',
+        //     'macropart',
+        //     'taggedunion',
+        //     'and sentence',
+        //     'copula sentence',
+        //     'complement',
+        //     'subclause',
+        //     'noun phrase']
     }
 
     get lexemes() {

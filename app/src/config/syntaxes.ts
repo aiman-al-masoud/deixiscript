@@ -62,12 +62,10 @@ export const syntaxes: SyntaxMap = {
     ],
 
     'and sentence': [
-        { type: ['copula sentence', 'noun phrase'], number: 1, role: 'left' },
-        { type: ['nonsubconj'], number: 1 },
-        { type: ['and sentence', 'copula sentence', 'noun phrase'], number: '+', role: 'right' }
+
     ],
 
-    'mverb sentence': [//TODO: complements
+    'mverb sentence': [ //TODO: complements
         { type: ['noun phrase'], number: 1, role: 'subject' },
         { type: ['hverb'], number: '1|0' },
         { type: ['negation'], number: '1|0' },
