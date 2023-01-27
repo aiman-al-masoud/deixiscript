@@ -1,6 +1,5 @@
 import { Id } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
-import { Enviro } from "../../enviro/Enviro";
 import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 
@@ -10,7 +9,7 @@ export default class EditAction implements Action {
 
     }
 
-    async run(context: Context): Promise<any> {
+    run(context: Context): any {
         const obj = context.enviro.get(this.id) ?? context.enviro.setPlaceholder(this.id)
         obj.set(this.predicate, this.props)
     }

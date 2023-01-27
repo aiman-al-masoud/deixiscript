@@ -1,13 +1,13 @@
-import { BasicClause } from "../../clauses/BasicClause";
-import { Clause } from "../../clauses/Clause";
-import { Id, getRandomId } from "../../clauses/Id";
-import { Context } from "../../brain/Context";
-import { isConcept } from "../../lexer/Lexeme";
-import Action from "./Action";
-import ConceptAction from "./ConceptAction";
-import CreateAction from "./CreateAction";
-import EditAction from "./EditAction";
-import RelationAction from "./RelationAction";
+import { BasicClause } from "../../clauses/BasicClause"
+import { Clause } from "../../clauses/Clause"
+import { Id, getRandomId } from "../../clauses/Id"
+import { Context } from "../../brain/Context"
+import { isConcept } from "../../lexer/Lexeme"
+import Action from "./Action"
+import ConceptAction from "./ConceptAction"
+import CreateAction from "./CreateAction"
+import EditAction from "./EditAction"
+import RelationAction from "./RelationAction"
 
 export default class RootAction implements Action {
 
