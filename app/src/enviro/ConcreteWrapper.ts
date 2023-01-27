@@ -1,4 +1,3 @@
-import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
 import Wrapper from "./Wrapper";
 
@@ -84,6 +83,12 @@ export default class ConcreteWrapper implements Wrapper {
             this.object.style.outline = opts?.turnOff ? '' : '#f00 solid 2px'
         }
 
+    }
+
+    call(verb: Lexeme, args: Wrapper[]) {
+        const concept = this.simpleConcepts[verb.root]
+        const methodName = concept?.[0] ?? verb.root
+        return this?.object[methodName](...args.map(x => x.object))
     }
 
 }

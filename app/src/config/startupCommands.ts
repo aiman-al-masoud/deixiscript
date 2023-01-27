@@ -4,8 +4,19 @@ export const startupCommands: string[] = [
     'quantifier is uniquant or existquant',
     'article is indefart or defart',
     'complement is preposition then noun phrase',
-    'copula sentence is subject noun phrase then copula then optional negation then predicate noun phrase',
-    'noun phrase is optional quantifier then optional article then zero  or  more adjectives then optional noun or pronoun then optional subclause then zero or more complements ',
+
+    `copula sentence is subject noun phrase 
+        then copula 
+        then optional negation 
+        then predicate noun phrase`,
+
+    `noun phrase is optional quantifier 
+        then optional article 
+        then zero  or  more adjectives 
+        then optional subject noun or pronoun or mverb 
+        then optional subclause 
+        then zero or more complements `,
+
     'copulasubclause is relpron then copula then noun phrase',
     'subclause is copulasubclause',
 

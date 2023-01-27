@@ -8,7 +8,9 @@ export default class BaseEnviro implements Enviro {
 
     protected lastReferenced?: Id
 
-    constructor(readonly root?: HTMLElement, readonly dictionary: { [id: Id]: Wrapper } = {}) {
+    constructor(
+        readonly root?: HTMLElement,
+        readonly dictionary: { [id: Id]: Wrapper } = {}) {
 
     }
 
@@ -46,11 +48,15 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    query(clause: Clause): Map[] { //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
+    query(clause: Clause): Map[] {
+
+        //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
+        //TODO: after "every ..." sentence, "it" should be undefined
 
         const universe = Object
             .entries(this.dictionary)
             .map(x => ({ e: x[0], w: x[1] }))
+
 
         const query = clause // described entities
             .entities
@@ -62,12 +68,8 @@ export default class BaseEnviro implements Enviro {
             .flatMap(q => {
 
                 const to = universe
-                    .filter(u => q.desc.every(d => u.w.is(d)))
-                    // .concat(q.desc.includes('it') ? getIt() : []) //TODO: hardcoded bad
+                    .filter(u => q.desc.length > 0 && q.desc.every(d => u.w.is(d)))
                     .concat(q.desc.find(x => x.type == 'pronoun') ? getIt() : [])
-
-
-                //TODO: after "every ..." sentence, "it" should be undefined
 
                 return { from: q.e, to: to }
 

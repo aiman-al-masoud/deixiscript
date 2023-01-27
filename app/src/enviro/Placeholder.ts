@@ -17,5 +17,6 @@ export class Placeholder implements Wrapper {
 
     setAlias(conceptName: Lexeme, propPath: Lexeme[]) { }
     pointOut(opts?: { turnOff: boolean }) { }
+    call(verb: Lexeme, args: Wrapper[]) { }
 
 }

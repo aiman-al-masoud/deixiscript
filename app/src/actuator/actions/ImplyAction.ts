@@ -1,7 +1,5 @@
-
 import { Clause, clauseOf } from "../../clauses/Clause";
 import { Context } from "../../brain/Context";
-import { Enviro } from "../../enviro/Enviro";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
@@ -20,7 +18,7 @@ export default class ImplyAction implements Action {
             || this.conclusion.getOwnershipChain(this.conclusion.topLevel()[0]).slice(1).length
 
         if (isSetAliasCall) {
-            this.setAliasCall()
+            this.setAliasCall(context)
         } else {
             this.other(context)
         }
@@ -28,7 +26,7 @@ export default class ImplyAction implements Action {
 
     }
 
-    setAliasCall() {
+    setAliasCall(context: Context) {
 
         const top = this.condition.topLevel()[0] //TODO (!ASSUME!) same as top in conclusion
         const alias = this.condition.getOwnershipChain(top).slice(1)
@@ -37,7 +35,13 @@ export default class ImplyAction implements Action {
         const propsNames = props.map(x => this.conclusion.describe(x)[0]) // same ...
         const protoName = this.condition.describe(top)[0] // assume one 
         const proto = getProto(protoName)
-        wrap(proto).setAlias(conceptName[0], propsNames)
+
+        const oldType = propsNames[0].type
+        const type = oldType ?? 'noun'
+        const newLexeme = { ...conceptName[0], type: type }
+
+        context.config.setLexeme(newLexeme)
+        wrap(proto).setAlias(newLexeme, propsNames)
         // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
     }
 

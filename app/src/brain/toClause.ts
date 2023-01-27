@@ -17,7 +17,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     let result
 
-    if (ast?.links?.pronoun || ast?.links?.noun || ast?.links?.adjective) {
+    if (ast.type === 'noun phrase') {
         result = nounPhraseToClause(ast, args)
     } else if (ast?.links?.relpron) {
         result = copulaSubClauseToClause(ast, args)
@@ -27,10 +27,15 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = copulaSentenceToClause(ast, args)
     } else if (ast.type === 'and sentence') {
         result = andSentenceToClause(ast, args)
+    } else if (ast.links?.subject && ast.links.object) {
+        result = mverbSentenceToClause(ast, args)
     }
 
     if (result) {
-        return propagateVarsOwned(resolveAnaphora(makeAllVars(result)))
+        const c1 = makeAllVars(result)
+        const c2 = resolveAnaphora(c1)
+        const c3 = propagateVarsOwned(c2)
+        return c3
     }
 
     console.log({ ast })
@@ -86,7 +91,7 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
     const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
 
     const adjectives = nounPhrase?.links?.adjective?.list ?? []
-    const noun = nounPhrase?.links?.noun ?? nounPhrase?.links?.pronoun
+    const noun = nounPhrase.links?.subject
     const complements = nounPhrase?.links?.complement?.list ?? []
     const subClause = nounPhrase?.links?.subclause
 
@@ -112,7 +117,7 @@ function makeAllVars(clause: Clause): Clause { // assume ids are case insensitiv
 
 }
 
-function resolveAnaphora(clause: Clause): Clause {
+function resolveAnaphora(clause: Clause): Clause {//colpevole!
 
     if (clause.rheme.hashCode === emptyClause().hashCode) {
         return clause
@@ -120,7 +125,8 @@ function resolveAnaphora(clause: Clause): Clause {
 
     const a = getAnaphora()
     a.assert(clause.theme)
-    return clause.copy({ map: a.query(clause.rheme)[0] ?? {} })
+    const m = a.query(clause.rheme)[0]
+    return clause.copy({ map: m ?? {} })
 }
 
 function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by a variable is also a variable
@@ -138,8 +144,8 @@ function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by
 
 function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
-    const left = toClause(ast.links?.left)
-    const right = toClause(ast?.links?.right?.list?.[0])
+    const left = toClause(ast.links?.left, args)
+    const right = toClause(ast?.links?.right?.list?.[0], args)
 
     if (ast.links?.left?.type === 'copula sentence') {
         return left.and(right).copy({ sideEffecty: true })
@@ -150,4 +156,29 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
         return theme.and(rheme, { asRheme: true }).copy({ sideEffecty: true })
     }
 
+}
+
+
+function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+
+    const subjId = args?.subject ?? getRandomId()
+    const objId = getRandomId()
+
+    const subject = toClause(ast.links?.subject, { subject: subjId })
+    const object = toClause(ast.links?.object, { subject: objId })
+    const mverb = ast.links?.mverb?.lexeme
+
+    if (!mverb) {
+        throw new Error('no mverb in mverb sentence!')
+    }
+
+    const rheme = clauseOf(mverb, subjId, objId)
+        .copy({ negate: !!ast.links.negation })
+
+    const res = subject
+        .and(object)
+        .and(rheme, { asRheme: true })
+        .copy({ sideEffecty: true })
+
+    return res
 }

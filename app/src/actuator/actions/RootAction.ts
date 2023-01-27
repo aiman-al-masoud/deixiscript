@@ -2,11 +2,12 @@ import { BasicClause } from "../../clauses/BasicClause";
 import { Clause } from "../../clauses/Clause";
 import { Id, getRandomId } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
-import { isConcept, Lexeme } from "../../lexer/Lexeme";
+import { isConcept } from "../../lexer/Lexeme";
 import Action from "./Action";
 import ConceptAction from "./ConceptAction";
 import CreateAction from "./CreateAction";
 import EditAction from "./EditAction";
+import RelationAction from "./RelationAction";
 
 export default class RootAction implements Action {
 
@@ -16,8 +17,13 @@ export default class RootAction implements Action {
 
     run(context: Context): any {
 
-        if (this.clause.args.length > 1) { // not handling relations yet
-            return
+        if (this.clause.args.length > 1 && this.clause.predicate.root !== 'of') { // relations 
+
+            return new RelationAction(this.topLevel,
+                this.clause.predicate,
+                this.clause.args,
+                this.clause.negated).run(context)
+
         }
 
         if (this.clause.exactIds) {

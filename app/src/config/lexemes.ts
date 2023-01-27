@@ -229,6 +229,11 @@ export const lexemes: Lexeme[] = [
         type: 'noun',
         concepts: ['concept']
     },
+    
+    // {
+    //     root: 'contain',
+    //     type: 'mverb'
+    // }
 ]
 
 /**
