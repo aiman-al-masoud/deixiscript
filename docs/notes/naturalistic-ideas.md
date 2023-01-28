@@ -11,8 +11,8 @@ Temporal referencing.
 Generalized (statement level) anaphora to refer to operations (full sentences!).
 
 ```
-the y button is red. //action 1
-the x button is green before the button is red. //action 2, precedes action 1 
+x is red.
+before that, throw an error if it doesn't exist.
 ```
 
 refining a statement or expression or function at a later point in the program text.
