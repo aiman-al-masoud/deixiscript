@@ -69,4 +69,8 @@ export class EmptyClause implements Clause {
         return []
     }
 
+    getTopLevelOwnerOf(id: Id): Id | undefined {
+        return undefined
+    }
+
 }

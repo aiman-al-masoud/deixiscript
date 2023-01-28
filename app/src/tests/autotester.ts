@@ -12,7 +12,8 @@ const tests = [
     test8,
     test9,
     test10,
-    test11
+    test11,
+    test12,
 ]
 
 /**
@@ -58,7 +59,6 @@ function test4() {
     const button = brain.execute('button')
     return button !== undefined
 }
-
 
 function test5() {
     const brain = getBrain()
@@ -122,6 +122,12 @@ function test11() {
 
 }
 
+function test12() {
+    const brain = getBrain()
+    brain.execute('x and y are buttons')
+    brain.execute('x appendChilds y')
+    return Object.values(brain.execute('x')[0].children).includes(brain.execute('y')[0])
+}
 
 function sleep(millisecs: number) {
     return new Promise((ok, err) => {

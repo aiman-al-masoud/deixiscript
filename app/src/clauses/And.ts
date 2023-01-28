@@ -2,6 +2,7 @@ import Action from "../actuator/actions/Action";
 import { Lexeme } from "../lexer/Lexeme";
 import { Clause, AndOpts, CopyOpts } from "./Clause";
 import { getOwnershipChain } from "./getOwnershipChain";
+import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
 import { hashString } from "./hashString";
 import { Id } from "./Id";
 import Imply from "./Imply";
@@ -95,6 +96,10 @@ export default class And implements Clause {
 
     toAction(topLevel: Clause): Action[] {
         return this.clause1.toAction(topLevel).concat(this.clause2.toAction(topLevel))
+    }
+
+    getTopLevelOwnerOf(id: Id): Id | undefined {
+        return getTopLevelOwnerOf(id, this)
     }
 
 }

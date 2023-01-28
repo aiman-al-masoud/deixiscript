@@ -17,25 +17,37 @@ export default class RootAction implements Action {
 
     run(context: Context): any {
 
-        if (this.clause.args.length > 1 && this.clause.predicate.root !== 'of') { // relations 
+        // relations (multi arg predicates) except for 'of' 
+        if (this.clause.args.length > 1 && this.clause.predicate.root !== 'of') {
 
-            return new RelationAction(this.topLevel,
+            return new RelationAction(
+                this.topLevel,
                 this.clause.predicate,
                 this.clause.args,
-                this.clause.negated).run(context)
+                this.clause.negated)
+                .run(context)
 
         }
 
+        // for anaphora resolution (TODO: remove)
         if (this.clause.exactIds) {
-            return new EditAction(this.clause.args[0], this.clause.predicate, []).run(context)
-        }
-
-        if (this.topLevel.rheme.describe(this.clause.args[0]).some(x => isConcept(x))) { // 
-            return new ConceptAction(this.clause.args[0],
+            return new EditAction(
+                this.clause.args[0],
                 this.clause.predicate,
-                this.topLevel).run(context)
+                [])
+                .run(context)
         }
 
+        // to create new concept or new instance thereof
+        if (this.topLevel.rheme.describe(this.clause.args[0]).some(x => isConcept(x))) { // 
+            return new ConceptAction(
+                this.clause.args[0],
+                this.clause.predicate,
+                this.topLevel)
+                .run(context)
+        }
+
+        // 
         if (this.topLevel.topLevel().includes(this.clause.args[0])) {
             this.forTopLevel(context)
         } else {
@@ -62,17 +74,22 @@ export default class RootAction implements Action {
         }
 
         if (this.clause.predicate.proto) {
-            return new CreateAction(id,
-                this.clause.predicate).run(context)
+            return new CreateAction(
+                id,
+                this.clause.predicate)
+                .run(context)
         } else {
-            return new EditAction(id, this.clause.predicate,
-                this.getProps(this.clause.args[0])).run(context)
+            return new EditAction(
+                id,
+                this.clause.predicate,
+                this.getProps(this.clause.args[0]))
+                .run(context)
         }
     }
 
     protected forNonTopLevel(context: Context) {
 
-        const tLOwner = this.getTopLevelOwnerOf(this.clause.args[0], this.topLevel)
+        const tLOwner = this.topLevel.getTopLevelOwnerOf(this.clause.args[0])
 
         if (!tLOwner) {
             return
@@ -88,23 +105,11 @@ export default class RootAction implements Action {
         const maps = context.enviro.query(q)
         const tLOwnerId = maps?.[0]?.[tLOwner] //?? getRandomId()
 
-        return new EditAction(tLOwnerId,
-            this.clause.predicate, this.getProps(tLOwner)).run(context)
-    }
-
-    protected getTopLevelOwnerOf(id: Id, topLevel: Clause): Id | undefined {
-
-        const owners = topLevel.ownersOf(id)
-
-        const maybe = owners
-            .filter(o => topLevel.topLevel().includes(o)).at(0)
-
-        if (!maybe && owners.length > 0) {
-            return this.getTopLevelOwnerOf(owners[0], topLevel)
-        } else {
-            return maybe
-        }
-
+        return new EditAction(
+            tLOwnerId,
+            this.clause.predicate,
+            this.getProps(tLOwner))
+            .run(context)
     }
 
 }

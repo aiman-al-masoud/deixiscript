@@ -31,7 +31,7 @@ export default class RelationAction implements Action {
         const subject = context.enviro.get(subjectId ?? '')
         const object = context.enviro.get(objectId ?? '')
 
-        subject?.call(this.verb, [object])
+        return subject?.call(this.verb, [object])
     }
 
 }

@@ -8,6 +8,7 @@ import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
 import RootAction from "../actuator/actions/RootAction";
+import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
 
 export class BasicClause implements Clause {
 
@@ -81,6 +82,10 @@ export class BasicClause implements Clause {
 
     get entities(): Id[] {
         return Array.from(new Set(this.args))
+    }
+
+    getTopLevelOwnerOf(id: Id): Id | undefined {
+        return getTopLevelOwnerOf(id, this)
     }
 
 }

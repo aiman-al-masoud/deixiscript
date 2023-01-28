@@ -3,7 +3,6 @@ import { Id, Map } from "./Id"
 import Action from "../actuator/actions/Action"
 import { EmptyClause } from "./EmptyClause"
 import { Lexeme } from "../lexer/Lexeme"
-import { LexemeType } from "../config/LexemeType"
 
 /**
  * A 'language-agnostic' first order logic representation.
@@ -28,6 +27,7 @@ export interface Clause {
     describe(id: Id): Lexeme[]
     topLevel(): Id[]
     getOwnershipChain(entity: Id): Id[]
+    getTopLevelOwnerOf(id: Id): Id | undefined
 }
 
 export function clauseOf(predicate: Lexeme, ...args: Id[]): Clause {
