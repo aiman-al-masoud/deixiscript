@@ -117,7 +117,7 @@ function makeAllVars(clause: Clause): Clause { // assume ids are case insensitiv
 
 }
 
-function resolveAnaphora(clause: Clause): Clause {//colpevole!
+function resolveAnaphora(clause: Clause): Clause {
 
     if (clause.rheme.hashCode === emptyClause().hashCode) {
         return clause

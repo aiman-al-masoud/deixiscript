@@ -14,6 +14,7 @@ const tests = [
     test10,
     test11,
     test12,
+    test13,
 ]
 
 /**
@@ -127,6 +128,12 @@ function test12() {
     brain.execute('x and y are buttons')
     brain.execute('x appendChilds y')
     return Object.values(brain.execute('x')[0].children).includes(brain.execute('y')[0])
+}
+
+function test13() {
+    const brain = getBrain()
+    brain.execute('x is a button and it is green')
+    return brain.execute('x')[0].style.background === 'green'
 }
 
 function sleep(millisecs: number) {

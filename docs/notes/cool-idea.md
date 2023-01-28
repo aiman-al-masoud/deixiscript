@@ -14,9 +14,10 @@ if any button is dangerous then
 	the height of it is 10vh
 ```
 
-You need to implement "and", treat a comma as an "and", implement pronoun anaphora such as "it" in the Enviro, check if-then (Complex clauses), ImplyAction.
+You need to implement "and" (DONE), treat a comma as an "and", implement pronoun anaphora such as "it" in the Enviro, check if-then (Complex clauses), ImplyAction.
 
-# Associating a predicate to a Concept
+
+# Associating a predicate to a Concept (DONE)
 
 ```
 red is a color.
