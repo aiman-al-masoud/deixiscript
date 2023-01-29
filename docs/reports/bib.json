@@ -58,5 +58,61 @@
             { "url": "https://en.wikipedia.org/wiki/Topic_and_comment" }
         ],
         "identifier": [ ]
+    },
+
+    {
+        "title": "Reconciliation",
+        "author": [ ],
+        "type": "documentation",
+        "year": "",
+        "publisher": {
+
+        },
+        "link": [
+            { "url": "https://reactjs.org/docs/reconciliation.html" }
+        ],
+        "identifier": [ ]
+    },
+
+    {
+        "title": "Beyond AOP: Toward Naturalistic Programming",
+        "author": [
+            { "name": "Cristina Videira Lopes" },
+            { "name": "Paul Dourish" },
+            { "name": "David H. Lorenz" },
+            { "name": "Karl Lieberherr" }
+        ],
+        "type": "article",
+        "year": "2003",
+        "publisher": {
+            "name": "OOPSLA Onward!"
+        },
+        "link": [
+            { "url": "https://www2.ccs.neu.edu/research/demeter/papers/oopsla-onward/beyondAOP.pdf" }
+        ],
+        "identifier": [
+            { "type": "doi", "id": "10.1145/966051.966058" }
+        ]
+    },
+
+    {
+        "title": "NaturalJava: A Natural Language Interface for Programming in Java",
+        "author": [
+            { "name": "David Price" },
+            { "name": "Ellen Riloff" },
+            { "name": "Joseph Zachary" },
+            { "name": "Brandon Harvey" }
+        ],
+        "type": "article",
+        "year": "2000",
+        "publisher": {
+            "name": "Department of Computer Science University of Utah"
+        },
+        "link": [
+            { "url": "https://www.cs.utah.edu/~riloff/pdfs/iui2000.pdf" }
+        ],
+        "identifier": [
+            { "type": "doi", "id": "10.1145/325737.325845" }
+        ]
     }
 ]
