@@ -1,7 +1,7 @@
 import { getActuator } from "../actuator/actuator/Actuator";
+import { getNewContext } from "../brain/Context";
 import { Clause } from "../clauses/Clause";
 import { Map } from "../clauses/Id"
-import getEnviro from "./Enviro";
 
 export interface Anaphora {
     assert(clause: Clause): void
@@ -14,16 +14,16 @@ export function getAnaphora() {
 
 class EnviroAnaphora implements Anaphora {
 
-    constructor(protected readonly enviro = getEnviro({ root: undefined })) {
+    constructor(protected readonly context = getNewContext({ root: undefined })) {
 
     }
 
     assert(clause: Clause) {
-        getActuator().takeAction(clause.copy({ exactIds: true }), { enviro: this.enviro, config: {/* TODO assuming anaphora dont care about lexeme and syntaxes config*/ } as any })
+        getActuator().takeAction(clause.copy({ exactIds: true }), this.context)
     }
 
     query(clause: Clause): Map[] {
-        return this.enviro.query(clause)
+        return this.context.enviro.query(clause)
     }
 
 }

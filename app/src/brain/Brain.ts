@@ -9,5 +9,5 @@ export default interface Brain {
 }
 
 export function getBrain(): Brain {
-    return new BasicBrain(getNewContext())
+    return new BasicBrain(getNewContext({ root: document.body }))
 }
