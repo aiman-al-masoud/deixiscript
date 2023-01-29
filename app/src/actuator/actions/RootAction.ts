@@ -66,7 +66,7 @@ export default class RootAction implements Action {
     protected lookup(id: Id, context: Context) { // based on theme info only
         const q = this.topLevel.theme.about(id)
         const maps = context.enviro.query(q)
-        return maps?.[0]?.[id]
+        return maps?.[0]?.[id] //TODO could be undefined
     }
 
     protected forTopLevel(context: Context) { // this id is TL entity
