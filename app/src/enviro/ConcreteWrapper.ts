@@ -30,7 +30,7 @@ export default class ConcreteWrapper implements Wrapper {
             if (predicate.concepts && predicate.concepts.length > 0) {
                 this.setNested(this.simpleConcepts[predicate.concepts[0]], predicate.root)
             } else {
-                (this.object as any)[predicate.root] = true // fallback
+                this.object[predicate.root] = true // fallback
             }
 
         }
