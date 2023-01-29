@@ -13,14 +13,16 @@ export default class ConcreteWrapper implements Wrapper {
 
         if (props && props.length > 1) { // assume > 1 props are a path
 
-            this.setNested(props.map(x => x.token ?? x.root), predicate.root)
+            this.setNested(props.map(x => x.root), predicate.root)
 
         } else if (props && props.length === 1) { // single prop
 
-            if (Object.keys(this.simpleConcepts).includes(props[0].root)) { // is concept 
-                this.setNested(this.simpleConcepts[props[0].root], predicate.root)
+            const path = this.simpleConcepts[props[0].root]
+
+            if (path) { // is concept 
+                this.setNested(path, predicate.root)
             } else { // ... not concept, just prop
-                this.setNested(props.map(x => x.token ?? x.root), predicate.root)
+                this.setNested(props.map(x => x.root), predicate.root)
             }
 
         } else if (!props || props.length === 0) { // no props
