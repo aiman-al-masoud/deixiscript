@@ -63,11 +63,15 @@ export default class RootAction implements Action {
             .map(e => this.topLevel.theme.describe(e)[0]) // ASSUME at least one
     }
 
+    protected lookup(id: Id, context: Context) { // based on theme info only
+        const q = this.topLevel.theme.about(id)
+        const maps = context.enviro.query(q)
+        return maps?.[0]?.[id]
+    }
+
     protected forTopLevel(context: Context) { // this id is TL entity
 
-        const q = this.topLevel.theme.about(this.clause.args[0])
-        const maps = context.enviro.query(q)
-        const id = maps?.[0]?.[this.clause.args[0]] ?? getRandomId()
+        const id = this.lookup(this.clause.args[0], context) ?? getRandomId()
 
         if (this.clause.predicate.proto) {
             return new CreateAction(
@@ -97,9 +101,7 @@ export default class RootAction implements Action {
             return
         }
 
-        const q = this.topLevel.theme.about(tLOwner)
-        const maps = context.enviro.query(q)
-        const tLOwnerId = maps?.[0]?.[tLOwner] //?? getRandomId()
+        const tLOwnerId = this.lookup(tLOwner, context)
 
         return new EditAction(
             tLOwnerId,
