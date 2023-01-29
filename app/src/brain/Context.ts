@@ -6,7 +6,9 @@ export interface Context {
     readonly config: Config
 }
 
-export function getNewContext(opts: GetEnviroOps): Context {
+export interface GetContextOpts extends GetEnviroOps { }
+
+export function getNewContext(opts: GetContextOpts): Context {
     return {
         enviro: getEnviro(opts),
         config: getConfig()

@@ -1,4 +1,4 @@
-import { getNewContext } from "./Context"
+import { GetContextOpts, getNewContext } from "./Context"
 import BasicBrain from "./BasicBrain"
 
 /**
@@ -8,6 +8,8 @@ export default interface Brain {
     execute(natlang: string): any[]
 }
 
-export function getBrain(): Brain {
-    return new BasicBrain(getNewContext({ root: document.body }))
+export interface GetBrainOpts extends GetContextOpts { }
+
+export function getBrain(opts: GetBrainOpts): Brain {
+    return new BasicBrain(getNewContext(opts))
 }

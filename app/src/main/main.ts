@@ -3,7 +3,7 @@ import { getBrain } from "../brain/Brain"
 export default function main() {
 
     const state = {
-        brain: getBrain(),
+        brain: getBrain({ root: document.body }),
         promptVisible: false
     }
 
@@ -11,8 +11,6 @@ export default function main() {
         textarea.hidden = !state.promptVisible
         state.promptVisible ? textarea.focus() : 0
     }
-
-    (window as any).brain = state.brain
 
     const textarea = document.createElement('textarea')
     textarea.style.width = '50vw'
@@ -25,7 +23,6 @@ export default function main() {
     document.body.appendChild(document.createElement('br'))
     document.body.appendChild(document.createElement('br'))
 
-
     document.body.addEventListener('keydown', e => {
 
         if (e.ctrlKey && e.code === 'Space') {
@@ -36,6 +33,7 @@ export default function main() {
         }
 
         update()
-    })
+    });
 
+    (window as any).brain = state.brain
 }
