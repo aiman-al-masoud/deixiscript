@@ -22,26 +22,25 @@ export function wrap(o?: Object, context?: Context): Wrapper {
 
 function addNewVerbs(object?: object, context?: Context) {
 
-    const allPropsOf = (x: any) => {
-
-        const result = []
-        let y = x
-
-        do {
-            result.push(...Object.getOwnPropertyNames(y))
-        } while ((y = Object.getPrototypeOf(y)))
-
-        return result
-    }
-
     if (context) {
         const props = allPropsOf(object)
         props.forEach(x => {
-
             if (!context.config.lexemes.map(l => l.root).includes(x)) {
                 context.config.setLexeme({ root: x, type: 'mverb' })
             }
-
         })
     }
+
+}
+
+function allPropsOf(x: any) {
+
+    const result = []
+    let y = x
+
+    do {
+        result.push(...Object.getOwnPropertyNames(y))
+    } while ((y = Object.getPrototypeOf(y)))
+
+    return result
 }
