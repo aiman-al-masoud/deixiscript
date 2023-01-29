@@ -16,20 +16,8 @@ export default class RelationAction implements Action {
 
     run(context: Context) {
 
-        const subjectId = context
-            .enviro
-            .query(this.topLevel.theme.about(this.args[0]))
-            .at(0)
-            ?.[this.args[0]]
-
-        const objectId = context
-            .enviro
-            .query(this.topLevel.theme.about(this.args[1]))
-            .at(0)
-            ?.[this.args[1]]
-
-        const subject = context.enviro.get(subjectId ?? '')
-        const object = context.enviro.get(objectId ?? '')
+        const subject = context.enviro.get(this.args[0])
+        const object = context.enviro.get(this.args[1])
 
         return subject?.call(this.verb, [object])
     }

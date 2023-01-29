@@ -23,7 +23,7 @@ export default class RootAction implements Action {
             return new RelationAction(
                 this.topLevel,
                 this.clause.predicate,
-                this.clause.args,
+                this.clause.args.map(x => this.lookup(x, context)),
                 this.clause.negated)
                 .run(context)
 
