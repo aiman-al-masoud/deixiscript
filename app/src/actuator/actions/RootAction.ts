@@ -90,14 +90,9 @@ export default class RootAction implements Action {
     protected forNonTopLevel(context: Context) {
 
         const tLOwner = this.topLevel.getTopLevelOwnerOf(this.clause.args[0])
-
-        if (!tLOwner) {
-            return
-        }
-
         const propName = this.topLevel.theme.describe(this.clause.args[0])
 
-        if (this.clause.predicate.root == propName[0].root) {
+        if (!tLOwner || this.clause.predicate.root == propName[0].root) {
             return
         }
 
