@@ -95,9 +95,9 @@ export default class RootAction implements Action {
             return
         }
 
-        const nameOfThis = this.topLevel.theme.describe(this.clause.args[0])
+        const propName = this.topLevel.theme.describe(this.clause.args[0])
 
-        if (this.clause.predicate.root == nameOfThis[0].root) {
+        if (this.clause.predicate.root == propName[0].root) {
             return
         }
 
