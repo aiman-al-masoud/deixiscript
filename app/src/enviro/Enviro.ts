@@ -9,7 +9,7 @@ export interface Enviro {
     setPlaceholder(id: Id): Wrapper
     query(clause: Clause): Map[]
     exists(id: Id): boolean
-    get values(): Wrapper[]
+    readonly values: Wrapper[]
     readonly root?: HTMLElement
     // get keys(): Id[]
 }
