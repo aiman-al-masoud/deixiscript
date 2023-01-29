@@ -73,18 +73,18 @@ export default class RootAction implements Action {
 
         const id = this.lookup(this.clause.args[0], context) ?? getRandomId()
 
-        if (this.clause.predicate.proto) {
-            return new CreateAction(
+        return this.clause.predicate.proto ?
+
+            new CreateAction(
                 id,
                 this.clause.predicate)
-                .run(context)
-        } else {
-            return new EditAction(
+                .run(context) :
+
+            new EditAction(
                 id,
                 this.clause.predicate,
                 this.getProps(this.clause.args[0]))
                 .run(context)
-        }
     }
 
     protected forNonTopLevel(context: Context) {
