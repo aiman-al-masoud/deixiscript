@@ -69,10 +69,6 @@ export default class RootAction implements Action {
         const maps = context.enviro.query(q)
         const id = maps?.[0]?.[this.clause.args[0]] ?? getRandomId()
 
-        if (!context.enviro.get(id)) {
-            context.enviro.setPlaceholder(id)
-        }
-
         if (this.clause.predicate.proto) {
             return new CreateAction(
                 id,
