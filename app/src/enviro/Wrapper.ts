@@ -9,12 +9,18 @@ export default interface Wrapper {
     is(predicate: Lexeme): boolean // TODO args
     setAlias(conceptName: Lexeme, propPath: Lexeme[]): void
     pointOut(opts?: { turnOff: boolean }): void
+    call(verb: Lexeme, args: (Wrapper | undefined)[]): any
     // get(predicate: string): any
-    call(verb:Lexeme, args:(Wrapper|undefined)[]):any
 
 }
 
 export function wrap(o?: Object, context?: Context): Wrapper {
+    addNewVerbs(o, context)
+    return new ConcreteWrapper(o)
+}
+
+
+function addNewVerbs(object?: object, context?: Context) {
 
     const allPropsOf = (x: any) => {
 
@@ -29,7 +35,7 @@ export function wrap(o?: Object, context?: Context): Wrapper {
     }
 
     if (context) {
-        const props = allPropsOf(o)
+        const props = allPropsOf(object)
         props.forEach(x => {
 
             if (!context.config.lexemes.map(l => l.root).includes(x)) {
@@ -38,6 +44,4 @@ export function wrap(o?: Object, context?: Context): Wrapper {
 
         })
     }
-
-    return new ConcreteWrapper(o)
 }
