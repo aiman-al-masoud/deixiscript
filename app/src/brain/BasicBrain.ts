@@ -18,7 +18,7 @@ export default class BasicBrain implements Brain {
 
         return getParser(natlang, this.context.config).parseAll().map(ast => {
 
-            if (ast.type == 'macro') {
+            if (ast.type === 'macro') {
                 this.context.config.setSyntax(ast as any)
                 return []
             }
