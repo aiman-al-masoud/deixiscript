@@ -3,7 +3,8 @@ import Wrapper from "./Wrapper";
 
 export default class ConcreteWrapper implements Wrapper {
 
-    constructor(readonly object: any,
+    constructor(
+        readonly object: any,
         readonly simpleConcepts: { [conceptName: string]: string[] } = object.simpleConcepts ?? {}) {
 
         object.simpleConcepts = simpleConcepts
@@ -12,27 +13,11 @@ export default class ConcreteWrapper implements Wrapper {
     set(predicate: Lexeme, props?: Lexeme[]): void {
 
         if (props && props.length > 1) { // assume > 1 props are a path
-
             this.setNested(props.map(x => x.root), predicate.root)
-
-        } else if (props && props.length === 1) { // single prop
-
-            const path = this.simpleConcepts[props[0].root]
-
-            if (path) { // is concept 
-                this.setNested(path, predicate.root)
-            } else { // ... not concept, just prop
-                this.setNested(props.map(x => x.root), predicate.root)
-            }
-
-        } else if (!props || props.length === 0) { // no props
-
-            if (predicate.concepts && predicate.concepts.length > 0) {
-                this.setNested(this.simpleConcepts[predicate.concepts[0]], predicate.root)
-            } else {
-                this.object[predicate.root] = true // fallback
-            }
-
+        } else if (props && props.length === 1) {
+            this.setSingleProp(predicate, props)
+        } else if (!props || props.length === 0) {
+            this.setZeroProps(predicate)
         }
 
     }
@@ -43,12 +28,48 @@ export default class ConcreteWrapper implements Wrapper {
 
         return concept ?
             this.getNested(this.simpleConcepts[concept]) === predicate.root :
-            (this.object as any)[predicate.root] !== undefined
+            this.object[predicate.root] !== undefined
 
     }
 
     setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
         this.simpleConcepts[conceptName.root] = propPath.map(x => x.root)
+    }
+
+    pointOut(opts?: { turnOff: boolean; }): void {
+
+        if (this.object instanceof HTMLElement) {
+            this.object.style.outline = opts?.turnOff ? '' : '#f00 solid 2px'
+        }
+
+    }
+
+    call(verb: Lexeme, args: Wrapper[]) {
+        const concept = this.simpleConcepts[verb.root]
+        const methodName = concept?.[0] ?? verb.root
+        return this?.object[methodName](...args.map(x => x.object))
+    }
+
+    protected setSingleProp(predicate: Lexeme, props: Lexeme[]) {
+
+        const path = this.simpleConcepts[props[0].root]
+
+        if (path) { // is concept 
+            this.setNested(path, predicate.root)
+        } else { // not concept
+            this.setNested(props.map(x => x.root), predicate.root)
+        }
+
+    }
+
+    protected setZeroProps(predicate: Lexeme) {
+
+        if (predicate.concepts && predicate.concepts.length > 0) {
+            this.setNested(this.simpleConcepts[predicate.concepts[0]], predicate.root)
+        } else {
+            this.object[predicate.root] = true // fallback
+        }
+
     }
 
     protected setNested(path: string[], value: string) {
@@ -77,20 +98,6 @@ export default class ConcreteWrapper implements Wrapper {
 
         return x
 
-    }
-
-    pointOut(opts?: { turnOff: boolean; }): void {
-
-        if (this.object instanceof HTMLElement) {
-            this.object.style.outline = opts?.turnOff ? '' : '#f00 solid 2px'
-        }
-
-    }
-
-    call(verb: Lexeme, args: Wrapper[]) {
-        const concept = this.simpleConcepts[verb.root]
-        const methodName = concept?.[0] ?? verb.root
-        return this?.object[methodName](...args.map(x => x.object))
     }
 
 }
