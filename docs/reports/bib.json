@@ -48,7 +48,6 @@
 
     {
         "title": "Topic and comment",
-        "author": [ ],
         "type": "article",
         "year": "",
         "publisher": {
@@ -56,13 +55,11 @@
         },
         "link": [
             { "url": "https://en.wikipedia.org/wiki/Topic_and_comment" }
-        ],
-        "identifier": [ ]
+        ]
     },
 
     {
         "title": "Reconciliation",
-        "author": [ ],
         "type": "documentation",
         "year": "",
         "publisher": {
@@ -70,8 +67,7 @@
         },
         "link": [
             { "url": "https://reactjs.org/docs/reconciliation.html" }
-        ],
-        "identifier": [ ]
+        ]
     },
 
     {
