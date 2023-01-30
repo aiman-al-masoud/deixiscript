@@ -110,5 +110,28 @@
         "identifier": [
             { "type": "doi", "id": "10.1145/325737.325845" }
         ]
+    },
+
+    {
+        "title": "A Model for Naturalistic Programming with Implementation",
+        "author": [
+            { "name": "Oscar Pulido-Prieto" },
+            { "name": "Ulises Juárez-Martínez" }
+        ],
+        "type": "article",
+        "year": "2019",
+        "publisher": {
+            "name": "Division of Research and Postgraduate Studies, Tecnológico Nacional de México"
+        },
+        "link": [
+            { "url": "https://www.mdpi.com/2076-3417/9/18/3936" },
+            { "url": "file:///home/aiman/Downloads/applsci-09-03936-v2.pdf" }
+        ],
+        "identifier": [
+            { "type": "doi", "id": "10.3390/app9183936" }
+        ],
+        "myComments": [
+            { "url": "../comments/a-model-for-naturalistic-programming-with-implementation.md" }
+        ]
     }
 ]
