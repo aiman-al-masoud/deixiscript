@@ -1,0 +1,1 @@
+New idea: one comment file per article, summarizing the important points and suggesting possible relationships with this project.
