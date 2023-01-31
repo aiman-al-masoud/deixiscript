@@ -8,8 +8,9 @@ import { Lexeme } from "../lexer/Lexeme"
  * A 'language-agnostic' first order logic representation.
 */
 export interface Clause {
+    readonly predicate?: Lexeme
+    readonly args?: Id[]
     readonly negated: boolean
-    readonly isImply: boolean
     readonly hashCode: number
     readonly entities: Id[]
     readonly theme: Clause

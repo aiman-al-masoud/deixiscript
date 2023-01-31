@@ -17,7 +17,6 @@ export default class Imply implements Clause {
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly isImply = true,
         readonly hashCode = hashString(JSON.stringify(arguments)),
         readonly theme = condition,
         readonly rheme = consequence) {

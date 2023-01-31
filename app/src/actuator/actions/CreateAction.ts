@@ -1,40 +1,49 @@
-import { Id } from "../../clauses/Id";
+import { getRandomId } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
 import { wrap } from "../../enviro/Wrapper";
-import { Lexeme, getProto } from "../../lexer/Lexeme";
+import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
+import { Clause } from "../../clauses/Clause";
+import { lookup } from "./RootAction";
 
 export default class CreateAction implements Action {
 
-    constructor(readonly id: Id, readonly predicate: Lexeme) {
+    constructor(readonly clause: Clause, readonly topLevel: Clause) {
 
     }
 
-    run(context: Context): any {
+    run(context: Context) {
 
-        if (context.enviro.exists(this.id)) { //  existence check prior to creating
+        const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel, this.clause.exactIds) ?? getRandomId()
+        const predicate = this.clause.predicate
+
+        if (!predicate || !id) {
             return
         }
 
-        const proto = getProto(this.predicate)
+        if (context.enviro.exists(id)) { //  existence check prior to creating
+            return
+        }
+
+        const proto = getProto(predicate)
 
         if (proto instanceof HTMLElement) {
 
             const tagNameFromProto = (x: Object) => x.constructor.name.replace('HTML', '').replace('Element', '').toLowerCase()
             const o = document.createElement(tagNameFromProto(proto))
             context.enviro.root?.appendChild(o)
-            o.id = this.id + ''
+            o.id = id + ''
             o.textContent = 'default'
             const newObj = wrap(o, context)
-            newObj.set(this.predicate)
-            context.enviro.set(this.id, newObj)
+            newObj.set(predicate)
+            context.enviro.set(id, newObj)
 
         } else {
 
             const o = new (proto as any).constructor()
             const newObj = wrap(o, context)
-            newObj.set(this.predicate)
-            context.enviro.set(this.id, newObj)
+            newObj.set(predicate)
+            context.enviro.set(id, newObj)
 
         }
 

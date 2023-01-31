@@ -6,7 +6,6 @@ import { Id } from "./Id";
 export class EmptyClause implements Clause {
 
     constructor(readonly negated = false,
-        readonly isImply = false,
         readonly hashCode = 99999999,
         readonly entities = [],
         readonly isSideEffecty = false,

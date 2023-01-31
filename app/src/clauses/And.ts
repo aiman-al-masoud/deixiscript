@@ -16,7 +16,6 @@ export default class And implements Clause {
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly isImply = false,
         readonly hashCode = hashString(JSON.stringify(arguments))) {
 
     }

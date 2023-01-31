@@ -1,6 +1,5 @@
-import { BasicClause } from "../../clauses/BasicClause"
 import { Clause } from "../../clauses/Clause"
-import { Id, getRandomId } from "../../clauses/Id"
+import { Id } from "../../clauses/Id"
 import { Context } from "../../brain/Context"
 import { isConcept } from "../../lexer/Lexeme"
 import Action from "./Action"
@@ -11,98 +10,45 @@ import RelationAction from "./RelationAction"
 
 export default class RootAction implements Action {
 
-    constructor(readonly clause: BasicClause, readonly topLevel: Clause) {
+    constructor(readonly clause: Clause, readonly topLevel: Clause) {
 
     }
 
     run(context: Context): any {
 
         // relations (multi arg predicates) except for 'of' 
-        if (this.clause.args.length > 1 && this.clause.predicate.root !== 'of') {
-
-            return new RelationAction(
-                this.topLevel,
-                this.clause.predicate,
-                this.clause.args.map(x => this.lookup(x, context)),
-                this.clause.negated)
-                .run(context)
-
+        if (this.clause.args && this.clause.args.length > 1 && this.clause.predicate && this.clause.predicate.root !== 'of') {
+            return new RelationAction(this.clause, this.topLevel).run(context)
         }
 
         // for anaphora resolution (TODO: remove)
         if (this.clause.exactIds) {
-            return new EditAction(
-                this.clause.args[0],
-                this.clause.predicate,
-                [])
-                .run(context)
+            return new EditAction(this.clause, this.topLevel).run(context)
         }
 
         // to create new concept or new instance thereof
-        if (this.topLevel.rheme.describe(this.clause.args[0]).some(x => isConcept(x))) { // 
-            return new ConceptAction(
-                this.clause.args[0],
-                this.clause.predicate,
-                this.topLevel)
-                .run(context)
+        if (this.clause.args && this.topLevel.rheme.describe(this.clause.args[0]).some(x => isConcept(x))) { // 
+            return new ConceptAction(this.clause, this.topLevel).run(context)
         }
 
-        // 
-        if (this.topLevel.topLevel().includes(this.clause.args[0])) {
-            this.forTopLevel(context)
-        } else {
-            this.forNonTopLevel(context)
+        if (this.clause.predicate?.proto) {
+            return new CreateAction(this.clause, this.topLevel).run(context)
         }
 
+        return new EditAction(this.clause, this.topLevel).run(context)
+
     }
 
-    protected getProps(topLevelEntity: Id) {
-        return this.topLevel
-            .getOwnershipChain(topLevelEntity)
-            .slice(1)
-            .map(e => this.topLevel.theme.describe(e)[0]) // ASSUME at least one
+}
+
+export function lookup(id: Id, context: Context, topLevel: Clause, exactIds: boolean) { // based on theme info only
+
+    if (exactIds) {
+        return id
     }
 
-    protected lookup(id: Id, context: Context) { // based on theme info only
-        const q = this.topLevel.theme.about(id)
-        const maps = context.enviro.query(q)
-        return maps?.[0]?.[id] //TODO could be undefined
-    }
-
-    protected forTopLevel(context: Context) { // this id is TL entity
-
-        const id = this.lookup(this.clause.args[0], context) ?? getRandomId()
-
-        return this.clause.predicate.proto ?
-
-            new CreateAction(
-                id,
-                this.clause.predicate)
-                .run(context) :
-
-            new EditAction(
-                id,
-                this.clause.predicate,
-                this.getProps(this.clause.args[0]))
-                .run(context)
-    }
-
-    protected forNonTopLevel(context: Context) {
-
-        const tLOwner = this.topLevel.getTopLevelOwnerOf(this.clause.args[0])
-        const propName = this.topLevel.theme.describe(this.clause.args[0])
-
-        if (!tLOwner || this.clause.predicate.root === propName[0].root) {
-            return
-        }
-
-        const tLOwnerId = this.lookup(tLOwner, context)
-
-        return new EditAction(
-            tLOwnerId,
-            this.clause.predicate,
-            this.getProps(tLOwner))
-            .run(context)
-    }
-
+    const q = topLevel.theme.about(id)
+    const maps = context.enviro.query(q)
+    const res = maps?.[0]?.[id] //TODO could be undefined
+    return res
 }

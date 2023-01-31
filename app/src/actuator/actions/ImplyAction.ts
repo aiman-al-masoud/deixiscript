@@ -3,7 +3,6 @@ import { Context } from "../../brain/Context";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
-import EditAction from "./EditAction";
 
 export default class ImplyAction implements Action {
 
@@ -23,7 +22,6 @@ export default class ImplyAction implements Action {
             this.other(context)
         }
 
-
     }
 
     setAliasCall(context: Context) {
@@ -42,7 +40,6 @@ export default class ImplyAction implements Action {
 
         context.config.setLexeme(newLexeme)
         wrap(proto).setAlias(newLexeme, propsNames)
-        // console.log(`wrap(${proto}).setAlias(${conceptName[0]}, [${propsNames}])`)
     }
 
     other(context: Context) {
@@ -51,8 +48,7 @@ export default class ImplyAction implements Action {
         const predicate = this.conclusion.describe(top)[0]
         const y = context.enviro.query(clauseOf(protoName, 'X'))
         const ids = y.map(m => m['X'])
-        ids.forEach(id => new EditAction(id, predicate).run(context))
+        ids.forEach(id => context.enviro.get(id)?.set(predicate))
     }
 
 }
-
