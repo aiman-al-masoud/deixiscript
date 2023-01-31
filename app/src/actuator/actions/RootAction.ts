@@ -2,43 +2,34 @@ import { Clause } from "../../clauses/Clause"
 import { Id } from "../../clauses/Id"
 import { Context } from "../../brain/Context"
 import { isConcept } from "../../lexer/Lexeme"
-import Action from "./Action"
 import ConceptAction from "./ConceptAction"
 import CreateAction from "./CreateAction"
 import EditAction from "./EditAction"
 import RelationAction from "./RelationAction"
 
-export default class RootAction implements Action {
 
-    constructor(readonly clause: Clause, readonly topLevel: Clause) {
+export function getAction(clause: Clause, topLevel: Clause) {
 
+    // relations (multi arg predicates) except for 'of' 
+    if (clause.args && clause.args.length > 1 && clause.predicate && clause.predicate.root !== 'of') {
+        return new RelationAction(clause, topLevel)
     }
 
-    run(context: Context): any {
-
-        // relations (multi arg predicates) except for 'of' 
-        if (this.clause.args && this.clause.args.length > 1 && this.clause.predicate && this.clause.predicate.root !== 'of') {
-            return new RelationAction(this.clause, this.topLevel).run(context)
-        }
-
-        // for anaphora resolution (TODO: remove)
-        if (this.clause.exactIds) {
-            return new EditAction(this.clause, this.topLevel).run(context)
-        }
-
-        // to create new concept or new instance thereof
-        if (this.clause.args && this.topLevel.rheme.describe(this.clause.args[0]).some(x => isConcept(x))) { // 
-            return new ConceptAction(this.clause, this.topLevel).run(context)
-        }
-
-        if (this.clause.predicate?.proto) {
-            return new CreateAction(this.clause, this.topLevel).run(context)
-        }
-
-        return new EditAction(this.clause, this.topLevel).run(context)
-
+    // for anaphora resolution (TODO: remove)
+    if (clause.exactIds) {
+        return new EditAction(clause, topLevel)
     }
 
+    // to create new concept or new instance thereof
+    if (clause.args && topLevel.rheme.describe(clause.args[0]).some(x => isConcept(x))) { // 
+        return new ConceptAction(clause, topLevel)
+    }
+
+    if (clause.predicate?.proto) {
+        return new CreateAction(clause, topLevel)
+    }
+
+    return new EditAction(clause, topLevel)
 }
 
 export function lookup(id: Id, context: Context, topLevel: Clause, exactIds: boolean) { // based on theme info only

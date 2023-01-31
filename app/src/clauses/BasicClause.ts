@@ -7,8 +7,8 @@ import Action from "../actuator/actions/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
-import RootAction from "../actuator/actions/RootAction";
 import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
+import { getAction } from "../actuator/actions/RootAction";
 
 export class BasicClause implements Clause {
 
@@ -72,7 +72,7 @@ export class BasicClause implements Clause {
     }
 
     toAction(topLevel: Clause): Action[] {
-        return [new RootAction(this, topLevel)]
+        return [getAction(this, topLevel)]
     }
 
     get theme(): Clause {
