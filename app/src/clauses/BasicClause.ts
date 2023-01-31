@@ -8,7 +8,7 @@ import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
 import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
-import { getAction } from "../actuator/actions/RootAction";
+import { getAction } from "../actuator/actions/getAction";
 
 export class BasicClause implements Clause {
 

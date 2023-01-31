@@ -1,7 +1,7 @@
 import { Context } from "../../brain/Context";
 import { Clause } from "../../clauses/Clause";
 import Action from "./Action";
-import { lookup } from "./RootAction";
+import { lookup } from "./getAction";
 
 export default class RelationAction implements Action {
 

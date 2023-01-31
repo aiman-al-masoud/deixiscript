@@ -4,7 +4,7 @@ import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
-import { lookup } from "./RootAction";
+import { lookup } from "./getAction";
 
 export default class CreateAction implements Action {
 

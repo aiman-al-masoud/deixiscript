@@ -3,7 +3,7 @@ import { Context } from "../../brain/Context";
 import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
-import { lookup } from "./RootAction";
+import { lookup } from "./getAction";
 
 export default class EditAction implements Action {
 
