@@ -1,6 +1,6 @@
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "./hashString";
-import { Id } from "./Id";
+import { Id, Map } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
 import Action from "../actuator/actions/Action";
@@ -85,6 +85,25 @@ export class BasicClause implements Clause {
 
     getTopLevelOwnerOf(id: Id): Id | undefined {
         return getTopLevelOwnerOf(id, this)
+    }
+
+    query(clause: Clause): Map[] { // all ids treated as vars
+
+        if (!(clause instanceof BasicClause)) { // TODO: what about And of same BasicClause
+            return []
+        }
+
+        if (clause.predicate.root !== this.predicate.root) {
+            return []
+        }
+
+        // TODO what about exact ids?
+
+        const map = clause.args
+            .map((x, i) => ({ [x]: this.args[i] }))
+            .reduce((a, b) => ({ ...a, ...b }))
+
+        return [map]
     }
 
 }

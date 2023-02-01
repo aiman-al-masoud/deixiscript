@@ -1,6 +1,6 @@
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "./hashString";
-import { Id } from "./Id";
+import { Id, Map } from "./Id";
 import And from "./And";
 import Action from "../actuator/actions/Action";
 import { topLevel } from "./topLevel";
@@ -86,4 +86,21 @@ export default class Imply implements Clause {
         return getTopLevelOwnerOf(id, this)
     }
 
+    query(clause: Clause): Map[] {
+
+        // if (!(clause instanceof Imply)) {
+        //     return []
+        // }
+
+        // if (clause.condition.predicate !== this.condition.predicate ||
+        //     clause.consequence.predicate !== this.consequence.predicate) {
+        //     return []
+        // }
+
+        // // this.condition.query(clause.condition)
+
+        //TODO!
+
+        return []
+    }
 }

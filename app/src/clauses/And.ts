@@ -4,7 +4,7 @@ import { Clause, AndOpts, CopyOpts } from "./Clause";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
 import { hashString } from "./hashString";
-import { Id } from "./Id";
+import { Id, Map } from "./Id";
 import Imply from "./Imply";
 import { topLevel } from "./topLevel";
 
@@ -99,6 +99,53 @@ export default class And implements Clause {
 
     getTopLevelOwnerOf(id: Id): Id | undefined {
         return getTopLevelOwnerOf(id, this)
+    }
+
+    query(query: Clause): Map[] {
+
+        // utility funcs
+        const range = (n: number) => [...new Array(n).keys()]
+        const uniq = (x: any[]) => Array.from(new Set(x))
+
+        // each entity in the query should find its full description,
+        // otherwise it does not exist in this
+
+        const multiMap: { [id: Id]: Id[] /* candidates */ } = {}
+
+        for (const e of query.entities) {
+
+            for (const d of query.about(e).flatList()) {
+
+                const r1 = this.clause1.query(d)
+                const r2 = this.clause2.query(d)
+
+                if (!r1.length && !r2.length) { // e doesn't exist
+                    multiMap[e] = []
+                    break
+                } else {// problem: (x,y,z) and (a,b,c) !-> (x,b,c)
+                    const cands = r1.map(m => m[e]).concat(r2.map(m => m[e])).filter(id => id !== undefined)
+                    multiMap[e] = uniq([...multiMap[e] ?? [], ...cands])
+                }
+
+            }
+
+        }
+
+        const maxSize = Math.max(...Object.values(multiMap).map(x => x.length))
+
+        const res = range(maxSize).map(i => {
+
+            const m: Map = query.entities
+                .filter(e => multiMap[e][i] !== undefined)
+                .map(e => ({ [e]: multiMap[e][i] }))
+                .reduce((a, b) => ({ ...a, ...b }), {})
+
+            return m
+
+        })
+
+        return res
+
     }
 
 }

@@ -29,6 +29,10 @@ export interface Clause {
     topLevel(): Id[]
     getOwnershipChain(entity: Id): Id[]
     getTopLevelOwnerOf(id: Id): Id | undefined
+
+
+
+    query(clause: Clause): Map[]
 }
 
 export function clauseOf(predicate: Lexeme, ...args: Id[]): Clause {

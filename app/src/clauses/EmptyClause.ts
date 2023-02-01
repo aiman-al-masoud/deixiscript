@@ -1,7 +1,7 @@
 import Action from "../actuator/actions/Action";
 import { Lexeme } from "../lexer/Lexeme";
 import { AndOpts, Clause, CopyOpts } from "./Clause";
-import { Id } from "./Id";
+import { Id, Map } from "./Id";
 
 export class EmptyClause implements Clause {
 
@@ -70,6 +70,10 @@ export class EmptyClause implements Clause {
 
     getTopLevelOwnerOf(id: Id): Id | undefined {
         return undefined
+    }
+
+    query(clause: Clause): Map[] {
+        return []
     }
 
 }
