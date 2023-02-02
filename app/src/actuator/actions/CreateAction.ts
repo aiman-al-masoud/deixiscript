@@ -34,7 +34,7 @@ export default class CreateAction implements Action {
             context.enviro.root?.appendChild(o)
             o.id = id + ''
             o.textContent = 'default'
-            const newObj = wrap(o, context)
+            const newObj = wrap(id, o, context)
             newObj.set(predicate)
             context.enviro.set(id, newObj)
 

@@ -30,7 +30,7 @@ export default class BaseEnviro implements Enviro {
 
         if (!object) {
 
-            return this.dictionary[id] = new Placeholder()
+            return this.dictionary[id] = new Placeholder(id)
 
         } else {
 

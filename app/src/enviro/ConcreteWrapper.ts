@@ -1,3 +1,4 @@
+import { Id } from "../clauses/Id";
 import { Lexeme } from "../lexer/Lexeme";
 import Wrapper from "./Wrapper";
 
@@ -5,6 +6,7 @@ export default class ConcreteWrapper implements Wrapper {
 
     constructor(
         readonly object: any,
+        readonly id: Id,
         readonly simpleConcepts: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {},
         readonly simplePredicates: Lexeme[] = []) {
 

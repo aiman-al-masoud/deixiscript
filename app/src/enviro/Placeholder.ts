@@ -1,9 +1,13 @@
+import { Id } from "../clauses/Id"
 import { Lexeme } from "../lexer/Lexeme"
 import Wrapper from "./Wrapper"
 
 export class Placeholder implements Wrapper {
 
-    constructor(readonly predicates: Lexeme[] = [], readonly object: any = {}) {
+    constructor(
+        readonly id: Id,
+        readonly predicates: Lexeme[] = [],
+        readonly object: any = {}) {
 
     }
 

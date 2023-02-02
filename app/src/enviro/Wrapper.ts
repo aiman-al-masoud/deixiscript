@@ -1,22 +1,23 @@
 import { Context } from "../brain/Context"
+import { Id } from "../clauses/Id"
 import { Lexeme } from "../lexer/Lexeme"
 import ConcreteWrapper from "./ConcreteWrapper"
 
 export default interface Wrapper {
 
+    readonly id: Id
     readonly object: any
     set(predicate: Lexeme, props?: Lexeme[]): void
     is(predicate: Lexeme): boolean // TODO args
     setAlias(conceptName: Lexeme, propPath: Lexeme[]): void
     pointOut(opts?: { turnOff: boolean }): void
     call(verb: Lexeme, args: (Wrapper | undefined)[]): any
-    // get(predicate: string): any
 
 }
 
-export function wrap(o?: Object, context?: Context): Wrapper {
+export function wrap(id: Id, o?: Object, context?: Context): Wrapper {
     addNewVerbs(o, context)
-    return new ConcreteWrapper(o)
+    return new ConcreteWrapper(o, id)
 }
 
 

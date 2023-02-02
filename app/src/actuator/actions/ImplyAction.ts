@@ -3,6 +3,7 @@ import { Context } from "../../brain/Context";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
+import { getRandomId } from "../../clauses/Id";
 
 export default class ImplyAction implements Action {
 
@@ -39,7 +40,7 @@ export default class ImplyAction implements Action {
         const newLexeme = { ...conceptName[0], type: type }
 
         context.config.setLexeme(newLexeme)
-        wrap(proto).setAlias(newLexeme, propsNames)
+        wrap(getRandomId(), proto).setAlias(newLexeme, propsNames)
     }
 
     other(context: Context) {
