@@ -1,3 +1,4 @@
+import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { Lexeme } from "../lexer/Lexeme";
 import Wrapper from "./Wrapper";
@@ -52,6 +53,20 @@ export default class ConcreteWrapper implements Wrapper {
         const concept = this.simpleConcepts[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
         return this?.object[methodName](...args.map(x => x.object))
+    }
+
+    get clause(): Clause {
+
+        const preds: Lexeme[] = Object.keys(this.simpleConcepts)
+            .map(k => this.getNested(this.simpleConcepts[k].path))
+            .map((x): Lexeme => ({ root: x, type: 'adjective' }))
+            .concat(this.simplePredicates)
+
+        const clause = preds
+            .map(x => clauseOf(x, this.id))
+            .reduce((a, b) => a.and(b), emptyClause())
+
+        return clause
     }
 
     protected setSingleProp(predicate: Lexeme, props: Lexeme[]) {

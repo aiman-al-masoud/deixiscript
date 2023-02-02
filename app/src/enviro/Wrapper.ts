@@ -1,4 +1,5 @@
 import { Context } from "../brain/Context"
+import { Clause } from "../clauses/Clause"
 import { Id } from "../clauses/Id"
 import { Lexeme } from "../lexer/Lexeme"
 import ConcreteWrapper from "./ConcreteWrapper"
@@ -7,6 +8,7 @@ export default interface Wrapper {
 
     readonly id: Id
     readonly object: any
+    readonly clause:Clause
     set(predicate: Lexeme, props?: Lexeme[]): void
     is(predicate: Lexeme): boolean // TODO args
     setAlias(conceptName: Lexeme, propPath: Lexeme[]): void

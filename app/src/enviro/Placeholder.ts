@@ -1,3 +1,4 @@
+import { Clause, clauseOf, emptyClause } from "../clauses/Clause"
 import { Id } from "../clauses/Id"
 import { Lexeme } from "../lexer/Lexeme"
 import Wrapper from "./Wrapper"
@@ -19,8 +20,16 @@ export class Placeholder implements Wrapper {
         return this.predicates.some(x => x.root == predicate.root)
     }
 
+
+    get clause(): Clause {
+        return this.predicates
+            .map(p => clauseOf(p, this.id))
+            .reduce((a, b) => a.and(b), emptyClause())
+    }
+
     setAlias(conceptName: Lexeme, propPath: Lexeme[]) { }
     pointOut(opts?: { turnOff: boolean }) { }
     call(verb: Lexeme, args: Wrapper[]) { }
+
 
 }
