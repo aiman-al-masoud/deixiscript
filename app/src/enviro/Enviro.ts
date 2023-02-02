@@ -5,13 +5,11 @@ import BaseEnviro from "./BaseEnviro";
 
 export interface Enviro {
     get(id: Id): Wrapper | undefined
-    set(id: Id, object: Wrapper): void
-    setPlaceholder(id: Id): Wrapper
+    set(id: Id, object?: Wrapper): Wrapper
     query(clause: Clause): Map[]
     exists(id: Id): boolean
     readonly values: Wrapper[]
     readonly root?: HTMLElement
-    // get keys(): Id[]
 }
 
 export default function getEnviro(opts?: GetEnviroOps): Enviro {
