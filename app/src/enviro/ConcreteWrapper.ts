@@ -5,9 +5,11 @@ export default class ConcreteWrapper implements Wrapper {
 
     constructor(
         readonly object: any,
-        readonly simpleConcepts: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {}) {
+        readonly simpleConcepts: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {},
+        readonly simplePredicates: Lexeme[] = []) {
 
         object.simpleConcepts = simpleConcepts
+        object.simplePredicates = simplePredicates
     }
 
     set(predicate: Lexeme, props?: Lexeme[]): void {
@@ -28,7 +30,7 @@ export default class ConcreteWrapper implements Wrapper {
 
         return concept ?
             this.getNested(this.simpleConcepts[concept].path) === predicate.root :
-            this.object[predicate.root] !== undefined
+            this.simplePredicates.map(x => x.root).includes(predicate.root)
 
     }
 
@@ -67,7 +69,7 @@ export default class ConcreteWrapper implements Wrapper {
         if (predicate.concepts && predicate.concepts.length > 0) {
             this.setNested(this.simpleConcepts[predicate.concepts[0]].path, predicate.root)
         } else {
-            this.object[predicate.root] = true // fallback
+            this.simplePredicates.push(predicate) //TODO: check duplicates!
         }
 
     }
