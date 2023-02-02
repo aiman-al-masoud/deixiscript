@@ -5,7 +5,7 @@ export default class ConcreteWrapper implements Wrapper {
 
     constructor(
         readonly object: any,
-        readonly simpleConcepts: { [conceptName: string]: string[] } = object.simpleConcepts ?? {}) {
+        readonly simpleConcepts: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {}) {
 
         object.simpleConcepts = simpleConcepts
     }
@@ -27,13 +27,13 @@ export default class ConcreteWrapper implements Wrapper {
         const concept = predicate.concepts?.at(0)
 
         return concept ?
-            this.getNested(this.simpleConcepts[concept]) === predicate.root :
+            this.getNested(this.simpleConcepts[concept].path) === predicate.root :
             this.object[predicate.root] !== undefined
 
     }
 
     setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
-        this.simpleConcepts[conceptName.root] = propPath.map(x => x.root)
+        this.simpleConcepts[conceptName.root] = { path: propPath.map(x => x.root), lexeme: conceptName }
     }
 
     pointOut(opts?: { turnOff: boolean; }): void {
@@ -45,14 +45,14 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     call(verb: Lexeme, args: Wrapper[]) {
-        const concept = this.simpleConcepts[verb.root]
+        const concept = this.simpleConcepts[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
         return this?.object[methodName](...args.map(x => x.object))
     }
 
     protected setSingleProp(predicate: Lexeme, props: Lexeme[]) {
 
-        const path = this.simpleConcepts[props[0].root]
+        const path = this.simpleConcepts[props[0].root].path
 
         if (path) { // is concept 
             this.setNested(path, predicate.root)
@@ -65,7 +65,7 @@ export default class ConcreteWrapper implements Wrapper {
     protected setZeroProps(predicate: Lexeme) {
 
         if (predicate.concepts && predicate.concepts.length > 0) {
-            this.setNested(this.simpleConcepts[predicate.concepts[0]], predicate.root)
+            this.setNested(this.simpleConcepts[predicate.concepts[0]].path, predicate.root)
         } else {
             this.object[predicate.root] = true // fallback
         }
