@@ -104,7 +104,7 @@ export default class And implements Clause {
     query(query: Clause): Map[] {
 
         const universe = this.clause1.and(this.clause2)
-        const result: Map[] = [{}]
+        const result: Map[] = []
 
         query.entities.forEach(qe => {
             universe.entities.forEach(re => {
