@@ -103,49 +103,33 @@ export default class And implements Clause {
 
     query(query: Clause): Map[] {
 
-        // utility funcs
-        const range = (n: number) => [...new Array(n).keys()]
-        const uniq = (x: any[]) => Array.from(new Set(x))
-
         const universe = this.clause1.and(this.clause2)
-        const multiMap: { [id: Id]: Id[] /* candidates */ } = {}
+        const result: Map[] = [{}]
 
         query.entities.forEach(qe => {
             universe.entities.forEach(re => {
 
-                // decide if qe is re ?
-
                 const rd = universe.about(re).flatList()
                 const qd = query.about(qe).flatList().filter(x => x.predicate?.root !== 'of') /* TODO remove filter eventually!  */
 
-                // subsitute re by qe in real description
-                const rd2 = rd.map(x => x.copy({ map: { [re]: qe } }))
+                const rd2 = rd.map(x => x.copy({ map: { [re]: qe } })) // subsitute re by qe in real description
 
                 const qhashes = qd.map(x => x.hashCode)
                 const r2hashes = rd2.map(x => x.hashCode)
 
-                if (qhashes.every(x => r2hashes.includes(x))) { // entities match!
-                    multiMap[qe] = uniq([...multiMap[qe] ?? [], re])
+                if (qhashes.every(x => r2hashes.includes(x))) { // qe unifies with re!
+
+                    const i = result.findIndex(x => !x[qe])
+                    const m = result[i] ?? {}
+                    m[qe] = re
+                    result[i > -1 ? i : result.length] = m
+
                 }
 
             })
         })
 
-        const maxSize = Math.max(Math.max(...Object.values(multiMap).map(x => x.length)), 0)
-
-        const res = range(maxSize).map(i => {
-
-            const m: Map = query.entities
-                .filter(e => multiMap[e]?.[i] !== undefined)
-                .map(e => ({ [e]: multiMap[e][i] }))
-                .reduce((a, b) => ({ ...a, ...b }), {})
-
-            return m
-
-        })
-
-        return res
-
+        return result
     }
 
 }

@@ -22,3 +22,15 @@ object[getSetterName(x)].bind(object)(prop)
  }
 
 ```
+
+# RANGE
+
+```javascript
+const range = (n: number) => [...new Array(n).keys()]
+```
+
+# UNIQUE
+
+```javascript
+const uniq = (x: any[]) => Array.from(new Set(x))
+```
