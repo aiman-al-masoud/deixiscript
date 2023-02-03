@@ -107,41 +107,36 @@ export default class And implements Clause {
         const range = (n: number) => [...new Array(n).keys()]
         const uniq = (x: any[]) => Array.from(new Set(x))
 
-        // each entity in the query should find its full description,
-        // otherwise it does not exist in this
-
-        //TODO big issue: searching for red(x),button(x) 
-        // finds all entities that are buttons, finds all entities that are red
-        // but KEEPS buttons that aren't red à la OR!!!!! 
-
+        const universe = this.clause1.and(this.clause2)
         const multiMap: { [id: Id]: Id[] /* candidates */ } = {}
 
-        for (const e of query.entities) {
+        query.entities.forEach(qe => {
+            universe.entities.forEach(re => {
 
-            for (const d of query.about(e).flatList()) {
+                // decide if qe is re ?
 
-                const r1 = this.clause1.query(d)
-                const r2 = this.clause2.query(d)
+                const rd = universe.about(re).flatList()
+                const qd = query.about(qe).flatList().filter(x => x.predicate?.root !== 'of') /* TODO remove filter eventually!  */
 
-                if (!r1.length && !r2.length) { // e doesn't exist
-                    multiMap[e] = []
-                    break
-                } else {// problem: (x,y,z) and (a,b,c) !-> (x,b,c)
+                // subsitute re by qe in real description
+                const rd2 = rd.map(x => x.copy({ map: { [re]: qe } }))
 
-                    const cands = r1.map(m => m[e]).concat(r2.map(m => m[e])).filter(id => id !== undefined)
-                    multiMap[e] = uniq([...multiMap[e] ?? [], ...cands])
+                const qhashes = qd.map(x => x.toString())
+                const r2hashes = rd2.map(x => x.toString())
+
+                if (qhashes.every(x => r2hashes.includes(x))) { // entities match!
+                    multiMap[qe] = uniq([...multiMap[qe] ?? [], re])
                 }
 
-            }
+            })
+        })
 
-        }
-
-        const maxSize = Math.max(...Object.values(multiMap).map(x => x.length))
+        const maxSize = Math.max(Math.max(...Object.values(multiMap).map(x => x.length)), 0)
 
         const res = range(maxSize).map(i => {
 
             const m: Map = query.entities
-                .filter(e => multiMap[e][i] !== undefined)
+                .filter(e => multiMap[e]?.[i] !== undefined)
                 .map(e => ({ [e]: multiMap[e][i] }))
                 .reduce((a, b) => ({ ...a, ...b }), {})
 
