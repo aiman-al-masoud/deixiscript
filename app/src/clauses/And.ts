@@ -110,6 +110,10 @@ export default class And implements Clause {
         // each entity in the query should find its full description,
         // otherwise it does not exist in this
 
+        //TODO big issue: searching for red(x),button(x) 
+        // finds all entities that are buttons, finds all entities that are red
+        // but KEEPS buttons that aren't red à la OR!!!!! 
+
         const multiMap: { [id: Id]: Id[] /* candidates */ } = {}
 
         for (const e of query.entities) {
@@ -123,6 +127,7 @@ export default class And implements Clause {
                     multiMap[e] = []
                     break
                 } else {// problem: (x,y,z) and (a,b,c) !-> (x,b,c)
+
                     const cands = r1.map(m => m[e]).concat(r2.map(m => m[e])).filter(id => id !== undefined)
                     multiMap[e] = uniq([...multiMap[e] ?? [], ...cands])
                 }

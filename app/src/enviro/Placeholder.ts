@@ -13,6 +13,7 @@ export class Placeholder implements Wrapper {
     }
 
     set(predicate: Lexeme, props?: Lexeme[]) {
+        // console.log('Placeholder.set()', predicate.root, new Date().getMilliseconds())
         this.predicates.push(predicate)
     }
 
@@ -22,9 +23,19 @@ export class Placeholder implements Wrapper {
 
 
     get clause(): Clause {
-        return this.predicates
+
+        // console.log('Placeholder.clause()', 'predicates=', this.predicates, 'predicates.length=', this.predicates.length, new Date().getMilliseconds())
+
+        const clauses = this.predicates
             .map(p => clauseOf(p, this.id))
-            .reduce((a, b) => a.and(b), emptyClause())
+
+        // console.log('Placeholder.clause()', 'clauses=',clauses)
+
+        const clause = clauses.reduce((a, b) => a.and(b), emptyClause())
+
+        // console.log('Placeholder.clause()', 'clause=', clause.toString())
+
+        return clause
     }
 
     setAlias(conceptName: Lexeme, propPath: Lexeme[]) { }

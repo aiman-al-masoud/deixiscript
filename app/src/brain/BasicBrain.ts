@@ -24,6 +24,7 @@ export default class BasicBrain implements Brain {
             }
 
             const clause = toClause(ast)
+            // console.log('BasicBrain clause=', clause.toString())
 
             if (clause.isSideEffecty) {
 

@@ -5,8 +5,10 @@ import queryTester from "./tests/queryTester";
 
 (async () => {
     await autotester()
-    queryTester()
+    // queryTester()
     main()
 })()
+
+
 
 // 

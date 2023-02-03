@@ -54,8 +54,13 @@ export default class EditAction implements Action {
 
     protected set(localId: Id, predicate: Lexeme, props: Lexeme[], context: Context) {
 
+        
         const id = lookup(localId, context, this.topLevel, this.clause.exactIds) ?? getRandomId()
+        
+        // console.log('EditAction.set()', 'predicate=', predicate.root, 'localId=', localId, 'globalId=', id)
+
         const obj = context.enviro.get(id) ?? context.enviro.set(id)
+
         obj.set(predicate, props)
     }
 

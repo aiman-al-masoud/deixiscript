@@ -1,4 +1,4 @@
-import { Clause } from "../clauses/Clause";
+import { Clause, emptyClause } from "../clauses/Clause";
 import { Id, Map } from "../clauses/Id";
 import Wrapper from "./Wrapper";
 import { Enviro } from "./Enviro";
@@ -52,47 +52,24 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    query(clause: Clause): Map[] {
-
-        //TODO this is a tmp solution, for anaphora resolution, but just with descriptions, without taking (multi-entity) relationships into account
-        //TODO: after "every ..." sentence, "it" should be undefined
-
-        const universe = Object
-            .entries(this.dictionary)
-            .map(x => ({ e: x[0], w: x[1] }))
+    query(clause: Clause): Map[] { // TODO: refactor and handle pronouns better
 
 
-        const query = clause // described entities
-            .entities
-            .map(e => ({ e, desc: clause.theme.describe(e) }))
+        const universe = this.values
+            .map(x => x.clause)
+            .reduce((a, b) => a.and(b), emptyClause())
 
-        const getIt = () => this.lastReferenced ? [{ e: this.lastReferenced as string, w: this.dictionary[this.lastReferenced] }] : []
+        const maps = universe.query(clause)
+        const pronentities = clause.entities.filter(e => clause.describe(e).some(x => x.type === 'pronoun'))
+        
+        const pronextras = pronentities
+            .map(e => ({ [e]: this.lastReferenced ?? '' }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
 
-        const res = query
-            .flatMap(q => {
+        const maps2 = maps.map(m => ({ ...m, ...pronextras })).concat([pronextras])
+        this.lastReferenced = maps2.flatMap(x => Object.values(x)).at(-1) ?? this.lastReferenced
 
-                const to = universe
-                    .filter(u => q.desc.length > 0 && q.desc.every(d => u.w.is(d)))
-                    .concat(q.desc.find(x => x.type == 'pronoun') ? getIt() : [])
-
-                return { from: q.e, to: to }
-
-            })
-
-        const resSize = Math.max(...res.map(q => q.to.length));
-        const fromToTo = (from: Id) => res.filter(x => x.from === from)[0].to.map(x => x.e);
-        const range = (n: number) => [...new Array(n).keys()]
-
-        const res2 = range(resSize).map(i =>
-            clause
-                .entities
-                .filter(from => fromToTo(from).length > 0)
-                .map(from => ({ [from]: fromToTo(from)[i] ?? fromToTo(from)[0] }))
-                .reduce((a, b) => ({ ...a, ...b })))
-
-        this.lastReferenced = res2.flatMap(x => Object.values(x)).at(-1) ?? this.lastReferenced
-
-        return res2 // return list of maps, where each map should should have ALL ids from clause in its keys, eg: [{id2:id1, id4:id3}, {id2:1, id4:3}].
+        return maps2  // return list of maps, where each map should should have ALL ids from clause in its keys, eg: [{id2:id1, id4:id3}, {id2:1, id4:3}].
     }
 
 }

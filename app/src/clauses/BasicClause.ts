@@ -89,6 +89,12 @@ export class BasicClause implements Clause {
 
     query(clause: Clause): Map[] { // all ids treated as vars
 
+        
+        // clause.flatList().length > 1?  console.log('BasicClause, some problem!', clause.toString()) : 0
+        
+        clause = clause.flatList()[0] //TODO!
+
+
         if (!(clause instanceof BasicClause)) { // TODO: what about And of same BasicClause
             return []
         }
@@ -102,7 +108,7 @@ export class BasicClause implements Clause {
         const map = clause.args
             .map((x, i) => ({ [x]: this.args[i] }))
             .reduce((a, b) => ({ ...a, ...b }))
-
+        
         return [map]
     }
 

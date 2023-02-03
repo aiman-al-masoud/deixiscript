@@ -56,7 +56,7 @@ export default class ConcreteWrapper implements Wrapper {
     }
 
     get clause(): Clause {
-
+         
         const preds: Lexeme[] = Object.keys(this.simpleConcepts)
             .map(k => this.getNested(this.simpleConcepts[k].path))
             .map((x): Lexeme => ({ root: x, type: 'adjective' }))
