@@ -121,8 +121,8 @@ export default class And implements Clause {
                 // subsitute re by qe in real description
                 const rd2 = rd.map(x => x.copy({ map: { [re]: qe } }))
 
-                const qhashes = qd.map(x => x.toString())
-                const r2hashes = rd2.map(x => x.toString())
+                const qhashes = qd.map(x => x.hashCode)
+                const r2hashes = rd2.map(x => x.hashCode)
 
                 if (qhashes.every(x => r2hashes.includes(x))) { // entities match!
                     multiMap[qe] = uniq([...multiMap[qe] ?? [], re])

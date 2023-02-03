@@ -17,7 +17,7 @@ export class BasicClause implements Clause {
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(JSON.stringify(arguments)),
+        readonly hashCode = hashString(JSON.stringify({ predicate: predicate.root, args, negated })),
         readonly rheme = emptyClause()) {
 
     }
@@ -89,9 +89,9 @@ export class BasicClause implements Clause {
 
     query(clause: Clause): Map[] { // all ids treated as vars
 
-        
+
         // clause.flatList().length > 1?  console.log('BasicClause, some problem!', clause.toString()) : 0
-        
+
         clause = clause.flatList()[0] //TODO!
 
 
@@ -108,7 +108,7 @@ export class BasicClause implements Clause {
         const map = clause.args
             .map((x, i) => ({ [x]: this.args[i] }))
             .reduce((a, b) => ({ ...a, ...b }))
-        
+
         return [map]
     }
 
