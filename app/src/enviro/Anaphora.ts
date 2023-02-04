@@ -8,7 +8,7 @@ export interface Anaphora {
     query(clause: Clause): Map[]
 }
 
-export function getAnaphora() {
+export function getAnaphora(): Anaphora {
     return new EnviroAnaphora()
 }
 
