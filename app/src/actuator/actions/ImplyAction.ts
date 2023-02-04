@@ -35,12 +35,7 @@ export default class ImplyAction implements Action {
         const protoName = this.condition.describe(top)[0] // assume one 
         const proto = getProto(protoName)
 
-        const oldType = propsNames[0].type
-        const type = oldType ?? 'noun'
-        const newLexeme = { ...conceptName[0], type: type }
-
-        context.config.setLexeme(newLexeme)
-        wrap(getRandomId(), proto).setAlias(newLexeme, propsNames)
+        wrap(getRandomId(), proto).setAlias(conceptName[0], propsNames)
     }
 
     other(context: Context) {
