@@ -1,6 +1,7 @@
 import EagerLexer from "./EagerLexer"
 import { Lexeme } from "./Lexeme"
 import { Config } from "../config/Config"
+import { Context } from "../brain/Context"
 
 export default interface Lexer {
     get peek(): Lexeme
@@ -11,6 +12,6 @@ export default interface Lexer {
     croak(errorMsg: string): void
 }
 
-export function getLexer(sourceCode: string, config: Config): Lexer {
-    return new EagerLexer(sourceCode, config)
+export function getLexer(sourceCode: string, context: Context): Lexer {
+    return new EagerLexer(sourceCode, context)
 }

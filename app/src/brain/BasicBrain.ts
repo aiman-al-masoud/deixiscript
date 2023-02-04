@@ -16,7 +16,7 @@ export default class BasicBrain implements Brain {
 
     execute(natlang: string): any[] {
 
-        return getParser(natlang, this.context.config).parseAll().map(ast => {
+        return getParser(natlang, this.context).parseAll().map(ast => {
 
             if (ast.type === 'macro') {
                 this.context.config.setSyntax(ast as any)
@@ -24,7 +24,6 @@ export default class BasicBrain implements Brain {
             }
 
             const clause = toClause(ast)
-            // console.log('BasicBrain clause=', clause.toString())
 
             if (clause.isSideEffecty) {
 

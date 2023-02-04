@@ -2,18 +2,18 @@ import { AstNode, Role } from "./interfaces/AstNode"
 import { CompositeType } from "../config/syntaxes"
 import { getLexer } from "../lexer/Lexer"
 import { LexemeType } from "../config/LexemeType"
-import { Config } from "../config/Config"
 import { Parser } from "./interfaces/Parser"
 import { isNecessary, isRepeatable } from "./interfaces/Cardinality"
 import { AstType, Member } from "./interfaces/Syntax"
+import { Context } from "../brain/Context"
 
 
 export class KoolParser implements Parser {
 
     constructor(
         protected readonly sourceCode: string,
-        protected readonly config: Config,
-        protected readonly lexer = getLexer(sourceCode, config)) {
+        protected readonly context: Context,
+        protected readonly lexer = getLexer(sourceCode, context)) {
 
     }
 
@@ -23,7 +23,7 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd) {
 
-            const ast = this.tryParse(this.config.syntaxList)
+            const ast = this.tryParse(this.context.config.syntaxList)
 
             if (!ast) {
                 break
@@ -59,7 +59,7 @@ export class KoolParser implements Parser {
 
     protected knownParse = (name: AstType, role?: Role): AstNode | undefined => {
 
-        const members = this.config.getSyntax(name)
+        const members = this.context.config.getSyntax(name)
 
         if (members.length === 1 && members[0].type.every(t => this.isLeaf(t))) {
             return this.parseLeaf(members[0])
@@ -83,7 +83,7 @@ export class KoolParser implements Parser {
 
         const links: any = {}
 
-        for (const m of this.config.getSyntax(name)) {
+        for (const m of this.context.config.getSyntax(name)) {
 
             const ast = this.parseMember(m)
 
@@ -141,7 +141,7 @@ export class KoolParser implements Parser {
     }
 
     protected isLeaf = (t: AstType) => {
-        return this.config.lexemeTypes.includes(t as LexemeType)
+        return this.context.config.lexemeTypes.includes(t as LexemeType)
     }
 
 }

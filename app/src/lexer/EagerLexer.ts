@@ -1,24 +1,25 @@
 import Lexer from "./Lexer";
 import { getLexemes, isMultiWord, Lexeme, respace, stdspace, unspace } from "./Lexeme";
 import { Config } from "../config/Config";
+import { Context } from "../brain/Context";
 
 export default class EagerLexer implements Lexer {
 
     protected readonly tokens: Lexeme[]
     protected _pos: number
 
-    constructor(readonly sourceCode: string, readonly config: Config) {
+    constructor(readonly sourceCode: string, readonly context: Context) {
 
 
 
         this.tokens =
-            this.joinMultiWordLexemes(stdspace(sourceCode), config.lexemes)
+            this.joinMultiWordLexemes(stdspace(sourceCode), context.config.lexemes)
                 // .toLowerCase()
                 .trim()
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
                 .map(s => respace(s))
-                .flatMap(s => getLexemes(s, config.lexemes))
+                .flatMap(s => getLexemes(s, context.config.lexemes))
 
         this._pos = 0
     }

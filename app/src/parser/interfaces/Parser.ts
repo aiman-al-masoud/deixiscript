@@ -1,4 +1,4 @@
-import { Config } from "../../config/Config"
+import { Context } from "../../brain/Context"
 import { KoolParser } from "../KoolParser"
 import { AstNode } from "./AstNode"
 
@@ -6,6 +6,6 @@ export interface Parser {
     parseAll(): AstNode[]
 }
 
-export function getParser(sourceCode: string, config: Config): Parser {
-    return new KoolParser(sourceCode, config)
+export function getParser(sourceCode: string, context: Context): Parser {
+    return new KoolParser(sourceCode, context)
 }
