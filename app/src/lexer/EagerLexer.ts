@@ -19,7 +19,7 @@ export default class EagerLexer implements Lexer {
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
                 .map(s => respace(s))
-                .flatMap(s => getLexemes(s, context.config.lexemes))
+                .flatMap(s => getLexemes(s, context))
 
         this._pos = 0
     }

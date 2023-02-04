@@ -1,3 +1,4 @@
+import { Context } from "../brain/Context"
 import { LexemeType } from "../config/LexemeType"
 import { Cardinality } from "../parser/interfaces/Cardinality"
 
@@ -23,17 +24,17 @@ export function formsOf(lexeme: Lexeme) {
 
 }
 
-export function getLexemes(word: string, lexemes: Lexeme[]): Lexeme[] {
+export function getLexemes(word: string, context: Context): Lexeme[] {
 
     const lexeme: Lexeme =
-        lexemes.filter(x => formsOf(x).includes(word)).at(0)
+        context.config.lexemes.filter(x => formsOf(x).includes(word)).at(0)
         ?? { root: word, type: 'noun' }
     // ?? { root: word, type: 'any' }
 
     const lexeme2: Lexeme = { ...lexeme, token: word }
 
     return lexeme2.contractionFor ?
-        lexeme2.contractionFor.flatMap(x => getLexemes(x, lexemes)) :
+        lexeme2.contractionFor.flatMap(x => getLexemes(x, context)) :
         [lexeme2]
 
 }
