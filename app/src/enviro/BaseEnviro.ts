@@ -1,8 +1,7 @@
 import { Clause, emptyClause } from "../clauses/Clause";
 import { Id, Map } from "../clauses/Id";
-import Wrapper from "./Wrapper";
+import Wrapper, { wrap } from "./Wrapper";
 import { Enviro } from "./Enviro";
-import { Placeholder } from "./Placeholder";
 
 export default class BaseEnviro implements Enviro {
 
@@ -23,22 +22,23 @@ export default class BaseEnviro implements Enviro {
     }
 
     exists(id: Id): boolean {
-        return this.dictionary[id] && !(this.dictionary[id] instanceof Placeholder)
+        return this.dictionary[id] && !this.dictionary[id].isPlaceholder
+
     }
 
     set(id: Id, object?: Wrapper): Wrapper {
 
         if (!object) {
 
-            return this.dictionary[id] = new Placeholder(id)
+            return this.dictionary[id] = wrap(id)
 
         } else {
 
             const placeholder = this.dictionary[id]
 
-            if (placeholder && placeholder instanceof Placeholder) {
+            if (placeholder?.isPlaceholder) {
 
-                placeholder.predicates.forEach(p => {
+                placeholder.simplePredicates.forEach(p => {
                     object.set(p)
                 })
 
@@ -54,14 +54,13 @@ export default class BaseEnviro implements Enviro {
 
     query(clause: Clause): Map[] { // TODO: refactor and handle pronouns better
 
-
         const universe = this.values
             .map(x => x.clause)
             .reduce((a, b) => a.and(b), emptyClause())
 
         const maps = universe.query(clause)
         const pronentities = clause.entities.filter(e => clause.describe(e).some(x => x.type === 'pronoun'))
-        
+
         const pronextras = pronentities
             .map(e => ({ [e]: this.lastReferenced ?? '' }))
             .reduce((a, b) => ({ ...a, ...b }), {})
