@@ -1,4 +1,5 @@
 import { Context } from "../brain/Context"
+import { clauseOf } from "../clauses/Clause"
 import { LexemeType } from "../config/LexemeType"
 import { Cardinality } from "../parser/interfaces/Cardinality"
 
@@ -24,18 +25,36 @@ export function formsOf(lexeme: Lexeme) {
 
 }
 
-export function getLexemes(word: string, context: Context): Lexeme[] {
+export function getLexemes(word: string, context: Context, words: string[]): Lexeme[] {
 
     const lexeme: Lexeme =
         context.config.lexemes.filter(x => formsOf(x).includes(word)).at(0)
-        ?? { root: word, type: 'noun' }
-    // ?? { root: word, type: 'any' }
+        ?? getLexeme(word, context, words)
 
     const lexeme2: Lexeme = { ...lexeme, token: word }
 
     return lexeme2.contractionFor ?
-        lexeme2.contractionFor.flatMap(x => getLexemes(x, context)) :
+        lexeme2.contractionFor.flatMap(x => getLexemes(x, context, words)) :
         [lexeme2]
+
+}
+
+function getLexeme(word: string, context: Context, words: string[]): Lexeme {
+
+    let isVerb = words
+        .map(w => clauseOf({ root: w, type: 'any' }, 'X'))
+        .flatMap(c => context.enviro.query(c))
+        .flatMap(m => Object.values(m))
+        .map(id => context.enviro.get(id))
+        .map(o => o?.object?.[word])
+        .some(x => typeof x === 'function')
+
+    if (!isVerb && word.at(-1) === 's') {
+        return getLexeme(word.slice(0, -1), context, words)
+    }
+
+    const type = isVerb ? 'mverb' : 'noun' // TODO check arity of method mverb/iverb!
+    return { root: word, type: type, token: word } // TODO maybe token!=word
 
 }
 

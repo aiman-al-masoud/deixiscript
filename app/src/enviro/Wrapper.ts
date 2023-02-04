@@ -1,4 +1,3 @@
-import { Context } from "../brain/Context"
 import { Clause } from "../clauses/Clause"
 import { Id } from "../clauses/Id"
 import { Lexeme } from "../lexer/Lexeme"
@@ -20,33 +19,6 @@ export default interface Wrapper {
 
 }
 
-export function wrap(id: Id, o?: Object, context?: Context): Wrapper {
-    addNewVerbs(o, context)
+export function wrap(id: Id, o?: Object): Wrapper {
     return new BaseWrapper(o ?? {}, id, o === undefined)
-}
-
-
-function addNewVerbs(object?: object, context?: Context) {
-
-    if (context) {
-        const props = allPropsOf(object)
-        props.forEach(x => {
-            if (!context.config.lexemes.map(l => l.root).includes(x)) {
-                context.config.setLexeme({ root: x, type: 'mverb' })
-            }
-        })
-    }
-
-}
-
-function allPropsOf(x: any) {
-
-    const result = []
-    let y = x
-
-    do {
-        result.push(...Object.getOwnPropertyNames(y))
-    } while ((y = Object.getPrototypeOf(y)))
-
-    return result
 }

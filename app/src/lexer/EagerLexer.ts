@@ -1,6 +1,5 @@
 import Lexer from "./Lexer";
 import { getLexemes, isMultiWord, Lexeme, respace, stdspace, unspace } from "./Lexeme";
-import { Config } from "../config/Config";
 import { Context } from "../brain/Context";
 
 export default class EagerLexer implements Lexer {
@@ -8,19 +7,16 @@ export default class EagerLexer implements Lexer {
     protected readonly tokens: Lexeme[]
     protected _pos: number
 
-    constructor(readonly sourceCode: string, readonly context: Context) {
+    constructor(readonly sourceCode: string, readonly context: Context) { // TODO: make case insensitive
 
-
-
-        this.tokens =
+        const words =
             this.joinMultiWordLexemes(stdspace(sourceCode), context.config.lexemes)
-                // .toLowerCase()
                 .trim()
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
                 .map(s => respace(s))
-                .flatMap(s => getLexemes(s, context))
 
+        this.tokens = words.flatMap(w => getLexemes(w, context, words))
         this._pos = 0
     }
 
