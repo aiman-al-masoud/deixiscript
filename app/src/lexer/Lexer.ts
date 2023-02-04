@@ -1,6 +1,5 @@
 import EagerLexer from "./EagerLexer"
 import { Lexeme } from "./Lexeme"
-import { Config } from "../config/Config"
 import { Context } from "../brain/Context"
 
 export default interface Lexer {
