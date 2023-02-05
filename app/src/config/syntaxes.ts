@@ -65,12 +65,8 @@ export const syntaxes: SyntaxMap = {
 
     ],
 
-    'mverb sentence': [ //TODO: complements
-        { type: ['noun phrase'], number: 1, role: 'subject' },
-        { type: ['hverb'], number: '1|0' },
-        { type: ['negation'], number: '1|0' },
-        { type: ['mverb'], number: 1 },
-        { type: ['noun phrase'], number: 1, role: 'object' }
+    'mverb sentence': [
+
     ]
 }
 

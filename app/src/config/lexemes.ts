@@ -238,6 +238,11 @@ export const lexemes: Lexeme[] = [
     {
         root: 'right',
         type: 'adjective'
+    },
+
+    {
+        root: 'object',
+        type: 'adjective'
     }
 ]
 

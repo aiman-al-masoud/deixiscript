@@ -24,6 +24,12 @@ export const startupCommands: string[] = [
         then nonsubconj
         then one or more right and sentence or copula sentence or noun phrase`,
 
+    `mverb sentence is subject noun phrase 
+		then optional hverb
+		then optional negation
+		then mverb
+		then object noun phrase`, // TODO complements?
+
     // domain
     'color is a concept',
     'red and blue and black and green are colors',
