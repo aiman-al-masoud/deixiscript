@@ -1,6 +1,5 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
-import Imply from "../clauses/Imply";
 import { getAnaphora } from "../enviro/Anaphora";
 import { AstNode } from "../parser/interfaces/AstNode";
 
