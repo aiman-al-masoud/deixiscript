@@ -15,6 +15,7 @@ const tests = [
     test11,
     test12,
     test13,
+    test14,
 ]
 
 /**
@@ -134,6 +135,26 @@ function test13() {
     const brain = getBrain({ root: document.body })
     brain.execute('x is a button and it is green')
     return brain.execute('x')[0].style.background === 'green'
+}
+
+function test14() {
+
+    const brain = getBrain({ root: document.body })
+
+    brain.execute('x and y and z are buttons. x and y are red and z is green.')
+
+    const assert1 = brain.execute('x')[0].style.background === 'red'
+        && brain.execute('y')[0].style.background === 'red'
+        && brain.execute('z')[0].style.background === 'green'
+
+    brain.execute('x and y and z are not red.')
+
+    const assert2 = brain.execute('x')[0].style.background !== 'red'
+        && brain.execute('y')[0].style.background !== 'red'
+        && brain.execute('z')[0].style.background === 'green'
+
+    return assert1 && assert2
+
 }
 
 function sleep(millisecs: number) {

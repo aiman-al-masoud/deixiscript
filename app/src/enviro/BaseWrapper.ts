@@ -27,7 +27,11 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected setNo(predicate: Lexeme, opts?: SetOps) {
-        console.log('setNo()', predicate.root)
+
+        if (this.is(predicate)) {
+            this.setYes({ ...predicate, root: '' }, { ...opts, negated: false })
+        }
+
     }
 
     protected setYes(predicate: Lexeme, opts?: SetOps) {
