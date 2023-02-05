@@ -16,6 +16,7 @@ const tests = [
     test12,
     test13,
     test14,
+    test15,
 ]
 
 /**
@@ -155,6 +156,20 @@ function test14() {
 
     return assert1 && assert2
 
+}
+
+function test15() {
+
+    const brain = getBrain({ root: document.body })
+    brain.execute('x and y and z are buttons. every button is blue.')
+    brain.execute('z is red.')
+    brain.execute('every button is not blue.')
+
+    const assert1 = brain.execute('x')[0].style.background !== 'blue'
+        && brain.execute('y')[0].style.background !== 'blue'
+        && brain.execute('z')[0].style.background === 'red'
+
+    return assert1
 }
 
 function sleep(millisecs: number) {

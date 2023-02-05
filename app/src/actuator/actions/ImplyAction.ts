@@ -44,7 +44,7 @@ export default class ImplyAction implements Action {
         const predicate = this.conclusion.describe(top)[0]
         const y = context.enviro.query(clauseOf(protoName, 'X'))
         const ids = y.map(m => m['X'])
-        ids.forEach(id => context.enviro.get(id)?.set(predicate))
+        ids.forEach(id => context.enviro.get(id)?.set(predicate, { negated: this.conclusion.negated }))
     }
 
 }
