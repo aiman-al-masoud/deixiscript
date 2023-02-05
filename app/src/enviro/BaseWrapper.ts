@@ -35,14 +35,10 @@ export default class BaseWrapper implements Wrapper {
 
     is(predicate: Lexeme): boolean {
 
-        if (this.isPlaceholder) {
-            return this.isSimplePredicate(predicate)
-        }
+        const path = this.simpleConcepts[predicate.concepts?.at(0) ?? '']?.path
 
-        const concept = predicate.concepts?.at(0)
-
-        return concept ?
-            this.getNested(this.simpleConcepts[concept].path) === predicate.root :
+        return path ?
+            this.getNested(path) === predicate.root :
             this.isSimplePredicate(predicate)
 
     }
