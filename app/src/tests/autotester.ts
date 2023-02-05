@@ -17,6 +17,7 @@ const tests = [
     test13,
     test14,
     test15,
+    test16,
 ]
 
 /**
@@ -26,7 +27,7 @@ export default async function autotester() {
 
     for (const test of tests) {
         console.log(test() ? 'success' : 'fail', test.name)
-        await sleep(100)
+        await sleep(75)
         clearDom()
     }
 
@@ -170,6 +171,16 @@ function test15() {
         && brain.execute('z')[0].style.background === 'red'
 
     return assert1
+}
+
+function test16() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is a button')
+    brain.execute('x is hidden')
+    const assert1 = brain.execute('x')[0].hidden
+    brain.execute('x is not hidden')
+    const assert2 = !brain.execute('x')[0].hidden
+    return assert1 && assert2
 }
 
 function sleep(millisecs: number) {

@@ -18,34 +18,26 @@ export default class BaseWrapper implements Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): void {
 
-        if (opts?.negated) {
-            this.setNo(predicate, opts)
-        } else {
-            this.setYes(predicate, opts)
-        }
-
-    }
-
-    protected setNo(predicate: Lexeme, opts?: SetOps) {
-
-        if (this.is(predicate)) {
-            this.setYes({ ...predicate, root: '' }, { ...opts, negated: false })
-        }
-
-    }
-
-    protected setYes(predicate: Lexeme, opts?: SetOps) {
-
         const props = opts?.props ?? []
 
         if (this.isPlaceholder) {
             this.setSimplePredicate(predicate)
         } else if (props.length > 1) { // assume > 1 props are a path
-            this.setNested(props.map(x => x.root), predicate.root)
+            this.setMultiProp(props, predicate, opts)
         } else if (props.length === 1) {
-            this.setSingleProp(predicate, props[0])
+            this.setSingleProp(predicate, props[0], opts)
         } else if (props.length === 0) {
-            this.setZeroProps(predicate)
+            this.setZeroProps(predicate, opts)
+        }
+
+    }
+
+    protected setMultiProp(path: Lexeme[], value: Lexeme, opts?: SetOps) {
+
+        if (opts?.negated && this.is(value)) {
+            this.setNested(path.map(x => x.root), '')
+        } else {
+            this.setNested(path.map(x => x.root), value.root)
         }
 
     }
@@ -96,22 +88,32 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    protected setSingleProp(value: Lexeme, prop: Lexeme) {
+    protected setSingleProp(value: Lexeme, prop: Lexeme, opts?: SetOps) {
 
         const path = this.simpleConcepts[prop.root]?.path
 
+        const val = opts?.negated && this.is(value) ? '' : value.root
+
         if (path) { // is concept 
-            this.setNested(path, value.root)
+            this.setNested(path, /* value.root */ val)
         } else { // not concept
-            this.setNested([prop.root], value.root)
+            this.setNested([prop.root], /* value.root */ val)
         }
 
     }
 
-    protected setZeroProps(predicate: Lexeme) {
+    protected setZeroProps(predicate: Lexeme, opts?: SetOps) {
 
         if (predicate.concepts && predicate.concepts.length > 0) {
-            this.setNested(this.simpleConcepts[predicate.concepts[0]].path, predicate.root)
+
+            if (!opts?.negated) {
+                this.setNested(this.simpleConcepts[predicate.concepts[0]].path, predicate.root)
+            } else if (opts?.negated && this.is(predicate)) {
+                this.setNested(this.simpleConcepts[predicate.concepts[0]].path, '')
+            }
+
+        } else if (typeof this.object[predicate.root] === 'boolean') {
+            this.object[predicate.root] = opts?.negated ? false : true
         } else {
             this.setSimplePredicate(predicate)
         }
