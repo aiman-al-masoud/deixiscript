@@ -1,7 +1,7 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { Lexeme } from "../lexer/Lexeme";
-import Wrapper from "./Wrapper";
+import Wrapper, { SetOps } from "./Wrapper";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -16,15 +16,31 @@ export default class BaseWrapper implements Wrapper {
         object.simplePredicates = simplePredicates
     }
 
-    set(predicate: Lexeme, props?: Lexeme[]): void {
+    set(predicate: Lexeme, opts?: SetOps): void {
+
+        if (opts?.negated) {
+            this.setNo(predicate, opts)
+        } else {
+            this.setYes(predicate, opts)
+        }
+
+    }
+
+    protected setNo(predicate: Lexeme, opts?: SetOps) {
+        console.log('setNo()', predicate.root)
+    }
+
+    protected setYes(predicate: Lexeme, opts?: SetOps) {
+
+        const props = opts?.props ?? []
 
         if (this.isPlaceholder) {
             this.setSimplePredicate(predicate)
-        }else if (props && props.length > 1) { // assume > 1 props are a path
+        } else if (props.length > 1) { // assume > 1 props are a path
             this.setNested(props.map(x => x.root), predicate.root)
-        } else if (props && props.length === 1) {
-            this.setSingleProp(predicate, props)
-        } else if (!props || props.length === 0) {
+        } else if (props.length === 1) {
+            this.setSingleProp(predicate, props[0])
+        } else if (props.length === 0) {
             this.setZeroProps(predicate)
         }
 
@@ -76,14 +92,14 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    protected setSingleProp(predicate: Lexeme, props: Lexeme[]) {
+    protected setSingleProp(value: Lexeme, prop: Lexeme) {
 
-        const path = this.simpleConcepts[props[0].root].path
+        const path = this.simpleConcepts[prop.root].path
 
         if (path) { // is concept 
-            this.setNested(path, predicate.root)
+            this.setNested(path, value.root)
         } else { // not concept
-            this.setNested(props.map(x => x.root), predicate.root)
+            this.setNested([prop.root], value.root)
         }
 
     }
@@ -129,5 +145,23 @@ export default class BaseWrapper implements Wrapper {
         return x
 
     }
+
+    // protected clone(): Wrapper {
+
+    //     let objectClone
+
+    //     if (this.object instanceof HTMLElement) {
+    //         objectClone = this.object.cloneNode() as HTMLElement
+    //         objectClone.innerHTML = this.object.innerHTML
+    //     } else {
+    //         objectClone = { ...this.object }
+    //     }
+
+    //     return new BaseWrapper(objectClone,
+    //         this.id,
+    //         this.isPlaceholder,
+    //         this.simpleConcepts,
+    //         this.simplePredicates)
+    // }
 
 }
