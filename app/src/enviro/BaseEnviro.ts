@@ -28,6 +28,8 @@ export default class BaseEnviro implements Enviro {
 
     set(id: Id, object?: Wrapper): Wrapper {
 
+        this.lastReferenced = id
+
         if (!object) {
 
             return this.dictionary[id] = wrap(id)
@@ -45,7 +47,6 @@ export default class BaseEnviro implements Enviro {
                 this.dictionary[id] = object
             }
 
-            this.lastReferenced = id
             return object
 
         }

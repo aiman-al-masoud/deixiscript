@@ -27,6 +27,6 @@ export const startupCommands: string[] = [
     // domain
     'color is a concept',
     'red and blue and black and green are colors',
-    'color of any button is background of style of button',
-    'text of any button is textContent of button',
+    'color of any button is background of style of it',
+    'text of any button is textContent of it',
 ]

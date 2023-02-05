@@ -1,5 +1,6 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
+import Imply from "../clauses/Imply";
 import { getAnaphora } from "../enviro/Anaphora";
 import { AstNode } from "../parser/interfaces/AstNode";
 
@@ -126,7 +127,9 @@ function resolveAnaphora(clause: Clause): Clause {
     const a = getAnaphora()
     a.assert(clause.theme)
     const m = a.query(clause.rheme)[0]
-    return clause.copy({ map: m ?? {} })
+    const res = clause.copy({ map: m ?? {} })
+
+    return res
 }
 
 function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by a variable is also a variable
