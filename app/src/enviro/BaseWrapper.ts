@@ -20,10 +20,7 @@ export default class BaseWrapper implements Wrapper {
 
         if (this.isPlaceholder) {
             this.setSimplePredicate(predicate)
-            return
-        }
-
-        if (props && props.length > 1) { // assume > 1 props are a path
+        }else if (props && props.length > 1) { // assume > 1 props are a path
             this.setNested(props.map(x => x.root), predicate.root)
         } else if (props && props.length === 1) {
             this.setSingleProp(predicate, props)
