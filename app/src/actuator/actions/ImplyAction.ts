@@ -13,9 +13,9 @@ export default class ImplyAction implements Action {
 
     run(context: Context): any {
 
-        const isSetAliasCall =  // assume if at least one owned entity that it's a set alias call
+        const isSetAliasCall =  // assume if "of" in condition AND conclusion that it's a set alias call
             this.condition.getOwnershipChain(this.condition.topLevel()[0]).slice(1).length
-            || this.conclusion.getOwnershipChain(this.conclusion.topLevel()[0]).slice(1).length
+            && this.conclusion.getOwnershipChain(this.conclusion.topLevel()[0]).slice(1).length
 
         if (isSetAliasCall) {
             this.setAliasCall(context)
