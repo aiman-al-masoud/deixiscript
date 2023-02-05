@@ -98,7 +98,7 @@ export default class BaseWrapper implements Wrapper {
 
     protected setSingleProp(value: Lexeme, prop: Lexeme) {
 
-        const path = this.simpleConcepts[prop.root].path
+        const path = this.simpleConcepts[prop.root]?.path
 
         if (path) { // is concept 
             this.setNested(path, value.root)
