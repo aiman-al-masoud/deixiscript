@@ -87,6 +87,6 @@ export default class Imply implements Clause {
     }
 
     query(clause: Clause): Map[] {// TODO
-        return []
+        throw new Error('not implemented!')
     }
 }
