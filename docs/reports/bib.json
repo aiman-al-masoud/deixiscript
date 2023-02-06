@@ -133,5 +133,18 @@
         "myComments": [
             { "url": "../comments/a-model-for-naturalistic-programming-with-implementation.md" }
         ]
+    },
+
+    {
+        "title": "The End of Programming",
+        "author": [ { "name": "Matt Welsh" } ],
+        "type": "article",
+        "year": "2023",
+        "link": [
+            { "url": "https://dl.acm.org/doi/10.1145/3570220" }
+        ],
+        "identifier": [
+            { "type": "doi", "id": "10.1145/3570220" }
+        ]
     }
 ]
