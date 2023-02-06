@@ -6,8 +6,8 @@ import Action from "../actuator/actions/Action";
 import { topLevel } from "./topLevel";
 import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
-import ImplyAction from "../actuator/actions/ImplyAction";
 import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
+import { getAction } from "../actuator/actions/getAction";
 
 export default class Imply implements Clause {
 
@@ -79,28 +79,14 @@ export default class Imply implements Clause {
     }
 
     toAction(topLevel: Clause): Action[] {
-        return [new ImplyAction(this.condition, this.consequence)]
+        return [getAction(this, topLevel)]
     }
 
     getTopLevelOwnerOf(id: Id): Id | undefined {
         return getTopLevelOwnerOf(id, this)
     }
 
-    query(clause: Clause): Map[] {
-
-        // if (!(clause instanceof Imply)) {
-        //     return []
-        // }
-
-        // if (clause.condition.predicate !== this.condition.predicate ||
-        //     clause.consequence.predicate !== this.consequence.predicate) {
-        //     return []
-        // }
-
-        // // this.condition.query(clause.condition)
-
-        //TODO!
-
+    query(clause: Clause): Map[] {// TODO
         return []
     }
 }

@@ -1,13 +1,17 @@
-import { Clause, clauseOf } from "../../clauses/Clause";
+import { clauseOf } from "../../clauses/Clause";
 import { Context } from "../../brain/Context";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/Lexeme";
 import Action from "./Action";
 import { getRandomId } from "../../clauses/Id";
+import Imply from "../../clauses/Imply";
 
 export default class ImplyAction implements Action {
 
-    constructor(readonly condition: Clause, readonly conclusion: Clause) {
+    constructor(
+        readonly clause: Imply,
+        protected readonly condition = clause.theme,
+        protected readonly conclusion = clause.rheme) {
 
     }
 

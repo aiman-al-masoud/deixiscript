@@ -6,9 +6,15 @@ import ConceptAction from "./ConceptAction"
 import CreateAction from "./CreateAction"
 import EditAction from "./EditAction"
 import RelationAction from "./RelationAction"
+import Imply from "../../clauses/Imply"
+import ImplyAction from "./ImplyAction"
 
 
 export function getAction(clause: Clause, topLevel: Clause) {
+
+    if (clause instanceof Imply) {
+        return new ImplyAction(clause)
+    }
 
     // relations (multi arg predicates) except for 'of' 
     if (clause.args && clause.args.length > 1 && clause.predicate && clause.predicate.root !== 'of') {
