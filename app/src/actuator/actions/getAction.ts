@@ -34,16 +34,11 @@ export function getAction(clause: Clause, topLevel: Clause) {
 
 export function lookup(id: Id, context: Context, topLevel: Clause, exactIds: boolean) { // based on theme info only
 
-    
     if (exactIds) {
         return id
     }
 
-    
     const q = topLevel.theme.about(id)
-    
-    // console.log('getAction()', topLevel.about(id).toString())
-
     const maps = context.enviro.query(q)
     const res = maps?.[0]?.[id] //TODO could be undefined
     return res
