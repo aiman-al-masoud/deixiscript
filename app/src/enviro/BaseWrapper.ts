@@ -173,18 +173,18 @@ export default class BaseWrapper implements Wrapper {
         return 'noun'
     }
 
-    // protected clone(): Wrapper {
+    // protected copy(): Wrapper {
 
-    //     let objectClone
+    //     let wrapped
 
     //     if (this.object instanceof HTMLElement) {
-    //         objectClone = this.object.cloneNode() as HTMLElement
-    //         objectClone.innerHTML = this.object.innerHTML
+    //         wrapped = this.object.cloneNode() as HTMLElement
+    //         wrapped.innerHTML = this.object.innerHTML
     //     } else {
-    //         objectClone = { ...this.object }
+    //         wrapped = { ...this.object }
     //     }
 
-    //     return new BaseWrapper(objectClone,
+    //     return new BaseWrapper(wrapped,
     //         this.id,
     //         this.isPlaceholder,
     //         this.simpleConcepts,
