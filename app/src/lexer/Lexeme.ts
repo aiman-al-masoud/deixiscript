@@ -41,21 +41,21 @@ export function getLexemes(word: string, context: Context, words: string[]): Lex
 
 function getLexeme(word: string, context: Context, words: string[]): Lexeme {
 
-    let isVerb = words
+    const types = words
         .map(w => clauseOf({ root: w, type: 'any' }, 'X'))
         .flatMap(c => context.enviro.query(c))
         .flatMap(m => Object.values(m))
         .map(id => context.enviro.get(id))
-        .map(o => o?.object?.[word])
-        .some(x => typeof x === 'function')
+        .map(x => x?.typeOf(word))
+        .filter(x => x !== undefined)
+
+    const isVerb = types[0] === 'mverb' || types[0] === 'iverb'
 
     if (!isVerb && word.at(-1) === 's') {
         return getLexeme(word.slice(0, -1), context, words)
     }
 
-    const type = isVerb ? 'mverb' : 'noun' // TODO check arity of method mverb/iverb!
-    return { root: word, type: type, token: word } // TODO maybe token!=word
-
+    return { root: word, type: types[0] ?? 'noun', token: word } // TODO maybe token!=word
 }
 
 export function getProto(lexeme: Lexeme): Object | undefined {

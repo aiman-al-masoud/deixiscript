@@ -1,5 +1,6 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
+import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
 import Wrapper, { SetOps } from "./Wrapper";
 
@@ -95,9 +96,9 @@ export default class BaseWrapper implements Wrapper {
         const val = opts?.negated && this.is(value) ? '' : value.root
 
         if (path) { // is concept 
-            this.setNested(path, /* value.root */ val)
+            this.setNested(path, val)
         } else { // not concept
-            this.setNested([prop.root], /* value.root */ val)
+            this.setNested([prop.root], val)
         }
 
     }
@@ -150,6 +151,22 @@ export default class BaseWrapper implements Wrapper {
 
         return x
 
+    }
+
+    typeOf(word: string): LexemeType | undefined {
+
+        const path = this.simpleConcepts[word]?.path ?? [word]
+        const w = this.getNested(path)
+
+        if (typeof w === 'function') {
+            return (w.length ?? 0) > 0 ? 'mverb' : 'iverb'
+        }
+
+        if (w === undefined) {
+            return undefined
+        }
+
+        return 'noun'
     }
 
     // protected clone(): Wrapper {

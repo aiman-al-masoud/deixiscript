@@ -1,5 +1,6 @@
 import { Clause } from "../clauses/Clause"
 import { Id } from "../clauses/Id"
+import { LexemeType } from "../config/LexemeType"
 import { Lexeme } from "../lexer/Lexeme"
 import BaseWrapper from "./BaseWrapper"
 
@@ -16,6 +17,8 @@ export default interface Wrapper {
 
     readonly simplePredicates: Lexeme[]
     readonly isPlaceholder: boolean
+
+    typeOf(word: string): LexemeType | undefined
 
 }
 

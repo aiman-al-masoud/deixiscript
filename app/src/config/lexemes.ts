@@ -24,24 +24,6 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: 'click',
-        type: 'mverb',
-        forms: ['click']
-    },
-
-    {
-        root: 'clicked',
-        type: 'adjective',
-        derivedFrom: 'click'
-    },
-
-    {
-        root: 'pressed',
-        type: 'adjective',
-        aliasFor: 'clicked'
-    },
-
-    {
         root: 'cat',
         type: 'noun'
     },
@@ -57,11 +39,6 @@ export const lexemes: Lexeme[] = [
         root: "isn't",
         type: 'contraction',
         contractionFor: ['is', 'not']
-    },
-
-    {
-        root: "exist",
-        type: "iverb",
     },
 
     {
