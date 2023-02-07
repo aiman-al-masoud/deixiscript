@@ -37,7 +37,7 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    protected setMultiProp(path: Lexeme[], value: Lexeme, opts?: SetOps) {
+    protected setMultiProp(path: Lexeme[], value: Lexeme, opts?: SetOps) { // assume not concept
 
         if (opts?.negated && this.is(value)) {
             this.setNested(path.map(x => x.root), '')
@@ -96,8 +96,12 @@ export default class BaseWrapper implements Wrapper {
     protected setSingleProp(value: Lexeme, prop: Lexeme, opts?: SetOps) {
 
         const path = this.aliases[prop.root]?.path ?? [prop.root]
-        const val = opts?.negated && this.is(value) ? '' : value.root
-        this.setNested(path, val)
+
+        if (!opts?.negated) {
+            this.setNested(path, value.root)
+        } else if (opts?.negated && this.is(value)) {
+            this.setNested(path, '')
+        }
 
     }
 
