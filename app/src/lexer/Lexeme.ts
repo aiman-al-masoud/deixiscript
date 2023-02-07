@@ -55,7 +55,7 @@ function getLexeme(word: string, context: Context, words: string[]): Lexeme {
         return getLexeme(word.slice(0, -1), context, words)
     }
 
-    return { root: word, type: types[0] ?? 'noun', token: word } // TODO maybe token!=word
+    return { root: word, type: types[0] ?? 'noun' }
 }
 
 export function getProto(lexeme: Lexeme): Object | undefined {
