@@ -12,7 +12,6 @@ export default interface Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
-    setAlias(conceptName: Lexeme, propPath: Lexeme[]): void
     pointOut(opts?: { turnOff: boolean }): void
     typeOf(word: string): LexemeType | undefined
     copy(opts?: CopyOpts): Wrapper
@@ -23,6 +22,7 @@ export interface SetOps {
     props?: Lexeme[]
     negated?: boolean
     args?: Wrapper[]
+    aliasPath?: Lexeme[]
 }
 
 export interface CopyOpts {

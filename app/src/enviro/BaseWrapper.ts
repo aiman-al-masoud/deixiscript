@@ -23,6 +23,10 @@ export default class BaseWrapper implements Wrapper {
             return this.call(predicate, opts.args)
         }
 
+        if (opts?.aliasPath) {
+            return this.setAlias(predicate, opts.aliasPath)
+        }
+
         const props = opts?.props ?? []
 
         if (this.isPlaceholder) {
@@ -61,7 +65,7 @@ export default class BaseWrapper implements Wrapper {
         return this.simplePredicates.map(x => x.root).includes(predicate.root)
     }
 
-    setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
+    protected setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
         this.aliases[conceptName.root] = { path: propPath.map(x => x.root), lexeme: conceptName }
     }
 

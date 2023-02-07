@@ -39,7 +39,7 @@ export default class ImplyAction implements Action {
         const protoName = this.condition.describe(top)[0] // assume one 
         const proto = getProto(protoName)
 
-        wrap(getRandomId(), proto).setAlias(conceptName[0], propsNames)
+        wrap(getRandomId(), proto).set(conceptName[0], { aliasPath: propsNames })
     }
 
     other(context: Context) {
