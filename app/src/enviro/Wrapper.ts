@@ -9,15 +9,14 @@ export default interface Wrapper {
     readonly id: Id
     readonly object: any
     readonly clause: Clause
-    set(predicate: Lexeme, opts?: SetOps): void
-    is(predicate: Lexeme): boolean // TODO args
-    setAlias(conceptName: Lexeme, propPath: Lexeme[]): void
-    pointOut(opts?: { turnOff: boolean }): void
-    call(verb: Lexeme, args: (Wrapper | undefined)[]): any
 
     readonly simplePredicates: Lexeme[]
     readonly isPlaceholder: boolean
 
+    set(predicate: Lexeme, opts?: SetOps): any
+    is(predicate: Lexeme): boolean
+    setAlias(conceptName: Lexeme, propPath: Lexeme[]): void
+    pointOut(opts?: { turnOff: boolean }): void
     typeOf(word: string): LexemeType | undefined
 
 }
@@ -25,6 +24,7 @@ export default interface Wrapper {
 export interface SetOps {
     props?: Lexeme[]
     negated?: boolean
+    args?: Wrapper[]
 }
 
 export function wrap(id: Id, o?: Object): Wrapper {

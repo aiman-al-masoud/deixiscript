@@ -23,7 +23,11 @@ export default class RelationAction implements Action {
         const subject = context.enviro.get(args[0])
         const object = context.enviro.get(args[1])
 
-        return subject?.call(predicate, [object])
+        if (!object) {
+            throw new Error('object of verb is undefined!')
+        }
+
+        return subject?.set(predicate, { args: [object] })
     }
 
 }

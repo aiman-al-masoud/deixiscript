@@ -17,7 +17,11 @@ export default class BaseWrapper implements Wrapper {
         object.simplePredicates = simplePredicates
     }
 
-    set(predicate: Lexeme, opts?: SetOps): void {
+    set(predicate: Lexeme, opts?: SetOps): any {
+
+        if (opts?.args) {
+            return this.call(predicate, opts.args)
+        }
 
         const props = opts?.props ?? []
 
@@ -69,7 +73,7 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    call(verb: Lexeme, args: Wrapper[]) {
+    protected call(verb: Lexeme, args: Wrapper[]) {
         const concept = this.simpleConcepts[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
         return this?.object[methodName](...args.map(x => x.object))
