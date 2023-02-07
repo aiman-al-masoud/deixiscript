@@ -2,7 +2,7 @@ import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
-import Wrapper, { SetOps } from "./Wrapper";
+import Wrapper, { CopyOpts, SetOps } from "./Wrapper";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -10,10 +10,10 @@ export default class BaseWrapper implements Wrapper {
         readonly object: any,
         readonly id: Id,
         readonly isPlaceholder: boolean,
-        readonly aliases: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {},
+        readonly aliases: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.aliases ?? {},
         readonly simplePredicates: Lexeme[] = []) {
 
-        object.simpleConcepts = aliases
+        object.aliases = aliases
         object.simplePredicates = simplePredicates
     }
 
@@ -173,22 +173,27 @@ export default class BaseWrapper implements Wrapper {
         return 'noun'
     }
 
-    // protected copy(): Wrapper {
+    copy(opts?: CopyOpts): Wrapper {
 
-    //     let wrapped
+        const copy = new BaseWrapper(
+            opts?.object ?? this.copyWrapped(),
+            this.id,
+            opts?.object ? false : this.isPlaceholder,
+        )
 
-    //     if (this.object instanceof HTMLElement) {
-    //         wrapped = this.object.cloneNode() as HTMLElement
-    //         wrapped.innerHTML = this.object.innerHTML
-    //     } else {
-    //         wrapped = { ...this.object }
-    //     }
+        this.simplePredicates.forEach(x => copy.set(x))
+        return copy
+    }
 
-    //     return new BaseWrapper(wrapped,
-    //         this.id,
-    //         this.isPlaceholder,
-    //         this.simpleConcepts,
-    //         this.simplePredicates)
-    // }
+    protected copyWrapped() {
+
+        if (this.object instanceof HTMLElement) {
+            const wrapped = this.object.cloneNode() as HTMLElement
+            wrapped.innerHTML = this.object.innerHTML
+            return wrapped
+        } else {
+            return { ...this.object }
+        }
+    }
 
 }

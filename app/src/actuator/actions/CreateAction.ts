@@ -1,6 +1,5 @@
 import { getRandomId } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
-import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
@@ -21,7 +20,7 @@ export default class CreateAction implements Action {
             return
         }
 
-        if (context.enviro.exists(id)) { //  existence check prior to creating
+        if (context.enviro.get(id)?.is(predicate)) {  //  existence check prior to creating
             return
         }
 
@@ -34,16 +33,12 @@ export default class CreateAction implements Action {
             context.enviro.root?.appendChild(o)
             o.id = id + ''
             o.textContent = 'default'
-            const newObj = wrap(id, o)
-            newObj.set(predicate)
-            context.enviro.set(id, newObj)
+            context.enviro.set(id, o).set(predicate)
 
         } else {
 
             const o = new (proto as any).constructor()
-            const newObj = wrap(o, context)
-            newObj.set(predicate)
-            context.enviro.set(id, newObj)
+            context.enviro.set(id, o).set(predicate)
 
         }
 

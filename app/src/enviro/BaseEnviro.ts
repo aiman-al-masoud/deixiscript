@@ -21,35 +21,12 @@ export default class BaseEnviro implements Enviro {
         return Object.values(this.dictionary)
     }
 
-    exists(id: Id): boolean {
-        return this.dictionary[id] && !this.dictionary[id].isPlaceholder
-
-    }
-
-    set(id: Id, object?: Wrapper): Wrapper {
+    set(id: Id, object?: object): Wrapper {
 
         this.lastReferenced = id
 
-        if (!object) {
-
-            return this.dictionary[id] = wrap(id)
-
-        } else {
-
-            const placeholder = this.dictionary[id]
-
-            if (placeholder?.isPlaceholder) {
-
-                placeholder.simplePredicates.forEach(p => {
-                    object.set(p) //TODO: maybe better placeholder.copy({object:object})
-                })
-
-                this.dictionary[id] = object
-            }
-
-            return object
-
-        }
+        const placeholder = this.dictionary[id]
+        return this.dictionary[id] = placeholder?.copy({ object: object }) ?? wrap(id, object)
 
     }
 
