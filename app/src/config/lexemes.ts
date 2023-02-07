@@ -7,8 +7,7 @@ export const lexemes: Lexeme[] = [
     {
         root: 'have',
         type: 'mverb',
-        forms: ['have', 'has'],
-        irregular: true
+        irregularForms: ['have', 'has']
     },
 
     {
@@ -31,8 +30,7 @@ export const lexemes: Lexeme[] = [
     {
         root: 'be',
         type: 'copula',
-        forms: ['is', 'are'],
-        irregular: true
+        irregularForms: ['is', 'are']
     },
 
     {
@@ -44,8 +42,7 @@ export const lexemes: Lexeme[] = [
     {
         root: 'do',
         type: 'hverb',
-        irregular: true,
-        forms: ['do', 'does']
+        irregularForms: ['do', 'does']
     },
 
     {

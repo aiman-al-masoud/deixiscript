@@ -7,13 +7,11 @@ import { Cardinality } from "../parser/interfaces/Cardinality"
 export interface Lexeme {
     /**canonical form*/ readonly root: string
     /**token type*/ readonly type: LexemeType
-    /**useful for irregular stuff*/ readonly forms?: string[]
-    /**refers to verb conjugations or plural forms, assume regularity*/ readonly irregular?: boolean
-    /**semantical dependece*/ readonly derivedFrom?: string
     /**semantical equivalence*/ readonly aliasFor?: string
     /**made up of more lexemes*/ readonly contractionFor?: string[]
     /**form of this instance*/readonly token?: string
     /**for quantadj */ readonly cardinality?: Cardinality
+    readonly irregularForms?: string[]
     readonly concepts?: string[]
     readonly proto?: string
 }
@@ -77,7 +75,7 @@ function stem(lexeme: Lexeme): string {
 
     const word = lexeme.token ?? lexeme.root
 
-    if (lexeme.irregular) {
+    if (lexeme.irregularForms) {
         return word
     }
 
@@ -93,8 +91,8 @@ function conjugate(lexeme: Lexeme): string[] {
 
     const word = lexeme.token ?? lexeme.root
 
-    if (lexeme.irregular) {
-        return [word, ...lexeme.forms ?? []]
+    if (lexeme.irregularForms) {
+        return [word, ...lexeme.irregularForms]
     }
 
     return [word, `${word}s`]
