@@ -10,10 +10,10 @@ export default class BaseWrapper implements Wrapper {
         readonly object: any,
         readonly id: Id,
         readonly isPlaceholder: boolean,
-        readonly simpleConcepts: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {},
+        readonly aliases: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.simpleConcepts ?? {},
         readonly simplePredicates: Lexeme[] = []) {
 
-        object.simpleConcepts = simpleConcepts
+        object.simpleConcepts = aliases
         object.simplePredicates = simplePredicates
     }
 
@@ -49,7 +49,7 @@ export default class BaseWrapper implements Wrapper {
 
     is(predicate: Lexeme): boolean {
 
-        const path = this.simpleConcepts[predicate.concepts?.at(0) ?? '']?.path
+        const path = this.aliases[predicate.concepts?.at(0) ?? '']?.path
 
         return path ?
             this.getNested(path) === predicate.root :
@@ -62,7 +62,7 @@ export default class BaseWrapper implements Wrapper {
     }
 
     setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
-        this.simpleConcepts[conceptName.root] = { path: propPath.map(x => x.root), lexeme: conceptName }
+        this.aliases[conceptName.root] = { path: propPath.map(x => x.root), lexeme: conceptName }
     }
 
     pointOut(opts?: { turnOff: boolean; }): void {
@@ -74,7 +74,7 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected call(verb: Lexeme, args: Wrapper[]) {
-        const concept = this.simpleConcepts[verb.root]?.path
+        const concept = this.aliases[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
         return this?.object[methodName](...args.map(x => x.object))
     }
@@ -82,8 +82,8 @@ export default class BaseWrapper implements Wrapper {
     get clause(): Clause {
 
         const preds: Lexeme[] =
-            Object.keys(this.simpleConcepts)
-                .map(k => this.getNested(this.simpleConcepts[k].path))
+            Object.keys(this.aliases)
+                .map(k => this.getNested(this.aliases[k].path))
                 .map((x): Lexeme => ({ root: x, type: 'adjective' }))
                 .concat(this.simplePredicates)
 
@@ -95,30 +95,26 @@ export default class BaseWrapper implements Wrapper {
 
     protected setSingleProp(value: Lexeme, prop: Lexeme, opts?: SetOps) {
 
-        const path = this.simpleConcepts[prop.root]?.path
-
+        const path = this.aliases[prop.root]?.path ?? [prop.root]
         const val = opts?.negated && this.is(value) ? '' : value.root
-
-        if (path) { // is concept 
-            this.setNested(path, val)
-        } else { // not concept
-            this.setNested([prop.root], val)
-        }
+        this.setNested(path, val)
 
     }
 
     protected setZeroProps(predicate: Lexeme, opts?: SetOps) {
 
-        if (predicate.concepts && predicate.concepts.length > 0) {
+        const path = this.aliases[predicate?.concepts?.[0] as any]?.path
+
+        if (path) {
 
             if (!opts?.negated) {
-                this.setNested(this.simpleConcepts[predicate.concepts[0]].path, predicate.root)
+                this.setNested(path, predicate.root)
             } else if (opts?.negated && this.is(predicate)) {
-                this.setNested(this.simpleConcepts[predicate.concepts[0]].path, '')
+                this.setNested(path, '')
             }
 
         } else if (typeof this.object[predicate.root] === 'boolean') {
-            this.object[predicate.root] = opts?.negated ? false : true
+            this.object[predicate.root] = !opts?.negated
         } else {
             this.setSimplePredicate(predicate)
         }
@@ -159,7 +155,7 @@ export default class BaseWrapper implements Wrapper {
 
     typeOf(word: string): LexemeType | undefined {
 
-        const path = this.simpleConcepts[word]?.path ?? [word]
+        const path = this.aliases[word]?.path ?? [word]
         const w = this.getNested(path)
 
         if (typeof w === 'function') {
