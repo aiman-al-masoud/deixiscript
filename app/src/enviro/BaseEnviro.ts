@@ -41,7 +41,7 @@ export default class BaseEnviro implements Enviro {
             if (placeholder?.isPlaceholder) {
 
                 placeholder.simplePredicates.forEach(p => {
-                    object.set(p)
+                    object.set(p) //TODO: maybe better placeholder.copy({object:object})
                 })
 
                 this.dictionary[id] = object
