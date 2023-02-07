@@ -12,10 +12,6 @@ import ImplyAction from "./ImplyAction"
 
 export function getAction(clause: Clause, topLevel: Clause) {
 
-    if (clause instanceof Imply) {
-        return new ImplyAction(clause)
-    }
-
     // TODO: prepositions, and be beware of 'of' 
     if (clause.predicate?.type === 'iverb' || clause.predicate?.type === 'mverb') {
         return new RelationAction(clause, topLevel)
@@ -33,6 +29,10 @@ export function getAction(clause: Clause, topLevel: Clause) {
 
     if (clause.predicate?.proto) {
         return new CreateAction(clause, topLevel)
+    }
+
+    if (clause instanceof Imply) {
+        return new ImplyAction(clause)
     }
 
     return new EditAction(clause, topLevel)
