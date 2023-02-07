@@ -1,2 +1,2 @@
-# Naturalistic Programming
+# DeixiScript
 
