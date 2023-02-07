@@ -17,7 +17,8 @@ export const constituentTypes = stringLiterals(
     'complement',
     'subclause',
     'and sentence',
-    'mverb sentence'
+    'mverb sentence',
+    'iverb sentence',
 )
 
 export const staticDescPrecedence: CompositeType[] = [
@@ -66,6 +67,10 @@ export const syntaxes: SyntaxMap = {
     ],
 
     'mverb sentence': [
+
+    ],
+
+    'iverb sentence': [
 
     ]
 }

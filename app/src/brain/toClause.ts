@@ -29,6 +29,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = andSentenceToClause(ast, args)
     } else if (ast.links?.subject && ast.links.object) {
         result = mverbSentenceToClause(ast, args)
+    } else if (ast.links?.subject && !ast.links.object) {
+        result = iverbSentenceToClause(ast, args)
     }
 
     if (result) {
@@ -183,4 +185,25 @@ function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
         .copy({ sideEffecty: true })
 
     return res
+}
+
+function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+
+    const subjId = args?.subject ?? getRandomId()
+    const subject = toClause(ast.links?.subject, { subject: subjId })
+    const iverb = ast.links?.iverb?.lexeme
+
+    if (!iverb) {
+        throw new Error('no iverb in iverb sentence!')
+    }
+
+    const rheme = clauseOf(iverb, subjId)
+        .copy({ negate: !!ast.links.negation })
+
+    const res = subject
+        .and(rheme, { asRheme: true })
+        .copy({ sideEffecty: true })
+
+    return res
+
 }

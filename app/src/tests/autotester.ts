@@ -18,6 +18,7 @@ const tests = [
     test14,
     test15,
     test16,
+    test17,
 ]
 
 /**
@@ -181,6 +182,17 @@ function test16() {
     brain.execute('x is not hidden')
     const assert2 = !brain.execute('x')[0].hidden
     return assert1 && assert2
+}
+
+function test17() {
+    const brain = getBrain({ root: document.body })
+
+    brain.execute('x is a button')
+    const x = brain.execute('x')[0]
+    x.onclick = () => brain.execute('x is red')
+    brain.execute('x clicks')
+    return x.style.background === 'red'
+
 }
 
 function sleep(millisecs: number) {

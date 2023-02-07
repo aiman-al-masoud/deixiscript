@@ -62,8 +62,8 @@ export function getProto(lexeme: Lexeme): Object | undefined {
     return (window as any)?.[lexeme.proto as any]?.prototype
 }
 
-export function isConcept(lexeme: Lexeme) {
-    return lexeme.concepts?.includes('concept')
+export function isConcept(lexeme?: Lexeme) {
+    return lexeme?.concepts?.includes('concept')
 }
 
 export function isMultiWord(lexeme: Lexeme) {

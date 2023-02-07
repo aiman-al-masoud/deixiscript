@@ -16,8 +16,8 @@ export function getAction(clause: Clause, topLevel: Clause) {
         return new ImplyAction(clause)
     }
 
-    // relations (multi arg predicates) except for 'of' 
-    if (clause.args && clause.args.length > 1 && clause.predicate && clause.predicate.root !== 'of') {
+    // TODO: prepositions, and be beware of 'of' 
+    if (clause.predicate?.type === 'iverb' || clause.predicate?.type === 'mverb') {
         return new RelationAction(clause, topLevel)
     }
 

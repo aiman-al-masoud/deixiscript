@@ -28,7 +28,12 @@ export const startupCommands: string[] = [
 		then optional hverb
 		then optional negation
 		then mverb
-		then object noun phrase`, // TODO complements?
+		then object noun phrase`, // TODO complements
+
+    `iverb sentence is subject noun phrase 
+		then optional hverb
+		then optional negation
+		then iverb`, // TODO complements
 
     // domain
     'color is a concept',
