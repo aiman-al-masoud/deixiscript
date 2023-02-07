@@ -1,7 +1,7 @@
 import { getRandomId } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
 import { wrap } from "../../enviro/Wrapper";
-import { getProto } from "../../lexer/Lexeme";
+import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
 import { lookup } from "./getAction";

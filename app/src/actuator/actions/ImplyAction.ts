@@ -1,7 +1,7 @@
 import { clauseOf } from "../../clauses/Clause";
 import { Context } from "../../brain/Context";
 import { wrap } from "../../enviro/Wrapper";
-import { getProto } from "../../lexer/Lexeme";
+import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";
 import { getRandomId } from "../../clauses/Id";
 import Imply from "../../clauses/Imply";

@@ -1,7 +1,7 @@
 import { Clause } from "../../clauses/Clause"
 import { Id } from "../../clauses/Id"
 import { Context } from "../../brain/Context"
-import { isConcept } from "../../lexer/Lexeme"
+import { isConcept } from "../../lexer/functions/isConcept"
 import ConceptAction from "./ConceptAction"
 import CreateAction from "./CreateAction"
 import EditAction from "./EditAction"
