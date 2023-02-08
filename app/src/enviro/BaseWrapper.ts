@@ -10,7 +10,7 @@ export default class BaseWrapper implements Wrapper {
         readonly object: any,
         readonly id: Id,
         readonly isPlaceholder: boolean,
-        readonly aliases: { [conceptName: string]: { path: string[], lexeme: Lexeme } } = object.aliases ?? {},
+        readonly aliases: { [alias: string]: { path: string[], lexeme: Lexeme } } = object.aliases ?? {},
         readonly simplePredicates: Lexeme[] = []) {
 
         object.aliases = aliases
