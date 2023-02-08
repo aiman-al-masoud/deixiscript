@@ -7,7 +7,8 @@ import CreateAction from "./CreateAction"
 import EditAction from "./EditAction"
 import RelationAction from "./RelationAction"
 import Imply from "../../clauses/Imply"
-import ImplyAction from "./ImplyAction"
+import SetAliasAction from "./SetAliasAction"
+import MultiEditAction from "./MultiEditAction"
 
 
 export function getAction(clause: Clause, topLevel: Clause) {
@@ -31,8 +32,12 @@ export function getAction(clause: Clause, topLevel: Clause) {
         return new CreateAction(clause, topLevel)
     }
 
+    if (clause instanceof Imply && clause.theme.and(clause.rheme).flatList().some(x => x.predicate?.root === 'of')) {
+        return new SetAliasAction(clause)
+    }
+
     if (clause instanceof Imply) {
-        return new ImplyAction(clause)
+        return new MultiEditAction(clause)
     }
 
     return new EditAction(clause, topLevel)
