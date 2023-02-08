@@ -12,7 +12,6 @@ export default interface Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
-    pointOut(opts?: { turnOff: boolean }): void
     typeOf(word: string): LexemeType | undefined
     copy(opts?: CopyOpts): Wrapper
 

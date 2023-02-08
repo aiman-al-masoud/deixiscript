@@ -3,6 +3,7 @@ import { getActuator } from "../actuator/actuator/Actuator";
 import { toClause } from "./toClause";
 import { getParser } from "../parser/interfaces/Parser";
 import { Context } from "./Context";
+import { pointOut } from "./pointOut";
 
 
 export default class BasicBrain implements Brain {
@@ -36,8 +37,9 @@ export default class BasicBrain implements Brain {
                 const ids = maps.flatMap(m => Object.values(m))
                 const objects = ids.map(id => this.context.enviro.get(id))
 
-                this.context.enviro.values.forEach(o => o.pointOut({ turnOff: true }))
-                objects.forEach(o => o?.pointOut())
+                this.context.enviro.values.forEach(w => pointOut(w, { turnOff: true }))
+                objects.forEach(w => w ? pointOut(w) : 0)
+
                 return objects.map(o => o?.object)
             }
 

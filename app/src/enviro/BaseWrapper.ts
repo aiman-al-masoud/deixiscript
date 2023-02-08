@@ -69,14 +69,6 @@ export default class BaseWrapper implements Wrapper {
         this.aliases[conceptName.root] = { path: propPath.map(x => x.root), lexeme: conceptName }
     }
 
-    pointOut(opts?: { turnOff: boolean; }): void {
-
-        if (this.object instanceof HTMLElement) {
-            this.object.style.outline = opts?.turnOff ? '' : '#f00 solid 2px'
-        }
-
-    }
-
     protected call(verb: Lexeme, args: Wrapper[]) {
         const concept = this.aliases[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
