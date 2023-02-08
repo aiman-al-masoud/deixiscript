@@ -85,7 +85,7 @@ export default class BaseWrapper implements Wrapper {
 
         return preds
             .map(x => clauseOf(x, this.id))
-            .reduce((a, b) => a.and(b), emptyClause())
+            .reduce((a, b) => a.and(b), emptyClause)
 
     }
 

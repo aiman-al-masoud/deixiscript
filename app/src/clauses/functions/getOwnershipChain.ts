@@ -1,5 +1,5 @@
-import { Clause } from "./Clause"
-import { Id } from "./Id"
+import { Clause } from "../Clause"
+import { Id } from "../Id"
 
 export function getOwnershipChain(clause: Clause, entity: Id): Id[] {
 

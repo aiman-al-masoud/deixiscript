@@ -4,6 +4,9 @@ import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
 import { lookup } from "./getAction";
+import { getOwnershipChain } from "../../clauses/functions/getOwnershipChain";
+import { getTopLevel } from "../../clauses/functions/topLevel";
+import { getTopLevelOwnerOf } from "../../clauses/functions/getTopLevelOwnerOf";
 
 export default class EditAction implements Action {
 
@@ -13,7 +16,7 @@ export default class EditAction implements Action {
 
     run(context: Context) {
 
-        if (this.clause.args && this.topLevel.topLevel().includes(this.clause.args[0])) {
+        if (this.clause.args && getTopLevel(this.topLevel).includes(this.clause.args[0])) {
             this.forTopLevel(context)
         } else {
             this.forNonTopLevel(context)
@@ -35,6 +38,7 @@ export default class EditAction implements Action {
 
     protected forNonTopLevel(context: Context) {
 
+
         const localId = this.clause.args?.[0]
         const predicate = this.clause.predicate
 
@@ -42,8 +46,11 @@ export default class EditAction implements Action {
             return
         }
 
-        const ownerLocalId = this.topLevel.getTopLevelOwnerOf(localId)
+        const ownerLocalId = getTopLevelOwnerOf(localId, this.topLevel)
         const propName = this.topLevel.theme.describe(localId)
+
+        // !propName[0]? console.log(this.clause.toString(), this.topLevel.theme.toString()) : 0
+
 
         if (!ownerLocalId || this.clause?.predicate?.root === propName[0].root) {
             return
@@ -53,14 +60,13 @@ export default class EditAction implements Action {
     }
 
     protected set(localId: Id, predicate: Lexeme, props: Lexeme[], context: Context) {
-        const id = lookup(localId, context, this.topLevel, this.clause.exactIds) ?? getRandomId()
+        const id = lookup(localId, context, this.topLevel, !!this.clause.exactIds) ?? getRandomId()
         const obj = context.enviro.get(id) ?? context.enviro.set(id)
         obj.set(predicate, { props, negated: this.clause.negated })
     }
 
     protected getProps(topLevelEntity: Id) {
-        return this.topLevel
-            .getOwnershipChain(topLevelEntity)
+        return getOwnershipChain(this.topLevel, topLevelEntity)
             .slice(1)
             .map(e => this.topLevel.theme.describe(e)[0]) // ASSUME at least one
     }

@@ -101,9 +101,9 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
         adjectives.flatMap(a => a.lexeme ?? [])
             .concat(noun?.lexeme ? [noun.lexeme] : [])
             .map(p => clauseOf(p, subjectId))
-            .reduce((c1, c2) => c1.and(c2), emptyClause())
-            .and(complements.map(c => c ? toClause(c, { subject: subjectId }) : emptyClause()).reduce((c1, c2) => c1.and(c2), emptyClause()))
-            .and(subClause ? toClause(subClause, { subject: subjectId }) : emptyClause())
+            .reduce((c1, c2) => c1.and(c2), emptyClause)
+            .and(complements.map(c => c ? toClause(c, { subject: subjectId }) : emptyClause).reduce((c1, c2) => c1.and(c2), emptyClause))
+            .and(subClause ? toClause(subClause, { subject: subjectId }) : emptyClause)
             .copy({ sideEffecty: false })
 
     return res
@@ -121,7 +121,7 @@ function makeAllVars(clause: Clause): Clause { // assume ids are case insensitiv
 
 function resolveAnaphora(clause: Clause): Clause {
 
-    if (clause.rheme.hashCode === emptyClause().hashCode) {
+    if (clause.rheme.hashCode === emptyClause.hashCode) {
         return clause
     }
 

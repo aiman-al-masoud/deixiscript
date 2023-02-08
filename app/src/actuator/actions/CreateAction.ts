@@ -13,7 +13,7 @@ export default class CreateAction implements Action {
 
     run(context: Context) {
 
-        const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel, this.clause.exactIds) ?? getRandomId()
+        const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel, !!this.clause.exactIds) ?? getRandomId()
         const predicate = this.clause.predicate
 
         if (!predicate || !id) {

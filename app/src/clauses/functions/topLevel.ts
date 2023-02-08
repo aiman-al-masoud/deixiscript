@@ -1,6 +1,6 @@
-import { Clause } from "./Clause";
+import { Clause } from "../Clause";
 
-export function topLevel(clause: Clause) {
+export function getTopLevel(clause: Clause) {
     return clause
         .entities
         .map(x => ({ x, owners: clause.ownersOf(x) }))

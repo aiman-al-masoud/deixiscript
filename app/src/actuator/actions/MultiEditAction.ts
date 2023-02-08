@@ -1,5 +1,6 @@
 import { Context } from "../../brain/Context";
 import { Clause, clauseOf } from "../../clauses/Clause";
+import { getTopLevel } from "../../clauses/functions/topLevel";
 import Action from "./Action";
 
 export default class MultiEditAction implements Action {
@@ -13,7 +14,7 @@ export default class MultiEditAction implements Action {
         const condition = this.clause.theme
         const consequence = this.clause.rheme
 
-        const top = condition.topLevel()[0]
+        const top = getTopLevel(condition)[0]
         const protoName = condition.describe(top)[0] // assume one 
         const predicate = consequence.describe(top)[0]
         const y = context.enviro.query(clauseOf(protoName, 'X'))

@@ -2,12 +2,8 @@ import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "./hashString";
 import { Id, Map } from "./Id";
 import And from "./And";
-import Action from "../actuator/actions/Action";
-import { topLevel } from "./topLevel";
-import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
-import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
-import { getAction } from "../actuator/actions/getAction";
+import { uniq } from "../utils/uniq";
 
 export default class Imply implements Clause {
 
@@ -24,7 +20,7 @@ export default class Imply implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And(this, other, opts?.asRheme ?? false)
+        return new And([this, other], opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): Clause {
@@ -42,7 +38,7 @@ export default class Imply implements Clause {
     }
 
     get entities(): Id[] {
-        return this.condition.entities.concat(this.consequence.entities)
+        return uniq(this.condition.entities.concat(this.consequence.entities))
     }
 
     implies(conclusion: Clause): Clause {
@@ -50,7 +46,7 @@ export default class Imply implements Clause {
     }
 
     about(id: Id): Clause {
-        return emptyClause() ///TODO!!!!!!!!
+        return emptyClause ///TODO!!!!!!!!
     }
 
     toString() {
@@ -70,23 +66,17 @@ export default class Imply implements Clause {
         return this.consequence.describe(id).concat(this.condition.describe(id))
     }
 
-    topLevel(): Id[] {
-        return topLevel(this)
-    }
-
-    getOwnershipChain(entity: Id): Id[] {
-        return getOwnershipChain(this, entity)
-    }
-
-    toAction(topLevel: Clause): Action[] {
-        return [getAction(this, topLevel)]
-    }
-
-    getTopLevelOwnerOf(id: Id): Id | undefined {
-        return getTopLevelOwnerOf(id, this)
-    }
-
     query(clause: Clause): Map[] {// TODO
         throw new Error('not implemented!')
+    }
+
+    get simplify(): Clause {
+
+        return new Imply(
+            this.condition.simplify,
+            this.consequence.simplify,
+            this.negated,
+            this.exactIds,
+            this.isSideEffecty)
     }
 }

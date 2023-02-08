@@ -3,12 +3,7 @@ import { hashString } from "./hashString";
 import { Id, Map } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
-import Action from "../actuator/actions/Action";
-import { topLevel } from "./topLevel";
-import { getOwnershipChain } from "./getOwnershipChain";
 import { Lexeme } from "../lexer/Lexeme";
-import { getTopLevelOwnerOf } from "./getTopLevelOwnerOf";
-import { getAction } from "../actuator/actions/getAction";
 
 export class BasicClause implements Clause {
 
@@ -18,12 +13,12 @@ export class BasicClause implements Clause {
         readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly hashCode = hashString(JSON.stringify({ predicate: predicate.root, args, negated })),
-        readonly rheme = emptyClause()) {
+        readonly rheme = emptyClause) {
 
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And(this, other, opts?.asRheme ?? false)
+        return new And([this, other], opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): BasicClause {
@@ -43,7 +38,7 @@ export class BasicClause implements Clause {
     }
 
     about(id: Id): Clause {
-        return this.entities.includes(id) ? this : emptyClause()
+        return this.entities.includes(id) ? this : emptyClause
     }
 
     ownedBy(id: Id): Id[] {
@@ -63,18 +58,6 @@ export class BasicClause implements Clause {
         return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
     }
 
-    topLevel(): Id[] {
-        return topLevel(this)
-    }
-
-    getOwnershipChain(entity: Id): Id[] {
-        return getOwnershipChain(this, entity)
-    }
-
-    toAction(topLevel: Clause): Action[] {
-        return [getAction(this, topLevel)]
-    }
-
     get theme(): Clause {
         return this
     }
@@ -83,17 +66,9 @@ export class BasicClause implements Clause {
         return Array.from(new Set(this.args))
     }
 
-    getTopLevelOwnerOf(id: Id): Id | undefined {
-        return getTopLevelOwnerOf(id, this)
-    }
-
     query(clause: Clause): Map[] { // all ids treated as vars
 
-
-        // clause.flatList().length > 1?  console.log('BasicClause, some problem!', clause.toString()) : 0
-
         clause = clause.flatList()[0] //TODO!
-
 
         if (!(clause instanceof BasicClause)) { // TODO: what about And of same BasicClause
             return []
@@ -110,6 +85,10 @@ export class BasicClause implements Clause {
             .reduce((a, b) => ({ ...a, ...b }))
 
         return [map]
+    }
+
+    get simplify(): Clause {
+        return this
     }
 
 }

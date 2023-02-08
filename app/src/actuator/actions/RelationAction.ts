@@ -12,7 +12,7 @@ export default class RelationAction implements Action {
     run(context: Context) {
 
         const args = (this.clause.args ?? [])
-            .map(a => lookup(a, context, this.topLevel, this.clause.exactIds))
+            .map(a => lookup(a, context, this.topLevel, !!this.clause.exactIds))
 
         const predicate = this.clause.predicate
 

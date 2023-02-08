@@ -34,7 +34,7 @@ export default class BaseEnviro implements Enviro {
 
         const universe = this.values
             .map(x => x.clause)
-            .reduce((a, b) => a.and(b), emptyClause())
+            .reduce((a, b) => a.and(b), emptyClause)
 
         const maps = universe.query(clause)
         const pronentities = clause.entities.filter(e => clause.describe(e).some(x => x.type === 'pronoun'))
