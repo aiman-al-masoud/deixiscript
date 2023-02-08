@@ -8,21 +8,21 @@ import Action from "./Action";
 export default class SetAliasAction implements Action {
 
 
-    constructor(
-        readonly clause: Clause,
-        readonly condition = clause.theme,
-        readonly conclusion = clause.rheme) {
+    constructor(readonly clause: Clause) {
 
     }
 
     run(context: Context) {
 
-        const top = this.condition.topLevel()[0] //TODO (!ASSUME!) same as top in conclusion
-        const alias = this.condition.getOwnershipChain(top).slice(1)
-        const props = this.conclusion.getOwnershipChain(top).slice(1)
-        const conceptName = alias.map(x => this.condition.describe(x)[0]) // assume at least one name
-        const propsNames = props.map(x => this.conclusion.describe(x)[0]) // same ...
-        const protoName = this.condition.describe(top)[0] // assume one 
+        const condition = this.clause.theme
+        const consequence = this.clause.rheme
+
+        const top = condition.topLevel()[0] //TODO (!ASSUME!) same as top in conclusion
+        const alias = condition.getOwnershipChain(top).slice(1)
+        const props = consequence.getOwnershipChain(top).slice(1)
+        const conceptName = alias.map(x => condition.describe(x)[0]) // assume at least one name
+        const propsNames = props.map(x => consequence.describe(x)[0]) // same ...
+        const protoName = condition.describe(top)[0] // assume one 
         const proto = getProto(protoName)
 
         wrap(getRandomId(), proto).set(conceptName[0], { aliasPath: propsNames })
