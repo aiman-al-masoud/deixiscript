@@ -1,6 +1,7 @@
 import { Role } from "../parser/interfaces/AstNode";
 import { SyntaxMap } from "../parser/interfaces/Syntax";
-import { ElementType, stringLiterals } from "./utils";
+import { ElementType } from "../utils/ElementType";
+import { stringLiterals } from "../utils/stringLiterals";
 
 export type CompositeType = ElementType<typeof constituentTypes>;
 

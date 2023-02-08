@@ -1,4 +1,5 @@
-import { ElementType, stringLiterals } from "./utils"
+import { ElementType } from "../utils/ElementType"
+import { stringLiterals } from "../utils/stringLiterals"
 
 export type LexemeType = ElementType<typeof lexemeTypes>
 

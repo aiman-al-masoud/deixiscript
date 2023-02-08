@@ -1,5 +1,5 @@
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
-import { hashString } from "./hashString";
+import { hashString } from "../utils/hashString";
 import { Id, Map } from "./Id";
 import And from "./And";
 import { Lexeme } from "../lexer/Lexeme";
@@ -13,14 +13,14 @@ export default class Imply implements Clause {
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(JSON.stringify(arguments)),
+        readonly hashCode = hashString(condition.toString()+consequence.toString()+negated),
         readonly theme = condition,
         readonly rheme = consequence) {
 
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And([this, other], opts?.asRheme ?? false)
+        return new And(this, other, opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): Clause {

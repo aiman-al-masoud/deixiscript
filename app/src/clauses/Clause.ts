@@ -1,7 +1,7 @@
 import { BasicClause } from "./BasicClause"
 import { Id, Map } from "./Id"
 import { Lexeme } from "../lexer/Lexeme"
-import And from "./And"
+import EmptyClause from "./EmptyClause"
 
 /**
  * A 'language-agnostic' first order logic representation.
@@ -35,9 +35,7 @@ export function clauseOf(predicate: Lexeme, ...args: Id[]): Clause {
     return new BasicClause(predicate, args)
 }
 
-
-export const emptyClause: Clause = new And([])
-
+export const emptyClause: Clause = new EmptyClause()
 
 export interface CopyOpts {
     negate?: boolean

@@ -1,49 +1,38 @@
 import { Lexeme } from "../lexer/Lexeme";
 import { uniq } from "../utils/uniq";
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
-import { hashString } from "./hashString";
+import { hashString } from "../utils/hashString";
 import { Id, Map } from "./Id";
 import Imply from "./Imply";
 
 export default class And implements Clause {
 
     constructor(
-        readonly clauses: [Clause?, Clause?],
+        readonly clause1: Clause,
+        readonly clause2: Clause,
         readonly clause2IsRheme: boolean = false,
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(JSON.stringify(arguments)),
-        readonly clause1 = clauses[0] ?? emptyClause,
-        readonly clause2 = clauses[1] ?? emptyClause,
+        readonly hashCode = hashString(clause1.toString() + clause2.toString() + negated),
 
     ) {
 
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-
-        if (isEmpty(this)) {
-            return other
-        }
-
-        return new And([this, other], opts?.asRheme ?? false)
+        return new And(this, other, opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): Clause {
-
-        if (isEmpty(this)) {
-            return this
-        }
-
         return new And(
-            [this.clause1?.copy(opts), this.clause2?.copy(opts)],
+            this.clause1.copy(opts),
+            this.clause2.copy(opts),
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
             opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty
         )
-
     }
 
     flatList(): Clause[] {
@@ -54,50 +43,31 @@ export default class And implements Clause {
     }
 
     get entities(): Id[] {
-        return uniq(optionalCat(this.clause1?.entities, this.clause2?.entities))
-    }
-
-    implies(conclusion: Clause): Clause {
-
-        if (isEmpty(this)) {
-            return conclusion
-        }
-
-        return new Imply(this, conclusion)
+        return uniq(this.clause1?.entities.concat(this.clause2?.entities))
     }
 
     toString() {
-        const yes = this.clause1?.toString() + ',' + this.clause2?.toString()
+        const yes = this.clause1.toString() + ',' + this.clause2.toString()
         return yes ? this.negated ? `not${yes}` : yes : ''
     }
 
-    about = (id: Id): Clause => optionalAnd(this.clause1?.about(id), this.clause2?.about(id))
-    ownedBy = (id: Id): Id[] => optionalCat(this.clause1?.ownedBy(id), this.clause2?.ownedBy(id))
-    ownersOf = (id: Id): Id[] => optionalCat(this.clause1?.ownersOf(id), this.clause2?.ownersOf(id))
-    describe = (id: Id): Lexeme[] => optionalCat(this.clause1?.describe(id), this.clause2?.describe(id))
+    implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
+    about = (id: Id): Clause => this.clause1?.about(id).and(this.clause2?.about(id))
+    ownedBy = (id: Id): Id[] => this.clause1?.ownedBy(id).concat(this.clause2?.ownedBy(id))
+    ownersOf = (id: Id): Id[] => this.clause1?.ownersOf(id).concat(this.clause2?.ownersOf(id))
+    describe = (id: Id): Lexeme[] => this.clause1?.describe(id).concat(this.clause2?.describe(id))
 
     get theme(): Clause {
-
-        if (isEmpty(this)) {
-            return this
-        }
-
         return this.clause2IsRheme ? this.clause1 : this.clause1.theme.and(this.clause2.theme)
     }
 
     get rheme(): Clause {
-
-        if (isEmpty(this)) {
-            return this
-        }
-
         return this.clause2IsRheme ? this.clause2 : this.clause1.rheme.and(this.clause2.rheme)
-
     }
 
     query(query: Clause): Map[] {
 
-        const universe = optionalAnd(this.clause1, this.clause2)
+        const universe = this.clause1.and(this.clause2)
         const result: Map[] = []
 
         query.entities.forEach(qe => {
@@ -129,21 +99,21 @@ export default class And implements Clause {
 
     get simplify(): Clause {
 
-        const c1 = this.clause1?.simplify
-        const c2 = this.clause2?.simplify
+        const c1 = this.clause1.simplify
+        const c2 = this.clause2.simplify
 
-        if (!isEmpty(c1) && c1 && isEmpty(c2)) {
-            return c1?.simplify
+        if (c1.hashCode !== emptyClause.hashCode && c2.hashCode === emptyClause.hashCode) {
+            return c1.simplify
         }
 
-        if (!isEmpty(c2) && c2 && isEmpty(c1)) {
-            return c2?.simplify
+        if (c2.hashCode !== emptyClause.hashCode && c1.hashCode === emptyClause.hashCode) {
+            return c2.simplify
         }
 
-        if (!isEmpty(c1) && !isEmpty(c2)) {
-
+        if (c1.hashCode !== emptyClause.hashCode && c2.hashCode !== emptyClause.hashCode) {
             return new And(
-                [c1?.simplify, c2?.simplify],
+                c1?.simplify,
+                c2?.simplify,
                 this.clause2IsRheme,
                 this.negated,
                 this.exactIds,
@@ -154,21 +124,4 @@ export default class And implements Clause {
         return this
     }
 
-}
-
-export function isEmpty(object?: Clause) {
-
-    if (object instanceof And) {
-        return object.clauses.filter(x => x !== undefined).length === 0
-    }
-
-    return object === undefined
-}
-
-const optionalCat = (x: any[] | undefined, y: any[] | undefined) => {
-    return [...x ?? [], ...y ?? []]
-}
-
-const optionalAnd = (x?: Clause, y?: Clause) => {
-    return (x ?? emptyClause).and(y ?? emptyClause)
 }

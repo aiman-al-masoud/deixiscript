@@ -1,5 +1,5 @@
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
-import { hashString } from "./hashString";
+import { hashString } from "../utils/hashString";
 import { Id, Map } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
@@ -7,7 +7,8 @@ import { Lexeme } from "../lexer/Lexeme";
 
 export class BasicClause implements Clause {
 
-    constructor(readonly predicate: Lexeme,
+    constructor(
+        readonly predicate: Lexeme,
         readonly args: Id[],
         readonly negated = false,
         readonly exactIds = false,
@@ -18,7 +19,7 @@ export class BasicClause implements Clause {
     }
 
     and(other: Clause, opts?: AndOpts): Clause {
-        return new And([this, other], opts?.asRheme ?? false)
+        return new And(this, other, opts?.asRheme ?? false)
     }
 
     copy(opts?: CopyOpts): BasicClause {

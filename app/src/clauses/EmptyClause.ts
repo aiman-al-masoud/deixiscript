@@ -1,79 +1,30 @@
-// import Action from "../actuator/actions/Action";
-// import { Lexeme } from "../lexer/Lexeme";
-// import { AndOpts, Clause, CopyOpts } from "./Clause";
-// import { Id, Map } from "./Id";
+import { Lexeme } from "../lexer/Lexeme";
+import { AndOpts, Clause, CopyOpts } from "./Clause";
+import { Id, Map } from "./Id";
 
-// export class EmptyClause implements Clause {
+export default class EmptyClause implements Clause {
 
-//     constructor(readonly negated = false,
-//         readonly hashCode = 99999999,
-//         readonly entities = [],
-//         readonly isSideEffecty = false,
-//         readonly exactIds = false) {
+    readonly theme
+    readonly rheme
+    readonly simplify
 
-//     }
+    constructor(
+        readonly hashCode = 0,
+        readonly entities = []) {
 
-//     copy(opts?: CopyOpts): Clause {
-//         return this
-//     }
+        this.theme = this
+        this.rheme = this
+        this.simplify = this
+    }
 
-//     get theme() {
-//         return this
-//     }
+    copy = (opts?: CopyOpts): Clause => this
+    and = (other: Clause, opts?: AndOpts): Clause => other
+    implies = (conclusion: Clause): Clause => conclusion
+    flatList = () => []
+    about = (id: Id): Clause => this
+    ownedBy = (id: Id): Id[] => []
+    ownersOf = (id: Id): Id[] => []
+    describe = (id: Id): Lexeme[] => []
+    query = (clause: Clause): Map[] => []
 
-//     get rheme() {
-//         return this
-//     }
-
-//     and(other: Clause, opts?: AndOpts): Clause {
-//         return other
-//     }
-
-//     implies(conclusion: Clause): Clause {
-//         return conclusion
-//     }
-
-//     flatList(): Clause[] {
-//         return []
-//     }
-
-//     about(id: Id): Clause {
-//         return this
-//     }
-
-//     ownedBy(id: Id): Id[] {
-//         return []
-//     }
-
-//     ownersOf(id: Id): Id[] {
-//         return []
-//     }
-
-//     describe(id: Id): Lexeme[] {
-//         return []
-//     }
-
-//     topLevel(): Id[] {
-//         return []
-//     }
-//     getOwnershipChain(entity: Id): Id[] {
-//         return []
-//     }
-
-//     toString() {
-//         return ''
-//     }
-
-//     toAction(topLevel: Clause): Action[] {
-//         return []
-//     }
-
-//     getTopLevelOwnerOf(id: Id): Id | undefined {
-//         return undefined
-//     }
-
-//     query(clause: Clause): Map[] {
-//         return []
-//     }
-
-// }
+}
