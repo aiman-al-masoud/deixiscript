@@ -2,7 +2,7 @@ import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../clauses/Id";
 import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
-import Wrapper, { CopyOpts, SetOps } from "./Wrapper";
+import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -72,7 +72,7 @@ export default class BaseWrapper implements Wrapper {
     protected call(verb: Lexeme, args: Wrapper[]) {
         const concept = this.aliases[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
-        return this?.object[methodName](...args.map(x => x.object))
+        return this?.object[methodName](...args.map(x => unwrap(x)))
     }
 
     get clause(): Clause {

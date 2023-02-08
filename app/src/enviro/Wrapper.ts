@@ -7,7 +7,6 @@ import BaseWrapper from "./BaseWrapper"
 export default interface Wrapper {
 
     readonly id: Id
-    readonly object: any
     readonly clause: Clause
 
     set(predicate: Lexeme, opts?: SetOps): any
@@ -30,4 +29,8 @@ export interface CopyOpts {
 
 export function wrap(id: Id, o?: Object): Wrapper {
     return new BaseWrapper(o ?? {}, id, o === undefined)
+}
+
+export function unwrap(wrapper: Wrapper) {
+    return (wrapper as any).object
 }
