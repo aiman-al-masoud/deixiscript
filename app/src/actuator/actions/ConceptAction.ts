@@ -16,7 +16,7 @@ export default class ConceptAction implements Action {
 
             context.config.setLexeme({
                 root: adj,
-                type: 'adjective',
+                type: 'adjective', //TODO: be able to declare any kind of lexeme like this
                 concepts: [this.clause.predicate.root],
             })
         }
