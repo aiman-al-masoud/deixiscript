@@ -1,4 +1,5 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
+import { getOwnershipChain } from "../clauses/functions/getOwnershipChain";
 import { Id } from "../clauses/Id";
 import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
@@ -75,7 +76,7 @@ export default class BaseWrapper implements Wrapper {
         return this?.object[methodName](...args.map(x => unwrap(x)))
     }
 
-    get clause(): Clause {
+    clause(clause?: Clause): Clause {
 
         const preds: Lexeme[] =
             Object.keys(this.aliases)

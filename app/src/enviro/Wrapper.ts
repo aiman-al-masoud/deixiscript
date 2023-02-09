@@ -7,8 +7,7 @@ import BaseWrapper from "./BaseWrapper"
 export default interface Wrapper {
 
     readonly id: Id
-    readonly clause: Clause
-
+    clause(clause?: Clause): Clause
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
     typeOf(word: string): LexemeType | undefined

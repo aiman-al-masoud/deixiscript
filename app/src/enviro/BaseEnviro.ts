@@ -30,14 +30,14 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    query(clause: Clause): Map[] { // TODO: refactor and handle pronouns better
+    query(query: Clause): Map[] { // TODO: refactor and handle pronouns better
 
         const universe = this.values
-            .map(x => x.clause)
+            .map(w => w.clause())
             .reduce((a, b) => a.and(b), emptyClause)
 
-        const maps = universe.query(clause)
-        const pronentities = clause.entities.filter(e => clause.describe(e).some(x => x.type === 'pronoun'))
+        const maps = universe.query(query)
+        const pronentities = query.entities.filter(e => query.describe(e).some(x => x.type === 'pronoun'))
 
         const pronextras = pronentities
             .map(e => ({ [e]: this.lastReferenced ?? '' }))
