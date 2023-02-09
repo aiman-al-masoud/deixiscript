@@ -15,6 +15,7 @@ export default class And implements Clause {
         readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly hashCode = hashString(clause1.toString() + clause2.toString() + negated),
+        readonly entities = uniq(clause1.entities.concat(clause2.entities))
 
     ) {
 
@@ -38,12 +39,8 @@ export default class And implements Clause {
     flatList(): Clause[] {
 
         return this.negated ? [this] :
-            [...this.clause1?.flatList() ?? [], ...this.clause2?.flatList() ?? []]
+            [...this.clause1.flatList() ?? [], ...this.clause2.flatList() ?? []]
 
-    }
-
-    get entities(): Id[] {
-        return uniq(this.clause1?.entities.concat(this.clause2?.entities))
     }
 
     toString() {
@@ -52,10 +49,10 @@ export default class And implements Clause {
     }
 
     implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
-    about = (id: Id): Clause => this.clause1?.about(id).and(this.clause2?.about(id))
-    ownedBy = (id: Id): Id[] => this.clause1?.ownedBy(id).concat(this.clause2?.ownedBy(id))
-    ownersOf = (id: Id): Id[] => this.clause1?.ownersOf(id).concat(this.clause2?.ownersOf(id))
-    describe = (id: Id): Lexeme[] => this.clause1?.describe(id).concat(this.clause2?.describe(id))
+    about = (id: Id): Clause => this.clause1.about(id).and(this.clause2.about(id))
+    ownedBy = (id: Id): Id[] => this.clause1.ownedBy(id).concat(this.clause2.ownedBy(id))
+    ownersOf = (id: Id): Id[] => this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
+    describe = (id: Id): Lexeme[] => this.clause1.describe(id).concat(this.clause2.describe(id))
 
     get theme(): Clause {
         return this.clause2IsRheme ? this.clause1 : this.clause1.theme.and(this.clause2.theme)
