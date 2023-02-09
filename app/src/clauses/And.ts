@@ -102,14 +102,14 @@ export default class And implements Clause {
         const c2 = this.clause2.simple
 
         if (c2.hashCode === emptyClause.hashCode) {
-            return c1.simple
+            return c1
         }
 
         if (c1.hashCode === emptyClause.hashCode) {
-            return c2.simple
+            return c2
         }
 
-        return this.copy({ clause1: c1.simple, clause2: c2.simple })
+        return this.copy({ clause1: c1, clause2: c2 })
 
     }
 
