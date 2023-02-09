@@ -1,6 +1,5 @@
 import { Context } from "../../brain/Context";
-import { Clause, clauseOf } from "../../clauses/Clause";
-import { getTopLevel } from "../../clauses/functions/topLevel";
+import { Clause } from "../../clauses/Clause";
 import Action from "./Action";
 
 export default class MultiEditAction implements Action {
@@ -14,12 +13,18 @@ export default class MultiEditAction implements Action {
         const condition = this.clause.theme
         const consequence = this.clause.rheme
 
-        const top = getTopLevel(condition)[0]
-        const protoName = condition.describe(top)[0] // assume one 
-        const predicate = consequence.describe(top)[0]
-        const y = context.enviro.query(clauseOf(protoName, 'X'))
-        const ids = y.map(m => m['X'])
-        ids.forEach(id => context.enviro.get(id)?.set(predicate, { negated: consequence.negated }))
+        context.enviro.query(condition).forEach(m => {
+
+            Object.keys(m).forEach(e => {
+
+                consequence.describe(e).forEach(p => {
+                    context.enviro.get(m[e])?.set(p, { negated: consequence.negated })
+                })
+
+            })
+
+        })
+
     }
 
 }

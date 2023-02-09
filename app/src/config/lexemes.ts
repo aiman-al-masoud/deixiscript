@@ -17,6 +17,18 @@ export const lexemes: Lexeme[] = [
     },
 
     {
+        root: 'div',
+        type: 'noun',
+        proto: 'HTMLDivElement'
+    },
+
+    {
+        root: 'element',
+        type: 'noun',
+        proto: 'HTMLElement'
+    },
+
+    {
         root: 'list',
         type: 'noun',
         proto: 'Array'

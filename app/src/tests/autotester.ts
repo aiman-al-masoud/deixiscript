@@ -19,6 +19,7 @@ const tests = [
     test15,
     test16,
     test17,
+    test18,
 ]
 
 /**
@@ -192,6 +193,18 @@ function test17() {
     x.onclick = () => brain.execute('x is red')
     brain.execute('x clicks')
     return x.style.background === 'red'
+
+}
+
+function test18() {
+
+    const brain = getBrain({ root: document.body })
+
+    brain.execute('x and y are red. x is a button and y is a div.')
+    brain.execute('every red button is black')
+    const assert1 = brain.execute('button')[0].style.background === 'black'
+    const assert2 = brain.execute('div')[0].style.background === 'red'
+    return assert1 && assert2
 
 }
 
