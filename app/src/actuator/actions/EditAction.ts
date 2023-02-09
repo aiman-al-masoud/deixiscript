@@ -38,7 +38,6 @@ export default class EditAction implements Action {
 
     protected forNonTopLevel(context: Context) {
 
-
         const localId = this.clause.args?.[0]
         const predicate = this.clause.predicate
 
@@ -47,9 +46,8 @@ export default class EditAction implements Action {
         }
 
         const ownerLocalId = getTopLevelOwnerOf(localId, this.topLevel)
-        const propName = this.topLevel.theme.describe(localId)
 
-        if (!ownerLocalId || this.clause?.predicate?.root === propName[0].root) {
+        if (!ownerLocalId) {
             return
         }
 
