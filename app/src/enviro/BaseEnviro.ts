@@ -14,6 +14,7 @@ export default class BaseEnviro implements Enviro {
     }
 
     get(id: Id): Wrapper | undefined {
+        this.lastReferenced = id
         return this.dictionary[id]
     }
 
@@ -22,12 +23,9 @@ export default class BaseEnviro implements Enviro {
     }
 
     set(id: Id, object?: object): Wrapper {
-
         this.lastReferenced = id
-
         const placeholder = this.dictionary[id]
         return this.dictionary[id] = placeholder?.copy({ object: object }) ?? wrap(id, object)
-
     }
 
     query(query: Clause): Map[] { // TODO: refactor and handle pronouns better
@@ -37,16 +35,30 @@ export default class BaseEnviro implements Enviro {
             .reduce((a, b) => a.and(b), emptyClause)
 
         const maps = universe.query(query)
-        const pronentities = query.entities.filter(e => query.describe(e).some(x => x.type === 'pronoun'))
 
-        const pronextras = pronentities
-            .map(e => ({ [e]: this.lastReferenced ?? '' }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
+        const proMap = pronounsMap(query, this.lastReferenced)
 
-        const maps2 = maps.map(m => ({ ...m, ...pronextras })).concat([pronextras])
-        this.lastReferenced = maps2.flatMap(x => Object.values(x)).at(-1) ?? this.lastReferenced
+        const maps2 = maps
+            .map(m => ({ ...m, ...proMap }))
+            .concat([proMap])
 
-        return maps2  // return list of maps, where each map should should have ALL ids from clause in its keys, eg: [{id2:id1, id4:id3}, {id2:1, id4:3}].
+        return maps2
     }
+
+}
+
+function pronounsMap(query: Clause, lastReferenced?: Id): Map {
+
+    if (!lastReferenced) {
+        return {}
+    }
+
+    const pronextras = query
+        .entities
+        .filter(e => query.describe(e).some(x => x.type === 'pronoun'))
+        .map(e => ({ [e]: lastReferenced }))
+        .reduce((a, b) => ({ ...a, ...b }), {})
+
+    return pronextras
 
 }
