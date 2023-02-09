@@ -4,6 +4,7 @@ import { Id, Map } from "./Id";
 import Imply from "./Imply";
 import And from "./And";
 import { Lexeme } from "../lexer/Lexeme";
+import { uniq } from "../utils/uniq";
 
 export class BasicClause implements Clause {
 
@@ -14,7 +15,9 @@ export class BasicClause implements Clause {
         readonly exactIds = false,
         readonly isSideEffecty = false,
         readonly hashCode = hashString(JSON.stringify({ predicate: predicate.root, args, negated })),
-        readonly rheme = emptyClause) {
+        readonly rheme = emptyClause,
+        readonly entities = uniq(args),
+    ) {
 
     }
 
@@ -23,11 +26,13 @@ export class BasicClause implements Clause {
     }
 
     copy(opts?: CopyOpts): BasicClause {
-        return new BasicClause(this.predicate,
+        return new BasicClause(
+            this.predicate,
             this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
             opts?.negate ? !this.negated : this.negated,
             opts?.exactIds ?? this.exactIds,
-            opts?.sideEffecty ?? this.isSideEffecty)
+            opts?.sideEffecty ?? this.isSideEffecty
+        )
     }
 
     flatList(): Clause[] {
@@ -61,10 +66,6 @@ export class BasicClause implements Clause {
 
     get theme(): Clause {
         return this
-    }
-
-    get entities(): Id[] {
-        return Array.from(new Set(this.args))
     }
 
     query(clause: Clause): Map[] { // all ids treated as vars
