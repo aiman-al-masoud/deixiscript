@@ -25,7 +25,7 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            const clause = toClause(ast).simplify
+            const clause = toClause(ast).simple
             // console.log(clause.toString())
 
             if (clause.isSideEffecty) {

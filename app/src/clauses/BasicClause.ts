@@ -88,7 +88,7 @@ export class BasicClause implements Clause {
         return [map]
     }
 
-    get simplify(): Clause {
+    get simple(): Clause {
         return this
     }
 

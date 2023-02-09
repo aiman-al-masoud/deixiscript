@@ -6,7 +6,7 @@ export default class EmptyClause implements Clause {
 
     readonly theme
     readonly rheme
-    readonly simplify
+    readonly simple
 
     constructor(
         readonly hashCode = 0,
@@ -14,7 +14,7 @@ export default class EmptyClause implements Clause {
 
         this.theme = this
         this.rheme = this
-        this.simplify = this
+        this.simple = this
     }
 
     copy = (opts?: CopyOpts): Clause => this

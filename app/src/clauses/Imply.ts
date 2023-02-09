@@ -13,7 +13,7 @@ export default class Imply implements Clause {
         readonly negated = false,
         readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(condition.toString()+consequence.toString()+negated),
+        readonly hashCode = hashString(condition.toString() + consequence.toString() + negated),
         readonly theme = condition,
         readonly rheme = consequence) {
 
@@ -25,11 +25,13 @@ export default class Imply implements Clause {
 
     copy(opts?: CopyOpts): Clause {
 
-        return new Imply(this.condition.copy(opts),
-            this.consequence.copy(opts),
+        return new Imply(
+            opts?.clause1 ?? this.condition.copy(opts),
+            opts?.clause2 ?? this.consequence.copy(opts),
             opts?.negate ? !this.negated : this.negated,
             opts?.exactIds ?? this.exactIds,
-            opts?.sideEffecty ?? this.isSideEffecty)
+            opts?.sideEffecty ?? this.isSideEffecty
+        )
 
     }
 
@@ -70,13 +72,10 @@ export default class Imply implements Clause {
         throw new Error('not implemented!')
     }
 
-    get simplify(): Clause {
-
-        return new Imply(
-            this.condition.simplify,
-            this.consequence.simplify,
-            this.negated,
-            this.exactIds,
-            this.isSideEffecty)
+    get simple(): Clause {
+        return this.copy({
+            clause1: this.condition.simple,
+            clause2: this.consequence.simple
+        })
     }
 }

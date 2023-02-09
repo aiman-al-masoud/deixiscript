@@ -12,7 +12,7 @@ export interface Clause {
     readonly entities: Id[]
     readonly theme: Clause
     readonly rheme: Clause
-    readonly simplify: Clause
+    readonly simple: Clause
     copy(opts?: CopyOpts): Clause
     and(other: Clause, opts?: AndOpts): Clause
     implies(conclusion: Clause): Clause
@@ -42,6 +42,8 @@ export interface CopyOpts {
     map?: Map
     exactIds?: boolean
     sideEffecty?: boolean
+    clause1?: Clause
+    clause2?: Clause
 }
 
 export interface AndOpts {

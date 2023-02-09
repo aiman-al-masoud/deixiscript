@@ -26,8 +26,8 @@ export default class And implements Clause {
 
     copy(opts?: CopyOpts): Clause {
         return new And(
-            this.clause1.copy(opts),
-            this.clause2.copy(opts),
+            opts?.clause1 ?? this.clause1.copy(opts),
+            opts?.clause2 ?? this.clause2.copy(opts),
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
             opts?.exactIds ?? this.exactIds,
@@ -96,32 +96,21 @@ export default class And implements Clause {
         return result
     }
 
+    get simple() {
 
-    get simplify(): Clause {
+        const c1 = this.clause1.simple
+        const c2 = this.clause2.simple
 
-        const c1 = this.clause1.simplify
-        const c2 = this.clause2.simplify
-
-        if (c1.hashCode !== emptyClause.hashCode && c2.hashCode === emptyClause.hashCode) {
-            return c1.simplify
+        if (c2.hashCode === emptyClause.hashCode) {
+            return c1.simple
         }
 
-        if (c2.hashCode !== emptyClause.hashCode && c1.hashCode === emptyClause.hashCode) {
-            return c2.simplify
+        if (c1.hashCode === emptyClause.hashCode) {
+            return c2.simple
         }
 
-        if (c1.hashCode !== emptyClause.hashCode && c2.hashCode !== emptyClause.hashCode) {
-            return new And(
-                c1?.simplify,
-                c2?.simplify,
-                this.clause2IsRheme,
-                this.negated,
-                this.exactIds,
-                this.isSideEffecty
-            )
-        }
+        return this.copy({ clause1: c1.simple, clause2: c2.simple })
 
-        return this
     }
 
 }
