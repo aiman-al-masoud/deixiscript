@@ -3,9 +3,10 @@ import { Id } from "../id/Id";
 import { getIncrementalId } from "../id/functions/getIncrementalId";
 import { toVar } from "../id/functions/toVar";
 import { isVar } from "../id/functions/isVar";
-import { toConst } from "../id/functions/toConst";
 import { AstNode } from "../parser/interfaces/AstNode";
-
+import { makeAllVars } from "../clauses/functions/makeAllVars";
+import { propagateVarsOwned } from "../clauses/functions/propagateVarsOwned";
+import { resolveAnaphora } from "../clauses/functions/resolveAnaphora";
 
 
 interface ToClauseOpts {
@@ -110,35 +111,6 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
             .copy({ sideEffecty: false })
 
     return res
-}
-
-function makeAllVars(clause: Clause): Clause { // assume ids are case insensitive, assume if IDX is var all idx are var
-
-    const m = clause.entities
-        .filter(x => isVar(x))
-        .map(e => ({ [toConst(e)]: e }))
-        .reduce((a, b) => ({ ...a, ...b }), {})
-    return clause.copy({ map: m })
-
-}
-
-function resolveAnaphora(clause: Clause): Clause {
-
-    const m = clause.theme.query(clause.rheme)[0]
-    return clause.copy({ map: m ?? {} })
-
-}
-
-function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by a variable is also a variable
-
-    const m = clause.entities
-        .filter(e => isVar(e))
-        .flatMap(e => clause.ownedBy(e))
-        .map(e => ({ [e]: toVar(e) }))
-        .reduce((a, b) => ({ ...a, ...b }), {})
-
-    return clause.copy({ map: m })
-
 }
 
 function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
