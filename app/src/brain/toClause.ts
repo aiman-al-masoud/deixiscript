@@ -1,6 +1,5 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
-import { getRandomId, Id, isVar, toConst, toVar } from "../clauses/Id";
-import { getAnaphora } from "../enviro/Anaphora";
+import { getIncrementalId, Id, isVar, toConst, toVar } from "../clauses/Id";
 import { AstNode } from "../parser/interfaces/AstNode";
 
 
@@ -47,7 +46,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
 function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
-    const subjectId = args?.subject ?? getRandomId()
+    const subjectId = args?.subject ?? getIncrementalId()
     const subject = toClause(copulaSentence?.links?.subject, { subject: subjectId })
     const predicate = toClause(copulaSentence?.links?.predicate, { subject: subjectId }).copy({ negate: !!copulaSentence?.links?.negation })
     const entities = subject.entities.concat(predicate.entities)
@@ -70,8 +69,8 @@ function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts):
 
 function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
 
-    const subjId = args?.subject ?? getRandomId() //?? ((): Id => { throw new Error('undefined subject id') })()
-    const newId = getRandomId()
+    const subjId = args?.subject ?? getIncrementalId() //?? ((): Id => { throw new Error('undefined subject id') })()
+    const newId = getIncrementalId()
 
     const preposition = complement?.links?.preposition?.lexeme
 
@@ -89,7 +88,7 @@ function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
 
 function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
 
-    const maybeId = args?.subject ?? getRandomId()
+    const maybeId = args?.subject ?? getIncrementalId()
     const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
 
     const adjectives = nounPhrase?.links?.adjective?.list ?? []
@@ -121,16 +120,9 @@ function makeAllVars(clause: Clause): Clause { // assume ids are case insensitiv
 
 function resolveAnaphora(clause: Clause): Clause {
 
-    if (clause.rheme.hashCode === emptyClause.hashCode) {
-        return clause
-    }
+    const m = clause.theme.query(clause.rheme)[0]
+    return clause.copy({ map: m ?? {} })
 
-    const a = getAnaphora()
-    a.assert(clause.theme)
-    const m = a.query(clause.rheme)[0]
-    const res = clause.copy({ map: m ?? {} })
-
-    return res
 }
 
 function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by a variable is also a variable
@@ -144,7 +136,6 @@ function propagateVarsOwned(clause: Clause): Clause {// assume anything owned by
     return clause.copy({ map: m })
 
 }
-
 
 function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
@@ -162,11 +153,10 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
 }
 
-
 function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
-    const subjId = args?.subject ?? getRandomId()
-    const objId = getRandomId()
+    const subjId = args?.subject ?? getIncrementalId()
+    const objId = getIncrementalId()
 
     const subject = toClause(ast.links?.subject, { subject: subjId })
     const object = toClause(ast.links?.object, { subject: objId })
@@ -189,7 +179,7 @@ function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
 function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
-    const subjId = args?.subject ?? getRandomId()
+    const subjId = args?.subject ?? getIncrementalId()
     const subject = toClause(ast.links?.subject, { subject: subjId })
     const iverb = ast.links?.iverb?.lexeme
 

@@ -2,7 +2,7 @@ import { Context } from "../../brain/Context";
 import { Clause } from "../../clauses/Clause";
 import { getOwnershipChain } from "../../clauses/functions/getOwnershipChain";
 import { getTopLevel } from "../../clauses/functions/topLevel";
-import { getRandomId } from "../../clauses/Id";
+import { getIncrementalId } from "../../clauses/Id";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";
@@ -27,7 +27,7 @@ export default class SetAliasAction implements Action {
         const protoName = condition.describe(top)[0] // assume one 
         const proto = getProto(protoName)
 
-        wrap(getRandomId(), proto).set(conceptName[0], { aliasPath: propsNames })
+        wrap(getIncrementalId(), proto).set(conceptName[0], { aliasPath: propsNames })
     }
 
 }

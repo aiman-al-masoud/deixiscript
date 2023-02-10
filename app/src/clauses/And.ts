@@ -2,7 +2,7 @@ import { Lexeme } from "../lexer/Lexeme";
 import { uniq } from "../utils/uniq";
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "../utils/hashString";
-import { Id, Map } from "./Id";
+import { Id, Map, sortIds } from "./Id";
 import Imply from "./Imply";
 
 export default class And implements Clause {
@@ -64,8 +64,18 @@ export default class And implements Clause {
 
     query(query: Clause): Map[] {
 
+        function unify(qe: Id, re: Id, result: Map[]) {
+
+            const i = result.findIndex(x => !x[qe])
+            const m = result[i] ?? {}
+            m[qe] = re
+            result[i > -1 ? i : result.length] = m
+
+        }
+
         const universe = this.clause1.and(this.clause2)
         const result: Map[] = []
+        const it = sortIds(universe.entities).at(-1)
 
         query.entities.forEach(qe => {
             universe.entities.forEach(re => {
@@ -79,12 +89,11 @@ export default class And implements Clause {
                 const r2hashes = rd2.map(x => x.hashCode)
 
                 if (qhashes.every(x => r2hashes.includes(x))) { // qe unifies with re!
+                    unify(qe, re, result)
+                }
 
-                    const i = result.findIndex(x => !x[qe])
-                    const m = result[i] ?? {}
-                    m[qe] = re
-                    result[i > -1 ? i : result.length] = m
-
+                if (it && qd.some(x => x.predicate?.type === 'pronoun')) {
+                    unify(qe, it, result)
                 }
 
             })

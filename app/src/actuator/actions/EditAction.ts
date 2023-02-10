@@ -1,4 +1,4 @@
-import { getRandomId, Id } from "../../clauses/Id";
+import { getIncrementalId, Id } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
 import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";
@@ -55,7 +55,7 @@ export default class EditAction implements Action {
     }
 
     protected set(localId: Id, predicate: Lexeme, props: Lexeme[], context: Context) {
-        const id = lookup(localId, context, this.topLevel, !!this.clause.exactIds) ?? getRandomId()
+        const id = lookup(localId, context, this.topLevel) ?? getIncrementalId()
         const obj = context.enviro.get(id) ?? context.enviro.set(id)
         obj.set(predicate, { props, negated: this.clause.negated })
     }

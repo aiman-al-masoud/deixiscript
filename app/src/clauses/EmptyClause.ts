@@ -26,5 +26,6 @@ export default class EmptyClause implements Clause {
     ownersOf = (id: Id): Id[] => []
     describe = (id: Id): Lexeme[] => []
     query = (clause: Clause): Map[] => []
+    toString = ()=> ''
 
 }

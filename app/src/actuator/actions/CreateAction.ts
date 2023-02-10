@@ -1,4 +1,4 @@
-import { getRandomId } from "../../clauses/Id";
+import { getIncrementalId } from "../../clauses/Id";
 import { Context } from "../../brain/Context";
 import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";
@@ -13,7 +13,7 @@ export default class CreateAction implements Action {
 
     run(context: Context) {
 
-        const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel, !!this.clause.exactIds) ?? getRandomId()
+        const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel) ?? getIncrementalId()
         const predicate = this.clause.predicate
 
         if (!predicate || !id) {

@@ -18,11 +18,6 @@ export function getAction(clause: Clause, topLevel: Clause) {
         return new RelationAction(clause, topLevel)
     }
 
-    // for anaphora resolution (TODO: remove)
-    if (clause.exactIds) {
-        return new EditAction(clause, topLevel)
-    }
-
     // to create new concept or new instance thereof
     if (clause.args && topLevel.rheme.describe(clause.args[0]).some(x => isConcept(x))) { // 
         return new ConceptAction(clause, topLevel)
@@ -43,12 +38,7 @@ export function getAction(clause: Clause, topLevel: Clause) {
     return new EditAction(clause, topLevel)
 }
 
-export function lookup(id: Id, context: Context, topLevel: Clause, exactIds: boolean) { // based on theme info only
-
-    if (exactIds) {
-        return id
-    }
-
+export function lookup(id: Id, context: Context, topLevel: Clause) { // based on theme info only
     const q = topLevel.theme.about(id)
     const maps = context.enviro.query(q)
     const res = maps?.[0]?.[id] //TODO could be undefined

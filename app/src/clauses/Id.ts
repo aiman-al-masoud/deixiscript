@@ -9,7 +9,7 @@ export type Id = number | string
 export type Map = { [a: Id]: Id }
 
 
-function* getIdGenerator() {
+function* getIncrementalIdGenerator() {
     let x = 0
     while (true) {
         x++
@@ -17,18 +17,14 @@ function* getIdGenerator() {
     }
 }
 
-const idGenerator = getIdGenerator()
+const idGenerator = getIncrementalIdGenerator()
 
-export function getRandomId(opts?: GetRandomIdOpts): Id {
-    
-    // const newId = `id${parseInt(1000 * Math.random() + '')}`
-
+export function getIncrementalId(opts?: GetIncrementalIdOpts): Id {
     const newId = `id${idGenerator.next().value}`
-
     return opts?.asVar ? toVar(newId) : newId
 }
 
-export interface GetRandomIdOpts {
+export interface GetIncrementalIdOpts {
     asVar: boolean
 }
 
@@ -42,4 +38,17 @@ export function isVar(e: Id) {
 
 export function toConst(id: Id): Id {
     return (!Number.isNaN(Number(id)) ? `id${id}` : id + '').toLowerCase()
+}
+
+
+
+export function idToNum(id: Id) { //TODO: undefined or NaN?
+    return parseInt(id.toString().replaceAll(/\D+/g, ''))
+}
+
+/**
+ * Sort ids in ascending order.
+ */
+export function sortIds(ids: Id[]) {
+    return ids.sort((a, b) => idToNum(a) - idToNum(b))
 }
