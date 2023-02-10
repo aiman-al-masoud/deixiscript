@@ -66,7 +66,7 @@ function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): C
 
 function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
 
-    const predicate = copulaSubClause?.links?.predicate //as CompositeNode<CompositeType>
+    const predicate = copulaSubClause?.links?.predicate
 
     return toClause(predicate, { subject: args?.subject })
         .copy({ sideEffecty: false })
@@ -74,7 +74,7 @@ function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts):
 
 function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
 
-    const subjId = args?.subject ?? getIncrementalId() //?? ((): Id => { throw new Error('undefined subject id') })()
+    const subjId = args?.subject ?? getIncrementalId()
     const newId = getIncrementalId()
 
     const preposition = complement?.links?.preposition?.lexeme
