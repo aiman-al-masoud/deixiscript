@@ -1,5 +1,5 @@
 import { Clause } from "../clauses/Clause"
-import { Id } from "../clauses/Id"
+import { Id } from "../id/Id"
 import { LexemeType } from "../config/LexemeType"
 import { Lexeme } from "../lexer/Lexeme"
 import BaseWrapper from "./BaseWrapper"

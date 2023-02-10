@@ -1,5 +1,9 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
-import { getIncrementalId, Id, isVar, toConst, toVar } from "../clauses/Id";
+import { Id } from "../id/Id";
+import { getIncrementalId } from "../id/functions/getIncrementalId";
+import { toVar } from "../id/functions/toVar";
+import { isVar } from "../id/functions/isVar";
+import { toConst } from "../id/functions/toConst";
 import { AstNode } from "../parser/interfaces/AstNode";
 
 

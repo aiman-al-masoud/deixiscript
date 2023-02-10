@@ -1,5 +1,5 @@
 import { Clause } from "../Clause"
-import { Id } from "../Id"
+import { Id } from "../../id/Id"
 import { getTopLevel } from "./topLevel"
 
 export function getTopLevelOwnerOf(id: Id, tl: Clause): Id | undefined {

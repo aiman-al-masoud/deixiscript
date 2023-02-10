@@ -1,5 +1,6 @@
 import { BasicClause } from "./BasicClause"
-import { Id, Map } from "./Id"
+import { Id } from "../id/Id"
+import { Map } from "../id/Map"
 import { Lexeme } from "../lexer/Lexeme"
 import EmptyClause from "./EmptyClause"
 

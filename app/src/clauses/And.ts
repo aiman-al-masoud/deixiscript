@@ -2,7 +2,9 @@ import { Lexeme } from "../lexer/Lexeme";
 import { uniq } from "../utils/uniq";
 import { Clause, AndOpts, CopyOpts, emptyClause, QueryOpts } from "./Clause";
 import { hashString } from "../utils/hashString";
-import { Id, Map, sortIds } from "./Id";
+import { Id } from "../id/Id";
+import { sortIds } from "../id/functions/sortIds";
+import { Map } from "../id/Map";
 import Imply from "./Imply";
 
 export default class And implements Clause {

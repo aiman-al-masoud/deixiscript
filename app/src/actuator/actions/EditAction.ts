@@ -1,4 +1,5 @@
-import { getIncrementalId, Id } from "../../clauses/Id";
+import { Id } from "../../id/Id";
+import { getIncrementalId } from "../../id/functions/getIncrementalId";
 import { Context } from "../../brain/Context";
 import { Lexeme } from "../../lexer/Lexeme";
 import Action from "./Action";

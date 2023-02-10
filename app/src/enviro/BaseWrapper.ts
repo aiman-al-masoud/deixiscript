@@ -1,5 +1,5 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
-import { Id } from "../clauses/Id";
+import { Id } from "../id/Id";
 import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
 import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";

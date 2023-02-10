@@ -2,7 +2,7 @@ import { Context } from "../../brain/Context";
 import { Clause } from "../../clauses/Clause";
 import { getOwnershipChain } from "../../clauses/functions/getOwnershipChain";
 import { getTopLevel } from "../../clauses/functions/topLevel";
-import { getIncrementalId } from "../../clauses/Id";
+import { getIncrementalId } from "../../id/functions/getIncrementalId";
 import { wrap } from "../../enviro/Wrapper";
 import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";

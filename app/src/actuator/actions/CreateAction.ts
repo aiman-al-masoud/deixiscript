@@ -1,4 +1,4 @@
-import { getIncrementalId } from "../../clauses/Id";
+import { getIncrementalId } from "../../id/functions/getIncrementalId";
 import { Context } from "../../brain/Context";
 import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";

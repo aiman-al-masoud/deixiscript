@@ -1,6 +1,7 @@
 import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { hashString } from "../utils/hashString";
-import { Id, Map } from "./Id";
+import { Id } from "../id/Id";
+import { Map } from "../id/Map";
 import And from "./And";
 import { Lexeme } from "../lexer/Lexeme";
 import { uniq } from "../utils/uniq";

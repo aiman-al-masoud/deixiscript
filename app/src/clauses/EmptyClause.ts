@@ -1,6 +1,7 @@
 import { Lexeme } from "../lexer/Lexeme";
 import { AndOpts, Clause, CopyOpts } from "./Clause";
-import { Id, Map } from "./Id";
+import { Id } from "../id/Id";
+import { Map } from "../id/Map";
 
 export default class EmptyClause implements Clause {
 

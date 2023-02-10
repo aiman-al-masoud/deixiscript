@@ -1,5 +1,6 @@
 import { Clause, emptyClause } from "../clauses/Clause";
-import { Id, Map } from "../clauses/Id";
+import { Id } from "../id/Id";
+import { Map } from "../id/Map";
 import Wrapper, { wrap } from "./Wrapper";
 import { Enviro } from "./Enviro";
 
