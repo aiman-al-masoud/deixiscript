@@ -69,11 +69,15 @@ export class BasicClause implements Clause {
         return this
     }
 
-    query(clause: Clause): Map[] { // all ids treated as vars
+    get simple(): Clause {
+        return this
+    }
 
-        clause = clause.flatList()[0] //TODO!
+    query(clause: Clause): Map[] {
 
-        if (!(clause instanceof BasicClause)) { // TODO: what about And of same BasicClause
+        clause = clause.flatList()[0] //TODO!!???
+
+        if (!(clause instanceof BasicClause)) {
             return []
         }
 
@@ -81,17 +85,11 @@ export class BasicClause implements Clause {
             return []
         }
 
-        // TODO what about exact ids?
-
         const map = clause.args
             .map((x, i) => ({ [x]: this.args[i] }))
             .reduce((a, b) => ({ ...a, ...b }))
 
         return [map]
-    }
-
-    get simple(): Clause {
-        return this
     }
 
 }
