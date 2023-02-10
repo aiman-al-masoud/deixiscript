@@ -9,6 +9,7 @@ import RelationAction from "./RelationAction"
 import Imply from "../../clauses/Imply"
 import SetAliasAction from "./SetAliasAction"
 import MultiEditAction from "./MultiEditAction"
+import { getTopLevelOwnerOf } from "../../clauses/functions/getTopLevelOwnerOf"
 
 
 export function getAction(clause: Clause, topLevel: Clause) {
@@ -27,7 +28,7 @@ export function getAction(clause: Clause, topLevel: Clause) {
         return new CreateAction(clause, topLevel)
     }
 
-    if (clause instanceof Imply && clause.theme.and(clause.rheme).flatList().some(x => x.predicate?.root === 'of')) {
+    if (clause instanceof Imply && clause.entities.some(e => clause.ownersOf(e).length)) {
         return new SetAliasAction(clause)
     }
 
