@@ -38,9 +38,7 @@ export function getAction(clause: Clause, topLevel: Clause) {
     return new EditAction(clause, topLevel)
 }
 
-export function lookup(id: Id, context: Context, topLevel: Clause) { // based on theme info only
-    const q = topLevel.theme.about(id)
-    const maps = context.enviro.query(q)
-    const res = maps?.[0]?.[id] //TODO could be undefined
-    return res
+export function lookup(id: Id, context: Context, topLevel: Clause) {
+    const maps = context.enviro.query(topLevel.theme) // 
+    return maps?.[0]?.[id] //TODO could be undefined
 }
