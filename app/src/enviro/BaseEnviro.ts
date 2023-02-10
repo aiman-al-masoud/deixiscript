@@ -28,37 +28,14 @@ export default class BaseEnviro implements Enviro {
         return this.dictionary[id] = placeholder?.copy({ object: object }) ?? wrap(id, object)
     }
 
-    query(query: Clause): Map[] { // TODO: refactor and handle pronouns better
+    query(query: Clause): Map[] {
 
         const universe = this.values
             .map(w => w.clause())
             .reduce((a, b) => a.and(b), emptyClause)
 
-        const maps = universe.query(query)
+        return universe.query(query, { it: this.lastReferenced })
 
-        const proMap = pronounsMap(query, this.lastReferenced)
-
-        const maps2 = maps
-            .map(m => ({ ...m, ...proMap }))
-            .concat([proMap])
-
-        return maps2
     }
-
-}
-
-function pronounsMap(query: Clause, lastReferenced?: Id): Map {
-
-    if (!lastReferenced) {
-        return {}
-    }
-
-    const pronextras = query
-        .entities
-        .filter(e => query.describe(e).some(x => x.type === 'pronoun'))
-        .map(e => ({ [e]: lastReferenced }))
-        .reduce((a, b) => ({ ...a, ...b }), {})
-
-    return pronextras
 
 }

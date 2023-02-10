@@ -1,6 +1,6 @@
 import { Lexeme } from "../lexer/Lexeme";
 import { uniq } from "../utils/uniq";
-import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause, QueryOpts } from "./Clause";
 import { hashString } from "../utils/hashString";
 import { Id, Map, sortIds } from "./Id";
 import Imply from "./Imply";
@@ -62,7 +62,7 @@ export default class And implements Clause {
         return this.clause2IsRheme ? this.clause2 : this.clause1.rheme.and(this.clause2.rheme)
     }
 
-    query(query: Clause): Map[] {
+    query(query: Clause, opts?: QueryOpts): Map[] {
 
         function unify(qe: Id, re: Id, result: Map[]) {
 
@@ -75,7 +75,7 @@ export default class And implements Clause {
 
         const universe = this.clause1.and(this.clause2)
         const result: Map[] = []
-        const it = sortIds(universe.entities).at(-1)
+        const it = opts?.it ?? sortIds(universe.entities).at(-1)
 
         query.entities.forEach(qe => {
             universe.entities.forEach(re => {

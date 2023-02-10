@@ -21,7 +21,7 @@ export interface Clause {
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
     describe(id: Id): Lexeme[]
-    query(clause: Clause): Map[]
+    query(clause: Clause, opts?: QueryOpts): Map[]
 
     readonly predicate?: Lexeme
     readonly args?: Id[]
@@ -47,4 +47,8 @@ export interface CopyOpts {
 
 export interface AndOpts {
     asRheme?: boolean
+}
+
+export interface QueryOpts {
+    it?: Id
 }
