@@ -9,9 +9,10 @@ import RelationAction from "./RelationAction"
 import Imply from "../../clauses/Imply"
 import SetAliasAction from "./SetAliasAction"
 import MultiEditAction from "./MultiEditAction"
+import Action from "./Action"
 
 
-export function getAction(clause: Clause, topLevel: Clause) {
+export function getAction(clause: Clause, topLevel: Clause): Action {
 
     // TODO: prepositions, and be beware of 'of' 
     if (clause.predicate?.type === 'iverb' || clause.predicate?.type === 'mverb') {

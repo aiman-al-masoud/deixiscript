@@ -7,7 +7,8 @@ export default class BaseActuator implements Actuator {
 
     takeAction(clause: Clause, context: Context): void {
 
-        clause.flatList().forEach(x => getAction(x, clause).run(context))
+        const actions = clause.flatList().map(x => getAction(x, clause))
+        actions.forEach(a => a.run(context))
 
     }
 
