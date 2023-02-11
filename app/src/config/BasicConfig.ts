@@ -13,7 +13,7 @@ export class BasicConfig implements Config {
         readonly lexemeTypes: LexemeType[],
         protected _lexemes: Lexeme[],
         readonly syntaxMap: SyntaxMap,
-        readonly startupCommands: string[],
+        readonly prelude: string[],
         readonly staticDescPrecedence: CompositeType[]) {
     }
 

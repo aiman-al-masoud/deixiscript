@@ -13,7 +13,7 @@ export default class BasicBrain implements Brain {
         readonly context: Context,
         readonly actuator = getActuator()) {
 
-        this.context.config.startupCommands.forEach(c => this.execute(c))
+        this.context.config.prelude.forEach(c => this.execute(c))
     }
 
     execute(natlang: string): any[] {

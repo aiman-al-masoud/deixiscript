@@ -4,12 +4,12 @@ import { AstType, Syntax } from "../parser/interfaces/Syntax"
 import { BasicConfig } from "./BasicConfig"
 import { lexemes } from "./lexemes"
 import { LexemeType, lexemeTypes } from "./LexemeType"
-import { startupCommands } from "./startupCommands"
+import { prelude } from "./prelude"
 import { CompositeType, staticDescPrecedence, syntaxes } from "./syntaxes"
 
 export interface Config {
     readonly lexemes: Lexeme[]
-    readonly startupCommands: string[]
+    readonly prelude: string[]
     readonly syntaxList: CompositeType[]
     readonly lexemeTypes: LexemeType[]
     getSyntax(name: AstType): Syntax
@@ -23,7 +23,7 @@ export function getConfig(): Config {
         lexemeTypes,
         lexemes,
         syntaxes,
-        startupCommands,
+        prelude,
         staticDescPrecedence)
 }
 
