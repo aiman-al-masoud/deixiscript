@@ -16,7 +16,7 @@ export default class CreateAction implements Action {
         const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel) ?? getIncrementalId()
         const predicate = this.clause.predicate
 
-        if (!predicate || !id) {
+        if (!predicate) {
             return
         }
 
