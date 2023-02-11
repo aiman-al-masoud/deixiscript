@@ -35,6 +35,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = mverbSentenceToClause(ast, args)
     } else if (ast.links?.subject && !ast.links.object) {
         result = iverbSentenceToClause(ast, args)
+    } else if (ast.links?.subconj) {
+        result = complexSentenceToClause(ast, args)
     }
 
     if (result) {
@@ -171,5 +173,18 @@ function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
         .copy({ sideEffecty: true })
 
     return res
+
+}
+
+function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+
+    const subconj = ast.links?.subconj?.lexeme
+    const condition = toClause(ast.links?.condition, args)
+    const consequence = toClause(ast.links?.consequence, args)
+
+    const i = condition.implies(consequence).copy({ subjconj: subconj }).simple
+    console.log(i.toString())
+
+    throw new Error('work in progress!')
 
 }

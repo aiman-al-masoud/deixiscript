@@ -144,17 +144,25 @@ export class KoolParser implements Parser {
         return this.context.config.lexemeTypes.includes(t as LexemeType)
     }
 
-    protected simplify(ast: AstNode) {
+    protected simplify(ast: AstNode): AstNode {
+
+        if (!ast.links) {
+            return ast
+        }
 
         const syntax = this.context.config.getSyntax(ast.type)
 
-        const vals = Object.values(ast.links ?? {})
-
-        if (syntax.length === 1 && vals.length === 1) {
-            return vals[0]
+        if (syntax.length === 1 && Object.values(ast.links).length === 1) {
+            return this.simplify(Object.values(ast.links)[0])
         }
 
-        return ast
+        const simpleLinks = Object
+            .entries(ast.links)
+            .map(l => ({ [l[0]]: this.simplify(l[1]) }))
+            .reduce((a, b) => ({ ...a, ...b }))
+
+        return { ...ast, links: simpleLinks }
+
     }
 
 }

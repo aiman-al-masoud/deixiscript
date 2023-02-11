@@ -17,6 +17,7 @@ export default class Imply implements Clause {
         readonly consequence: Clause,
         readonly negated = false,
         readonly isSideEffecty = false,
+        readonly subjconj?: Lexeme,
     ) {
 
     }
@@ -31,7 +32,8 @@ export default class Imply implements Clause {
             opts?.clause1 ?? this.condition.copy(opts),
             opts?.clause2 ?? this.consequence.copy(opts),
             opts?.negate ? !this.negated : this.negated,
-            opts?.sideEffecty ?? this.isSideEffecty
+            opts?.sideEffecty ?? this.isSideEffecty,
+            opts?.subjconj ?? this.subjconj
         )
 
     }
@@ -53,7 +55,7 @@ export default class Imply implements Clause {
     }
 
     toString() {
-        const yes = `${this.condition.toString()} ---> ${this.consequence.toString()}`
+        const yes = `${this.subjconj?.root ?? ''} ${this.condition.toString()} ---> ${this.consequence.toString()}`
         return this.negated ? `not(${yes})` : yes
     }
 

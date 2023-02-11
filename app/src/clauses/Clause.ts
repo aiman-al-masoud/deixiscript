@@ -40,10 +40,10 @@ export const emptyClause: Clause = new EmptyClause()
 export interface CopyOpts {
     negate?: boolean
     map?: Map
-    exactIds?: boolean
     sideEffecty?: boolean
     clause1?: Clause
     clause2?: Clause
+    subjconj?:Lexeme
 }
 
 export interface AndOpts {
