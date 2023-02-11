@@ -8,15 +8,16 @@ import { uniq } from "../utils/uniq";
 
 export default class Imply implements Clause {
 
+    readonly theme = this.condition
+    readonly rheme = this.consequence
+    readonly hashCode = hashString(this.condition.toString() + this.consequence.toString() + this.negated)
+
     constructor(
         readonly condition: Clause,
         readonly consequence: Clause,
         readonly negated = false,
-        readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(condition.toString() + consequence.toString() + negated),
-        readonly theme = condition,
-        readonly rheme = consequence) {
+    ) {
 
     }
 
@@ -30,7 +31,6 @@ export default class Imply implements Clause {
             opts?.clause1 ?? this.condition.copy(opts),
             opts?.clause2 ?? this.consequence.copy(opts),
             opts?.negate ? !this.negated : this.negated,
-            opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty
         )
 
