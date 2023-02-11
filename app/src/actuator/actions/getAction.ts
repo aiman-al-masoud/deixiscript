@@ -9,7 +9,6 @@ import RelationAction from "./RelationAction"
 import Imply from "../../clauses/Imply"
 import SetAliasAction from "./SetAliasAction"
 import MultiEditAction from "./MultiEditAction"
-import { getTopLevelOwnerOf } from "../../clauses/functions/getTopLevelOwnerOf"
 
 
 export function getAction(clause: Clause, topLevel: Clause) {
