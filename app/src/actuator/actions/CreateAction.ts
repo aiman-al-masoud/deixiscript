@@ -5,7 +5,7 @@ import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
 import { lookup } from "./getAction";
 import { Id } from "../../id/Id";
-import { tagNameFromProto } from "../../utils/tagNameFromProto";
+import { newInstance } from "../../utils/newInstance";
 
 export default class CreateAction implements Action {
 
@@ -26,24 +26,25 @@ export default class CreateAction implements Action {
             return
         }
 
-        const o = newInstance(getProto(predicate), context, id)
+        const proto = getProto(predicate)
+
+        if (!proto) {
+            return
+        }
+
+        const o = newInstance(proto)
+        init(o, context, id)
         context.enviro.set(id, o).set(predicate)
 
     }
 
 }
 
-function newInstance(proto?: object, context?: Context, id?: Id) {
+function init(o: object, context: Context, id: Id) {
 
-    if (proto instanceof HTMLElement) {
-        const o = document.createElement(tagNameFromProto(proto))
+    if (o instanceof HTMLElement) {
         o.id = id + ''
         o.textContent = 'default'
         context?.enviro.root?.appendChild(o)
-        return o
-    } else {
-        return new (proto as any).constructor()
     }
-
 }
-
