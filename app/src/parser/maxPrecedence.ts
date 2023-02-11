@@ -26,10 +26,20 @@ const dependencyCompare = (a: CompositeType, b: CompositeType, syntaxes: SyntaxM
 
 }
 
-function dependencies(a: CompositeType, syntaxes: SyntaxMap): AstType[] {
+function dependencies(a: CompositeType, syntaxes: SyntaxMap, visited: AstType[] = []): AstType[] { //DFS
 
-    const x = (syntaxes[a] ?? []).flatMap(m => m.type)
-    return x
+    const members = syntaxes[a] ?? []
+
+    return members.flatMap(m => m.type).flatMap(t => {
+
+        if (visited.includes(t)) {
+            return []
+        } else {
+            return [...visited, ...dependencies(t as CompositeType, syntaxes, [...visited, t])]
+        }
+
+    })
+
 }
 
 const lenCompare = (a: CompositeType, b: CompositeType, syntaxes: SyntaxMap) => {

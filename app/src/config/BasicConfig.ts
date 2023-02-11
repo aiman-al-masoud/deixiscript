@@ -28,11 +28,15 @@ export class BasicConfig implements Config {
         //     'macro',
         //     'macropart',
         //     'taggedunion',
+        //     'complex sentence',
         //     'and sentence',
         //     'copula sentence',
+        //     'iverb sentence',
+        //     'mverb sentence',
         //     'complement',
         //     'subclause',
-        //     'noun phrase']
+        //     'noun phrase',
+        // ]
     }
 
     get lexemes() {
