@@ -17,7 +17,7 @@ export class BasicConfig implements Config {
         readonly staticDescPrecedence: CompositeType[]) {
     }
 
-    get syntaxList(): CompositeType[] {
+    get syntaxList(): CompositeType[] { //TODO: re-sort only when needed
 
         const x = Object.keys(this.syntaxMap) as CompositeType[]
         const y = x.filter(e => !this.staticDescPrecedence.includes(e))

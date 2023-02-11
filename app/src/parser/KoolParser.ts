@@ -29,7 +29,7 @@ export class KoolParser implements Parser {
                 break
             }
 
-            results.push(ast)
+            results.push(this.simplify(ast))
 
             if (this.lexer.peek?.type === 'fullstop') {
                 this.lexer.next()
@@ -142,6 +142,19 @@ export class KoolParser implements Parser {
 
     protected isLeaf = (t: AstType) => {
         return this.context.config.lexemeTypes.includes(t as LexemeType)
+    }
+
+    protected simplify(ast: AstNode) {
+
+        const syntax = this.context.config.getSyntax(ast.type)
+
+        const vals = Object.values(ast.links ?? {})
+
+        if (syntax.length === 1 && vals.length === 1) {
+            return vals[0]
+        }
+
+        return ast
     }
 
 }
