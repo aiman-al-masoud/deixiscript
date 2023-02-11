@@ -4,6 +4,8 @@ import { getProto } from "../../lexer/functions/getProto";
 import Action from "./Action";
 import { Clause } from "../../clauses/Clause";
 import { lookup } from "./getAction";
+import { Id } from "../../id/Id";
+import { tagNameFromProto } from "../../utils/tagNameFromProto";
 
 export default class CreateAction implements Action {
 
@@ -24,24 +26,24 @@ export default class CreateAction implements Action {
             return
         }
 
-        const proto = getProto(predicate)
-
-        if (proto instanceof HTMLElement) {
-
-            const tagNameFromProto = (x: Object) => x.constructor.name.replace('HTML', '').replace('Element', '').toLowerCase()
-            const o = document.createElement(tagNameFromProto(proto))
-            context.enviro.root?.appendChild(o)
-            o.id = id + ''
-            o.textContent = 'default'
-            context.enviro.set(id, o).set(predicate)
-
-        } else {
-
-            const o = new (proto as any).constructor()
-            context.enviro.set(id, o).set(predicate)
-
-        }
+        const o = newInstance(getProto(predicate), context, id)
+        context.enviro.set(id, o).set(predicate)
 
     }
 
 }
+
+function newInstance(proto?: object, context?: Context, id?: Id) {
+
+    if (proto instanceof HTMLElement) {
+        const o = document.createElement(tagNameFromProto(proto))
+        o.id = id + ''
+        o.textContent = 'default'
+        context?.enviro.root?.appendChild(o)
+        return o
+    } else {
+        return new (proto as any).constructor()
+    }
+
+}
+
