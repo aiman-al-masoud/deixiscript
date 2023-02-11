@@ -35,6 +35,8 @@ export const prelude: string[] = [
 		then optional negation
 		then iverb`, // TODO complements
 
+      `simple sentence is copula sentence or iverb sentence or mverb sentence`,
+   
       // domain
       'color is a concept',
       'red and blue and black and green are colors',
