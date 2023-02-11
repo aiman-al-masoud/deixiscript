@@ -41,8 +41,6 @@ export const prelude: string[] = [
       then subconj
       then condition simple sentence`,
 
-      `complex sentence is cs2`,
-
       // domain
       'color is a concept',
       'red and blue and black and green are colors',

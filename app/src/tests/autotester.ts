@@ -29,7 +29,7 @@ export default async function autotester() {
 
     for (const test of tests) {
         console.log(test() ? 'success' : 'fail', test.name)
-        await sleep(50)//75
+        await sleep(10)//75
         clearDom()
     }
 

@@ -22,6 +22,7 @@ export const constituentTypes = stringLiterals(
     'iverb sentence',
     'simple sentence',
     'complex sentence',
+    'cs1',
 )
 
 export const staticDescPrecedence: CompositeType[] = [
@@ -83,6 +84,13 @@ export const syntaxes: SyntaxMap = {
 
     'complex sentence': [
 
+    ],
+
+    'cs1': [
+        { type: ['subconj'], number: 1 },
+        { type: ['simple sentence'], number: 1, role: 'condition' },
+        { type: ['then'], number: 1 },
+        { type: ['simple sentence'], number: 1, role: 'consequence' },
     ]
 }
 
