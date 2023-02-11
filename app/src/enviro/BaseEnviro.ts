@@ -32,7 +32,7 @@ export default class BaseEnviro implements Enviro {
     query(query: Clause): Map[] {
 
         const universe = this.values
-            .map(w => w.clause())
+            .map(w => w.clause(query))
             .reduce((a, b) => a.and(b), emptyClause)
 
         return universe.query(query, { it: this.lastReferenced })

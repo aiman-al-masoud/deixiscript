@@ -3,6 +3,8 @@ import { Id } from "../id/Id";
 import { LexemeType } from "../config/LexemeType";
 import { Lexeme } from "../lexer/Lexeme";
 import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";
+import { getTopLevel } from "../clauses/functions/topLevel";
+import { getOwnershipChain } from "../clauses/functions/getOwnershipChain";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -75,7 +77,7 @@ export default class BaseWrapper implements Wrapper {
         return this?.object[methodName](...args.map(x => unwrap(x)))
     }
 
-    clause(clause?: Clause): Clause {
+    clause(query?: Clause): Clause {
 
         const preds: Lexeme[] =
             Object.keys(this.aliases)
@@ -83,10 +85,28 @@ export default class BaseWrapper implements Wrapper {
                 .map((x): Lexeme => ({ root: x, type: 'adjective' }))
                 .concat(this.simplePredicates)
 
-        return preds
+        let res = preds
             .map(x => clauseOf(x, this.id))
             .reduce((a, b) => a.and(b), emptyClause)
 
+        return res.and(this.extraInfo(query))
+
+    }
+
+    protected extraInfo(query?: Clause) {
+
+        if (query) {
+            const oc = getOwnershipChain(query, getTopLevel(query)[0])
+            const path = oc.map(x => query.describe(x)?.[0]?.root).slice(1)
+            const nested = this.getNested(this.aliases?.[path?.[0]]?.path ?? path)
+
+            if (nested !== undefined) {
+                const data = query.copy({ map: { [oc[0]]: this.id } })
+                return data
+            }
+        }
+
+        return emptyClause
     }
 
     protected setSingleProp(value: Lexeme, prop: Lexeme, opts?: SetOps) {
@@ -146,7 +166,7 @@ export default class BaseWrapper implements Wrapper {
         let x = this.object[path[0]] // assume at least one
 
         path.slice(1).forEach(p => {
-            x = x[p]
+            x = x?.[p]
         })
 
         return x

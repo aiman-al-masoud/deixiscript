@@ -83,14 +83,28 @@ export default class And implements Clause {
             universe.entities.forEach(re => {
 
                 const rd = universe.about(re).flatList()
-                const qd = query.about(qe).flatList().filter(x => x.predicate?.root !== 'of') /* TODO remove filter eventually!  */
-
+                const qd = query.about(qe).flatList()
                 const rd2 = rd.map(x => x.copy({ map: { [re]: qe } })) // subsitute re by qe in real description
+                // const rd2 =  rd
+
+                // compare each rd2 to each qd, if predicate is same replace r args with q args
+                rd2.forEach((r, i) => {
+                    qd.forEach(q => {
+                        if (r.predicate === q.predicate) {
+                            const m: Map = (r.args ?? []).map((a, i) => ({ [a]: q.args?.[i] ?? a })).reduce((a, b) => ({ ...a, ...b }), {})
+                            rd2[i] = r.copy({ map: m })
+                            // console.log(r.toString(), 'may be ', q.toString(), 'r becomes', rd2[i].toString())
+                        }
+                    })
+                })
 
                 const qhashes = qd.map(x => x.hashCode)
                 const r2hashes = rd2.map(x => x.hashCode)
 
+                // console.log('Unify or not?', 'qd=', qd.map(x=>x.toString()), 'rd2=', rd2.map(x=>x.toString()))
+
                 if (qhashes.every(x => r2hashes.includes(x))) { // qe unifies with re!
+                    // console.log(qe, 'is', re, '!')
                     unify(qe, re, result)
                 }
 
