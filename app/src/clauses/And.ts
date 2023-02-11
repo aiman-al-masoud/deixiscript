@@ -9,16 +9,15 @@ import Imply from "./Imply";
 
 export default class And implements Clause {
 
+    readonly hashCode = hashString(this.clause1.toString() + this.clause2.toString() + this.negated)
+    readonly entities = uniq(this.clause1.entities.concat(this.clause2.entities))
+
     constructor(
         readonly clause1: Clause,
         readonly clause2: Clause,
-        readonly clause2IsRheme: boolean = false,
+        readonly clause2IsRheme = false,
         readonly negated = false,
-        readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(clause1.toString() + clause2.toString() + negated),
-        readonly entities = uniq(clause1.entities.concat(clause2.entities))
-
     ) {
 
     }
@@ -33,16 +32,8 @@ export default class And implements Clause {
             opts?.clause2 ?? this.clause2.copy(opts),
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
-            opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty
         )
-    }
-
-    flatList(): Clause[] {
-
-        return this.negated ? [this] :
-            [...this.clause1.flatList() ?? [], ...this.clause2.flatList() ?? []]
-
     }
 
     toString() {
@@ -55,6 +46,10 @@ export default class And implements Clause {
     ownedBy = (id: Id): Id[] => this.clause1.ownedBy(id).concat(this.clause2.ownedBy(id))
     ownersOf = (id: Id): Id[] => this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
     describe = (id: Id): Lexeme[] => this.clause1.describe(id).concat(this.clause2.describe(id))
+
+    flatList(): Clause[] {
+        return this.negated ? [this] : [...this.clause1.flatList(), ...this.clause2.flatList()]
+    }
 
     get theme(): Clause {
         return this.clause2IsRheme ? this.clause1 : this.clause1.theme.and(this.clause2.theme)

@@ -9,15 +9,17 @@ import { uniq } from "../utils/uniq";
 
 export class BasicClause implements Clause {
 
+    readonly simple = this
+    readonly theme = this
+    readonly rheme = emptyClause
+    readonly entities = uniq(this.args)
+    readonly hashCode = hashString(JSON.stringify({ predicate: this.predicate.root, args: this.args, negated: this.negated }))
+
     constructor(
         readonly predicate: Lexeme,
         readonly args: Id[],
         readonly negated = false,
-        readonly exactIds = false,
         readonly isSideEffecty = false,
-        readonly hashCode = hashString(JSON.stringify({ predicate: predicate.root, args, negated })),
-        readonly rheme = emptyClause,
-        readonly entities = uniq(args),
     ) {
 
     }
@@ -31,7 +33,6 @@ export class BasicClause implements Clause {
             this.predicate,
             this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
             opts?.negate ? !this.negated : this.negated,
-            opts?.exactIds ?? this.exactIds,
             opts?.sideEffecty ?? this.isSideEffecty
         )
     }
@@ -63,14 +64,6 @@ export class BasicClause implements Clause {
 
     describe(id: Id): Lexeme[] {
         return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
-    }
-
-    get theme(): Clause {
-        return this
-    }
-
-    get simple(): Clause {
-        return this
     }
 
     query(clause: Clause): Map[] {
