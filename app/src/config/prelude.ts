@@ -37,11 +37,11 @@ export const prelude: string[] = [
 
       `simple sentence is copula sentence or iverb sentence or mverb sentence`,
 
-      // `cs2 is consequence simple sentence
-      // then subconj
-      // then condition simple sentence`,
+      `cs2 is consequence simple sentence
+      then subconj
+      then condition simple sentence`,
 
-      // `complex sentence is cs2`,
+      `complex sentence is cs2`,
 
       // domain
       'color is a concept',

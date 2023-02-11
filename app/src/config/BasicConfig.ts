@@ -9,20 +9,27 @@ import { SyntaxMap, AstType } from "../parser/interfaces/Syntax"
 
 export class BasicConfig implements Config {
 
+    protected _syntaxList = this.getSyntaxList()
+
     constructor(
         readonly lexemeTypes: LexemeType[],
         protected _lexemes: Lexeme[],
         readonly syntaxMap: SyntaxMap,
         readonly prelude: string[],
-        readonly staticDescPrecedence: CompositeType[]) {
+        readonly staticDescPrecedence: CompositeType[],
+    ) {
     }
 
-    get syntaxList(): CompositeType[] { //TODO: re-sort only when needed
-
+    protected getSyntaxList() {
         const x = Object.keys(this.syntaxMap) as CompositeType[]
         const y = x.filter(e => !this.staticDescPrecedence.includes(e))
         const z = y.sort((a, b) => maxPrecedence(b, a, this.syntaxMap))
         return this.staticDescPrecedence.concat(z)
+    }
+
+    get syntaxList(): CompositeType[] { //TODO: re-sort only when needed
+
+        return this._syntaxList
 
         // return [
         //     'macro',
@@ -47,6 +54,7 @@ export class BasicConfig implements Config {
         const syntax = macroToSyntax(macro)
         this.setLexeme({ type: 'grammar', root: syntax.name })
         this.syntaxMap[syntax.name as CompositeType] = syntax.syntax
+        this._syntaxList = this.getSyntaxList()
     }
 
     getSyntax = (name: AstType) => {
