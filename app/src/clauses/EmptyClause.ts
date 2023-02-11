@@ -5,18 +5,11 @@ import { Map } from "../id/Map";
 
 export default class EmptyClause implements Clause {
 
-    readonly theme
-    readonly rheme
-    readonly simple
-
-    constructor(
-        readonly hashCode = 0,
-        readonly entities = []) {
-
-        this.theme = this
-        this.rheme = this
-        this.simple = this
-    }
+    readonly hashCode = 0
+    readonly entities = []
+    readonly theme = this
+    readonly rheme = this
+    readonly simple = this
 
     copy = (opts?: CopyOpts): Clause => this
     and = (other: Clause, opts?: AndOpts): Clause => other
@@ -27,6 +20,6 @@ export default class EmptyClause implements Clause {
     ownersOf = (id: Id): Id[] => []
     describe = (id: Id): Lexeme[] => []
     query = (clause: Clause): Map[] => []
-    toString = ()=> ''
+    toString = () => ''
 
 }
