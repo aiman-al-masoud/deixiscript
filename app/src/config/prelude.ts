@@ -36,7 +36,13 @@ export const prelude: string[] = [
 		then iverb`, // TODO complements
 
       `simple sentence is copula sentence or iverb sentence or mverb sentence`,
-   
+
+      `cs2 is consequence simple sentence
+      then subconj
+      then condition simple sentence`,
+
+      `complex sentence is cs2`,
+
       // domain
       'color is a concept',
       'red and blue and black and green are colors',
