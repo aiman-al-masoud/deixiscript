@@ -6,6 +6,7 @@ import { Id } from "../id/Id";
 import { sortIds } from "../id/functions/sortIds";
 import { Map } from "../id/Map";
 import Imply from "./Imply";
+import { mockMap } from "./functions/mockMap";
 
 export default class And implements Clause {
 
@@ -62,6 +63,10 @@ export default class And implements Clause {
     }
 
     query(query: Clause, opts?: QueryOpts): Map[] {
+
+        if (query.exactIds) {
+            return [mockMap(query)]
+        }
 
         function unify(qe: Id, re: Id, result: Map[]) {
 

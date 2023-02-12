@@ -6,6 +6,7 @@ import Imply from "./Imply";
 import And from "./And";
 import { Lexeme } from "../lexer/Lexeme";
 import { uniq } from "../utils/uniq";
+import { mockMap } from "./functions/mockMap";
 
 export class BasicClause implements Clause {
 
@@ -68,19 +69,23 @@ export class BasicClause implements Clause {
         return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
     }
 
-    query(clause: Clause): Map[] {
+    query(query: Clause): Map[] {
 
-        clause = clause.flatList()[0] //TODO!!???
+        if (query.exactIds) {
+            return [mockMap(query)]
+        }
 
-        if (!(clause instanceof BasicClause)) {
+        query = query.flatList()[0] //TODO!!???
+
+        if (!(query instanceof BasicClause)) {
             return []
         }
 
-        if (clause.predicate.root !== this.predicate.root) {
+        if (query.predicate.root !== this.predicate.root) {
             return []
         }
 
-        const map = clause.args
+        const map = query.args
             .map((x, i) => ({ [x]: this.args[i] }))
             .reduce((a, b) => ({ ...a, ...b }))
 
