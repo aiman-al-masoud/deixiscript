@@ -24,6 +24,7 @@ const tests = [
     test20,
     test21,
     test22,
+    test23,
 ]
 
 /**
@@ -233,6 +234,12 @@ function test21() {
 function test22() {
     const brain = getBrain({ root: document.body })
     brain.execute('x and y and z are buttons. background of style of every button is red.')
+    return brain.execute('red buttons').length === 3
+}
+
+function test23() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x and y and z are red. every red is a button')
     return brain.execute('red buttons').length === 3
 }
 

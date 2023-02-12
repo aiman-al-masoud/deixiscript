@@ -15,7 +15,8 @@ export default class CreateAction implements Action {
 
     run(context: Context) {
 
-        const id = lookup(this.clause?.args?.[0] as any, context, this.topLevel) ?? getIncrementalId()
+        const localId = this.clause?.args?.[0] as Id
+        const id = this.clause.exactIds ? localId : lookup(localId, context, this.topLevel) ?? getIncrementalId()
         const predicate = this.clause.predicate
 
         if (!predicate) {
