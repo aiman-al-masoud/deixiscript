@@ -10,6 +10,8 @@ import Imply from "../../clauses/Imply"
 import SetAliasAction from "./SetAliasAction"
 import MultiEditAction from "./MultiEditAction"
 import Action from "./Action"
+import IfAction from "./IfAction"
+import WhenAction from "./WhenAction"
 
 
 export function getAction(clause: Clause, topLevel: Clause): Action {
@@ -30,6 +32,14 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
 
     if (clause instanceof Imply && clause.entities.some(e => clause.ownersOf(e).length)) {
         return new SetAliasAction(clause)
+    }
+
+    if (clause instanceof Imply && clause.subjconj?.root === 'if') {
+        return new IfAction(clause)
+    }
+
+    if (clause instanceof Imply && clause.subjconj?.root === 'when') {
+        return new WhenAction(clause)
     }
 
     if (clause instanceof Imply) {

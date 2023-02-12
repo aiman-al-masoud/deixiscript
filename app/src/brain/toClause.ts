@@ -182,9 +182,10 @@ function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const condition = toClause(ast.links?.condition, args)
     const consequence = toClause(ast.links?.consequence, args)
 
-    const i = condition.implies(consequence).copy({ subjconj: subconj }).simple
-    console.log(i.toString())
+    const c = condition.implies(consequence).copy({ subjconj: subconj, sideEffecty: true }).simple
 
-    throw new Error('work in progress!')
+    // console.log(c.toString())
+    // throw new Error('work in progress!')
 
+    return c
 }
