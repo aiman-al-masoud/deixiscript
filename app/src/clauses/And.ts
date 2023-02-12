@@ -18,6 +18,7 @@ export default class And implements Clause {
         readonly clause2IsRheme = false,
         readonly negated = false,
         readonly isSideEffecty = false,
+        readonly exactIds = false
     ) {
 
     }
@@ -32,7 +33,8 @@ export default class And implements Clause {
             opts?.clause2 ?? this.clause2.copy(opts),
             this.clause2IsRheme,
             opts?.negate ? !this.negated : this.negated,
-            opts?.sideEffecty ?? this.isSideEffecty
+            opts?.sideEffecty ?? this.isSideEffecty,
+            opts?.exactIds ?? this.exactIds,
         )
     }
 

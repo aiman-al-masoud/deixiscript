@@ -22,6 +22,8 @@ const tests = [
     test18,
     test19,
     test20,
+    test21,
+    test22,
 ]
 
 /**
@@ -220,6 +222,18 @@ function test20() {
     const brain = getBrain({ root: document.body })
     brain.execute('x is a red button. y is a green button if x is red')
     return brain.execute('green button')[0].style.background === 'green'
+}
+
+function test21() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x and y and z are buttons. color of every button is red.')
+    return brain.execute('red buttons').length === 3
+}
+
+function test22() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x and y and z are buttons. background of style of every button is red.')
+    return brain.execute('red buttons').length === 3
 }
 
 function sleep(millisecs: number) {

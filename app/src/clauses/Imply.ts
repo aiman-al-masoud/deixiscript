@@ -18,6 +18,7 @@ export default class Imply implements Clause {
         readonly negated = false,
         readonly isSideEffecty = false,
         readonly subjconj?: Lexeme,
+        readonly exactIds = false
     ) {
 
     }
@@ -33,7 +34,8 @@ export default class Imply implements Clause {
             opts?.clause2 ?? this.consequence.copy(opts),
             opts?.negate ? !this.negated : this.negated,
             opts?.sideEffecty ?? this.isSideEffecty,
-            opts?.subjconj ?? this.subjconj
+            opts?.subjconj ?? this.subjconj,
+            opts?.exactIds ?? this.exactIds   
         )
 
     }
@@ -51,7 +53,8 @@ export default class Imply implements Clause {
     }
 
     about(id: Id): Clause {
-        return emptyClause ///TODO!!!!!!!!
+        // return emptyClause ///TODO!!!!!!!!
+        return this.condition.about(id).and(this.consequence.about(id))
     }
 
     toString() {

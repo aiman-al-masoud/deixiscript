@@ -8,7 +8,7 @@ import EditAction from "./EditAction"
 import RelationAction from "./RelationAction"
 import Imply from "../../clauses/Imply"
 import SetAliasAction from "./SetAliasAction"
-import MultiEditAction from "./MultiEditAction"
+import MultiAction from "./MultiAction"
 import Action from "./Action"
 import IfAction from "./IfAction"
 import WhenAction from "./WhenAction"
@@ -30,7 +30,7 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
         return new CreateAction(clause, topLevel)
     }
 
-    if (clause instanceof Imply && clause.entities.some(e => clause.ownersOf(e).length)) {
+    if (clause instanceof Imply && clause.theme.entities.some(e => clause.theme.ownersOf(e).length) && clause.rheme.entities.some(e => clause.rheme.ownersOf(e).length)) {
         return new SetAliasAction(clause)
     }
 
@@ -43,7 +43,7 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
     }
 
     if (clause instanceof Imply) {
-        return new MultiEditAction(clause)
+        return new MultiAction(clause)
     }
 
     return new EditAction(clause, topLevel)

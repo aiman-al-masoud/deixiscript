@@ -20,6 +20,7 @@ export class BasicClause implements Clause {
         readonly args: Id[],
         readonly negated = false,
         readonly isSideEffecty = false,
+        readonly exactIds = false
     ) {
 
     }
@@ -33,7 +34,8 @@ export class BasicClause implements Clause {
             this.predicate,
             this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
             opts?.negate ? !this.negated : this.negated,
-            opts?.sideEffecty ?? this.isSideEffecty
+            opts?.sideEffecty ?? this.isSideEffecty,
+            opts?.exactIds ?? this.exactIds,
         )
     }
 
