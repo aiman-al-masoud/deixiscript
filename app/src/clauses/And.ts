@@ -70,6 +70,10 @@ export default class And implements Clause {
 
         function unify(qe: Id, re: Id, result: Map[]) {
 
+            if (result.some(x => x[qe] === re)) { // if already unified don't do it again
+                return
+            }
+
             const i = result.findIndex(x => !x[qe])
             const m = result[i] ?? {}
             m[qe] = re
