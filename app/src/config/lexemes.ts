@@ -114,7 +114,7 @@ export const lexemes: Lexeme[] = [
 
     {
         root: 'then',
-        type: 'then' // filler word, what about partial parsing?
+        type: 'filler' // filler word, what about partial parsing?
     },
 
     {

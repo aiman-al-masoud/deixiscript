@@ -42,7 +42,7 @@ export const syntaxes: SyntaxMap = {
     'macropart': [
         { type: ['adjective'], number: '*' },
         { type: ['taggedunion'], number: '+' },
-        { type: ['then'], number: '1|0' }
+        { type: ['filler'], number: '1|0' }
     ],
     'taggedunion': [
         { type: ['grammar'], number: 1 },
@@ -87,10 +87,7 @@ export const syntaxes: SyntaxMap = {
     ],
 
     'cs1': [
-        { type: ['subconj'], number: 1 },
-        { type: ['simple sentence'], number: 1, role: 'condition' },
-        { type: ['then'], number: 1 },
-        { type: ['simple sentence'], number: 1, role: 'consequence' },
+
     ]
 }
 

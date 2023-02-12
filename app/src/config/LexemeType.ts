@@ -16,7 +16,7 @@ export const lexemeTypes = stringLiterals(
   'negation',
   'existquant',
   'uniquant',
-  'then',
+  'filler',
   'relpron',
   'negation',
   'noun',

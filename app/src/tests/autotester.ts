@@ -20,6 +20,8 @@ const tests = [
     test16,
     test17,
     test18,
+    test19,
+    test20,
 ]
 
 /**
@@ -206,6 +208,18 @@ function test18() {
     const assert2 = brain.execute('div')[0].style.background === 'red'
     return assert1 && assert2
 
+}
+
+function test19() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is a red button. if x is red then y is a green button')
+    return brain.execute('green button')[0].style.background === 'green'
+}
+
+function test20() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is a red button. y is a green button if x is red')
+    return brain.execute('green button')[0].style.background === 'green'
 }
 
 function sleep(millisecs: number) {
