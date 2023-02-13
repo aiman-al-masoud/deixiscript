@@ -39,6 +39,10 @@ export default class BasicBrain implements Brain {
                 const ids = maps.flatMap(m => Object.values(m))
                 const wrappers = ids.map(id => this.context.enviro.get(id))
 
+                //TODO: getKool() only returns one search result (from one map) and discards all the others
+                // need getKool() because it also gets nested props (like style, background string ...)
+                // const wrappers = clause.entities.map(id=>getKool(this.context, clause, id))
+
                 this.context.enviro.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)
 

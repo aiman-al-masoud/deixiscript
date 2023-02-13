@@ -1,6 +1,4 @@
 import { Clause } from "../../clauses/Clause"
-import { Id } from "../../id/Id"
-import { Context } from "../../brain/Context"
 import { isConcept } from "../../lexer/functions/isConcept"
 import ConceptAction from "./ConceptAction"
 import CreateAction from "./CreateAction"
@@ -47,9 +45,4 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
     }
 
     return new EditAction(clause, topLevel)
-}
-
-export function lookup(id: Id, context: Context, topLevel: Clause) {
-    const maps = context.enviro.query(topLevel.theme) // 
-    return maps?.[0]?.[id] //TODO could be undefined
 }

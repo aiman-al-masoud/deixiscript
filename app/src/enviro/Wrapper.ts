@@ -13,6 +13,9 @@ export default interface Wrapper {
     typeOf(word: string): LexemeType | undefined
     copy(opts?: CopyOpts): Wrapper
 
+    get(clause: Clause): Wrapper | undefined
+    parent?: Wrapper
+
 }
 
 export interface SetOps {

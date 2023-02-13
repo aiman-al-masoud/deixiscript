@@ -1,7 +1,7 @@
 import { Context } from "../../brain/Context";
 import { Clause } from "../../clauses/Clause";
+import { getKool } from "../../clauses/functions/getKool";
 import Action from "./Action";
-import { lookup } from "./getAction";
 
 export default class RelationAction implements Action {
 
@@ -12,14 +12,14 @@ export default class RelationAction implements Action {
     run(context: Context) {
 
         const args = (this.clause.args ?? [])
-            .map(a => lookup(a, context, this.topLevel))
+            .map(x => getKool(context, this.topLevel.theme, x))
 
         if (!this.clause.predicate) {
             return
         }
 
-        const subject = context.enviro.get(args[0])
-        const object = context.enviro.get(args[1])
+        const subject = args[0]
+        const object = args[1]
 
         return subject?.set(this.clause.predicate, { args: object ? [object] : [] })
     }

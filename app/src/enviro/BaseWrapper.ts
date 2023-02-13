@@ -5,21 +5,37 @@ import { Lexeme } from "../lexer/Lexeme";
 import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";
 import { getTopLevel } from "../clauses/functions/topLevel";
 import { getOwnershipChain } from "../clauses/functions/getOwnershipChain";
+import { getIncrementalId } from "../id/functions/getIncrementalId";
 
 export default class BaseWrapper implements Wrapper {
+
+    readonly aliases: { [alias: string]: { path: string[], lexeme: Lexeme } } = this.object.aliases ?? {}
+    readonly simplePredicates: Lexeme[] = []
 
     constructor(
         readonly object: any,
         readonly id: Id,
         readonly isPlaceholder: boolean,
-        readonly aliases: { [alias: string]: { path: string[], lexeme: Lexeme } } = object.aliases ?? {},
-        readonly simplePredicates: Lexeme[] = []) {
+        readonly parent?: Wrapper
+    ) {
 
-        object.aliases = aliases
-        object.simplePredicates = simplePredicates
+        try {
+            this.object.aliases = this.aliases
+            this.object.simplePredicates = this.simplePredicates
+        } catch { }
+
+
     }
 
     set(predicate: Lexeme, opts?: SetOps): any {
+
+
+        if (this.parent) {
+            //TODO: problem when this wrapper is textContent because predicate has no concept and path is unknown (not passed) to parent
+            return this.parent.set(predicate, { ...opts, props: [...opts?.props ?? []] })
+        }
+
+
 
         if (opts?.args) {
             return this.call(predicate, opts.args)
@@ -210,6 +226,20 @@ export default class BaseWrapper implements Wrapper {
         } else {
             return { ...this.object }
         }
+    }
+
+    get(clause: Clause): Wrapper | undefined {
+
+        const x = clause.entities.flatMap(e => clause.describe(e))[0]
+
+        if (x) {
+
+            const path = this.aliases[x.root]?.path
+            // x.root === 'text' ? console.log(path) : 0
+            const object = path ? this.getNested(path) : this.object[x.root]
+            return new BaseWrapper(object, getIncrementalId(), false, this)
+        }
+
     }
 
 }
