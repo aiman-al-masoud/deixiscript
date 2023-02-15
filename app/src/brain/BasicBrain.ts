@@ -5,6 +5,7 @@ import { getParser } from "../parser/interfaces/Parser";
 import { Context } from "./Context";
 import { pointOut } from "./pointOut";
 import { unwrap } from "../enviro/Wrapper";
+import { getKool } from "../clauses/functions/getKool";
 
 
 export default class BasicBrain implements Brain {
@@ -35,13 +36,13 @@ export default class BasicBrain implements Brain {
 
             } else {
 
-                const maps = this.context.enviro.query(clause)
-                const ids = maps.flatMap(m => Object.values(m))
-                const wrappers = ids.map(id => this.context.enviro.get(id))
+                // const maps = this.context.enviro.query(clause)
+                // const ids = maps.flatMap(m => Object.values(m))
+                // const wrappers = ids.map(id => this.context.enviro.get(id))
 
                 //TODO: getKool() only returns one search result (from one map) and discards all the others
                 // need getKool() because it also gets nested props (like style, background string ...)
-                // const wrappers = clause.entities.map(id=>getKool(this.context, clause, id))
+                const wrappers = clause.entities.flatMap(id=>getKool(this.context, clause, id))
 
                 this.context.enviro.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)

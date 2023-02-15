@@ -1,7 +1,7 @@
+import Action from "./Action";
 import { Context } from "../../brain/Context";
 import { Clause } from "../../clauses/Clause";
 import { getKool } from "../../clauses/functions/getKool";
-import Action from "./Action";
 
 export default class RelationAction implements Action {
 
@@ -12,7 +12,7 @@ export default class RelationAction implements Action {
     run(context: Context) {
 
         const args = (this.clause.args ?? [])
-            .map(x => getKool(context, this.topLevel.theme, x))
+            .map(x => getKool(context, this.topLevel.theme, x)[0])
 
         if (!this.clause.predicate) {
             return
