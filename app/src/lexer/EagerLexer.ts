@@ -9,7 +9,7 @@ import { joinMultiWordLexemes } from "./functions/joinMultiWordLexemes";
 export default class EagerLexer implements Lexer {
 
     protected readonly tokens: Lexeme[]
-    protected _pos: number
+    protected _pos: number = 0
 
     constructor(readonly sourceCode: string, readonly context: Context) { // TODO: make case insensitive
 
@@ -21,7 +21,6 @@ export default class EagerLexer implements Lexer {
                 .map(s => respace(s))
 
         this.tokens = words.flatMap(w => getLexemes(w, context, words))
-        this._pos = 0
     }
 
     next(): void {
