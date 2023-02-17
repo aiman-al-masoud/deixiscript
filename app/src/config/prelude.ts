@@ -17,7 +17,7 @@ export const prelude: string[] = [
         then optional subclause 
         then zero or more complements `,
 
-  'copulasubclause is relpron then copula then noun phrase',
+  'copulasubclause is relpron then copula then predicate noun phrase',
   'subclause is copulasubclause',
 
   `and sentence is left copula sentence or noun phrase 
