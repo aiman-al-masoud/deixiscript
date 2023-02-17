@@ -25,6 +25,7 @@ const tests = [
     test21,
     test22,
     test23,
+    test24,
 ]
 
 /**
@@ -241,6 +242,16 @@ function test23() {
     const brain = getBrain({ root: document.body })
     brain.execute('x and y and z are red. every red is a button')
     return brain.execute('red buttons').length === 3
+}
+
+function test24() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x and y are red buttons')
+    let clicks = ''
+    brain.execute('x')[0].onclick = () => clicks += 'x'
+    brain.execute('y')[0].onclick = () => clicks += 'y'
+    brain.execute('every button clicks')
+    return clicks === 'xy'
 }
 
 function sleep(millisecs: number) {

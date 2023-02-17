@@ -2,11 +2,11 @@ import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../id/Id";
 import { getIncrementalId } from "../id/functions/getIncrementalId";
 import { toVar } from "../id/functions/toVar";
-import { isVar } from "../id/functions/isVar";
 import { AstNode } from "../parser/interfaces/AstNode";
 import { makeAllVars } from "../clauses/functions/makeAllVars";
 import { propagateVarsOwned } from "../clauses/functions/propagateVarsOwned";
 import { resolveAnaphora } from "../clauses/functions/resolveAnaphora";
+import { makeImply } from "../clauses/functions/makeImply";
 
 
 interface ToClauseOpts {
@@ -40,7 +40,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     }
 
     if (result) {
-        const c1 = makeAllVars(result)
+        const c0 = makeImply(result)
+        const c1 = makeAllVars(c0)
         const c2 = resolveAnaphora(c1)
         const c3 = propagateVarsOwned(c2)
         return c3
@@ -56,14 +57,8 @@ function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): C
     const subjectId = args?.subject ?? getIncrementalId()
     const subject = toClause(copulaSentence?.links?.subject, { subject: subjectId })
     const predicate = toClause(copulaSentence?.links?.predicate, { subject: subjectId }).copy({ negate: !!copulaSentence?.links?.negation })
-    const entities = subject.entities.concat(predicate.entities)
 
-    const result = entities.some(e => isVar(e)) ?  // assume any sentence with any var is an implication
-        subject.implies(predicate) :
-        subject.and(predicate, { asRheme: true })
-
-    return result.copy({ sideEffecty: true })
-
+    return subject.and(predicate, { asRheme: true }).copy({ sideEffecty: true })
 }
 
 function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
