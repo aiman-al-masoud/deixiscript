@@ -11,9 +11,6 @@ export default class MultiAction implements Action {
 
     run(context: Context) {
 
-        // this.clause.toString().includes('click') ? console.log(this.clause.toString()) : 0
-
-
         const condition = this.clause.theme
 
         context.enviro.query(condition).forEach(m => {
