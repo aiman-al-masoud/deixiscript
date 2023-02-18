@@ -7,8 +7,6 @@ import { makeAllVars } from "../clauses/functions/makeAllVars";
 import { propagateVarsOwned } from "../clauses/functions/propagateVarsOwned";
 import { resolveAnaphora } from "../clauses/functions/resolveAnaphora";
 import { makeImply } from "../clauses/functions/makeImply";
-import Imply from "../clauses/Imply";
-
 
 interface ToClauseOpts {
     subject?: Id
@@ -61,15 +59,7 @@ function negate(clause: Clause, negate: boolean) { //TODO: consider putting this
         return clause
     }
 
-    const theme = clause.theme.simple
-    const rheme = clause.rheme.simple
-    const maybeNegRheme = rheme.copy({ negate })
-
-    if (clause instanceof Imply) {
-        return theme.implies(maybeNegRheme)
-    }
-
-    return theme.and(maybeNegRheme, { asRheme: true })
+    return clause.copy({ clause1 : clause.theme.simple, clause2 : clause.rheme.simple.copy({negate})})
 
 }
 
