@@ -13,8 +13,7 @@ export function makeImply(clause: Clause) { // any clause with any var is an imp
     }
 
     if (clause.entities.some(e => isVar(e))) {
-        const r = clause.theme.implies(clause.rheme).copy({ sideEffecty: clause.isSideEffecty })
-        return r
+        return clause.theme.implies(clause.rheme)
     }
 
     return clause
