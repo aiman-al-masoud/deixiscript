@@ -72,23 +72,6 @@ function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts):
     return toClause(predicate, args)
 }
 
-function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
-
-    const subjId = args?.subject ?? getIncrementalId()
-    const newId = getIncrementalId()
-
-    const nounPhrase = toClause(complement?.links?.['noun phrase'], { subject: newId })
-    const preposition = complement?.links?.preposition?.lexeme
-
-    if (!preposition) {
-        throw new Error('No preposition!')
-    }
-
-    return clauseOf(preposition, subjId, newId)
-        .and(nounPhrase)
-
-}
-
 function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
 
     const maybeId = args?.subject ?? getIncrementalId()
@@ -121,6 +104,23 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
         const rheme = right.rheme.and(right.rheme.copy({ map: m }))
         return theme.and(rheme, { asRheme: true })
     }
+
+}
+
+function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
+
+    const subjId = args?.subject ?? getIncrementalId()
+    const newId = getIncrementalId()
+
+    const nounPhrase = toClause(complement?.links?.['noun phrase'], { subject: newId })
+    const preposition = complement?.links?.preposition?.lexeme
+
+    if (!preposition) {
+        throw new Error('No preposition!')
+    }
+
+    return clauseOf(preposition, subjId, newId)
+        .and(nounPhrase)
 
 }
 
