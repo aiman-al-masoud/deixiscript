@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
+import { Clause, AndOpts, CopyOpts } from "./Clause";
 import { hashString } from "../utils/hashString";
 import { Id } from "../id/Id";
 import { Map } from "../id/Map";
