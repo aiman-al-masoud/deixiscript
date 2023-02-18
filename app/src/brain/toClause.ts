@@ -13,11 +13,15 @@ interface ToClauseOpts {
     subject?: Id
 }
 
-export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+export function toClause(ast?: AstNode | AstNode[], args?: ToClauseOpts): Clause {
 
     if (!ast) {
         console.warn('Ast is undefined!')
         return emptyClause
+    }
+
+    if (ast instanceof Array) {
+        return ast.map(c => toClause(c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
     }
 
     let result
@@ -73,7 +77,7 @@ function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
     const subjId = args?.subject ?? getIncrementalId()
     const newId = getIncrementalId()
 
-    const nounPhrase = complement?.links?.['noun phrase']
+    const nounPhrase = toClause(complement?.links?.['noun phrase'], { subject: newId })
     const preposition = complement?.links?.preposition?.lexeme
 
     if (!preposition) {
@@ -81,7 +85,7 @@ function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
     }
 
     return clauseOf(preposition, subjId, newId)
-        .and(toClause(nounPhrase, { subject: newId }))
+        .and(nounPhrase)
 
 }
 
@@ -92,18 +96,16 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
 
     const adjectives = nounPhrase?.links?.adjective?.list ?? []
     const noun = nounPhrase.links?.subject
-    const complements = nounPhrase?.links?.complement?.list ?? []
-    const subClause = nounPhrase?.links?.subclause
+    const complements = toClause(nounPhrase?.links?.complement?.list ?? [], { subject: subjectId })
+    const subClause = toClause(nounPhrase?.links?.subclause, { subject: subjectId })
 
-    const res =
-        adjectives.flatMap(a => a.lexeme ?? [])
-            .concat(noun?.lexeme ? [noun.lexeme] : [])
-            .map(p => clauseOf(p, subjectId))
-            .reduce((c1, c2) => c1.and(c2), emptyClause)
-            .and(complements.map(c => toClause(c, { subject: subjectId })).reduce((c1, c2) => c1.and(c2), emptyClause))
-            .and(toClause(subClause, { subject: subjectId }))
+    return adjectives.flatMap(a => a.lexeme ?? [])
+        .concat(noun?.lexeme ? [noun.lexeme] : [])
+        .map(p => clauseOf(p, subjectId))
+        .reduce((c1, c2) => c1.and(c2), emptyClause)
+        .and(complements)
+        .and(subClause)
 
-    return res
 }
 
 function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
