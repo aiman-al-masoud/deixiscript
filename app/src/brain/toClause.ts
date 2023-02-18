@@ -65,7 +65,7 @@ function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): C
 function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
 
     const predicate = copulaSubClause?.links?.predicate
-    return toClause(predicate, { subject: args?.subject })
+    return toClause(predicate, args)
 }
 
 function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
