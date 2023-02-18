@@ -32,10 +32,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = copulaSentenceToClause(ast, args)
     } else if (ast.links?.nonsubconj) {
         result = andSentenceToClause(ast, args)
-    } else if (ast.links?.subject && ast.links.object) {
-        result = mverbSentenceToClause(ast, args)
-    } else if (ast.links?.subject && !ast.links.object) {
-        result = iverbSentenceToClause(ast, args)
+    } else if (ast.links?.iverb || ast.links?.mverb) {
+        result = verbSentenceToClause(ast, args)
     } else if (ast.links?.subconj) {
         result = complexSentenceToClause(ast, args)
     }
@@ -124,39 +122,24 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
 }
 
-function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+function verbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
     const subjId = args?.subject ?? getIncrementalId()
     const objId = getIncrementalId()
 
     const subject = toClause(ast.links?.subject, { subject: subjId })
     const object = toClause(ast.links?.object, { subject: objId })
-    const mverb = ast.links?.mverb?.lexeme
+    const verb = ast.links?.mverb?.lexeme ?? ast.links?.iverb?.lexeme
 
-    if (!mverb) {
-        throw new Error('no mverb in mverb sentence!')
+    if (!verb) {
+        throw new Error('missing verb in verb sentence!')
     }
 
-    const rheme = clauseOf(mverb, subjId, objId)
+    const rheme = object === emptyClause ? clauseOf(verb, subjId) : clauseOf(verb, subjId, objId)
 
     return subject
         .and(object)
         .and(rheme, { asRheme: true })
-
-}
-
-function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
-
-    const subjId = args?.subject ?? getIncrementalId()
-    const subject = toClause(ast.links?.subject, { subject: subjId })
-    const iverb = ast.links?.iverb?.lexeme
-
-    if (!iverb) {
-        throw new Error('no iverb in iverb sentence!')
-    }
-
-    const rheme = clauseOf(iverb, subjId)
-    return subject.and(rheme, { asRheme: true })
 
 }
 
