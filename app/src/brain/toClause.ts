@@ -7,6 +7,7 @@ import { makeAllVars } from "../clauses/functions/makeAllVars";
 import { propagateVarsOwned } from "../clauses/functions/propagateVarsOwned";
 import { resolveAnaphora } from "../clauses/functions/resolveAnaphora";
 import { makeImply } from "../clauses/functions/makeImply";
+import Imply from "../clauses/Imply";
 
 
 interface ToClauseOpts {
@@ -44,7 +45,9 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         const c1 = makeAllVars(c0)
         const c2 = resolveAnaphora(c1)
         const c3 = propagateVarsOwned(c2)
-        return c3
+        const c4 = negate(c3, !!ast?.links?.negation)
+        const c5 = c4.copy({ sideEffecty: c4.rheme !== emptyClause })
+        return c5
     }
 
     console.log({ ast })
@@ -52,21 +55,37 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
 }
 
+function negate(clause: Clause, negate: boolean) { //TODO: consider putting this directly in copy({negate})
+
+    if (!negate) {
+        return clause
+    }
+
+    const theme = clause.theme.simple
+    const rheme = clause.rheme.simple
+    const maybeNegRheme = rheme.copy({ negate })
+
+    if (clause instanceof Imply) {
+        return theme.implies(maybeNegRheme)
+    }
+
+    return theme.and(maybeNegRheme, { asRheme: true })
+
+}
+
 function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
     const subjectId = args?.subject ?? getIncrementalId()
     const subject = toClause(copulaSentence?.links?.subject, { subject: subjectId })
-    const predicate = toClause(copulaSentence?.links?.predicate, { subject: subjectId }).copy({ negate: !!copulaSentence?.links?.negation })
+    const predicate = toClause(copulaSentence?.links?.predicate, { subject: subjectId })
 
-    return subject.and(predicate, { asRheme: true }).copy({ sideEffecty: true })
+    return subject.and(predicate, { asRheme: true })
 }
 
 function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
 
     const predicate = copulaSubClause?.links?.predicate
-
     return toClause(predicate, { subject: args?.subject })
-        .copy({ sideEffecty: false })
 }
 
 function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
@@ -84,7 +103,6 @@ function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
 
     return clauseOf(preposition, subjId, newId)
         .and(toClause(nounPhrase, { subject: newId }))
-        .copy({ sideEffecty: false })
 
 }
 
@@ -105,7 +123,6 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
             .reduce((c1, c2) => c1.and(c2), emptyClause)
             .and(complements.map(c => toClause(c, { subject: subjectId })).reduce((c1, c2) => c1.and(c2), emptyClause))
             .and(subClause ? toClause(subClause, { subject: subjectId }) : emptyClause)
-            .copy({ sideEffecty: false })
 
     return res
 }
@@ -116,12 +133,12 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const right = toClause(ast?.links?.right?.list?.[0], args)
 
     if (ast.links?.left?.type === 'copula sentence') {
-        return left.and(right).copy({ sideEffecty: true })
+        return left.and(right)
     } else {
         const m = { [right.entities[0]]: left.entities[0] }
         const theme = left.theme.and(right.theme)
         const rheme = right.rheme.and(right.rheme.copy({ map: m }))
-        return theme.and(rheme, { asRheme: true }).copy({ sideEffecty: true })
+        return theme.and(rheme, { asRheme: true })
     }
 
 }
@@ -140,12 +157,10 @@ function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     }
 
     const rheme = clauseOf(mverb, subjId, objId)
-        .copy({ negate: !!ast.links.negation })
 
     const res = subject
         .and(object)
         .and(rheme, { asRheme: true })
-        .copy({ sideEffecty: true })
 
     return res
 }
@@ -161,11 +176,9 @@ function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     }
 
     const rheme = clauseOf(iverb, subjId)
-        .copy({ negate: !!ast.links.negation })
 
     const res = subject
         .and(rheme, { asRheme: true })
-        .copy({ sideEffecty: true })
 
     return res
 
@@ -176,7 +189,7 @@ function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const subconj = ast.links?.subconj?.lexeme
     const condition = toClause(ast.links?.condition, args)
     const consequence = toClause(ast.links?.consequence, args)
-    const c = condition.implies(consequence).copy({ subjconj: subconj, sideEffecty: true }).simple
+    const c = condition.implies(consequence).copy({ subjconj: subconj }).simple
 
     return c
 }
