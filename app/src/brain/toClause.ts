@@ -8,6 +8,7 @@ import { propagateVarsOwned } from "../clauses/functions/propagateVarsOwned";
 import { resolveAnaphora } from "../clauses/functions/resolveAnaphora";
 import { makeImply } from "../clauses/functions/makeImply";
 import { negate } from "../clauses/functions/negate";
+import { Lexeme } from "../lexer/Lexeme";
 
 interface ToClauseOpts {
     subject?: Id
@@ -25,6 +26,7 @@ export function toClause(ast?: AstNode | AstNode[], args?: ToClauseOpts): Clause
     }
 
     let result
+    let rel
 
     if (ast.type === 'noun phrase') {
         result = nounPhraseToClause(ast, args)
@@ -34,8 +36,8 @@ export function toClause(ast?: AstNode | AstNode[], args?: ToClauseOpts): Clause
         result = copulaSentenceToClause(ast, args)
     } else if (ast.links?.nonsubconj) {
         result = andSentenceToClause(ast, args)
-    } else if (ast.links?.iverb || ast.links?.mverb || ast.links?.preposition) {
-        result = relationToClause(ast, args)
+    } else if (rel = ast.links?.iverb?.lexeme || ast.links?.mverb?.lexeme || ast.links?.preposition?.lexeme) {
+        result = relationToClause(ast, rel, args)
     } else if (ast.links?.subconj) {
         result = complexSentenceToClause(ast, args)
     }
@@ -105,22 +107,17 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
 }
 
-function relationToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+function relationToClause(ast: AstNode, rel: Lexeme, opts?: ToClauseOpts): Clause {
 
-    const subjId = args?.subject ?? getIncrementalId()
+    const subjId = opts?.subject ?? getIncrementalId()
     const objId = getIncrementalId()
 
     const subject = toClause(ast.links?.subject, { subject: subjId })
     const object = toClause(ast.links?.object, { subject: objId })
-    const rel = ast.links?.iverb?.lexeme ?? ast.links?.mverb?.lexeme ?? ast.links?.preposition?.lexeme
 
-    if (!rel) {
-        throw new Error('missing relation in verb/preposition phrase!')
-    }
-
-    const verbArgs = object === emptyClause ? [subjId] : [subjId, objId]
+    const args = object === emptyClause ? [subjId] : [subjId, objId]
+    const relation = clauseOf(rel, ...args)
     const relationIsRheme = subject !== emptyClause
-    const relation = clauseOf(rel, ...verbArgs)
 
     return subject
         .and(object)
