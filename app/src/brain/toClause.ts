@@ -14,15 +14,15 @@ interface ToClauseOpts {
     subject?: Id
 }
 
-export function toClause(ast?: AstNode | AstNode[], args?: ToClauseOpts): Clause {
+export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     if (!ast) {
         console.warn('Ast is undefined!')
         return emptyClause
     }
 
-    if (ast instanceof Array) {
-        return ast.map(c => toClause(c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
+    if (ast.list) {
+        return ast.list.map(c => toClause(c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
     }
 
     let result
@@ -79,7 +79,7 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
 
     const adjectives = nounPhrase?.links?.adjective?.list ?? []
     const noun = nounPhrase.links?.subject
-    const complements = toClause(nounPhrase?.links?.complement?.list ?? [], { subject: subjectId })
+    const complements = toClause(nounPhrase?.links?.complement, { subject: subjectId })
     const subClause = toClause(nounPhrase?.links?.subclause, { subject: subjectId })
 
     return adjectives.flatMap(a => a.lexeme ?? [])
