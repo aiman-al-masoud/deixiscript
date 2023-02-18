@@ -149,7 +149,6 @@ function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const subconj = ast.links?.subconj?.lexeme
     const condition = toClause(ast.links?.condition, args)
     const consequence = toClause(ast.links?.consequence, args)
-    const c = condition.implies(consequence).copy({ subjconj: subconj })
+    return condition.implies(consequence).copy({ subjconj: subconj })
 
-    return c
 }
