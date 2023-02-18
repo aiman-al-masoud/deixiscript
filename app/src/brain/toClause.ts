@@ -7,6 +7,7 @@ import { makeAllVars } from "../clauses/functions/makeAllVars";
 import { propagateVarsOwned } from "../clauses/functions/propagateVarsOwned";
 import { resolveAnaphora } from "../clauses/functions/resolveAnaphora";
 import { makeImply } from "../clauses/functions/makeImply";
+import { negate } from "../clauses/functions/negate";
 
 interface ToClauseOpts {
     subject?: Id
@@ -15,7 +16,8 @@ interface ToClauseOpts {
 export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     if (!ast) {
-        throw new Error(`Ast is undefined!`)
+        console.warn('Ast is undefined!')
+        return emptyClause
     }
 
     let result
@@ -28,7 +30,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = complementToClause(ast, args)
     } else if (ast?.links?.subject && ast?.links.predicate) {
         result = copulaSentenceToClause(ast, args)
-    } else if (ast.type === 'and sentence') {
+    } else if (ast.links?.nonsubconj) {
         result = andSentenceToClause(ast, args)
     } else if (ast.links?.subject && ast.links.object) {
         result = mverbSentenceToClause(ast, args)
@@ -50,16 +52,6 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     console.log({ ast })
     throw new Error(`Idk what to do with '${ast.type}'!`)
-
-}
-
-function negate(clause: Clause, negate: boolean) { //TODO: consider putting this directly in copy({negate})
-
-    if (!negate) {
-        return clause
-    }
-
-    return clause.copy({ clause1 : clause.theme.simple, clause2 : clause.rheme.simple.copy({negate})})
 
 }
 
@@ -112,7 +104,7 @@ function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
             .map(p => clauseOf(p, subjectId))
             .reduce((c1, c2) => c1.and(c2), emptyClause)
             .and(complements.map(c => toClause(c, { subject: subjectId })).reduce((c1, c2) => c1.and(c2), emptyClause))
-            .and(subClause ? toClause(subClause, { subject: subjectId }) : emptyClause)
+            .and(toClause(subClause, { subject: subjectId }))
 
     return res
 }
@@ -148,11 +140,10 @@ function mverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
     const rheme = clauseOf(mverb, subjId, objId)
 
-    const res = subject
+    return subject
         .and(object)
         .and(rheme, { asRheme: true })
 
-    return res
 }
 
 function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
@@ -166,11 +157,7 @@ function iverbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     }
 
     const rheme = clauseOf(iverb, subjId)
-
-    const res = subject
-        .and(rheme, { asRheme: true })
-
-    return res
+    return subject.and(rheme, { asRheme: true })
 
 }
 
@@ -179,7 +166,7 @@ function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const subconj = ast.links?.subconj?.lexeme
     const condition = toClause(ast.links?.condition, args)
     const consequence = toClause(ast.links?.consequence, args)
-    const c = condition.implies(consequence).copy({ subjconj: subconj }).simple
+    const c = condition.implies(consequence).copy({ subjconj: subconj })
 
     return c
 }
