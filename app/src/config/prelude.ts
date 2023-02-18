@@ -3,7 +3,7 @@ export const prelude: string[] = [
   // grammar
   'quantifier is uniquant or existquant',
   'article is indefart or defart',
-  'complement is preposition then noun phrase',
+  'complement is preposition then object noun phrase',
 
   `copula sentence is subject noun phrase 
         then copula 

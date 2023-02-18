@@ -112,7 +112,7 @@ function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
     const subjId = args?.subject ?? getIncrementalId()
     const newId = getIncrementalId()
 
-    const nounPhrase = toClause(complement?.links?.['noun phrase'], { subject: newId })
+    const object = toClause(complement?.links?.object, { subject: newId })
     const preposition = complement?.links?.preposition?.lexeme
 
     if (!preposition) {
@@ -120,7 +120,7 @@ function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
     }
 
     return clauseOf(preposition, subjId, newId)
-        .and(nounPhrase)
+        .and(object)
 
 }
 
