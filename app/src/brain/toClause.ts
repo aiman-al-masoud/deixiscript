@@ -129,13 +129,14 @@ function verbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
     const subject = toClause(ast.links?.subject, { subject: subjId })
     const object = toClause(ast.links?.object, { subject: objId })
-    const verb = ast.links?.mverb?.lexeme ?? ast.links?.iverb?.lexeme
+    const verb = ast.links?.iverb?.lexeme ?? ast.links?.mverb?.lexeme
 
     if (!verb) {
         throw new Error('missing verb in verb sentence!')
     }
 
-    const rheme = object === emptyClause ? clauseOf(verb, subjId) : clauseOf(verb, subjId, objId)
+    const verbArgs = object === emptyClause ? [subjId] : [subjId, objId]
+    const rheme = clauseOf(verb, ...verbArgs)
 
     return subject
         .and(object)
