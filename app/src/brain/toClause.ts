@@ -110,16 +110,16 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
 
     const subjId = args?.subject ?? getIncrementalId()
-    const newId = getIncrementalId()
+    const objId = getIncrementalId()
 
-    const object = toClause(complement?.links?.object, { subject: newId })
+    const object = toClause(complement?.links?.object, { subject: objId })
     const preposition = complement?.links?.preposition?.lexeme
 
     if (!preposition) {
         throw new Error('No preposition!')
     }
 
-    return clauseOf(preposition, subjId, newId)
+    return clauseOf(preposition, subjId, objId)
         .and(object)
 
 }
