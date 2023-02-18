@@ -30,14 +30,12 @@ export function toClause(ast?: AstNode | AstNode[], args?: ToClauseOpts): Clause
         result = nounPhraseToClause(ast, args)
     } else if (ast?.links?.relpron) {
         result = copulaSubClauseToClause(ast, args)
-    } else if (ast?.links?.preposition) {
-        result = complementToClause(ast, args)
     } else if (ast?.links?.subject && ast?.links.predicate) {
         result = copulaSentenceToClause(ast, args)
     } else if (ast.links?.nonsubconj) {
         result = andSentenceToClause(ast, args)
-    } else if (ast.links?.iverb || ast.links?.mverb) {
-        result = verbSentenceToClause(ast, args)
+    } else if (ast.links?.iverb || ast.links?.mverb || ast.links?.preposition) {
+        result = relationToClause(ast, args)
     } else if (ast.links?.subconj) {
         result = complexSentenceToClause(ast, args)
     }
@@ -107,42 +105,26 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
 }
 
-function complementToClause(complement: AstNode, args?: ToClauseOpts): Clause {
-
-    const subjId = args?.subject ?? getIncrementalId()
-    const objId = getIncrementalId()
-
-    const object = toClause(complement?.links?.object, { subject: objId })
-    const preposition = complement?.links?.preposition?.lexeme
-
-    if (!preposition) {
-        throw new Error('No preposition!')
-    }
-
-    return clauseOf(preposition, subjId, objId)
-        .and(object)
-
-}
-
-function verbSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+function relationToClause(ast: AstNode, args?: ToClauseOpts): Clause {
 
     const subjId = args?.subject ?? getIncrementalId()
     const objId = getIncrementalId()
 
     const subject = toClause(ast.links?.subject, { subject: subjId })
     const object = toClause(ast.links?.object, { subject: objId })
-    const verb = ast.links?.iverb?.lexeme ?? ast.links?.mverb?.lexeme
+    const rel = ast.links?.iverb?.lexeme ?? ast.links?.mverb?.lexeme ?? ast.links?.preposition?.lexeme
 
-    if (!verb) {
-        throw new Error('missing verb in verb sentence!')
+    if (!rel) {
+        throw new Error('missing relation in verb/preposition phrase!')
     }
 
     const verbArgs = object === emptyClause ? [subjId] : [subjId, objId]
-    const rheme = clauseOf(verb, ...verbArgs)
+    const relationIsRheme = subject !== emptyClause
+    const relation = clauseOf(rel, ...verbArgs)
 
     return subject
         .and(object)
-        .and(rheme, { asRheme: true })
+        .and(relation, { asRheme: relationIsRheme })
 
 }
 
