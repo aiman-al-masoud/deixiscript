@@ -1,21 +1,21 @@
-import { Clause, emptyClause } from "../Clause";
-import { isVar } from "../../id/functions/isVar";
-import Imply from "../Imply";
+import { Clause, emptyClause } from "../Clause"
+import { isVar } from "../../id/functions/isVar"
+import Imply from "../Imply"
 
-export function makeImply(clause: Clause) {
+export function makeImply(clause: Clause) { // any clause with any var is an imply
 
     if (clause instanceof Imply) {
-        return clause;
+        return clause
     }
 
     if (clause.rheme === emptyClause) {
-        return clause;
+        return clause
     }
 
     if (clause.entities.some(e => isVar(e))) {
-        const r = clause.theme.implies(clause.rheme).copy({ sideEffecty: clause.isSideEffecty });
-        return r;
+        const r = clause.theme.implies(clause.rheme).copy({ sideEffecty: clause.isSideEffecty })
+        return r
     }
 
-    return clause;
+    return clause
 }
