@@ -21,6 +21,10 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         return emptyClause
     }
 
+    if (ast.lexeme) {
+        return clauseOf(ast.lexeme, ...args?.subject ? [args?.subject] : [])
+    }
+
     if (ast.list) {
         return ast.list.map(c => toClause(c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
     }
@@ -72,38 +76,21 @@ function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts):
     return toClause(predicate, args)
 }
 
-function nounPhraseToClause(nounPhrase: AstNode, args?: ToClauseOpts): Clause {
+function nounPhraseToClause(nounPhrase: AstNode, opts?: ToClauseOpts): Clause {
 
-    const maybeId = args?.subject ?? getIncrementalId()
+    const maybeId = opts?.subject ?? getIncrementalId()
     const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
 
-    const adjectives = nounPhrase?.links?.adjective?.list ?? []
-    const noun = nounPhrase.links?.subject
-    const complements = toClause(nounPhrase?.links?.complement, { subject: subjectId })
-    const subClause = toClause(nounPhrase?.links?.subclause, { subject: subjectId })
+    const args = { subject: subjectId }
+    const adjectives = toClause(nounPhrase?.links?.adjective, args)
+    const noun = toClause(nounPhrase.links?.subject, args)
+    const complements = toClause(nounPhrase?.links?.complement, args)
+    const subClause = toClause(nounPhrase?.links?.subclause, args)
 
-    return adjectives.flatMap(a => a.lexeme ?? [])
-        .concat(noun?.lexeme ? [noun.lexeme] : [])
-        .map(p => clauseOf(p, subjectId))
-        .reduce((c1, c2) => c1.and(c2), emptyClause)
+    return adjectives
+        .and(noun)
         .and(complements)
         .and(subClause)
-
-}
-
-function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
-
-    const left = toClause(ast.links?.left, args)
-    const right = toClause(ast?.links?.right?.list?.[0], args)
-
-    if (ast.links?.left?.type === 'copula sentence') {
-        return left.and(right)
-    } else {
-        const m = { [right.entities[0]]: left.entities[0] }
-        const theme = left.theme.and(right.theme)
-        const rheme = right.rheme.and(right.rheme.copy({ map: m }))
-        return theme.and(rheme, { asRheme: true })
-    }
 
 }
 
@@ -131,5 +118,21 @@ function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const condition = toClause(ast.links?.condition, args)
     const consequence = toClause(ast.links?.consequence, args)
     return condition.implies(consequence).copy({ subjconj: subconj })
+
+}
+
+function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+
+    const left = toClause(ast.links?.left, args)
+    const right = toClause(ast?.links?.right?.list?.[0], args)
+
+    if (ast.links?.left?.type === 'copula sentence') {
+        return left.and(right)
+    } else {
+        const m = { [right.entities[0]]: left.entities[0] }
+        const theme = left.theme.and(right.theme)
+        const rheme = right.rheme.and(right.rheme.copy({ map: m }))
+        return theme.and(rheme, { asRheme: true })
+    }
 
 }
