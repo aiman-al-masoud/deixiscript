@@ -8,7 +8,9 @@ export interface Lexeme {
     /**made up of more lexemes*/ readonly contractionFor?: string[]
     /**form of this instance*/readonly token?: string
     /**for quantadj */ readonly cardinality?: Cardinality
-    readonly irregularForms?: string[]
+    // readonly irregularForms?: string[]
     readonly concepts?: string[]
     readonly proto?: string
+    /*irregular plurals*/ readonly plurals?:string[]
+    /*irregular singulars*/ readonly singulars?:string[]
 }

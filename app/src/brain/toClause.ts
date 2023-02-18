@@ -47,7 +47,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     }
 
     if (result) {
-        const c0 = makeImply(result)
+        const c0 = ast.links?.nonsubconj ? result : makeImply(result)
         const c1 = makeAllVars(c0)
         const c2 = resolveAnaphora(c1)
         const c3 = propagateVarsOwned(c2)

@@ -1,6 +1,7 @@
 import { Clause, emptyClause } from "../Clause"
 import { isVar } from "../../id/functions/isVar"
 import Imply from "../Imply"
+import { isPlural } from "../../lexer/functions/isPlural"
 
 export function makeImply(clause: Clause) { // any clause with any var is an imply
 
@@ -12,7 +13,7 @@ export function makeImply(clause: Clause) { // any clause with any var is an imp
         return clause
     }
 
-    if (clause.entities.some(e => isVar(e))) {
+    if (clause.entities.some(e => isVar(e)) || clause.flatList().some(x => x.predicate ? isPlural(x.predicate) : false)) {
         return clause.theme.implies(clause.rheme)
     }
 
