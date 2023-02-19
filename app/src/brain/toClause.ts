@@ -127,7 +127,7 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const left = toClause(ast.links?.left, args)
     const right = toClause(ast?.links?.right?.list?.[0], args)
 
-    if (isCopulaSentence(ast.links?.left)) {
+    if (ast.links?.left?.type === ast.links?.right?.type) {
         return left.and(right)
     } else {
         const m = { [right.entities[0]]: left.entities[0] }
