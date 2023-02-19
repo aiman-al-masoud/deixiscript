@@ -38,7 +38,8 @@ const tests = [
 export default async function autotester() {
 
     for (const test of tests) {
-        console.log(test() ? 'success' : 'fail', test.name)
+        const success = test()
+        console.log(`%c${ success ? 'success' : 'fail'} ${test.name}`, `color:${success?'green' : 'red'}`)
         await sleep(10)//75
         clearDom()
     }

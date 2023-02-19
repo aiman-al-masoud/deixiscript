@@ -17,12 +17,18 @@ interface ToClauseOpts {
 export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     if (!ast) {
-        console.warn('Ast is undefined!')
+        // console.warn('Ast is undefined!')
         return emptyClause
     }
 
     if (ast.lexeme) {
-        return clauseOf(ast.lexeme, ...args?.subject ? [args?.subject] : [])
+
+        if (ast.lexeme.type === 'noun' || ast.lexeme.type === 'adjective' || ast.lexeme.type === 'pronoun') {
+            return clauseOf(ast.lexeme, ...args?.subject ? [args?.subject] : [])
+        }
+
+        return emptyClause
+
     }
 
     if (ast.list) {
@@ -32,11 +38,9 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     let result
     let rel
 
-    if (ast.type === 'noun phrase') {
-        result = nounPhraseToClause(ast, args)
-    } else if (ast?.links?.relpron) {
+    if (ast?.links?.relpron) {
         result = copulaSubClauseToClause(ast, args)
-    } else if (ast?.links?.subject && ast?.links.predicate) {
+    } else if (isCopulaSentence(ast)) {
         result = copulaSentenceToClause(ast, args)
     } else if (ast.links?.nonsubconj) {
         result = andSentenceToClause(ast, args)
@@ -44,6 +48,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = relationToClause(ast, rel, args)
     } else if (ast.links?.subconj) {
         result = complexSentenceToClause(ast, args)
+    } else {
+        result = nounPhraseToClause(ast, args)
     }
 
     if (result) {
@@ -60,6 +66,8 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     throw new Error(`Idk what to do with '${ast.type}'!`)
 
 }
+
+const isCopulaSentence = (ast?: AstNode) => !!ast?.links?.copula
 
 function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
@@ -80,17 +88,10 @@ function nounPhraseToClause(nounPhrase: AstNode, opts?: ToClauseOpts): Clause {
 
     const maybeId = opts?.subject ?? getIncrementalId()
     const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
-
     const args = { subject: subjectId }
-    const adjectives = toClause(nounPhrase?.links?.adjective, args)
-    const noun = toClause(nounPhrase.links?.subject, args)
-    const complements = toClause(nounPhrase?.links?.complement, args)
-    const subClause = toClause(nounPhrase?.links?.subclause, args)
 
-    return adjectives
-        .and(noun)
-        .and(complements)
-        .and(subClause)
+    return Object.values(nounPhrase.links ?? {})
+        .map(x => toClause(x, args)).reduce((a, b) => a.and(b), emptyClause)
 
 }
 
@@ -126,7 +127,7 @@ function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
     const left = toClause(ast.links?.left, args)
     const right = toClause(ast?.links?.right?.list?.[0], args)
 
-    if (ast.links?.left?.type === 'copula sentence') {
+    if (isCopulaSentence(ast.links?.left)) {
         return left.and(right)
     } else {
         const m = { [right.entities[0]]: left.entities[0] }

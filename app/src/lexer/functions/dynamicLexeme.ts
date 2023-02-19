@@ -1,20 +1,26 @@
-import { Context } from "../../brain/Context";
-import { clauseOf } from "../../clauses/Clause";
-import { Lexeme } from "../Lexeme";
-import { stem } from "./stem";
+import { Context } from "../../brain/Context"
+import { clauseOf } from "../../clauses/Clause"
+import { Lexeme } from "../Lexeme"
+import { stem } from "./stem"
 
 
 export function dynamicLexeme(word: string, context: Context, words: string[]): Lexeme {
 
-    const stemmedWord = stem({ root: word, type: 'any' });
+    const stemmedWord = stem({ root: word, type: 'noun' })
 
     const types = words
-        .map(w => clauseOf({ root: w, type: 'any' }, 'X'))
+        .map(w => clauseOf({ root: w, type: 'noun' }, 'X'))
         .flatMap(c => context.enviro.query(c))
         .flatMap(m => Object.values(m))
         .map(id => context.enviro.get(id))
         .map(x => x?.typeOf(stemmedWord))
-        .filter(x => x !== undefined);
+        .filter(x => x !== undefined)
 
-    return { root: stemmedWord, type: types[0] ?? 'noun' };
+    const isMacroContext = context.config.lexemes
+        .some(l => l.type === 'grammar' && words.some(w => w === l.root)) //TODO: stem the word w
+
+    const type = types[0] ??
+        (isMacroContext ? 'grammar' : 'noun')
+
+    return { root: stemmedWord, type: type }
 }

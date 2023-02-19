@@ -26,5 +26,5 @@ export const lexemeTypes = stringLiterals(
   'nonsubconj', // and ...
   'disjunc', // or, but, however ...
   'pronoun',
-  'any'
+  // 'any'
 )

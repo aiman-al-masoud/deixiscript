@@ -3,48 +3,48 @@ export const prelude: string[] = [
   // grammar
   'quantifier is uniquant or existquant',
   'article is indefart or defart',
-  'complement is preposition then object noun phrase',
+  'complement is preposition then object noun-phrase',
 
-  `copula sentence is subject noun phrase 
+  `copula-sentence is subject noun-phrase 
         then copula 
         then optional negation 
-        then predicate noun phrase`,
+        then predicate noun-phrase`,
 
-  `noun phrase is optional quantifier 
+  `noun-phrase is optional quantifier 
         then optional article 
         then zero  or  more adjectives 
-        then optional subject noun or pronoun or mverb 
+        then optional subject noun or pronoun 
         then optional subclause 
         then zero or more complements `,
 
-  'copulasubclause is relpron then copula then predicate noun phrase',
+  'copulasubclause is relpron then copula then predicate noun-phrase',
   'subclause is copulasubclause',
 
-  `and sentence is left copula sentence or noun phrase 
+  `and-sentence is left copula-sentence or noun-phrase 
         then nonsubconj
-        then one or more right and sentence or copula sentence or noun phrase`,
+        then one or more right and-sentence or copula-sentence or noun-phrase`,
 
-  `mverb sentence is subject noun phrase 
+  `mverb-sentence is subject noun-phrase 
 		then optional hverb
 		then optional negation
 		then mverb
-		then object noun phrase`, // TODO complements
+		then object noun-phrase`, // TODO complements
 
-  `iverb sentence is subject noun phrase 
+  `iverb-sentence is subject noun-phrase 
 		then optional hverb
 		then optional negation
 		then iverb`, // TODO complements
 
-  `simple sentence is copula sentence or iverb sentence or mverb sentence`,
+  `simple-sentence is copula-sentence or iverb-sentence or mverb-sentence`,
 
-  `cs2 is consequence simple sentence
+  `cs2 is consequence simple-sentence
       then subconj
-      then condition simple sentence`,
+      then condition simple-sentence`,
 
   `cs1 is subconj 
-    then condition simple sentence 
+    then condition simple-sentence 
     then filler 
-    then consequence simple sentence`,
+    then consequence simple-sentence`,
 
   // domain
   'color is a concept',
