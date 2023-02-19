@@ -31,8 +31,7 @@ export default class BasicBrain implements Brain {
             
             if (clause.isSideEffecty) {
 
-                this.actuator.takeAction(clause, this.context)
-                return []
+                return this.actuator.takeAction(clause, this.context)
 
             } else {
 

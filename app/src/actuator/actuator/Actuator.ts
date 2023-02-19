@@ -3,7 +3,7 @@ import { Context } from "../../brain/Context";
 import BaseActuator from "./BaseActuator";
 
 export interface Actuator {
-    takeAction(clause: Clause, context: Context): void
+    takeAction(clause: Clause, context: Context): any[]
 }
 
 export function getActuator(): Actuator {

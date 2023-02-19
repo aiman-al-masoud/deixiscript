@@ -5,10 +5,10 @@ import { getAction } from "../actions/getAction";
 
 export default class BaseActuator implements Actuator {
 
-    takeAction(clause: Clause, context: Context): void {
+    takeAction(clause: Clause, context: Context): any[] {
 
         const actions = clause.flatList().map(x => getAction(x, clause))
-        actions.forEach(a => a.run(context))
+        return actions.flatMap(a => a.run(context)??[])
 
     }
 
