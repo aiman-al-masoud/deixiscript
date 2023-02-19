@@ -29,6 +29,7 @@ const tests = [
     test25,
     test26,
     test27,
+    test28,
 ]
 
 /**
@@ -279,6 +280,15 @@ function test27() {
     brain.execute('red buttons are black')
     const assert1 = brain.execute('z')[0].style.background === 'blue'
     const assert2 = brain.execute('black').length === 2
+    return assert1 && assert2
+}
+
+function test28() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is a red button')
+    brain.execute('border of style of x is dotted-yellow')
+    const assert1 = brain.execute('x')[0].style.background === 'red'
+    const assert2 = brain.execute('x')[0].style.border.includes('dotted yellow')
     return assert1 && assert2
 }
 

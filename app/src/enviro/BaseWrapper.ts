@@ -16,7 +16,8 @@ export default class BaseWrapper implements Wrapper {
         readonly object: any,
         readonly id: Id,
         readonly isPlaceholder: boolean,
-        readonly parent?: Wrapper
+        readonly parent?: Wrapper,
+        readonly name?: string
     ) {
 
         try {
@@ -29,13 +30,9 @@ export default class BaseWrapper implements Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): any {
 
-
         if (this.parent) {
-            //TODO: problem when this wrapper is textContent because predicate has no concept and path is unknown (not passed) to parent
-            return this.parent.set(predicate, { ...opts, props: [...opts?.props ?? []] })
+            return this.parent.set(predicate, { ...opts, props: [...(opts?.props ?? []), ...[{ root: this.name ?? '', type: 'noun' as any }]].reverse() })
         }
-
-
 
         if (opts?.args) {
             return this.call(predicate, opts.args)
@@ -163,6 +160,10 @@ export default class BaseWrapper implements Wrapper {
 
     protected setNested(path: string[], value: string) {
 
+        if (typeof this.getNested(path) !== typeof value) { //TODO: remove!
+            return
+        }
+
         if (path.length === 1) {
             this.object[path[0]] = value
             return
@@ -233,11 +234,10 @@ export default class BaseWrapper implements Wrapper {
         const x = clause.entities.flatMap(e => clause.describe(e))[0]
 
         if (x) {
-
             const path = this.aliases[x.root]?.path
-            // x.root === 'text' ? console.log(path) : 0
             const object = path ? this.getNested(path) : this.object[x.root]
-            return new BaseWrapper(object, getIncrementalId(), false, this)
+            const name = path ? this.aliases[x.root].lexeme.root : x.root
+            return new BaseWrapper(object, getIncrementalId(), false, this, name)
         }
 
     }
