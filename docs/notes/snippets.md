@@ -3,6 +3,13 @@
 ```javascript
 Object.defineProperty(HTMLButtonElement.prototype, 'color', {value: ['style', 'background']}) 
 ```
+
+# SETTING FUNCTION (METHOD) ON PROTOTYPE
+
+```javascript
+Object.defineProperty(Number.prototype, 'plus' , {value : function(a) { return this + a }  }) 
+```
+
 # BINDING FUNCTION TO OBJECT AND INVOKING IT
 
 ```javascript
