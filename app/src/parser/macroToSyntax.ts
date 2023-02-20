@@ -1,7 +1,7 @@
 import { AstNode, Role } from "./interfaces/AstNode"
-import { Syntax, Member, AstType } from "./interfaces/Syntax"
+import { Member, AstType } from "./interfaces/Syntax"
 
-export function macroToSyntax(macro: AstNode): { name: string, syntax: Syntax } {
+export function macroToSyntax(macro: AstNode) {
 
     const macroparts = macro?.links?.macropart?.list ?? []
     const syntax = macroparts.map(m => macroPartToMember(m))
