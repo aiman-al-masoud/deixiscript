@@ -19,7 +19,7 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
         return new CreateLexemeAction(clause, topLevel)
     }
 
-    if (clause.args && topLevel.rheme.describe(clause.args[0]).some(x => isConcept(x))) { // 
+    if (topLevel.rheme.flatList().some(x => isConcept(x.predicate))) { // 
         return new ConceptAction(clause, topLevel)
     }
 
