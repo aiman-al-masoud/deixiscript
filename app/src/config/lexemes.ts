@@ -4,11 +4,93 @@ import { constituentTypes } from "./syntaxes";
 
 export const lexemes: Lexeme[] = [
 
+    // CORE --------------------
+
+    {
+        root: 'be',
+        type: 'copula',
+        plurals: ['are'],
+        singulars: ['is', 'art']
+    },
+
+    {
+        root: 'any',
+        type: 'uniquant'
+    },
+
+    {
+        root: 'of',
+        type: 'preposition'
+    },
+
+    {
+        root: 'then',
+        type: 'filler' // filler word, what about partial parsing?
+    },
+
+    {
+        root: '.',
+        type: 'fullstop'
+    },
+
+    {
+        root: 'optional',
+        type: 'adjective',
+        cardinality: '1|0'
+    },
+
+    {
+        root: 'one or more',
+        type: 'adjective',
+        cardinality: '+'
+    },
+
+    {
+        root: 'zero or more',
+        type: 'adjective',
+        cardinality: '*'
+    },
+
+    {
+        root: 'or',
+        type: 'disjunc'
+    },
+
+    {
+        root: 'concept',
+        type: 'noun',
+        concepts: ['concept']
+    },
+
+    {
+        root: 'subject',
+        type: 'adjective'
+    },
+
+    {
+        root: 'predicate',
+        type: 'adjective'
+    },
+
+    {
+        root: 'object',
+        type: 'adjective'
+    },
+
+    // END CORE -----------------------------
+
+    {
+        root: 'do',
+        type: 'hverb',
+        plurals: ['do'],
+        singulars: ['does']
+    },
+
     {
         root: 'have',
         type: 'mverb',
-        plurals : ['have'],
-        singulars : ['has']
+        plurals: ['have'],
+        singulars: ['has']
     },
 
     {
@@ -41,23 +123,9 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: 'be',
-        type: 'copula',
-        plurals : ['are'],
-        singulars : ['is', 'art']
-    },
-
-    {
         root: "isn't",
         type: 'contraction',
         contractionFor: ['is', 'not']
-    },
-
-    {
-        root: 'do',
-        type: 'hverb',
-        plurals : ['do'],
-        singulars : ['does']
     },
 
     {
@@ -72,11 +140,6 @@ export const lexemes: Lexeme[] = [
 
     {
         root: 'all',
-        type: 'uniquant'
-    },
-
-    {
-        root: 'any',
         type: 'uniquant'
     },
 
@@ -96,11 +159,6 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: 'of',
-        type: 'preposition'
-    },
-
-    {
         root: 'over',
         type: 'preposition'
     },
@@ -113,11 +171,6 @@ export const lexemes: Lexeme[] = [
     {
         root: 'at',
         type: 'preposition'
-    },
-
-    {
-        root: 'then',
-        type: 'filler' // filler word, what about partial parsing?
     },
 
     {
@@ -166,57 +219,13 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: '.',
-        type: 'fullstop'
-    },
-
-    {
         root: 'and',
         type: 'nonsubconj'
     },
 
     {
-        root: 'subject',
-        type: 'adjective'
-    },
-
-    {
-        root: 'predicate',
-        type: 'adjective'
-    },
-
-    {
-        root: 'optional',
-        type: 'adjective',
-        cardinality: '1|0'
-    },
-
-    {
-        root: 'one or more',
-        type: 'adjective',
-        cardinality: '+'
-    },
-
-    {
-        root: 'zero or more',
-        type: 'adjective',
-        cardinality: '*'
-    },
-
-    {
-        root: 'or',
-        type: 'disjunc'
-    },
-
-    {
         root: 'it',
         type: 'pronoun'
-    },
-
-    {
-        root: 'concept',
-        type: 'noun',
-        concepts: ['concept']
     },
 
     {
@@ -226,11 +235,6 @@ export const lexemes: Lexeme[] = [
 
     {
         root: 'right',
-        type: 'adjective'
-    },
-
-    {
-        root: 'object',
         type: 'adjective'
     },
 
