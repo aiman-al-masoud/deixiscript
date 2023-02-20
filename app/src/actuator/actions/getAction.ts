@@ -10,18 +10,22 @@ import MultiAction from "./MultiAction"
 import Action from "./Action"
 import IfAction from "./IfAction"
 import WhenAction from "./WhenAction"
+import CreateLexemeAction from "./CreateLexemeAction"
 
 
 export function getAction(clause: Clause, topLevel: Clause): Action {
 
+    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
+        return new CreateLexemeAction(clause, topLevel)
+    }
+
+    if (clause.args && topLevel.rheme.describe(clause.args[0]).some(x => isConcept(x))) { // 
+        return new ConceptAction(clause, topLevel)
+    }
+
     // TODO: prepositions, and be beware of 'of' 
     if (clause.predicate?.type === 'iverb' || clause.predicate?.type === 'mverb') {
         return new RelationAction(clause, topLevel)
-    }
-
-    // to create new concept or new instance thereof
-    if (clause.args && topLevel.rheme.describe(clause.args[0]).some(x => isConcept(x))) { // 
-        return new ConceptAction(clause, topLevel)
     }
 
     if (clause.predicate?.proto) {

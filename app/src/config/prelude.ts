@@ -13,7 +13,7 @@ export const prelude: string[] = [
   `noun-phrase is optional quantifier 
         then optional article 
         then zero  or  more adjectives 
-        then optional subject noun or pronoun 
+        then optional subject noun or pronoun or grammar
         then optional subclause 
         then zero or more complements `,
 
@@ -46,7 +46,20 @@ export const prelude: string[] = [
     then filler 
     then consequence simple-sentence`,
 
+   `a and an are indefarts`,
+   `the is a defart`,
+   `if and when and while are subconjs`,
+   `any and every and all are uniquants`,
+   `of and on and to and from are prepositions`,
+   `that is a relpron`,
+   `not is a negation`,
+   `it is a pronoun`,
+
+
   // domain
+  `button is a noun and proto of it is HTMLButtonElement`,
+  `div is a noun and proto of it is HTMLDivElement`,
+  `element is a noun and proto of it is HTMLElement`,
   'color is a concept',
   'red and blue and black and green are colors',
   'color of any element is background of style of it',

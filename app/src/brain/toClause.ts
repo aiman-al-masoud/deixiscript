@@ -23,7 +23,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
     if (ast.lexeme) {
 
-        if (ast.lexeme.type === 'noun' || ast.lexeme.type === 'adjective' || ast.lexeme.type === 'pronoun') {
+        if (ast.lexeme.type === 'noun' || ast.lexeme.type === 'adjective' || ast.lexeme.type === 'pronoun' || ast.lexeme.type === 'grammar') {
             return clauseOf(ast.lexeme, ...args?.subject ? [args?.subject] : [])
         }
 

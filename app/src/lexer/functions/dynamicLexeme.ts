@@ -16,8 +16,9 @@ export function dynamicLexeme(word: string, context: Context, words: string[]): 
         .map(x => x?.typeOf(stemmedWord))
         .filter(x => x !== undefined)
 
-    const isMacroContext = context.config.lexemes
+    const isMacroContext = context.config.lexemes // macro identifying heuristic
         .some(l => l.type === 'grammar' && words.some(w => w === l.root)) //TODO: stem the word w
+        && (!words.includes('a') && !words.includes('an') && !words.includes('the') && !words.includes('and')) //TODO: defart/indefart!!!!
 
     const type = types[0] ??
         (isMacroContext ? 'grammar' : 'noun')
