@@ -16,7 +16,7 @@ export const staticDescPrecedence = constituentTypes.concat()
 export const syntaxes: SyntaxMap = {
 
     'macro': [
-        { type: ['noun', 'grammar'], number: 1, role: 'noun' as Role },
+        { type: ['noun', 'grammar'], number: 1, role: 'subject' },
         { type: ['copula'], number: 1 },
         { type: ['macropart'], number: '+' }
     ],

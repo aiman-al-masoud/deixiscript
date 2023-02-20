@@ -5,7 +5,7 @@ export function macroToSyntax(macro: AstNode): { name: string, syntax: Syntax } 
 
     const macroparts = macro?.links?.macropart?.list ?? []
     const syntax = macroparts.map(m => macroPartToMember(m))
-    const name = macro?.links?.noun?.lexeme?.root
+    const name = macro?.links?.subject?.lexeme?.root
 
     if (!name) {
         throw new Error('Anonymous syntax!')
