@@ -31,6 +31,7 @@ const tests = [
     test27,
     test28,
     test29,
+    test30,
 ]
 
 /**
@@ -299,6 +300,13 @@ function test29(){
     brain.execute('x is 1 and y is 2')
     brain.execute('x adds y')
     return brain.execute('it')[0] === 3
+}
+
+function test30(){
+    const brain = getBrain({ root: document.body })
+    brain.execute('=  is a copula')
+    brain.execute('x = red button')
+    return brain.execute('x')[0].style.background === 'red'
 }
 
 function sleep(millisecs: number) {
