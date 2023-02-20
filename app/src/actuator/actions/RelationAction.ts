@@ -2,6 +2,7 @@ import Action from "./Action";
 import { Context } from "../../brain/Context";
 import { Clause } from "../../clauses/Clause";
 import { getKool } from "../../clauses/functions/getKool";
+import { getIncrementalId } from "../../id/functions/getIncrementalId";
 
 export default class RelationAction implements Action {
 
@@ -21,7 +22,13 @@ export default class RelationAction implements Action {
         const subject = args[0]
         const object = args[1]
 
-        return subject?.set(this.clause.predicate, { args: object ? [object] : [] })
+        const res = subject?.set(this.clause.predicate, { args: object ? [object] : [] })
+
+        if (res) {
+            context.enviro.set(getIncrementalId(), res)
+        }
+
+        return res
     }
 
 }

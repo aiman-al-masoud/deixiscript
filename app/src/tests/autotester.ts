@@ -30,6 +30,7 @@ const tests = [
     test26,
     test27,
     test28,
+    test29,
 ]
 
 /**
@@ -291,6 +292,13 @@ function test28() {
     const assert1 = brain.execute('x')[0].style.background === 'red'
     const assert2 = brain.execute('x')[0].style.border.includes('dotted yellow')
     return assert1 && assert2
+}
+
+function test29(){
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is 1 and y is 2')
+    brain.execute('x adds y')
+    return brain.execute('it')[0] === 3
 }
 
 function sleep(millisecs: number) {

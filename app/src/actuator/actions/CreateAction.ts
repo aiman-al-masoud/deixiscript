@@ -13,7 +13,7 @@ export default class CreateAction implements Action {
     }
 
     run(context: Context) {
-        
+
         const localId = this.clause?.args?.[0] as Id
         const id = context.enviro.query(this.topLevel.theme)?.[0]?.[localId] ?? getIncrementalId()
         const predicate = this.clause.predicate
@@ -32,7 +32,7 @@ export default class CreateAction implements Action {
             return
         }
 
-        const o = newInstance(proto)
+        const o = newInstance(proto, predicate.root)
         init(o, context, id)
         context.enviro.set(id, o).set(predicate)
 

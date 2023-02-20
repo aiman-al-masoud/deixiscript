@@ -14,6 +14,9 @@ export default class BasicBrain implements Brain {
         readonly context: Context,
         readonly actuator = getActuator()) {
 
+        //TODO: move somewhere else
+        Object.defineProperty(Number.prototype, 'add', { writable: true, value: function (a: any) { return this + a } })
+
         this.context.config.prelude.forEach(c => this.execute(c))
     }
 
@@ -27,8 +30,7 @@ export default class BasicBrain implements Brain {
             }
 
             const clause = toClause(ast).simple
-            
-            
+
             if (clause.isSideEffecty) {
 
                 return this.actuator.takeAction(clause, this.context)

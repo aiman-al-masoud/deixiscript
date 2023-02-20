@@ -7,6 +7,6 @@ export function isPlural(lexeme: Lexeme) {
     }
 
     return lexeme.plurals?.includes(lexeme.token) ||
-        (!lexeme.plurals && lexeme.token.endsWith('s'))
+        (!lexeme.plurals && lexeme.type==='noun' && lexeme.token.endsWith('s'))
 
 }
