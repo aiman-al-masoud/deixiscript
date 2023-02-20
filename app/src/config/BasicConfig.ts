@@ -27,7 +27,7 @@ export class BasicConfig implements Config {
         return this.staticDescPrecedence.concat(z)
     }
 
-    get syntaxList(): CompositeType[] { //TODO: re-sort only when needed
+    get syntaxList(): CompositeType[] { 
 
         return this._syntaxList
 
