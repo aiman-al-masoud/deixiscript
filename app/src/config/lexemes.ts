@@ -77,14 +77,14 @@ export const lexemes: Lexeme[] = [
         type: 'adjective'
     },
 
-    // END CORE -----------------------------
-
     {
         root: 'do',
         type: 'hverb',
         plurals: ['do'],
         singulars: ['does']
     },
+
+    // END CORE -----------------------------
 
     {
         root: 'have',
