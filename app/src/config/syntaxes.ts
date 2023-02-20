@@ -1,4 +1,3 @@
-import { Role } from "../parser/interfaces/AstNode"
 import { SyntaxMap } from "../parser/interfaces/Syntax"
 import { ElementType } from "../utils/ElementType"
 import { stringLiterals } from "../utils/stringLiterals"
