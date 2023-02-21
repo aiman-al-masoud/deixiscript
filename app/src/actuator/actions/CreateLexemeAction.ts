@@ -4,6 +4,7 @@ import { Clause, clauseOf } from "../../clauses/Clause";
 import { Lexeme } from "../../lexer/Lexeme";
 import { LexemeType } from "../../config/LexemeType";
 import { Id } from "../../id/Id";
+import { isConcept } from "../../lexer/functions/isConcept";
 
 export default class CreateLexemeAction implements Action {
 
@@ -13,26 +14,24 @@ export default class CreateLexemeAction implements Action {
 
     run(context: Context) {
 
-        if (!context.config.lexemeTypes.includes(this.clause.predicate?.root as any)) {
+        if (!context.config.lexemeTypes.includes(this.clause.predicate?.root as any) && !this.topLevel.rheme.flatList().some(x => isConcept(x.predicate))) {
             return
         }
 
-        const name = this.topLevel.describe(this.clause.entities[0])[0].root //TODO: could be undefined
-        
+        const name = this.topLevel.theme.describe((this.clause.args as any)[0])[0].root //TODO: could be undefined        
+        const type = (context.config.lexemeTypes.includes(this.clause.predicate?.root as any) ? this.clause.predicate?.root : 'adjective') as LexemeType
+        const concepts = type === 'noun' ? [] : type === 'adjective' ? [this.clause.predicate?.root].flatMap(x => x ?? []) : undefined
         const res = this.topLevel.query($('proto', 'X')).at(0)?.['X']
-        // this.topLevel.describe()
         const proto = res ? this.topLevel.describe(res).map(x => x.root).filter(x => x !== 'proto')[0] : undefined
 
         const lexeme: Lexeme = {
             root: name,
-            type: this.clause.predicate?.root as LexemeType,
-            proto: proto
+            type: type,
+            proto: proto,
+            concepts: concepts
         }
 
-        // console.log(this.topLevel.toString())
-        // console.log(lexeme)
         context.config.setLexeme(lexeme)
-
 
     }
 

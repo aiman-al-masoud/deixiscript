@@ -45,12 +45,6 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: 'concept',
-        type: 'noun',
-        concepts: ['concept']
-    },
-
-    {
         root: 'subject',
         type: 'adjective'
     },

@@ -60,7 +60,7 @@ export const prelude: string[] = [
   `button is a noun and proto of it is HTMLButtonElement`,
   `div is a noun and proto of it is HTMLDivElement`,
   `element is a noun and proto of it is HTMLElement`,
-  'color is a concept',
+  'color is a noun',
   'red and blue and black and green are colors',
   'color of any element is background of style of it',
   'text of any button is textContent of it',

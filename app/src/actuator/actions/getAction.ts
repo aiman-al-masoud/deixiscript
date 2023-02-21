@@ -1,6 +1,5 @@
 import { Clause } from "../../clauses/Clause"
 import { isConcept } from "../../lexer/functions/isConcept"
-import ConceptAction from "./ConceptAction"
 import CreateAction from "./CreateAction"
 import EditAction from "./EditAction"
 import RelationAction from "./RelationAction"
@@ -15,12 +14,10 @@ import CreateLexemeAction from "./CreateLexemeAction"
 
 export function getAction(clause: Clause, topLevel: Clause): Action {
 
-    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
-        return new CreateLexemeAction(clause, topLevel)
-    }
+    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')
+        || topLevel.rheme.flatList().some(x => isConcept(x.predicate))) {
 
-    if (topLevel.rheme.flatList().some(x => isConcept(x.predicate))) { // 
-        return new ConceptAction(clause, topLevel)
+        return new CreateLexemeAction(clause, topLevel)
     }
 
     // TODO: prepositions, and be beware of 'of' 
