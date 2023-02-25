@@ -5,21 +5,19 @@ import LexemeObject from "./LexemeObject"
 
 
 export interface Lexeme {
-    /**canonical form*/ readonly root: string
-    /**token type*/ readonly type: LexemeType
-    /**form of this instance*/readonly token?: string
-    /**made up of more lexemes*/ readonly contractionFor?: string[]
-    /**for quantadj */ readonly cardinality?: Cardinality
-    readonly proto?: string
-    readonly concepts?: string[]
-    readonly _root?: Partial<Lexeme>
+    /**canonical form*/  root: string
+    /**token type*/  type: LexemeType
+    /**form of this instance*/ token?: string
+    /**made up of more lexemes*/  contractionFor?: string[]
+    /**for quantadj */ cardinality?: Cardinality
+    proto?: string
+    concepts?: string[]
+    _root?: Partial<Lexeme>
+    extrapolate(context: Context): Lexeme[]
+    getProto(): object | undefined
     readonly isPlural: boolean
     readonly isConcept: boolean
-
-    extrapolate(context: Context): Lexeme[]
-    readonly isMultiWord:boolean
-    getProto():object|undefined
-
+    readonly isMultiWord: boolean
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {

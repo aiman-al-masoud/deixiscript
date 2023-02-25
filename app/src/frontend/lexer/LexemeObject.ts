@@ -7,12 +7,12 @@ import { Lexeme, makeLexeme } from "./Lexeme"
 
 export default class LexemeObject implements Lexeme /*, Wrapper */ {
 
-    readonly _root = this.newData?._root
-    readonly contractionFor = this.newData?.contractionFor ?? this._root?.contractionFor
-    readonly token = this.newData?.token ?? this._root?.token
-    readonly cardinality = this.newData?.cardinality ?? this._root?.cardinality
-    readonly proto = this.newData?.proto ?? this._root?.proto
-    readonly concepts = this.newData?.concepts ?? this._root?.concepts
+    _root = this.newData?._root
+    contractionFor = this.newData?.contractionFor ?? this._root?.contractionFor
+    token = this.newData?.token ?? this._root?.token
+    cardinality = this.newData?.cardinality ?? this._root?.cardinality
+    proto = this.newData?.proto ?? this._root?.proto
+    concepts = this.newData?.concepts ?? this._root?.concepts
 
     constructor(
         readonly newData?: Partial<Lexeme>
@@ -57,7 +57,7 @@ export default class LexemeObject implements Lexeme /*, Wrapper */ {
 
         return []
     }
-    
+
     get isMultiWord() {
         return this.root.includes(' ');
     }
