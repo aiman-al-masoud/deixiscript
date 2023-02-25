@@ -1,5 +1,4 @@
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
-import { getProto } from "../../frontend/lexer/functions/getProto";
 import { wrap } from "../wrapper/Wrapper";
 import Action from "./Action";
 import { Clause } from "../../middle/clauses/Clause";
@@ -25,9 +24,10 @@ export default class SetAliasAction implements Action {
         const conceptName = alias.map(x => condition.describe(x)[0]) // assume at least one name
         const propsNames = props.map(x => consequence.describe(x)[0]) // same ...
         const protoName = condition.describe(top)[0] // assume one 
-        const proto = getProto(protoName)
+        // const proto = getProto(protoName)
 
-        wrap(getIncrementalId(), proto).set(conceptName[0], { aliasPath: propsNames })
+
+        wrap(getIncrementalId(), protoName.getProto()).set(conceptName[0], { aliasPath: propsNames })
     }
 
 }

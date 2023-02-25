@@ -15,7 +15,11 @@ export interface Lexeme {
     readonly _root?: Partial<Lexeme>
     readonly isPlural: boolean
     readonly isConcept: boolean
+
     extrapolate(context: Context): Lexeme[]
+    readonly isMultiWord:boolean
+    getProto():object|undefined
+
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {

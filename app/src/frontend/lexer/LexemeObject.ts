@@ -57,5 +57,13 @@ export default class LexemeObject implements Lexeme /*, Wrapper */ {
 
         return []
     }
+    
+    get isMultiWord() {
+        return this.root.includes(' ');
+    }
+
+    getProto(): object | undefined {
+        return (window as any)?.[this.proto as any]?.prototype;
+    }
 
 }

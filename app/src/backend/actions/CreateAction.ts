@@ -1,6 +1,5 @@
-import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
-import { getProto } from "../../frontend/lexer/functions/getProto";
 import Action from "./Action";
+import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 import { Id } from "../../middle/id/Id";
 import { newInstance } from "../../utils/newInstance";
 import { Clause } from "../../middle/clauses/Clause";
@@ -26,7 +25,7 @@ export default class CreateAction implements Action {
             return
         }
 
-        const proto = getProto(predicate)
+        const proto = predicate.getProto()
 
         if (!proto) {
             return
