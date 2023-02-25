@@ -15,14 +15,14 @@ export default class CreateAction implements Action {
     run(context: Context) {
 
         const localId = this.clause?.args?.[0] as Id
-        const id = context.enviro.query(this.topLevel.theme)?.[0]?.[localId] ?? getIncrementalId()
+        const id = context.query(this.topLevel.theme)?.[0]?.[localId] ?? getIncrementalId()
         const predicate = this.clause.predicate
 
         if (!predicate) {
             return
         }
 
-        if (context.enviro.get(id)?.is(predicate)) {  //  existence check prior to creating
+        if (context.get(id)?.is(predicate)) {  //  existence check prior to creating
             return
         }
 
@@ -34,7 +34,7 @@ export default class CreateAction implements Action {
 
         const o = newInstance(proto, predicate.root)
         init(o, context, id)
-        context.enviro.set(id, o).set(predicate)
+        context.set(id, o).set(predicate)
 
     }
 
@@ -45,6 +45,7 @@ function init(o: object, context: Context, id: Id) {
     if (o instanceof HTMLElement) {
         o.id = id + ''
         o.textContent = 'default'
-        context?.enviro.root?.appendChild(o)
+        // context?.enviro.root?.appendChild(o)
+        context.root?.appendChild(o)
     }
 }

@@ -6,7 +6,7 @@ import { numberLexeme } from "./numberLexeme"
 
 export function getLexemes(word: string, context: Context, words: string[]): Lexeme[] {
 
-    const lex = context.config.getLexeme(word) ??
+    const lex = context.getLexeme(word) ??
         numberLexeme(word) ??
         dynamicLexeme(word, context, words)
 

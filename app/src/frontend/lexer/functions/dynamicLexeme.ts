@@ -7,15 +7,15 @@ export function dynamicLexeme(word: string, context: Context, words: string[]): 
 
     const relevant = words
         .map(w => clauseOf(makeLexeme({ root: w, type: 'noun' }), 'X'))
-        .flatMap(c => context.enviro.query(c))
+        .flatMap(c => context.query(c))
         .flatMap(m => Object.values(m))
-        .flatMap(id => context.enviro.get(id) ?? [])
-        .flatMap(x => x?.dynamic().flatMap(x => x.extrapolate(context.config)))
+        .flatMap(id => context.get(id) ?? [])
+        .flatMap(x => x?.dynamic().flatMap(x => x.extrapolate(context)))
         .filter(x => x.token === word || x.root === word)
 
     const isMacroContext =
-        words.some(x => context.config.getLexeme(x)?.type === 'grammar')
-        && !words.some(x => ['defart', 'indefart', 'nonsubconj'].includes(context.config.getLexeme(x)?.type as any))//TODO: why dependencies('macro') doesn't work?!
+        words.some(x => context.getLexeme(x)?.type === 'grammar')
+        && !words.some(x => ['defart', 'indefart', 'nonsubconj'].includes(context.getLexeme(x)?.type as any))//TODO: why dependencies('macro') doesn't work?!
 
     const type = relevant[0]?.type ??
         (isMacroContext ?

@@ -13,7 +13,7 @@ export default class MultiAction implements Action {
 
         const condition = this.clause.theme
 
-        context.enviro.query(condition).forEach(m => {
+        context.query(condition).forEach(m => {
 
             const top = this.clause.copy({ map: m, exactIds: true })
             const conseq = top.rheme

@@ -23,7 +23,7 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd) {
 
-            const ast = this.tryParse(this.context.config.syntaxList)
+            const ast = this.tryParse(this.context.syntaxList)
 
             if (!ast) {
                 break
@@ -59,7 +59,7 @@ export class KoolParser implements Parser {
 
     protected knownParse = (name: AstType, role?: Role): AstNode | undefined => {
 
-        const members = this.context.config.getSyntax(name)
+        const members = this.context.getSyntax(name)
 
         if (members.length === 1 && members[0].type.every(t => this.isLeaf(t))) {
             return this.parseLeaf(members[0])
@@ -83,7 +83,7 @@ export class KoolParser implements Parser {
 
         const links: any = {}
 
-        for (const m of this.context.config.getSyntax(name)) {
+        for (const m of this.context.getSyntax(name)) {
 
             const ast = this.parseMember(m)
 
@@ -141,7 +141,7 @@ export class KoolParser implements Parser {
     }
 
     protected isLeaf = (t: AstType) => {
-        return this.context.config.lexemeTypes.includes(t as LexemeType)
+        return this.context.lexemeTypes.includes(t as LexemeType)
     }
 
     protected simplify(ast: AstNode): AstNode {
@@ -150,7 +150,7 @@ export class KoolParser implements Parser {
             return ast
         }
 
-        const syntax = this.context.config.getSyntax(ast.type)
+        const syntax = this.context.getSyntax(ast.type)
 
         if (syntax.length === 1 && Object.values(ast.links).length === 1) {
             return this.simplify(Object.values(ast.links)[0])

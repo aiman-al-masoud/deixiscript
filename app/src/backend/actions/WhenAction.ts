@@ -13,7 +13,7 @@ export default class WhenAction implements Action {
 
         const interval = setInterval(() => {
 
-            if (context.enviro.query(this.clause.theme).length > 0) {
+            if (context.query(this.clause.theme).length > 0) {
 
                 this.clause.rheme.flatList().forEach(c => {
                     getAction(c, this.clause.rheme).run(context)

@@ -18,7 +18,7 @@ export default class BasicBrain implements Brain {
         //TODO: move somewhere else
         Object.defineProperty(Number.prototype, 'add', { writable: true, value: function (a: any) { return this + a } })
 
-        this.context.config.prelude.forEach(c => this.execute(c))
+        this.context.prelude.forEach(c => this.execute(c))
     }
 
     execute(natlang: string): any[] {
@@ -26,7 +26,7 @@ export default class BasicBrain implements Brain {
         return getParser(natlang, this.context).parseAll().map(ast => {
 
             if (ast.type === 'macro') {
-                this.context.config.setSyntax(ast)
+                this.context.setSyntax(ast)
                 return []
             }
 
@@ -41,7 +41,7 @@ export default class BasicBrain implements Brain {
 
                 const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
 
-                this.context.enviro.values.forEach(w => pointOut(w, { turnOff: true }))
+                this.context.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)
 
                 return wrappers.flatMap(o => o ? unwrap(o) : [])

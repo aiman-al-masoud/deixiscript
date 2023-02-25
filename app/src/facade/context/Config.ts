@@ -3,31 +3,25 @@ import { LexemeType, lexemeTypes } from "../../config/LexemeType"
 import { prelude } from "../../config/prelude"
 import { CompositeType, syntaxes, staticDescPrecedence } from "../../config/syntaxes"
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme"
-import { AstNode } from "../../frontend/parser/interfaces/AstNode"
-import { SyntaxMap, AstType, Syntax } from "../../frontend/parser/interfaces/Syntax"
-import { BasicConfig } from "./BasicConfig"
+import { SyntaxMap } from "../../frontend/parser/interfaces/Syntax"
 
 
 export interface Config {
-    readonly lexemes: Lexeme[]
-    readonly prelude: string[]
-    readonly syntaxList: CompositeType[]
     readonly lexemeTypes: LexemeType[]
-    readonly syntaxMap : SyntaxMap
-    getSyntax(name: AstType): Syntax
-    setSyntax(macro: AstNode): void
-    setLexeme(lexeme: Lexeme): void
-    getLexeme(rootOrToken: string): Lexeme | undefined
+    readonly lexemes: Lexeme[]
+    readonly syntaxes: SyntaxMap
+    readonly prelude: string[]
+    readonly staticDescPrecedence: CompositeType[]
 }
 
 export function getConfig(): Config {
 
-    return new BasicConfig(
+    return {
         lexemeTypes,
-        lexemes.map(x => makeLexeme(x)),
+        lexemes: lexemes.map(x => makeLexeme(x)),
         syntaxes,
         prelude,
-        staticDescPrecedence
-    )
+        staticDescPrecedence,
+    }
 }
 

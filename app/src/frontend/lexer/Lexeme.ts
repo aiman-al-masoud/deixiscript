@@ -3,7 +3,7 @@ import Wrapper from "../../backend/wrapper/Wrapper"
 import { conjugate } from "./functions/conjugate"
 import { pluralize } from "./functions/pluralize"
 import { Cardinality, isRepeatable } from "../parser/interfaces/Cardinality"
-import { Config } from "../../facade/context/Config"
+import { Context } from "../../facade/context/Context"
 
 
 export interface Lexeme {
@@ -18,7 +18,7 @@ export interface Lexeme {
     readonly isPlural: boolean
     readonly isConcept: boolean
 
-    extrapolate(context: Config): Lexeme[]
+    extrapolate(context: Context): Lexeme[]
 }
 
 const thisIsRidiculous: (keyof Lexeme)[] = ['contractionFor', 'token', 'cardinality', 'proto', 'concepts']
@@ -75,7 +75,7 @@ class LexemeObject implements Lexeme /*, Wrapper */ {
         return this?.type === 'noun' && (this as any).concepts && !(this as any).proto
     }
 
-    extrapolate(config: Config): Lexeme[] {
+    extrapolate(context: Context): Lexeme[] {
 
         if ((this.type === 'noun' || this.type === 'grammar') && !this.isPlural) {
             return [makeLexeme({ _root: this, token: pluralize(this.root), cardinality: '*' })]

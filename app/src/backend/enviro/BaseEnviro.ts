@@ -14,7 +14,7 @@ export default class BaseEnviro implements Enviro {
 
     }
 
-    get(id: Id): Wrapper | undefined {
+    get = (id: Id): Wrapper | undefined => {
         this.lastReferenced = id
         return this.dictionary[id]
     }
@@ -23,13 +23,13 @@ export default class BaseEnviro implements Enviro {
         return Object.values(this.dictionary)
     }
 
-    set(id: Id, object?: object): Wrapper {
+    set = (id: Id, object?: object): Wrapper => {
         this.lastReferenced = id
         const placeholder = this.dictionary[id]
         return this.dictionary[id] = placeholder?.copy({ object: object }) ?? wrap(id, object)
     }
 
-    query(query: Clause): Map[] {
+    query = (query: Clause): Map[] => {
 
         const universe = this.values
             .map(w => w.clause(query))

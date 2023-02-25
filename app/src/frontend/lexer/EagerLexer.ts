@@ -14,7 +14,7 @@ export default class EagerLexer implements Lexer {
     constructor(readonly sourceCode: string, readonly context: Context) { // TODO: make case insensitive
 
         const words =
-            joinMultiWordLexemes(stdspace(sourceCode), context.config.lexemes)
+            joinMultiWordLexemes(stdspace(sourceCode), context.lexemes)
                 .trim()
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)

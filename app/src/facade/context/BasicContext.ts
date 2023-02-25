@@ -1,26 +1,29 @@
-import { LexemeType } from "../../config/LexemeType"
+import { Enviro } from "../../backend/enviro/Enviro"
 import { CompositeType } from "../../config/syntaxes"
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme"
 import { AstNode } from "../../frontend/parser/interfaces/AstNode"
-import { SyntaxMap, AstType } from "../../frontend/parser/interfaces/Syntax"
+import { AstType } from "../../frontend/parser/interfaces/Syntax"
 import { macroToSyntax } from "../../frontend/parser/macroToSyntax"
 import { maxPrecedence } from "../../frontend/parser/maxPrecedence"
 import { Config } from "./Config"
+import { Context } from "./Context"
 
+export default class BasicContext implements Context {
 
-export class BasicConfig implements Config {
+    protected readonly staticDescPrecedence = this.config.staticDescPrecedence
+    protected readonly syntaxMap = this.config.syntaxes
+    protected _syntaxList: CompositeType[] = this.getSyntaxList()
+    protected _lexemes = this.config.lexemes
+    readonly prelude = this.config.prelude
+    readonly lexemeTypes = this.config.lexemeTypes
+    readonly get = this.enviro.get
+    readonly set = this.enviro.set
+    readonly query = this.enviro.query
+    readonly root = this.enviro.root
 
-    protected _syntaxList = this.getSyntaxList()
+    constructor(readonly enviro: Enviro, readonly config: Config) {
 
-    constructor(
-        readonly lexemeTypes: LexemeType[],
-        protected _lexemes: Lexeme[],
-        readonly syntaxMap: SyntaxMap,
-        readonly prelude: string[],
-        readonly staticDescPrecedence: CompositeType[],
-    ) {
-
-        lexemeTypes.concat(staticDescPrecedence as any).forEach(g => {
+        this.astTypes.forEach(g => {
 
             this.setLexeme(makeLexeme({
                 root: g,
@@ -31,8 +34,11 @@ export class BasicConfig implements Config {
 
     }
 
+    get values() {
+        return this.enviro.values
+    }
 
-    getLexeme(rootOrToken: string): Lexeme | undefined {
+    getLexeme = (rootOrToken: string): Lexeme | undefined => {
         return this._lexemes
             .filter(x => rootOrToken === x.token || rootOrToken === x.root)
             .at(0)
@@ -40,28 +46,13 @@ export class BasicConfig implements Config {
 
     protected getSyntaxList() {
         const x = Object.keys(this.syntaxMap) as CompositeType[]
-        const y = x.filter(e => !this.staticDescPrecedence.includes(e))
+        const y = x.filter(e => !this.config.staticDescPrecedence.includes(e))
         const z = y.sort((a, b) => maxPrecedence(b, a, this.syntaxMap))
-        return this.staticDescPrecedence.concat(z)
+        return this.config.staticDescPrecedence.concat(z)
     }
 
     get syntaxList(): CompositeType[] {
-
         return this._syntaxList
-
-        // return [
-        //     'macro',
-        //     'macropart',
-        //     'taggedunion',
-        //     'complex sentence',
-        //     'and sentence',
-        //     'copula sentence',
-        //     'iverb sentence',
-        //     'mverb sentence',
-        //     'complement',
-        //     'subclause',
-        //     'noun phrase',
-        // ]
     }
 
     get lexemes() {
@@ -70,10 +61,7 @@ export class BasicConfig implements Config {
 
     setSyntax = (macro: AstNode) => {
         const syntax = macroToSyntax(macro)
-
-        const sing = makeLexeme({ type: 'grammar', root: syntax.name })
-        this.setLexeme(sing)
-
+        this.setLexeme(makeLexeme({ type: 'grammar', root: syntax.name }))
         this.syntaxMap[syntax.name as CompositeType] = syntax.syntax
         this._syntaxList = this.getSyntaxList()
     }
@@ -82,7 +70,7 @@ export class BasicConfig implements Config {
         return this.syntaxMap[name as CompositeType] ?? [{ type: [name], number: 1 }] // TODO: problem, adj is not always 1 !!!!!!
     }
 
-    setLexeme(lexeme: Lexeme) {
+    setLexeme = (lexeme: Lexeme) => {
 
         if (lexeme.root && !lexeme.token && this._lexemes.some(x => x.root === lexeme.root)) {
             this._lexemes = this._lexemes.filter(x => x.root !== lexeme.root)
@@ -90,6 +78,12 @@ export class BasicConfig implements Config {
 
         this._lexemes.push(lexeme)
         this._lexemes.push(...lexeme.extrapolate(this))
+    }
+
+    get astTypes(): AstType[] {
+        const res: AstType[] = this.config.lexemeTypes
+        res.push(...this.staticDescPrecedence)
+        return res
     }
 
 }

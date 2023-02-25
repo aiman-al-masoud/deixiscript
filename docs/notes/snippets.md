@@ -91,3 +91,23 @@ export function tree(object: any, iter = 3): any {
 
 }
 ```
+
+
+
+# If autosort based on maxPrecedence() fails:
+
+```javascript
+return [
+    'macro',
+    'macropart',
+    'taggedunion',
+    'complex sentence',
+    'and sentence',
+    'copula sentence',
+    'iverb sentence',
+    'mverb sentence',
+    'complement',
+    'subclause',
+    'noun phrase',
+]
+```
