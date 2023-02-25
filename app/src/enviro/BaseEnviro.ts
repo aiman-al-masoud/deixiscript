@@ -1,7 +1,7 @@
 import { Clause, emptyClause } from "../clauses/Clause";
 import { Id } from "../id/Id";
 import { Map } from "../id/Map";
-import Wrapper, { wrap } from "./Wrapper";
+import Wrapper, { wrap } from "../wrapper/Wrapper";
 import { Enviro } from "./Enviro";
 
 export default class BaseEnviro implements Enviro {

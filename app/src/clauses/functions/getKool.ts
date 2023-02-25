@@ -1,7 +1,7 @@
 import { Context } from "../../brain/Context";
 import { Clause } from "../Clause";
-import Wrapper from "../../enviro/Wrapper";
 import { Id } from "../../id/Id";
+import Wrapper from "../../wrapper/Wrapper";
 
 export function getKool(context: Context, clause: Clause, localId: Id): Wrapper[] {
 

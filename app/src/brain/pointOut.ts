@@ -1,4 +1,4 @@
-import Wrapper, { unwrap } from "../enviro/Wrapper";
+import Wrapper, { unwrap } from "../wrapper/Wrapper"
 
 export function pointOut(wrapper: Wrapper, opts?: { turnOff: boolean }) {
 

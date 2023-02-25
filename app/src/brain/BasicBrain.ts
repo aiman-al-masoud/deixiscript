@@ -4,8 +4,8 @@ import { toClause } from "./toClause";
 import { getParser } from "../parser/interfaces/Parser";
 import { Context } from "./Context";
 import { pointOut } from "./pointOut";
-import { unwrap } from "../enviro/Wrapper";
 import { getKool } from "../clauses/functions/getKool";
+import { unwrap } from "../wrapper/Wrapper";
 
 
 export default class BasicBrain implements Brain {

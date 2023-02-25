@@ -1,6 +1,6 @@
 import { Config } from "../config/Config"
 import { LexemeType } from "../config/LexemeType"
-import Wrapper from "../enviro/Wrapper"
+import Wrapper from "../wrapper/Wrapper"
 import { Cardinality, isRepeatable } from "../parser/interfaces/Cardinality"
 import { conjugate } from "./functions/conjugate"
 import { pluralize } from "./functions/pluralize"
