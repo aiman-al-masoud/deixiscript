@@ -6,7 +6,6 @@ import { Config } from "./Config"
 import { macroToSyntax } from "../parser/macroToSyntax"
 import { maxPrecedence } from "../parser/maxPrecedence"
 import { SyntaxMap, AstType } from "../parser/interfaces/Syntax"
-import { pluralize } from "../lexer/functions/stem"
 
 export class BasicConfig implements Config {
 
@@ -89,18 +88,7 @@ export class BasicConfig implements Config {
         }
 
         this._lexemes.push(lexeme)
-
-        if (!lexeme.isPlural) {
-            const tok = pluralize(lexeme.root)
-
-            if (this._lexemes.some(x => x.token === tok)) {
-                return
-            }
-
-            const plur = makeLexeme({ _root: lexeme, token: tok, cardinality: '*' } as any/* TODO! 2+ */)
-            this.setLexeme(plur)
-        }
-
+        this._lexemes.push(...lexeme.extrapolate(this))
     }
 
 }

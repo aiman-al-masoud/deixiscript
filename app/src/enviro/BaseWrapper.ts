@@ -6,6 +6,7 @@ import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";
 import { getTopLevel } from "../clauses/functions/topLevel";
 import { getOwnershipChain } from "../clauses/functions/getOwnershipChain";
 import { getIncrementalId } from "../id/functions/getIncrementalId";
+import { allKeys } from "../utils/allKeys";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -190,22 +191,6 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    typeOf(word: string): LexemeType | undefined {
-
-        const path = this.aliases[word]?.path ?? [word]
-        const w = this.getNested(path)
-
-        if (typeof w === 'function') {
-            return (w.length ?? 0) > 0 ? 'mverb' : 'iverb'
-        }
-
-        if (w === undefined) {
-            return undefined
-        }
-
-        return 'noun'
-    }
-
     copy(opts?: CopyOpts): Wrapper {
 
         const copy = new BaseWrapper(
@@ -242,4 +227,26 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
+    dynamic(): Lexeme[] {
+        return allKeys(this.object).map(x => {
+            const path = this.aliases[x]?.path ?? [x]
+            const o = this.getNested(path)
+            return makeLexeme({ type: typeOf(o), root: x })
+        })
+    }
+
+}
+
+
+function typeOf(o: object): LexemeType | undefined {
+
+    if (typeof o === 'function') {
+        return (o.length ?? 0) > 0 ? 'mverb' : 'iverb'
+    }
+
+    if (o === undefined) {
+        return undefined
+    }
+
+    return 'noun'
 }

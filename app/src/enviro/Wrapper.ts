@@ -1,20 +1,18 @@
 import { Clause } from "../clauses/Clause"
 import { Id } from "../id/Id"
-import { LexemeType } from "../config/LexemeType"
 import { Lexeme } from "../lexer/Lexeme"
 import BaseWrapper from "./BaseWrapper"
 
 export default interface Wrapper {
 
     readonly id: Id
+    readonly parent?: Wrapper
     clause(clause?: Clause): Clause
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
-    typeOf(word: string): LexemeType | undefined
     copy(opts?: CopyOpts): Wrapper
-
     get(clause: Clause): Wrapper | undefined
-    parent?: Wrapper
+    dynamic(): Lexeme[] /* extrapolated nouns and verbs associated to this object */
 
 }
 
