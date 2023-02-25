@@ -1,4 +1,4 @@
-import { getBrain } from "../brain/Brain"
+import { getBrain } from "../facade/brain/Brain"
 
 export default function main() {
 

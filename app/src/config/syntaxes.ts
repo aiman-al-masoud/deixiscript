@@ -1,4 +1,4 @@
-import { SyntaxMap } from "../parser/interfaces/Syntax"
+import { SyntaxMap } from "../frontend/parser/interfaces/Syntax"
 import { ElementType } from "../utils/ElementType"
 import { stringLiterals } from "../utils/stringLiterals"
 

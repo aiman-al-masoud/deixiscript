@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
 
   //entry point (main's file)
-  entry: path.join(__dirname, "app", "src", "index.ts"),
+  entry: path.join(__dirname, "app", "index.ts"),
   devtool: "inline-source-map",
 
   module: {

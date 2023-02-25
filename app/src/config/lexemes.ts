@@ -1,4 +1,4 @@
-import { Lexeme } from "../lexer/Lexeme";
+import { Lexeme } from "../frontend/lexer/Lexeme";
 
 const be: Partial<Lexeme> = {
     root: 'be',
