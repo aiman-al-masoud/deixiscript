@@ -1,11 +1,10 @@
-import { Lexeme } from "../Lexeme"
+import { makeLexeme } from "../Lexeme"
 
 
-export function numberLexeme(word: string): Lexeme | undefined {
+export function numberLexeme(word: string) {
 
     if (word.match(/\d+/)) {
-        return { root: word, type: 'noun', proto: 'Number' }
+        return makeLexeme({ root: word, type: 'noun', proto: 'Number' })
     }
 
-    return undefined
 }

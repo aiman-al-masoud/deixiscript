@@ -1,15 +1,23 @@
 import { Lexeme } from "../lexer/Lexeme";
-import { lexemeTypes } from "./LexemeType";
-import { constituentTypes } from "./syntaxes";
 
-export const lexemes: Lexeme[] = [
+const be: Partial<Lexeme> = {
+    root: 'be',
+    type: 'copula',
+}
 
-    {
-        root: 'be',
-        type: 'copula',
-        plurals: ['are'],
-        singulars: ['is', 'art']
-    },
+const _do: Partial<Lexeme> = {
+    root: 'do',
+    type: 'hverb',
+}
+
+export const lexemes: Partial<Lexeme>[] = [
+
+    be,
+    _do,
+
+    { _root: be, token: 'is', cardinality: 1 },
+    { _root: be, token: 'are', cardinality: '*' }, //TODO! 2+
+    { _root: _do, token: 'does', cardinality: 1 },
 
     {
         root: 'then',
@@ -60,20 +68,6 @@ export const lexemes: Lexeme[] = [
     },
 
     {
-        root: 'do',
-        type: 'hverb',
-        plurals: ['do'],
-        singulars: ['does']
-    },
-
-    {
-        root: 'have',
-        type: 'mverb',
-        plurals: ['have'],
-        singulars: ['has']
-    },
-
-    {
         root: "isn't",
         type: 'contraction',
         contractionFor: ['is', 'not']
@@ -104,13 +98,3 @@ export const lexemes: Lexeme[] = [
         type: 'adjective'
     }
 ]
-
-/**
- * Grammar
- */
-constituentTypes.concat(lexemeTypes as any).forEach(g => {
-    lexemes.push({
-        root: g,
-        type: 'grammar'
-    })
-})

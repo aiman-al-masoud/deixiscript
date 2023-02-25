@@ -1,7 +1,7 @@
 import { Clause, clauseOf, emptyClause } from "../clauses/Clause";
 import { Id } from "../id/Id";
 import { LexemeType } from "../config/LexemeType";
-import { Lexeme } from "../lexer/Lexeme";
+import { Lexeme, makeLexeme } from "../lexer/Lexeme";
 import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";
 import { getTopLevel } from "../clauses/functions/topLevel";
 import { getOwnershipChain } from "../clauses/functions/getOwnershipChain";
@@ -31,7 +31,7 @@ export default class BaseWrapper implements Wrapper {
     set(predicate: Lexeme, opts?: SetOps): any {
 
         if (this.parent) {
-            return this.parent.set(predicate, { ...opts, props: [...(opts?.props ?? []), ...[{ root: this.name ?? '', type: 'noun' as any }]].reverse() })
+            return this.parent.set(predicate, { ...opts, props: [...(opts?.props ?? []), ...[makeLexeme({ root: this.name ?? '', type: 'noun' as any })]].reverse() })
         }
 
         if (opts?.args) {
@@ -95,7 +95,7 @@ export default class BaseWrapper implements Wrapper {
         const preds: Lexeme[] =
             Object.keys(this.aliases)
                 .map(k => this.getNested(this.aliases[k].path))
-                .map((x): Lexeme => ({ root: x, type: 'adjective' }))
+                .map((x): Lexeme => (makeLexeme({ root: x, type: 'adjective' })))
                 .concat(this.simplePredicates)
 
         let res = preds

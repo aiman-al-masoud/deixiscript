@@ -42,7 +42,7 @@ export class KoolParser implements Parser {
 
 
     protected tryParse(types: AstType[], role?: Role) {
-
+        
         for (const t of types) {
 
             const memento = this.lexer.pos

@@ -26,7 +26,7 @@ const dependencyCompare = (a: CompositeType, b: CompositeType, syntaxes: SyntaxM
 
 }
 
-function dependencies(a: CompositeType, syntaxes: SyntaxMap, visited: AstType[] = []): AstType[] { //DFS
+export function dependencies(a: CompositeType, syntaxes: SyntaxMap, visited: AstType[] = []): AstType[] { //DFS
 
     const members = syntaxes[a] ?? []
 

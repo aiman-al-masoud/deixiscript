@@ -1,19 +1,8 @@
-import { Lexeme } from "../Lexeme"
-import { isIrregular } from "./isIrregular"
 
+export function stem(word: string): string {
+    return word.endsWith('s') ? word.slice(0, -1) : word
+}
 
-export function stem(lexeme: Lexeme): string {
-
-    const word = lexeme.token ?? lexeme.root
-
-    if (isIrregular(lexeme)) {
-        return word
-    }
-
-    if (word.endsWith('s')) {
-        return word.slice(0, -1)
-    }
-
-    return word
-
+export function pluralize(root: string) {
+    return root + 's'
 }
