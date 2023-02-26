@@ -10,7 +10,7 @@ import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 
 export default class BaseWrapper implements Wrapper {
 
-    readonly aliases: { [alias: string]: { path: string[], lexeme: Lexeme } } = this.object.aliases ?? {}
+    readonly aliases: { [alias: string]: { path: string[], lexeme: Lexeme } } = this.object?.aliases ?? {}
     readonly simplePredicates: Lexeme[] = []
 
     constructor(
