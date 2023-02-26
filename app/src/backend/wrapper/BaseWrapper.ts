@@ -34,12 +34,8 @@ export default class BaseWrapper implements Wrapper {
 
         return path ?
             this.getNested(path) === predicate.root :
-            this.isSimplePredicate(predicate)
+            this.predicates.map(x => x.root).includes(predicate.root)
 
-    }
-
-    protected isSimplePredicate(predicate: Lexeme) {
-        return this.predicates.map(x => x.root).includes(predicate.root)
     }
 
     protected setAlias(alias: Lexeme, path: Lexeme[]): void {
