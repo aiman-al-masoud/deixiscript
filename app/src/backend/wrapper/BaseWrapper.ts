@@ -107,30 +107,25 @@ export default class BaseWrapper implements Wrapper {
             [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]] :
             this.aliases[predicate?.concepts?.[0]!]?.path
 
-        if (path?.length > 0) {
-            this.setMultiProp(path, predicate, opts)
-        } else {
-            this.setZeroProps(predicate, opts)
-        }
+        this.setMultiProp(path, predicate, opts)
 
     }
 
     protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) {
 
-        if (!opts?.negated) {
+        if (!path) {
+            const val = value.root
+
+            if (typeof this.object[val] === 'boolean') {
+                this.object[val] = !opts?.negated
+            } else {
+                this.simplePredicates.push(value)
+            }
+
+        } else if (!opts?.negated) {
             this.setNested(path, value.root)
         } else if (opts?.negated && this.is(value)) {
             this.setNested(path, '')
-        }
-
-    }
-
-    protected setZeroProps(predicate: Lexeme, opts?: SetOps) {
-
-        if (typeof this.object[predicate.root] === 'boolean') {
-            this.object[predicate.root] = !opts?.negated
-        } else {
-            this.simplePredicates.push(predicate)
         }
 
     }
