@@ -47,10 +47,8 @@ export default class BaseWrapper implements Wrapper {
         this.aliases[alias.root] = path.map(x => x.root)
     }
 
-    protected call(verb: Lexeme, args: Wrapper[]) {
-        const concept = this.aliases[verb.root]
-        const methodName = concept?.[0] ?? verb.root
-        return this?.object[methodName](...args.map(x => x.unwrap()))
+    protected call(verb: Lexeme, args: Wrapper[]) {//TODO: alias
+        return this.object[verb.root](...args.map(x => x.unwrap()))
     }
 
     clause(query?: Clause): Clause {
