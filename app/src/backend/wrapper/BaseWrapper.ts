@@ -136,14 +136,11 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    dynamic(): Lexeme[] {
-        return allKeys(this.object).map(x => {
-            return makeLexeme({ type: typeOf(this.object[x]), root: x })
-        })
-    }
+    dynamic = () => allKeys(this.object).map(x => makeLexeme({
+        type: typeOf(this.object[x]),
+        root: x
+    }))
 
-    unwrap(): object | undefined {
-        return this.object
-    }
+    unwrap = () => this.object
 
 }
