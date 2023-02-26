@@ -12,7 +12,7 @@ import { deepCopy } from "../../utils/deepCopy";
 export default class BaseWrapper implements Wrapper {
 
     readonly aliases: { [alias: string]: string[] } = this.object?.aliases ?? {}
-    readonly simplePredicates: Lexeme[] = []
+    readonly predicates: Lexeme[] = []
 
     constructor(
         readonly object: any,
@@ -24,7 +24,7 @@ export default class BaseWrapper implements Wrapper {
 
         try {
             this.object.aliases = this.aliases
-            this.object.simplePredicates = this.simplePredicates
+            this.object.simplePredicates = this.predicates
         } catch { }
 
 
@@ -41,7 +41,7 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected isSimplePredicate(predicate: Lexeme) {
-        return this.simplePredicates.map(x => x.root).includes(predicate.root)
+        return this.predicates.map(x => x.root).includes(predicate.root)
     }
 
     protected setAlias(alias: Lexeme, path: Lexeme[]): void {
@@ -57,7 +57,7 @@ export default class BaseWrapper implements Wrapper {
         return Object.keys(this.aliases)
             .map(k => this.getNested(this.aliases[k]))
             .map(x => makeLexeme({ root: x, type: 'adjective' }))
-            .concat(this.simplePredicates)
+            .concat(this.predicates)
             .map(x => clauseOf(x, this.id))
             .reduce((a, b) => a.and(b), emptyClause)
             .and(this.extraInfo(query ?? emptyClause))
@@ -105,7 +105,7 @@ export default class BaseWrapper implements Wrapper {
             if (typeof this.object[val] === 'boolean') {
                 this.object[val] = !opts?.negated
             } else {
-                this.simplePredicates.push(value)
+                this.predicates.push(value)
             }
 
         } else {
@@ -155,7 +155,7 @@ export default class BaseWrapper implements Wrapper {
             opts?.object ? false : this.isPlaceholder,
         )
 
-        this.simplePredicates.forEach(x => copy.set(x))
+        this.predicates.forEach(x => copy.set(x))
         return copy
     }
 
