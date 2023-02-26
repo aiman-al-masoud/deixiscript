@@ -103,13 +103,13 @@ export default class BaseWrapper implements Wrapper {
 
         const props = opts?.props ?? []
         const last = props.at(-1)!
-        const path = props.length > 0 ? 
-            [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]] : 
-            this.aliases[predicate?.concepts?.[0]!]?.path        
-        
+        const path = props.length > 0 ?
+            [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]] :
+            this.aliases[predicate?.concepts?.[0]!]?.path
+
         if (path?.length > 0) {
             this.setMultiProp(path, predicate, opts)
-        } else if (props.length === 0) {
+        } else {
             this.setZeroProps(predicate, opts)
         }
 
