@@ -20,7 +20,7 @@ const tests = [
     test16,
     test17,
     test18,
-    // test19, //TODO!
+    test19,
     test20,
     test21,
     test22,
@@ -41,9 +41,9 @@ export default async function autotester() {
 
     for (const test of tests) {
         const success = test()
-        console.log(`%c${ success ? 'success' : 'fail'} ${test.name}`, `color:${success?'green' : 'red'}`)
+        console.log(`%c${success ? 'success' : 'fail'} ${test.name}`, `color:${success ? 'green' : 'red'}`)
         await sleep(10)//75
-        clearDom()
+        clear()
     }
 
 }
@@ -295,14 +295,14 @@ function test28() {
     return assert1 && assert2
 }
 
-function test29(){
+function test29() {
     const brain = getBrain({ root: document.body })
     brain.execute('x is 1 and y is 2')
     brain.execute('x adds y')
     return brain.execute('it')[0] === 3
 }
 
-function test30(){
+function test30() {
     const brain = getBrain({ root: document.body })
     brain.execute('=  is a copula')
     brain.execute('x = red button')
@@ -315,10 +315,7 @@ function sleep(millisecs: number) {
     })
 }
 
-function clearDom() {
-    // document.body.innerHTML = ''
-    // document.body.style.background = 'white'
-    // document.body = {} as any
-    const x=  document.createElement('body')
+function clear() {
+    const x = document.createElement('body')
     document.body = x
 }
