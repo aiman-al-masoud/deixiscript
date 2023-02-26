@@ -24,9 +24,7 @@ export default class BaseWrapper implements Wrapper {
 
         try {
             this.object.aliases = this.aliases
-            this.object.simplePredicates = this.predicates
         } catch { }
-
 
     }
 
