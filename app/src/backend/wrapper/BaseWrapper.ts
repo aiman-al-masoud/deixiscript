@@ -52,19 +52,15 @@ export default class BaseWrapper implements Wrapper {
         return this.object[verb.root](...args.map(x => x.unwrap()))
     }
 
-    clause(query?: Clause): Clause {
+    toClause(query?: Clause) {
 
-        const preds: Lexeme[] =
-            Object.keys(this.aliases)
-                .map(k => this.getNested(this.aliases[k]))
-                .map((x): Lexeme => (makeLexeme({ root: x, type: 'adjective' })))
-                .concat(this.simplePredicates)
-
-        let res = preds
+        return Object.keys(this.aliases)
+            .map(k => this.getNested(this.aliases[k]))
+            .map(x => makeLexeme({ root: x, type: 'adjective' }))
+            .concat(this.simplePredicates)
             .map(x => clauseOf(x, this.id))
             .reduce((a, b) => a.and(b), emptyClause)
-
-        return res.and(this.extraInfo(query))
+            .and(this.extraInfo(query))
 
     }
 

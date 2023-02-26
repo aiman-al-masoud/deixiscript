@@ -7,7 +7,7 @@ export default interface Wrapper {
 
     readonly id: Id
     readonly parent?: Wrapper
-    clause(clause?: Clause): Clause
+    toClause(clause?: Clause): Clause
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
