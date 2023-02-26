@@ -1,5 +1,4 @@
 import { Id } from "../../middle/id/Id";
-import { LexemeType } from "../../config/LexemeType";
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme";
 import Wrapper, { CopyOpts, SetOps } from "./Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
@@ -7,6 +6,7 @@ import { allKeys } from "../../utils/allKeys";
 import { Clause, clauseOf, emptyClause } from "../../middle/clauses/Clause";
 import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipChain";
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
+import { typeOf } from "./typeOf";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -28,8 +28,6 @@ export default class BaseWrapper implements Wrapper {
 
 
     }
-
-
 
     is(predicate: Lexeme): boolean {
 
@@ -213,18 +211,4 @@ export default class BaseWrapper implements Wrapper {
         return this.object
     }
 
-}
-
-
-function typeOf(o: object): LexemeType | undefined {
-
-    if (typeof o === 'function') {
-        return (o.length ?? 0) > 0 ? 'mverb' : 'iverb'
-    }
-
-    if (o === undefined) {
-        return undefined
-    }
-
-    return 'noun'
 }
