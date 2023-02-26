@@ -87,16 +87,16 @@ export default class BaseWrapper implements Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): any {
 
-        if (this.parent) {
-            return this.parent.set(predicate, { props: [...opts?.props ?? [], this.name!].reverse() })
-        }
-
         if (opts?.args) {
             return this.call(predicate, opts.args)
         }
 
         if (opts?.aliasPath) {
             return this.setAlias(predicate, opts.aliasPath)
+        }
+
+        if (this.parent) {
+            return this.parent.set(predicate, { props: [...opts?.props ?? [], this.name!].reverse() })
         }
 
         const props = opts?.props ?? []
