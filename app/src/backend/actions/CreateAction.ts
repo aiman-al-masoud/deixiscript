@@ -44,7 +44,6 @@ function init(o: object, context: Context, id: Id) {
     if (o instanceof HTMLElement) {
         o.id = id + ''
         o.textContent = 'default'
-        // context?.enviro.root?.appendChild(o)
         context.root?.appendChild(o)
     }
 }
