@@ -206,9 +206,7 @@ export default class BaseWrapper implements Wrapper {
 
     dynamic(): Lexeme[] {
         return allKeys(this.object).map(x => {
-            const path = this.aliases[x]?.path ?? [x]
-            const o = this.getNested(path)
-            return makeLexeme({ type: typeOf(o), root: x })
+            return makeLexeme({ type: typeOf(this.object[x]), root: x })
         })
     }
 
