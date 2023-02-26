@@ -112,22 +112,21 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) {
-        const val = (opts?.negated && this.is(value)) ? '' : value.root
-        this.setNested(path, val)
+
+        if (!opts?.negated) {
+            this.setNested(path, value.root)
+        } else if (opts?.negated && this.is(value)) {
+            this.setNested(path, '')
+        }
+
     }
 
     protected setZeroProps(predicate: Lexeme, opts?: SetOps) {
 
-        const path = this.aliases[predicate?.concepts?.[0] as any]?.path
+        const path = this.aliases[predicate?.concepts?.[0]!]?.path
 
         if (path) {
-
-            if (!opts?.negated) {
-                this.setNested(path, predicate.root)
-            } else if (opts?.negated && this.is(predicate)) {
-                this.setNested(path, '')
-            }
-
+            this.setMultiProp(path, predicate, opts)
         } else if (typeof this.object[predicate.root] === 'boolean') {
             this.object[predicate.root] = !opts?.negated
         } else {
