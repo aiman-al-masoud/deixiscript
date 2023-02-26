@@ -24,8 +24,6 @@ export default class SetAliasAction implements Action {
         const conceptName = alias.map(x => condition.describe(x)[0]) // assume at least one name
         const propsNames = props.map(x => consequence.describe(x)[0]) // same ...
         const protoName = condition.describe(top)[0] // assume one 
-        // const proto = getProto(protoName)
-
 
         wrap(getIncrementalId(), protoName.getProto()).set(conceptName[0], { aliasPath: propsNames })
     }

@@ -10,7 +10,7 @@ import { typeOf } from "./typeOf";
 
 export default class BaseWrapper implements Wrapper {
 
-    readonly aliases: { [alias: string]: { path: string[], lexeme: Lexeme } } = this.object?.aliases ?? {}
+    readonly aliases: { [alias: string]: string[] } = this.object?.aliases ?? {}
     readonly simplePredicates: Lexeme[] = []
 
     constructor(
@@ -31,7 +31,7 @@ export default class BaseWrapper implements Wrapper {
 
     is(predicate: Lexeme): boolean {
 
-        const path = this.aliases[predicate.concepts?.at(0) ?? '']?.path
+        const path = this.aliases[predicate.concepts?.at(0) ?? '']
 
         return path ?
             this.getNested(path) === predicate.root :
@@ -44,11 +44,11 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
-        this.aliases[conceptName.root] = { path: propPath.map(x => x.root), lexeme: conceptName }
+        this.aliases[conceptName.root] = propPath.map(x => x.root)
     }
 
     protected call(verb: Lexeme, args: Wrapper[]) {
-        const concept = this.aliases[verb.root]?.path
+        const concept = this.aliases[verb.root]
         const methodName = concept?.[0] ?? verb.root
         return this?.object[methodName](...args.map(x => x.unwrap()))
     }
@@ -57,7 +57,7 @@ export default class BaseWrapper implements Wrapper {
 
         const preds: Lexeme[] =
             Object.keys(this.aliases)
-                .map(k => this.getNested(this.aliases[k].path))
+                .map(k => this.getNested(this.aliases[k]))
                 .map((x): Lexeme => (makeLexeme({ root: x, type: 'adjective' })))
                 .concat(this.simplePredicates)
 
@@ -74,7 +74,7 @@ export default class BaseWrapper implements Wrapper {
         if (query) {
             const oc = getOwnershipChain(query, getTopLevel(query)[0])
             const path = oc.map(x => query.describe(x)?.[0]?.root).slice(1)
-            const nested = this.getNested(this.aliases?.[path?.[0]]?.path ?? path)
+            const nested = this.getNested(this.aliases?.[path?.[0]] ?? path)
 
             if (nested !== undefined) {
                 const data = query.copy({ map: { [oc[0]]: this.id } })
@@ -102,8 +102,8 @@ export default class BaseWrapper implements Wrapper {
         const props = opts?.props ?? []
         const last = props.at(-1)!
         const path = props.length > 0 ?
-            [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]] :
-            this.aliases[predicate?.concepts?.[0]!]?.path
+            [...props.slice(0, -1), ...this.aliases[last] ?? [last]] :
+            this.aliases[predicate?.concepts?.[0]!]
 
         this.setMultiProp(path, predicate, opts)
 
@@ -187,7 +187,7 @@ export default class BaseWrapper implements Wrapper {
         const x = clause.entities.flatMap(e => clause.describe(e))[0]
 
         if (x) {
-            const path = this.aliases?.[x.root]?.path ?? [x.root]
+            const path = this.aliases?.[x.root] ?? [x.root]
             let parent: Wrapper = this
 
             path.forEach(p => {
