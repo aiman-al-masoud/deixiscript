@@ -7,6 +7,7 @@ import { Clause, clauseOf, emptyClause } from "../../middle/clauses/Clause";
 import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipChain";
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
+import { deepCopy } from "../../utils/deepCopy";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -160,24 +161,13 @@ export default class BaseWrapper implements Wrapper {
     copy(opts?: CopyOpts): Wrapper {
 
         const copy = new BaseWrapper(
-            opts?.object ?? this.copyWrapped(),
+            opts?.object ?? deepCopy(this.object),
             this.id,
             opts?.object ? false : this.isPlaceholder,
         )
 
         this.simplePredicates.forEach(x => copy.set(x))
         return copy
-    }
-
-    protected copyWrapped() {
-
-        if (this.object instanceof HTMLElement) {
-            const wrapped = this.object.cloneNode() as HTMLElement
-            wrapped.innerHTML = this.object.innerHTML
-            return wrapped
-        } else {
-            return { ...this.object }
-        }
     }
 
     get(clause: Clause): Wrapper | undefined {
