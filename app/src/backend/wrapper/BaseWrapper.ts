@@ -134,7 +134,7 @@ export default class BaseWrapper implements Wrapper {
         }
 
     }
-    
+
     protected setNested(path: string[], value: string) {
 
         if (typeof this.getNested(path) !== typeof value) { //TODO: remove!
@@ -195,9 +195,9 @@ export default class BaseWrapper implements Wrapper {
         const x = clause.entities.flatMap(e => clause.describe(e))[0]
 
         if (x) {
-            const path = this.aliases[x.root]?.path
-            const object = path ? this.getNested(path) : this.object[x.root]
-            const name = path ? this.aliases[x.root].lexeme.root : x.root
+            const path = this.aliases?.[x.root]?.path ?? [x.root]
+            const object = this.getNested(path)
+            const name = x.root
             return new BaseWrapper(object, getIncrementalId(), false, this, name)
         }
 
