@@ -43,8 +43,8 @@ export default class BaseWrapper implements Wrapper {
         return this.simplePredicates.map(x => x.root).includes(predicate.root)
     }
 
-    protected setAlias(conceptName: Lexeme, propPath: Lexeme[]): void {
-        this.aliases[conceptName.root] = propPath.map(x => x.root)
+    protected setAlias(alias: Lexeme, path: Lexeme[]): void {
+        this.aliases[alias.root] = path.map(x => x.root)
     }
 
     protected call(verb: Lexeme, args: Wrapper[]) {
