@@ -130,15 +130,11 @@ export default class BaseWrapper implements Wrapper {
         } else if (typeof this.object[predicate.root] === 'boolean') {
             this.object[predicate.root] = !opts?.negated
         } else {
-            this.setSimplePredicate(predicate)
+            this.simplePredicates.push(predicate)
         }
 
     }
-
-    protected setSimplePredicate(predicate: Lexeme) {
-        this.simplePredicates.push(predicate) //TODO: check duplicates!
-    }
-
+    
     protected setNested(path: string[], value: string) {
 
         if (typeof this.getNested(path) !== typeof value) { //TODO: remove!
