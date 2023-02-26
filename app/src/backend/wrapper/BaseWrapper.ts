@@ -60,24 +60,17 @@ export default class BaseWrapper implements Wrapper {
             .concat(this.simplePredicates)
             .map(x => clauseOf(x, this.id))
             .reduce((a, b) => a.and(b), emptyClause)
-            .and(this.extraInfo(query))
+            .and(this.extraInfo(query ?? emptyClause))
 
     }
 
-    protected extraInfo(query?: Clause) {
+    protected extraInfo(q: Clause) {
 
-        if (query) {
-            const oc = getOwnershipChain(query, getTopLevel(query)[0])
-            const path = oc.map(x => query.describe(x)?.[0]?.root).slice(1)
-            const nested = this.getNested(this.aliases?.[path?.[0]] ?? path)
+        const oc = getOwnershipChain(q, getTopLevel(q)[0])
+        const path = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').map(x => x.root).slice(1)
+        const nested = this.getNested(this.aliases?.[path?.[0]] ?? path)
+        return nested !== undefined ? q.copy({ map: { [oc[0]]: this.id } }) : emptyClause
 
-            if (nested !== undefined) {
-                const data = query.copy({ map: { [oc[0]]: this.id } })
-                return data
-            }
-        }
-
-        return emptyClause
     }
 
     set(predicate: Lexeme, opts?: SetOps): any {
