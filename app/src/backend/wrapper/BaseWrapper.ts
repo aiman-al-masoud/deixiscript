@@ -122,10 +122,9 @@ export default class BaseWrapper implements Wrapper {
                 this.simplePredicates.push(value)
             }
 
-        } else if (!opts?.negated) {
-            this.setNested(path, value.root)
-        } else if (opts?.negated && this.is(value)) {
-            this.setNested(path, '')
+        } else {
+            const val = !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this.getNested(path)
+            this.setNested(path, val)
         }
 
     }
