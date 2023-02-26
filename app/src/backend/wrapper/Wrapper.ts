@@ -7,17 +7,17 @@ export default interface Wrapper {
 
     readonly id: Id
     readonly parent?: Wrapper
-    toClause(clause?: Clause): Clause
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
     get(clause: Clause): Wrapper | undefined
-    dynamic(): Lexeme[] /* extrapolated nouns and verbs associated to this object */
-    unwrap():any|undefined
+    /** describe the object */ toClause(clause?: Clause): Clause
+    /** infer grammatical types of props */ dynamic(): Lexeme[]
+    unwrap(): any | undefined
 }
 
 export interface SetOps {
-    props?:string[]
+    props?: string[]
     negated?: boolean
     args?: Wrapper[]
     aliasPath?: Lexeme[]

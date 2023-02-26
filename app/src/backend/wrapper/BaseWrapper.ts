@@ -8,6 +8,8 @@ import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipCh
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
+import { setNested } from "../../utils/setNested";
+import { getNested } from "../../utils/getNested";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -33,7 +35,7 @@ export default class BaseWrapper implements Wrapper {
         const path = this.aliases[predicate.concepts?.at(0) ?? '']
 
         return path ?
-            this.getNested(path) === predicate.root :
+            getNested(this.object, path) === predicate.root :
             this.predicates.map(x => x.root).includes(predicate.root)
 
     }
@@ -49,7 +51,7 @@ export default class BaseWrapper implements Wrapper {
     toClause(query?: Clause) {
 
         return Object.keys(this.aliases)
-            .map(k => this.getNested(this.aliases[k]))
+            .map(k => getNested(this.object, this.aliases[k]))
             .map(x => makeLexeme({ root: x, type: 'adjective' }))
             .concat(this.predicates)
             .map(x => clauseOf(x, this.id))
@@ -62,7 +64,7 @@ export default class BaseWrapper implements Wrapper {
 
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const path = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').map(x => x.root).slice(1)
-        const nested = this.getNested(this.aliases?.[path?.[0]] ?? path)
+        const nested = getNested(this.object, this.aliases?.[path?.[0]] ?? path)
         return nested !== undefined ? q.copy({ map: { [oc[0]]: this.id } }) : emptyClause
 
     }
@@ -77,67 +79,29 @@ export default class BaseWrapper implements Wrapper {
             return this.setAlias(predicate, opts.aliasPath)
         }
 
-        if (this.parent) {
-            return this.parent.set(predicate, { props: [...opts?.props ?? [], this.name!].reverse() })
+        if (this.parent && typeof this.object !== 'object') {
+            return this.parent.unwrap()[this.name!] = predicate.root
         }
+
+        this.setMultiProp(predicate, opts)
+
+    }
+
+    protected setMultiProp(value: Lexeme, opts?: SetOps) {
 
         const props = opts?.props ?? []
         const last = props.at(-1)!
         const path = props.length > 0 ?
             [...props.slice(0, -1), ...this.aliases[last] ?? [last]] :
-            this.aliases[predicate?.concepts?.[0]!]
+            this.aliases[value?.concepts?.[0]!]
+            ?? (this.object[value.root] !== undefined ? [value.root] : undefined)
 
-        this.setMultiProp(path, predicate, opts)
-
-    }
-
-    protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) {
-
-        if (!path) {
-            const val = value.root
-
-            if (typeof this.object[val] === 'boolean') {
-                this.object[val] = !opts?.negated
-            } else {
-                this.predicates.push(value)
-            }
-
+        if (path) {
+            const val = typeof this.object[value.root] === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : getNested(this.object, path)
+            setNested(this.object, path, val)
         } else {
-            const val = !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this.getNested(path)
-            this.setNested(path, val)
+            this.predicates.push(value)
         }
-
-    }
-
-    protected setNested(path: string[], value: string) {
-
-        if (typeof this.getNested(path) !== typeof value) { //TODO: remove!
-            return
-        }
-
-        if (path.length === 1) {
-            this.object[path[0]] = value
-            return
-        }
-
-        let x = this.object[path[0]]
-
-        path.slice(1, -2).forEach(p => {
-            x = x[p]
-        })
-
-        x[path.at(-1) as string] = value
-    }
-
-    protected getNested(path: string[]) {
-
-        let x = this.object[path[0]] // assume at least one
-
-        path.slice(1).forEach(p => {
-            x = x?.[p]
-        })
-
-        return x
 
     }
 
