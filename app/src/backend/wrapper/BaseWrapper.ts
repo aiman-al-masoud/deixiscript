@@ -29,31 +29,7 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    set(predicate: Lexeme, opts?: SetOps): any {
 
-        if (this.parent) {
-            return this.parent.set(predicate, { props: [...opts?.props ?? [], this.name!].reverse() })
-        }
-
-        if (opts?.args) {
-            return this.call(predicate, opts.args)
-        }
-
-        if (opts?.aliasPath) {
-            return this.setAlias(predicate, opts.aliasPath)
-        }
-
-        const props = opts?.props ?? []
-
-        if (props.length > 0) {
-            const last = props.at(-1)!
-            const propx = [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]]
-            this.setMultiProp(propx, predicate, opts)
-        } else if (props.length === 0) {
-            this.setZeroProps(predicate, opts)
-        }
-
-    }
 
     is(predicate: Lexeme): boolean {
 
@@ -111,6 +87,34 @@ export default class BaseWrapper implements Wrapper {
         return emptyClause
     }
 
+    set(predicate: Lexeme, opts?: SetOps): any {
+
+        if (this.parent) {
+            return this.parent.set(predicate, { props: [...opts?.props ?? [], this.name!].reverse() })
+        }
+
+        if (opts?.args) {
+            return this.call(predicate, opts.args)
+        }
+
+        if (opts?.aliasPath) {
+            return this.setAlias(predicate, opts.aliasPath)
+        }
+
+        const props = opts?.props ?? []
+        const last = props.at(-1)!
+        const path = props.length > 0 ? 
+            [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]] : 
+            this.aliases[predicate?.concepts?.[0]!]?.path        
+        
+        if (path?.length > 0) {
+            this.setMultiProp(path, predicate, opts)
+        } else if (props.length === 0) {
+            this.setZeroProps(predicate, opts)
+        }
+
+    }
+
     protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) {
 
         if (!opts?.negated) {
@@ -123,11 +127,7 @@ export default class BaseWrapper implements Wrapper {
 
     protected setZeroProps(predicate: Lexeme, opts?: SetOps) {
 
-        const path = this.aliases[predicate?.concepts?.[0]!]?.path
-
-        if (path) {
-            this.setMultiProp(path, predicate, opts)
-        } else if (typeof this.object[predicate.root] === 'boolean') {
+        if (typeof this.object[predicate.root] === 'boolean') {
             this.object[predicate.root] = !opts?.negated
         } else {
             this.simplePredicates.push(predicate)
