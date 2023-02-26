@@ -21,11 +21,5 @@ export interface Lexeme {
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {
-
-    if (data instanceof LexemeObject) {
-        return data
-    }
-
     return new LexemeObject(data)
-
 }
