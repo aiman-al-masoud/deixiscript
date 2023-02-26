@@ -45,24 +45,12 @@ export default class BaseWrapper implements Wrapper {
 
         const props = opts?.props ?? []
 
-        if (this.isPlaceholder) {
-            this.setSimplePredicate(predicate)
-        } else if (props.length > 1) { // assume > 1 props are a path
-            this.setMultiProp(props, predicate, opts)
-        } else if (props.length === 1) {
-            this.setSingleProp(predicate, props[0], opts)
+        if (props.length > 0) {
+            const last = props.at(-1)!
+            const propx = [...props.slice(0, -1), ...this.aliases[last]?.path ?? [last]]
+            this.setMultiProp(propx, predicate, opts)
         } else if (props.length === 0) {
             this.setZeroProps(predicate, opts)
-        }
-
-    }
-
-    protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) { // assume not concept
-
-        if (opts?.negated && this.is(value)) {
-            this.setNested(path, '')
-        } else {
-            this.setNested(path, value.root)
         }
 
     }
@@ -123,16 +111,9 @@ export default class BaseWrapper implements Wrapper {
         return emptyClause
     }
 
-    protected setSingleProp(value: Lexeme, prop: string, opts?: SetOps) {
-
-        const path = this.aliases[prop]?.path ?? [prop]
-
-        if (!opts?.negated) {
-            this.setNested(path, value.root)
-        } else if (opts?.negated && this.is(value)) {
-            this.setNested(path, '')
-        }
-
+    protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) {
+        const val = (opts?.negated && this.is(value)) ? '' : value.root
+        this.setNested(path, val)
     }
 
     protected setZeroProps(predicate: Lexeme, opts?: SetOps) {
