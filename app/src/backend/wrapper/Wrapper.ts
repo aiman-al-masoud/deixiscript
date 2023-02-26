@@ -13,11 +13,11 @@ export default interface Wrapper {
     copy(opts?: CopyOpts): Wrapper
     get(clause: Clause): Wrapper | undefined
     dynamic(): Lexeme[] /* extrapolated nouns and verbs associated to this object */
-
+    unwrap():object|undefined
 }
 
 export interface SetOps {
-    props?: Lexeme[]
+    props?:string[]
     negated?: boolean
     args?: Wrapper[]
     aliasPath?: Lexeme[]
@@ -29,8 +29,4 @@ export interface CopyOpts {
 
 export function wrap(id: Id, o?: Object): Wrapper {
     return new BaseWrapper(o ?? {}, id, o === undefined)
-}
-
-export function unwrap(wrapper: Wrapper): object | undefined {
-    return (wrapper as any).object
 }

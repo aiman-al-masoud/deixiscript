@@ -1,5 +1,4 @@
 import { getActuator } from "../../backend/actuator/Actuator";
-import { unwrap } from "../../backend/wrapper/Wrapper";
 import { getParser } from "../../frontend/parser/interfaces/Parser";
 import { getKool } from "../../middle/clauses/functions/getKool";
 import { toClause } from "../../middle/toClause";
@@ -44,7 +43,7 @@ export default class BasicBrain implements Brain {
                 this.context.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)
 
-                return wrappers.flatMap(o => o ? unwrap(o) : [])
+                return wrappers.flatMap(o => o ? o.unwrap() : [])
             }
 
         }).flat()

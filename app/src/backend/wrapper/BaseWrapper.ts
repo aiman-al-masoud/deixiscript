@@ -1,7 +1,7 @@
 import { Id } from "../../middle/id/Id";
 import { LexemeType } from "../../config/LexemeType";
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme";
-import Wrapper, { CopyOpts, SetOps, unwrap } from "./Wrapper";
+import Wrapper, { CopyOpts, SetOps } from "./Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 import { allKeys } from "../../utils/allKeys";
 import { Clause, clauseOf, emptyClause } from "../../middle/clauses/Clause";
@@ -32,7 +32,7 @@ export default class BaseWrapper implements Wrapper {
     set(predicate: Lexeme, opts?: SetOps): any {
 
         if (this.parent) {
-            return this.parent.set(predicate, { ...opts, props: [...(opts?.props ?? []), ...[makeLexeme({ root: this.name ?? '', type: 'noun' as any })]].reverse() })
+            return this.parent.set(predicate, { props: [...opts?.props ?? [], this.name!].reverse() })
         }
 
         if (opts?.args) {
@@ -57,12 +57,12 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    protected setMultiProp(path: Lexeme[], value: Lexeme, opts?: SetOps) { // assume not concept
+    protected setMultiProp(path: string[], value: Lexeme, opts?: SetOps) { // assume not concept
 
         if (opts?.negated && this.is(value)) {
-            this.setNested(path.map(x => x.root), '')
+            this.setNested(path, '')
         } else {
-            this.setNested(path.map(x => x.root), value.root)
+            this.setNested(path, value.root)
         }
 
     }
@@ -88,7 +88,7 @@ export default class BaseWrapper implements Wrapper {
     protected call(verb: Lexeme, args: Wrapper[]) {
         const concept = this.aliases[verb.root]?.path
         const methodName = concept?.[0] ?? verb.root
-        return this?.object[methodName](...args.map(x => unwrap(x)))
+        return this?.object[methodName](...args.map(x => x.unwrap()))
     }
 
     clause(query?: Clause): Clause {
@@ -123,9 +123,9 @@ export default class BaseWrapper implements Wrapper {
         return emptyClause
     }
 
-    protected setSingleProp(value: Lexeme, prop: Lexeme, opts?: SetOps) {
+    protected setSingleProp(value: Lexeme, prop: string, opts?: SetOps) {
 
-        const path = this.aliases[prop.root]?.path ?? [prop.root]
+        const path = this.aliases[prop]?.path ?? [prop]
 
         if (!opts?.negated) {
             this.setNested(path, value.root)
@@ -233,6 +233,10 @@ export default class BaseWrapper implements Wrapper {
             const o = this.getNested(path)
             return makeLexeme({ type: typeOf(o), root: x })
         })
+    }
+
+    unwrap(): object | undefined {
+        return this.object
     }
 
 }
