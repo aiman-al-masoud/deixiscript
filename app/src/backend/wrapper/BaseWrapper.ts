@@ -196,9 +196,15 @@ export default class BaseWrapper implements Wrapper {
 
         if (x) {
             const path = this.aliases?.[x.root]?.path ?? [x.root]
-            const object = this.getNested(path)
-            const name = x.root
-            return new BaseWrapper(object, getIncrementalId(), false, this, name)
+            let parent: Wrapper = this
+
+            path.forEach(p => {
+                const o = parent.unwrap()[p]
+                parent = new BaseWrapper(o, getIncrementalId(), false, parent, p)
+            })
+
+            return parent
+
         }
 
     }
