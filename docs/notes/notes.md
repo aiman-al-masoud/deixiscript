@@ -161,7 +161,7 @@ LazyLexer possible idea:
 
 1. read until whitespace.
 1. word is a lexeme? you got a lexeme.
-1. word is not a lexeme (not even dynamic)? then hold word and concatenate until you get to a word that is a know lexeme. not gonna work to define 'zero or more'.
+1. word is not a lexeme (not even dynamic)? then hold word and concatenate until you get to a word that is a know lexeme. not gonna work to define 'zero or more', because 'or' is a lexeme!.
 
 Consider ignoring multiword lexemes temporarily?
 
