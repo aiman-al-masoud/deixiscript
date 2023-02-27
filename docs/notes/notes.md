@@ -114,10 +114,6 @@ Lexemes may have to take up the responsibility to stores aliases and other data 
 A combination of lexemes eg: (dangerous button) may correspond to a wholly new set of aliases and rules than the single (dangerous, button) lexemes.
 
 
-
-
-
-
 # Negation
 
 Negation as undoing any particular action, requires general solution when no ad hoc solution is available.
@@ -169,16 +165,6 @@ LazyLexer possible idea:
 
 Consider ignoring multiword lexemes temporarily?
 
-# And Sentence Bug
-
-"x and y are buttons and every button is green"
-
-problem is probably due to two ands in one sentence.
-
-# Boolean Property Bug
-
-"hidden of x is true" doesn't work.
-
 # Context Dependent/Relative Predicates
 
 First/Last
@@ -192,12 +178,6 @@ First/Last
 Biggest/Smallest
 
 For sortable types
-
-
-# And.query() BUG
-
-probably buggy
-
 
 # Possessive Adjectives
 
@@ -218,9 +198,6 @@ Temporary Solution: in toClause(), don't call makeImply() if current ast is and 
 It would be great if (x and y and z) would just behave like a noun phrase... 
 BUT this is a problem for and-sentence: 'x is a button and it is red' if noun-phrase contains 'and then noun-phrase' because left copula sentence gets parsed but within it there is the 'and it' and-phrase!
 
-
-
-
 # Full Subordinate Clauses
 
 * The button that is blue (OK)
@@ -228,21 +205,15 @@ BUT this is a problem for and-sentence: 'x is a button and it is red' if noun-ph
 * The div that appendChilds the button 
 * ...
 
-* every button that is not red (BUG!)
-
-
 # And between consecutive adjectives
 
 Can and between ajectives be safely removed, to allow for desired meaning without complicating andToClause()?
 
 big and red ------> big red
 
-
-
 # Low Level JS Access
 
 * add of any number is "a=>this+a"
-
 
 # Phatic words, fillers and partial parsing
 
@@ -252,21 +223,14 @@ Some words should be ignored all the time ("uhm", "errm", "ah", "oh"...)
 
 Maybe some words should be treated as "fillers"/phatics and ignored just in some contexts! (please)
 
-
 # Morphology
 
 * Extract basic hardcoded English morphology that remains to be extracted. 
 * Make a more general morphological model to support languages that are more synthetic than English.
 
-
 # Case Insensitivity
 
 https://stackoverflow.com/questions/12484386/access-javascript-property-case-insensitively
-
-
-# Number BUG
-
-value of number being treated as simplePredicate even after reassignment
 
 
 # Child Wrapper convey props
@@ -280,10 +244,34 @@ Need to set name of child when creating it from parent in get(), because the nam
 (DONE), but may be better.
 
 
-# Object to Object comparisons (AND ASSIGNMENTS!)
+# Comparisons and Assignments
 
 if both objects on left and right side of copula, call "Wrapper.compare()".
 
 1. x is 1
 1. y is 1
 1. if x is y then b is a red button
+
+
+# BUGS
+
+## And Sentence Bug
+
+'x and y are buttons and every button is green'
+
+problem is probably due to two ands in one sentence.
+
+## Negation Bugs
+* every button that is not red (BUG!)
+
+## And.query() Bugs
+
+probably buggy
+
+## Boolean Property Bug
+
+"hidden of x is true" doesn't work.
+
+## Number BUG
+
+value of number being treated as simplePredicate even after reassignment
