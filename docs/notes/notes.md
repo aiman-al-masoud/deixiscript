@@ -289,3 +289,5 @@ x and y are buttons. color of x is yellow. y is red.
 yellow button.
 
 returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't declared as an adjective, and is a noun by default.
+
+Fixed by allowing for zero or more nouns in a noun-phrase.
