@@ -68,19 +68,6 @@ export default class And implements Clause {
             return [mockMap(query)]
         }
 
-        function unify(qe: Id, re: Id, result: Map[]) {
-
-            if (result.some(x => x[qe] === re)) { // if already unified don't do it again
-                return
-            }
-
-            const i = result.findIndex(x => !x[qe])
-            const m = result[i] ?? {}
-            m[qe] = re
-            result[i > -1 ? i : result.length] = m
-
-        }
-
         const universe = this.clause1.and(this.clause2)
         const result: Map[] = []
         const it = opts?.it ?? sortIds(universe.entities).at(-1)
@@ -88,29 +75,16 @@ export default class And implements Clause {
         query.entities.forEach(qe => {
             universe.entities.forEach(re => {
 
-                const rd = universe.about(re).flatList()
+                const rd = universe.about(re).flatList().map(x => x.copy({ map: { [re]: qe } })) // subsitute re by qe in real description
                 const qd = query.about(qe).flatList()
-                const rd2 = rd.map(x => x.copy({ map: { [re]: qe } })) // subsitute re by qe in real description
-                // const rd2 =  rd
-
-                // compare each rd2 to each qd, if predicate is same replace r args with q args
-                rd2.forEach((r, i) => {
-                    qd.forEach(q => {
-                        if (r.predicate === q.predicate) {
-                            const m: Map = (r.args ?? []).map((a, i) => ({ [a]: q.args?.[i] ?? a })).reduce((a, b) => ({ ...a, ...b }), {})
-                            rd2[i] = r.copy({ map: m })
-                            // console.log(r.toString(), 'may be ', q.toString(), 'r becomes', rd2[i].toString())
-                        }
-                    })
-                })
 
                 const qhashes = qd.map(x => x.hashCode)
-                const r2hashes = rd2.map(x => x.hashCode)
+                const rhashes = rd.map(x => x.hashCode)
 
-                // console.log('Unify or not?', 'qd=', qd.map(x=>x.toString()), 'rd2=', rd2.map(x=>x.toString()))
-
-                if (qhashes.every(x => r2hashes.includes(x))) { // qe unifies with re!
-                    // console.log(qe, 'is', re, '!')
+                if (qhashes.every(x => rhashes.includes(x))) { // qe unifies with re!
+                    // const qds = qd.map(x => x.toString())
+                    // const rds = rd.map(x => x.toString())
+                    // console.log('qds=',qds, 'rds=',rds)
                     unify(qe, re, result)
                 }
 
@@ -140,5 +114,18 @@ export default class And implements Clause {
         return this.copy({ clause1: c1, clause2: c2 })
 
     }
+
+}
+
+function unify(qe: Id, re: Id, result: Map[]) {
+
+    if (result.some(x => x[qe] === re)) { // if already unified don't do it again
+        return
+    }
+
+    const i = result.findIndex(x => !x[qe])
+    const m = result[i] ?? {}
+    m[qe] = re
+    result[i > -1 ? i : result.length] = m
 
 }

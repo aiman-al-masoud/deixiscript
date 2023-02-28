@@ -65,7 +65,13 @@ export default class BaseWrapper implements Wrapper {
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const path = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').map(x => x.root).slice(1)
         const nested = getNested(this.object, this.aliases?.[path?.[0]] ?? path)
-        return nested !== undefined ? q.copy({ map: { [oc[0]]: this.id } }) : emptyClause
+
+        //without filter, q.copy() ends up asserting wrong information about this object,
+        //you need to assert only ownership of given props if present,
+        //not everything else that may come with query q. 
+
+        const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause)
+        return nested !== undefined ? filteredq.copy({ map: { [oc[0]]: this.id } }) : emptyClause
 
     }
 

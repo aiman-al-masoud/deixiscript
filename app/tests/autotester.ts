@@ -32,6 +32,7 @@ const tests = [
     test28,
     test29,
     test30,
+    test31,
 ]
 
 /**
@@ -307,6 +308,13 @@ function test30() {
     brain.execute('=  is a copula')
     brain.execute('x = red button')
     return brain.execute('x')[0].style.background === 'red'
+}
+
+function test31(){
+    const brain = getBrain({root:document.body})
+    brain.execute('x and y are buttons. x is green and y is red.')
+    const res = brain.execute('color of the red button')
+    return res.includes('red') && !res.includes('green')
 }
 
 function sleep(millisecs: number) {
