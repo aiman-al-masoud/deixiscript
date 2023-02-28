@@ -281,3 +281,11 @@ probably buggy
 ## Number BUG
 
 value of number being treated as simplePredicate even after reassignment
+
+## Adjective as Noun BUG
+
+x and y are buttons. color of x is yellow. y is red. 
+
+yellow button.
+
+returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't declared as an adjective, and is a noun by default.
