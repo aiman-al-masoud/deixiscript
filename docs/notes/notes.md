@@ -165,6 +165,12 @@ LazyLexer possible idea:
 
 Consider ignoring multiword lexemes temporarily?
 
+---
+
+Tried turning prelude from string[] to string:
+
+must feed dynamicLexeme() words of sentence (delimited by .) or else it gets the heuristic wrong. But it doesn't work for some reason, or it's tricky.
+
 # Context Dependent/Relative Predicates
 
 First/Last
