@@ -113,6 +113,36 @@ Lexemes may have to take up the responsibility to store aliases and other data f
 
 A combination of lexemes eg: (dangerous button) may correspond to a wholly new set of aliases and rules than the single (dangerous, button) lexemes.
 
+-----
+
+A Lexeme is a mutable object.
+
+A Lexeme can extend (multiple) other Lexemes.
+
+button is a noun and proto of it is HTMLButtonElement.
+every button is an element.
+every button is an object.
+
+A Lexeme inherits aliases and methods/props from Lexemes it extends.
+
+
+color is a noun.  // kind of like a class
+red and blue are colors. // ... and subclasses
+
+Need to fuse together: concepts, proto, (and maybe) _root.
+
+---
+A lot of problems with order of application of predicates (lexemes) upon creation of object.
+
+Currently solved by putting reference to aliases on prototype.
+
+----
+
+https://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+
+--------
 
 # Negation
 
