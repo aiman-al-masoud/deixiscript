@@ -109,7 +109,7 @@ Lexeme order of operands, for lexmes with same meaning (of, own, have) but diffe
 ---
 
 
-Lexemes may have to take up the responsibility to stores aliases and other data from js prototypes (which hold it currently). 
+Lexemes may have to take up the responsibility to store aliases and other data from js prototypes (which hold it currently). 
 
 A combination of lexemes eg: (dangerous button) may correspond to a wholly new set of aliases and rules than the single (dangerous, button) lexemes.
 
