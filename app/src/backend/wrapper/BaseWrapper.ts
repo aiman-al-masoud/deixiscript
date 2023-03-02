@@ -19,7 +19,6 @@ export default class BaseWrapper implements Wrapper {
     constructor(
         readonly object: any,
         readonly id: Id,
-        readonly isPlaceholder: boolean,
         readonly parent?: Wrapper,
         readonly name?: string
     ) {
@@ -115,8 +114,7 @@ export default class BaseWrapper implements Wrapper {
 
         const copy = new BaseWrapper(
             opts?.object ?? deepCopy(this.object),
-            this.id,
-            opts?.object ? false : this.isPlaceholder,
+            this.id
         )
 
         this.predicates.forEach(x => copy.set(x))
@@ -133,7 +131,7 @@ export default class BaseWrapper implements Wrapper {
 
             path.forEach(p => {
                 const o = parent.unwrap()[p]
-                parent = new BaseWrapper(o, getIncrementalId(), false, parent, p)
+                parent = new BaseWrapper(o, getIncrementalId(),/*  false, */ parent, p)
             })
 
             return parent

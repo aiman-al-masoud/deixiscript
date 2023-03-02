@@ -28,5 +28,5 @@ export interface CopyOpts {
 }
 
 export function wrap(id: Id, o?: Object): Wrapper {
-    return new BaseWrapper(o ?? {}, id, o === undefined)
+    return new BaseWrapper(o ?? {}, id)
 }
