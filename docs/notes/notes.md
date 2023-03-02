@@ -144,6 +144,14 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 --------
 
+
+setters and getters inherited from noun lexeme instead of alias path.
+
+setColor
+getColor
+
+----
+
 # Negation
 
 Negation as undoing any particular action, requires general solution when no ad hoc solution is available.
