@@ -41,7 +41,7 @@ export default class And implements Clause {
 
     toString() {
         const yes = this.clause1.toString() + ',' + this.clause2.toString()
-        return yes ? this.negated ? `not${yes}` : yes : ''
+        return this.negated ? `not${yes}` : yes
     }
 
     implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
