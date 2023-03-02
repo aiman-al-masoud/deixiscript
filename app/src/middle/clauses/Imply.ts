@@ -32,7 +32,7 @@ export default class Imply implements Clause {
         return new Imply(
             opts?.clause1 ?? this.condition.copy(opts),
             opts?.clause2 ?? this.consequence.copy(opts),
-            opts?.negate ? !this.negated : this.negated,
+            opts?.negate ?? this.negated,
             opts?.sideEffecty ?? this.isSideEffecty,
             opts?.subjconj ?? this.subjconj,
             opts?.exactIds ?? this.exactIds   

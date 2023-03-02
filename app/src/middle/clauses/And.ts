@@ -33,7 +33,7 @@ export default class And implements Clause {
             opts?.clause1 ?? this.clause1.copy(opts),
             opts?.clause2 ?? this.clause2.copy(opts),
             this.clause2IsRheme,
-            opts?.negate ? !this.negated : this.negated,
+            opts?.negate ?? this.negated,
             opts?.sideEffecty ?? this.isSideEffecty,
             opts?.exactIds ?? this.exactIds,
         )
