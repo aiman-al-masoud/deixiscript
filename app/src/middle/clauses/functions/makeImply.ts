@@ -12,7 +12,8 @@ export function makeImply(clause: Clause) { // any clause with any var is an imp
         return clause
     }
 
-    if (clause.entities.some(e => isVar(e)) || clause.flatList().some(x => x.predicate ? x.predicate.isPlural : false)) {
+    if (clause.entities.some(e => isVar(e))
+        || clause.flatList().some(x => !!x.predicate?.isPlural)) {
         return clause.theme.implies(clause.rheme)
     }
 
