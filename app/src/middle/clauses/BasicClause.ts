@@ -33,8 +33,8 @@ export class BasicClause implements Clause {
     copy(opts?: CopyOpts): BasicClause {
         return new BasicClause(
             this.predicate,
-            this.args.map(a => opts?.map ? opts?.map[a] ?? a : a),
-            opts?.negate ? !this.negated : this.negated,
+            this.args.map(a => opts?.map?.[a] ?? a),
+            opts?.negate ?? this.negated,
             opts?.sideEffecty ?? this.isSideEffecty,
             opts?.exactIds ?? this.exactIds,
         )
