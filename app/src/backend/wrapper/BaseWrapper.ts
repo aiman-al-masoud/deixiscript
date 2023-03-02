@@ -131,7 +131,7 @@ export default class BaseWrapper implements Wrapper {
 
             path.forEach(p => {
                 const o = parent.unwrap()[p]
-                parent = new BaseWrapper(o, getIncrementalId(),/*  false, */ parent, p)
+                parent = new BaseWrapper(o, getIncrementalId(), parent, p)
             })
 
             return parent
