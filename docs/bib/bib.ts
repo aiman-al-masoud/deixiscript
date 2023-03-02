@@ -111,6 +111,25 @@ export const biblios: schema[] =
         },
 
         {
+            "title": "The End of Programming",
+            "author": [{ "name": "Matt Welsh" }],
+            "type": "article",
+            "year": "2023",
+            "link": [
+                { "url": "https://dl.acm.org/doi/10.1145/3570220" }
+            ],
+            "identifier": [
+                { "type": "doi", "id": "10.1145/3570220" }
+            ]
+        },
+
+        {
+            "title": "Robopsychology",
+            "type": "wikipedia",
+            "link": [{ url: "https://en.wikipedia.org/wiki/Robopsychology" }]
+        },
+
+        {
             "title": "A Model for Naturalistic Programming with Implementation",
             "author": [
                 { "name": "Oscar Pulido-Prieto" },
@@ -131,22 +150,48 @@ export const biblios: schema[] =
         },
 
         {
-            "title": "The End of Programming",
-            "author": [{ "name": "Matt Welsh" }],
+            "title": "Pegasus – First Steps Toward a Naturalistic Programming Language",
+            "year": "2006",
             "type": "article",
-            "year": "2023",
             "link": [
-                { "url": "https://dl.acm.org/doi/10.1145/3570220" }
+                { "url": "https://dl.acm.org/doi/abs/10.1145/1176617.1176628" },
+                { "url": "/home/aiman/Desktop/ideas-voice-programming/pegasus-paper.pdf" }
+
             ],
             "identifier": [
-                { "type": "doi", "id": "10.1145/3570220" }
+                { "type": "doi", "id": "10.1145/1176617.1176628" }
             ]
         },
 
         {
-            "title": "Robopsychology",
-            "type": "wikipedia",
-            "link": [{ url: "https://en.wikipedia.org/wiki/Robopsychology" }]
+            "title": "Evolution of Naturalistic Programming: A Need",
+            "year": "2020",
+            "type": "article",
+            "link": [
+                { "url": "https://link.springer.com/chapter/10.1007/978-3-030-63329-5_13" },
+                { "url": "/home/aiman/Desktop/ideas-voice-programming/evolution-of-naturalistic-programming-a-need.pdf" }
+            ]
+        },
+
+        {
+            "title": "Osmosian",
+            "type": "webpage",
+            "link": [{ "url": "http://www.osmosian.com" }]
+        },
+
+        {
+            "title": "Pegasus",
+            "type": "webpage",
+            "link": [{ "url": "http://www.pegasus-project.org/en/Welcome.html" }]
+        },
+
+        {
+            "title": "Plain English Programming",
+            "type": "documentation",
+            "link": [
+                { "url": "http://www.osmosian.com/instructions.pdf" },
+                { "url": "/home/aiman/Desktop/ideas-voice-programming/osmosian.pdf" }
+            ]
         }
     ]
 

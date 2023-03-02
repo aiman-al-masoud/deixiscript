@@ -1,7 +1,7 @@
 export interface schema {
 
     title: string
-    type: 'article' | 'book' | 'documentation' | 'wikipedia'
+    type: 'article' | 'book' | 'documentation' | 'wikipedia' | 'webpage'
     link: { url: string }[]
     year?: string
     publisher?: { name: string }

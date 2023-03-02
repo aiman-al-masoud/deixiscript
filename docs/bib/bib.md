@@ -30,12 +30,6 @@
 - https://www.cs.utah.edu/~riloff/pdfs/iui2000.pdf
 
 
-# A Model for Naturalistic Programming with Implementation
-## Year: 2019
-- https://www.mdpi.com/2076-3417/9/18/3936
-- file:///home/aiman/Downloads/applsci-09-03936-v2.pdf
-
-
 # The End of Programming
 ## Year: 2023
 - https://dl.acm.org/doi/10.1145/3570220
@@ -44,5 +38,39 @@
 # Robopsychology
 ## Year: undefined
 - https://en.wikipedia.org/wiki/Robopsychology
+
+
+# A Model for Naturalistic Programming with Implementation
+## Year: 2019
+- https://www.mdpi.com/2076-3417/9/18/3936
+- file:///home/aiman/Downloads/applsci-09-03936-v2.pdf
+
+
+# Pegasus – First Steps Toward a Naturalistic Programming Language
+## Year: 2006
+- https://dl.acm.org/doi/abs/10.1145/1176617.1176628
+- /home/aiman/Desktop/ideas-voice-programming/pegasus-paper.pdf
+
+
+# Evolution of Naturalistic Programming: A Need
+## Year: 2020
+- https://link.springer.com/chapter/10.1007/978-3-030-63329-5_13
+- /home/aiman/Desktop/ideas-voice-programming/evolution-of-naturalistic-programming-a-need.pdf
+
+
+# Osmosian
+## Year: undefined
+- http://www.osmosian.com
+
+
+# Pegasus
+## Year: undefined
+- http://www.pegasus-project.org/en/Welcome.html
+
+
+# Plain English Programming
+## Year: undefined
+- http://www.osmosian.com/instructions.pdf
+- /home/aiman/Desktop/ideas-voice-programming/osmosian.pdf
 
 
