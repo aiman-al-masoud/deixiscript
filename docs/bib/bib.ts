@@ -192,6 +192,19 @@ export const biblios: schema[] =
                 { "url": "http://www.osmosian.com/instructions.pdf" },
                 { "url": "/home/aiman/Desktop/ideas-voice-programming/osmosian.pdf" }
             ]
+        },
+
+        {
+            "title": "Language and Communication Problems in Formalization: A Natural Language Approach",
+            "type": "article",
+            "year": "2021",
+            "identifier": [
+                { "type": "doi", "id": "10.1007/978-3-030-76020-5_7" }
+            ],
+            "link": [
+                { "url": "https://link.springer.com/chapter/10.1007/978-3-030-76020-5_7" },
+                { "url": "/home/aiman/Desktop/ideas-voice-programming/978-3-030-76020-5.pdf" }
+            ]
         }
     ]
 
