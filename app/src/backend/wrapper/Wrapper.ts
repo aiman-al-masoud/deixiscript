@@ -20,14 +20,13 @@ export interface SetOps {
     props?: string[]
     negated?: boolean
     args?: Wrapper[]
-    aliasPath?: Lexeme[]
 }
 
 export interface CopyOpts {
     object?: object
-    preds?:Lexeme[]
+    preds?: Lexeme[]
 }
 
-export function wrap(id: Id, preds:Lexeme[],  o?: Object): Wrapper {
+export function wrap(id: Id, preds: Lexeme[], o?: Object): Wrapper {
     return new BaseWrapper(o ?? {}, id, preds)
 }
