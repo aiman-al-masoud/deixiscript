@@ -91,8 +91,14 @@ export default class BaseWrapper implements Wrapper {
             ?? (this.object[value.root] !== undefined ? [value.root] : undefined)
 
         if (path) {
-            const val = typeof this.object[value.root] === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : getNested(this.object, path)
+
+            const val = typeof this.object[value.root] === 'boolean' ? !opts?.negated
+                : !opts?.negated ? value.root
+                    : opts?.negated && this.is(value) ? ''
+                        : getNested(this.object, path)
+
             setNested(this.object, path, val)
+
         } else {
             this.predicates.push(value)
         }
