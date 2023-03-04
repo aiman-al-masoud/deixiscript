@@ -86,10 +86,7 @@ export default class BaseWrapper implements Wrapper {
 
     protected setMultiProp(value: Lexeme, opts?: SetOps) {
 
-        const props = opts?.props ?? []
-        const last = props.at(-1)!
-        const path = props.length > 0 ?
-            [...props.slice(0, -1), ...this.aliases[last] ?? [last]] :
+        const path =
             this.aliases[value?.concepts?.[0]!]
             ?? (this.object[value.root] !== undefined ? [value.root] : undefined)
 

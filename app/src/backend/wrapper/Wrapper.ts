@@ -17,7 +17,6 @@ export default interface Wrapper {
 }
 
 export interface SetOps {
-    props?: string[]
     negated?: boolean
     args?: Wrapper[]
 }
