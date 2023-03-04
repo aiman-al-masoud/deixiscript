@@ -1,5 +1,3 @@
-import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
-import { wrap } from "../wrapper/Wrapper";
 import Action from "./Action";
 import { Clause } from "../../middle/clauses/Clause";
 import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipChain";
@@ -25,7 +23,7 @@ export default class SetAliasAction implements Action {
         const propsNames = props.map(x => consequence.describe(x)[0]) // same ...
         const protoName = condition.describe(top)[0] // assume one 
 
-        wrap(getIncrementalId(), protoName.getProto()).set(conceptName[0], { aliasPath: propsNames })
+        protoName.aliases[conceptName[0].root] = propsNames.map(x => x.root)
     }
 
 }

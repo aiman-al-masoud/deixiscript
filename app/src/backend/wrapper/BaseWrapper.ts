@@ -13,20 +13,20 @@ import { getNested } from "../../utils/getNested";
 
 export default class BaseWrapper implements Wrapper {
 
-    readonly aliases: { [alias: string]: string[] } = this.object?.aliases ?? {}
     readonly predicates: Lexeme[] = []
 
     constructor(
         readonly object: any,
         readonly id: Id,
+        preds: Lexeme[],
         readonly parent?: Wrapper,
         readonly name?: string
     ) {
+        preds.forEach(p => this.set(p))
+    }
 
-        try {
-            this.object.aliases = this.aliases
-        } catch { }
-
+    protected get aliases(): { [alias: string]: string[] } {
+        return this.predicates.map(x => x.aliases).reduce((a, b) => ({ ...a, ...b }), {})
     }
 
     is(predicate: Lexeme): boolean {
@@ -37,10 +37,6 @@ export default class BaseWrapper implements Wrapper {
             getNested(this.object, path) === predicate.root :
             this.predicates.map(x => x.root).includes(predicate.root)
 
-    }
-
-    protected setAlias(alias: Lexeme, path: Lexeme[]): void {
-        this.aliases[alias.root] = path.map(x => x.root)
     }
 
     protected call(verb: Lexeme, args: Wrapper[]) {//TODO: alias
@@ -80,10 +76,6 @@ export default class BaseWrapper implements Wrapper {
             return this.call(predicate, opts.args)
         }
 
-        if (opts?.aliasPath) {
-            return this.setAlias(predicate, opts.aliasPath)
-        }
-
         if (this.parent && typeof this.object !== 'object') {
             return this.parent.unwrap()[this.name!] = predicate.root
         }
@@ -114,7 +106,8 @@ export default class BaseWrapper implements Wrapper {
 
         const copy = new BaseWrapper(
             opts?.object ?? deepCopy(this.object),
-            this.id
+            this.id,
+            (opts?.preds ?? []).concat(this.predicates)
         )
 
         this.predicates.forEach(x => copy.set(x))
@@ -131,7 +124,7 @@ export default class BaseWrapper implements Wrapper {
 
             path.forEach(p => {
                 const o = parent.unwrap()[p]
-                parent = new BaseWrapper(o, getIncrementalId(), parent, p)
+                parent = new BaseWrapper(o, getIncrementalId(), [], parent, p)
             })
 
             return parent

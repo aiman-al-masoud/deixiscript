@@ -108,7 +108,7 @@ function test7() {
 function test8() {
     const brain = getBrain({ root: document.body })
     brain.execute('x is a button. text of x is capra.')
-    const assert1 = brain.execute('button')[0].textContent == 'capra'
+    const assert1 = brain.execute('button')[0].textContent === 'capra'
     return assert1
 }
 

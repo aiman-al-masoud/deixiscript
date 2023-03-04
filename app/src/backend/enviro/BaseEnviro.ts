@@ -1,3 +1,4 @@
+import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { Clause, emptyClause } from "../../middle/clauses/Clause";
 import { Id } from "../../middle/id/Id";
 import { Map } from "../../middle/id/Map";
@@ -23,10 +24,10 @@ export default class BaseEnviro implements Enviro {
         return Object.values(this.dictionary)
     }
 
-    set = (id: Id, object?: object): Wrapper => {
+    set = (id: Id, preds:Lexeme[], object?: object): Wrapper => {
         this.lastReferenced = id
         const placeholder = this.dictionary[id]
-        return this.dictionary[id] = placeholder?.copy({ object: object }) ?? wrap(id, object)
+        return this.dictionary[id] = placeholder?.copy({ object, preds }) ?? wrap(id,preds, object)
     }
 
     query = (query: Clause): Map[] => {

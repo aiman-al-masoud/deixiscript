@@ -25,7 +25,7 @@ export default class RelationAction implements Action {
         const res = subject?.set(this.clause.predicate, { args: object ? [object] : [] })
 
         if (res) {
-            context.set(getIncrementalId(), res)
+            context.set(getIncrementalId(), [], res)
         }
 
         return res

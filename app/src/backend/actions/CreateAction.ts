@@ -33,7 +33,7 @@ export default class CreateAction implements Action {
 
         const o = newInstance(proto, predicate.root)
         init(o, context, id)
-        context.set(id, o).set(predicate)
+        context.set(id, [predicate], o)
 
     }
 

@@ -25,8 +25,9 @@ export interface SetOps {
 
 export interface CopyOpts {
     object?: object
+    preds?:Lexeme[]
 }
 
-export function wrap(id: Id, o?: Object): Wrapper {
-    return new BaseWrapper(o ?? {}, id)
+export function wrap(id: Id, preds:Lexeme[],  o?: Object): Wrapper {
+    return new BaseWrapper(o ?? {}, id, preds)
 }

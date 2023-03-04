@@ -5,7 +5,7 @@ import { conjugate } from "./functions/conjugate"
 import { pluralize } from "./functions/pluralize"
 import { Lexeme, makeLexeme } from "./Lexeme"
 
-export default class LexemeObject implements Lexeme /*, Wrapper */ {
+export default class LexemeObject implements Lexeme {
 
     _root = this.newData?._root
     contractionFor = this.newData?.contractionFor ?? this._root?.contractionFor
@@ -13,6 +13,7 @@ export default class LexemeObject implements Lexeme /*, Wrapper */ {
     cardinality = this.newData?.cardinality ?? this._root?.cardinality
     proto = this.newData?.proto ?? this._root?.proto
     concepts = this.newData?.concepts ?? this._root?.concepts
+    aliases = this._root?.aliases ?? {}
 
     constructor(
         readonly newData?: Partial<Lexeme>

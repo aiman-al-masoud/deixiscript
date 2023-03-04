@@ -18,6 +18,7 @@ export interface Lexeme {
     readonly isPlural: boolean
     readonly isConcept: boolean
     readonly isMultiWord: boolean
+    aliases: { [alias: string]: string[] }
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {

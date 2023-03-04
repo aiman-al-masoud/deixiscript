@@ -1,3 +1,4 @@
+import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { Clause } from "../../middle/clauses/Clause";
 import { Id } from "../../middle/id/Id";
 import { Map } from "../../middle/id/Map";
@@ -6,7 +7,7 @@ import BaseEnviro from "./BaseEnviro";
 
 export interface Enviro {
     get(id: Id): Wrapper | undefined
-    set(id: Id, object?: object): Wrapper
+    set(id: Id, preds:Lexeme[], object?: object): Wrapper
     query(clause: Clause): Map[]
     readonly values: Wrapper[]
     readonly root?: HTMLElement
