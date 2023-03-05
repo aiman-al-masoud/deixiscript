@@ -49,13 +49,13 @@
 # Pegasus – First Steps Toward a Naturalistic Programming Language
 ## Year: 2006
 - https://dl.acm.org/doi/abs/10.1145/1176617.1176628
-- /home/aiman/Desktop/ideas-voice-programming/pegasus-paper.pdf
+- file:///home/aiman/Desktop/ideas-voice-programming/pegasus-paper.pdf
 
 
 # Evolution of Naturalistic Programming: A Need
 ## Year: 2020
 - https://link.springer.com/chapter/10.1007/978-3-030-63329-5_13
-- /home/aiman/Desktop/ideas-voice-programming/evolution-of-naturalistic-programming-a-need.pdf
+- file:///home/aiman/Desktop/ideas-voice-programming/evolution-of-naturalistic-programming-a-need.pdf
 
 
 # Osmosian
@@ -71,6 +71,12 @@
 # Plain English Programming
 ## Year: undefined
 - http://www.osmosian.com/instructions.pdf
-- /home/aiman/Desktop/ideas-voice-programming/osmosian.pdf
+- file:///home/aiman/Desktop/ideas-voice-programming/osmosian.pdf
+
+
+# Language and Communication Problems in Formalization: A Natural Language Approach
+## Year: 2021
+- https://link.springer.com/chapter/10.1007/978-3-030-76020-5_7
+- file:///home/aiman/Desktop/ideas-voice-programming/978-3-030-76020-5.pdf
 
 

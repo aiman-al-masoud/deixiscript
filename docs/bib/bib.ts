@@ -155,7 +155,7 @@ export const biblios: schema[] =
             "type": "article",
             "link": [
                 { "url": "https://dl.acm.org/doi/abs/10.1145/1176617.1176628" },
-                { "url": "/home/aiman/Desktop/ideas-voice-programming/pegasus-paper.pdf" }
+                { "url": "file:///home/aiman/Desktop/ideas-voice-programming/pegasus-paper.pdf" }
 
             ],
             "identifier": [
@@ -169,7 +169,7 @@ export const biblios: schema[] =
             "type": "article",
             "link": [
                 { "url": "https://link.springer.com/chapter/10.1007/978-3-030-63329-5_13" },
-                { "url": "/home/aiman/Desktop/ideas-voice-programming/evolution-of-naturalistic-programming-a-need.pdf" }
+                { "url": "file:///home/aiman/Desktop/ideas-voice-programming/evolution-of-naturalistic-programming-a-need.pdf" }
             ]
         },
 
@@ -190,7 +190,7 @@ export const biblios: schema[] =
             "type": "documentation",
             "link": [
                 { "url": "http://www.osmosian.com/instructions.pdf" },
-                { "url": "/home/aiman/Desktop/ideas-voice-programming/osmosian.pdf" }
+                { "url": "file:///home/aiman/Desktop/ideas-voice-programming/osmosian.pdf" }
             ]
         },
 
@@ -203,7 +203,7 @@ export const biblios: schema[] =
             ],
             "link": [
                 { "url": "https://link.springer.com/chapter/10.1007/978-3-030-76020-5_7" },
-                { "url": "/home/aiman/Desktop/ideas-voice-programming/978-3-030-76020-5.pdf" }
+                { "url": "file:///home/aiman/Desktop/ideas-voice-programming/978-3-030-76020-5.pdf" }
             ]
         }
     ]
