@@ -333,3 +333,7 @@ Fixed by allowing for zero or more nouns in a noun-phrase.
 # Paraphrases
 
 Many different paraphrasing styles could aid in debugging?
+
+# "Prototyping"
+
+Defining classes/blueprints (especially a component) from a single prototype (eg: a one-off attempt at creating a component).
