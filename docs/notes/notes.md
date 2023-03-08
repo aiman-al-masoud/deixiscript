@@ -337,3 +337,15 @@ Many different paraphrasing styles could aid in debugging?
 # "Prototyping"
 
 Defining classes/blueprints (especially a component) from a single prototype (eg: a one-off attempt at creating a component).
+
+# Position Getter/Setter trick
+
+Object.defineProperty(window.id1661,  'pos', { get: getPosition, set: setPosition, name:'pos'} )
+
+function setPosition(pos){
+    pos.appendChild(this)
+}
+
+function getPosition(){
+    return this.parentNode
+}
