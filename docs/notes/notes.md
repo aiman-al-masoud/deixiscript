@@ -336,7 +336,7 @@ Many different paraphrasing styles could aid in debugging?
 
 # "Prototyping"
 
-Defining classes/blueprints (especially a component) from a single prototype (eg: a one-off attempt at creating a component).
+Defining classes/blueprints (especially a component) from a single prototype (eg: a one-off attempt at creating a component). You could accomplish this with Wrapper.copy().
 
 # Position Getter/Setter trick
 
