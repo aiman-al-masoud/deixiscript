@@ -10,7 +10,7 @@ export default interface Wrapper {
     set(predicate: Lexeme, opts?: SetOps): any
     is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
-    get(clause: Clause): Wrapper | undefined
+    get(predicate: Lexeme): Wrapper | undefined
     /** describe the object */ toClause(clause?: Clause): Clause
     /** infer grammatical types of props */ dynamic(): Lexeme[]
     unwrap(): any | undefined

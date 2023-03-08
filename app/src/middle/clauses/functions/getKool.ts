@@ -13,6 +13,6 @@ export function getKool(context: Context, clause: Clause, localId: Id): Wrapper[
     }
 
     const owner = getKool(context, clause, ownerIds[0])
-    return owner.flatMap(x => x.get(clause.about(localId)) ?? [])
+    return owner.flatMap(x => x.get(clause.describe(localId)[0]) ?? [])
 
 }

@@ -109,9 +109,9 @@ export default class BaseWrapper implements Wrapper {
         (opts?.preds ?? []).concat(this.predicates)
     )
 
-    get(clause: Clause): Wrapper | undefined {
+    get(predicate: Lexeme): Wrapper | undefined {
 
-        const x = clause.entities.flatMap(e => clause.describe(e))[0]
+        const x = predicate
 
         if (x) {
 
