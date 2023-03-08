@@ -4,6 +4,8 @@ import { isRepeatable } from "../parser/interfaces/Cardinality"
 import { conjugate } from "./functions/conjugate"
 import { pluralize } from "./functions/pluralize"
 import { Lexeme, makeLexeme } from "./Lexeme"
+import { makeGetter } from "./makeGetter"
+import { makeSetter } from "./makeSetter"
 
 export default class LexemeObject implements Lexeme {
 
@@ -13,11 +15,12 @@ export default class LexemeObject implements Lexeme {
     cardinality = this.newData?.cardinality ?? this._root?.cardinality
     proto = this.newData?.proto ?? this._root?.proto
     concepts = this.newData?.concepts ?? this._root?.concepts
-    aliases = this._root?.aliases ?? {}
+    heirlooms = this?.newData?.heirlooms ?? this._root?.heirlooms ?? []
 
     constructor(
         readonly newData?: Partial<Lexeme>
     ) {
+
     }
 
     get root() {
@@ -65,6 +68,17 @@ export default class LexemeObject implements Lexeme {
 
     getProto(): object | undefined {
         return (window as any)?.[this.proto as any]?.prototype;
+    }
+
+    setAlias = (alias: string, path: string[]) => {
+
+        this.heirlooms.push({
+            set: makeSetter(alias, path),
+            get: makeGetter(alias, path),
+            name: alias,
+            path
+        })
+
     }
 
 }

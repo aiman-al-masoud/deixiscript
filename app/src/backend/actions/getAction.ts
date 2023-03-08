@@ -13,7 +13,6 @@ import Imply from "../../middle/clauses/Imply"
 
 export function getAction(clause: Clause, topLevel: Clause): Action {
 
-    // console.log(topLevel.toString())
 
     if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')
         || topLevel.rheme.flatList().some(x => x.predicate?.isConcept)) {

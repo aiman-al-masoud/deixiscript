@@ -18,7 +18,8 @@ export interface Lexeme {
     readonly isPlural: boolean
     readonly isConcept: boolean
     readonly isMultiWord: boolean
-    aliases: { [alias: string]: string[] }
+    setAlias(alias: string, path: string[]): void
+    heirlooms: { set?: any, get?: any, name: string, path: string[] }[]
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {

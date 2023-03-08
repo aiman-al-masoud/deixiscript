@@ -20,10 +20,11 @@ export default class SetAliasAction implements Action {
         const alias = getOwnershipChain(condition, top).slice(1)
         const props = getOwnershipChain(consequence, top).slice(1)
         const concept = alias.map(x => condition.describe(x)[0]) // assume at least one name
-        const path = props.map(x => consequence.describe(x)[0]) // same ...
+        const path = props.map(x => consequence.describe(x)[0]).map(x => x.root) // same ...
         const lexeme = condition.describe(top)[0] // assume one 
 
-        lexeme.aliases[concept[0].root] = path.map(x => x.root)
+        // lexeme.aliases[concept[0].root] = path.map(x => x.root)
+        lexeme.setAlias(concept[0].root, path)
     }
 
 }

@@ -8,8 +8,6 @@ import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipCh
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
-import { setNested } from "../../utils/setNested";
-import { getNested } from "../../utils/getNested";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -25,28 +23,20 @@ export default class BaseWrapper implements Wrapper {
         preds.forEach(p => this.set(p))
     }
 
-    protected get aliases(): { [alias: string]: string[] } {
-        return this.predicates.map(x => x.aliases).reduce((a, b) => ({ ...a, ...b }), {})
-    }
+    is = (predicate: Lexeme) =>
+        this.object[predicate?.concepts?.[0]!] === predicate.root
+        || this.predicates.map(x => x.root).includes(predicate.root)
 
-    is(predicate: Lexeme): boolean {
-
-        const path = this.aliases[predicate.concepts?.at(0) ?? '']
-
-        return path ?
-            getNested(this.object, path) === predicate.root :
-            this.predicates.map(x => x.root).includes(predicate.root)
-
-    }
-
-    protected call(verb: Lexeme, args: Wrapper[]) {//TODO: alias
+    protected call(verb: Lexeme, args: Wrapper[]) {
         return this.object[verb.root](...args.map(x => x.unwrap()))
     }
 
     toClause(query?: Clause) {
 
-        return Object.keys(this.aliases)
-            .map(k => getNested(this.object, this.aliases[k]))
+        const ks = this.predicates.flatMap(x => x.heirlooms.flatMap(x => x.name))
+
+        return ks
+            .map(x => this.object[x])
             .map(x => makeLexeme({ root: x, type: 'adjective' }))
             .concat(this.predicates)
             .map(x => clauseOf(x, this.id))
@@ -58,8 +48,8 @@ export default class BaseWrapper implements Wrapper {
     protected extraInfo(q: Clause) {
 
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
-        const path = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').map(x => x.root).slice(1)
-        const nested = getNested(this.object, this.aliases?.[path?.[0]] ?? path)
+        const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
+        const nested = this.object[lx?.concepts?.[0] ?? lx?.root]
 
         //without filter, q.copy() ends up asserting wrong information about this object,
         //you need to assert only ownership of given props if present,
@@ -86,43 +76,47 @@ export default class BaseWrapper implements Wrapper {
 
     protected setMultiProp(value: Lexeme, opts?: SetOps) {
 
-        const path =
-            this.aliases[value?.concepts?.[0]!]
-            ?? (this.object[value.root] !== undefined ? [value.root] : undefined)
+        const hasProp =
+            this.object[value?.concepts?.[0]!] !== undefined
+            || this.object[value.root] !== undefined
 
-        if (path) {
+        if (hasProp) {
 
             const val = typeof this.object[value.root] === 'boolean' ? !opts?.negated
                 : !opts?.negated ? value.root
                     : opts?.negated && this.is(value) ? ''
-                        : getNested(this.object, path)
+                        : this.object[value.concepts?.[0] ?? value.root]
 
-            setNested(this.object, path, val)
+            this.object[value?.concepts?.[0]! ?? value.root] = val
 
         } else {
-            this.predicates.push(value)
+
+            if (!this.is(value)) {
+                this.predicates.push(value)
+            }
+
+            value.heirlooms.forEach(h => {
+                Object.defineProperty(this.object, h.name, h)
+            })
+
         }
 
     }
 
-    copy(opts?: CopyOpts): Wrapper {
-
-        const copy = new BaseWrapper(
-            opts?.object ?? deepCopy(this.object),
-            this.id,
-            (opts?.preds ?? []).concat(this.predicates)
-        )
-
-        this.predicates.forEach(x => copy.set(x))
-        return copy
-    }
+    copy = (opts?: CopyOpts) => new BaseWrapper(
+        opts?.object ?? deepCopy(this.object),
+        this.id,
+        (opts?.preds ?? []).concat(this.predicates)
+    )
 
     get(clause: Clause): Wrapper | undefined {
 
         const x = clause.entities.flatMap(e => clause.describe(e))[0]
 
         if (x) {
-            const path = this.aliases?.[x.root] ?? [x.root]
+
+            const aliases = this.predicates.flatMap(x => x.heirlooms).map(x => ({ [x.name]: x.path })).reduce((a, b) => ({ ...a, ...b }), {})
+            const path = aliases?.[x.root] ?? [x.root]
             let parent: Wrapper = this
 
             path.forEach(p => {
