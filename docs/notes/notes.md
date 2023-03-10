@@ -366,5 +366,6 @@ Bring back "every button is an element" understood as letting "button" inherit f
 
 Eliminate Wrapper.proto somehow, make sure classes are accessible directly, maybe by window['HTMLButtonElement'].
 
-
 be vs become copulas?
+
+'red and blue and black and green are colors' should let red, blue... inherit from mixin 'color'.
