@@ -10,13 +10,11 @@ import { pointOut } from "./pointOut";
 
 export default class BasicBrain implements Brain {
 
+
     constructor(
         readonly context: Context,
-        readonly actuator = getActuator()) {
-
-        //TODO: move somewhere else
-        Object.defineProperty(Number.prototype, 'add', { writable: true, value: function (a: any) { return this + a } })
-
+        readonly actuator = getActuator()
+    ) {
         this.context.prelude.forEach(c => this.execute(c))
     }
 

@@ -96,5 +96,15 @@ export const lexemes: Partial<Lexeme>[] = [
     {
         root: 'consequence',
         type: 'adjective'
+    },
+
+    {
+        root: 'number',
+        type: 'noun',
+        proto: 'Number',
+        heirlooms: [
+            { name: 'add', value: function (a: any) { return this + a } },
+            { name: 'multiply', value: function (a: any) { return this as any * a } },
+        ]
     }
 ]

@@ -51,18 +51,11 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected extraInfo(q: Clause) {
-
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
         const nested = this._get(lx?.concepts?.[0] ?? lx?.root)
-
-        //without filter, q.copy() ends up asserting wrong information about this object,
-        //you need to assert only ownership of given props if present,
-        //not everything else that may come with query q. 
-
-        const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause)
+        const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause) /* without filter, q.copy() ends up asserting wrong information about this object, you need to assert only ownership of given props if present, not everything else that may come with query q.  */
         return nested !== undefined ? filteredq.copy({ map: { [oc[0]]: this.id } }) : emptyClause
-
     }
 
     set(predicate: Lexeme, opts?: SetOps): any {
@@ -111,7 +104,10 @@ export default class BaseWrapper implements Wrapper {
             }
 
             value.heirlooms.forEach(h => {
-                Object.defineProperty(this.object, h.name, h)
+
+                const object = typeof this.object === 'object' ? this.object : this.object.constructor.prototype
+                Object.defineProperty(object, h.name, h)
+
             })
 
         }
