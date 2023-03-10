@@ -364,3 +364,6 @@ Maybe a Lexeme shouldn't contain directly heirlooms, maybe it should be connecte
 
 Bring back "every button is an element" understood as letting "button" inherit from mixin "element".
 
+Eliminate Wrapper.proto somehow, make sure classes are accessible directly, maybe by window['HTMLButtonElement'].
+
+
