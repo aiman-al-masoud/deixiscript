@@ -362,3 +362,5 @@ wrap(WrapArgs) // remove all but one new BaseWrapper(...)
 
 Maybe a Lexeme shouldn't contain directly heirlooms, maybe it should be connected to a "prototype" object used as a mixin/class. Need to facilitate [prototyping](#prototyping). Need to have simple system, where any object is potentially a mixin, and where you can define complex stuff on an object and then "create copies" of that object.
 
+Bring back "every button is an element" understood as letting "button" inherit from mixin "element".
+
