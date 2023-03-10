@@ -357,3 +357,4 @@ this needs set(Predicate|Wrapper) or usage of opts.args.
 
 Eliminate the need for "aliases" in BaseWrapper.get(), maybe by new getNested that incorporates wrapping capabilities to attach parent to each object.
 
+wrap(WrapArgs) // remove all but one new BaseWrapper(...)

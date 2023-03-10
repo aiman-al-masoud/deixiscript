@@ -27,7 +27,7 @@ export default class BaseEnviro implements Enviro {
     set = (id: Id, preds:Lexeme[], object?: object): Wrapper => {
         this.lastReferenced = id
         const placeholder = this.dictionary[id]
-        return this.dictionary[id] = placeholder?.copy({ object, preds }) ?? wrap(id,preds, object)
+        return this.dictionary[id] = placeholder?.copy({ object, preds }) ?? wrap({id,preds, o:object})
     }
 
     query = (query: Clause): Map[] => {

@@ -23,12 +23,17 @@ export default class BaseWrapper implements Wrapper {
         preds.forEach(p => this.set(p))
     }
 
+    protected hasPredicate(predicate: Lexeme) {
+        return this.predicates.some(x => x.root === predicate.root)
+    }
+
     is = (predicate: Lexeme) =>
-        this.object[predicate?.concepts?.[0]!] === predicate.root
+        this._get(predicate?.concepts?.[0]!) === predicate.root
         || this.predicates.map(x => x.root).includes(predicate.root)
 
     protected call(verb: Lexeme, args: Wrapper[]) {
-        return this.object[verb.root](...args.map(x => x.unwrap()))
+        const method = this._get(verb.root) as Function
+        return method.call(this.object, ...args.map(x => x.unwrap()))
     }
 
     toClause(query?: Clause) {
@@ -36,7 +41,7 @@ export default class BaseWrapper implements Wrapper {
         const ks = this.predicates.flatMap(x => x.heirlooms.flatMap(x => x.name))
 
         return ks
-            .map(x => this.object[x])
+            .map(x => this._get(x))
             .map(x => makeLexeme({ root: x, type: 'adjective' }))
             .concat(this.predicates)
             .map(x => clauseOf(x, this.id))
@@ -49,7 +54,7 @@ export default class BaseWrapper implements Wrapper {
 
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
-        const nested = this.object[lx?.concepts?.[0] ?? lx?.root]
+        const nested = this._get(lx?.concepts?.[0] ?? lx?.root)
 
         //without filter, q.copy() ends up asserting wrong information about this object,
         //you need to assert only ownership of given props if present,
@@ -67,31 +72,41 @@ export default class BaseWrapper implements Wrapper {
         }
 
         if (this.parent && typeof this.object !== 'object') {
-            return this.parent.unwrap()[this.name!] = predicate.root
+
+            if (this.parent instanceof BaseWrapper) {
+                this.parent.unwrap()[this.name!] = predicate.root
+            } else {
+                (this.parent as any)[this.name!] = predicate.root
+            }
         }
 
         this.setMultiProp(predicate, opts)
 
     }
 
+    protected _get(key: string) {
+        const val = this.object[key]
+        return val instanceof BaseWrapper ? val.unwrap() : val
+    }
+
     protected setMultiProp(value: Lexeme, opts?: SetOps) {
 
         const hasProp =
-            this.object[value?.concepts?.[0]!] !== undefined
-            || this.object[value.root] !== undefined
+            this._get(value?.concepts?.[0]!) !== undefined
+            || this._get(value.root) !== undefined
 
         if (hasProp) {
 
-            const val = typeof this.object[value.root] === 'boolean' ? !opts?.negated
+            const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated
                 : !opts?.negated ? value.root
                     : opts?.negated && this.is(value) ? ''
-                        : this.object[value.concepts?.[0] ?? value.root]
+                        : this._get(value.concepts?.[0] ?? value.root)
 
-            this.object[value?.concepts?.[0]! ?? value.root] = val
+            this.object[value?.concepts?.[0] ?? value.root] = val
 
         } else {
 
-            if (!this.is(value)) {
+            if (!this.hasPredicate(value)) {
                 this.predicates.push(value)
             }
 
@@ -110,28 +125,12 @@ export default class BaseWrapper implements Wrapper {
     )
 
     get(predicate: Lexeme): Wrapper | undefined {
-
-        const x = predicate
-
-        if (x) {
-
-            const aliases = this.predicates.flatMap(x => x.heirlooms).map(x => ({ [x.name]: x.path })).reduce((a, b) => ({ ...a, ...b }), {})
-            const path = aliases?.[x.root] ?? [x.root]
-            let parent: Wrapper = this
-
-            path.forEach(p => {
-                const o = parent.unwrap()[p]
-                parent = new BaseWrapper(o, getIncrementalId(), [], parent, p)
-            })
-
-            return parent
-
-        }
-
+        const w = this.object[predicate.root]
+        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), [], this, predicate.root)
     }
 
     dynamic = () => allKeys(this.object).map(x => makeLexeme({
-        type: typeOf(this.object[x]),
+        type: typeOf(this._get(x)),
         root: x
     }))
 

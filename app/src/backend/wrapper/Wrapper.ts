@@ -11,9 +11,9 @@ export default interface Wrapper {
     is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
     get(predicate: Lexeme): Wrapper | undefined
-    /** describe the object */ toClause(clause?: Clause): Clause
+    /** describe the object */ toClause(query?: Clause): Clause
     /** infer grammatical types of props */ dynamic(): Lexeme[]
-    unwrap(): any | undefined
+    unwrap(): any
 }
 
 export interface SetOps {
@@ -26,6 +26,14 @@ export interface CopyOpts {
     preds?: Lexeme[]
 }
 
-export function wrap(id: Id, preds: Lexeme[], o?: Object): Wrapper {
-    return new BaseWrapper(o ?? {}, id, preds)
+export function wrap(args: WrapArgs): Wrapper {
+    return new BaseWrapper(args.o ?? {}, args.id, args.preds ?? [], args.parent, args.name)
+}
+
+export interface WrapArgs {
+    id: Id,
+    preds?: Lexeme[],
+    o?: Object,
+    parent?: Wrapper,
+    name?: string
 }
