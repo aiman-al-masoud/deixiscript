@@ -70,13 +70,12 @@ export default class LexemeObject implements Lexeme {
         return (window as any)?.[this.proto as any]?.prototype;
     }
 
-    setAlias = (alias: string, path: string[]) => {
+    setAlias = (name: string, path: string[]) => {
 
         this.heirlooms.push({
-            set: makeSetter(alias, path),
-            get: makeGetter(alias, path),
-            name: alias,
-            path
+            name,
+            set: makeSetter(path),
+            get: makeGetter(path),
         })
 
     }
