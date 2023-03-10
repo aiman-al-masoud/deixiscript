@@ -360,4 +360,5 @@ Eliminate the need for "aliases" in BaseWrapper.get(), maybe by new getNested th
 wrap(WrapArgs) // remove all but one new BaseWrapper(...)
 
 
-Maybe a Lexeme shouldn't contain directly heirlooms, maybe it should be connected to a "prototype" object used as a mixin/class.
+Maybe a Lexeme shouldn't contain directly heirlooms, maybe it should be connected to a "prototype" object used as a mixin/class. Need to facilitate [prototyping](#prototyping). Need to have simple system, where any object is potentially a mixin, and where you can define complex stuff on an object and then "create copies" of that object.
+
