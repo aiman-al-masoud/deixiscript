@@ -367,3 +367,4 @@ Bring back "every button is an element" understood as letting "button" inherit f
 Eliminate Wrapper.proto somehow, make sure classes are accessible directly, maybe by window['HTMLButtonElement'].
 
 
+be vs become copulas?
