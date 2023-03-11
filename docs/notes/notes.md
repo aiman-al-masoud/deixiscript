@@ -352,20 +352,36 @@ function getPosition(){
 
 this needs set(Predicate|Wrapper) or usage of opts.args.
 
+# New Inheritance Model
 
-#
+Generally: an object ("thing") should be able to inherit from one or more objects.
 
-Eliminate the need for "aliases" in BaseWrapper.get(), maybe by new getNested that incorporates wrapping capabilities to attach parent to each object.
+In deixiscript, `inheritance == is-a`, but `is-a != has-a`, eg:
 
-wrap(WrapArgs) // remove all but one new BaseWrapper(...)
+red is a color // is-a
+scarlet is a red // is-a
+scarlet is a color // is-a, redundant
+the button is red // has-a, (button.color = red)
+
+Wrapper.inherit(w:Wrapper) or Wrapper.inherit(o:Inheritable)
+
+transferring "heirlooms" vs making a copy of the prototype object ????
+
+Wrapper.inherit() decides whether to copy() the prototype or whether to copy its heirlooms?
+
+A Lexeme is tied to a Wrapper, a Lexeme doesn't contain directly implementation code, because that seems out of its responsibility scope.
+
+element is an HTMLElement.
+button is an HTMLButtonElement.
+buttons are elements. // button is an element ???
 
 
-Maybe a Lexeme shouldn't contain directly heirlooms, maybe it should be connected to a "prototype" object used as a mixin/class. Need to facilitate [prototyping](#prototyping). Need to have simple system, where any object is potentially a mixin, and where you can define complex stuff on an object and then "create copies" of that object.
+An object can have multiple prototypes, but some prototypes may be incompatible. Describe some rules:
 
-Bring back "every button is an element" understood as letting "button" inherit from mixin "element".
+1. If a js-proto is a derived from another prototype, just keep the subprototype
+1. If two js-protos are both derived from same prototype, keep the latest.
+1. If two dx-protos are mutually incompatible (for the future) ...
 
-Eliminate Wrapper.proto somehow, make sure classes are accessible directly, maybe by window['HTMLButtonElement'].
+Methods can be fetched from the prototypes, but what about instance properties?
 
-be vs become copulas?
-
-'red and blue and black and green are colors' should let red, blue... inherit from mixin 'color'.
+For instance properties copy the prototype using Wrapper.copy(), but beware of incompatibilities.
