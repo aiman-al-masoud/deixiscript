@@ -393,3 +393,12 @@ Some kinds of relationships
 * identity: objects are the same
 * equivalence: objects are logically equivalent
 * has-a: an object has a property (eg: the button is red/color of the button is red)
+
+```
+button is an HTMLButtonElement. // create a new object-prototype, add global lexeme
+x is a button. // create a new object-prototype, add global lexeme
+x is black. // set a property
+color of style of x is red. // set a property
+y is an x. // create a new object-prototype, add global lexeme
+```
+
