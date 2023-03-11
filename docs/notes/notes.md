@@ -369,7 +369,7 @@ transferring "heirlooms" vs making a copy of the prototype object ????
 
 Wrapper.inherit() decides whether to copy() the prototype or whether to copy its heirlooms?
 
-A Lexeme is tied to a Wrapper, a Lexeme doesn't contain directly implementation code, because that seems out of its responsibility scope.
+A Lexeme has a link to a Wrapper. A Lexeme doesn't contain directly implementation code, because that seems out of its responsibility scope. A Lexeme is not a class or a prototype, it's just a symbol.
 
 element is an HTMLElement.
 button is an HTMLButtonElement.
