@@ -385,3 +385,11 @@ An object can have multiple prototypes, but some prototypes may be incompatible.
 Methods can be fetched from the prototypes, but what about instance properties?
 
 For instance properties copy the prototype using Wrapper.copy(), but beware of incompatibilities.
+
+
+Some kinds of relationships
+
+* is-a: inheritance, (eg: red is a color)
+* identity: objects are the same
+* equivalence: objects are logically equivalente
+* has-a: an object has a property
