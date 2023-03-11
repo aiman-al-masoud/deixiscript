@@ -23,10 +23,6 @@ export default class BaseWrapper implements Wrapper {
         preds.forEach(p => this.set(p))
     }
 
-    protected hasPredicate(predicate: Lexeme) {
-        return this.predicates.some(x => x.root === predicate.root)
-    }
-
     is = (predicate: Lexeme) =>
         this._get(predicate?.concepts?.[0]!) === predicate.root
         || this.predicates.map(x => x.root).includes(predicate.root)
@@ -66,44 +62,38 @@ export default class BaseWrapper implements Wrapper {
 
         if (this.parent && typeof this.object !== 'object') {
             const parent = this.parent?.unwrap?.() ?? this.parent
-            parent[this.name!] = predicate.root
+            return parent[this.name!] = predicate.root
         }
 
-        this.setMultiProp(predicate, opts)
+        this._set(predicate, opts)
 
     }
 
     protected _get(key: string) {
         const val = this.object[key]
-        return val instanceof BaseWrapper ? val.unwrap() : val
+        return val?.unwrap?.() ?? val
     }
 
-    protected setMultiProp(value: Lexeme, opts?: SetOps) {
+    protected _set(value: Lexeme, opts?: SetOps) {
 
-        const hasProp =
-            this._get(value?.concepts?.[0]!) !== undefined
-            || this._get(value.root) !== undefined
+        const prop = value?.concepts?.[0] ?? value.root
 
-        if (hasProp) {
+        if (this._get(prop) !== undefined) {
 
             const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated
                 : !opts?.negated ? value.root
                     : opts?.negated && this.is(value) ? ''
-                        : this._get(value.concepts?.[0] ?? value.root)
+                        : this._get(prop)
 
-            this.object[value?.concepts?.[0] ?? value.root] = val
+            this.object[prop] = val
 
         } else {
 
-            if (!this.hasPredicate(value)) {
-                this.predicates.push(value)
-            }
+            this.predicates.push(value)
 
             value.heirlooms.forEach(h => {
-
                 const object = typeof this.object === 'object' ? this.object : this.object.constructor.prototype
                 Object.defineProperty(object, h.name, h)
-
             })
 
         }
