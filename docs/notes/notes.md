@@ -392,4 +392,4 @@ Some kinds of relationships
 * is-a: inheritance, (eg: red is a color)
 * identity: objects are the same
 * equivalence: objects are logically equivalent
-* has-a: an object has a property
+* has-a: an object has a property (eg: the button is red/color of the button is red)
