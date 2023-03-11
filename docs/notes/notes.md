@@ -402,3 +402,4 @@ color of style of x is red. // set a property
 y is an x. // create a new object-prototype, add global lexeme
 ```
 
+Each object has a list of instances, achieve multiple inheritance through proxy/composition...
