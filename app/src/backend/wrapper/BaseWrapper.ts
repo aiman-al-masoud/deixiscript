@@ -65,12 +65,8 @@ export default class BaseWrapper implements Wrapper {
         }
 
         if (this.parent && typeof this.object !== 'object') {
-
-            if (this.parent instanceof BaseWrapper) {
-                this.parent.unwrap()[this.name!] = predicate.root
-            } else {
-                (this.parent as any)[this.name!] = predicate.root
-            }
+            const parent = this.parent?.unwrap?.() ?? this.parent
+            parent[this.name!] = predicate.root
         }
 
         this.setMultiProp(predicate, opts)
