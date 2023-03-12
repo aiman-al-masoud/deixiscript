@@ -10,14 +10,15 @@ export interface Lexeme {
     /**form of this instance*/ token?: string
     /**made up of more lexemes*/  contractionFor?: string[]
     /**for quantadj */ cardinality?: Cardinality
-    proto?: string
-    concepts?: string[]
     _root?: Partial<Lexeme>
     extrapolate(context: Context): Lexeme[]
-    getProto(): object | undefined
     readonly isPlural: boolean
-    readonly isConcept: boolean
     readonly isMultiWord: boolean
+
+    proto?: string
+    concepts?: string[]
+    getProto(): object | undefined
+    readonly isConcept: boolean
     setAlias(alias: string, path: string[]): void
     heirlooms: Heirloom[]
 }
