@@ -403,3 +403,10 @@ y is an x. // create a new object-prototype, add global lexeme
 ```
 
 Each object has a list of instances, achieve multiple inheritance through proxy/composition...
+
+
+# Next Step
+
+Doing it the "shotgun" way prooved to be too difficult. In the interest of mental sanity, take the small-steps approach.
+
+Remove CreateAction in favor of just EditAction. BaseWrapper.set() should create an instance of the object from lexeme.getProto(). May need to pass the Context to append DOM element from within BaseWrapper.
