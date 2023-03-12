@@ -24,11 +24,7 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
     if (clause.predicate?.type === 'iverb' || clause.predicate?.type === 'mverb') {
         return new RelationAction(clause, topLevel)
     }
-
-    if (clause.predicate?.proto) {
-        return new CreateAction(clause, topLevel)
-    }
-
+  
     if (clause instanceof Imply && clause.theme.entities.some(e => clause.theme.ownersOf(e).length) && clause.rheme.entities.some(e => clause.rheme.ownersOf(e).length)) {
         return new SetAliasAction(clause)
     }
@@ -43,6 +39,10 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
 
     if (clause instanceof Imply) {
         return new MultiAction(clause)
+    }
+
+    if (clause.predicate?.proto) {
+        return new CreateAction(clause, topLevel)
     }
 
     return new EditAction(clause, topLevel)
