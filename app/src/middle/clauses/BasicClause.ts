@@ -30,15 +30,13 @@ export class BasicClause implements Clause {
         return new And(this, other, opts?.asRheme ?? false)
     }
 
-    copy(opts?: CopyOpts): BasicClause {
-        return new BasicClause(
-            this.predicate,
-            this.args.map(a => opts?.map?.[a] ?? a),
-            opts?.negate ?? this.negated,
-            opts?.sideEffecty ?? this.isSideEffecty,
-            opts?.exactIds ?? this.exactIds,
-        )
-    }
+    copy = (opts?: CopyOpts) => new BasicClause(
+        this.predicate,
+        this.args.map(a => opts?.map?.[a] ?? a),
+        opts?.negate ?? this.negated,
+        opts?.sideEffecty ?? this.isSideEffecty,
+        opts?.exactIds ?? this.exactIds,
+    )
 
     flatList(): Clause[] {
         return [this]
