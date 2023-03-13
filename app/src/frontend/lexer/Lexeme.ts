@@ -14,6 +14,7 @@ export interface Lexeme {
     extrapolate(context: Context): Lexeme[]
     readonly isPlural: boolean
     readonly isMultiWord: boolean
+    readonly isVerb:boolean
 
     proto?: string
     concepts?: string[]

@@ -16,6 +16,7 @@ export default class LexemeObject implements Lexeme {
     proto = this.newData?.proto ?? this._root?.proto
     concepts = this.newData?.concepts ?? this._root?.concepts
     heirlooms = this?.newData?.heirlooms ?? this._root?.heirlooms ?? []
+    readonly isVerb = this.type === 'mverb' || this.type === 'iverb'
 
     constructor(
         readonly newData?: Partial<Lexeme>

@@ -20,11 +20,10 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
         return new CreateLexemeAction(clause, topLevel)
     }
 
-    // TODO: prepositions, and be beware of 'of' 
-    if (clause.predicate?.type === 'iverb' || clause.predicate?.type === 'mverb') {
+    if (clause.predicate?.isVerb) { // prepositions? 'of'?
         return new RelationAction(clause, topLevel)
     }
-  
+
     if (clause instanceof Imply && clause.theme.entities.some(e => clause.theme.ownersOf(e).length) && clause.rheme.entities.some(e => clause.rheme.ownersOf(e).length)) {
         return new SetAliasAction(clause)
     }
