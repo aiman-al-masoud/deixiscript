@@ -67,7 +67,7 @@ export default class LexemeObject implements Lexeme {
         return this.root.includes(' ');
     }
 
-    getProto(): object | undefined {
+    getProto(): object | undefined {//TODO: maybe return Object.prototype by default
         return (window as any)?.[this.proto as any]?.prototype;
     }
 
