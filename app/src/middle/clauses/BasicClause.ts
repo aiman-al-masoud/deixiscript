@@ -26,10 +26,6 @@ export class BasicClause implements Clause {
 
     }
 
-    and(other: Clause, opts?: AndOpts): Clause {
-        return new And(this, other, opts?.asRheme ?? false)
-    }
-
     copy = (opts?: CopyOpts) => new BasicClause(
         this.predicate,
         this.args.map(a => opts?.map?.[a] ?? a),
@@ -38,33 +34,17 @@ export class BasicClause implements Clause {
         opts?.exactIds ?? this.exactIds,
     )
 
-    flatList(): Clause[] {
-        return [this]
-    }
-
-    implies(conclusion: Clause): Clause {
-        return new Imply(this, conclusion)
-    }
-
-    about(id: Id): Clause {
-        return this.entities.includes(id) ? this : emptyClause
-    }
-
-    ownedBy(id: Id): Id[] {
-        return this.predicate.root === 'of' && this.args[1] === id ? [this.args[0]] : []
-    }
-
-    ownersOf(id: Id): Id[] {
-        return this.predicate.root === 'of' && this.args[0] === id ? [this.args[1]] : []
-    }
+    and = (other: Clause, opts?: AndOpts): Clause => new And(this, other, opts?.asRheme ?? false)
+    implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
+    flatList = () => [this]
+    about = (id: Id) => this.entities.includes(id) ? this : emptyClause
+    ownedBy = (id: Id) => this.predicate.root === 'of' && this.args[1] === id ? [this.args[0]] : []
+    ownersOf = (id: Id) => this.predicate.root === 'of' && this.args[0] === id ? [this.args[1]] : []
+    describe = (id: Id) => this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
 
     toString() {
         const yes = `${this.predicate.root}(${this.args})`
         return this.negated ? `not(${yes})` : yes
-    }
-
-    describe(id: Id): Lexeme[] {
-        return this.entities.includes(id) && this.args.length === 1 ? [this.predicate] : []
     }
 
     query(query: Clause): Map[] {
