@@ -75,13 +75,11 @@ export class BasicClause implements Clause {
             return [mockMap(query)]
         }
 
-        query = query.flatList()[0] //TODO!!???
-
         if (!(query instanceof BasicClause)) {
             return []
         }
 
-        if (query.predicate.root !== this.predicate.root) {
+        if (this.predicate.root !== query.predicate.root) {
             return []
         }
 
