@@ -13,17 +13,6 @@ import Imply from "../../middle/clauses/Imply"
 
 export function getAction(clause: Clause, topLevel: Clause): Action {
 
-
-    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')
-        || topLevel.rheme.flatList().some(x => x.predicate?.isConcept)) {
-
-        return new CreateLexemeAction(clause, topLevel)
-    }
-
-    if (clause.predicate?.isVerb) { // prepositions? 'of'?
-        return new RelationAction(clause, topLevel)
-    }
-
     if (clause instanceof Imply && clause.theme.entities.some(e => clause.theme.ownersOf(e).length) && clause.rheme.entities.some(e => clause.rheme.ownersOf(e).length)) {
         return new SetAliasAction(clause)
     }
@@ -38,6 +27,15 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
 
     if (clause instanceof Imply) {
         return new MultiAction(clause)
+    }
+
+    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')
+        || topLevel.rheme.flatList().some(x => x.predicate?.isConcept)) {
+        return new CreateLexemeAction(clause, topLevel)
+    }
+
+    if (clause.predicate?.isVerb) { // prepositions? 'of'?
+        return new RelationAction(clause, topLevel)
     }
 
     if (clause.predicate?.proto) {
