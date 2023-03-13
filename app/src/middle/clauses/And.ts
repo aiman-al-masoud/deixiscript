@@ -54,7 +54,7 @@ export default class And implements Clause {
         return this.negated ? [this] : [...this.clause1.flatList(), ...this.clause2.flatList()]
     }
 
-    get theme(): Clause {
+    get theme(): Clause { // can't be prop, because would be called in And's cons, BasicCluse.and() calls And's cons, \inf recursion ensues
         return this.clause2IsRheme ? this.clause1 : this.clause1.theme.and(this.clause2.theme)
     }
 
