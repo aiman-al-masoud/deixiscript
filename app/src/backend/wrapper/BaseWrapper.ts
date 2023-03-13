@@ -60,12 +60,25 @@ export default class BaseWrapper implements Wrapper {
             return this.call(predicate, opts.args)
         }
 
-        if (this.parent && typeof this.object !== 'object') {
-            const parent = this.parent?.unwrap?.() ?? this.parent
-            return parent[this.name!] = predicate.root
+        this._set(predicate, opts)
+
+    }
+
+    protected _set(value: Lexeme, opts?: SetOps) {
+
+        if (this.parent && typeof this.object !== 'object') { //has-a
+            const parent = this.parent.unwrap?.() ?? this.parent
+            return parent[this.name!] = value.root //TODO: negation
         }
 
-        this._set(predicate, opts)
+        const prop = value?.concepts?.[0] ?? value.root
+
+        if (this._get(prop) !== undefined) { // has-a
+            const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this._get(prop)
+            this.object[prop] = val
+        } else { // is-a
+            this.inherit(value)
+        }
 
     }
 
@@ -74,30 +87,13 @@ export default class BaseWrapper implements Wrapper {
         return val?.unwrap?.() ?? val
     }
 
-    protected _set(value: Lexeme, opts?: SetOps) {
+    protected inherit(value: Lexeme) {
+        this.predicates.push(value)
 
-        const prop = value?.concepts?.[0] ?? value.root
-
-        if (this._get(prop) !== undefined) {
-
-            const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated
-                : !opts?.negated ? value.root
-                    : opts?.negated && this.is(value) ? ''
-                        : this._get(prop)
-
-            this.object[prop] = val
-
-        } else {
-
-            this.predicates.push(value)
-
-            value.heirlooms.forEach(h => {
-                const object = typeof this.object === 'object' ? this.object : this.object.constructor.prototype
-                Object.defineProperty(object, h.name, h)
-            })
-
-        }
-
+        value.heirlooms.forEach(h => {
+            const object = typeof this.object === 'object' ? this.object : this.object.constructor.prototype
+            Object.defineProperty(object, h.name, h)
+        })
     }
 
     copy = (opts?: CopyOpts) => new BaseWrapper(
