@@ -5,7 +5,8 @@ import EmptyClause from "./EmptyClause"
 import { Lexeme } from "../../frontend/lexer/Lexeme"
 
 /**
- * A 'language-agnostic' first order logic representation.
+ * An unambiguous predicate-logic-like intermediate representation
+ * of the programmer's intent.
 */
 export interface Clause {
 
