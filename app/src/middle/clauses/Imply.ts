@@ -23,10 +23,6 @@ export default class Imply implements Clause {
 
     }
 
-    and(other: Clause, opts?: AndOpts): Clause {
-        return new And(this, other, opts?.asRheme ?? false)
-    }
-
     copy = (opts?: CopyOpts) => new Imply(
         opts?.clause1 ?? this.condition.copy(opts),
         opts?.clause2 ?? this.consequence.copy(opts),
@@ -42,6 +38,7 @@ export default class Imply implements Clause {
     }
 
     flatList = () => [this]
+    and = (other: Clause, opts?: AndOpts): Clause => new And(this, other, opts?.asRheme ?? false)
     ownedBy = (id: Id) => this.condition.ownedBy(id).concat(this.consequence.ownedBy(id))
     ownersOf = (id: Id) => this.condition.ownersOf(id).concat(this.consequence.ownersOf(id))
     describe = (id: Id) => this.consequence.describe(id).concat(this.condition.describe(id))
