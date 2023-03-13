@@ -378,7 +378,7 @@ buttons are elements. // button is an element ???
 
 An object can have multiple prototypes, but some prototypes may be incompatible. Describe some rules:
 
-1. If a js-proto is a derived from another prototype, just keep the subprototype
+1. If a js-proto is derived from another prototype, just keep the subprototype
 1. If two js-protos are both derived from same prototype, keep the latest.
 1. If two dx-protos are mutually incompatible (for the future) ...
 
