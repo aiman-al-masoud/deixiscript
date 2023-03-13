@@ -27,18 +27,14 @@ export default class Imply implements Clause {
         return new And(this, other, opts?.asRheme ?? false)
     }
 
-    copy(opts?: CopyOpts): Clause {
-
-        return new Imply(
-            opts?.clause1 ?? this.condition.copy(opts),
-            opts?.clause2 ?? this.consequence.copy(opts),
-            opts?.negate ?? this.negated,
-            opts?.sideEffecty ?? this.isSideEffecty,
-            opts?.subjconj ?? this.subjconj,
-            opts?.exactIds ?? this.exactIds   
-        )
-
-    }
+    copy = (opts?: CopyOpts) => new Imply(
+        opts?.clause1 ?? this.condition.copy(opts),
+        opts?.clause2 ?? this.consequence.copy(opts),
+        opts?.negate ?? this.negated,
+        opts?.sideEffecty ?? this.isSideEffecty,
+        opts?.subjconj ?? this.subjconj,
+        opts?.exactIds ?? this.exactIds
+    )
 
     flatList(): Clause[] {
         return [this]
