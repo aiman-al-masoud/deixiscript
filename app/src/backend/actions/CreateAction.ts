@@ -34,10 +34,7 @@ export default class CreateAction implements Action {
         const o = newInstance(proto, predicate.root)
         init(o, context, id)
 
-        const numberLexeme = context.lexemes.filter(x => x.root === 'number')[0]
-        const predicates = [predicate, ...(typeof o === 'number' ? [numberLexeme] : [])]
-
-        context.set(id, predicates, o)
+        context.set(id, [predicate], o)
     }
 
 }

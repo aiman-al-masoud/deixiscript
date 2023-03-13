@@ -89,11 +89,7 @@ export default class BaseWrapper implements Wrapper {
 
     protected inherit(value: Lexeme) {
         this.predicates.push(value)
-
-        value.heirlooms.forEach(h => {
-            const object = typeof this.object === 'object' ? this.object : this.object.constructor.prototype
-            Object.defineProperty(object, h.name, h)
-        })
+        value.heirlooms.forEach(h => { Object.defineProperty(this.object, h.name, h) })
     }
 
     copy = (opts?: CopyOpts) => new BaseWrapper(

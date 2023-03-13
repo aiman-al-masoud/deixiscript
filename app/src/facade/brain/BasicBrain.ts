@@ -15,6 +15,9 @@ export default class BasicBrain implements Brain {
         readonly context: Context,
         readonly actuator = getActuator()
     ) {
+
+        Object.defineProperty(Number.prototype, 'add', { writable : true, value: function (a: any) { return this + a } })
+
         this.context.prelude.forEach(c => this.execute(c))
     }
 
