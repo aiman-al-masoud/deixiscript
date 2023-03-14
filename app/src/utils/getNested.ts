@@ -7,11 +7,11 @@ export function getNested(object: any, path: string[]) {
         return undefined
     }
 
-    let x = wrap({ o: object[path[0]], id: getIncrementalId(), parent: object, name: path[0] })
+    let x = wrap({ object: object[path[0]], id: getIncrementalId(), parent: object, name: path[0] })
 
     path.slice(1).forEach(p => {
         const y = x.unwrap()[p]
-        x = wrap({ o: y, id: getIncrementalId(), parent: x, name: p })
+        x = wrap({ object: y, id: getIncrementalId(), parent: x, name: p })
     })
 
     return x
