@@ -413,3 +413,5 @@ Remove CreateAction in favor of just EditAction. BaseWrapper.set() should create
 
 
 Merge EditAction and RelationAction.
+
+Detect incompatibilities and auto-disinherit when need be (eg: x is a button. x is a div.).
