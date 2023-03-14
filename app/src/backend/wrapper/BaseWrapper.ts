@@ -57,8 +57,8 @@ export default class BaseWrapper implements Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): any {
 
-        if (opts?.args) {
-            return this.call(predicate, opts.args)
+        if (predicate.isVerb) {
+            return this.call(predicate, opts?.args!)
         }
 
         this._set(predicate, opts)

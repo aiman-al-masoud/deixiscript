@@ -1,5 +1,4 @@
-import EditAction from "./EditAction"
-import RelationAction from "./RelationAction"
+import SimpleAction from "./SimpleAction"
 import SetAliasAction from "./SetAliasAction"
 import MultiAction from "./MultiAction"
 import Action from "./Action"
@@ -33,9 +32,5 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
         return new CreateLexemeAction(clause, topLevel)
     }
 
-    if (clause.predicate?.isVerb) { // prepositions? 'of'?
-        return new RelationAction(clause, topLevel)
-    }
-
-    return new EditAction(clause, topLevel)
+    return new SimpleAction(clause, topLevel)
 }
