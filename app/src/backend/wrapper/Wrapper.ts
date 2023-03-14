@@ -2,6 +2,7 @@ import { Id } from "../../middle/id/Id"
 import { Lexeme } from "../../frontend/lexer/Lexeme"
 import BaseWrapper from "./BaseWrapper"
 import { Clause } from "../../middle/clauses/Clause"
+import { Context } from "../../facade/context/Context"
 
 export default interface Wrapper {
 
@@ -19,6 +20,7 @@ export default interface Wrapper {
 export interface SetOps {
     negated?: boolean
     args?: Wrapper[]
+    context?: Context
 }
 
 export interface CopyOpts {

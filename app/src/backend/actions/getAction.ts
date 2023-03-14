@@ -1,4 +1,3 @@
-import CreateAction from "./CreateAction"
 import EditAction from "./EditAction"
 import RelationAction from "./RelationAction"
 import SetAliasAction from "./SetAliasAction"
@@ -36,10 +35,6 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
 
     if (clause.predicate?.isVerb) { // prepositions? 'of'?
         return new RelationAction(clause, topLevel)
-    }
-
-    if (clause.predicate?.proto) {
-        return new CreateAction(clause, topLevel)
     }
 
     return new EditAction(clause, topLevel)

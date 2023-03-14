@@ -8,13 +8,14 @@ import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipCh
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
+import { newInstance } from "../../utils/newInstance";
 
 export default class BaseWrapper implements Wrapper {
 
-    readonly predicates: Lexeme[] = []
+    protected predicates: Lexeme[] = []
 
     constructor(
-        readonly object: any,
+        protected object: any,
         readonly id: Id,
         preds: Lexeme[],
         readonly parent?: Wrapper,
@@ -77,19 +78,49 @@ export default class BaseWrapper implements Wrapper {
             const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this._get(prop)
             this.object[prop] = val
         } else { // is-a
-            this.inherit(value)
+            opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
         }
 
     }
 
-    protected _get(key: string) {
-        const val = this.object[key]
-        return val?.unwrap?.() ?? val
+    protected inherit(value: Lexeme, opts?: SetOps) {
+
+        if (this.is(value)) {
+            return
+        }
+
+        this.predicates.push(value)
+        const proto = value.getProto()
+
+        if (!proto) {
+            return
+        }
+
+        this.object = newInstance(proto, value.root)
+        value.heirlooms.forEach(h => Object.defineProperty(this.object, h.name, h))
+
+        const buffer = this.predicates.filter(x => x !== value)
+        this.predicates = []
+        buffer.forEach(p => this.set(p))
+        this.predicates.push(value)
+
+        if (this.object instanceof HTMLElement) {
+            this.object.id = this.id + ''
+            this.object.textContent = 'default'
+            opts?.context?.root?.appendChild(this.object)
+        }
+
     }
 
-    protected inherit(value: Lexeme) {
-        this.predicates.push(value)
-        value.heirlooms.forEach(h => { Object.defineProperty(this.object, h.name, h) })
+    protected disinherit(value: Lexeme, opts?: SetOps) {
+
+        this.predicates = this.predicates.filter(x => x !== value)
+
+        if (this.object instanceof HTMLElement) {
+            opts?.context?.root?.removeChild(this.object)
+            // TODO: remove this.object, but save predicates
+        }
+
     }
 
     copy = (opts?: CopyOpts) => new BaseWrapper(
@@ -101,6 +132,11 @@ export default class BaseWrapper implements Wrapper {
     get(predicate: Lexeme): Wrapper | undefined {
         const w = this.object[predicate.root]
         return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), [], this, predicate.root)
+    }
+
+    protected _get(key: string) {
+        const val = this.object[key]
+        return val?.unwrap?.() ?? val
     }
 
     dynamic = () => allKeys(this.object).map(x => makeLexeme({

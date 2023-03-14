@@ -21,7 +21,7 @@ export default class EditAction implements Action {
         }
 
         const wrapper = getKool(context, searchSpace, localId)[0] ?? context.set(getIncrementalId(), [])
-        wrapper.set(predicate, { negated: this.clause.negated })
+        wrapper.set(predicate, { negated: this.clause.negated, context })
 
     }
 
