@@ -1,23 +1,23 @@
 import { Lexeme } from "../frontend/lexer/Lexeme";
 
-const be: Partial<Lexeme> = {
+const being: Partial<Lexeme> = {
     root: 'be',
     type: 'copula',
 }
 
-const _do: Partial<Lexeme> = {
+const doing: Partial<Lexeme> = {
     root: 'do',
     type: 'hverb',
 }
 
 export const lexemes: Partial<Lexeme>[] = [
 
-    be,
-    _do,
+    being,
+    doing,
 
-    { _root: be, token: 'is', cardinality: 1 },
-    { _root: be, token: 'are', cardinality: '*' }, //TODO! 2+
-    { _root: _do, token: 'does', cardinality: 1 },
+    { _root: being, token: 'is', cardinality: 1 },
+    { _root: being, token: 'are', cardinality: '*' }, //TODO! 2+
+    { _root: doing, token: 'does', cardinality: 1 },
 
     {
         root: 'then',
