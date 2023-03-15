@@ -409,9 +409,6 @@ Each object has a list of instances, achieve multiple inheritance through proxy/
 
 Doing it the "shotgun" way prooved to be too difficult. In the interest of mental sanity, take the small-steps approach.
 
-Remove CreateAction in favor of just EditAction. BaseWrapper.set() should create an instance of the object from lexeme.getProto(). May need to pass the Context to append DOM element from within BaseWrapper. Wrapper.addToDom(root:HTMLElement) method on Wrapper to be called by BaseEnvironment.
-
-
-Merge EditAction and RelationAction.
+Merged CreateAction, EditAction and RelationAction into single class.
 
 Detect incompatibilities and auto-disinherit when need be (eg: x is a button. x is a div.).
