@@ -18,10 +18,10 @@ export interface Lexeme {
 
     proto?: string
     concepts?: string[]
-    getProto(): object | undefined
-    readonly isConcept: boolean
-    setAlias(alias: string, path: string[]): void
     heirlooms: Heirloom[]
+    readonly isConcept: boolean
+    getProto(): object | undefined
+    setAlias(alias: string, path: string[]): void
 }
 
 export interface Heirloom { set?: any, get?: any, name: string, value?: any, writable?: boolean }
