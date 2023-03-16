@@ -24,10 +24,15 @@ const testData3: Map[][] = [
     [{ x: 1 }, { x: 2 }, { x: 3 }]
 ]
 
-const testData4: Map[][] = [ //FAIL
+const testData4: Map[][] = [ 
     [{ x: 1 }, { x: 2 }, { x: 3 }],
     [{ y: 1 }, { y: 2 }, { y: 3 }],
 ]
+
+// const testData5: Map[][] = [ //FAIL, but never happens, since all vars should have a name, so there should be a 1-arg predicate for each var
+//     [{ x: 1, y: 2 }],
+//     [{ x: 3, y: 4 }],
+// ]
 
 function listsEqual(l1: any[], l2: any[]) {
     return l1.length === l2.length && l1.every(x => l2.includes(x))
@@ -65,10 +70,16 @@ function isInvalid(map: Map, allValsOfMem: { [x: Id]: Id[] }) {
 function solveMaps(data: Map[][]): Map[] {
 
     const maps = removeLongest(data).flat()
+    // console.log({ maps })
     const oneEntryMaps = maps.filter(m => Object.values(m).length <= 1)
-    const allVarz = allVars(oneEntryMaps)
-    const allValsOfMem = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }))
+    // console.log({ oneEntryMaps })
+    const allVarz = allVars(maps)
+    // console.log({ allVarz })
+    const allValsOfMem = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
+    // console.log({ allValsOfMem })
     const valid = maps.filter(m => !isInvalid(m, allValsOfMem))
+    // console.log({ valid })
+
 
     valid.forEach((m1, i) => {
         valid.forEach((m2, j) => {
@@ -81,7 +92,8 @@ function solveMaps(data: Map[][]): Map[] {
         })
     })
 
-    return valid.filter(m => Object.values(m).length === allVarz.length)
+    const maxLen = Math.max(...valid.map(m => Object.values(m).length))
+    return valid.filter(m => Object.values(m).length === maxLen)
 }
 
 export function newUnification() {
@@ -92,5 +104,4 @@ export function newUnification() {
     const assert4 = JSON.stringify(solveMaps(testData4)) === JSON.stringify([{ x: 1 }, { x: 2 }, { x: 3 }, { y: 1 }, { y: 2 }, { y: 3 }])
 
     console.log(assert1, assert2, assert3, assert4)
-
 }
