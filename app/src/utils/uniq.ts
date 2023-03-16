@@ -1,7 +1,7 @@
 /**
  * Remove duplicates from an array. Equality by JSON.stringify.
  */
-export function uniq(seq: any[]) {
+export function uniq<T>(seq: T[]): T[] {
     let seen = {} as any
 
     return seq.filter(e => {
