@@ -1,9 +1,8 @@
 /**
- * Remove duplicates from a list of primitives (numbers, bools, strings).
- * Careful using this with objects.
+ * Remove duplicates from an array. Equality by JSON.stringify.
  */
 export function uniq(seq: any[]) {
-    const seen = {} as any
+    let seen = {} as any
 
     return seq.filter(e => {
         const k = JSON.stringify(e)

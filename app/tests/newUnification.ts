@@ -25,7 +25,7 @@ function solveMaps(maps: Map[]): Map[] {
     
     const dedup = uniq(maps)
 
-    console.log(dedup, maps)
+    // console.log(dedup, maps)
 
 
     return []
