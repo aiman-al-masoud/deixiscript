@@ -62,7 +62,6 @@ export const prelude: string[] = [
   `element is a noun and proto of it is HTMLElement`,
   'color is a noun',
   'red and blue and black and green are colors',
-//   'color of any element is background of style of it',
   'color of any button is background of style of it',
   'color of any div is background of style of it',
   'text of any button is textContent of it',

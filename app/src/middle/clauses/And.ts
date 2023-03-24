@@ -7,6 +7,7 @@ import { mockMap } from "./functions/mockMap";
 import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
+import { solveMaps } from "../../../tests/newUnification";
 
 export default class And implements Clause {
 
@@ -69,33 +70,21 @@ export default class And implements Clause {
         }
 
         const universe = this.clause1.and(this.clause2)
-        const result: Map[] = []
-        const it = opts?.it ?? sortIds(universe.entities).at(-1)
+        const it = opts?.it ?? sortIds(universe.entities).at(-1)! //TODO!
 
-        query.entities.forEach(qe => {
-            universe.entities.forEach(re => {
+        const universeList = universe.flatList()
+        const queryList = query.flatList()
 
-                const rd = universe.about(re).flatList().map(x => x.copy({ map: { [re]: qe } })) // subsitute re by qe in real description
-                const qd = query.about(qe).flatList()
-
-                const qhashes = qd.map(x => x.hashCode)
-                const rhashes = rd.map(x => x.hashCode)
-
-                if (qhashes.every(x => rhashes.includes(x))) { // qe unifies with re!
-                    // const qds = qd.map(x => x.toString())
-                    // const rds = rd.map(x => x.toString())
-                    // console.log('qds=',qds, 'rds=',rds)
-                    unify(qe, re, result)
-                }
-
-                if (it && qd.some(x => x.predicate?.type === 'pronoun')) {
-                    unify(qe, it, result)
-                }
-
+        const candidates = queryList.map(q => {
+            return universeList.flatMap(u => {
+                return u.query(q)
             })
         })
 
-        return result
+        const maps = solveMaps(candidates)
+        const pronMap: Map = queryList.filter(c => c.predicate?.type === 'pronoun').map(c => ({ [c.args?.at(0)!]: it })).reduce((a, b) => ({ ...a, ...b }), {})
+        return maps.concat(pronMap)
+
     }
 
     get simple() {
@@ -114,18 +103,5 @@ export default class And implements Clause {
         return this.copy({ clause1: c1, clause2: c2 })
 
     }
-
-}
-
-function unify(qe: Id, re: Id, result: Map[]) {
-
-    if (result.some(x => x[qe] === re)) { // if already unified don't do it again
-        return
-    }
-
-    const i = result.findIndex(x => !x[qe])
-    const m = result[i] ?? {}
-    m[qe] = re
-    result[i > -1 ? i : result.length] = m
 
 }

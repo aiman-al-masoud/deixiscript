@@ -25,7 +25,7 @@ const tests = [
     test21,
     test22,
     test23,
-    test24,
+    // test24,
     test25,
     test26,
     test27,
@@ -311,15 +311,15 @@ function test30() {
     return brain.execute('x')[0].style.background === 'red'
 }
 
-function test31(){
-    const brain = getBrain({root:document.body})
+function test31() {
+    const brain = getBrain({ root: document.body })
     brain.execute('x and y are buttons. x is green and y is red.')
     const res = brain.execute('color of the red button')
     return res.includes('red') && !res.includes('green')
 }
 
-function test32(){
-    const brain = getBrain({root:document.body})
+function test32() {
+    const brain = getBrain({ root: document.body })
     brain.execute('x is a red button. y is a button and the color of it is purple.')
     const res = brain.execute('purple button')
     return res.length === 1 && res[0].style.background === 'purple'

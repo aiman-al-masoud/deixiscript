@@ -2,6 +2,35 @@ import { Id } from "../src/middle/id/Id";
 import { Map } from "../src/middle/id/Map";
 import { uniq } from "../src/utils/uniq";
 
+export function solveMaps(data: Map[][]): Map[] {
+
+    const maps = removeLongest(data).flat()
+    // console.log({ maps })
+    const oneEntryMaps = maps.filter(m => Object.values(m).length <= 1)
+    // console.log({ oneEntryMaps })
+    const allVarz = allVars(maps)
+    // console.log({ allVarz })
+    const allValsOfMem = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
+    // console.log({ allValsOfMem })
+    const valid = maps.filter(m => !isInvalid(m, allValsOfMem))
+    // console.log({ valid })
+
+    valid.forEach((m1, i) => {
+        valid.forEach((m2, j) => {
+
+            if (i !== j && Object.entries(m1).some(e => m2[e[0]] === e[1])) {
+                valid[j] = { ...m2, ...m1 }
+                valid[i] = {}
+            }
+
+        })
+    })
+
+    const maxLen = Math.max(...valid.map(m => Object.values(m).length))
+    return valid.filter(m => Object.values(m).length === maxLen)
+}
+
+
 const testData: Map[][] = [
     [{ x: 1 }, { x: 10 }],
     [{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 10, y: 11 }, { x: 11, y: 12 }],
@@ -24,7 +53,7 @@ const testData3: Map[][] = [
     [{ x: 1 }, { x: 2 }, { x: 3 }]
 ]
 
-const testData4: Map[][] = [ 
+const testData4: Map[][] = [
     [{ x: 1 }, { x: 2 }, { x: 3 }],
     [{ y: 1 }, { y: 2 }, { y: 3 }],
 ]
@@ -67,34 +96,6 @@ function isInvalid(map: Map, allValsOfMem: { [x: Id]: Id[] }) {
     return Object.entries(map).some(x => !allValsOfMem[x[0]].includes(x[1]))
 }
 
-function solveMaps(data: Map[][]): Map[] {
-
-    const maps = removeLongest(data).flat()
-    // console.log({ maps })
-    const oneEntryMaps = maps.filter(m => Object.values(m).length <= 1)
-    // console.log({ oneEntryMaps })
-    const allVarz = allVars(maps)
-    // console.log({ allVarz })
-    const allValsOfMem = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
-    // console.log({ allValsOfMem })
-    const valid = maps.filter(m => !isInvalid(m, allValsOfMem))
-    // console.log({ valid })
-
-
-    valid.forEach((m1, i) => {
-        valid.forEach((m2, j) => {
-
-            if (i !== j && Object.entries(m1).some(e => m2[e[0]] === e[1])) {
-                valid[j] = { ...m2, ...m1 }
-                valid[i] = {}
-            }
-
-        })
-    })
-
-    const maxLen = Math.max(...valid.map(m => Object.values(m).length))
-    return valid.filter(m => Object.values(m).length === maxLen)
-}
 
 export function newUnification() {
 

@@ -9,7 +9,10 @@ export function getKool(context: Context, clause: Clause, localId: Id): Wrapper[
 
     if (ownerIds.length === 0) {
         const maps = context.query(clause)
-        return maps.map(x => x[localId]).flatMap(x => context.get(x) ?? [])
+        return maps
+            .map(x => x[localId])
+            .filter(x => x)
+            .flatMap(x => context.get(x) ?? [])
     }
 
     const owner = getKool(context, clause, ownerIds[0])
