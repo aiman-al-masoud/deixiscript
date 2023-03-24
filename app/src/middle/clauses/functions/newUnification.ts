@@ -1,18 +1,19 @@
-import { Id } from "../src/middle/id/Id";
-import { Map } from "../src/middle/id/Map";
-import { uniq } from "../src/utils/uniq";
+import { Id } from "../../id/Id";
+import { Map } from "../../id/Map";
+import { uniq } from "../../../utils/uniq";
 
 export function solveMaps(data: Map[][]): Map[] {
 
+    // console.log({data})
     const maps = removeLongest(data).flat()
     // console.log({ maps })
     const oneEntryMaps = maps.filter(m => Object.values(m).length <= 1)
     // console.log({ oneEntryMaps })
     const allVarz = allVars(maps)
     // console.log({ allVarz })
-    const allValsOfMem = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
+    const allVals = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
     // console.log({ allValsOfMem })
-    const valid = maps.filter(m => !isInvalid(m, allValsOfMem))
+    const valid = maps.filter(m => !isInvalid(m, allVals))
     // console.log({ valid })
 
     valid.forEach((m1, i) => {
@@ -63,7 +64,7 @@ const testData4: Map[][] = [
 //     [{ x: 3, y: 4 }],
 // ]
 
-function listsEqual(l1: any[], l2: any[]) {
+function equals(l1: any[], l2: any[]) {
     return l1.length === l2.length && l1.every(x => l2.includes(x))
 }
 
@@ -73,7 +74,7 @@ function removeLongest(maps: Map[][]) {
 
     mapsCopy.forEach((ml1, i) => {
         mapsCopy.forEach((ml2, j) => {
-            if (listsEqual(allVars(ml1), allVars(ml2)) && ml1.length !== ml2.length) {
+            if (i !== j && equals(allVars(ml1), allVars(ml2))) {
                 const longest = ml1.length > ml2.length ? i : j
                 mapsCopy[longest] = []
             }
@@ -84,7 +85,7 @@ function removeLongest(maps: Map[][]) {
 
 }
 
-function allValsOf(maps: Map[], variable: string) {
+function allValsOf(maps: Map[], variable: Id) {
     return uniq(maps.flatMap(m => m[variable] ?? []))
 }
 
@@ -95,7 +96,6 @@ function allVars(maps: Map[]) {
 function isInvalid(map: Map, allValsOfMem: { [x: Id]: Id[] }) {
     return Object.entries(map).some(x => !allValsOfMem[x[0]].includes(x[1]))
 }
-
 
 export function newUnification() {
 

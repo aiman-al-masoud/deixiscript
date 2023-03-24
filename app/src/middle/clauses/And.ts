@@ -7,7 +7,7 @@ import { mockMap } from "./functions/mockMap";
 import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
-import { solveMaps } from "../../../tests/newUnification";
+import { solveMaps } from "./functions/newUnification";
 
 export default class And implements Clause {
 
