@@ -7,7 +7,7 @@ import { mockMap } from "./functions/mockMap";
 import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
-import { solveMaps } from "./functions/newUnification";
+import { solveMaps } from "./functions/solveMaps";
 
 export default class And implements Clause {
 
@@ -85,7 +85,7 @@ export default class And implements Clause {
 
         const maps = solveMaps(candidates)
         const pronMap: Map = queryList.filter(c => c.predicate?.type === 'pronoun').map(c => ({ [c.args?.at(0)!]: it })).reduce((a, b) => ({ ...a, ...b }), {})
-        return maps.concat(pronMap).filter(m=>Object.keys(m).length) // empty maps cause problems all around the code!
+        return maps.concat(pronMap).filter(m => Object.keys(m).length) // empty maps cause problems all around the code!
 
     }
 

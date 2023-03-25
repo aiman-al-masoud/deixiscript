@@ -2,19 +2,16 @@ import { Id } from "../../id/Id";
 import { Map } from "../../id/Map";
 import { uniq } from "../../../utils/uniq";
 
+/**
+ * {@link file://./../../../../../docs/notes/unification-algo.md}
+ */
 export function solveMaps(data: Map[][]): Map[] {
 
-    // console.log({data})
     const maps = removeLongest(data).flat()
-    // console.log({ maps })
     const oneEntryMaps = maps.filter(m => Object.values(m).length <= 1)
-    // console.log({ oneEntryMaps })
     const allVarz = allVars(maps)
-    // console.log({ allVarz })
     const allVals = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
-    // console.log({ allValsOfMem })
     const valid = maps.filter(m => !isInvalid(m, allVals))
-    // console.log({ valid })
 
     valid.forEach((m1, i) => {
         valid.forEach((m2, j) => {
@@ -30,39 +27,6 @@ export function solveMaps(data: Map[][]): Map[] {
     const maxLen = Math.max(...valid.map(m => Object.values(m).length))
     return valid.filter(m => Object.values(m).length === maxLen)
 }
-
-
-const testData: Map[][] = [
-    [{ x: 1 }, { x: 10 }],
-    [{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 10, y: 11 }, { x: 11, y: 12 }],
-    [{ y: 2 }, { y: 11 }],
-    [{ y: 1, z: 2 }, { y: 2, z: 3 }, { y: 10, z: 11 }, { y: 11, z: 12 }],
-    [{ z: 3 }, { z: 12 }],
-    [{ x: 1 }, { x: 10 }],
-]
-
-const testData2: Map[][] = [
-    [{ x: 1 }, { x: 10 }],
-    [{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 10, y: 11 }, { x: 11, y: 12 },],
-    [{ y: 2 }, { y: 11 },],
-    [{ y: 1, z: 2 }, { y: 2, z: 3 }, { y: 10, z: 11 }, { y: 11, z: 12 },],
-    [{ z: 3 }, { z: 12 },],
-    [{ x: 1 }],
-]
-
-const testData3: Map[][] = [
-    [{ x: 1 }, { x: 2 }, { x: 3 }]
-]
-
-const testData4: Map[][] = [
-    [{ x: 1 }, { x: 2 }, { x: 3 }],
-    [{ y: 1 }, { y: 2 }, { y: 3 }],
-]
-
-// const testData5: Map[][] = [ //FAIL, but never happens, since all vars should have a name, so there should be a 1-arg predicate for each var
-//     [{ x: 1, y: 2 }],
-//     [{ x: 3, y: 4 }],
-// ]
 
 function equals(l1: any[], l2: any[]) {
     return l1.length === l2.length && l1.every(x => l2.includes(x))
@@ -97,7 +61,41 @@ function isInvalid(map: Map, allValsOfMem: { [x: Id]: Id[] }) {
     return Object.entries(map).some(x => !allValsOfMem[x[0]].includes(x[1]))
 }
 
-export function newUnification() {
+// ------------------------
+
+const testData: Map[][] = [
+    [{ x: 1 }, { x: 10 }],
+    [{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 10, y: 11 }, { x: 11, y: 12 }],
+    [{ y: 2 }, { y: 11 }],
+    [{ y: 1, z: 2 }, { y: 2, z: 3 }, { y: 10, z: 11 }, { y: 11, z: 12 }],
+    [{ z: 3 }, { z: 12 }],
+    [{ x: 1 }, { x: 10 }],
+]
+
+const testData2: Map[][] = [
+    [{ x: 1 }, { x: 10 }],
+    [{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 10, y: 11 }, { x: 11, y: 12 },],
+    [{ y: 2 }, { y: 11 },],
+    [{ y: 1, z: 2 }, { y: 2, z: 3 }, { y: 10, z: 11 }, { y: 11, z: 12 },],
+    [{ z: 3 }, { z: 12 },],
+    [{ x: 1 }],
+]
+
+const testData3: Map[][] = [
+    [{ x: 1 }, { x: 2 }, { x: 3 }]
+]
+
+const testData4: Map[][] = [
+    [{ x: 1 }, { x: 2 }, { x: 3 }],
+    [{ y: 1 }, { y: 2 }, { y: 3 }],
+]
+
+// const testData5: Map[][] = [ //FAIL, but never happens, since all vars should have a name, so there should be a 1-arg predicate for each var
+//     [{ x: 1, y: 2 }],
+//     [{ x: 3, y: 4 }],
+// ]
+
+export function unificationTest() {
 
     const assert1 = JSON.stringify(solveMaps(testData)) === JSON.stringify([{ x: 1, y: 2, z: 3 }, { x: 10, y: 11, z: 12 }])
     const assert2 = JSON.stringify(solveMaps(testData2)) === JSON.stringify([{ x: 1, y: 2, z: 3 }])
