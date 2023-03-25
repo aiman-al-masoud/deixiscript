@@ -13,11 +13,13 @@ background(1),of(1,2),style(2),of(2,3),button(3),red(1),background(10),of(10,11)
 style(11),of(11,12),button(12),red(10).
 ```
 
+Each row represents a list of maps that may agree or disagree with other rows:
+
 ```
 {x:1},{x:10}
 {x:1,y:2},{x:2,y:3},{x:10,y:11},{x:11,y:12}
 {y:2},{y:11}
-{y:1,z:2},{y:2,z:3},{y:10,z:11}{y:11,z:12}
+{y:1,z:2},{y:2,z:3},{y:10,z:11},{y:11,z:12}
 {z:3},{z:12}
 {x:1},{x:10}
 ```
@@ -30,7 +32,7 @@ Rearrange just for simplicity:
 {y:2},{y:11}
 {z:3},{z:12}
 {x:1,y:2},{x:2,y:3},{x:10,y:11},{x:11,y:12}
-{y:1,z:2},{y:2,z:3},{y:10,z:11}{y:11,z:12}
+{y:1,z:2},{y:2,z:3},{y:10,z:11},{y:11,z:12}
 ```
 
 ![](../res/solving-map-unif-equation.png)
@@ -38,7 +40,6 @@ Rearrange just for simplicity:
 ---
 
 # Example 2
-
 
 ## query
 
@@ -57,7 +58,24 @@ style(11),of(11,12),button(12),green(10).
 {x:1},{x:10}
 {x:1,y:2},{x:2,y:3},{x:10,y:11},{x:11,y:12}
 {y:2},{y:11}
-{y:1,z:2},{y:2,z:3},{y:10,z:11}{y:11,z:12}
+{y:1,z:2},{y:2,z:3},{y:10,z:11},{y:11,z:12}
 {z:3},{z:12}
 {x:1}
 ```
+
+Rearrange:
+
+```
+{x:1}
+{x:1},{x:10}
+{y:2},{y:11}
+{z:3},{z:12}
+{x:1,y:2},{x:2,y:3},{x:10,y:11},{x:11,y:12}
+{y:1,z:2},{y:2,z:3},{y:10,z:11},{y:11,z:12}
+```
+
+### Eliminating conflicts
+
+In this case you first need to resolve the conflict: _**`{x:1}` vs `{x:1},{x:10}`**_, by
+eliminating the most permissive, ie: `{x:1},{x:10}`. This is `removeLongest()`'s
+job.

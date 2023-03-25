@@ -6,59 +6,68 @@ import { uniq } from "../../../utils/uniq";
  * {@link file://./../../../../../docs/notes/unification-algo.md}
  */
 export function solveMaps(data: Map[][]): Map[] {
-
     const maps = removeLongest(data).flat()
+    const keys = getKeys(maps)
     const oneEntryMaps = maps.filter(m => Object.values(m).length <= 1)
-    const allVarz = allVars(maps)
-    const allVals = allVarz.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
-    const valid = maps.filter(m => !isInvalid(m, allVals))
-
-    valid.forEach((m1, i) => {
-        valid.forEach((m2, j) => {
-
-            if (i !== j && Object.entries(m1).some(e => m2[e[0]] === e[1])) {
-                valid[j] = { ...m2, ...m1 }
-                valid[i] = {}
-            }
-
-        })
-    })
-
-    const maxLen = Math.max(...valid.map(m => Object.values(m).length))
-    return valid.filter(m => Object.values(m).length === maxLen)
+    const allVals = keys.map(x => ({ [x]: allValsOf(oneEntryMaps, x) })).reduce((a, b) => ({ ...a, ...b }), {})
+    const valid = maps.filter(m => isValid(m, allVals))
+    const pairedUp = pairUp(valid)
+    const results = sameLen(pairedUp)
+    return results
 }
 
-function equals(l1: any[], l2: any[]) {
+function equalSets(l1: any[], l2: any[]) {
     return l1.length === l2.length && l1.every(x => l2.includes(x))
 }
 
+function pairUp(maps: Map[]) {
+
+    const mapz = maps.slice()
+
+    mapz.forEach((m1, i) => {
+        mapz.forEach((m2, j) => {
+
+            if (i !== j && Object.entries(m1).some(e => m2[e[0]] === e[1])) {
+                mapz[j] = { ...m2, ...m1 }
+                mapz[i] = {}
+            }
+
+        })
+    })
+
+    return mapz
+}
+
 function removeLongest(maps: Map[][]) {
+    const mapz = maps.slice()
 
-    const mapsCopy = maps.slice()
-
-    mapsCopy.forEach((ml1, i) => {
-        mapsCopy.forEach((ml2, j) => {
-            if (i !== j && equals(allVars(ml1), allVars(ml2))) {
+    mapz.forEach((ml1, i) => {
+        mapz.forEach((ml2, j) => {
+            if (i !== j && equalSets(getKeys(ml1), getKeys(ml2))) {
                 const longest = ml1.length > ml2.length ? i : j
-                mapsCopy[longest] = []
+                mapz[longest] = []
             }
         })
     })
 
-    return mapsCopy
-
+    return mapz
 }
 
 function allValsOf(maps: Map[], variable: Id) {
     return uniq(maps.flatMap(m => m[variable] ?? []))
 }
 
-function allVars(maps: Map[]) {
+function getKeys(maps: Map[]) {
     return uniq(maps.flatMap(x => Object.keys(x)))
 }
 
-function isInvalid(map: Map, allValsOfMem: { [x: Id]: Id[] }) {
-    return Object.entries(map).some(x => !allValsOfMem[x[0]].includes(x[1]))
+function isValid(map: Map, allValsOfMem: { [x: Id]: Id[] }) {
+    return Object.entries(map).every(x => allValsOfMem[x[0]].includes(x[1]))
+}
+
+function sameLen(maps: Map[]) {
+    const maxLen = Math.max(...maps.map(m => Object.values(m).length))
+    return maps.filter(m => Object.values(m).length === maxLen)
 }
 
 // ------------------------
