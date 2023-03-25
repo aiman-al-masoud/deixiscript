@@ -9,6 +9,7 @@ import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
 import { newInstance } from "../../utils/newInstance";
+import { Map } from "../../middle/id/Map";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -51,8 +52,11 @@ export default class BaseWrapper implements Wrapper {
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
         const nested = this._get(lx?.concepts?.[0] ?? lx?.root)
-        const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause) /* without filter, q.copy() ends up asserting wrong information about this object, you need to assert only ownership of given props if present, not everything else that may come with query q.  */
-        return nested !== undefined ? filteredq.copy({ map: { [oc[0]]: this.id } }) : emptyClause
+        // without filter, q.copy() ends up asserting wrong information about this object, you need to assert only ownership of given props if present, not everything else that may come with query q. 
+        const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause)
+        // ids of owned elements need to be unique, or else new unification algo gets confused
+        const childMap: Map = oc.slice(1).map(x => ({ [x]: `${this.id}${x}` })).reduce((a, b) => ({ ...a, ...b }), {})
+        return nested !== undefined ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
     }
 
     set(predicate: Lexeme, opts?: SetOps): any {

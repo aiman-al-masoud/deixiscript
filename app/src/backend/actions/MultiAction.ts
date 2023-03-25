@@ -11,7 +11,13 @@ export default class MultiAction implements Action {
 
     run(context: Context) {
 
-        context.query(this.clause.theme).forEach(m => {
+        const maps = context.query(this.clause.theme)
+
+        // console.log(this.clause.theme.toString())
+        // console.log(this.clause.rheme.toString())
+        // console.log('maps=', maps)
+
+        maps.forEach(m => {
 
             const top = this.clause.copy({ map: m, exactIds: true })
             const conseq = top.rheme
