@@ -440,6 +440,8 @@ Merged CreateAction, EditAction and RelationAction into single class.
 Detect incompatibilities and auto-disinherit when need be (eg: x is a button. x
 is a div.).
 
-# 2023/03/25
+# 2023/03/25 TODO
 
-TODO: when a lexeme is first created, a referent is created too
+Both or just one?: 
+* when a lexeme is first created, a referent is created too
+* when a wrapper is created any new lexeme pointing to it is created and wrapper is set as referent.
