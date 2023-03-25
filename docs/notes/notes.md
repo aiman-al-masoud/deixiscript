@@ -445,3 +445,6 @@ is a div.).
 Both or just one?: 
 * when a lexeme is first created, a referent is created too
 * when a wrapper is created any new lexeme pointing to it is created and wrapper is set as referent.
+
+
+Context shortcut to most common lexemes
