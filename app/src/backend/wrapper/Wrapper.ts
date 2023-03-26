@@ -8,7 +8,7 @@ export default interface Wrapper {
 
     readonly id: Id
     readonly parent?: Wrapper
-    set(predicate: Lexeme, opts?: SetOps): any
+    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined
     is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
     get(predicate: Lexeme): Wrapper | undefined

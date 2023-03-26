@@ -12,21 +12,25 @@ export default class SimpleAction implements Action {
 
     run(context: Context) {
 
-        if (!this.clause.args || ! this.clause.predicate) {
+        if (!this.clause.args || !this.clause.predicate) {
             return
         }
 
-        const args = this.clause
-            .args
-            .map(x => getKool(context, this.topLevel.theme, x)[0] ?? context.set(getIncrementalId(), []))
-            
-        const subject = args[0]
-        const object = args[1]
+        const args =
+            this.clause
+                .args
+                .map(x => getKool(context, this.topLevel.theme, x)[0] ?? context.set({ id: getIncrementalId(), preds: [], type: 1 }))
 
-        const res = subject?.set(this.clause.predicate, { args: object ? [object] : [], context, negated: this.clause.negated })
+        const subject = args[0]
+
+        const res = subject?.set(this.clause.predicate, {
+            args: args.slice(1),
+            context,
+            negated: this.clause.negated
+        })
 
         if (res) {
-            context.set(getIncrementalId(), [], res)
+            context.set({ wrapper: res, type: 2 })
         }
 
         return res

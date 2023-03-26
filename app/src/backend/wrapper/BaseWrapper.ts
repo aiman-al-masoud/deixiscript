@@ -1,6 +1,6 @@
 import { Id } from "../../middle/id/Id";
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme";
-import Wrapper, { CopyOpts, SetOps } from "./Wrapper";
+import Wrapper, { CopyOpts, SetOps, wrap } from "./Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 import { allKeys } from "../../utils/allKeys";
 import { Clause, clauseOf, emptyClause } from "../../middle/clauses/Clause";
@@ -31,7 +31,8 @@ export default class BaseWrapper implements Wrapper {
 
     protected call(verb: Lexeme, args: Wrapper[]) {
         const method = this._get(verb.root) as Function
-        return method.call(this.object, ...args.map(x => x.unwrap()))
+        const result = method.call(this.object, ...args.map(x => x.unwrap()))
+        return wrap({ id: getIncrementalId(), object: result })
     }
 
     toClause(query?: Clause) {
@@ -59,7 +60,7 @@ export default class BaseWrapper implements Wrapper {
         return nested !== undefined ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
     }
 
-    set(predicate: Lexeme, opts?: SetOps): any {
+    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined {
 
         if (predicate.isVerb) {
             return this.call(predicate, opts?.args!)

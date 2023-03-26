@@ -1,9 +1,8 @@
-import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { Clause, emptyClause } from "../../middle/clauses/Clause";
 import { Id } from "../../middle/id/Id";
 import { Map } from "../../middle/id/Map";
 import Wrapper, { wrap } from "../wrapper/Wrapper";
-import { Enviro } from "./Enviro";
+import { Enviro, SetArgs1, SetArgs2 } from "./Enviro";
 
 export default class BaseEnviro implements Enviro {
 
@@ -24,9 +23,17 @@ export default class BaseEnviro implements Enviro {
         return Object.values(this.dictionary)
     }
 
-    set = (id: Id, preds: Lexeme[], object?: object): Wrapper => {
-        this.lastReferenced = id
-        return this.dictionary[id] = wrap({ id, preds, object })
+    set = (args: SetArgs1 | SetArgs2): Wrapper => {
+
+        switch (args.type) {
+            case 1:
+                this.lastReferenced = args.id
+                return this.dictionary[args.id] = wrap(args)
+            case 2:
+                this.lastReferenced = args.wrapper.id
+                return this.dictionary[args.wrapper.id] = args.wrapper
+        }
+
     }
 
     query = (query: Clause): Map[] => {
