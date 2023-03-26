@@ -34,6 +34,7 @@ const tests = [
     test30,
     test31,
     test32,
+    test33,
 ]
 
 /**
@@ -323,6 +324,12 @@ function test32() {
     brain.execute('x is a red button. y is a button and the color of it is purple.')
     const res = brain.execute('purple button')
     return res.length === 1 && res[0].style.background === 'purple'
+}
+
+function test33(){
+    const brain = getBrain({root : document.body})
+    brain.execute('x is a red div and the width of style of it is 50vw')
+    return brain.execute('red div')[0].style.width === '50vw'
 }
 
 function sleep(millisecs: number) {
