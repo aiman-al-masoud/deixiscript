@@ -442,9 +442,11 @@ is a div.).
 
 # 2023/03/25 TODO
 
+Context shortcut to most common lexemes
+
 Both or just one?: 
 * when a lexeme is first created, a referent is created too
 * when a wrapper is created any new lexeme pointing to it is created and wrapper is set as referent.
 
+getProto, proto, concepts, heirlooms, isConcept, setAlias should go away from Lexeme. They should be replaced with referent:Wrapper on Lexeme.
 
-Context shortcut to most common lexemes
