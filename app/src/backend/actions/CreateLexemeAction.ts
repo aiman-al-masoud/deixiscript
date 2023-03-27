@@ -26,14 +26,15 @@ export default class CreateLexemeAction implements Action {
         const proto = res ? this.topLevel.describe(res).map(x => x.root).filter(x => x !== 'proto')[0] : undefined
 
 
-        // if (concepts && concepts[0]) {
-        //     console.log(concepts[0])
-        //     console.log(context.getLexeme(concepts[0])?.referent)
-        // }
-
         const referent = wrap({ id: getIncrementalId() })
         referent.setProto(proto)
-        referent.setConcepts(concepts)
+
+        if (concepts && concepts[0]) {
+            const superclazz = context.getLexeme(concepts[0])
+            if (superclazz) {
+                referent.set(superclazz)
+            }
+        }
 
         const lexeme = makeLexeme({
             root: name,

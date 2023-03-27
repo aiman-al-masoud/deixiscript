@@ -23,7 +23,6 @@ export default interface Wrapper {
     getHeilooms(): Heirloom[]
     setProto(proto?: string): void
     getProto(): object | undefined
-    setConcepts(concepts?: string[]): void
     getConcepts(): string[] | undefined
 
 }

@@ -28,9 +28,10 @@ export default class BaseWrapper implements Wrapper {
         preds.forEach(p => this.set(p))
     }
 
-    is = (predicate: Lexeme) =>
-        this._get(predicate?.referent?.getConcepts()?.[0]!) === predicate.root
-        || this.predicates.map(x => x.root).includes(predicate.root)
+    is = (predicate: Lexeme) => {
+        return predicate.referent?.getConcepts()?.some(x => this._get(x) === predicate.root)
+            || this.predicates.map(x => x.root).includes(predicate.root)
+    }
 
     protected call(verb: Lexeme, args: Wrapper[]) {
         const method = this._get(verb.root) as Function
@@ -55,12 +56,13 @@ export default class BaseWrapper implements Wrapper {
     protected extraInfo(q: Clause) {
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
-        const nested = this._get(lx?.referent?.getConcepts()?.[0] ?? lx?.root)
+        const conceptsAndRoot = [lx?.referent?.getConcepts(), lx?.root].filter(x => x).flat().map(x => x as string)
+        const nested = conceptsAndRoot.some(x => this._get(x))
         // without filter, q.copy() ends up asserting wrong information about this object, you need to assert only ownership of given props if present, not everything else that may come with query q. 
         const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause)
         // ids of owned elements need to be unique, or else new unification algo gets confused
         const childMap: Map = oc.slice(1).map(x => ({ [x]: `${this.id}${x}` })).reduce((a, b) => ({ ...a, ...b }), {})
-        return nested !== undefined ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
+        return nested ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
     }
 
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined {
@@ -80,7 +82,7 @@ export default class BaseWrapper implements Wrapper {
             return parent[this.name!] = value.root //TODO: negation
         }
 
-        const prop = value?.referent?.getConcepts()?.[0] ?? value.root
+        const prop = value?.referent?.getConcepts()?.[0] ?? value.root//TODO!!!! more than one concept
 
         if (this._get(prop) !== undefined) { // has-a
             const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this._get(prop)
@@ -179,7 +181,7 @@ export default class BaseWrapper implements Wrapper {
         return this.heirlooms
     }
 
-    protected proto?:string
+    protected proto?: string
 
     setProto(proto: string): void {
         this.proto = proto
@@ -189,15 +191,8 @@ export default class BaseWrapper implements Wrapper {
         return (window as any)?.[this.proto as any]?.prototype
     }
 
-    protected concepts:string[] = []
-
-    setConcepts(concepts: string[]): void {
-        this.concepts = concepts
-    }
-
     getConcepts(): string[] {
-        return this.concepts
+        return this.predicates.map(x => x.root)
     }
-
 
 }
