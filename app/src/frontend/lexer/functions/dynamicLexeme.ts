@@ -10,7 +10,7 @@ export function dynamicLexeme(word: string, context: Context, words: string[]): 
         .flatMap(c => context.query(c))
         .flatMap(m => Object.values(m))
         .flatMap(id => context.get(id) ?? [])
-        .flatMap(x => x?.dynamic().flatMap(x => x.extrapolate(context)))
+        .flatMap(x => x?.dynamic().flatMap(x => [...x.extrapolate(context), x]))
         .filter(x => x.token === word || x.root === word)
 
     const isMacroContext =
