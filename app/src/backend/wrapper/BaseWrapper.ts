@@ -41,7 +41,7 @@ export default class BaseWrapper implements Wrapper {
 
     toClause(query?: Clause) {
 
-        const ks = this.predicates.flatMap(x => (x.referent?.getHeilooms() ?? []).flatMap(x => x.name))
+        const ks = this.predicates.flatMap(x => (x.referent?.getHeirlooms() ?? []).flatMap(x => x.name))
 
         return ks
             .map(x => this._get(x))
@@ -107,7 +107,7 @@ export default class BaseWrapper implements Wrapper {
         }
 
         this.object = newInstance(proto, value.root)
-        value.referent?.getHeilooms().forEach(h => Object.defineProperty(this.object, h.name, h))
+        value.referent?.getHeirlooms().forEach(h => Object.defineProperty(this.object, h.name, h))
 
         const buffer = this.predicates.filter(x => x !== value)
         this.predicates = []
@@ -177,7 +177,7 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    getHeilooms(): Heirloom[] {
+    getHeirlooms(): Heirloom[] {
         return this.heirlooms
     }
 

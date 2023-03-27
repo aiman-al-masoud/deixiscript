@@ -20,7 +20,7 @@ export default interface Wrapper {
 
 
     setAlias(alias: string, path: string[]): void
-    getHeilooms(): Heirloom[]
+    getHeirlooms(): Heirloom[]
     setProto(proto?: string): void
     getProto(): object | undefined
     getConcepts(): string[] | undefined
