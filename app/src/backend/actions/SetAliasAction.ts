@@ -23,7 +23,7 @@ export default class SetAliasAction implements Action {
         const path = props.map(x => consequence.describe(x)[0]).map(x => x.root) // same ...
         const lexeme = condition.describe(top)[0] // assume one 
 
-        lexeme.setAlias(concept[0].root, path)
+        lexeme.referent?.setAlias(concept[0].root, path)
     }
 
 }

@@ -1,5 +1,6 @@
 import { Id } from "../../middle/id/Id";
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme";
+import { Heirloom } from "./Heirloom";
 import Wrapper, { CopyOpts, SetOps, wrap } from "./Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 import { allKeys } from "../../utils/allKeys";
@@ -10,6 +11,8 @@ import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
 import { newInstance } from "../../utils/newInstance";
 import { Map } from "../../middle/id/Map";
+import { makeGetter } from "./makeGetter";
+import { makeSetter } from "./makeSetter";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -26,7 +29,7 @@ export default class BaseWrapper implements Wrapper {
     }
 
     is = (predicate: Lexeme) =>
-        this._get(predicate?.concepts?.[0]!) === predicate.root
+        this._get(predicate?.referent?.getConcepts()?.[0]!) === predicate.root
         || this.predicates.map(x => x.root).includes(predicate.root)
 
     protected call(verb: Lexeme, args: Wrapper[]) {
@@ -37,7 +40,7 @@ export default class BaseWrapper implements Wrapper {
 
     toClause(query?: Clause) {
 
-        const ks = this.predicates.flatMap(x => x.heirlooms.flatMap(x => x.name))
+        const ks = this.predicates.flatMap(x => (x.referent?.getHeilooms() ?? []).flatMap(x => x.name))
 
         return ks
             .map(x => this._get(x))
@@ -52,7 +55,7 @@ export default class BaseWrapper implements Wrapper {
     protected extraInfo(q: Clause) {
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
-        const nested = this._get(lx?.concepts?.[0] ?? lx?.root)
+        const nested = this._get(lx?.referent?.getConcepts()?.[0] ?? lx?.root)
         // without filter, q.copy() ends up asserting wrong information about this object, you need to assert only ownership of given props if present, not everything else that may come with query q. 
         const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause)
         // ids of owned elements need to be unique, or else new unification algo gets confused
@@ -77,7 +80,7 @@ export default class BaseWrapper implements Wrapper {
             return parent[this.name!] = value.root //TODO: negation
         }
 
-        const prop = value?.concepts?.[0] ?? value.root
+        const prop = value?.referent?.getConcepts()?.[0] ?? value.root
 
         if (this._get(prop) !== undefined) { // has-a
             const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this._get(prop)
@@ -95,14 +98,14 @@ export default class BaseWrapper implements Wrapper {
         }
 
         this.predicates.push(value)
-        const proto = value.getProto()
+        const proto = value.referent?.getProto()
 
         if (!proto) {
             return
         }
 
         this.object = newInstance(proto, value.root)
-        value.heirlooms.forEach(h => Object.defineProperty(this.object, h.name, h))
+        value.referent?.getHeilooms().forEach(h => Object.defineProperty(this.object, h.name, h))
 
         const buffer = this.predicates.filter(x => x !== value)
         this.predicates = []
@@ -150,5 +153,51 @@ export default class BaseWrapper implements Wrapper {
     }))
 
     unwrap = () => this.object
+
+
+
+
+
+
+
+
+
+
+    readonly heirlooms: Heirloom[] = []
+
+    setAlias = (name: string, path: string[]) => {
+
+        this.heirlooms.push({
+            name,
+            set: makeSetter(path),
+            get: makeGetter(path),
+        })
+
+    }
+
+    getHeilooms(): Heirloom[] {
+        return this.heirlooms
+    }
+
+    protected proto?:string
+
+    setProto(proto: string): void {
+        this.proto = proto
+    }
+
+    getProto(): object | undefined {//TODO: maybe return Object.prototype by default
+        return (window as any)?.[this.proto as any]?.prototype
+    }
+
+    protected concepts:string[] = []
+
+    setConcepts(concepts: string[]): void {
+        this.concepts = concepts
+    }
+
+    getConcepts(): string[] {
+        return this.concepts
+    }
+
 
 }

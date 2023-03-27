@@ -1,7 +1,8 @@
 import { LexemeType } from "../../config/LexemeType"
 import { Cardinality } from "../parser/interfaces/Cardinality"
 import { Context } from "../../facade/context/Context"
-import LexemeObject from "./LexemeObject"
+import BaseLexeme from "./BaseLexeme"
+import Wrapper from "../../backend/wrapper/Wrapper"
 
 
 export interface Lexeme {
@@ -14,18 +15,13 @@ export interface Lexeme {
     extrapolate(context: Context): Lexeme[]
     readonly isPlural: boolean
     readonly isMultiWord: boolean
-    readonly isVerb:boolean
+    readonly isVerb: boolean
 
-    proto?: string
-    concepts?: string[]
-    heirlooms: Heirloom[]
+
+    referent?: Wrapper
     readonly isConcept: boolean
-    getProto(): object | undefined
-    setAlias(alias: string, path: string[]): void
 }
 
-export interface Heirloom { set?: any, get?: any, name: string, value?: any, writable?: boolean }
-
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {
-    return new LexemeObject(data)
+    return new BaseLexeme(data)
 }

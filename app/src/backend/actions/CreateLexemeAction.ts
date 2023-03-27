@@ -4,6 +4,8 @@ import { LexemeType } from "../../config/LexemeType";
 import { Id } from "../../middle/id/Id";
 import { Clause, clauseOf } from "../../middle/clauses/Clause";
 import { Context } from "../../facade/context/Context";
+import { wrap } from "../wrapper/Wrapper";
+import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 
 export default class CreateLexemeAction implements Action {
 
@@ -24,12 +26,19 @@ export default class CreateLexemeAction implements Action {
         const proto = res ? this.topLevel.describe(res).map(x => x.root).filter(x => x !== 'proto')[0] : undefined
 
 
+        // if (concepts && concepts[0]) {
+        //     console.log(concepts[0])
+        //     console.log(context.getLexeme(concepts[0])?.referent)
+        // }
+
+        const referent = wrap({ id: getIncrementalId() })
+        referent.setProto(proto)
+        referent.setConcepts(concepts)
 
         const lexeme = makeLexeme({
             root: name,
-            type: type,
-            proto: proto,
-            concepts: concepts
+            type,
+            referent,
         })
 
         context.setLexeme(lexeme)

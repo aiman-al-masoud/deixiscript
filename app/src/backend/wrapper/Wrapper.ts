@@ -1,5 +1,6 @@
 import { Id } from "../../middle/id/Id"
 import { Lexeme } from "../../frontend/lexer/Lexeme"
+import { Heirloom } from "./Heirloom"
 import BaseWrapper from "./BaseWrapper"
 import { Clause } from "../../middle/clauses/Clause"
 import { Context } from "../../facade/context/Context"
@@ -15,6 +16,16 @@ export default interface Wrapper {
     /** describe the object */ toClause(query?: Clause): Clause
     /** infer grammatical types of props */ dynamic(): Lexeme[]
     unwrap(): any
+
+
+
+    setAlias(alias: string, path: string[]): void
+    getHeilooms(): Heirloom[]
+    setProto(proto?: string): void
+    getProto(): object | undefined
+    setConcepts(concepts?: string[]): void
+    getConcepts(): string[] | undefined
+
 }
 
 export interface SetOps {
