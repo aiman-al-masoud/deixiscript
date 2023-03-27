@@ -23,16 +23,13 @@ export default class SimpleAction implements Action {
 
         const subject = args[0]
 
-
-
         const res = subject?.set(this.clause.predicate, {
             args: args.slice(1),
             context,
             negated: this.clause.negated
         })
 
-
-        if (this.clause.predicate.type === 'noun') { // referent of "proper noun" is first to get it 
+        if (!this.clause.predicate.referent && this.clause.predicate.type === 'noun') { // referent of "proper noun" is first to get it 
             this.clause.predicate.referent ??= subject
             context.setLexeme(this.clause.predicate)
         }

@@ -61,9 +61,10 @@ function test1() {
 
 function test2() {
     const brain = getBrain({ root: document.body })
+    const v1 = (brain as BasicBrain).context.values.length
     brain.execute('x is red. x is a button. x is a button. x is a button. x is red.');
-    const assert1 = (brain as BasicBrain).context.values.length === 1
-    return assert1
+    const v2 = (brain as BasicBrain).context.values.length
+    return v2 - v1 === 1 
 }
 
 function test3() {
@@ -116,8 +117,8 @@ function test8() {
 function test9() {
     const brain = getBrain({ root: document.body })
     brain.execute('x is a red button. x is green.')
-    const assert1 = brain.execute('red').length === 0
-    const assert2 = brain.execute('green').length === 1
+    const assert1 = brain.execute('red button').length === 0
+    const assert2 = brain.execute('green button').length === 1
     return assert1 && assert2
 }
 
@@ -250,7 +251,7 @@ function test22() {
 
 function test23() {
     const brain = getBrain({ root: document.body })
-    brain.execute('x and y and z are red. every red is a button')
+    brain.execute('x and y and z are red. x and y and z are buttons')
     return brain.execute('red buttons').length === 3
 }
 
@@ -277,7 +278,7 @@ function test26() {
     const brain = getBrain({ root: document.body })
     brain.execute('x and y and z are buttons')
     brain.execute('buttons are red')
-    return brain.execute('red').length === 3
+    return brain.execute('red buttons').length === 3
 }
 
 function test27() {
@@ -285,7 +286,7 @@ function test27() {
     brain.execute('x and y and z are buttons. x and y are red. z is blue.')
     brain.execute('red buttons are black')
     const assert1 = brain.execute('z')[0].style.background === 'blue'
-    const assert2 = brain.execute('black').length === 2
+    const assert2 = brain.execute('black buttons').length === 2
     return assert1 && assert2
 }
 

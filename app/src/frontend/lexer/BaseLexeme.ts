@@ -21,10 +21,6 @@ export default class BaseLexeme implements Lexeme {
         readonly newData?: Partial<Lexeme>
     ) { }
 
-    get isConcept() {
-        return this.type === 'noun' && !!this.referent?.getConcepts() && !this.referent?.getProto()
-    }
-
     extrapolate(context: Context): Lexeme[] {
 
         if ((this.type === 'noun' || this.type === 'grammar') && !this.isPlural) {

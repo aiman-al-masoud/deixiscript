@@ -16,7 +16,7 @@ export default class BasicBrain implements Brain {
         readonly actuator = getActuator()
     ) {
 
-        Object.defineProperty(Number.prototype, 'add', { writable : true, value: function (a: any) { return this + a } })
+        Object.defineProperty(Number.prototype, 'add', { writable: true, value: function (a: any) { return this + a } })
 
         this.context.prelude.forEach(c => this.execute(c))
     }
@@ -34,16 +34,11 @@ export default class BasicBrain implements Brain {
             // console.log(clause.toString())
 
             if (clause.isSideEffecty) {
-
                 return this.actuator.takeAction(clause, this.context)
-
             } else {
-
                 const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
-
                 this.context.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)
-
                 return wrappers.flatMap(o => o ? o.unwrap() : [])
             }
 

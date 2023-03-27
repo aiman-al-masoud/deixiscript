@@ -15,12 +15,12 @@ export default class CreateLexemeAction implements Action {
 
     run(context: Context) {
 
-        if (!context.lexemeTypes.includes(this.clause.predicate?.root as any) && !this.topLevel.rheme.flatList().some(x => x.predicate?.isConcept)) {
+        if (!context.lexemeTypes.includes(this.clause.predicate?.root as any)) {
             return
         }
 
         const name = this.topLevel.theme.describe((this.clause.args as any)[0])[0].root //TODO: could be undefined        
-        const type = (context.lexemeTypes.includes(this.clause.predicate?.root as any) ? this.clause.predicate?.root : 'adjective') as LexemeType
+        const type = this.clause.predicate?.root as LexemeType
         const concepts = type === 'noun' ? [] : type === 'adjective' ? [this.clause.predicate?.root].flatMap(x => x ?? []).filter(x => x !== name)/* HEEEEEEEERE */ : undefined
         const res = this.topLevel.query($('proto', 'X')).at(0)?.['X']
         const proto = res ? this.topLevel.describe(res).map(x => x.root).filter(x => x !== 'proto')[0] : undefined

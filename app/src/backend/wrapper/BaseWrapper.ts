@@ -13,6 +13,7 @@ import { newInstance } from "../../utils/newInstance";
 import { Map } from "../../middle/id/Map";
 import { makeGetter } from "./makeGetter";
 import { makeSetter } from "./makeSetter";
+import { uniq } from "../../utils/uniq";
 
 export default class BaseWrapper implements Wrapper {
 
@@ -82,7 +83,7 @@ export default class BaseWrapper implements Wrapper {
             return parent[this.name!] = value.root //TODO: negation
         }
 
-        const prop = value?.referent?.getConcepts()?.[0] ?? value.root//TODO!!!! more than one concept
+        const prop = value.referent?.getConcepts()?.find(x => this._get(x) !== undefined) ?? value.root//TODO!!!! more than one concept
 
         if (this._get(prop) !== undefined) { // has-a
             const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this._get(prop)
@@ -113,6 +114,7 @@ export default class BaseWrapper implements Wrapper {
         this.predicates = []
         buffer.forEach(p => this.set(p))
         this.predicates.push(value)
+
 
         if (this.object instanceof HTMLElement) {
             this.object.id = this.id + ''
@@ -192,7 +194,13 @@ export default class BaseWrapper implements Wrapper {
     }
 
     getConcepts(): string[] {
-        return this.predicates.map(x => x.root)
+
+        return uniq(this.predicates.flatMap(x => {
+            const superStuff = (x.referent as BaseWrapper).predicates.map(x => x.root)
+            return [...superStuff, /* x.root */]
+            // return x.referent ? x.referent.getConcepts() ?? [] : [x.root] //TODO
+        }))
+
     }
 
 }

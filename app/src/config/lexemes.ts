@@ -1,3 +1,4 @@
+import { wrap } from "../backend/wrapper/Wrapper";
 import { Lexeme } from "../frontend/lexer/Lexeme";
 
 const being: Partial<Lexeme> = {
@@ -96,5 +97,11 @@ export const lexemes: Partial<Lexeme>[] = [
     {
         root: 'consequence',
         type: 'adjective'
+    },
+
+    {
+        root : 'thing',
+        type : 'noun',
+        referent : wrap({id:'thing', object : Object.prototype})
     }
 ]

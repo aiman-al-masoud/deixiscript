@@ -42,8 +42,12 @@ export default class BaseEnviro implements Enviro {
             .map(w => w.toClause(query))
             .reduce((a, b) => a.and(b), emptyClause)
 
-        return universe.query(query, { it: this.lastReferenced })
 
+        const maps = universe.query(query, { it: this.lastReferenced })
+
+        // console.log('query=', query.toString(), 'universe=', universe.toString(), 'maps=', maps)
+
+        return maps
     }
 
 }

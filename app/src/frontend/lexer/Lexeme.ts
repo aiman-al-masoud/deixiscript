@@ -17,9 +17,7 @@ export interface Lexeme {
     readonly isMultiWord: boolean
     readonly isVerb: boolean
 
-
     referent?: Wrapper
-    readonly isConcept: boolean
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {

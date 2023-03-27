@@ -81,9 +81,8 @@ export default class And implements Clause {
             })
         })
 
-        // console.log('candidates=', candidates)
-
         const maps = solveMaps(candidates)
+
         const pronMap: Map = queryList.filter(c => c.predicate?.type === 'pronoun').map(c => ({ [c.args?.at(0)!]: it })).reduce((a, b) => ({ ...a, ...b }), {})
         return maps.concat(pronMap).filter(m => Object.keys(m).length) // empty maps cause problems all around the code!
 

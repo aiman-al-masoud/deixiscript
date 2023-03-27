@@ -27,8 +27,7 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
         return new MultiAction(clause)
     }
 
-    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')
-        || topLevel.rheme.flatList().some(x => x.predicate?.isConcept)) {
+    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
         return new CreateLexemeAction(clause, topLevel)
     }
 

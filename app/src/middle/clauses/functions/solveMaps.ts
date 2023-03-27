@@ -2,7 +2,7 @@ import { Map } from "../../id/Map";
 import { uniq } from "../../../utils/uniq";
 
 /**
- * {@link file://./../../../../../docs/notes/unification-algo.md}
+ * {@link "file://./../../../../../docs/notes/unification-algo.md"}
  */
 export function solveMaps(data: Map[][]): Map[] {
 
