@@ -1,4 +1,5 @@
 import { getActuator } from "../../backend/actuator/Actuator";
+import Wrapper from "../../backend/wrapper/Wrapper";
 import { getParser } from "../../frontend/parser/interfaces/Parser";
 import { getKool } from "../../middle/clauses/functions/getKool";
 import { toClause } from "../../middle/toClause";
@@ -21,8 +22,7 @@ export default class BasicBrain implements Brain {
         this.context.prelude.forEach(c => this.execute(c))
     }
 
-    execute(natlang: string): any[] {
-
+    execute(natlang: string): Wrapper[] {
         return getParser(natlang, this.context).parseAll().map(ast => {
 
             if (ast.type === 'macro') {
@@ -39,10 +39,14 @@ export default class BasicBrain implements Brain {
                 const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
                 this.context.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)
-                return wrappers.flatMap(o => o ? o.unwrap() : [])
+                return wrappers
             }
 
         }).flat()
+    }
+
+    executeUnwrapped(natlang: string): any[] {
+        return this.execute(natlang).map(x => x?.unwrap?.() ?? x)
     }
 
 }
