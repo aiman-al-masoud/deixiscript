@@ -111,7 +111,6 @@ export default class BaseWrapper implements Wrapper {
         }
 
         this.object = newInstance(proto, value.root)
-        // value.referent?.getHeirlooms().forEach(h => Object.defineProperty(this.object, h.name, h))
         this.refreshHeirlooms()
 
         const buffer = this.predicates.filter(x => x !== value)
