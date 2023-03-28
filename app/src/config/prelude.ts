@@ -57,9 +57,6 @@ export const prelude: string[] = [
 
 
       // domain
-      `button is a noun and proto of it is HTMLButtonElement`,
-      `div is a noun and proto of it is HTMLDivElement`,
-      `element is a noun and proto of it is HTMLElement`,
       'color is a thing',
       'red and blue and black and green are colors',
 

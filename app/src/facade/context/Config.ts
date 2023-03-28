@@ -18,7 +18,10 @@ export function getConfig(): Config {
 
     return {
         lexemeTypes,
-        lexemes: lexemes.map(x => makeLexeme(x)),
+        lexemes: lexemes.flatMap(x => {
+            const l = makeLexeme(x)
+            return [l, ...l.extrapolate({} as any)]
+        }),
         syntaxes,
         prelude,
         staticDescPrecedence,

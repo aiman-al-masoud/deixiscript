@@ -21,7 +21,6 @@ export default interface Wrapper {
 
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
-    setProto(proto?: string): void
     getProto(): object | undefined
     getConcepts(): string[] | undefined
     getSupers(): Wrapper[]

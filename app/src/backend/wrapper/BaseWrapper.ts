@@ -19,8 +19,6 @@ export default class BaseWrapper implements Wrapper {
 
     protected predicates: Lexeme[] = []
     readonly heirlooms: Heirloom[] = []
-    protected proto?: string
-
 
     constructor(
         protected object: any,
@@ -45,7 +43,7 @@ export default class BaseWrapper implements Wrapper {
 
     toClause(query?: Clause) {
 
-        const ks = this.predicates.flatMap(x => (x.referent?.getHeirlooms() ?? []).flatMap(x => x.name))
+        const ks = uniq(this.predicates.flatMap(x => (x.referent?.getHeirlooms() ?? []).flatMap(x => x.name)))
 
         return ks
             .map(x => this._get(x))
@@ -99,6 +97,7 @@ export default class BaseWrapper implements Wrapper {
 
     protected inherit(value: Lexeme, opts?: SetOps) {
 
+
         if (this.is(value)) {
             return
         }
@@ -106,17 +105,22 @@ export default class BaseWrapper implements Wrapper {
         this.predicates.push(value)
         const proto = value.referent?.getProto()
 
-        if (!proto) {
+        if (!proto || value.referent === this) {
             return
         }
 
         this.object = newInstance(proto, value.root)
-        this.refreshHeirlooms()
+        // console.log('recreated object!', value.root)
+
+        value.referent?.getHeirlooms().forEach(h => {
+            Object.defineProperty(this.object, h.name, h)
+        })
 
         const buffer = this.predicates.filter(x => x !== value)
         this.predicates = []
         buffer.forEach(p => this.set(p))
         this.predicates.push(value)
+        this.refreshHeirlooms()
 
         if (this.object instanceof HTMLElement) {
             this.object.id = this.id + ''
@@ -167,7 +171,8 @@ export default class BaseWrapper implements Wrapper {
             name,
             set: makeSetter(path),
             get: makeGetter(path),
-        })
+            configurable: true,
+        } as any)
 
     }
 
@@ -175,12 +180,13 @@ export default class BaseWrapper implements Wrapper {
         return this.heirlooms
     }
 
-    setProto(proto: string): void {
-        this.proto = proto
-    }
+    getProto(): object | undefined {
 
-    getProto(): object | undefined {//TODO: maybe return Object.prototype by default
-        return (window as any)?.[this.proto as any]?.prototype
+        if (!(this.object instanceof HTMLElement)) { //TODO
+            return undefined
+        }
+
+        return this.object.constructor.prototype
     }
 
     getConcepts(): string[] {
@@ -202,7 +208,9 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected refreshHeirlooms() {
-        this.predicates.forEach(p => p.referent?.getHeirlooms().forEach(h => Object.defineProperty(this.object, h.name, h)))
+        this.predicates.forEach(p => p.referent?.getHeirlooms().forEach(h => {
+            Object.defineProperty(this.object, h.name, h)
+        }))
     }
 
 }
