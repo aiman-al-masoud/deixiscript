@@ -461,7 +461,6 @@ button is HTMLButtonElement. div is HTMLDivElement. element is HTMLElement.
 
 remove ungainly "proto of" part.
 
-For easier debugging:
-
+For easier debugging: (DONE)
 * manually start tests with keystroke return wrapped object from brain.query()
 * maybe separate func
