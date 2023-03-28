@@ -1,3 +1,4 @@
+import autotester from "../../tests/autotester"
 import { getBrain } from "../facade/brain/Brain"
 
 export default function main() {
@@ -23,13 +24,16 @@ export default function main() {
     document.body.appendChild(document.createElement('br'))
     document.body.appendChild(document.createElement('br'))
 
-    document.body.addEventListener('keydown', e => {
+    document.body.addEventListener('keydown', async e => {
 
         if (e.ctrlKey && e.code === 'Space') {
             state.promptVisible = !state.promptVisible
         } else if (e.ctrlKey && e.code === 'Enter') {
             const result = state.brain.execute(textarea.value)
             console.log(result)
+        } else if (e.ctrlKey && e.code === 'KeyY') {
+            await autotester()
+            main()
         }
 
         update()
