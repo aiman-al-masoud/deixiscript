@@ -194,13 +194,9 @@ export default class BaseWrapper implements Wrapper {
     }
 
     getConcepts(): string[] {
-
         return uniq(this.predicates.flatMap(x => {
-            const superStuff = (x.referent as BaseWrapper).predicates.map(x => x.root)
-            return [...superStuff, /* x.root */]
-            // return x.referent ? x.referent.getConcepts() ?? [] : [x.root] //TODO
+            return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
         }))
-
     }
 
 }
