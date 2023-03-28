@@ -24,6 +24,7 @@ export default interface Wrapper {
     setProto(proto?: string): void
     getProto(): object | undefined
     getConcepts(): string[] | undefined
+    getSupers(): Wrapper[]
 
 }
 

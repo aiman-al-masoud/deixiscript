@@ -199,4 +199,16 @@ export default class BaseWrapper implements Wrapper {
         }))
     }
 
+    getSupers(): Wrapper[] { //maybe use for getConcepts()
+        return this.predicates
+            .flatMap(x => {
+
+                if (x.referent === this || !x.referent) {
+                    return []
+                }
+
+                return [x.referent, ...x.referent.getSupers()]
+            })
+    }
+
 }

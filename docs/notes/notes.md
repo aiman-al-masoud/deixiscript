@@ -445,17 +445,23 @@ is a div.).
 Context shortcut to most common lexemes
 
 Both or just one?: DONE
-* when a lexeme is first created, a referent is created too
-* when a wrapper is created any new lexeme pointing to it is created and wrapper is set as referent/model/proto.
 
-getProto, proto, concepts, heirlooms, isConcept, setAlias should go away from Lexeme. They should be replaced with referent:Wrapper on Lexeme. DONE
+- when a lexeme is first created, a referent is created too
+- when a wrapper is created any new lexeme pointing to it is created and wrapper
+  is set as referent/model/proto.
+
+getProto, proto, concepts, heirlooms, isConcept, setAlias should go away from
+Lexeme. They should be replaced with referent:Wrapper on Lexeme. DONE
 
 color is a thing DONE
 
 # 2023/03/28 TODO
 
-button is HTMLButtonElement.
-div is HTMLDivElement.
-element is HTMLElement.
+button is HTMLButtonElement. div is HTMLDivElement. element is HTMLElement.
 
 remove ungainly "proto of" part.
+
+For easier debugging:
+
+* manually start tests with keystroke return wrapped object from brain.query()
+* maybe separate func
