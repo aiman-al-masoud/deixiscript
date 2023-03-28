@@ -18,6 +18,9 @@ import { uniq } from "../../utils/uniq";
 export default class BaseWrapper implements Wrapper {
 
     protected predicates: Lexeme[] = []
+    readonly heirlooms: Heirloom[] = []
+    protected proto?: string
+
 
     constructor(
         protected object: any,
@@ -108,13 +111,13 @@ export default class BaseWrapper implements Wrapper {
         }
 
         this.object = newInstance(proto, value.root)
-        value.referent?.getHeirlooms().forEach(h => Object.defineProperty(this.object, h.name, h))
+        // value.referent?.getHeirlooms().forEach(h => Object.defineProperty(this.object, h.name, h))
+        this.refreshHeirlooms()
 
         const buffer = this.predicates.filter(x => x !== value)
         this.predicates = []
         buffer.forEach(p => this.set(p))
         this.predicates.push(value)
-
 
         if (this.object instanceof HTMLElement) {
             this.object.id = this.id + ''
@@ -147,6 +150,7 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected _get(key: string) {
+        this.refreshHeirlooms()
         const val = this.object[key]
         return val?.unwrap?.() ?? val
     }
@@ -157,17 +161,6 @@ export default class BaseWrapper implements Wrapper {
     }))
 
     unwrap = () => this.object
-
-
-
-
-
-
-
-
-
-
-    readonly heirlooms: Heirloom[] = []
 
     setAlias = (name: string, path: string[]) => {
 
@@ -182,8 +175,6 @@ export default class BaseWrapper implements Wrapper {
     getHeirlooms(): Heirloom[] {
         return this.heirlooms
     }
-
-    protected proto?: string
 
     setProto(proto: string): void {
         this.proto = proto
@@ -209,6 +200,10 @@ export default class BaseWrapper implements Wrapper {
 
                 return [x.referent, ...x.referent.getSupers()]
             })
+    }
+
+    protected refreshHeirlooms() {
+        this.predicates.forEach(p => p.referent?.getHeirlooms().forEach(h => Object.defineProperty(this.object, h.name, h)))
     }
 
 }

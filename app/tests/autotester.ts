@@ -35,6 +35,7 @@ const tests = [
     test31,
     test32,
     test33,
+    test34,
 ]
 
 /**
@@ -64,7 +65,7 @@ function test2() {
     const v1 = (brain as BasicBrain).context.values.length
     brain.execute('x is red. x is a button. x is a button. x is a button. x is red.');
     const v2 = (brain as BasicBrain).context.values.length
-    return v2 - v1 === 1 
+    return v2 - v1 === 1
 }
 
 function test3() {
@@ -327,10 +328,18 @@ function test32() {
     return res.length === 1 && res[0].style.background === 'purple'
 }
 
-function test33(){
-    const brain = getBrain({root : document.body})
+function test33() {
+    const brain = getBrain({ root: document.body })
     brain.execute('x is a red div and the width of style of it is 50vw')
     return brain.execute('red div')[0].style.width === '50vw'
+}
+
+function test34() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is a red button')
+    brain.execute('fg of any button is color of style of it')
+    brain.execute('fg of x is yellow')
+    return brain.execute('x')[0].style.color === 'yellow'
 }
 
 function sleep(millisecs: number) {
