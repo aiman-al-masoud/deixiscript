@@ -36,6 +36,7 @@ const tests = [
     test32,
     test33,
     test34,
+    test35,
 ]
 
 /**
@@ -340,6 +341,12 @@ function test34() {
     brain.executeUnwrapped('fg of any button is color of style of it')
     brain.executeUnwrapped('fg of x is yellow')
     return brain.executeUnwrapped('x')[0].style.color === 'yellow'
+}
+
+function test35(){
+    const brain = getBrain({root : document.body})
+    brain.execute('x is a button')
+    return brain.execute('something button').length === 0
 }
 
 function sleep(millisecs: number) {
