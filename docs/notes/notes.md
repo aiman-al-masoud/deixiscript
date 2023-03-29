@@ -457,9 +457,9 @@ color is a thing DONE
 
 # 2023/03/28 TODO
 
-button is HTMLButtonElement. div is HTMLDivElement. element is HTMLElement.
+button is HTMLButtonElement. div is HTMLDivElement. element is HTMLElement. (DONE but directly in lexemes.ts)
 
-remove ungainly "proto of" part.
+remove ungainly "proto of" part. (DONE)
 
 For easier debugging: (DONE)
 * manually start tests with keystroke return wrapped object from brain.query()
