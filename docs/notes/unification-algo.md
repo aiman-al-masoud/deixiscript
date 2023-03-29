@@ -110,6 +110,15 @@ universe = baz(22),y(22),x(11),button(11)
 * [{2:22}]
 * [{2:22}]
 
+Maybe:
+
+
+* [{1:undefined}]
+* [{1:11}]
+* [{2:22}]
+* [{2:22}]
+
+so that id 1 will just map to nothing
 
 
 
