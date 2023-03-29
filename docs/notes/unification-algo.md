@@ -79,3 +79,17 @@ Rearrange:
 In this case you first need to resolve the conflict: _**`{x:1}` vs `{x:1},{x:10}`**_, by
 eliminating the most permissive, ie: `{x:1},{x:10}`. This is `removeLongest()`'s
 job.
+
+
+### "foobar x" BUG
+
+query = foobar(id1),x(id1)
+universe = x(id11),button(id11)
+
+[]             // for foobar
+[{id1:id11}]   // for x
+
+
+
+
+
