@@ -44,12 +44,12 @@ export default class BaseWrapper implements Wrapper {
     toClause(query?: Clause) {
 
         const queryOrEmpty = query ?? emptyClause
-        const fillerClause = clauseOf(makeLexeme({root : this.id.toString(), type : 'noun'}), this.id) //TODO
+        const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
 
         return queryOrEmpty.flatList()
             .filter(x => x.entities.length === 1 && x.predicate)
             .filter(x => this.is(x.predicate as Lexeme))
-            .map(x=>x.copy({map : {[x.args![0]] : this.id} }))
+            .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
             .concat(fillerClause)
             .reduce((a, b) => a.and(b), emptyClause)
             .and(this.ownerInfo(queryOrEmpty))
@@ -111,11 +111,7 @@ export default class BaseWrapper implements Wrapper {
         }
 
         this.object = newInstance(proto, value.root)
-        // console.log('recreated object!', value.root)
-
-        value.referent?.getHeirlooms().forEach(h => {
-            Object.defineProperty(this.object, h.name, h)
-        })
+        this.refreshHeirlooms([value])
 
         const buffer = this.predicates.filter(x => x !== value)
         this.predicates = []
@@ -208,8 +204,8 @@ export default class BaseWrapper implements Wrapper {
             })
     }
 
-    protected refreshHeirlooms() {
-        this.predicates.forEach(p => p.referent?.getHeirlooms().forEach(h => {
+    protected refreshHeirlooms(preds?: Lexeme[]) {
+        (preds ?? this.predicates).forEach(p => p.referent?.getHeirlooms().forEach(h => {
             Object.defineProperty(this.object, h.name, h)
         }))
     }
