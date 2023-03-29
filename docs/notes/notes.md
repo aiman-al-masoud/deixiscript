@@ -465,7 +465,6 @@ For easier debugging: (DONE)
 * manually start tests with keystroke return wrapped object from brain.query()
 * maybe separate func
 
-onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event
 
 Replace getProto() somehow; with copy() ? 
 
@@ -485,6 +484,10 @@ reproducing the bug
 
 returns x, WRONG!
 
+
+# Events
+
+onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event
 
 ```
  protected overrideClick(){
@@ -511,6 +514,8 @@ returns x, WRONG!
         }
     }
 ```
+
+More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?)
 
 
 
