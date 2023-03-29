@@ -466,3 +466,5 @@ For easier debugging: (DONE)
 * maybe separate func
 
 onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event
+
+Replace getProto() somehow; with copy() ? 
