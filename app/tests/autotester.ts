@@ -157,6 +157,7 @@ function test12() {
 function test13() {
     const brain = getBrain({ root: document.body })
     brain.executeUnwrapped('x is a button and it is green')
+    // brain.executeUnwrapped('x is a button and the button is green')
     return brain.executeUnwrapped('x')[0].style.background === 'green'
 }
 
@@ -332,6 +333,7 @@ function test32() {
 function test33() {
     const brain = getBrain({ root: document.body })
     brain.executeUnwrapped('x is a red div and the width of style of it is 50vw')
+    // brain.executeUnwrapped('x is a red div and the width of style of the div is 50vw')
     return brain.executeUnwrapped('red div')[0].style.width === '50vw'
 }
 

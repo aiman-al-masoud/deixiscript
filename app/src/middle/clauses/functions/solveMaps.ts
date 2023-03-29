@@ -21,6 +21,7 @@ export function solveMaps(data: Map[][]): Map[] {
         })
     })
 
+    // return dataCopy.flat().filter(x=> !Object.values(x).includes('IMPOSSIBLE') )
     return dataCopy.flat()
 }
 

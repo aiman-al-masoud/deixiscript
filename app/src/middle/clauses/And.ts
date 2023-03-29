@@ -76,15 +76,26 @@ export default class And implements Clause {
         const queryList = query.flatList()
 
         const candidates = queryList.map(q => {
-            return universeList.flatMap(u => {
+            
+            const res =  universeList.flatMap(u => {
                 return u.query(q)
             })
+
+            // if (!res.length){
+            //     const map:Map = q.entities.map(x=>({[x]:'IMPOSSIBLE'})).reduce((a,b)=>({...a,...b}), {})
+            //     return [map]
+            // }
+
+            return res
+
         })
 
         const maps = solveMaps(candidates)
-
+        
         const pronMap: Map = queryList.filter(c => c.predicate?.type === 'pronoun').map(c => ({ [c.args?.at(0)!]: it })).reduce((a, b) => ({ ...a, ...b }), {})
-        return maps.concat(pronMap).filter(m => Object.keys(m).length) // empty maps cause problems all around the code!
+        const res =  maps.concat(pronMap).filter(m => Object.keys(m).length) // empty maps cause problems all around the code!
+
+        return res
 
     }
 
