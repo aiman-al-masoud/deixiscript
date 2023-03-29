@@ -58,7 +58,7 @@ export const prelude: string[] = [
 
       // domain
       'color is a thing',
-      'red and blue and black and green are colors',
+      'red and blue and black and green and purple are colors',
 
       'color of any button is background of style of it',
       'color of any div is background of style of it',

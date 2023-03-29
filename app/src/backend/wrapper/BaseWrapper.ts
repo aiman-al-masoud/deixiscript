@@ -43,19 +43,20 @@ export default class BaseWrapper implements Wrapper {
 
     toClause(query?: Clause) {
 
-        const ks = uniq(this.predicates.flatMap(x => (x.referent?.getHeirlooms() ?? []).flatMap(x => x.name)))
+        const queryOrEmpty = query ?? emptyClause
+        const fillerClause = clauseOf(makeLexeme({root : this.id.toString(), type : 'noun'}), this.id) //TODO
 
-        return ks
-            .map(x => this._get(x))
-            .map(x => makeLexeme({ root: x, type: 'adjective' }))
-            .concat(this.predicates)
-            .map(x => clauseOf(x, this.id))
+        return queryOrEmpty.flatList()
+            .filter(x => x.entities.length === 1 && x.predicate)
+            .filter(x => this.is(x.predicate as Lexeme))
+            .map(x=>x.copy({map : {[x.args![0]] : this.id} }))
+            .concat(fillerClause)
             .reduce((a, b) => a.and(b), emptyClause)
-            .and(this.extraInfo(query ?? emptyClause))
+            .and(this.ownerInfo(queryOrEmpty))
 
     }
 
-    protected extraInfo(q: Clause) {
+    protected ownerInfo(q: Clause) {
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
         const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
         const conceptsAndRoot = [lx?.referent?.getConcepts(), lx?.root].filter(x => x).flat().map(x => x as string)
