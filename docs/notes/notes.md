@@ -478,6 +478,14 @@ universe = x(id11),button(id1)
 
 returns {id1 : id11}, WRONG!
 
+reproducing the bug
+
+> x is a button
+> something button
+
+returns x, WRONG!
+
+
 ```
  protected overrideClick(){
         let buf : Function | undefined
@@ -503,3 +511,7 @@ returns {id1 : id11}, WRONG!
         }
     }
 ```
+
+
+
+
