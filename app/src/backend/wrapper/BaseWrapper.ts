@@ -143,7 +143,7 @@ export default class BaseWrapper implements Wrapper {
 
     copy = (opts?: CopyOpts) => new BaseWrapper(
         opts?.object ?? deepCopy(this.object),
-        this.id,
+        opts?.id ?? this.id, //TODO: keep old by default?
         (opts?.preds ?? []).concat(this.predicates)
     )
 
