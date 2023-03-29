@@ -5,7 +5,8 @@ export function deepCopy(object: object) {
         wrapped.innerHTML = object.innerHTML
         return wrapped
     } else {
-        return { ...object }
+        // return { ...object }
+        return { __proto__: object }
     }
 
 }
