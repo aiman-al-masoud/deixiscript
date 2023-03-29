@@ -468,3 +468,38 @@ For easier debugging: (DONE)
 onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event
 
 Replace getProto() somehow; with copy() ? 
+
+
+
+# MAYBE BUG IN solveMaps()!
+
+query = click(id1),x(id1)
+universe = x(id11),button(id1)
+
+returns {id1 : id11}, WRONG!
+
+```
+ protected overrideClick(){
+        let buf : Function | undefined
+        try{
+            buf = this.object.onclick as Function | undefined
+        }catch{}
+
+        const clickLex = makeLexeme({root : 'click', type:'iverb'})
+
+        try{
+            this.object.onclick = (e:Event)=>{
+                
+                buf?.call(this.object)
+                this.predicates.push(clickLex)
+                console.log('first=',this.toClause().toString())
+                setTimeout(()=>{
+                    this.predicates = this.predicates.filter(x=>x!==clickLex)
+                    console.log('last=',this.toClause().toString())
+                }, 200)
+            }
+        }catch(e){
+            console.log(e)
+        }
+    }
+```
