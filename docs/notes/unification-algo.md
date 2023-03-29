@@ -83,11 +83,32 @@ job.
 
 ### "foobar x" BUG
 
+
+#### example 1
+
+> foobar x
+
+```
 query = foobar(id1),x(id1)
 universe = x(id11),button(id11)
+```
 
-[]             // for foobar
-[{id1:id11}]   // for x
+* []             // for foobar
+* [{id1:id11}]   // for x
+
+#### example 2
+
+> foobar x and baz y
+
+```
+query = foobar(1),x(1),baz(2),y(2)
+universe = baz(22),y(22),x(11),button(11)
+```
+
+* []
+* [{1:11}]
+* [{2:22}]
+* [{2:22}]
 
 
 
