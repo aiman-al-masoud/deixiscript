@@ -470,7 +470,7 @@ Replace getProto() somehow; with copy() ?
 
 
 
-# MAYBE BUG IN solveMaps()!
+# BUG IN solveMaps()!
 
 query = click(id1),x(id1)
 universe = x(id11),button(id1)
