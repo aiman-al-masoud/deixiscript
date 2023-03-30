@@ -189,18 +189,7 @@ export default class BaseWrapper implements Wrapper {
             return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
         }))
     }
-
-    getSupers(): Wrapper[] { //maybe use for getConcepts()
-        return this.predicates.flatMap(x => {
-
-            if (x.referent === this || !x.referent) {
-                return []
-            }
-
-            return [x.referent, ...x.referent.getSupers()]
-        })
-    }
-
+    
     protected refreshHeirlooms(preds?: Lexeme[]) {
         (preds ?? this.predicates).forEach(p => p.referent?.getHeirlooms().forEach(h => {
             Object.defineProperty(this.object, h.name, h)

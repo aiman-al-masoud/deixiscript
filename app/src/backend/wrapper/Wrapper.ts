@@ -23,7 +23,6 @@ export default interface Wrapper {
     getHeirlooms(): Heirloom[]
     getProto(): object | undefined
     getConcepts(): string[] | undefined
-    getSupers(): Wrapper[]
 
 }
 
