@@ -169,7 +169,7 @@ export default class BaseWrapper implements Wrapper {
             set: makeSetter(path),
             get: makeGetter(path),
             configurable: true,
-        } as any)
+        })
 
     }
 

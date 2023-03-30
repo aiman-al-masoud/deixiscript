@@ -5,4 +5,5 @@ export interface Heirloom {
     name: string
     value?: any
     writable?: boolean
+    configurable?:boolean
 }
