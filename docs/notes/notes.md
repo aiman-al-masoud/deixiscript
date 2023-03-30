@@ -540,3 +540,8 @@ color of x is red  ----> x.color.push(redLexeme)
 
 Maybe "parent[this.name!] = predicate.root" goes into reinterpret() "implementation" for child objects
 
+reinterpret may update the predicates list, for eg if detects that a property has been overwritten.
+
+x is a button.
+x is red.
+x is green. //remove red
