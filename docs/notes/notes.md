@@ -521,5 +521,6 @@ More generally, when invoking any method (BaseWrapper.call()) you may tmp add pr
 replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
 
 
-
+# 
+Clearly separate is-a from has-a in _set & company. Avoid recursion in case copy() is called from inherit() or the like
 
