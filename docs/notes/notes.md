@@ -521,6 +521,22 @@ More generally, when invoking any method (BaseWrapper.call()) you may tmp add pr
 replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
 
 
-# 
-Clearly separate is-a from has-a in _set & company. Avoid recursion in case copy() is called from inherit() or the like
+# BaseWrapper sucks, new ideas
+
+every wrapper has a list of predicates, whenever anything is asserted about a wrapper, the list of predicates is updated, predicates are added/removed
+
+the predicates may be interpreted differently for each individual wrapper
+
+x is red  -----> x.predicates.push(redLexeme)
+
+then reinterpret() will be called, a button wrapper may actually change its color, another wrapper will not.
+
+You're gaining: easier to think of, decouples predicates from "side-effects", avoid complicated inherit() logic with buffer etc...
+
+You're losing: "out of the box" get/is that fetches directly from this.object
+
+???????????????????????????????????
+color of x is red  ----> x.color.push(redLexeme) 
+
+Maybe "parent[this.name!] = predicate.root" goes into reinterpret() "implementation" for child objects
 
