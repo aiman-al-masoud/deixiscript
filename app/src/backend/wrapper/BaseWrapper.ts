@@ -70,34 +70,32 @@ export default class BaseWrapper implements Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined {
 
+        const prop = this.canHaveA(predicate)
+
         if (predicate.isVerb) {
             return this.call(predicate, opts?.args!)
-        }
-
-        this._set(predicate, opts)
-
-    }
-
-    protected _set(value: Lexeme, opts?: SetOps) {
-
-        if (this.parent && typeof this.object !== 'object') { //has-a
-            const parent = this.parent.unwrap?.() ?? this.parent
-            return parent[this.name!] = value.root //TODO: negation
-        }
-
-        const prop = value.referent?.getConcepts()?.find(x => this._get(x) !== undefined) ?? value.root//TODO!!!! more than one concept
-
-        if (this._get(prop) !== undefined) { // has-a
-            const val = typeof this._get(value.root) === 'boolean' ? !opts?.negated : !opts?.negated ? value.root : opts?.negated && this.is(value) ? '' : this._get(prop)
+        } else if (prop) { // has-a
+            const val = typeof this._get(predicate.root) === 'boolean' ? !opts?.negated : !opts?.negated ? predicate.root : opts?.negated && this.is(predicate) ? '' : this._get(prop)
             this.object[prop] = val
+        } else if (this.parent) { // child is-a, parent has-a
+            const parent = this.parent.unwrap?.() ?? this.parent
+            if (typeof this.object !== 'object') parent[this.name!] = predicate.root //TODO: negation
         } else { // is-a
-            opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
+            this.beA(predicate, opts)
         }
 
     }
 
-    protected inherit(value: Lexeme, opts?: SetOps) {
+    protected canHaveA(value: Lexeme) { //returns name of prop corresponding to Lexeme if any
+        const concepts = [...value.referent?.getConcepts() ?? [], value.root]
+        return concepts.find(x => this._get(x) !== undefined)
+    }
 
+    protected beA(value: Lexeme, opts?: SetOps) {
+        opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
+    }
+
+    protected inherit = (value: Lexeme, opts?: SetOps) => {
 
         if (this.is(value)) {
             return
@@ -127,7 +125,7 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    protected disinherit(value: Lexeme, opts?: SetOps) {
+    protected disinherit = (value: Lexeme, opts?: SetOps) => {
 
         this.predicates = this.predicates.filter(x => x !== value)
 
@@ -193,15 +191,14 @@ export default class BaseWrapper implements Wrapper {
     }
 
     getSupers(): Wrapper[] { //maybe use for getConcepts()
-        return this.predicates
-            .flatMap(x => {
+        return this.predicates.flatMap(x => {
 
-                if (x.referent === this || !x.referent) {
-                    return []
-                }
+            if (x.referent === this || !x.referent) {
+                return []
+            }
 
-                return [x.referent, ...x.referent.getSupers()]
-            })
+            return [x.referent, ...x.referent.getSupers()]
+        })
     }
 
     protected refreshHeirlooms(preds?: Lexeme[]) {
