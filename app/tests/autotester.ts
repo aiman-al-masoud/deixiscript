@@ -37,6 +37,7 @@ const tests = [
     test33,
     test34,
     test35,
+    test36,
 ]
 
 /**
@@ -345,10 +346,25 @@ function test34() {
     return brain.executeUnwrapped('x')[0].style.color === 'yellow'
 }
 
-function test35(){
-    const brain = getBrain({root : document.body})
+function test35() {
+    const brain = getBrain({ root: document.body })
     brain.execute('x is a button')
     return brain.execute('something button').length === 0
+}
+
+function test36() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('a car is a thing')
+    brain.execute('x and y are cars')
+    brain.execute('overtake is an mverb')
+    brain.execute('x overtakes y')
+
+    const firstIntension = brain.execute('the car that overtakes y')[0]
+    const secondIntension = brain.execute('x')[0]
+    const falseSecondIntension = brain.execute('y')[0]
+
+    return firstIntension === secondIntension
+        && firstIntension !== falseSecondIntension
 }
 
 function sleep(millisecs: number) {

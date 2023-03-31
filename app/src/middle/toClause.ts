@@ -21,26 +21,29 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         // console.warn('Ast is undefined!')
         return emptyClause
     }
-
+    
     if (ast.lexeme) {
-
+        
         if (ast.lexeme.type === 'noun' || ast.lexeme.type === 'adjective' || ast.lexeme.type === 'pronoun' || ast.lexeme.type === 'grammar') {
             return clauseOf(ast.lexeme, ...args?.subject ? [args?.subject] : [])
         }
-
+        
         return emptyClause
-
+        
     }
-
+    
     if (ast.list) {
         return ast.list.map(c => toClause(c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
     }
-
+    
+    
     let result
     let rel
 
-    if (ast?.links?.relpron) {
+    if (ast?.links?.relpron && ast.links.copula) {
         result = copulaSubClauseToClause(ast, args)
+    }else if (ast?.links?.relpron && ast.links.mverb){
+        result = mverbSubClauseToClause(ast, args)
     } else if (isCopulaSentence(ast)) {
         result = copulaSentenceToClause(ast, args)
     } else if (ast.links?.nonsubconj) {
@@ -53,6 +56,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         result = nounPhraseToClause(ast, args)
     }
 
+    
     if (result) {
         const c0 = ast.links?.nonsubconj ? result : makeImply(result)
         const c1 = makeAllVars(c0)
@@ -83,6 +87,17 @@ function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts):
 
     const predicate = copulaSubClause?.links?.predicate
     return toClause(predicate, args)
+}
+
+function mverbSubClauseToClause(ast:AstNode, args?:ToClauseOpts)/* :Clause */{ 
+    
+    const mverb = ast.links?.mverb?.lexeme!
+    const subjectId = args?.subject!
+    const objectId = getIncrementalId()
+    const object = toClause(ast.links?.object, {subject : objectId}) // 
+    
+    return object.and(clauseOf(mverb, subjectId, objectId))
+
 }
 
 function nounPhraseToClause(nounPhrase: AstNode, opts?: ToClauseOpts): Clause {

@@ -102,6 +102,7 @@ export const lexemes: Partial<Lexeme>[] = [
     {
         root: 'thing',
         type: 'noun',
+        referent : wrap({id:'thing', object: {}})
     },
     {
         root: 'button',

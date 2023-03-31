@@ -39,7 +39,7 @@ export interface CopyOpts {
 }
 
 export function wrap(args: WrapArgs): Wrapper {
-    return new BaseWrapper(args.object ?? {}, args.id, args.preds ?? [], args.parent, args.name)
+    return new BaseWrapper(args.object ?? {}, args.id/* , args.preds ?? [] */, args.parent, args.name)
 }
 
 export interface WrapArgs {

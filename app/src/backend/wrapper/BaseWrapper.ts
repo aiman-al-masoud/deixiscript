@@ -16,73 +16,97 @@ import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
 import { intersection } from "../../utils/intersection";
 
+
+type Relation = { predicate: Lexeme, args: Wrapper[] } //implied subject = this object
+
+
+
+function relationsEqual(r1: Relation, r2: Relation) {
+    return r1.predicate.root === r2.predicate.root
+        && r1.args.length === r2.args.length
+        && r1.args.every((x, i) => r2.args[i] === x)
+}
+
+
 export default class BaseWrapper implements Wrapper {
 
     constructor(
         protected object: any,
         readonly id: Id,
-        protected predicates: Lexeme[],
+        // protected predicates: Lexeme[],
         readonly parent?: Wrapper,
         readonly name?: string,
-        readonly heirlooms: Heirloom[] = []
+        readonly heirlooms: Heirloom[] = [],
+        protected relations: Relation[] = []
     ) { }
 
     is = (predicate: Lexeme) =>
-        this.predicates.map(x => x.root).includes(predicate.root)
-    // this.getConcepts().includes(predicate.root) //TODO also from supers
+        // this.predicates.map(x => x.root).includes(predicate.root)
+        // this.getConcepts().includes(predicate.root) //TODO also from supers
+        this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
+
 
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined { //TODO: do something with opts.args!
 
-        let added: Lexeme[] = []
-        let removed: Lexeme[] = []
-        let unchanged = this.predicates.filter(x => x.root !== predicate.root)
+
+
+        const relation: Relation = { predicate, args: opts?.args ?? [] }
+
+        let added: Relation[] = []
+        let removed: Relation[] = []
+        let unchanged = this.relations.filter(x => !relationsEqual(x, relation))
 
         if (opts?.negated) {
-            this.removePredicate(predicate)
-            removed = [predicate]
+            this.removeRelation(relation)
+            removed = [relation]
         } else {
-            added = [predicate]
+            added = [relation]
             removed.push(...this.getMutex(added))
-            unchanged = unchanged.filter(x => !removed.map(x => x.root).includes(x.root))
-            this.addPredicate(predicate)
-            removed.forEach(x => this.removePredicate(x))
+            unchanged = unchanged.filter(x => !removed.some(r => relationsEqual(x, r)))
+            this.addRelation(relation)
+            removed.forEach(x => this.removeRelation(x))
         }
 
-        // console.log('added=',added, 'removed=',removed, 'unchanged=',unchanged)
+        // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
         return this.reinterpret(added, removed, unchanged, opts)
     }
 
-    protected getMutex(added: Lexeme[]) {
-        const a = added[0]
+    protected getMutex(added: Relation[]): Relation[] {
 
-        if (a.referent?.getConcepts()?.includes('color')) {
-            return this.predicates.filter(x => (x.referent !== this) && (x.referent?.getConcepts()?.includes('color')) && (x.root !== a.root))
+        const newOne = added[0].predicate
+
+        if (newOne.referent?.getConcepts()?.includes('color')) {
+            return this.relations.filter(x => !x.args.length).filter(x => (x.predicate.referent !== this) && (x.predicate.referent?.getConcepts()?.includes('color')) && (x.predicate.root !== newOne.root))
         }
+
         return []
     }
 
-    protected addPredicate(predicate: Lexeme) {
-        this.predicates.push(predicate) //TODO:uniq?
+    protected addRelation(relation: Relation) {
+        // this.predicates.push(predicate) //TODO:uniq?
+        this.relations.push(relation)
     }
 
-    protected removePredicate(predicate: Lexeme) {
-        this.predicates = this.predicates.filter(x => x.root !== predicate.root) //TODO:uniq?
+    protected removeRelation(relation: Relation) {
+        // this.predicates = this.predicates.filter(x => x.root !== predicate.root) //TODO:uniq?
+        // console.log('to be removed=',relation)
+        this.relations = this.relations.filter(x => !relationsEqual(x, relation))
     }
 
-    protected reinterpret(added: Lexeme[], removed: Lexeme[], unchanged: Lexeme[], opts?: SetOps) {
+    protected reinterpret(added: Relation[], removed: Relation[], unchanged: Relation[], opts?: SetOps) {
 
         removed.forEach(p => {
-            this.doSideEffects(p, opts)
-            this.removeHeirlooms(p)
+            this.doSideEffects(p.predicate, opts)
+            this.removeHeirlooms(p.predicate)
         })
 
         added.forEach(p => {
-            this.doSideEffects(p, opts)
-            this.addHeirlooms(p)
+            this.doSideEffects(p.predicate, opts)
+            this.addHeirlooms(p.predicate)
         })
 
         unchanged.forEach(p => {
-            this.doSideEffects(p, opts) //TODO! restore heirlooms
+            this.doSideEffects(p.predicate, opts) //TODO! restore heirlooms
         })
 
         return undefined
@@ -93,7 +117,7 @@ export default class BaseWrapper implements Wrapper {
         const prop = this.canHaveA(predicate)
 
         if (predicate.isVerb) {
-            return this.call(predicate, opts?.args!)
+            return this.call(predicate, opts?.args!)//TODO
         } else if (prop) { // has-a
             const val = typeof this._get(predicate.root) === 'boolean' ? !opts?.negated : !opts?.negated ? predicate.root : opts?.negated && this.is(predicate) ? '' : this._get(prop)
             this.object[prop] = val
@@ -158,7 +182,11 @@ export default class BaseWrapper implements Wrapper {
     //-----------------------------------------------------------
 
     getConcepts(): string[] {
-        return uniq(this.predicates.flatMap(x => {
+        // return uniq(this.predicates.flatMap(x => {
+        //     return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
+        // }))
+
+        return uniq(this.relations.filter(x => !x.args.length).map(x => x.predicate).flatMap(x => {
             return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
         }))
     }
@@ -175,7 +203,7 @@ export default class BaseWrapper implements Wrapper {
     copy = (opts?: CopyOpts) => new BaseWrapper(
         opts?.object ?? deepCopy(this.object),
         opts?.id ?? this.id, //TODO: keep old by default?
-        (opts?.preds ?? []).concat(this.predicates)
+        // (opts?.preds ?? []).concat(this.predicates)
     )
 
     dynamic = () => allKeys(this.object).map(x => makeLexeme({
@@ -187,19 +215,19 @@ export default class BaseWrapper implements Wrapper {
 
     unwrap = () => this.object
 
-    protected refreshHeirlooms(preds?: Lexeme[]) {
-        (preds ?? this.predicates).forEach(p => p.referent?.getHeirlooms().forEach(h => {
+    protected refreshHeirlooms() {
+        this.relations.map(x => x.predicate).forEach(p => p.referent?.getHeirlooms().forEach(h => {
             Object.defineProperty(this.object, h.name, h)
         }))
     }
 
     get(predicate: Lexeme): Wrapper | undefined {
         const w = this.object[predicate.root]
-        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), [], this, predicate.root)
+        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), this, predicate.root)
     }
 
     protected _get(key: string) {
-        this.refreshHeirlooms()
+        this.refreshHeirlooms() //TODO!
         const val = this.object[key]
         return val?.unwrap?.() ?? val
     }
@@ -224,13 +252,22 @@ export default class BaseWrapper implements Wrapper {
         const queryOrEmpty = query ?? emptyClause
         const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
 
-        return queryOrEmpty.flatList()
+
+        const relStuff = this.relations.filter(x => x.args.length > 0).map(x => clauseOf(x.predicate, ...[this.id, ...x.args.map(x => x.id)])).reduce((a, b) => a.and(b), emptyClause)
+
+        const res = queryOrEmpty.flatList()
             .filter(x => x.entities.length === 1 && x.predicate)
             .filter(x => this.is(x.predicate as Lexeme))
             .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
             .concat(fillerClause)
             .reduce((a, b) => a.and(b), emptyClause)
             .and(this.ownerInfo(queryOrEmpty))
+            .and(relStuff)
+
+        // console.log(res.toString())
+
+        return res
+
 
     }
 
@@ -248,6 +285,11 @@ export default class BaseWrapper implements Wrapper {
 
     protected call(verb: Lexeme, args: Wrapper[]) {
         const method = this._get(verb.root) as Function
+
+        if (!method) {
+            return
+        }
+
         const result = method.call(this.object, ...args.map(x => x.unwrap()))
         return wrap({ id: getIncrementalId(), object: result })
     }
