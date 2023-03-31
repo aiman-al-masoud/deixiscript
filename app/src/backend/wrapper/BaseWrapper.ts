@@ -14,31 +14,209 @@ import { Map } from "../../middle/id/Map";
 import { makeGetter } from "./makeGetter";
 import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
+import { intersection } from "../../utils/intersection";
 
 export default class BaseWrapper implements Wrapper {
-
-    protected predicates: Lexeme[] = []
-    readonly heirlooms: Heirloom[] = []
 
     constructor(
         protected object: any,
         readonly id: Id,
-        preds: Lexeme[],
+        protected predicates: Lexeme[],
         readonly parent?: Wrapper,
-        readonly name?: string
-    ) {
-        preds.forEach(p => this.set(p))
+        readonly name?: string,
+        readonly heirlooms: Heirloom[] = []
+    ) { }
+
+    is = (predicate: Lexeme) =>
+        this.predicates.map(x => x.root).includes(predicate.root)
+    // this.getConcepts().includes(predicate.root) //TODO also from supers
+
+    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined { //TODO: do something with opts.args!
+
+        let added: Lexeme[] = []
+        let removed: Lexeme[] = []
+        let unchanged = this.predicates.filter(x => x.root !== predicate.root)
+
+        if (opts?.negated) {
+            this.removePredicate(predicate)
+            removed = [predicate]
+        } else {
+            added = [predicate]
+            removed.push(...this.getMutex(added))
+            unchanged = unchanged.filter(x => !removed.map(x => x.root).includes(x.root))
+            this.addPredicate(predicate)
+            removed.forEach(x => this.removePredicate(x))
+        }
+
+        // console.log('added=',added, 'removed=',removed, 'unchanged=',unchanged)
+        return this.reinterpret(added, removed, unchanged, opts)
     }
 
-    is = (predicate: Lexeme) => {
-        return predicate.referent?.getConcepts()?.some(x => this._get(x) === predicate.root)
-            || this.predicates.map(x => x.root).includes(predicate.root)
+    protected getMutex(added: Lexeme[]) {
+        const a = added[0]
+
+        if (a.referent?.getConcepts()?.includes('color')) {
+            return this.predicates.filter(x => (x.referent !== this) && (x.referent?.getConcepts()?.includes('color')) && (x.root !== a.root))
+        }
+        return []
     }
 
-    protected call(verb: Lexeme, args: Wrapper[]) {
-        const method = this._get(verb.root) as Function
-        const result = method.call(this.object, ...args.map(x => x.unwrap()))
-        return wrap({ id: getIncrementalId(), object: result })
+    protected addPredicate(predicate: Lexeme) {
+        this.predicates.push(predicate) //TODO:uniq?
+    }
+
+    protected removePredicate(predicate: Lexeme) {
+        this.predicates = this.predicates.filter(x => x.root !== predicate.root) //TODO:uniq?
+    }
+
+    protected reinterpret(added: Lexeme[], removed: Lexeme[], unchanged: Lexeme[], opts?: SetOps) {
+
+        removed.forEach(p => {
+            this.doSideEffects(p, opts)
+            this.removeHeirlooms(p)
+        })
+
+        added.forEach(p => {
+            this.doSideEffects(p, opts)
+            this.addHeirlooms(p)
+        })
+
+        unchanged.forEach(p => {
+            this.doSideEffects(p, opts) //TODO! restore heirlooms
+        })
+
+        return undefined
+    }
+
+    protected doSideEffects(predicate: Lexeme, opts?: SetOps) {
+
+        const prop = this.canHaveA(predicate)
+
+        if (predicate.isVerb) {
+            return this.call(predicate, opts?.args!)
+        } else if (prop) { // has-a
+            const val = typeof this._get(predicate.root) === 'boolean' ? !opts?.negated : !opts?.negated ? predicate.root : opts?.negated && this.is(predicate) ? '' : this._get(prop)
+            this.object[prop] = val
+        } else if (this.parent) { // child is-a, parent has-a
+            const parent = this.parent.unwrap?.() ?? this.parent
+            if (typeof this.object !== 'object') parent[this.name!] = predicate.root //TODO: negation
+            // this.parent?.set(predicate, opts) // TODO: set predicate on parent? 
+        } else { // is-a
+            this.beA(predicate, opts)
+        }
+
+    }
+
+    protected addHeirlooms(predicate: Lexeme) {
+        predicate.referent?.getHeirlooms().forEach(h => {
+            Object.defineProperty(this.object, h.name, h)
+        })
+    }
+
+    protected removeHeirlooms(predicate: Lexeme) {
+        predicate.referent?.getHeirlooms().forEach(h => {
+            delete this.object[h.name]
+        })
+    }
+
+    protected inherit = (value: Lexeme, opts?: SetOps) => {
+
+        const proto = value.referent?.getProto()
+
+        if (!proto || value.referent === this) {
+            return
+        }
+
+        if (Object.getPrototypeOf(this.object) === proto) { //don't re-create
+            return
+        }
+
+        this.object = newInstance(proto, value.root)
+
+        if (this.object instanceof HTMLElement) {
+            this.object.id = this.id + ''
+            this.object.textContent = 'default'
+            opts?.context?.root?.appendChild(this.object)
+        }
+
+    }
+
+    protected disinherit = (value: Lexeme, opts?: SetOps) => {
+
+    }
+
+    protected canHaveA(value: Lexeme) { //returns name of prop corresponding to Lexeme if any
+        const concepts = [...value.referent?.getConcepts() ?? [], value.root]
+        return concepts.find(x => this._get(x) !== undefined)
+    }
+
+    protected beA(value: Lexeme, opts?: SetOps) {
+        opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
+    }
+
+
+    //-----------------------------------------------------------
+
+    getConcepts(): string[] {
+        return uniq(this.predicates.flatMap(x => {
+            return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
+        }))
+    }
+
+    getProto(): object | undefined {
+
+        if (!(this.object instanceof HTMLElement)) { //TODO
+            return undefined
+        }
+
+        return this.object.constructor.prototype
+    }
+
+    copy = (opts?: CopyOpts) => new BaseWrapper(
+        opts?.object ?? deepCopy(this.object),
+        opts?.id ?? this.id, //TODO: keep old by default?
+        (opts?.preds ?? []).concat(this.predicates)
+    )
+
+    dynamic = () => allKeys(this.object).map(x => makeLexeme({
+        type: typeOf(this._get(x)),
+        root: x
+    }))
+
+    // getAll = ()=> allKeys(this.object).map(x=> new BaseWrapper(this._get(x), 1, [], this)  )
+
+    unwrap = () => this.object
+
+    protected refreshHeirlooms(preds?: Lexeme[]) {
+        (preds ?? this.predicates).forEach(p => p.referent?.getHeirlooms().forEach(h => {
+            Object.defineProperty(this.object, h.name, h)
+        }))
+    }
+
+    get(predicate: Lexeme): Wrapper | undefined {
+        const w = this.object[predicate.root]
+        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), [], this, predicate.root)
+    }
+
+    protected _get(key: string) {
+        this.refreshHeirlooms()
+        const val = this.object[key]
+        return val?.unwrap?.() ?? val
+    }
+
+    setAlias = (name: string, path: string[]) => {
+
+        this.heirlooms.push({
+            name,
+            set: makeSetter(path),
+            get: makeGetter(path),
+            configurable: true,
+        })
+
+    }
+
+    getHeirlooms(): Heirloom[] {
+        return this.heirlooms
     }
 
     toClause(query?: Clause) {
@@ -68,132 +246,11 @@ export default class BaseWrapper implements Wrapper {
         return nested ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
     }
 
-    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined {
-
-        const prop = this.canHaveA(predicate)
-
-        if (predicate.isVerb) {
-            return this.call(predicate, opts?.args!)
-        } else if (prop) { // has-a
-            const val = typeof this._get(predicate.root) === 'boolean' ? !opts?.negated : !opts?.negated ? predicate.root : opts?.negated && this.is(predicate) ? '' : this._get(prop)
-            this.object[prop] = val
-        } else if (this.parent) { // child is-a, parent has-a
-            const parent = this.parent.unwrap?.() ?? this.parent
-            if (typeof this.object !== 'object') parent[this.name!] = predicate.root //TODO: negation
-        } else { // is-a
-            this.beA(predicate, opts)
-        }
-
+    protected call(verb: Lexeme, args: Wrapper[]) {
+        const method = this._get(verb.root) as Function
+        const result = method.call(this.object, ...args.map(x => x.unwrap()))
+        return wrap({ id: getIncrementalId(), object: result })
     }
 
-    protected canHaveA(value: Lexeme) { //returns name of prop corresponding to Lexeme if any
-        const concepts = [...value.referent?.getConcepts() ?? [], value.root]
-        return concepts.find(x => this._get(x) !== undefined)
-    }
-
-    protected beA(value: Lexeme, opts?: SetOps) {
-        opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
-    }
-
-    protected inherit = (value: Lexeme, opts?: SetOps) => {
-
-        if (this.is(value)) {
-            return
-        }
-
-        this.predicates.push(value)
-        const proto = value.referent?.getProto()
-
-        if (!proto || value.referent === this) {
-            return
-        }
-
-        this.object = newInstance(proto, value.root)
-        this.refreshHeirlooms([value])
-
-        const buffer = this.predicates.filter(x => x !== value)
-        this.predicates = []
-        buffer.forEach(p => this.set(p))
-        this.predicates.push(value)
-        this.refreshHeirlooms()
-
-        if (this.object instanceof HTMLElement) {
-            this.object.id = this.id + ''
-            this.object.textContent = 'default'
-            opts?.context?.root?.appendChild(this.object)
-        }
-
-    }
-
-    protected disinherit = (value: Lexeme, opts?: SetOps) => {
-
-        this.predicates = this.predicates.filter(x => x !== value)
-
-        if (this.object instanceof HTMLElement) {
-            opts?.context?.root?.removeChild(this.object)
-            // TODO: remove this.object, but save predicates
-        }
-
-    }
-
-    copy = (opts?: CopyOpts) => new BaseWrapper(
-        opts?.object ?? deepCopy(this.object),
-        opts?.id ?? this.id, //TODO: keep old by default?
-        (opts?.preds ?? []).concat(this.predicates)
-    )
-
-    get(predicate: Lexeme): Wrapper | undefined {
-        const w = this.object[predicate.root]
-        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), [], this, predicate.root)
-    }
-
-    protected _get(key: string) {
-        this.refreshHeirlooms()
-        const val = this.object[key]
-        return val?.unwrap?.() ?? val
-    }
-
-    dynamic = () => allKeys(this.object).map(x => makeLexeme({
-        type: typeOf(this._get(x)),
-        root: x
-    }))
-
-    unwrap = () => this.object
-
-    setAlias = (name: string, path: string[]) => {
-
-        this.heirlooms.push({
-            name,
-            set: makeSetter(path),
-            get: makeGetter(path),
-            configurable: true,
-        })
-
-    }
-
-    getHeirlooms(): Heirloom[] {
-        return this.heirlooms
-    }
-
-    getProto(): object | undefined {
-
-        if (!(this.object instanceof HTMLElement)) { //TODO
-            return undefined
-        }
-
-        return this.object.constructor.prototype
-    }
-
-    getConcepts(): string[] {
-        return uniq(this.predicates.flatMap(x => {
-            return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
-        }))
-    }
-    
-    protected refreshHeirlooms(preds?: Lexeme[]) {
-        (preds ?? this.predicates).forEach(p => p.referent?.getHeirlooms().forEach(h => {
-            Object.defineProperty(this.object, h.name, h)
-        }))
-    }
 
 }
