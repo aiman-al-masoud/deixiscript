@@ -1,28 +1,37 @@
 import { Map } from "../../id/Map";
 import { uniq } from "../../../utils/uniq";
 import { intersection } from "../../../utils/intersection";
+import { SpecialIds } from "../../id/Id";
+import { Clause } from "../Clause";
 
 /**
+ * Finds possible Map-ings from queryList to universeList
  * {@link "file://./../../../../../docs/notes/unification-algo.md"}
  */
-export function solveMaps(data: Map[][]): Map[] {
+export function solveMaps(queryList: Clause[], universeList: Clause[]): Map[] {
 
-    const dataCopy = data.slice()
+    const candidates = findCandidates(queryList, universeList)
 
-    dataCopy.forEach((ml1, i) => {
-        dataCopy.forEach((ml2, j) => {
+    candidates.forEach((ml1, i) => {
+        candidates.forEach((ml2, j) => {
 
             if (ml1.length && ml2.length && i !== j) {
                 const merged = merge(ml1, ml2)
-                dataCopy[i] = []
-                dataCopy[j] = merged
+                candidates[i] = []
+                candidates[j] = merged
             }
 
         })
     })
 
-    // return dataCopy.flat().filter(x=> !Object.values(x).includes('IMPOSSIBLE') )
-    return dataCopy.flat()
+    return candidates.flat().filter(x => !isImposible(x))
+}
+
+function findCandidates(queryList: Clause[], universeList: Clause[]): Map[][] {
+    return queryList.map(q => {
+        const res = universeList.flatMap(u => u.query(q))
+        return res.length ? res : [makeImpossible(q)]
+    })
 }
 
 function merge(ml1: Map[], ml2: Map[]) {
@@ -45,4 +54,14 @@ function merge(ml1: Map[], ml2: Map[]) {
 function mapsAgree(m1: Map, m2: Map) {
     const commonKeys = intersection(Object.keys(m1), Object.keys(m2))
     return commonKeys.every(k => m1[k] === m2[k])
+}
+
+function makeImpossible(q: Clause): Map {
+    return q.entities
+        .map(x => ({ [x]: SpecialIds.IMPOSSIBLE }))
+        .reduce((a, b) => ({ ...a, ...b }), {})
+}
+
+function isImposible(map: Map) {
+    return Object.values(map).includes(SpecialIds.IMPOSSIBLE)
 }
