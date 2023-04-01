@@ -519,10 +519,6 @@ More generally, when invoking any method (BaseWrapper.call()) you may tmp add pr
 
 Maybe ephemeral vs permanent relations (verbs)?
 
-# Wrapper.query(Clause)
-replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
-
-
 # BaseWrapper sucks, new ideas
 
 every wrapper has a list of predicates, whenever anything is asserted about a wrapper, the list of predicates is updated, predicates are added/removed
@@ -559,3 +555,14 @@ color of a button is background of style of it
 # copy
 
 not copying heirlooms. YOU STILL NEED TO FIND A BETTER INHERITANCE SYSTEM!
+
+# Rename
+Wrapper ---> Thing
+
+# Enviro vs Wrapper
+
+Turn Enviro into a Wrapper
+
+## Wrapper.query(Clause)
+replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
+
