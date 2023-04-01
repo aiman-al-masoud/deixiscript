@@ -555,3 +555,7 @@ maybe do this:
 
 color of a button is background of style of it
 
+
+# copy
+
+not copying heirlooms. YOU STILL NEED TO FIND A BETTER INHERITANCE SYSTEM!
