@@ -9,12 +9,10 @@ import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipCh
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
-import { newInstance } from "../../utils/newInstance";
 import { Map } from "../../middle/id/Map";
 import { makeGetter } from "./makeGetter";
 import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
-import { intersection } from "../../utils/intersection";
 
 
 type Relation = { predicate: Lexeme, args: Wrapper[] } //implied subject = this object
@@ -33,7 +31,6 @@ export default class BaseWrapper implements Wrapper {
     constructor(
         protected object: any,
         readonly id: Id,
-        // protected predicates: Lexeme[],
         readonly parent?: Wrapper,
         readonly name?: string,
         readonly heirlooms: Heirloom[] = [],
@@ -48,13 +45,11 @@ export default class BaseWrapper implements Wrapper {
 
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined { //TODO: do something with opts.args!
 
-
         const relation: Relation = { predicate, args: opts?.args ?? [] }
-        
-        if (!opts?.negated  && this.relations.filter(x=>relationsEqual(x, relation)).length){
+
+        if (!opts?.negated && this.relations.filter(x => relationsEqual(x, relation)).length) {
             return this.reinterpret([], [], [relation], opts)
         }
-
 
         let added: Relation[] = []
         let removed: Relation[] = []
@@ -159,12 +154,15 @@ export default class BaseWrapper implements Wrapper {
             return
         }
 
-        this.object = newInstance(proto, value.root)
+        this.object = value.referent?.copy({ id: this.id }).unwrap()
 
         if (this.object instanceof HTMLElement) {
             this.object.id = this.id + ''
-            this.object.textContent = 'default'
             opts?.context?.root?.appendChild(this.object)
+        }
+
+        if (this.object instanceof HTMLElement && !this.object.children.length) {
+            this.object.textContent = 'default'
         }
 
     }
