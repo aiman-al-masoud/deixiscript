@@ -82,13 +82,10 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected addRelation(relation: Relation) {
-        // this.predicates.push(predicate) //TODO:uniq?
         this.relations.push(relation)
     }
 
     protected removeRelation(relation: Relation) {
-        // this.predicates = this.predicates.filter(x => x.root !== predicate.root) //TODO:uniq?
-        // console.log('to be removed=',relation)
         this.relations = this.relations.filter(x => !relationsEqual(x, relation))
     }
 
@@ -176,7 +173,6 @@ export default class BaseWrapper implements Wrapper {
         opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
     }
 
-
     //-----------------------------------------------------------
 
     getConcepts(): string[] {
@@ -195,25 +191,12 @@ export default class BaseWrapper implements Wrapper {
         root: x
     }))
 
-    // getAll = ()=> allKeys(this.object).map(x=> new BaseWrapper(this._get(x), 1, [], this)  )
-
     unwrap = () => this.object
 
     protected refreshHeirlooms() {
         this.relations.map(x => x.predicate).forEach(p => p.referent?.getHeirlooms().forEach(h => {
             Object.defineProperty(this.object, h.name, h)
         }))
-    }
-
-    get(predicate: Lexeme): Wrapper | undefined {
-        const w = this.object[predicate.root]
-        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), this, predicate.root)
-    }
-
-    protected _get(key: string) {
-        this.refreshHeirlooms() //TODO!
-        const val = this.object[key]
-        return val?.unwrap?.() ?? val
     }
 
     setAlias = (name: string, path: string[]) => {
@@ -231,12 +214,20 @@ export default class BaseWrapper implements Wrapper {
         return this.heirlooms
     }
 
-    toClause(query?: Clause) {
+    protected call(verb: Lexeme, args: Wrapper[]) {
+        const method = this._get(verb.root) as Function
 
+        if (!method) {
+            return
+        }
+
+        const result = method.call(this.object, ...args.map(x => x.unwrap()))
+        return wrap({ id: getIncrementalId(), object: result })
+    }
+
+    toClause(query?: Clause) {
         const queryOrEmpty = query ?? emptyClause
         const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
-
-
         const relStuff = this.relations.filter(x => x.args.length > 0).map(x => clauseOf(x.predicate, ...[this.id, ...x.args.map(x => x.id)])).reduce((a, b) => a.and(b), emptyClause)
 
         const res = queryOrEmpty.flatList()
@@ -248,11 +239,7 @@ export default class BaseWrapper implements Wrapper {
             .and(this.ownerInfo(queryOrEmpty))
             .and(relStuff)
 
-        // console.log(res.toString())
-
         return res
-
-
     }
 
     protected ownerInfo(q: Clause) {
@@ -267,16 +254,25 @@ export default class BaseWrapper implements Wrapper {
         return nested ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
     }
 
-    protected call(verb: Lexeme, args: Wrapper[]) {
-        const method = this._get(verb.root) as Function
 
-        if (!method) {
-            return
-        }
 
-        const result = method.call(this.object, ...args.map(x => x.unwrap()))
-        return wrap({ id: getIncrementalId(), object: result })
+
+
+    // --------------
+
+    get(predicate: Lexeme): Wrapper | undefined {
+        const w = this.object[predicate.root]
+        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), this, predicate.root)
     }
 
+    protected _get(key: string) {
+        this.refreshHeirlooms() //TODO!
+        const val = this.object[key]
+        return val?.unwrap?.() ?? val
+    }
+
+    // getAll = ()=> allKeys(this.object).map(x=> new BaseWrapper(this._get(x), 1, [], this)  )
+
+    // -----------------
 
 }
