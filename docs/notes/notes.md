@@ -566,3 +566,7 @@ Turn Enviro into a Wrapper
 ## Wrapper.query(Clause)
 replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
 
+
+# Multi
+
+get rid of MutliAction ? 
