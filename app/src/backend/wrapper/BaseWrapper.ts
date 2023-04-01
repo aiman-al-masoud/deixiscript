@@ -144,17 +144,13 @@ export default class BaseWrapper implements Wrapper {
 
     protected inherit = (value: Lexeme, opts?: SetOps) => {
 
-        const proto = value.referent?.getProto()
+        const copy = value.referent?.copy({ id: this.id }).unwrap()
 
-        if (!proto || value.referent === this) {
+        if (!copy || value.referent === this || Object.getPrototypeOf(this.object) === Object.getPrototypeOf(copy) /* don't recreate */) {
             return
         }
 
-        if (Object.getPrototypeOf(this.object) === proto) { //don't re-create
-            return
-        }
-
-        this.object = value.referent?.copy({ id: this.id }).unwrap()
+        this.object = copy
 
         if (this.object instanceof HTMLElement) {
             this.object.id = this.id + ''
@@ -184,28 +180,14 @@ export default class BaseWrapper implements Wrapper {
     //-----------------------------------------------------------
 
     getConcepts(): string[] {
-        // return uniq(this.predicates.flatMap(x => {
-        //     return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
-        // }))
-
         return uniq(this.relations.filter(x => !x.args.length).map(x => x.predicate).flatMap(x => {
             return x.referent === this ? [x.root] : x.referent?.getConcepts() ?? []
         }))
     }
 
-    getProto(): object | undefined {
-
-        if (!(this.object instanceof HTMLElement)) { //TODO
-            return undefined
-        }
-
-        return this.object.constructor.prototype
-    }
-
     copy = (opts?: CopyOpts) => new BaseWrapper(
         opts?.object ?? deepCopy(this.object),
         opts?.id ?? this.id, //TODO: keep old by default?
-        // (opts?.preds ?? []).concat(this.predicates)
     )
 
     dynamic = () => allKeys(this.object).map(x => makeLexeme({
