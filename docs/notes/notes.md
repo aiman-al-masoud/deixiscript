@@ -517,6 +517,8 @@ onclick of button triggers addtion of "click" verb predicate to button's own pre
 
 More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations
 
+Maybe ephemeral vs permanent relations (verbs)?
+
 # Wrapper.query(Clause)
 replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
 
