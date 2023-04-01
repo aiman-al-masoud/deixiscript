@@ -22,7 +22,7 @@ export default interface Wrapper {
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
     getProto(): object | undefined
-    getConcepts(): string[] | undefined
+    getConcepts(): string[]
 
 }
 
@@ -35,7 +35,7 @@ export interface SetOps {
 export interface CopyOpts {
     object?: object
     preds?: Lexeme[]
-    id?:Id
+    id?: Id
 }
 
 export function wrap(args: WrapArgs): Wrapper {

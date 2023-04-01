@@ -74,8 +74,8 @@ export default class BaseWrapper implements Wrapper {
 
         const newOne = added[0].predicate
 
-        if (newOne.referent?.getConcepts()?.includes('color')) {
-            return this.relations.filter(x => !x.args.length).filter(x => (x.predicate.referent !== this) && (x.predicate.referent?.getConcepts()?.includes('color')) && (x.predicate.root !== newOne.root))
+        if (newOne.referent?.getConcepts().includes('color')) {
+            return this.relations.filter(x => !x.args.length).filter(x => (x.predicate.referent !== this) && (x.predicate.referent?.getConcepts().includes('color')) && (x.predicate.root !== newOne.root))
         }
 
         return []
