@@ -38,6 +38,7 @@ const tests = [
     test34,
     test35,
     test36,
+    test37,
 ]
 
 /**
@@ -365,6 +366,13 @@ function test36() {
 
     return firstIntension === secondIntension
         && firstIntension !== falseSecondIntension
+}
+
+function test37() {
+    const brain = getBrain({ root: document.body })
+    brain.execute('x is red')
+    brain.execute('x is a button')
+    return brain.executeUnwrapped('x')[0].style.background === 'red'
 }
 
 function sleep(millisecs: number) {

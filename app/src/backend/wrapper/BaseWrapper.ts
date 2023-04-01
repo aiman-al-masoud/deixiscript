@@ -49,8 +49,12 @@ export default class BaseWrapper implements Wrapper {
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined { //TODO: do something with opts.args!
 
 
-
         const relation: Relation = { predicate, args: opts?.args ?? [] }
+        
+        if (!opts?.negated  && this.relations.filter(x=>relationsEqual(x, relation)).length){
+            return this.reinterpret([], [], [relation], opts)
+        }
+
 
         let added: Relation[] = []
         let removed: Relation[] = []
