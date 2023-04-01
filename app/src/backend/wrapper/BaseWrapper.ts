@@ -43,7 +43,7 @@ export default class BaseWrapper implements Wrapper {
         this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
 
 
-    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined { //TODO: do something with opts.args!
+    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined {
 
         const relation: Relation = { predicate, args: opts?.args ?? [] }
 
