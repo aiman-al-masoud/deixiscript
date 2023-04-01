@@ -9,7 +9,6 @@ export function dynamicLexeme(word: string, context: Context, words: string[]): 
         .map(w => clauseOf(makeLexeme({ root: w, type: 'noun' }), 'X'))
         .flatMap(c => context.query(c))
         .flatMap(m => Object.values(m))
-        .flatMap(id => context.get(id) ?? [])
         .flatMap(x => x?.dynamic().flatMap(x => [...x.extrapolate(context), x]))
         .filter(x => x.token === word || x.root === word)
 

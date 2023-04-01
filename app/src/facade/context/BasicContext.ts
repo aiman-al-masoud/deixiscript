@@ -16,7 +16,6 @@ export default class BasicContext implements Context {
     protected _lexemes = this.config.lexemes
     readonly prelude = this.config.prelude
     readonly lexemeTypes = this.config.lexemeTypes
-    readonly get = this.enviro.get
     readonly set = this.enviro.set
     readonly query = this.enviro.query
     readonly root = this.enviro.root
