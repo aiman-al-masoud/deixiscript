@@ -10,7 +10,6 @@ import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
 import { Map } from "../../middle/id/Map";
-import { makeGetter } from "./makeGetter";
 import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
 
@@ -199,17 +198,6 @@ export default class BaseWrapper implements Wrapper {
         }))
     }
 
-    setAlias = (name: string, path: string[]) => {
-
-        this.heirlooms.push({
-            name,
-            set: makeSetter(path),
-            get: makeGetter(path),
-            configurable: true,
-        })
-
-    }
-
     getHeirlooms(): Heirloom[] {
         return this.heirlooms
     }
@@ -258,11 +246,22 @@ export default class BaseWrapper implements Wrapper {
 
 
 
-    // --------------
+    // --------------------------------------------------------------------
+
+    setAlias = (name: string, path: string[]) => {
+
+        this.heirlooms.push({
+            name,
+            set: makeSetter(path),
+            get: makeGetter(path),
+            configurable: true,
+        })
+
+    }
 
     get(predicate: Lexeme): Wrapper | undefined {
         const w = this.object[predicate.root]
-        return w instanceof BaseWrapper ? w : new BaseWrapper(w, getIncrementalId(), this, predicate.root)
+        return w instanceof BaseWrapper ? w : new BaseWrapper(w, `${this.id}.${predicate.root}`, this, predicate.root)
     }
 
     protected _get(key: string) {
@@ -273,6 +272,32 @@ export default class BaseWrapper implements Wrapper {
 
     // getAll = ()=> allKeys(this.object).map(x=> new BaseWrapper(this._get(x), 1, [], this)  )
 
-    // -----------------
+}
+
+function getNested(object: any, path: string[]) {
+
+    if (!object[path[0]]) {
+        return undefined
+    }
+
+    let x = wrap({ object: object[path[0]], id: getIncrementalId(), parent: object, name: path[0] })
+
+    path.slice(1).forEach(p => {
+        const y = x.unwrap()[p]
+        x = wrap({ object: y, id: getIncrementalId(), parent: x, name: p })
+    })
+
+    return x
 
 }
+
+export function makeGetter(path: string[]) {
+
+    function f(this: any) {
+        return getNested(this, path)
+    }
+
+    return f
+}
+
+// ---------------------------------------------------------------
