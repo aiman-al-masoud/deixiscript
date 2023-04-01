@@ -545,3 +545,11 @@ reinterpret may update the predicates list, for eg if detects that a property ha
 x is a button.
 x is red.
 x is green. //remove red
+
+
+# No imply for alias definition
+
+maybe do this:
+
+color of a button is background of style of it
+
