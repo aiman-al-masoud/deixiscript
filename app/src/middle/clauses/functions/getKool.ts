@@ -24,7 +24,7 @@ export function getKool(context: Context, clause: Clause, localId: Id): Wrapper[
 
     // return owner.flatMap(x => x.get(clause.describe(localId)[0]) ?? [])
 
-    console.log(localId)//TODO!
+    // console.log(localId)//TODO!
     return owner.flatMap(x => x.get(localId) ?? [])
 
 
