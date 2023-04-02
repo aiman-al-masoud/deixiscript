@@ -9,7 +9,7 @@ import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipCh
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
-import { Map } from "../../middle/id/Map";
+import { Map, ThingMap } from "../../middle/id/Map";
 import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
 
@@ -213,22 +213,13 @@ export default class BaseWrapper implements Wrapper {
         return wrap({ id: getIncrementalId(), object: result })
     }
 
-    toClause(query?: Clause) {
-        const queryOrEmpty = query ?? emptyClause
-        const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
-        const relStuff = this.relations.filter(x => x.args.length > 0).map(x => clauseOf(x.predicate, ...[this.id, ...x.args.map(x => x.id)])).reduce((a, b) => a.and(b), emptyClause)
 
-        const res = queryOrEmpty.flatList()
-            .filter(x => x.entities.length === 1 && x.predicate)
-            .filter(x => this.is(x.predicate as Lexeme))
-            .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
-            .concat(fillerClause)
-            .reduce((a, b) => a.and(b), emptyClause)
-            .and(this.ownerInfo(queryOrEmpty))
-            .and(relStuff)
 
-        return res
-    }
+
+
+
+    // --------------------------------------------------------------------
+
 
     protected ownerInfo(q: Clause) {
         const oc = getOwnershipChain(q, getTopLevel(q)[0])
@@ -242,11 +233,25 @@ export default class BaseWrapper implements Wrapper {
         return nested ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
     }
 
+    toClause(query?: Clause) {
+        const queryOrEmpty = query ?? emptyClause
 
+        const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
+        const nameClause = this.name ? clauseOf(makeLexeme({ root: this.name, type: 'noun' }), this.id) : emptyClause //TODO
+        const relStuff = this.relations.filter(x => x.args.length > 0).map(x => clauseOf(x.predicate, ...[this.id, ...x.args.map(x => x.id)])).reduce((a, b) => a.and(b), emptyClause)
 
+        const res = queryOrEmpty.flatList()
+            .filter(x => x.entities.length === 1 && x.predicate)
+            .filter(x => this.is(x.predicate as Lexeme))
+            .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
+            .concat(fillerClause)
+            .reduce((a, b) => a.and(b), emptyClause)
+            .and(this.ownerInfo(queryOrEmpty))
+            .and(relStuff)
+            .and(nameClause)
 
-
-    // --------------------------------------------------------------------
+        return res
+    }
 
     setAlias = (name: string, path: string[]) => {
 
@@ -265,12 +270,48 @@ export default class BaseWrapper implements Wrapper {
     }
 
     protected _get(key: string) {
-        this.refreshHeirlooms() //TODO!
-        const val = this.object[key]
-        return val?.unwrap?.() ?? val
+
+        try {
+            this.refreshHeirlooms() //TODO!
+            const val = this.object?.[key]
+            return val?.unwrap?.() ?? val
+        } catch {
+
+        }
+
     }
 
-    // getAll = ()=> allKeys(this.object).map(x=> new BaseWrapper(this._get(x), 1, [], this)  )
+    query(clause: Clause): ThingMap[] {
+
+        const top = getTopLevel(clause)
+
+        const peeled = clause.flatList()
+            .filter(x => x.entities.every(e => !top.includes(e)))
+            .reduce((a, b) => a.and(b), emptyClause)
+
+        const relevantNames = peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
+
+        const universe = allKeys(this.object)
+            .map(x => ({ name: x, obj: this._get(x) }))
+            .filter(x => relevantNames.includes(x.name)) // performance
+            .filter(x => x.obj !== this.object)
+            .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
+            .map(x => x.toClause(peeled))
+            .reduce((a, b) => a.and(b), emptyClause)
+            .simple
+
+        const maps = universe.query(peeled)
+        const res = maps
+            .flatMap(m => Object.entries(m)
+                .map(e => ({ [e[0]]: this._get(e[1].split('.')[1]) /*TODO! to wrapper! */ })))
+
+
+        console.log('peeled=', peeled.toString())
+        console.log('maps=', maps)
+        console.log('res=', res)
+
+        return res
+    }
 
 }
 

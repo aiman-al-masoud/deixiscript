@@ -4,6 +4,7 @@ import { Heirloom } from "./Heirloom"
 import BaseWrapper from "./BaseWrapper"
 import { Clause } from "../../middle/clauses/Clause"
 import { Context } from "../../facade/context/Context"
+import { ThingMap } from "../../middle/id/Map"
 
 export default interface Wrapper {
 
@@ -22,6 +23,9 @@ export default interface Wrapper {
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
     getConcepts(): string[]
+
+    query(clause: Clause): ThingMap[]
+
 
 }
 
