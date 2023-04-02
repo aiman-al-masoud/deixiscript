@@ -13,17 +13,19 @@ export default interface Wrapper {
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined
     is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
-    get(predicate: Lexeme): Wrapper | undefined
+    
     /** describe the object */ toClause(query?: Clause): Clause
     /** infer grammatical types of props */ dynamic(): Lexeme[]
     unwrap(): any
-
-
-
+    
+    
+    
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
     getConcepts(): string[]
-
+    
+    
+    get(id:Id):Wrapper|undefined
     query(clause: Clause, parentMap?:ThingMap): ThingMap[]
 
 

@@ -257,9 +257,25 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    get(predicate: Lexeme): Wrapper | undefined {
-        const w = this.object[predicate.root]
-        return w instanceof BaseWrapper ? w : new BaseWrapper(w, `${this.id}.${predicate.root}`, this, predicate.root)
+    // get(predicate: Lexeme): Wrapper | undefined {
+    //     const w = this.object[predicate.root]
+    //     return w instanceof BaseWrapper ? w : new BaseWrapper(w, `${this.id}.${predicate.root}`, this, predicate.root)
+    // }
+
+    get(id: Id): Wrapper | undefined {
+
+        if (this.id === id) {
+            return this
+        }
+
+        const parts = id.split('.')
+
+        if (parts[0] !== this.id) {
+            return undefined
+        }
+
+        return getNested(this.object, parts.slice(1))
+
     }
 
     protected _get(key: string) {
