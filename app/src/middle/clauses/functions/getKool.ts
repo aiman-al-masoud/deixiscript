@@ -12,6 +12,7 @@ export function getKool(context: Context, clause: Clause, localId: Id): Wrapper[
         return maps
             .map(x => x[localId])
             .filter(x => x)
+            .flatMap(x => context.get(x) ?? [])
     }
 
 

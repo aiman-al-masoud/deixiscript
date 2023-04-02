@@ -1,13 +1,16 @@
 import { Clause } from "../../middle/clauses/Clause";
-import { ThingMap } from "../../middle/id/Map";
+import { Id } from "../../middle/id/Id";
+import { Map } from "../../middle/id/Map";
 import Wrapper from "../wrapper/Wrapper";
 import BaseEnviro from "./BaseEnviro";
 
 export interface Enviro {
-    set(wrapper: Wrapper): Wrapper
-    query(clause: Clause): ThingMap[]
     readonly values: Wrapper[]
     readonly root?: HTMLElement
+    set(wrapper: Wrapper): Wrapper
+
+    query(clause: Clause): Map[]
+    get(id:Id):Wrapper|undefined
 }
 
 export default function getEnviro(opts?: GetEnviroOps): Enviro {

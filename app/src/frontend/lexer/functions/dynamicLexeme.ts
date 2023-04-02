@@ -6,11 +6,12 @@ import { Lexeme, makeLexeme } from "../Lexeme"
 export function dynamicLexeme(word: string, context: Context, words: string[]): Lexeme {
 
     const relevant = words
-        .map(w => clauseOf(makeLexeme({ root: w, type: 'noun' }), 'X'))
-        .flatMap(c => context.query(c))
-        .flatMap(m => Object.values(m))
-        .flatMap(x => x?.dynamic().flatMap(x => [...x.extrapolate(context), x]))
-        .filter(x => x.token === word || x.root === word)
+    .map(w => clauseOf(makeLexeme({ root: w, type: 'noun' }), 'X'))
+    .flatMap(c => context.query(c))
+    .flatMap(m => Object.values(m))
+    .flatMap(id => context.get(id) ?? [])
+    .flatMap(x => x?.dynamic().flatMap(x => [...x.extrapolate(context), x]))
+    .filter(x => x.token === word || x.root === word)
 
     const isMacroContext =
         words.some(x => context.getLexeme(x)?.type === 'grammar')

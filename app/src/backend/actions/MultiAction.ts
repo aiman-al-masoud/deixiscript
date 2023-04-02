@@ -14,7 +14,7 @@ export default class MultiAction implements Action {
 
     run(context: Context) {
 
-        const maps = context.query(this.clause.theme).map(m => this.toMap(m))
+        const maps = context.query(this.clause.theme)//.map(m => this.toMap(m))
 
         // console.log(this.clause.theme.toString())
         // console.log(this.clause.rheme.toString())
@@ -32,8 +32,8 @@ export default class MultiAction implements Action {
 
     }
 
-    protected toMap(m: { [x: Id]: Wrapper }): Map {
-        return Object.entries(m).map(e => ({ [e[0]]: e[1]?.id })).reduce((a, b) => ({ ...a, ...b }))
-    }
+    // protected toMap(m: { [x: Id]: Wrapper }): Map {
+    //     return Object.entries(m).map(e => ({ [e[0]]: e[1]?.id })).reduce((a, b) => ({ ...a, ...b }))
+    // }
 
 }

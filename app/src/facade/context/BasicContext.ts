@@ -19,6 +19,7 @@ export default class BasicContext implements Context {
     readonly set = this.enviro.set
     readonly query = this.enviro.query
     readonly root = this.enviro.root
+    readonly get = this.enviro.get
 
     constructor(readonly enviro: Enviro, readonly config: Config) {
 
