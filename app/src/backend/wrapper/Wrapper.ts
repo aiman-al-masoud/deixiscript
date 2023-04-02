@@ -24,7 +24,7 @@ export default interface Wrapper {
     getHeirlooms(): Heirloom[]
     getConcepts(): string[]
 
-    query(clause: Clause): ThingMap[]
+    query(clause: Clause, parentMap?:ThingMap): ThingMap[]
 
 
 }

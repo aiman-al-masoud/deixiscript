@@ -217,20 +217,13 @@ export default class BaseWrapper implements Wrapper {
 
 
 
-
     // --------------------------------------------------------------------
 
 
     protected ownerInfo(q: Clause) {
-        const oc = getOwnershipChain(q, getTopLevel(q)[0])
-        const lx = oc.flatMap(x => q.describe(x)).filter(x => x.type === 'noun').slice(1)[0]
-        const conceptsAndRoot = [lx?.referent?.getConcepts(), lx?.root].filter(x => x).flat().map(x => x as string)
-        const nested = conceptsAndRoot.some(x => this._get(x))
-        // without filter, q.copy() ends up asserting wrong information about this object, you need to assert only ownership of given props if present, not everything else that may come with query q. 
-        const filteredq = q.flatList().filter(x => !(x?.args?.[0] === oc[0] && x.args?.length === 1)).reduce((a, b) => a.and(b), emptyClause)
-        // ids of owned elements need to be unique, or else new unification algo gets confused
-        const childMap: Map = oc.slice(1).map(x => ({ [x]: `${this.id}${x}` })).reduce((a, b) => ({ ...a, ...b }), {})
-        return nested ? filteredq.copy({ map: { [oc[0]]: this.id, ...childMap } }) : emptyClause
+        const maps: Map[] = this.query(q).map(m => Object.entries(m).map(e => ({ [e[0]]: e[1].id })).reduce((a, b) => ({ ...a, ...b }), {}))
+        const newClause = q.copy({ map: maps[0] })
+        return (maps[0] && getOwnershipChain(q, getTopLevel(q)[0]).length > 1) ? newClause : emptyClause
     }
 
     toClause(query?: Clause) {
@@ -281,23 +274,17 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    query(clause: Clause): ThingMap[] {
+    query(clause: Clause, parentMap: ThingMap = {}): ThingMap[] {
 
         const oc = getOwnershipChain(clause, getTopLevel(clause)[0])
         // console.log('clause=', clause.toString(), 'oc=', oc, 'name=', this.name)
 
-        if (oc.length===1) { //BASECASE: check yourself
-            // console.log('hello!', this.name) 
-
+        if (oc.length === 1) { //BASECASE: check yourself
             //TODO: also handle non-ownership non-intransitive relations!
             //TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
-
-            // console.log('predicate=', clause.simple.predicate)
-
             if (clause.simple.predicate && (this.is(clause.simple.predicate) || this.name === clause.simple.predicate?.root)) {
-                return [{ [this.id]: this }]
+                return [{ ...parentMap, [clause.entities[0]]: this }]
             }
-
             return [] //TODO
         }
 
@@ -317,31 +304,9 @@ export default class BaseWrapper implements Wrapper {
             .filter(x => x.obj !== this.object)
             .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
 
-        const res = children.flatMap(x => x.query(peeled))
-
+        const res = children.flatMap(x => x.query(peeled, { [top[0]]: this }))
         return res
 
-
-        // const universe = allKeys(this.object)
-        //     .map(x => ({ name: x, obj: this._get(x) }))
-        //     .filter(x => relevantNames.includes(x.name)) // performance
-        //     .filter(x => x.obj !== this.object)
-        //     .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
-        //     .map(x => x.toClause(peeled))
-        //     .reduce((a, b) => a.and(b), emptyClause)
-        //     .simple
-
-        // const maps = universe.query(peeled)
-        // const res = maps
-        //     .flatMap(m => Object.entries(m)
-        //         .map(e => ({ [e[0]]: this._get(e[1].split('.')[1]) /*TODO! to wrapper! */ })))
-
-
-        // console.log('peeled=', peeled.toString())
-        // console.log('maps=', maps)
-        // console.log('res=', res)
-
-        // return res
     }
 
 }
