@@ -20,7 +20,8 @@ export default class SimpleAction implements Action {
         const args =
             this.clause
                 .args
-                .map(x => getKool(context, this.topLevel.theme, x)[0] ?? context.set(wrap({id:getIncrementalId()}) /*  { type: 1 } */ ))
+                .map(x => getKool(context, this.topLevel.theme, x)[0] ?? context.set(wrap({ id: getIncrementalId() })))
+                
 
         const subject = args[0]
 

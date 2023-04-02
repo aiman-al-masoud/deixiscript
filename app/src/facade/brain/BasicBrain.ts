@@ -36,7 +36,10 @@ export default class BasicBrain implements Brain {
             if (clause.isSideEffecty) {
                 return this.actuator.takeAction(clause, this.context)
             } else {
-                const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
+
+                const maps = this.context.query(clause)
+                const wrappers = maps.flatMap(m=>Object.values(m)).map(id=>this.context.get(id))
+                // const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
                 this.context.values.forEach(w => pointOut(w, { turnOff: true }))
                 wrappers.forEach(w => w ? pointOut(w) : 0)
                 return wrappers
