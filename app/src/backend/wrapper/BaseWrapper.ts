@@ -221,7 +221,7 @@ export default class BaseWrapper implements Wrapper {
 
 
     protected ownerInfo(q: Clause) {
-        const maps: Map[] = this.query(q).map(m => Object.entries(m).map(e => ({ [e[0]]: e[1].id })).reduce((a, b) => ({ ...a, ...b }), {}))
+        const maps: Map[] = this.query(q).map(m => Object.entries(m).map(e => ({ [e[0]]: e[1] })).reduce((a, b) => ({ ...a, ...b }), {}))
         const newClause = q.copy({ map: maps[0] })
         return (maps[0] && getOwnershipChain(q, getTopLevel(q)[0]).length > 1) ? newClause : emptyClause
     }
@@ -290,7 +290,7 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    query(clause: Clause, parentMap: ThingMap = {}): ThingMap[] {
+    query(clause: Clause, parentMap: Map = {}): Map[] {
 
         const oc = getOwnershipChain(clause, getTopLevel(clause)[0])
         // console.log('clause=', clause.toString(), 'oc=', oc, 'name=', this.name)
@@ -299,7 +299,7 @@ export default class BaseWrapper implements Wrapper {
             //TODO: also handle non-ownership non-intransitive relations!
             //TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
             if (clause.simple.predicate && (this.is(clause.simple.predicate) || this.name === clause.simple.predicate?.root)) {
-                return [{ ...parentMap, [clause.entities[0]]: this }]
+                return [{ ...parentMap, [clause.entities[0]]: this.id }]
             }
             return [] //TODO
         }
@@ -320,7 +320,7 @@ export default class BaseWrapper implements Wrapper {
             .filter(x => x.obj !== this.object)
             .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
 
-        const res = children.flatMap(x => x.query(peeled, { [top[0]]: this }))
+        const res = children.flatMap(x => x.query(peeled, { [top[0]]: this.id }))
         return res
 
     }

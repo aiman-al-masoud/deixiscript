@@ -4,7 +4,7 @@ import { Heirloom } from "./Heirloom"
 import BaseWrapper from "./BaseWrapper"
 import { Clause } from "../../middle/clauses/Clause"
 import { Context } from "../../facade/context/Context"
-import { ThingMap } from "../../middle/id/Map"
+import { Map, ThingMap } from "../../middle/id/Map"
 
 export default interface Wrapper {
 
@@ -24,9 +24,9 @@ export default interface Wrapper {
     getHeirlooms(): Heirloom[]
     getConcepts(): string[]
     
-    
+
     get(id:Id):Wrapper|undefined
-    query(clause: Clause, parentMap?:ThingMap): ThingMap[]
+    query(clause: Clause, parentMap?:Map): Map[]
 
 
 }
