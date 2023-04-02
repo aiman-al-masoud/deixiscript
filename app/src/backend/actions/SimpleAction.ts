@@ -1,6 +1,5 @@
 import Action from "./Action";
 import { Clause } from "../../middle/clauses/Clause";
-// import { getKool } from "../../middle/clauses/functions/getKool";
 import { Context } from "../../facade/context/Context";
 import { wrap } from "../wrapper/Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
