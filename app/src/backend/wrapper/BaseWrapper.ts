@@ -283,34 +283,65 @@ export default class BaseWrapper implements Wrapper {
 
     query(clause: Clause): ThingMap[] {
 
+        const oc = getOwnershipChain(clause, getTopLevel(clause)[0])
+        // console.log('clause=', clause.toString(), 'oc=', oc, 'name=', this.name)
+
+        if (oc.length===1) { //BASECASE: check yourself
+            // console.log('hello!', this.name) 
+
+            //TODO: also handle non-ownership non-intransitive relations!
+            //TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
+
+            // console.log('predicate=', clause.simple.predicate)
+
+            if (clause.simple.predicate && (this.is(clause.simple.predicate) || this.name === clause.simple.predicate?.root)) {
+                return [{ [this.id]: this }]
+            }
+
+            return [] //TODO
+        }
+
+        // check your children!
+
         const top = getTopLevel(clause)
 
         const peeled = clause.flatList()
             .filter(x => x.entities.every(e => !top.includes(e)))
             .reduce((a, b) => a.and(b), emptyClause)
 
-        const relevantNames = peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
+        const relevantNames = /* or clause??? */peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
 
-        const universe = allKeys(this.object)
+        const children: Wrapper[] = allKeys(this.object)
             .map(x => ({ name: x, obj: this._get(x) }))
             .filter(x => relevantNames.includes(x.name)) // performance
             .filter(x => x.obj !== this.object)
             .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
-            .map(x => x.toClause(peeled))
-            .reduce((a, b) => a.and(b), emptyClause)
-            .simple
 
-        const maps = universe.query(peeled)
-        const res = maps
-            .flatMap(m => Object.entries(m)
-                .map(e => ({ [e[0]]: this._get(e[1].split('.')[1]) /*TODO! to wrapper! */ })))
-
-
-        console.log('peeled=', peeled.toString())
-        console.log('maps=', maps)
-        console.log('res=', res)
+        const res = children.flatMap(x => x.query(peeled))
 
         return res
+
+
+        // const universe = allKeys(this.object)
+        //     .map(x => ({ name: x, obj: this._get(x) }))
+        //     .filter(x => relevantNames.includes(x.name)) // performance
+        //     .filter(x => x.obj !== this.object)
+        //     .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
+        //     .map(x => x.toClause(peeled))
+        //     .reduce((a, b) => a.and(b), emptyClause)
+        //     .simple
+
+        // const maps = universe.query(peeled)
+        // const res = maps
+        //     .flatMap(m => Object.entries(m)
+        //         .map(e => ({ [e[0]]: this._get(e[1].split('.')[1]) /*TODO! to wrapper! */ })))
+
+
+        // console.log('peeled=', peeled.toString())
+        // console.log('maps=', maps)
+        // console.log('res=', res)
+
+        // return res
     }
 
 }
