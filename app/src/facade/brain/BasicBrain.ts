@@ -1,7 +1,6 @@
 import { getActuator } from "../../backend/actuator/Actuator";
 import Wrapper from "../../backend/wrapper/Wrapper";
 import { getParser } from "../../frontend/parser/interfaces/Parser";
-import { getKool } from "../../middle/clauses/functions/getKool";
 import { toClause } from "../../middle/toClause";
 import { Context } from "../context/Context";
 import Brain from "./Brain";

@@ -1,6 +1,6 @@
 import Action from "./Action";
 import { Clause } from "../../middle/clauses/Clause";
-import { getKool } from "../../middle/clauses/functions/getKool";
+// import { getKool } from "../../middle/clauses/functions/getKool";
 import { Context } from "../../facade/context/Context";
 import { wrap } from "../wrapper/Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
@@ -17,11 +17,12 @@ export default class SimpleAction implements Action {
             return
         }
 
-        const args =
-            this.clause
-                .args
-                .map(x => getKool(context, this.topLevel.theme, x)[0] ?? context.set(wrap({ id: getIncrementalId() })))
-                
+        const maps = context.query(this.topLevel.theme)
+
+        const map = maps[0] ?? {}
+
+        const args = this.clause.args
+            .map(id => map[id] ? context.get(map[id])! : context.set(wrap({ id: getIncrementalId() })))
 
         const subject = args[0]
 
