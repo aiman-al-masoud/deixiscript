@@ -15,8 +15,17 @@ export default class BaseEnviro implements Enviro {
     }
 
     get = (id: Id): Wrapper | undefined => {
-        this.lastReferenced = id
-        return this.dictionary[id]
+
+        const parts = id.split('.')
+        const p1 = parts[0]
+        const w = this.dictionary[p1]
+
+        if (parts.length > 1) {
+            return w.get(parts.slice(1).join('.'))
+        }
+
+        this.setLastReferenced(p1)
+        return w
     }
 
     get values(): Wrapper[] {
@@ -24,7 +33,7 @@ export default class BaseEnviro implements Enviro {
     }
 
     set = (wrapper: Wrapper): Wrapper => {
-        this.lastReferenced = wrapper.id
+        this.setLastReferenced(wrapper.id)
         return this.dictionary[wrapper.id] = wrapper
     }
 
@@ -36,10 +45,15 @@ export default class BaseEnviro implements Enviro {
 
         const maps = universe
             .query(query, { it: this.lastReferenced })
-        // .map(m => this.convertMap(m))
 
         // console.log('query=', query.toString(), 'universe=', universe.toString(), 'maps=', maps)
         return maps
+    }
+
+    protected setLastReferenced(lastReferenced: Id) {
+        if (Object.keys(this.dictionary).includes(lastReferenced)) {
+            this.lastReferenced = lastReferenced
+        }
     }
 
 
