@@ -20,7 +20,7 @@ export function getConfig(): Config {
         lexemeTypes,
         lexemes: lexemes.flatMap(x => {
             const l = makeLexeme(x)
-            return [l, ...l.extrapolate({} as any)]
+            return [l, ...l.extrapolate()]
         }),
         syntaxes,
         prelude,

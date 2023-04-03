@@ -20,7 +20,7 @@ export default class BaseLexeme implements Lexeme {
         readonly newData?: Partial<Lexeme>
     ) { }
 
-    extrapolate(context: Context): Lexeme[] {
+    extrapolate(context?: Context): Lexeme[] {
 
         if ((this.type === 'noun' || this.type === 'grammar') && !this.isPlural) {
             return [makeLexeme({ _root: this, token: pluralize(this.root), cardinality: '*' })]

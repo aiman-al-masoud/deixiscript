@@ -13,8 +13,8 @@ export default interface Thing {
     set(predicate: Lexeme, opts?: SetOps): Thing | undefined
     copy(opts?: CopyOpts): Thing
     unwrap(): any
-    /** describe the object */ toClause(query?: Clause): Clause
-    /** infer grammatical types of props */ dynamic(): Lexeme[]
+    toClause(query?: Clause): Clause
+    getLexemes(): Lexeme[]
     readonly id: Id
     readonly parent?: Thing
 

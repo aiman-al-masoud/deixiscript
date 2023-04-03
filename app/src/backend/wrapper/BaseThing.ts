@@ -185,10 +185,16 @@ export default class BaseThing implements Thing {
         opts?.id ?? this.id, //TODO: keep old by default?
     )
 
-    dynamic = () => allKeys(this.object).map(x => makeLexeme({
-        type: typeOf(this._get(x)),
-        root: x
-    }))
+    getLexemes = () => {
+
+        const lexemes = allKeys(this.object).map(x => makeLexeme({
+            type: typeOf(this._get(x)),
+            root: x
+        }))
+
+        return lexemes.concat(lexemes.flatMap(l => l.extrapolate()))
+    }
+
 
     unwrap = () => this.object
 

@@ -9,10 +9,10 @@ export interface Lexeme {
     /**canonical form*/  root: string
     /**token type*/  type: LexemeType
     /**form of this instance*/ token?: string
-    /**made up of more lexemes*/  contractionFor?: Lexeme[] //TODO: Lexeme[]
+    /**made up of more lexemes*/  contractionFor?: Lexeme[]
     /**for quantadj */ cardinality?: Cardinality
     _root?: Partial<Lexeme>
-    extrapolate(context: Context): Lexeme[] //TODO: optional Context?
+    extrapolate(context?: Context): Lexeme[]
     readonly isPlural: boolean
     readonly isVerb: boolean
 
