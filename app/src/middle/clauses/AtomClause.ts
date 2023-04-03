@@ -7,7 +7,7 @@ import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { uniq } from "../../utils/uniq";
 import { hashString } from "../../utils/hashString";
 
-export class BasicClause implements Clause {
+export class AtomClause implements Clause {
 
     readonly simple = this
     readonly theme = this
@@ -25,7 +25,7 @@ export class BasicClause implements Clause {
 
     }
 
-    copy = (opts?: CopyOpts) => new BasicClause(
+    copy = (opts?: CopyOpts) => new AtomClause(
         this.predicate,
         this.args.map(a => opts?.map?.[a] ?? a),
         opts?.negate ?? this.negated,
@@ -47,7 +47,7 @@ export class BasicClause implements Clause {
 
     query(query: Clause): Map[] {
 
-        if (!(query instanceof BasicClause)) {
+        if (!(query instanceof AtomClause)) {
             return []
         }
 

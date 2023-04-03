@@ -1,4 +1,4 @@
-import { BasicClause } from "./BasicClause"
+import { AtomClause } from "./AtomClause"
 import { Id } from "../id/Id"
 import { Map } from "../id/Map"
 import EmptyClause from "./EmptyClause"
@@ -33,7 +33,7 @@ export interface Clause {
 }
 
 export function clauseOf(predicate: Lexeme, ...args: Id[]): Clause {
-    return new BasicClause(predicate, args)
+    return new AtomClause(predicate, args)
 }
 
 export const emptyClause: Clause = new EmptyClause()
