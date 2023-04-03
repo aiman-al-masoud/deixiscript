@@ -3,7 +3,7 @@ import { AstNode } from "../frontend/parser/interfaces/AstNode"
 import { Clause, emptyClause, clauseOf } from "./clauses/Clause"
 import { makeAllVars } from "./clauses/functions/makeAllVars"
 import { makeImply } from "./clauses/functions/makeImply"
-import { negate } from "./clauses/functions/negate"
+import { invertEffect } from "./clauses/functions/negate"
 import { propagateVarsOwned } from "./clauses/functions/propagateVarsOwned"
 import { resolveAnaphora } from "./clauses/functions/resolveAnaphora"
 import { getIncrementalId } from "./id/functions/getIncrementalId"
@@ -62,7 +62,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
         const c1 = makeAllVars(c0)
         const c2 = resolveAnaphora(c1)
         const c3 = propagateVarsOwned(c2)
-        const c4 = negate(c3, !!ast?.links?.negation)
+        const c4 = ast?.links?.negation ? invertEffect(c3) : c3
         return c4
     }
 

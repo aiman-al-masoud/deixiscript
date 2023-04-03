@@ -1,12 +1,10 @@
 import { Clause } from "../Clause"
 
-//TODO: consider moving to Clause.copy({negate}) !!!!!
-export function negate(clause: Clause, negate: boolean) {
+export function invertEffect(clause: Clause) {
 
-    if (!negate) {
-        return clause
-    }
-
-    return clause.copy({ clause1: clause.theme.simple, clause2: clause.rheme.simple.copy({ negate }) })
+    return clause.copy({
+        clause1: clause.theme.simple,
+        clause2: clause.rheme.simple.copy({ negate: true })
+    })
 
 }
