@@ -567,6 +567,8 @@ Turn Enviro into a Wrapper
 replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
 
 
-# Multi
+# Less Actions
 
 get rid of MutliAction ? 
+
+Unify SimpleAction, MultiAction and CreateLexemeAction.
