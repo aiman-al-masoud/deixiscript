@@ -12,6 +12,7 @@ import { deepCopy } from "../../utils/deepCopy";
 import { Map } from "../../middle/id/Map";
 import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
+import { Context } from "../../facade/context/Context";
 
 
 type Relation = { predicate: Lexeme, args: Thing[] } //implied subject = this object
@@ -66,7 +67,7 @@ export default class BaseThing implements Thing {
         added.forEach(r => this.addRelation(r))
         removed.forEach(r => this.removeRelation(r))
 
-        return this.reinterpret(added, removed, unchanged, opts)
+        return this.reinterpret(added, removed, unchanged, opts?.context)
     }
 
     protected getExcludedBy(added: Relation[]): Relation[] {
@@ -88,45 +89,42 @@ export default class BaseThing implements Thing {
         this.relations = this.relations.filter(x => !relationsEqual(x, relation))
     }
 
-    protected reinterpret(added: Relation[], removed: Relation[], unchanged: Relation[], opts?: SetOps) {
+    protected reinterpret(added: Relation[], removed: Relation[], unchanged: Relation[], context?: Context) {
 
         // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
 
-        //TODO!!!!!! Don't pass down opts to everyone!!! if opts.negated 
-        // goes into added/unchanged that's a BUUUUUUUUUUG!!!!!!!!
-
         removed.forEach(p => {
-            this.doSideEffects(p.predicate, opts)
+            this.doSideEffects(p, { negated: true, context })
             this.removeHeirlooms(p.predicate)
         })
 
         added.forEach(p => {
-            this.doSideEffects(p.predicate, opts)
+            this.doSideEffects(p, { negated: false, context })
             this.addHeirlooms(p.predicate)
         })
 
         unchanged.forEach(p => {
-            this.doSideEffects(p.predicate, opts) //TODO! restore heirlooms
+            this.doSideEffects(p, { negated: false, context }) //TODO! restore heirlooms
         })
 
         return undefined
     }
 
-    protected doSideEffects(predicate: Lexeme, opts?: SetOps) {
+    protected doSideEffects(relation: Relation, opts: { negated: boolean, context?: Context }) {
 
-        const prop = this.canHaveA(predicate)
+        const prop = this.canHaveA(relation.predicate)
 
-        if (predicate.isVerb) {
-            return this.call(predicate, opts?.args!)//TODO
+        if (relation.predicate.isVerb) {
+            return this.call(relation.predicate, relation.args)//TODO
         } else if (prop) { // has-a
-            const val = typeof this._get(predicate.root) === 'boolean' ? !opts?.negated : !opts?.negated ? predicate.root : opts?.negated && this.is(predicate) ? '' : this._get(prop)
+            const val = typeof this._get(relation.predicate.root) === 'boolean' ? !opts.negated : !opts.negated ? relation.predicate.root : opts.negated && this.is(relation.predicate) ? '' : this._get(prop)
             this.object[prop] = val
         } else if (this.parent) { // child is-a, parent has-a
             const parent = this.parent.unwrap?.() ?? this.parent
-            if (typeof this.object !== 'object') parent[this.name!] = predicate.root //TODO: negation
+            if (typeof this.object !== 'object') parent[this.name!] = relation.predicate.root //TODO: negation
             // this.parent?.set(predicate, opts) // TODO: set predicate on parent? 
         } else { // is-a
-            this.beA(predicate, opts)
+            this.beA(relation.predicate, opts)
         }
 
     }
@@ -143,7 +141,7 @@ export default class BaseThing implements Thing {
         })
     }
 
-    protected inherit = (value: Lexeme, opts?: SetOps) => {
+    protected inherit = (value: Lexeme, context?: Context) => {
 
         const copy = value.referent?.copy({ id: this.id }).unwrap()
 
@@ -155,7 +153,7 @@ export default class BaseThing implements Thing {
 
         if (this.object instanceof HTMLElement) {
             this.object.id = this.id + ''
-            opts?.context?.root?.appendChild(this.object)
+            context?.root?.appendChild(this.object)
         }
 
         if (this.object instanceof HTMLElement && !this.object.children.length) {
@@ -164,7 +162,7 @@ export default class BaseThing implements Thing {
 
     }
 
-    protected disinherit = (value: Lexeme, opts?: SetOps) => {
+    protected disinherit = (value: Lexeme, context?: Context) => {
 
     }
 
@@ -173,8 +171,8 @@ export default class BaseThing implements Thing {
         return concepts.find(x => this._get(x) !== undefined)
     }
 
-    protected beA(value: Lexeme, opts?: SetOps) {
-        opts?.negated ? this.disinherit(value, opts) : this.inherit(value, opts)
+    protected beA(value: Lexeme, opts: { negated: boolean, context?: Context }) {
+        opts?.negated ? this.disinherit(value, opts.context) : this.inherit(value, opts.context)
     }
 
     //-----------------------------------------------------------
