@@ -118,8 +118,8 @@ export default class BaseThing implements Thing {
         } else if (this.parent) {
             const parent = this.parent.unwrap?.() ?? this.parent
             if (typeof this.object !== 'object') parent[this.name!] = relation.predicate.root //TODO bool
-        } else {
-            this.inherit(relation.predicate, context)
+        } else if (relation.predicate.referent) {
+            this.inherit(relation.predicate.referent, context) //undef?
         }
     }
 
@@ -133,27 +133,27 @@ export default class BaseThing implements Thing {
         } else if (this.parent) {
             const parent = this.parent.unwrap?.() ?? this.parent
             if (typeof this.object !== 'object') parent[this.name!] = '' //TODO bool
-        } else {
-            this.disinherit(relation.predicate, context)
+        } else if (relation.predicate.referent) {
+            this.disinherit(relation.predicate.referent, context)//undef?
         }
     }
 
-    protected addHeirlooms(predicate: Lexeme) {
-        predicate.referent?.getHeirlooms().forEach(h => {
+    protected addHeirlooms(thing: Thing) {
+        thing.getHeirlooms().forEach(h => {
             Object.defineProperty(this.object, h.name, h)
         })
     }
 
-    protected removeHeirlooms(predicate: Lexeme) {
-        predicate.referent?.getHeirlooms().forEach(h => {
+    protected removeHeirlooms(thing: Thing) {
+        thing.getHeirlooms().forEach(h => {
             delete this.object[h.name]
         })
     }
 
-    protected inherit = (value: Lexeme, context?: Context) => {
-        const copy = value.referent?.copy({ id: this.id }).unwrap()
+    protected inherit = (thing: Thing, context?: Context) => {
+        const copy = thing.copy({ id: this.id }).unwrap()
 
-        if (!copy || value.referent === this || Object.getPrototypeOf(this.object) === Object.getPrototypeOf(copy) /* don't recreate */) {
+        if (!copy || thing === this || Object.getPrototypeOf(this.object) === Object.getPrototypeOf(copy) /* don't recreate */) {
             return
         }
 
@@ -168,20 +168,16 @@ export default class BaseThing implements Thing {
             this.object.textContent = 'default'
         }
 
-        this.addHeirlooms(value)
+        this.addHeirlooms(thing)
     }
 
-    protected disinherit = (value: Lexeme, context?: Context) => {
-        this.removeHeirlooms(value)
+    protected disinherit = (thing: Thing, context?: Context) => {
+        this.removeHeirlooms(thing)
     }
 
     protected canHaveA(value: Lexeme) { //returns name of prop corresponding to Lexeme if any
         const concepts = [...value.referent?.getConcepts() ?? [], value.root]
         return concepts.find(x => this._get(x) !== undefined)
-    }
-
-    protected beA(value: Lexeme, opts: { negated: boolean, context?: Context }) {
-        opts?.negated ? this.disinherit(value, opts.context) : this.inherit(value, opts.context)
     }
 
     //-----------------------------------------------------------
@@ -210,7 +206,7 @@ export default class BaseThing implements Thing {
     unwrap = () => this.object
 
     protected refreshHeirlooms() {
-        this.relations.map(x => x.predicate).forEach(x => this.addHeirlooms(x))
+        this.relations.map(x => x.predicate.referent).filter(x => x).map(x => x!).forEach(x => this.addHeirlooms(x))
     }
 
     getHeirlooms(): Heirloom[] {
