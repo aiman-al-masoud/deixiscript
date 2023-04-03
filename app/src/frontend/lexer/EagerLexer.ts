@@ -1,7 +1,7 @@
 import Lexer from "./Lexer";
 import { Lexeme } from "./Lexeme";
-import { getLexemes } from "./functions/getLexemes";
 import { Context } from "../../facade/context/Context";
+import { dynamicLexeme } from "./functions/dynamicLexeme";
 
 export default class EagerLexer implements Lexer {
 
@@ -16,7 +16,11 @@ export default class EagerLexer implements Lexer {
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
 
-        this.tokens = words.flatMap(w => getLexemes(w, context, words))
+        this.tokens = words.flatMap(w => {
+            const lex = context.getLexeme(w) ?? dynamicLexeme(w, context, words)
+            return lex.contractionFor ?? [lex]
+        })
+
     }
 
     next(): void {

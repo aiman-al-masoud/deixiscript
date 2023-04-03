@@ -1,20 +1,26 @@
 import { wrap } from "../backend/wrapper/Thing";
-import { Lexeme } from "../frontend/lexer/Lexeme";
+import { Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
 
-const being: Partial<Lexeme> = {
+const being: Lexeme = makeLexeme({
     root: 'be',
     type: 'copula',
-}
+})
 
 const doing: Partial<Lexeme> = {
     root: 'do',
     type: 'hverb',
 }
 
-export const lexemes: Partial<Lexeme>[] = [
+const not: Lexeme = makeLexeme({
+    root: 'not',
+    type: 'negation',
+})
+
+export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
 
     being,
     doing,
+    not,
 
     { _root: being, token: 'is', cardinality: 1 },
     { _root: being, token: 'are', cardinality: '*' }, //TODO! 2+
@@ -71,7 +77,7 @@ export const lexemes: Partial<Lexeme>[] = [
     {
         root: "isn't",
         type: 'contraction',
-        contractionFor: ['is', 'not']
+        contractionFor: [being, not]
     },
 
     {
@@ -102,7 +108,7 @@ export const lexemes: Partial<Lexeme>[] = [
     {
         root: 'thing',
         type: 'noun',
-        referent : wrap({id:'thing', object: {}})
+        referent: wrap({ id: 'thing', object: {} })
     },
     {
         root: 'button',

@@ -53,7 +53,6 @@ export const prelude: string[] = [
       `any and every and all are uniquants`,
       `of and on and to and from are prepositions`,
       `that is a relpron`,
-      `not is a negation`,
       `it is a pronoun`,
 
 
