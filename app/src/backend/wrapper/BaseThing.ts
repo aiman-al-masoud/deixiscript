@@ -94,21 +94,21 @@ export default class BaseThing implements Thing {
         // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
 
         removed.forEach(p => {
-            this.undo(p, context)
+            this.repeal(p, context)
         })
 
         added.forEach(p => {
-            this.do(p, context)
+            this.enact(p, context)
         })
 
         unchanged.forEach(p => {
-            this.do(p, context)
+            this.enact(p, context)
         })
 
         return undefined
     }
 
-    protected do(relation: Relation, context?: Context) {
+    protected enact(relation: Relation, context?: Context) {
         const prop = this.canHaveA(relation.predicate)
 
         if (relation.predicate.isVerb) {
@@ -123,7 +123,7 @@ export default class BaseThing implements Thing {
         }
     }
 
-    protected undo(relation: Relation, context?: Context) {
+    protected repeal(relation: Relation, context?: Context) {
         const prop = this.canHaveA(relation.predicate)
 
         if (relation.predicate.isVerb) {
