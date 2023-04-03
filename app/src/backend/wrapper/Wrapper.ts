@@ -8,27 +8,19 @@ import { Map, ThingMap } from "../../middle/id/Map"
 
 export default interface Wrapper {
 
-    readonly id: Id
-    readonly parent?: Wrapper
+    query(clause: Clause, parentMap?: Map): Map[]
+    get(id: Id): Wrapper | undefined
     set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined
-    is(predicate: Lexeme): boolean
     copy(opts?: CopyOpts): Wrapper
-    
+    unwrap(): any
     /** describe the object */ toClause(query?: Clause): Clause
     /** infer grammatical types of props */ dynamic(): Lexeme[]
-    unwrap(): any
-    
-    
-    
+    readonly id: Id
+    readonly parent?: Wrapper
+
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
     getConcepts(): string[]
-    
-
-    get(id:Id):Wrapper|undefined
-    query(clause: Clause, parentMap?:Map): Map[]
-
-
 }
 
 export interface SetOps {
