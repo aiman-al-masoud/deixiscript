@@ -94,39 +94,50 @@ export default class BaseThing implements Thing {
         // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
 
         removed.forEach(p => {
-            this.doSideEffects(p, { negated: true, context })
+            this.undo(p, context)
             this.removeHeirlooms(p.predicate)
         })
 
         added.forEach(p => {
-            this.doSideEffects(p, { negated: false, context })
+            this.do(p, context)
             this.addHeirlooms(p.predicate)
         })
 
         unchanged.forEach(p => {
-            this.doSideEffects(p, { negated: false, context }) //TODO! restore heirlooms
+            this.do(p, context)
         })
 
         return undefined
     }
 
-    protected doSideEffects(relation: Relation, opts: { negated: boolean, context?: Context }) {
-
+    protected do(relation: Relation, context?: Context) {
         const prop = this.canHaveA(relation.predicate)
 
         if (relation.predicate.isVerb) {
-            return this.call(relation.predicate, relation.args)//TODO
-        } else if (prop) { // has-a
-            const val = typeof this._get(relation.predicate.root) === 'boolean' ? !opts.negated : !opts.negated ? relation.predicate.root : opts.negated && this.is(relation.predicate) ? '' : this._get(prop)
-            this.object[prop] = val
-        } else if (this.parent) { // child is-a, parent has-a
+            return this.call(relation.predicate, relation.args)
+        } else if (prop) {
+            this.object[prop] = typeof this._get(relation.predicate.root) === 'boolean' ? true : relation.predicate.root
+        } else if (this.parent) {
             const parent = this.parent.unwrap?.() ?? this.parent
-            if (typeof this.object !== 'object') parent[this.name!] = relation.predicate.root //TODO: negation
-            // this.parent?.set(predicate, opts) // TODO: set predicate on parent? 
-        } else { // is-a
-            this.beA(relation.predicate, opts)
+            if (typeof this.object !== 'object') parent[this.name!] = relation.predicate.root //TODO bool
+        } else {
+            this.inherit(relation.predicate, context)
         }
+    }
 
+    protected undo(relation: Relation, context?: Context) {
+        const prop = this.canHaveA(relation.predicate)
+
+        if (relation.predicate.isVerb) {
+            //TODO: undo method call
+        } else if (prop) {
+            this.object[prop] = typeof this._get(relation.predicate.root) === 'boolean' ? false : ''
+        } else if (this.parent) {
+            const parent = this.parent.unwrap?.() ?? this.parent
+            if (typeof this.object !== 'object') parent[this.name!] = '' //TODO bool
+        } else {
+            this.disinherit(relation.predicate, context)
+        }
     }
 
     protected addHeirlooms(predicate: Lexeme) {
