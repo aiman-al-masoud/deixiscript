@@ -572,3 +572,7 @@ replace Wrapper.get() and getKool() and possibily some functionality of BaseWrap
 get rid of MutliAction ? 
 
 Unify SimpleAction, MultiAction and CreateLexemeAction.
+
+
+# strings... :(
+string is quote then one or more noun or pronoun or quantifier or article or copula or iverb or mverb or hverb or negation then quote
