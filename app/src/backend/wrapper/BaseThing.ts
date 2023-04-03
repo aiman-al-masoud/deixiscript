@@ -90,6 +90,9 @@ export default class BaseThing implements Thing {
 
     protected reinterpret(added: Relation[], removed: Relation[], unchanged: Relation[], opts?: SetOps) {
 
+        //TODO!!!!!! Don't pass down opts to everyone!!! if opts.negated 
+        // goes into added/unchanged that's a BUUUUUUUUUUG!!!!!!!!
+
         removed.forEach(p => {
             this.doSideEffects(p.predicate, opts)
             this.removeHeirlooms(p.predicate)
