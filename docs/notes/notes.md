@@ -1,36 +1,6 @@
-# Actions as Objects
+# Action as Objects (Reflection)
 
-cf: statement level anaphora/temporal referencing/out of order execution.
-
-console logs something before any x is red.
-
-x is red. before that then x is a button.
-
----
-
-ActionWrapper or wrap(action) [cf 1](#aop-support),
-[cf 2](#object-vs-action-pronoun)
-
----
-
-need a way to favor (regular) objects in lastReferenced/pronoun/it business, or
-else the last action becomes the last referenced object and breaks stuff:
-
-1. x is a button.
-1. it is black. // "it" should be "the button", not the "x is a button" action!
-
----
-
-Breaking down Actions
-
-A button is red. The last instruction repeats. // full, or just "is red" or just
-"is button"
-
----
-
-Naturalistic iterators
-
-with [actions as objects](#actions-as-objects), eg:
+# Naturalistic iterators
 
 - The next 2 actions repeat while x < 10.
 - x increments.
@@ -42,541 +12,96 @@ As well as:
 - console logs x.
 - The previous 2 actions repeat while x < 10.
 
----
-
-Verb (method) definition
+# Verb (method) definition
 
 with [actions as objects](#actions-as-objects), eg:
 
-- The next 3 actions are blink of any button.
+- The next 3 actions are blink of a button.
 - the button is red.
 - the button is green.
 - the button is red.
 
-defines a new intransitive verb "blink" on (attaches a method without args other
-than self) to the button prototype.
+# Lexemes as Things/ pointing to Things
 
-# Lexemes as Objects
+# Lexeme order of operands, for lexmes with same meaning (of, own, have) but different order of operands (x of y === y owns x).
 
-## polymorphic value of a predicate?
 
-Any kind of lexeme should be definable and editable from within deixiscript.
+# https://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
 
-problem telling lexeme modifying action from macro, solved by fact that macro
-can't contain certain kinds of words:
+# https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 
-- 'x is adjective' // is macro
-- 'x is an adjective' // not macro
-
----
-
-lexemes should be (mutable) objects.
-
----
-
-Lexemes and Actions should be "discouraged" from appearing as anaphora,
-"regular" (structure) objects should appear first.
-
-Maybe Lexeme subclass of BaseWrapper with overridden clause() that searches for
-'relevant' props (proto, cardinality, root...) or else requires a "lexeme"
-lexeme to return anything non-empty.
-
----
-
-26-02-2023
-
-tried with LexemeWrapper extends BaseWrapper. By adding lexemes to enviro from
-Context.setLexeme().
-
-- if clause() returns info unconditionally Very very slow execution because of
-  many hundreds of lexemes (I assume that's the reason for slow down).
-
-- bearable if clause() checks if query contains relevant info first, but makes
-  it more complicated.
-
-- Must simplify BaseWrapper before going forward with Lexemes and Actions as
-  objects.
-
----
-
-Wrapper.dynamic():Lexeme[] returns inferred grammatical type of each member of
-object.
-
----
-
-Lexeme.extrapolate() extrapolates declinations/cojugation of a lexeme.
-
----
-
-Lexemes point to each other. A lexeme may have a _root lexeme, for example "is"
-has "be" as a root, plus extra morpheme related information. "Normalized" model.
-
----
-
-Lexeme order of operands, for lexmes with same meaning (of, own, have) but
-different order of operands (x of y === y owns x).
-
----
-
-Lexemes may have to take up the responsibility to store aliases and other data
-from js prototypes (which hold it currently).
-
-A combination of lexemes eg: (dangerous button) may correspond to a wholly new
-set of aliases and rules than the single (dangerous, button) lexemes.
-
----
-
-A Lexeme is a mutable object.
-
-A Lexeme can extend (multiple) other Lexemes.
-
-button is a noun and proto of it is HTMLButtonElement. every button is an
-element. every button is an object.
-
-A Lexeme inherits aliases and methods/props from Lexemes it extends.
-
-color is a noun. // kind of like a class red and blue are colors. // ... and
-subclasses
-
-Need to fuse together: concepts, proto, (and maybe) _root.
-
----
-
-A lot of problems with order of application of predicates (lexemes) upon
-creation of object.
-
-Currently solved by putting reference to aliases on prototype.
-
----
-
-https://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
-
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-
----
-
-setters and getters inherited from noun lexeme instead of alias path.
-
-setColor getColor
-
----
 
 # Negation
 
 Negation as undoing any particular action, requires general solution when no ad
-hoc solution is available.
+hoc solution is available. At any edit action A1 on an object X, a new copy is made of X and is kept up to date, except for what happened at A1. When "A1 is negated" the copy is retrieved and it "replaces" (how?) the current object X.
 
-A general solution could be:
+# x is hidden === x hides
 
-At any edit action A1 on an object X, a new copy is made of X and is kept up to
-date, except for what happened at A1.
+# x appendChilds y === y is on x === position of y is x
 
-When "A1 is negated" the copy is retrieved and it "replaces" (how?) the current
-object X.
-
-# Macros
-
-No more hardcoded names of grammar constituents.
-
-Contextual lexing with heuristic.
-
-# Adjective-Verb-Preposition Equivalence
-
-Adjective = Intransitive Verb
-
-- x is hidden
-- x hides
-
-Verb = Preposition
-
-- x appendChilds y
-- y is on x
-- position of y is x
-
-cf: Lexeme order of operands
-
-# Lexer
-
-- Eager lexer lexes everything before new grammar pieces start getting added as
-  lexemes, so you cannot run one single string as startup command, because eager
-  lexer has it all lexed at the beginning.
-
-- Other problem with lexer: it cannot discern distinct but concatenated "words",
-  such as 1+1
-
-- string literals
-
-- number literals
-
-- multi word lexemes
-
----
-
-LazyLexer possible idea:
-
-1. read until whitespace.
-1. word is a lexeme? you got a lexeme.
-1. word is not a lexeme (not even dynamic)? then hold word and concatenate until
-   you get to a word that is a know lexeme. not gonna work to define 'zero or
-   more', because 'or' is a lexeme!.
-
-Consider ignoring multiword lexemes temporarily?
-
----
-
-Tried turning prelude from string[] to string:
-
-must feed dynamicLexeme() words of sentence (delimited by .) or else it gets the
-heuristic wrong. But it doesn't work for some reason, or it's tricky.
+# Eager lexer lexes everything before new grammar pieces start getting added as lexemes, so you cannot run one single string as startup command, because eager lexer has it all lexed at the beginning. Bad heuristic in dynamicLexeme() is an obstacle to change!
+# string literals
+# number literals
 
 # Context Dependent/Relative Predicates
 
-First/Last
+First/Last & Biggest/Smallest & Left/Right
 
 - the first button ----> button with smallest ID
 - the last button -----> button with largest ID
 - the third button -----> button with third ID
 
----
-
-Biggest/Smallest
-
-For sortable types
-
-# Possessive Adjectives
-
-x is a button and **its** color is red.
+# Possessive Adjectives: x is a button and **its** color is red.
 
 # Plurals
 
-Plurals are treated like implications.
-
 'buttons are red' = 'every button is red' = 'button(X) -> red(X)'
 
-Problem with 'and sentences':
-
-'x and y and z are colors' Temporary Solution: in toClause(), don't call
-makeImply() if current ast is and sentence. Plurals work.
+Problem with 'and sentences': 'x and y and z are colors' Temporary Solution: in toClause(), don't call makeImply() if current ast is and sentence. Plurals work.
 
 It would be great if (x and y and z) would just behave like a noun phrase... BUT
 this is a problem for and-sentence: 'x is a button and it is red' if noun-phrase
 contains 'and then noun-phrase' because left copula sentence gets parsed but
 within it there is the 'and it' and-phrase!
 
-# Full Subordinate Clauses
+# All kinds of Subordinate Clauses
 
-- The button that is blue (OK)
-- The button that is on the red div
-- The div that appendChilds the button
-- ...
+# Low Level JS Access: add of any number is "a=>this+a"
 
-# And between consecutive adjectives
+# Phatic words, fillers and partial parsing ("uhm", "errm", "ah", "oh", "please"...)
 
-Can and between ajectives be safely removed, to allow for desired meaning
-without complicating andToClause()?
-
-big and red ------> big red
-
-# Low Level JS Access
-
-- add of any number is "a=>this+a"
-
-# Phatic words, fillers and partial parsing
-
-"then" is needed and currenlty employed as a filler, it is used as a delimiter.
-
-Some words should be ignored all the time ("uhm", "errm", "ah", "oh"...)
-
-Maybe some words should be treated as "fillers"/phatics and ignored just in some
-contexts! (please)
-
-# Morphology
-
-- Extract basic hardcoded English morphology that remains to be extracted.
-- Make a more general morphological model to support languages that are more
-  synthetic than English.
+# Morphology: support languages that are more synthetic than English.
 
 # Case Insensitivity
 
 https://stackoverflow.com/questions/12484386/access-javascript-property-case-insensitively
 
-# Child Wrapper convey props
+# Identity and Equivalence and Assignments: if x is 1 ...
 
-test 8 used to fail because child wrapper doesn't convey props to parent.
+# and between simple clauses is kind of broken
 
-this also affected: "color of button is yellow"
+# Adjective as Noun BUG
 
-Need to set name of child when creating it from parent in get(), because the
-name of the child is part of the chain of props.
+"x and y are buttons. color of x is yellow. y is red. yellow button."
 
-(DONE), but may be better.
+Returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't
+declared as an adjective, and is a noun by default. Fixed by allowing for zero or more nouns in a noun-phrase.
 
-# Comparisons and Assignments
+# New Inheritance Model: A Thing can have multiple prototypes. Ok methods, what about state?
 
-if both objects on left and right side of copula, call "Wrapper.compare()".
-
-1. x is 1
-1. y is 1
-1. if x is y then b is a red button
-
-# BUGS
-
-## And Sentence Bug
-
-'x and y are buttons and every button is green'
-
-problem is probably due to two ands in one sentence.
-
-## Negation Bugs
-
-- every button that is not red (BUG!)
-
-## And.query() Bugs
-
-probably buggy
-
-## Boolean Property Bug
-
-"hidden of x is true" doesn't work.
-
-## Number BUG
-
-value of number being treated as simplePredicate even after reassignment
-
-## Adjective as Noun BUG
-
-x and y are buttons. color of x is yellow. y is red.
-
-yellow button.
-
-returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't
-declared as an adjective, and is a noun by default.
-
-Fixed by allowing for zero or more nouns in a noun-phrase.
-
-# Paraphrases
-
-Many different paraphrasing styles could aid in debugging?
-
-# "Prototyping"
-
-Defining classes/blueprints (especially a component) from a single prototype
-(eg: a one-off attempt at creating a component). You could accomplish this with
-Wrapper.copy().
-
-# Position Getter/Setter trick
-
-Object.defineProperty(window.id1661, 'pos', { get: getPosition, set:
-setPosition, name:'pos'} )
-
-function setPosition(pos){ pos.appendChild(this) }
-
-function getPosition(){ return this.parentNode }
-
-this needs set(Predicate|Wrapper) or usage of opts.args.
-
-# New Inheritance Model
-
-Generally: an object ("thing") should be able to inherit from one or more
-objects.
-
-In deixiscript, `inheritance == is-a`, but `is-a != has-a`, eg:
-
-red is a color // is-a scarlet is a red // is-a scarlet is a color // is-a,
-redundant the button is red // has-a, (button.color = red)
-
-Wrapper.inherit(w:Wrapper) or Wrapper.inherit(o:Inheritable)
-
-transferring "heirlooms" vs making a copy of the prototype object ????
-
-Wrapper.inherit() decides whether to copy() the prototype or whether to copy its
-heirlooms?
-
-A Lexeme has a link to a Wrapper/Object/Thing. A Lexeme doesn't contain directly
-implementation code, because that seems out of its responsibility scope. A
-Lexeme is not a class or a prototype, it's just a symbol.
-
-element is an HTMLElement. button is an HTMLButtonElement. buttons are elements.
-// button is an element ???
-
-An object can have multiple prototypes, but some prototypes may be incompatible.
-Describe some rules:
-
-1. If a js-proto is derived from another prototype, just keep the subprototype
-1. If two js-protos are both derived from same prototype, keep the latest.
-1. If two dx-protos are mutually incompatible (for the future) ...
-
-Methods can be fetched from the prototypes, but what about instance properties?
-
-For instance properties copy the prototype using Wrapper.copy(), but beware of
-incompatibilities.
-
-Some kinds of relationships
-
-- is-a: inheritance, (eg: red is a color)
-- identity: objects are the same
-- equivalence: objects are logically equivalent
-- has-a: an object has a property (eg: the button is red/color of the button is
-  red)
-
-```
-button is an HTMLButtonElement. // create a new object-prototype, add global lexeme
-x is a button. // create a new object-prototype, add global lexeme
-x is black. // set a property
-color of style of x is red. // set a property
-y is an x. // create a new object-prototype, add global lexeme
-```
-
-Each object has a list of instances, achieve multiple inheritance through
-proxy/composition...
-
-# Next Step
-
-Doing it the "shotgun" way prooved to be too difficult. In the interest of
-mental sanity, take the small-steps approach.
-
-Merged CreateAction, EditAction and RelationAction into single class.
-
-Detect incompatibilities and auto-disinherit when need be (eg: x is a button. x
-is a div.).
-
-# 2023/03/25 TODO
-
-Context shortcut to most common lexemes
-
-Both or just one?: DONE
-
-- when a lexeme is first created, a referent is created too
-- when a wrapper is created any new lexeme pointing to it is created and wrapper
-  is set as referent/model/proto.
-
-getProto, proto, concepts, heirlooms, isConcept, setAlias should go away from
-Lexeme. They should be replaced with referent:Wrapper on Lexeme. DONE
-
-color is a thing DONE
-
-# 2023/03/28 TODO
-
-button is HTMLButtonElement. div is HTMLDivElement. element is HTMLElement. (DONE but directly in lexemes.ts)
-
-remove ungainly "proto of" part. (DONE)
-
-For easier debugging: (DONE)
-* manually start tests with keystroke return wrapped object from brain.query()
-* maybe separate func
-
-
-Replace getProto() somehow; with copy() ? 
-
-
-
-# BUG IN solveMaps()!
-
-query = click(id1),x(id1)
-universe = x(id11),button(id1)
-
-returns {id1 : id11}, WRONG!
-
-reproducing the bug
-
-> x is a button
-> something button
-
-returns x, WRONG!
-
-
-# Events
-
-onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event
-
-```
- protected overrideClick(){
-        let buf : Function | undefined
-        try{
-            buf = this.object.onclick as Function | undefined
-        }catch{}
-
-        const clickLex = makeLexeme({root : 'click', type:'iverb'})
-
-        try{
-            this.object.onclick = (e:Event)=>{
-                
-                buf?.call(this.object)
-                this.predicates.push(clickLex)
-                console.log('first=',this.toClause().toString())
-                setTimeout(()=>{
-                    this.predicates = this.predicates.filter(x=>x!==clickLex)
-                    console.log('last=',this.toClause().toString())
-                }, 200)
-            }
-        }catch(e){
-            console.log(e)
-        }
-    }
-```
-
-More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations
-
-Maybe ephemeral vs permanent relations (verbs)?
-
-# BaseWrapper sucks, new ideas
-
-every wrapper has a list of predicates, whenever anything is asserted about a wrapper, the list of predicates is updated, predicates are added/removed
-
-the predicates may be interpreted differently for each individual wrapper
-
-x is red  -----> x.predicates.push(redLexeme)
-
-then reinterpret() will be called, a button wrapper may actually change its color, another wrapper will not.
-
-You're gaining: easier to think of, decouples predicates from "side-effects", avoid complicated inherit() logic with buffer etc...
-
-You're losing: "out of the box" get/is that fetches directly from this.object
-
-???????????????????????????????????
-color of x is red  ----> x.color.push(redLexeme) 
-
-Maybe "parent[this.name!] = predicate.root" goes into reinterpret() "implementation" for child objects
-
-reinterpret may update the predicates list, for eg if detects that a property has been overwritten.
-
-x is a button.
-x is red.
-x is green. //remove red
-
-
-# No imply for alias definition
-
-maybe do this:
-
-color of a button is background of style of it
+# Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs)?
 
 
 # copy
 
 not copying heirlooms. YOU STILL NEED TO FIND A BETTER INHERITANCE SYSTEM!
 
-# Rename
-Wrapper ---> Thing
-
 # Enviro vs Wrapper
 
 Turn Enviro into a Wrapper
 
-## Wrapper.query(Clause)
-replace Wrapper.get() and getKool() and possibily some functionality of BaseWrapper.ownerInfo() with recursive Wrapper.query(Clause)
-
-
-# Less Actions
-
-get rid of MutliAction ? 
-
-Unify SimpleAction, MultiAction and CreateLexemeAction.
-
-
-# strings... :(
-string is quote then one or more noun or pronoun or quantifier or article or copula or iverb or mverb or hverb or negation then quote
-
+# Less Actions, Kill CreateLexemeAction.
 
 # every lexeme must have a referent (Thing)
 
