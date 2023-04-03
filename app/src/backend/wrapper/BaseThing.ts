@@ -41,20 +41,21 @@ export default class BaseThing implements Thing {
         // this.getConcepts().includes(predicate.root) //TODO also from supers
         this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
 
+    protected isAlready(relation: Relation) {
+        return this.relations.filter(x => relationsEqual(x, relation)).length
+    }
 
     set(predicate: Lexeme, opts?: SetOps): Thing | undefined {
 
         const relation: Relation = { predicate, args: opts?.args ?? [] }
 
-        if (!opts?.negated && this.relations.filter(x => relationsEqual(x, relation)).length) {
-            return this.reinterpret([], [], [relation], opts)
-        }
-
         let added: Relation[] = []
         let removed: Relation[] = []
         let unchanged = this.relations.filter(x => !relationsEqual(x, relation))
 
-        if (opts?.negated) {
+        if (!opts?.negated && this.isAlready(relation)) {
+            unchanged.push(relation)
+        } else if (opts?.negated) {
             removed = [relation]
         } else {
             added = [relation]
