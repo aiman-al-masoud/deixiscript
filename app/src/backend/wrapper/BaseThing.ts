@@ -53,24 +53,23 @@ export default class BaseThing implements Thing {
         let removed: Relation[] = []
         let unchanged = this.relations.filter(x => !relationsEqual(x, relation))
 
-        if (!opts?.negated && this.isAlready(relation)) {
-            unchanged.push(relation)
-        } else if (opts?.negated) {
+        if (opts?.negated) {
             removed = [relation]
+        } else if (this.isAlready(relation)) {
+            unchanged.push(relation)
         } else {
             added = [relation]
-            removed.push(...this.getMutex(added))
+            removed.push(...this.getExcludedBy(added))
             unchanged = unchanged.filter(x => !removed.some(r => relationsEqual(x, r)))
         }
 
         added.forEach(r => this.addRelation(r))
         removed.forEach(r => this.removeRelation(r))
 
-        // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
         return this.reinterpret(added, removed, unchanged, opts)
     }
 
-    protected getMutex(added: Relation[]): Relation[] {
+    protected getExcludedBy(added: Relation[]): Relation[] {
 
         const newOne = added[0].predicate
 
@@ -90,6 +89,8 @@ export default class BaseThing implements Thing {
     }
 
     protected reinterpret(added: Relation[], removed: Relation[], unchanged: Relation[], opts?: SetOps) {
+
+        // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
 
         //TODO!!!!!! Don't pass down opts to everyone!!! if opts.negated 
         // goes into added/unchanged that's a BUUUUUUUUUUG!!!!!!!!
