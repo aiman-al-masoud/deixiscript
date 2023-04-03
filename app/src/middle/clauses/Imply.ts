@@ -29,7 +29,6 @@ export default class Imply implements Clause {
         opts?.negate ?? this.negated,
         opts?.sideEffecty ?? this.isSideEffecty,
         opts?.subjconj ?? this.subjconj,
-        opts?.exactIds ?? this.exactIds
     )
 
     toString() {

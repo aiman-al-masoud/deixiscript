@@ -29,7 +29,6 @@ export interface Clause {
     readonly args?: Id[]
     readonly negated?: boolean
     readonly isSideEffecty?: boolean
-    readonly exactIds?: boolean
 
 }
 
@@ -46,7 +45,6 @@ export interface CopyOpts {
     clause1?: Clause
     clause2?: Clause
     subjconj?: Lexeme
-    exactIds?: boolean
 }
 
 export interface AndOpts {

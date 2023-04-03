@@ -3,7 +3,6 @@ import { Id } from "../id/Id";
 import { sortIds } from "../id/functions/sortIds";
 import { Map } from "../id/Map";
 import Imply from "./Imply";
-import { mockMap } from "./functions/mockMap";
 import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
@@ -36,7 +35,6 @@ export default class And implements Clause {
             this.clause2IsRheme,
             opts?.negate ?? this.negated,
             opts?.sideEffecty ?? this.isSideEffecty,
-            opts?.exactIds ?? this.exactIds,
         )
     }
 
@@ -64,10 +62,6 @@ export default class And implements Clause {
     }
 
     query(query: Clause, opts?: QueryOpts): Map[] {
-
-        if (query.exactIds) {
-            return [mockMap(query)]
-        }
 
         const universe = this.clause1.and(this.clause2)
         const it = opts?.it ?? sortIds(universe.entities).at(-1)! //TODO!

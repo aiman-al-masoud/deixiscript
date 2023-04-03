@@ -1,5 +1,5 @@
 import Action from "./Action";
-import { Clause, emptyClause } from "../../middle/clauses/Clause";
+import { Clause } from "../../middle/clauses/Clause";
 import { Context } from "../../facade/context/Context";
 import { wrap } from "../wrapper/Wrapper";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
@@ -19,22 +19,12 @@ export default class SimpleAction implements Action {
         const maps2 = !maps.length ? this.getDefaultMap(this.clause, context) : maps
         const maps3 = this.clause instanceof Imply ? maps2 : maps2.slice(0, 1)
 
-        // console.log('topLevel=',this.topLevel.toString(),  'clause=',this.clause.toString(), 'maps3=', maps3)
-
-        // const clauzez =  maps.map(m=>this.clause.copy({map:m}))
-        // console.log('clauzez=', clauzez.map(x=>x.toString()))
 
         maps3.forEach(m => {
-
-
-            // if (!this.clause.args || !this.clause.predicate) {
-            //     return
-            // }
 
             const argz = this.clause.args! ?? this.clause.entities
             const predicate = this.clause.predicate! ?? this.clause.rheme.predicate
 
-            // console.log('m=', m)
 
             if (this.topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
                 return new CreateLexemeAction(this.clause, this.topLevel).run(context)
@@ -60,8 +50,6 @@ export default class SimpleAction implements Action {
             // return res//TODO save to context
 
         })
-
-        // const map = maps[0] ?? {}
 
     }
 

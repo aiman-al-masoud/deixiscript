@@ -3,7 +3,6 @@ import { Id } from "../id/Id";
 import { Map } from "../id/Map";
 import Imply from "./Imply";
 import And from "./And";
-import { mockMap } from "./functions/mockMap";
 import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { uniq } from "../../utils/uniq";
 import { hashString } from "../../utils/hashString";
@@ -31,7 +30,6 @@ export class BasicClause implements Clause {
         this.args.map(a => opts?.map?.[a] ?? a),
         opts?.negate ?? this.negated,
         opts?.sideEffecty ?? this.isSideEffecty,
-        opts?.exactIds ?? this.exactIds,
     )
 
     and = (other: Clause, opts?: AndOpts): Clause => new And(this, other, opts?.asRheme ?? false)
@@ -48,10 +46,6 @@ export class BasicClause implements Clause {
     }
 
     query(query: Clause): Map[] {
-
-        if (query.exactIds) {
-            return [mockMap(query)]
-        }
 
         if (!(query instanceof BasicClause)) {
             return []
