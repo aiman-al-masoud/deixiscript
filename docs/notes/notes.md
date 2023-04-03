@@ -1,4 +1,4 @@
-# Action as Objects (Reflection)
+# Actions/Clauses as Objects (Reflection)
 
 # Naturalistic iterators
 
@@ -21,15 +21,14 @@ with [actions as objects](#actions-as-objects), eg:
 - the button is green.
 - the button is red.
 
-# Lexemes as Things/ pointing to Things
+
+# Every Lexeme must have a referent (Thing), maybe also Lexeme is a Thing
 
 # Lexeme order of operands, for lexmes with same meaning (of, own, have) but different order of operands (x of y === y owns x).
-
 
 # https://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
 
 # https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
-
 
 # Negation
 
@@ -92,17 +91,11 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 
 # Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs)?
 
+# copy: not copying heirlooms. YOU STILL NEED TO FIND A BETTER INHERITANCE SYSTEM!
 
-# copy
+# Turn Enviro into a Wrapper
 
-not copying heirlooms. YOU STILL NEED TO FIND A BETTER INHERITANCE SYSTEM!
+# Less Actions, kill CreateLexemeAction.
 
-# Enviro vs Wrapper
-
-Turn Enviro into a Wrapper
-
-# Less Actions, Kill CreateLexemeAction.
-
-# every lexeme must have a referent (Thing)
 
 # Thing should know the least possible about Lexemes
