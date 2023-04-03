@@ -221,9 +221,8 @@ export default class BaseWrapper implements Wrapper {
 
 
     protected ownerInfo(q: Clause) {
-        const maps: Map[] = this.query(q).map(m => Object.entries(m).map(e => ({ [e[0]]: e[1] })).reduce((a, b) => ({ ...a, ...b }), {}))
-        const newClause = q.copy({ map: maps[0] })
-        return (maps[0] && getOwnershipChain(q, getTopLevel(q)[0]).length > 1) ? newClause : emptyClause
+        const maps = this.query(q)
+        return (maps[0] && getOwnershipChain(q, getTopLevel(q)[0]).length > 1) ? q.copy({ map: maps[0] }) : emptyClause
     }
 
     toClause(query?: Clause) {
