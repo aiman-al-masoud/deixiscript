@@ -1,5 +1,5 @@
 import { getActuator } from "../../backend/actuator/Actuator";
-import Wrapper from "../../backend/wrapper/Wrapper";
+import Thing from "../../backend/wrapper/Thing";
 import { getParser } from "../../frontend/parser/interfaces/Parser";
 import { toClause } from "../../middle/toClause";
 import { Context } from "../context/Context";
@@ -21,7 +21,7 @@ export default class BasicBrain implements Brain {
         this.context.prelude.forEach(c => this.execute(c))
     }
 
-    execute(natlang: string): Wrapper[] {
+    execute(natlang: string): Thing[] {
         return getParser(natlang, this.context).parseAll().map(ast => {
 
             if (ast.type === 'macro') {

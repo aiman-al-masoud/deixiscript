@@ -1,7 +1,7 @@
 import { Clause, emptyClause } from "../../middle/clauses/Clause";
 import { Id } from "../../middle/id/Id";
 import { Map } from "../../middle/id/Map";
-import Wrapper from "../wrapper/Wrapper";
+import Thing from "../wrapper/Thing";
 import { Enviro, } from "./Enviro";
 
 export default class BaseEnviro implements Enviro {
@@ -10,11 +10,11 @@ export default class BaseEnviro implements Enviro {
 
     constructor(
         readonly root?: HTMLElement,
-        readonly dictionary: { [id: Id]: Wrapper } = {}) {
+        readonly dictionary: { [id: Id]: Thing } = {}) {
 
     }
 
-    get = (id: Id): Wrapper | undefined => {
+    get = (id: Id): Thing | undefined => {
 
         const parts = id.split('.')
         const p1 = parts[0]
@@ -28,11 +28,11 @@ export default class BaseEnviro implements Enviro {
         return w
     }
 
-    get values(): Wrapper[] {
+    get values(): Thing[] {
         return Object.values(this.dictionary)
     }
 
-    set = (wrapper: Wrapper): Wrapper => {
+    set = (wrapper: Thing): Thing => {
         this.setLastReferenced(wrapper.id)
         return this.dictionary[wrapper.id] = wrapper
     }

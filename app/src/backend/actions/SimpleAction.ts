@@ -1,7 +1,7 @@
 import Action from "./Action";
 import { Clause } from "../../middle/clauses/Clause";
 import { Context } from "../../facade/context/Context";
-import { wrap } from "../wrapper/Wrapper";
+import { wrap } from "../wrapper/Thing";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 import CreateLexemeAction from "./CreateLexemeAction";
 import { Map } from "../../middle/id/Map";

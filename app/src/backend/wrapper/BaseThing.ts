@@ -1,7 +1,7 @@
 import { Id } from "../../middle/id/Id";
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme";
 import { Heirloom } from "./Heirloom";
-import Wrapper, { CopyOpts, SetOps, wrap } from "./Wrapper";
+import Thing, { CopyOpts, SetOps, wrap } from "./Thing";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
 import { allKeys } from "../../utils/allKeys";
 import { Clause, clauseOf, emptyClause } from "../../middle/clauses/Clause";
@@ -14,7 +14,7 @@ import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
 
 
-type Relation = { predicate: Lexeme, args: Wrapper[] } //implied subject = this object
+type Relation = { predicate: Lexeme, args: Thing[] } //implied subject = this object
 
 
 
@@ -25,15 +25,15 @@ function relationsEqual(r1: Relation, r2: Relation) {
 }
 
 
-export default class BaseWrapper implements Wrapper {
+export default class BaseThing implements Thing {
 
     constructor(
         protected object: any,
         readonly id: Id,
-        readonly parent?: Wrapper,
+        readonly parent?: Thing,
         readonly name?: string,
         readonly heirlooms: Heirloom[] = [],
-        protected relations: Relation[] = []
+        protected relations: Relation[] = [],
     ) { }
 
     protected is = (predicate: Lexeme) =>
@@ -42,7 +42,7 @@ export default class BaseWrapper implements Wrapper {
         this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
 
 
-    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined {
+    set(predicate: Lexeme, opts?: SetOps): Thing | undefined {
 
         const relation: Relation = { predicate, args: opts?.args ?? [] }
 
@@ -180,7 +180,7 @@ export default class BaseWrapper implements Wrapper {
         }))
     }
 
-    copy = (opts?: CopyOpts) => new BaseWrapper(
+    copy = (opts?: CopyOpts) => new BaseThing(
         opts?.object ?? deepCopy(this.object),
         opts?.id ?? this.id, //TODO: keep old by default?
     )
@@ -202,7 +202,7 @@ export default class BaseWrapper implements Wrapper {
         return this.heirlooms
     }
 
-    protected call(verb: Lexeme, args: Wrapper[]) {
+    protected call(verb: Lexeme, args: Thing[]) {
         const method = this._get(verb.root) as Function
 
         if (!method) {
@@ -256,12 +256,12 @@ export default class BaseWrapper implements Wrapper {
 
     }
 
-    get(id: Id): Wrapper | undefined {
+    get(id: Id): Thing | undefined {
 
         const parts = id.split('.')
         const p1 = parts[0]
         const o = this.object[p1]
-        const w = o instanceof BaseWrapper ? o : new BaseWrapper(o, `${this.id}.${p1}`, this, p1) //TODO:check id!
+        const w = o instanceof BaseThing ? o : new BaseThing(o, `${this.id}.${p1}`, this, p1) //TODO:check id!
 
         if (parts.length > 1) {
             return w.get(parts.slice(1).join('.'))
@@ -306,11 +306,11 @@ export default class BaseWrapper implements Wrapper {
 
         const relevantNames = /* or clause??? */peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
 
-        const children: Wrapper[] = allKeys(this.object)
+        const children: Thing[] = allKeys(this.object)
             .map(x => ({ name: x, obj: this._get(x) }))
             .filter(x => relevantNames.includes(x.name)) // performance
             .filter(x => x.obj !== this.object)
-            .map(x => new BaseWrapper(x.obj, `${this.id}.${x.name}`, this, x.name))
+            .map(x => new BaseThing(x.obj, `${this.id}.${x.name}`, this, x.name))
 
         const res = children.flatMap(x => x.query(peeled, { [top[0]]: this.id }))
         return res

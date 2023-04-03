@@ -1,4 +1,4 @@
-import Wrapper from "../../backend/wrapper/Wrapper"
+import Thing from "../../backend/wrapper/Thing"
 import { GetContextOpts, getNewContext } from "../context/Context"
 import BasicBrain from "./BasicBrain"
 
@@ -6,7 +6,7 @@ import BasicBrain from "./BasicBrain"
  * The main facade controller.
  */
 export default interface Brain {
-    execute(natlang: string): Wrapper[]
+    execute(natlang: string): Thing[]
     executeUnwrapped(natlang: string): any[]
 }
 

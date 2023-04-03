@@ -1,4 +1,4 @@
-import { wrap } from "../backend/wrapper/Wrapper";
+import { wrap } from "../backend/wrapper/Thing";
 import { Lexeme } from "../frontend/lexer/Lexeme";
 
 const being: Partial<Lexeme> = {

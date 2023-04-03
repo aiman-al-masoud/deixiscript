@@ -1,22 +1,22 @@
 import { Id } from "../../middle/id/Id"
 import { Lexeme } from "../../frontend/lexer/Lexeme"
 import { Heirloom } from "./Heirloom"
-import BaseWrapper from "./BaseWrapper"
+import BaseThing from "./BaseThing"
 import { Clause } from "../../middle/clauses/Clause"
 import { Context } from "../../facade/context/Context"
 import { Map } from "../../middle/id/Map"
 
-export default interface Wrapper {
+export default interface Thing {
 
     query(clause: Clause, parentMap?: Map): Map[]
-    get(id: Id): Wrapper | undefined
-    set(predicate: Lexeme, opts?: SetOps): Wrapper | undefined
-    copy(opts?: CopyOpts): Wrapper
+    get(id: Id): Thing | undefined
+    set(predicate: Lexeme, opts?: SetOps): Thing | undefined
+    copy(opts?: CopyOpts): Thing
     unwrap(): any
     /** describe the object */ toClause(query?: Clause): Clause
     /** infer grammatical types of props */ dynamic(): Lexeme[]
     readonly id: Id
-    readonly parent?: Wrapper
+    readonly parent?: Thing
 
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
@@ -25,7 +25,7 @@ export default interface Wrapper {
 
 export interface SetOps {
     negated?: boolean
-    args?: Wrapper[]
+    args?: Thing[]
     context?: Context
 }
 
@@ -35,14 +35,14 @@ export interface CopyOpts {
     id?: Id
 }
 
-export function wrap(args: WrapArgs): Wrapper {
-    return new BaseWrapper(args.object ?? {}, args.id/* , args.preds ?? [] */, args.parent, args.name)
+export function wrap(args: WrapArgs): Thing {
+    return new BaseThing(args.object ?? {}, args.id, args.parent, args.name)
 }
 
 export interface WrapArgs {
     id: Id,
     preds?: Lexeme[],
     object?: Object,
-    parent?: Wrapper,
+    parent?: Thing,
     name?: string
 }

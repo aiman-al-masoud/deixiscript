@@ -2,7 +2,7 @@ import { LexemeType } from "../../config/LexemeType"
 import { Cardinality } from "../parser/interfaces/Cardinality"
 import { Context } from "../../facade/context/Context"
 import BaseLexeme from "./BaseLexeme"
-import Wrapper from "../../backend/wrapper/Wrapper"
+import Thing from "../../backend/wrapper/Thing"
 
 
 export interface Lexeme {
@@ -17,7 +17,7 @@ export interface Lexeme {
     readonly isMultiWord: boolean
     readonly isVerb: boolean
 
-    referent?: Wrapper
+    referent?: Thing
 }
 
 export function makeLexeme(data: Partial<Lexeme>): Lexeme {

@@ -1,6 +1,6 @@
-import Wrapper from "../../backend/wrapper/Wrapper"
+import Thing from "../../backend/wrapper/Thing"
 
-export function pointOut(wrapper: Wrapper, opts?: { turnOff: boolean }) {
+export function pointOut(wrapper: Thing, opts?: { turnOff: boolean }) {
 
     const object = wrapper.unwrap()
 
