@@ -23,13 +23,9 @@ export function getAction(clause: Clause, topLevel: Clause): Action {
         return new WhenAction(clause)
     }
 
-    if (clause instanceof Imply) {
-        return new MultiAction(clause)
-    }
-
-    if (topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
-        return new CreateLexemeAction(clause, topLevel)
-    }
+    // if (clause instanceof Imply) {
+    //     return new MultiAction(clause)
+    // }
 
     return new SimpleAction(clause, topLevel)
 }
