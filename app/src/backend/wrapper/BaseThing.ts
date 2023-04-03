@@ -43,7 +43,7 @@ export default class BaseThing implements Thing {
         this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
 
     protected isAlready(relation: Relation) {
-        return this.relations.filter(x => relationsEqual(x, relation)).length
+        return this.relations.some(x => relationsEqual(x, relation))
     }
 
     set(predicate: Lexeme, opts?: SetOps): Thing | undefined {
