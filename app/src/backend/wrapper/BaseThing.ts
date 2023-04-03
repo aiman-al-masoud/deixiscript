@@ -95,12 +95,10 @@ export default class BaseThing implements Thing {
 
         removed.forEach(p => {
             this.undo(p, context)
-            this.removeHeirlooms(p.predicate)
         })
 
         added.forEach(p => {
             this.do(p, context)
-            this.addHeirlooms(p.predicate)
         })
 
         unchanged.forEach(p => {
@@ -153,7 +151,6 @@ export default class BaseThing implements Thing {
     }
 
     protected inherit = (value: Lexeme, context?: Context) => {
-
         const copy = value.referent?.copy({ id: this.id }).unwrap()
 
         if (!copy || value.referent === this || Object.getPrototypeOf(this.object) === Object.getPrototypeOf(copy) /* don't recreate */) {
@@ -171,10 +168,11 @@ export default class BaseThing implements Thing {
             this.object.textContent = 'default'
         }
 
+        this.addHeirlooms(value)
     }
 
     protected disinherit = (value: Lexeme, context?: Context) => {
-
+        this.removeHeirlooms(value)
     }
 
     protected canHaveA(value: Lexeme) { //returns name of prop corresponding to Lexeme if any
@@ -209,13 +207,10 @@ export default class BaseThing implements Thing {
         return lexemes.concat(lexemes.flatMap(l => l.extrapolate()))
     }
 
-
     unwrap = () => this.object
 
     protected refreshHeirlooms() {
-        this.relations.map(x => x.predicate).forEach(p => p.referent?.getHeirlooms().forEach(h => {
-            Object.defineProperty(this.object, h.name, h)
-        }))
+        this.relations.map(x => x.predicate).forEach(x => this.addHeirlooms(x))
     }
 
     getHeirlooms(): Heirloom[] {
@@ -232,10 +227,6 @@ export default class BaseThing implements Thing {
         const result = method.call(this.object, ...args.map(x => x.unwrap()))
         return wrap({ id: getIncrementalId(), object: result })
     }
-
-
-
-
 
     // --------------------------------------------------------------------
 
