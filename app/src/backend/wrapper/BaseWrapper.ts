@@ -36,7 +36,7 @@ export default class BaseWrapper implements Wrapper {
         protected relations: Relation[] = []
     ) { }
 
-    is = (predicate: Lexeme) =>
+    protected is = (predicate: Lexeme) =>
         // this.predicates.map(x => x.root).includes(predicate.root)
         // this.getConcepts().includes(predicate.root) //TODO also from supers
         this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
