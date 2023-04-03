@@ -9,7 +9,7 @@ import { getOwnershipChain } from "../../middle/clauses/functions/getOwnershipCh
 import { getTopLevel } from "../../middle/clauses/functions/topLevel";
 import { typeOf } from "./typeOf";
 import { deepCopy } from "../../utils/deepCopy";
-import { Map, ThingMap } from "../../middle/id/Map";
+import { Map } from "../../middle/id/Map";
 import { makeSetter } from "./makeSetter";
 import { uniq } from "../../utils/uniq";
 

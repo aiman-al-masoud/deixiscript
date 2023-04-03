@@ -4,7 +4,7 @@ import { Heirloom } from "./Heirloom"
 import BaseWrapper from "./BaseWrapper"
 import { Clause } from "../../middle/clauses/Clause"
 import { Context } from "../../facade/context/Context"
-import { Map, ThingMap } from "../../middle/id/Map"
+import { Map } from "../../middle/id/Map"
 
 export default interface Wrapper {
 
