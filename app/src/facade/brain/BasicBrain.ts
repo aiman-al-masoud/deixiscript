@@ -32,7 +32,7 @@ export default class BasicBrain implements Brain {
             const clause = toClause(ast).simple
             // console.log(clause.toString())
 
-            if (clause.isSideEffecty) {
+            if (clause.hasSideEffects) {
                 return this.actuator.takeAction(clause, this.context)
             } else {
 

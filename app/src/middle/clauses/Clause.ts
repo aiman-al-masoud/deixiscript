@@ -28,7 +28,7 @@ export interface Clause {
     readonly predicate?: Lexeme
     readonly args?: Id[]
     readonly negated?: boolean
-    readonly isSideEffecty?: boolean
+    readonly hasSideEffects?: boolean
 
 }
 

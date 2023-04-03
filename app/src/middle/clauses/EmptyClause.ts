@@ -10,6 +10,7 @@ export default class EmptyClause implements Clause {
     readonly theme = this
     readonly rheme = this
     readonly simple = this
+    readonly hasSideEffects = false
 
     copy = (opts?: CopyOpts): Clause => this
     and = (other: Clause, opts?: AndOpts): Clause => other

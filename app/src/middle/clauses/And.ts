@@ -12,14 +12,13 @@ export default class And implements Clause {
 
     readonly hashCode = hashString(this.clause1.toString() + this.clause2.toString() + this.negated)
     readonly entities = uniq(this.clause1.entities.concat(this.clause2.entities))
+    readonly hasSideEffects = this.rheme !== emptyClause
 
     constructor(
         readonly clause1: Clause,
         readonly clause2: Clause,
         readonly clause2IsRheme = false,
         readonly negated = false,
-        readonly isSideEffecty = false,
-        readonly exactIds = false
     ) {
 
     }
@@ -34,7 +33,6 @@ export default class And implements Clause {
             opts?.clause2 ?? this.clause2.copy(opts),
             this.clause2IsRheme,
             opts?.negate ?? this.negated,
-            opts?.sideEffecty ?? this.isSideEffecty,
         )
     }
 

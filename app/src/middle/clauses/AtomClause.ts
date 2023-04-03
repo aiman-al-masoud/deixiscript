@@ -14,13 +14,13 @@ export class AtomClause implements Clause {
     readonly rheme = emptyClause
     readonly entities = uniq(this.args)
     readonly hashCode = hashString(JSON.stringify({ predicate: this.predicate.root, args: this.args, negated: this.negated }))
+    readonly hasSideEffects = this.rheme !== emptyClause
+
 
     constructor(
         readonly predicate: Lexeme,
         readonly args: Id[],
         readonly negated = false,
-        readonly isSideEffecty = false,
-        readonly exactIds = false
     ) {
 
     }
@@ -29,7 +29,6 @@ export class AtomClause implements Clause {
         this.predicate,
         this.args.map(a => opts?.map?.[a] ?? a),
         opts?.negate ?? this.negated,
-        opts?.sideEffecty ?? this.isSideEffecty,
     )
 
     and = (other: Clause, opts?: AndOpts): Clause => new And(this, other, opts?.asRheme ?? false)

@@ -1,4 +1,4 @@
-import { Clause, AndOpts, CopyOpts } from "./Clause";
+import { Clause, AndOpts, CopyOpts, emptyClause } from "./Clause";
 import { Id } from "../id/Id";
 import { Map } from "../id/Map";
 import And from "./And";
@@ -11,14 +11,13 @@ export default class Imply implements Clause {
     readonly theme = this.condition
     readonly rheme = this.consequence
     readonly hashCode = hashString(this.condition.toString() + this.consequence.toString() + this.negated)
+    readonly hasSideEffects = this.rheme !== emptyClause
 
     constructor(
         readonly condition: Clause,
         readonly consequence: Clause,
         readonly negated = false,
-        readonly isSideEffecty = false,
         readonly subjconj?: Lexeme,
-        readonly exactIds = false
     ) {
 
     }
@@ -27,7 +26,6 @@ export default class Imply implements Clause {
         opts?.clause1 ?? this.condition.copy(opts),
         opts?.clause2 ?? this.consequence.copy(opts),
         opts?.negate ?? this.negated,
-        opts?.sideEffecty ?? this.isSideEffecty,
         opts?.subjconj ?? this.subjconj,
     )
 
