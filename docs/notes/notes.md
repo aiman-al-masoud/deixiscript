@@ -576,3 +576,8 @@ Unify SimpleAction, MultiAction and CreateLexemeAction.
 
 # strings... :(
 string is quote then one or more noun or pronoun or quantifier or article or copula or iverb or mverb or hverb or negation then quote
+
+
+# every lexeme must have a referent (Thing)
+
+# Thing should know the least possible about Lexemes
