@@ -30,8 +30,6 @@ export interface SetOps {
 }
 
 export interface CopyOpts {
-    object?: object
-    preds?: Lexeme[]
     id?: Id
 }
 
@@ -41,7 +39,6 @@ export function wrap(args: WrapArgs): Thing {
 
 export interface WrapArgs {
     id: Id,
-    preds?: Lexeme[],
     object?: Object,
     parent?: Thing,
     name?: string

@@ -187,7 +187,7 @@ export default class BaseThing implements Thing {
     }
 
     copy = (opts?: CopyOpts) => new BaseThing(
-        opts?.object ?? deepCopy(this.object),
+        deepCopy(this.object),
         opts?.id ?? this.id, //TODO: keep old by default?
     )
 
