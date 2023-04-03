@@ -37,9 +37,7 @@ export default class BaseThing implements Thing {
         protected relations: Relation[] = [],
     ) { }
 
-    protected is = (predicate: Lexeme) =>
-        // this.predicates.map(x => x.root).includes(predicate.root)
-        // this.getConcepts().includes(predicate.root) //TODO also from supers
+    protected is = (predicate: Lexeme) => //TODO:remove
         this.relations.filter(x => x.args.length === 0).map(x => x.predicate).map(x => x.root).includes(predicate.root)
 
     protected isAlready(relation: Relation) {
@@ -114,7 +112,7 @@ export default class BaseThing implements Thing {
         if (relation.predicate.isVerb) {
             return this.call(relation.predicate, relation.args)
         } else if (prop) {
-            this.object[prop] = typeof this._get(relation.predicate.root) === 'boolean' ? true : relation.predicate.root
+            this.object[prop] = typeof this.get(relation.predicate.root)?.unwrap() === 'boolean' ? true : relation.predicate.root
         } else if (this.parent) {
             const parent = this.parent.unwrap?.() ?? this.parent
             if (typeof this.object !== 'object') parent[this.name!] = relation.predicate.root //TODO bool
@@ -129,7 +127,7 @@ export default class BaseThing implements Thing {
         if (relation.predicate.isVerb) {
             //TODO: undo method call
         } else if (prop) {
-            this.object[prop] = typeof this._get(relation.predicate.root) === 'boolean' ? false : ''
+            this.object[prop] = typeof this.get(relation.predicate.root)?.unwrap() === 'boolean' ? false : ''
         } else if (this.parent) {
             const parent = this.parent.unwrap?.() ?? this.parent
             if (typeof this.object !== 'object') parent[this.name!] = '' //TODO bool
@@ -177,7 +175,7 @@ export default class BaseThing implements Thing {
 
     protected canHaveA(value: Lexeme) { //returns name of prop corresponding to Lexeme if any
         const concepts = [...value.referent?.getConcepts() ?? [], value.root]
-        return concepts.find(x => this._get(x) !== undefined)
+        return concepts.find(x => this.get(x)?.unwrap() !== undefined)
     }
 
     //-----------------------------------------------------------
@@ -196,7 +194,7 @@ export default class BaseThing implements Thing {
     getLexemes = () => {
 
         const lexemes = allKeys(this.object).map(x => makeLexeme({
-            type: typeOf(this._get(x)),
+            type: typeOf(this.get(x)?.unwrap()),
             root: x
         }))
 
@@ -214,7 +212,7 @@ export default class BaseThing implements Thing {
     }
 
     protected call(verb: Lexeme, args: Thing[]) {
-        const method = this._get(verb.root) as Function
+        const method = this.get(verb.root)?.unwrap() as Function
 
         if (!method) {
             return
@@ -265,6 +263,8 @@ export default class BaseThing implements Thing {
 
     get(id: Id): Thing | undefined {
 
+        // this.refreshHeirlooms() //TODO! 
+
         const parts = id.split('.')
         const p1 = parts[0]
         const o = this.object[p1]
@@ -275,18 +275,6 @@ export default class BaseThing implements Thing {
         }
 
         return w
-    }
-
-    protected _get(key: string) {
-
-        try {
-            this.refreshHeirlooms() //TODO!
-            const val = this.object?.[key]
-            return val?.unwrap?.() ?? val
-        } catch {
-
-        }
-
     }
 
     query(clause: Clause, parentMap: Map = {}): Map[] {
@@ -314,7 +302,7 @@ export default class BaseThing implements Thing {
         const relevantNames = /* or clause??? */peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
 
         const children: Thing[] = allKeys(this.object)
-            .map(x => ({ name: x, obj: this._get(x) }))
+            .map(x => ({ name: x, obj: this.get(x)?.unwrap() }))
             .filter(x => relevantNames.includes(x.name)) // performance
             .filter(x => x.obj !== this.object)
             .map(x => new BaseThing(x.obj, `${this.id}.${x.name}`, this, x.name))
