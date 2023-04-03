@@ -12,10 +12,10 @@ export const prelude: string[] = [
 
       `noun-phrase is optional quantifier 
         then optional article 
-        then zero  or  more adjectives 
-        then zero or more subject noun or pronoun or grammar
+        then zero-or-more adjectives 
+        then zero-or-more subject noun or pronoun or grammar
         then optional subclause 
-        then zero or more complements `,
+        then zero-or-more complements `,
 
       'copulasubclause is relpron then copula then predicate noun-phrase',
       'mverbsubclause is relpron then mverb then object noun-phrase.',
@@ -23,7 +23,7 @@ export const prelude: string[] = [
 
       `and-sentence is left copula-sentence or noun-phrase 
         then nonsubconj
-        then one or more right and-sentence or copula-sentence or noun-phrase`,
+        then one-or-more right and-sentence or copula-sentence or noun-phrase`,
 
       `mverb-sentence is subject noun-phrase 
 		then optional hverb

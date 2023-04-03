@@ -14,7 +14,6 @@ export default class BaseLexeme implements Lexeme {
     cardinality = this.newData?.cardinality ?? this._root?.cardinality
     readonly isVerb = this.type === 'mverb' || this.type === 'iverb'
     readonly isPlural = isRepeatable(this.newData?.cardinality)
-    readonly isMultiWord = this.root.includes(' ')
     readonly referent = this.newData?.referent ?? this._root?.referent
 
     constructor(

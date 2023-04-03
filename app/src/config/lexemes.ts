@@ -37,13 +37,13 @@ export const lexemes: Partial<Lexeme>[] = [
     },
 
     {
-        root: 'one or more',
+        root: 'one-or-more',
         type: 'adjective',
         cardinality: '+'
     },
 
     {
-        root: 'zero or more',
+        root: 'zero-or-more',
         type: 'adjective',
         cardinality: '*'
     },

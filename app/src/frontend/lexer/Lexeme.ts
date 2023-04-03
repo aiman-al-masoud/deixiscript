@@ -14,7 +14,6 @@ export interface Lexeme {
     _root?: Partial<Lexeme>
     extrapolate(context: Context): Lexeme[] //TODO: optional Context?
     readonly isPlural: boolean
-    readonly isMultiWord: boolean
     readonly isVerb: boolean
 
     referent?: Thing
