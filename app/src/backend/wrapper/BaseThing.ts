@@ -55,15 +55,15 @@ export default class BaseThing implements Thing {
         let unchanged = this.relations.filter(x => !relationsEqual(x, relation))
 
         if (opts?.negated) {
-            this.removeRelation(relation)
             removed = [relation]
         } else {
             added = [relation]
             removed.push(...this.getMutex(added))
             unchanged = unchanged.filter(x => !removed.some(r => relationsEqual(x, r)))
-            this.addRelation(relation)
-            removed.forEach(x => this.removeRelation(x))
         }
+
+        added.forEach(r => this.addRelation(r))
+        removed.forEach(r => this.removeRelation(r))
 
         // console.log('added=', added, 'removed=', removed, 'unchanged=', unchanged) 
         return this.reinterpret(added, removed, unchanged, opts)
