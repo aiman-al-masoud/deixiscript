@@ -21,6 +21,11 @@ export default interface Thing {
     setAlias(alias: string, path: string[]): void
     getHeirlooms(): Heirloom[]
     getConcepts(): string[]
+
+
+    
+    set2(predicate:Thing, args:Thing[], negated:boolean, context:Context):Thing[]
+
 }
 
 export interface SetOps {

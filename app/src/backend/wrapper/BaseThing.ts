@@ -312,6 +312,23 @@ export default class BaseThing implements Thing {
 
     }
 
+
+    set2(predicate: Thing, args: Thing[], negated: boolean, context: Context): Thing[] {
+        console.log(predicate)
+
+        return []
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
 
 function getNested(object: any, path: string[]) {
@@ -341,3 +358,9 @@ export function makeGetter(path: string[]) {
 }
 
 // ---------------------------------------------------------------
+
+
+
+
+
+
