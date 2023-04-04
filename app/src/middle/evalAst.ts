@@ -10,6 +10,8 @@ import { getIncrementalId } from "./id/functions/getIncrementalId"
 import { toVar } from "./id/functions/toVar"
 import { Id } from "./id/Id"
 import { Context } from "../facade/context/Context"
+import Imply from "./clauses/Imply"
+import { wrap } from "../backend/wrapper/Thing"
 
 
 interface ToClauseOpts {
@@ -80,6 +82,35 @@ function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: To
     const subjectId = args?.subject ?? getIncrementalId()
     const subject = evalAst(context, copulaSentence?.links?.subject, { subject: subjectId })
     const predicate = evalAst(context, copulaSentence?.links?.predicate, { subject: subjectId })
+
+
+    const maps1 = context.query(subject.theme)
+    // const maps3 = this.clause instanceof Imply ? maps2 : maps2.slice(0, 1)
+    const maps = !maps1.length ? [{}] : maps1
+    const clause = predicate.flatList()[0]
+
+    maps.forEach(m => {
+
+        const argz = clause.args ?? clause.entities
+        const predicate = clause.predicate ?? clause.rheme.predicate!
+
+        const args = argz
+            .map(id => m[id] ? context.get(m[id])! : context.set(wrap({ id: getIncrementalId() })))
+
+        const subject = args[0]
+
+        subject?.set(predicate, {
+            args: args.slice(1),
+            context,
+            negated: clause.negated
+        })
+
+        if (!predicate.referent && predicate.type === 'noun') { // referent of "proper noun" is first to get it 
+            predicate.referent ??= subject
+            context.setLexeme(predicate)
+        }
+
+    })
 
     return subject.and(predicate, { asRheme: true })
 }

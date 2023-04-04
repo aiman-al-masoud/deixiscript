@@ -53,6 +53,7 @@ if condition is not empty run the consequence
 * an MRF can produce side effects AND/OR resolve to a value (list of maps or whatever)!
 * toClause() effectively becomes a sort of eval() as in traditional interpreters, but supercharged with anaphora!
 
+eval() needs to return Map[] instead of Clause
 
 
 
