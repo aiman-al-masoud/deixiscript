@@ -9,13 +9,16 @@ import { resolveAnaphora } from "./clauses/functions/resolveAnaphora"
 import { getIncrementalId } from "./id/functions/getIncrementalId"
 import { toVar } from "./id/functions/toVar"
 import { Id } from "./id/Id"
+import { Context } from "../facade/context/Context"
 
 
 interface ToClauseOpts {
     subject?: Id
 }
 
-export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Clause {
+
+    console.log(ast)
 
     if (!ast) {
         // console.warn('Ast is undefined!')
@@ -33,7 +36,7 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     }
 
     if (ast.list) {
-        return ast.list.map(c => toClause(c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
+        return ast.list.map(c => evalAst(context, c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
     }
 
 
@@ -41,19 +44,19 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     let rel
 
     if (ast?.links?.relpron && ast.links.copula) {
-        result = copulaSubClauseToClause(ast, args)
+        result = evalCopulaSubClause(context, ast, args)
     } else if (ast?.links?.relpron && ast.links.mverb) {
-        result = mverbSubClauseToClause(ast, args)
+        result = evalMverbSubClause(context, ast, args)
     } else if (isCopulaSentence(ast)) {
-        result = copulaSentenceToClause(ast, args)
+        result = evalCopulaSentence(context, ast, args)
     } else if (ast.links?.nonsubconj) {
-        result = andSentenceToClause(ast, args)
+        result = evalAndSentence(context, ast, args)
     } else if (rel = ast.links?.iverb?.lexeme || ast.links?.mverb?.lexeme || ast.links?.preposition?.lexeme) {
-        result = relationToClause(ast, rel, args)
+        result = evalRelation(context, ast, rel, args)
     } else if (ast.links?.subconj) {
-        result = complexSentenceToClause(ast, args)
+        result = evalComplexSentence(context, ast, args)
     } else {
-        result = nounPhraseToClause(ast, args)
+        result = evalNounPhrase(context, ast, args)
     }
 
 
@@ -73,50 +76,50 @@ export function toClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
 const isCopulaSentence = (ast?: AstNode) => !!ast?.links?.copula
 
-function copulaSentenceToClause(copulaSentence: AstNode, args?: ToClauseOpts): Clause {
+function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
     const subjectId = args?.subject ?? getIncrementalId()
-    const subject = toClause(copulaSentence?.links?.subject, { subject: subjectId })
-    const predicate = toClause(copulaSentence?.links?.predicate, { subject: subjectId })
+    const subject = evalAst(context, copulaSentence?.links?.subject, { subject: subjectId })
+    const predicate = evalAst(context, copulaSentence?.links?.predicate, { subject: subjectId })
 
     return subject.and(predicate, { asRheme: true })
 }
 
-function copulaSubClauseToClause(copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
+function evalCopulaSubClause(context: Context, copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
 
     const predicate = copulaSubClause?.links?.predicate
-    return toClause(predicate, args)
+    return evalAst(context, predicate, args)
 }
 
-function mverbSubClauseToClause(ast: AstNode, args?: ToClauseOpts)/* :Clause */ {
+function evalMverbSubClause(context: Context, ast: AstNode, args?: ToClauseOpts)/* :Clause */ {
 
     const mverb = ast.links?.mverb?.lexeme!
     const subjectId = args?.subject!
     const objectId = getIncrementalId()
-    const object = toClause(ast.links?.object, { subject: objectId }) // 
+    const object = evalAst(context, ast.links?.object, { subject: objectId }) // 
 
     return object.and(clauseOf(mverb, subjectId, objectId))
 
 }
 
-function nounPhraseToClause(nounPhrase: AstNode, opts?: ToClauseOpts): Clause {
+function evalNounPhrase(context: Context, nounPhrase: AstNode, opts?: ToClauseOpts): Clause {
 
     const maybeId = opts?.subject ?? getIncrementalId()
     const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
     const args = { subject: subjectId }
 
     return Object.values(nounPhrase.links ?? {})
-        .map(x => toClause(x, args)).reduce((a, b) => a.and(b), emptyClause)
+        .map(x => evalAst(context, x, args)).reduce((a, b) => a.and(b), emptyClause)
 
 }
 
-function relationToClause(ast: AstNode, rel: Lexeme, opts?: ToClauseOpts): Clause {
+function evalRelation(context: Context, ast: AstNode, rel: Lexeme, opts?: ToClauseOpts): Clause {
 
     const subjId = opts?.subject ?? getIncrementalId()
     const objId = getIncrementalId()
 
-    const subject = toClause(ast.links?.subject, { subject: subjId })
-    const object = toClause(ast.links?.object, { subject: objId })
+    const subject = evalAst(context, ast.links?.subject, { subject: subjId })
+    const object = evalAst(context, ast.links?.object, { subject: objId })
 
     const args = object === emptyClause ? [subjId] : [subjId, objId]
     const relation = clauseOf(rel, ...args)
@@ -128,19 +131,19 @@ function relationToClause(ast: AstNode, rel: Lexeme, opts?: ToClauseOpts): Claus
 
 }
 
-function complexSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Clause {
 
     const subconj = ast.links?.subconj?.lexeme
-    const condition = toClause(ast.links?.condition, args)
-    const consequence = toClause(ast.links?.consequence, args)
+    const condition = evalAst(context, ast.links?.condition, args)
+    const consequence = evalAst(context, ast.links?.consequence, args)
     return condition.implies(consequence).copy({ subjconj: subconj })
 
 }
 
-function andSentenceToClause(ast: AstNode, args?: ToClauseOpts): Clause {
+function evalAndSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Clause {
 
-    const left = toClause(ast.links?.left, args)
-    const right = toClause(ast?.links?.right?.list?.[0], args)
+    const left = evalAst(context, ast.links?.left, args)
+    const right = evalAst(context, ast?.links?.right?.list?.[0], args)
 
     if (ast.links?.left?.type === ast.links?.right?.type) {
         return left.and(right)

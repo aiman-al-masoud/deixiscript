@@ -1,29 +1,29 @@
-import { Context } from "../../facade/context/Context";
-import { Clause } from "../../middle/clauses/Clause";
-import Action from "./Action";
-import { getAction } from "./getAction";
+// import { Context } from "../../facade/context/Context";
+// import { Clause } from "../../middle/clauses/Clause";
+// import Action from "./Action";
+// import { getAction } from "./getAction";
 
-export default class WhenAction implements Action {
+// export default class WhenAction implements Action {
 
-    constructor(readonly clause: Clause) {
+//     constructor(readonly clause: Clause) {
 
-    }
+//     }
 
-    run(context: Context) {
+//     run(context: Context) {
 
-        const interval = setInterval(() => {
+//         const interval = setInterval(() => {
 
-            if (context.query(this.clause.theme).length > 0) {
+//             if (context.query(this.clause.theme).length > 0) {
 
-                this.clause.rheme.flatList().forEach(c => {
-                    getAction(c, this.clause.rheme).run(context)
-                })
+//                 this.clause.rheme.flatList().forEach(c => {
+//                     getAction(c, this.clause.rheme).run(context)
+//                 })
 
-                clearInterval(interval)
-            }
+//                 clearInterval(interval)
+//             }
 
-        }, 100)
+//         }, 100)
 
-    }
+//     }
 
-}
+// }

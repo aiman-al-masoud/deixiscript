@@ -1,5 +1,5 @@
-import { Context } from "../../facade/context/Context";
+// import { Context } from "../../facade/context/Context";
 
-export default interface Action {
-    run(context: Context): any
-}
+// export default interface Action {
+//     run(context: Context): any
+// }

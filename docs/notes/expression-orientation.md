@@ -45,8 +45,8 @@ if condition is not empty run the consequence
 * make branch (DONE)
 * tmp eliminate CreateLexemeClause, putting lexemes in lexemes.ts (DONE)
 * tmp eliminate SetAliasAction & its usage in prelude (DONE)
-* eliminate Actions & Actuator
-* in BasicBrain, toClause() is called with ast and context as args
+* eliminate Actions & Actuator (DONE)
+* in BasicBrain, toClause() is called with ast and context as args (DONE)
 * in toClause() tmp eliminate every transformation step except for resolveAnaphora(result) if need be.
 * put resolveAnaphora() within each eval MRF (mutually recursive function)
 * computation (yes, potentially with side effects!) performed within each MRF

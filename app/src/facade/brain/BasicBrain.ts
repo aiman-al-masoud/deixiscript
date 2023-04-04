@@ -1,7 +1,7 @@
-import { getActuator } from "../../backend/actuator/Actuator";
+// import { getActuator } from "../../backend/actuator/Actuator";
 import Thing from "../../backend/wrapper/Thing";
 import { getParser } from "../../frontend/parser/interfaces/Parser";
-import { toClause } from "../../middle/toClause";
+import { evalAst } from "../../middle/evalAst";
 import { Context } from "../context/Context";
 import Brain from "./Brain";
 import { pointOut } from "./pointOut";
@@ -13,7 +13,7 @@ export default class BasicBrain implements Brain {
 
     constructor(
         readonly context: Context,
-        readonly actuator = getActuator()
+        // readonly actuator = getActuator()
     ) {
 
         Object.defineProperty(Number.prototype, 'add', { writable: true, value: function (a: any) { return this + a } })
@@ -29,20 +29,22 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            const clause = toClause(ast).simple
+            const clause = evalAst(this.context, ast).simple
+            return []
+
             // console.log(clause.toString())
 
-            if (clause.hasSideEffects) {
-                return this.actuator.takeAction(clause, this.context)
-            } else {
+            // if (clause.hasSideEffects) {
+            //     return this.actuator.takeAction(clause, this.context)
+            // } else {
 
-                const maps = this.context.query(clause)
-                const wrappers = maps.flatMap(m=>Object.values(m)).map(id=>this.context.get(id))
-                // const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
-                this.context.values.forEach(w => pointOut(w, { turnOff: true }))
-                wrappers.forEach(w => w ? pointOut(w) : 0)
-                return wrappers
-            }
+            //     const maps = this.context.query(clause)
+            //     const wrappers = maps.flatMap(m=>Object.values(m)).map(id=>this.context.get(id))
+            //     // const wrappers = clause.entities.flatMap(id => getKool(this.context, clause, id))
+            //     this.context.values.forEach(w => pointOut(w, { turnOff: true }))
+            //     wrappers.forEach(w => w ? pointOut(w) : 0)
+            //     return wrappers
+            // }
 
         }).flat()
     }
