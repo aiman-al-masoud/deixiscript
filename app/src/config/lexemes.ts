@@ -119,6 +119,19 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
         root: 'div',
         type: 'noun',
         referent: wrap({ id: 'div', object: HTMLDivElement.prototype })
-    }
+    },
+
+
+    //TODO: put back in prelude!
+    { root: 'a', type: 'indefart' },
+    { root: 'an', type: 'indefart' },
+    { root: 'the', type: 'defart' },
+    { root: 'if', type: 'subconj' },
+    { root: 'when', type: 'subconj' },
+    { root: 'any', type: 'uniquant' },
+    { root: 'every', type: 'uniquant' },
+    { root: 'of', type: 'preposition' },
+    { root: 'that', type: 'relpron' },
+    { root: 'it', type: 'pronoun' },
 
 ]

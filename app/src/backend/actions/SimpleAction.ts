@@ -3,7 +3,7 @@ import { Clause } from "../../middle/clauses/Clause";
 import { Context } from "../../facade/context/Context";
 import { wrap } from "../wrapper/Thing";
 import { getIncrementalId } from "../../middle/id/functions/getIncrementalId";
-import CreateLexemeAction from "./CreateLexemeAction";
+// import CreateLexemeAction from "./CreateLexemeAction";
 import Imply from "../../middle/clauses/Imply";
 
 export default class SimpleAction implements Action {
@@ -23,9 +23,9 @@ export default class SimpleAction implements Action {
             const argz = this.clause.args! ?? this.clause.entities
             const predicate = this.clause.predicate! ?? this.clause.rheme.predicate
 
-            if (this.topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
-                return new CreateLexemeAction(this.clause, this.topLevel).run(context)
-            }
+            // if (this.topLevel.flatList().some(x => x.predicate?.type === 'grammar')) {
+            //     return new CreateLexemeAction(this.clause, this.topLevel).run(context)
+            // }
 
             const args = argz
                 .map(id => m[id] ? context.get(m[id])! : context.set(wrap({ id: getIncrementalId() })))

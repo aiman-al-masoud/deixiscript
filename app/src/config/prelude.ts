@@ -47,15 +47,8 @@ export const prelude: string[] = [
     then filler 
     then consequence simple-sentence`,
 
-      `a and an are indefarts`,
-      `the is a defart`,
-      `if and when and while are subconjs`,
-      `any and every and all are uniquants`,
-      `of and on and to and from are prepositions`,
-      `that is a relpron`,
-      `it is a pronoun`,
-
-
+     
+    
       // domain
       'color is a thing',
       'red and blue and black and green and purple are colors',
