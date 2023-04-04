@@ -87,7 +87,7 @@ function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: To
     const maps1 = context.query(subject.theme)
     // const maps3 = this.clause instanceof Imply ? maps2 : maps2.slice(0, 1)
     const maps = !maps1.length ? [{}] : maps1
-    const clause = predicate.flatList()[0]
+    const clause = predicate.flatList()[0] //TODOOOOOOOOOOOOOOOOOO!!!!
 
     maps.forEach(m => {
 
