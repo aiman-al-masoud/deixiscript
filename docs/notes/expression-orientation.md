@@ -53,16 +53,22 @@ if condition is not empty run the consequence
 * an MRF can produce side effects AND/OR resolve to a value (list of maps or whatever)!
 * toClause() effectively becomes a sort of eval() as in traditional interpreters, but supercharged with anaphora!
 
-eval() needs to return Map[] instead of Clause
-
-returning Map[] is ok for theme part, but currently not ok for rheme part, partly because Thing.set() requires Lexeme as predicate.
-
-in a traditional programming language, the RHS is always defined, so some Clauses should be able to resolve to a Thing value, or list of {[id:Id] : Thing} with newly created Thing perhaps.
+eval() needs to return {[id:Id]:Thing}[] instead of Clause
 
 in Deixiscript:
 
 * the rheme is always assumed to be "undefined", it has to be "applied to" the Things resolved via the theme, and maybe created first.
 
 * even some part (or all) of the THEME may be yet undefined, and needs to be created in that case!
+
+
+```ts
+evalThing(context, nounPhraseClause):[{[id:Id] : Thing}] 
+```
+has NO side effects, just retrieves corresponding Things from context, or creates them WITHOUT SETTING THEM IN THE context, just returning them.
+
+
+
+General idea: EOP, can you map every clause/sentence to a bunch of Things?
 
 
