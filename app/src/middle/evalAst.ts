@@ -46,12 +46,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): C
     }
 
     if (result) {
-        const c0 = ast?.links?.nonsubconj ? result : makeImply(result)
-        const c1 = makeAllVars(c0)
-        const c2 = resolveAnaphora(c1)
-        const c3 = propagateVarsOwned(c2)
-        const c4 = ast?.links?.negation ? invertEffect(c3) : c3
-        return c4
+        return adjustClause(result, !!ast?.links?.nonsubconj, !!ast?.links?.negation)
     }
 
     console.log({ ast })
@@ -59,6 +54,14 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): C
 
 }
 
+function adjustClause(clause: Clause, hasAnd?: boolean, isNegated?: boolean): Clause {
+    const c0 = hasAnd ? clause : makeImply(clause)
+    const c1 = makeAllVars(c0)
+    const c2 = resolveAnaphora(c1)
+    const c3 = propagateVarsOwned(c2)
+    const c4 = isNegated ? invertEffect(c3) : c3
+    return c4
+}
 
 function evalLexeme(context: Context, lexeme: Lexeme, args?: ToClauseOpts): Clause {
     if (lexeme.type === 'noun' || lexeme.type === 'adjective' || lexeme.type === 'pronoun' || lexeme.type === 'grammar') {
