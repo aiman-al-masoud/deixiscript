@@ -84,7 +84,7 @@ function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: To
     const predicate = evalAst(context, copulaSentence?.links?.predicate, { subject: subjectId })
 
 
-    const maps1 = context.query(subject.theme)
+    const maps1 = context.query(subject)
     const maps = !maps1.length ? [{}] : maps1
     const clause = predicate.flatList()[0] //TODOOOOOOOOOOOOOOOOOO!!!!
 
