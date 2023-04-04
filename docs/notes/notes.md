@@ -99,3 +99,5 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 
 
 # Thing should know the least possible about Lexemes
+
+# [Expression Orientation](./expression-orientation.md)
