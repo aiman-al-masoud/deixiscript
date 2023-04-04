@@ -42,8 +42,8 @@ if condition is not empty run the consequence
 
 # Plan:
 
-* make branch
-* tmp eliminate CreateLexemeClause, putting lexemes in lexemes.ts
+* make branch (DONE)
+* tmp eliminate CreateLexemeClause, putting lexemes in lexemes.ts (DONE)
 * tmp eliminate SetAliasAction & its usage in prelude (unnecessary for test)
 * eliminate Actions & Actuator
 * in BasicBrain, toClause() is called with ast and context as args
