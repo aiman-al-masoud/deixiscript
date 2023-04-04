@@ -85,14 +85,13 @@ function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: To
 
 
     const maps1 = context.query(subject.theme)
-    // const maps3 = this.clause instanceof Imply ? maps2 : maps2.slice(0, 1)
     const maps = !maps1.length ? [{}] : maps1
     const clause = predicate.flatList()[0] //TODOOOOOOOOOOOOOOOOOO!!!!
 
-    maps.forEach(m => {
+    maps.forEach(m => { // TODO: imply vs single
 
-        const argz = clause.args ?? clause.entities
-        const predicate = clause.predicate ?? clause.rheme.predicate!
+        const argz = clause.args!
+        const predicate = clause.predicate!
 
         const args = argz
             .map(id => m[id] ? context.get(m[id])! : context.set(wrap({ id: getIncrementalId() })))
