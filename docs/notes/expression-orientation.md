@@ -55,6 +55,6 @@ if condition is not empty run the consequence
 
 eval() needs to return Map[] instead of Clause
 
-
+returning Map[] is ok for theme part, but currently not ok for rheme part, partly because Thing.set() requires Lexeme as predicate.
 
 
