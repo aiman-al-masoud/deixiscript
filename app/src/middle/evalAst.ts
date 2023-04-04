@@ -33,7 +33,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): C
         result = evalCopulaSubClause(context, ast, args)
     } else if (ast?.links?.relpron && ast.links.mverb) {
         result = evalMverbSubClause(context, ast, args)
-    } else if (isCopulaSentence(ast)) {
+    } else if (ast?.links?.copula) {
         result = evalCopulaSentence(context, ast, args)
     } else if (ast.links?.nonsubconj) {
         result = evalAndSentence(context, ast, args)
@@ -71,8 +71,6 @@ function evalLexeme(context: Context, lexeme: Lexeme, args?: ToClauseOpts): Clau
 function evalAstList(context: Context, asts: AstNode[], args?: ToClauseOpts) {
     return asts.map(c => evalAst(context, c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
 }
-
-const isCopulaSentence = (ast?: AstNode) => !!ast?.links?.copula
 
 function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: ToClauseOpts): Clause {
 
