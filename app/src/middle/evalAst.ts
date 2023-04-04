@@ -20,30 +20,16 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): C
 
     console.log(ast)
 
-    if (!ast) {
-        // console.warn('Ast is undefined!')
-        return emptyClause
-    }
-
-    if (ast.lexeme) {
-
-        if (ast.lexeme.type === 'noun' || ast.lexeme.type === 'adjective' || ast.lexeme.type === 'pronoun' || ast.lexeme.type === 'grammar') {
-            return clauseOf(ast.lexeme, ...args?.subject ? [args?.subject] : [])
-        }
-
-        return emptyClause
-
-    }
-
-    if (ast.list) {
-        return ast.list.map(c => evalAst(context, c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
-    }
-
-
     let result
     let rel
 
-    if (ast?.links?.relpron && ast.links.copula) {
+    if (!ast) {
+        result = emptyClause
+    } else if (ast.lexeme) {
+        result = evalLexeme(context, ast.lexeme, args)
+    } else if (ast.list) {
+        result = evalAstList(context, ast.list, args)
+    } else if (ast?.links?.relpron && ast.links.copula) {
         result = evalCopulaSubClause(context, ast, args)
     } else if (ast?.links?.relpron && ast.links.mverb) {
         result = evalMverbSubClause(context, ast, args)
@@ -59,9 +45,8 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): C
         result = evalNounPhrase(context, ast, args)
     }
 
-
     if (result) {
-        const c0 = ast.links?.nonsubconj ? result : makeImply(result)
+        const c0 = ast?.links?.nonsubconj ? result : makeImply(result)
         const c1 = makeAllVars(c0)
         const c2 = resolveAnaphora(c1)
         const c3 = propagateVarsOwned(c2)
@@ -70,8 +55,21 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): C
     }
 
     console.log({ ast })
-    throw new Error(`Idk what to do with '${ast.type}'!`)
+    throw new Error(`Idk what to do with '${ast?.type}'!`)
 
+}
+
+
+function evalLexeme(context: Context, lexeme: Lexeme, args?: ToClauseOpts): Clause {
+    if (lexeme.type === 'noun' || lexeme.type === 'adjective' || lexeme.type === 'pronoun' || lexeme.type === 'grammar') {
+        return clauseOf(lexeme, ...args?.subject ? [args?.subject] : [])
+    } else {
+        return emptyClause
+    }
+}
+
+function evalAstList(context: Context, asts: AstNode[], args?: ToClauseOpts) {
+    return asts.map(c => evalAst(context, c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
 }
 
 const isCopulaSentence = (ast?: AstNode) => !!ast?.links?.copula
