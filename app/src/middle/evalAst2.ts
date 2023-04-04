@@ -114,6 +114,7 @@ function isPlural(ast?: AstNode) {
         || ast?.links?.adjective?.lexeme?.isPlural
         || ast?.links?.noun?.list?.some(x => x.lexeme?.isPlural)
         || ast?.links?.adjective?.list?.some(x => x.lexeme?.isPlural)
+        || ast?.links?.subject?.list?.some(x=>x.lexeme?.isPlural)
         || ast?.links?.uniquant
 
 }
