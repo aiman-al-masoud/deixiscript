@@ -86,7 +86,8 @@ function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const subjectId = args?.subject ?? getIncrementalId()
     const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
-    const complements = Object.values(ast?.links ?? {}).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false })).reduce((a, b) => a.and(b), emptyClause)
+    const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false })).reduce((a, b) => a.and(b), emptyClause)
+
     return adjectives.and(nouns).and(complements)
     //TODO: subclause
 
@@ -123,10 +124,12 @@ function getInterestingIds(maps: Map[]): Id[] {
     // has buttonId.style.color and that's the object the sentence should resolve to
     // possible problem if "color of button AND button"
     const ids = maps.flatMap(x => Object.values(x))
-    const maxLen = Math.max(...ids.map(x => x.length))
-    return ids.filter(x => x.length === maxLen)
+    const maxLen = Math.max(...ids.map(x => getNumberOfDots(x)))
+    return ids.filter(x => getNumberOfDots(x) === maxLen)
 
 }
+
+const getNumberOfDots = (id: Id) => id.split('.').length
 
 function createThingExNovo(context: Context, clause: Clause): Thing {
     const thing = wrap({ id: getIncrementalId() })
