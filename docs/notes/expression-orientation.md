@@ -72,3 +72,10 @@ has NO side effects, just retrieves corresponding Things from context, or create
 General idea: EOP, can you map every clause/sentence to a bunch of Things?
 
 
+eval functions should return **Thing[]**, see examples:
+
+(the buttons) are (red)
+(color of the button) is (red)
+(the red button) appendChilds (the green buttons)
+
+the stuff between brackets () can all be represented as Thing[]
