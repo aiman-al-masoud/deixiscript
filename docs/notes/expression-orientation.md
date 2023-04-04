@@ -44,7 +44,7 @@ if condition is not empty run the consequence
 
 * make branch (DONE)
 * tmp eliminate CreateLexemeClause, putting lexemes in lexemes.ts (DONE)
-* tmp eliminate SetAliasAction & its usage in prelude (unnecessary for test)
+* tmp eliminate SetAliasAction & its usage in prelude (DONE)
 * eliminate Actions & Actuator
 * in BasicBrain, toClause() is called with ast and context as args
 * in toClause() tmp eliminate every transformation step except for resolveAnaphora(result) if need be.

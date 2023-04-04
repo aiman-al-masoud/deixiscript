@@ -16,6 +16,14 @@ const not: Lexeme = makeLexeme({
     type: 'negation',
 })
 
+
+//TODO: put back in prelude!
+const buttonThing = wrap({ id: 'button', object: HTMLButtonElement.prototype })
+buttonThing.setAlias('color', ['style', 'background'])
+buttonThing.setAlias('text', ['textContent'])
+const divThing = wrap({ id: 'div', object: HTMLDivElement.prototype })
+divThing.setAlias('color', ['style', 'background'])
+
 export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
 
     being,
@@ -113,12 +121,12 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     {
         root: 'button',
         type: 'noun',
-        referent: wrap({ id: 'button', object: HTMLButtonElement.prototype })
+        referent: buttonThing
     },
     {
         root: 'div',
         type: 'noun',
-        referent: wrap({ id: 'div', object: HTMLDivElement.prototype })
+        referent: divThing
     },
 
 

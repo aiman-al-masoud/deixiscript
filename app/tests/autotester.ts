@@ -70,13 +70,13 @@ const tests = [
     test27,
     test28,
     test29,
-    // test30,//defining a copula
+    // test30,// dynamically defining a copula
     test31,
     // test32,
     test33,
-    test34,
+    // test34,// dynamically defining an alias
     test35,
-    // test36, //defining an mverb
+    // test36, // dynamically defining an mverb
     test37,
     test38,
 ]

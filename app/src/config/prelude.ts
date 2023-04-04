@@ -47,13 +47,11 @@ export const prelude: string[] = [
     then filler 
     then consequence simple-sentence`,
 
-     
-    
       // domain
       'color is a thing',
       'red and blue and black and green and purple are colors',
 
-      'color of a button is background of style of it',
-      'color of a div is background of style of it',
-      'text of a button is textContent of it',
+      // 'color of a button is background of style of it',
+      // 'color of a div is background of style of it',
+      // 'text of a button is textContent of it',
 ]
