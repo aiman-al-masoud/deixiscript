@@ -58,3 +58,11 @@ eval() needs to return Map[] instead of Clause
 returning Map[] is ok for theme part, but currently not ok for rheme part, partly because Thing.set() requires Lexeme as predicate.
 
 in a traditional programming language, the RHS is always defined, so some Clauses should be able to resolve to a Thing value, or list of {[id:Id] : Thing} with newly created Thing perhaps.
+
+in Deixiscript:
+
+* the rheme is always assumed to be "undefined", it has to be "applied to" the Things resolved via the theme, and maybe created first.
+
+* even some part (or all) of the THEME may be yet undefined, and needs to be created in that case!
+
+
