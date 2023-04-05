@@ -83,3 +83,4 @@ the stuff between brackets () can all be represented as Thing[]
 
 
 make BaseThing.set() accept Thing as a predicate!
+make Clause work with Thing as predicate?!
