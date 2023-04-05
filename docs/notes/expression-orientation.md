@@ -79,3 +79,7 @@ eval functions should return **Thing[]**, see examples:
 (the red button) appendChilds (the green buttons)
 
 the stuff between brackets () can all be represented as Thing[]
+
+
+
+make BaseThing.set() accept Thing as a predicate!
