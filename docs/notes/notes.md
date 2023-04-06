@@ -114,4 +114,6 @@ clause should make use of Thing not Lexeme.
 
 BasicClause.ownerInfo() unwittingly asserts wrong non-relational info about this object "parroting the query". That's BasicClause.query()'s fault.
 
+it broken again!
+
 

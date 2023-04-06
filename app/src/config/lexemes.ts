@@ -1,5 +1,5 @@
 import { Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
-import { buttonThing, colorThing, divThing, greenThing, redThing, thing } from "./things";
+import { buttonThing, colorThing, divThing, greenThing, instructionThing, redThing, thing } from "./things";
 
 const being: Lexeme = makeLexeme({
     root: 'be',
@@ -58,6 +58,7 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     { root: 'color', type: 'noun', referent: colorThing },
     { root: 'red', type: 'noun', referent: redThing },
     { root: 'green', type: 'noun', referent: greenThing },
+    { root: 'instruction', type: 'noun', referent: instructionThing }
 
 ]
 

@@ -1,4 +1,5 @@
 import Thing, { wrap } from "../backend/thing/Thing";
+import { instructionThing } from "../config/things";
 import { Context } from "../facade/context/Context";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
@@ -7,6 +8,12 @@ import { Id } from "./id/Id";
 import { Map } from "./id/Map";
 
 export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+
+    if (!args) { //TODO: only cache instructions with side effects
+        const instr = wrap({ object: ast, id: getIncrementalId() })
+        instr.set(instructionThing)
+        context.set(instr)
+    }
 
     if (ast?.links?.copula) {
         return evalCopulaSentence(context, ast, args)
@@ -19,6 +26,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
     } else {
         return evalNounPhrase(context, ast, args)  //nounphrase is the "atom"
     }
+
 }
 
 
