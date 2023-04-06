@@ -122,7 +122,7 @@ function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return emptyClause //TODO!
 }
 
-function isPlural(ast?: AstNode) {
+function isPlural(ast?: AstNode) { //TODO: incomplete! doesn't scan node recursively!
 
     return ast?.links?.noun?.lexeme?.isPlural
         || ast?.links?.adjective?.lexeme?.isPlural
