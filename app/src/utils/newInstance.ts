@@ -11,8 +11,13 @@ export function newInstance(proto: object, ...args: any[]) {
         return parseFloat(args[0])
     }
 
-    return proto instanceof HTMLElement ?
-        document.createElement(tagNameFromProto(proto)) :
-        new (proto as any).constructor(...args)
+    if (proto instanceof HTMLElement) {
+        const tagName = tagNameFromProto(proto)
+        const elem = document.createElement(tagName)
+        elem.textContent = tagName
+        return elem
+    }
+
+    return new (proto as any).constructor(...args)
 
 }
