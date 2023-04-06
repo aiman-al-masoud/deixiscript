@@ -20,7 +20,6 @@ export class BaseThing implements Thing {
     readonly object = this.args.object
     protected superclass = this.args.superclass
     protected base = this.args.base
-    protected name = this.args.name
 
 
     constructor(readonly args: WrapArgs) {
@@ -296,7 +295,7 @@ export class BaseThing implements Thing {
             .map(x => ({ name: x, obj: this.get(x)?.unwrap() }))
             .filter(x => relevantNames.includes(x.name)) // performance
             .filter(x => x.obj !== this.object)
-            .map(x => new BaseThing({ object: x.obj, id: `${this.id}.${x.name}`, parent: this, name: x.name }))
+            .map(x => new BaseThing({ object: x.obj, id: `${this.id}.${x.name}`, parent: this }))
 
 
         const res = children.flatMap(x => x.query(peeled, { [top[0]]: this.id }))

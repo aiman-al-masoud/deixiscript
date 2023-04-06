@@ -39,5 +39,4 @@ export interface WrapArgs {
     parent?: Thing | Context,
     base?: Thing,
     superclass?: Thing,
-    name?: string,
 }
