@@ -137,7 +137,6 @@ export class BaseThing implements Thing {
     }
 
     protected do(relation: Relation) {
-        // console.log((relation.predicate as BetterBaseThing).superclass === colorThing )
 
         if ((relation.predicate as BaseThing).superclass === colorThing) {
             this.refreshColor(relation)
@@ -244,7 +243,7 @@ export class BaseThing implements Thing {
 
         if (oc.length === 1) { //BASECASE: check yourself
 
-            if (this.isAlready({ predicate: clause.predicate?.referent!, args: [] })) { //TODO: also handle non-ownership non-intransitive relations!, TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
+            if (this.name === clause.predicate?.root) { //TODO: also handle non-ownership non-intransitive relations!, TODO: handle non BasicClauses!!!! (that don't have ONE predicate!) //problem with comparing referent is that stupid heuristic in getLexemes() does not attempt to query button.style, it just queries button, and so it doesn't get button.styles's lexemes!
                 return [{ ...parentMap, [clause.entities[0]]: this.id }]
             }
 
@@ -287,6 +286,9 @@ export class BaseThing implements Thing {
         }
     }
 
+    get name() {
+        return this.id.split('.').at(-1)
+    }
 
 }
 
