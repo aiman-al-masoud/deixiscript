@@ -111,8 +111,6 @@ export class BaseThing implements Thing {
 
     set(predicate: Thing, opts?: SetArgs): Thing[] {
 
-        // console.log(predicate)
-
         const relation: Relation = { predicate, args: opts?.args ?? [] }
 
         let added: Relation[] = []
