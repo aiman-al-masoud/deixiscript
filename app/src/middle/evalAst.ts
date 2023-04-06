@@ -7,7 +7,7 @@ import { getIncrementalId } from "./id/functions/getIncrementalId";
 import { Id } from "./id/Id";
 import { Map } from "./id/Map";
 
-export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] { //TODO: option to disable side effects (for example for if condition)
 
     if (!args) { //TODO: only cache instructions with side effects
         const instr = wrap({ object: ast, id: getIncrementalId() })
