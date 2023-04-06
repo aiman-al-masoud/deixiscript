@@ -161,12 +161,17 @@ export class BaseThing implements Thing {
         // console.log((relation.predicate as BetterBaseThing).superclass === colorThing )
 
         if ((relation.predicate as BaseThing).superclass === colorThing) {
-            const style = this.get('style')?.unwrap()
-            style? style.background = relation.predicate.unwrap() : 0
+            this.refreshColor(relation)
             return
         }
 
         this.inherit(relation.predicate)
+    }
+
+    protected refreshColor(relation: Relation) {
+        const style = this.get('style')?.unwrap()
+        style ? style.background = relation.predicate.unwrap() : 0
+        return
     }
 
     protected undo(relation: Relation) {
@@ -174,7 +179,7 @@ export class BaseThing implements Thing {
     }
 
     protected keep(relation: Relation) {
-
+        this.refreshColor(relation)
     }
 
     protected addRelation(relation: Relation) {
