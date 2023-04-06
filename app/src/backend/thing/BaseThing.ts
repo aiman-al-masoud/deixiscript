@@ -83,7 +83,7 @@ export class BaseThing implements Thing {
             const lex = makeLexeme({
                 type: typeOf(child.unwrap()),
                 root: x,
-                referent: child,
+                // referent: child,
             })
 
             return [lex, ...lex.extrapolate()]
@@ -254,7 +254,20 @@ export class BaseThing implements Thing {
 
         const top = getTopLevel(clause)
 
-        const peeled = clause.flatList()
+        const aboutTopLevel = clause
+            .flatList()
+            .filter(x => top.some(t => x.entities.includes(t)))
+            .filter(x => x.entities.length <= 1)
+            .reduce((a, b) => a.and(b), emptyClause)
+
+        const notOk = aboutTopLevel.flatList().filter(x => !(this.isAlready({ predicate: x.predicate?.referent!, args: [] }) || this.name === x.predicate?.root))
+
+        if (notOk.length) {
+            return []
+        }
+
+        const peeled = clause
+            .flatList()
             .filter(x => x.entities.every(e => !top.includes(e)))
             .reduce((a, b) => a.and(b), emptyClause)
 
