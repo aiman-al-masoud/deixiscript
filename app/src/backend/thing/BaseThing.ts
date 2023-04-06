@@ -71,33 +71,23 @@ export class BaseThing implements Thing {
 
     getLexemes = () => {
 
-        const lexemes = this.getAllKeys().flatMap(x => {
+        return this.getAllKeys().flatMap(x => {
 
-            try {
+            let child = this.get(x)
 
-                const o = this.get(x)
-
-                if (o === undefined) {
-                    return []
-                }
-
-                const unwrapped = o?.unwrap()
-
-                const lex = makeLexeme({
-                    type: typeOf(unwrapped),
-                    root: x,
-                    referent: o,
-                })
-
-                return [lex]
-            } catch {
+            if (!child) {
                 return []
             }
 
+            const lex = makeLexeme({
+                type: typeOf(child.unwrap()),
+                root: x,
+                referent: child,
+            })
 
+            return [lex, ...lex.extrapolate()]
         })
 
-        return lexemes.concat(lexemes.flatMap(l => l.extrapolate()))
     }
 
     set(predicate: Thing, opts?: SetArgs): Thing[] {
