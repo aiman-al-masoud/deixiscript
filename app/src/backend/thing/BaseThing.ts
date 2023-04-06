@@ -162,7 +162,8 @@ export class BaseThing implements Thing {
 
         if ((relation.predicate as BaseThing).superclass === colorThing) {
             const style = this.get('style')?.unwrap()
-            style.background = relation.predicate.unwrap()
+            style? style.background = relation.predicate.unwrap() : 0
+            return
         }
 
         this.inherit(relation.predicate)

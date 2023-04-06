@@ -9,10 +9,10 @@ export const redThing = wrap({ id: 'red', object: 'red' })
 redThing.set(colorThing)
 
 
-export const things = [
+export const things = [ //find a better solution to avoid capturing base-buttons in query results
     thing,
-    buttonThing,
-    divThing,
+    // buttonThing,
+    // divThing,
     colorThing,
     redThing,
 ]
