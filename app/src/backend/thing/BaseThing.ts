@@ -84,15 +84,21 @@ export class BaseThing implements Thing {
         const lexemes = this.getAllKeys().flatMap(x => {
 
             try {
+
                 const o = this.get(x)
+
+                if (o === undefined) {
+                    return []
+                }
+
                 const unwrapped = o?.unwrap()
 
                 const lex = makeLexeme({
                     type: typeOf(unwrapped),
                     root: x,
-                    referent : o,
+                    referent: o,
                 })
-                
+
                 return [lex]
             } catch {
                 return []
@@ -263,7 +269,7 @@ export class BaseThing implements Thing {
             //TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
             // if (clause.simple.predicate && (this.is(clause.simple.predicate) || this.name === clause.simple.predicate?.root)) {
 
-            if (this.name === clause.simple.predicate?.root) {
+            if (this.object === clause.simple.predicate?.referent?.unwrap()) { //this.name === clause.simple.predicate?.root    
                 return [{ ...parentMap, [clause.entities[0]]: this.id }]
             }
 

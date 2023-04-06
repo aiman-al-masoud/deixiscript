@@ -23,11 +23,11 @@ export default class BaseLexeme implements Lexeme {
     extrapolate(context?: Context): Lexeme[] {
 
         if ((this.type === 'noun' || this.type === 'grammar') && !this.isPlural) {
-            return [makeLexeme({ _root: this, token: pluralize(this.root), cardinality: '*' })]
+            return [makeLexeme({ _root: this, token: pluralize(this.root), cardinality: '*', referent: this.referent })]
         }
 
         if (this.isVerb) {
-            return conjugate(this.root).map(x => makeLexeme({ _root: this, token: x }))
+            return conjugate(this.root).map(x => makeLexeme({ _root: this, token: x, referent: this.referent }))
         }
 
         return []
