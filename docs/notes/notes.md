@@ -112,6 +112,6 @@ extract Things in own file, link from lexemes via referent. every lexeme should 
 
 clause should make use of Thing not Lexeme.
 
-BetterBasicClause.ownerInfo() unwittinlgy asserts wrong non-relational info about this object "parroting the query".
+BasicClause.ownerInfo() unwittingly asserts wrong non-relational info about this object "parroting the query". That's BasicClause.query()'s fault.
 
 
