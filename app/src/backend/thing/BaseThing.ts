@@ -169,7 +169,7 @@ export class BaseThing implements Thing {
     }
 
     protected isAlready(relation: Relation): boolean {
-        return (!relation.args.length && relation.predicate === this)
+        return (!relation.args.length && this.equals(relation.predicate))
             || this.relations.some(x => relationsEqual(x, relation))
     }
 
@@ -246,14 +246,10 @@ export class BaseThing implements Thing {
     query(clause: Clause, parentMap: Map = {}): Map[] {
 
         const oc = getOwnershipChain(clause, getTopLevel(clause)[0])
-        // console.log('clause=', clause.toString(), 'oc=', oc, 'name=', this.name)
 
         if (oc.length === 1) { //BASECASE: check yourself
-            //TODO: also handle non-ownership non-intransitive relations!
-            //TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
-            // if (clause.simple.predicate && (this.is(clause.simple.predicate) || this.name === clause.simple.predicate?.root)) {
 
-            if (this.object === clause.simple.predicate?.referent?.unwrap()) { //this.name === clause.simple.predicate?.root    
+            if (this.isAlready({ predicate: clause.predicate?.referent!, args: [] })) { //TODO: also handle non-ownership non-intransitive relations!, TODO: handle non BasicClauses!!!! (that don't have ONE predicate!)
                 return [{ ...parentMap, [clause.entities[0]]: this.id }]
             }
 
@@ -282,11 +278,12 @@ export class BaseThing implements Thing {
 
     }
 
-
-
     // -----------evil ends ---------------------------------------
 
 
+    equals(other: Thing): boolean {
+        return other && this.unwrap() === other.unwrap()
+    }
 
 
 }
@@ -298,7 +295,7 @@ type Relation = {
 }
 
 function relationsEqual(r1: Relation, r2: Relation) {
-    return r1.predicate === r2.predicate
+    return r1.predicate.equals(r2.predicate)
         && r1.args.length === r2.args.length
         && r1.args.every((x, i) => r2.args[i] === x)
 }

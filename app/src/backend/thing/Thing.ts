@@ -18,6 +18,9 @@ export default interface Thing {
     readonly id: Id
     readonly parent?: Thing | Context
 
+
+    equals(other:Thing):boolean
+
 }
 
 export interface SetArgs {
