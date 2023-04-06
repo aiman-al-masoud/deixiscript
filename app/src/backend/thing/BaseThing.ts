@@ -26,52 +26,17 @@ export class BaseThing implements Thing {
 
     }
 
-    get(id: Id): Thing | undefined {
 
-        const parts = id.split('.')
-        const p1 = parts[0]
-
-        let o
-
-        try {
-            o = (this as any)[p1] ?? (this.object as any)?.[p1] ?? this.base?.get(p1)
-        } catch {
-            return undefined
-        }
-
-        if (!o) {
-            return undefined
-        }
-
-        const w = o instanceof BaseThing ? o : new BaseThing({ object: o, id: `${this.id}.${p1}`, parent: this })
-        //memoize
-
-        if (parts.length > 1) {
-            return w.get(parts.slice(1).join('.'))
-        }
-
-        return w
-
-    }
 
     copy(opts?: CopyOpts): Thing {
 
-        if (this.object) {
-            return new BaseThing({
-                id: opts?.id ?? this.id,
-                object: deepCopy(this.object),
-            })
-        }
+        return new BaseThing({
+            id: opts?.id ?? this.id,
+            object: this.object ? deepCopy(this.object) : undefined,
+            superclass: this.superclass,
+            base: this.base?.copy(),
+        })
 
-        if (this.base) {
-            return new BaseThing({
-                id: opts?.id ?? this.id,
-                superclass: this.superclass,
-                base: this.base.copy(),
-            })
-        }
-
-        throw 'TODO!'
     }
 
     unwrap() {
@@ -196,7 +161,7 @@ export class BaseThing implements Thing {
 
         //TODO: prevent re-creation of existing DOM elements
 
-        this.base = added.copy()
+        this.base = added.copy({ id: this.id })
         this.superclass = added
 
         if (this.base.unwrap() instanceof HTMLElement && this.parent instanceof BasicContext) {
@@ -287,22 +252,51 @@ export class BaseThing implements Thing {
             .filter(x => x.entities.every(e => !top.includes(e)))
             .reduce((a, b) => a.and(b), emptyClause)
 
-        const relevantNames = /* or clause??? */peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
+        const relevantNames = peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
 
-        const children: Thing[] = this.getAllKeys()
-            .map(x => ({ name: x, obj: this.get(x)?.unwrap() }))
-            .filter(x => relevantNames.includes(x.name)) // performance
-            .filter(x => x.obj !== this.object)
-            .map(x => new BaseThing({ object: x.obj, id: `${this.id}.${x.name}`, parent: this }))
-
+        const children =
+            this.getAllKeys()
+                .filter(x => relevantNames.includes(x))
+                .map(x => this.get(x)) // .filter(x=>x?.unwrap() !== this)
+                .filter(x => x)
+                .map(x => x as Thing)
 
         const res = children.flatMap(x => x.query(peeled, { [top[0]]: this.id }))
-
-
         return res
 
     }
+
+
+
     // -----------evil ends ---------------------------------------
+
+    get(id: Id): Thing | undefined {
+
+        const parts = id.split('.')
+        const p1 = parts[0]
+
+        let o
+
+        try {
+            o = (this as any)[p1] ?? (this.object as any)?.[p1] ?? this.base?.get(p1)
+        } catch {
+            return undefined
+        }
+
+        if (!o) {
+            return undefined
+        }
+
+        const w = o instanceof BaseThing ? o : new BaseThing({ object: o, id: `${this.id}.${p1}`, parent: this })
+        //memoize
+
+        if (parts.length > 1) {
+            return w.get(parts.slice(1).join('.'))
+        }
+
+        return w
+
+    }
 
 
 }

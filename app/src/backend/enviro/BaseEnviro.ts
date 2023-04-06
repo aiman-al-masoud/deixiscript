@@ -20,6 +20,10 @@ export default class BaseEnviro implements Enviro {
         const p1 = parts[0]
         const w = this.dictionary[p1]
 
+        if (!w){
+            return undefined
+        }
+
         if (parts.length > 1) {
             return w.get(parts.slice(1).join('.'))
         }
