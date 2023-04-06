@@ -46,15 +46,15 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
 }
 
 function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    throw 'TODO!'
+    throw new Error('TODO!')
 }
 
 function evalComplexSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    throw 'TODO!'
+    throw new Error('TODO!')
 }
 
 function evalCompoundSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    throw 'TODO!'
+    throw new Error('TODO!')
 }
 
 function evalNounPhrase(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
