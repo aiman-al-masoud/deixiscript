@@ -1,5 +1,6 @@
 import { thing, colorThing } from '../../config/things';
 import BasicContext from '../../facade/context/BasicContext';
+import { Context } from '../../facade/context/Context';
 import { makeLexeme } from '../../frontend/lexer/Lexeme';
 import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
 import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
@@ -16,7 +17,7 @@ export class BaseThing implements Thing {
 
     readonly id = this.args.id
     protected relations: Relation[] = []
-    readonly parent = this.args.parent //container
+    protected parent = this.args.parent //container
     readonly object = this.args.object
     protected superclass = this.args.superclass
     protected base = this.args.base
@@ -180,10 +181,6 @@ export class BaseThing implements Thing {
         this.base = added.copy({ id: this.id })
         this.superclass = added
 
-        if (this.base.unwrap() instanceof HTMLElement && this.parent instanceof BasicContext) {
-            this.parent.root?.appendChild(this.base.unwrap())
-        }
-
     }
 
     protected disinherit(expelled: Thing) {
@@ -283,6 +280,13 @@ export class BaseThing implements Thing {
 
     equals(other: Thing): boolean {
         return other && this.unwrap() === other.unwrap()
+    }
+
+    setParent(parent: Context): void {
+        this.parent = parent
+        if (this.base?.unwrap() instanceof HTMLElement && this.parent instanceof BasicContext) {
+            this.parent.root?.appendChild(this.base.unwrap())
+        }
     }
 
 

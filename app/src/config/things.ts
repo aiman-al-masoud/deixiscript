@@ -6,7 +6,9 @@ export const buttonThing = wrap({ id: 'button', object: HTMLButtonElement.protot
 export const divThing = wrap({ id: 'div', object: HTMLDivElement.prototype })
 export const colorThing = wrap({ id: 'color', object: {} })
 export const redThing = wrap({ id: 'red', object: 'red' })
+export const greenThing = wrap({ id: 'green', object: 'green' })
 redThing.set(colorThing)
+greenThing.set(colorThing)
 
 
 export const things = [ //find a better solution to avoid capturing base-buttons in query results
@@ -15,4 +17,5 @@ export const things = [ //find a better solution to avoid capturing base-buttons
     // divThing,
     colorThing,
     redThing,
+    greenThing,
 ]

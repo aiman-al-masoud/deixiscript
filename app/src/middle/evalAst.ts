@@ -28,13 +28,19 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
     const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: true })
     const predicate = nounPhraseToClause(ast?.links?.predicate, { subject: subjectId, autovivification: false })//, { subject: subjectId, autovivification: false })
 
+    // const test = evalAst(context,  ast?.links?.predicate, {subject: subjectId, autovivification:true})
+    // console.log(test)
+
     subject.forEach(s => {
         predicate.flatList().forEach(c => {
             s.set(c.predicate?.referent!, { negated: !!ast?.links?.negation })
         })
     })
 
-    subject.forEach(s => context.set(s))
+    subject.forEach(s => {
+        context.set(s)
+        s.setParent(context)
+    })
 
     return []//TODO
 }
@@ -134,7 +140,7 @@ const getNumberOfDots = (id: Id) => id.split('.').length //-1
 
 function createThing(context: Context, clause: Clause): Thing {
 
-    const thing = wrap({ id: getIncrementalId(), parent: context }) //TODO: don't add to context? implicitly added by thing.set() inherit
+    const thing = wrap({ id: getIncrementalId() })
 
     clause.flatList().forEach(c => {
 
@@ -142,7 +148,7 @@ function createThing(context: Context, clause: Clause): Thing {
 
         if (!lexeme.referent) {
             if (lexeme.type === 'noun') lexeme.referent = thing
-            context.setLexeme(lexeme)
+            context.setLexeme(lexeme) // TODO: no side effects on context!!!!
         } else {
             thing.set(lexeme.referent, { negated: clause.negated })
         }

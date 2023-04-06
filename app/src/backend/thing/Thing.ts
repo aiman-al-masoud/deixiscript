@@ -16,10 +16,10 @@ export default interface Thing {
     query(clause: Clause, parentMap?: Map): Map[]
     pointOut(doIt: boolean): void
     readonly id: Id
-    readonly parent?: Thing | Context
 
-
-    equals(other:Thing):boolean
+    // readonly parent?: Thing | Context
+    equals(other: Thing): boolean
+    setParent(parent: Context): void
 
 }
 
