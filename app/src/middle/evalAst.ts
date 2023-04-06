@@ -122,15 +122,20 @@ function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return emptyClause //TODO!
 }
 
-function isPlural(ast?: AstNode) { //TODO: incomplete! doesn't scan node recursively!
+function isPlural(ast?: AstNode):boolean {
 
-    return ast?.links?.noun?.lexeme?.isPlural
+    const x = ast?.links?.noun?.lexeme?.isPlural
         || ast?.links?.adjective?.lexeme?.isPlural
         || ast?.links?.noun?.list?.some(x => x.lexeme?.isPlural)
         || ast?.links?.adjective?.list?.some(x => x.lexeme?.isPlural)
         || ast?.links?.subject?.list?.some(x => x.lexeme?.isPlural)
         || ast?.links?.uniquant
 
+    if (x){
+        return true
+    }
+    
+    return Object.values(ast?.links??{}).concat(ast?.list??[]).some(x=>isPlural(x))
 }
 
 function getInterestingIds(maps: Map[]): Id[] {
