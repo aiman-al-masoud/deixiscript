@@ -233,7 +233,7 @@ export class BaseThing implements Thing {
             q.copy({ map: maps[0] })
             : emptyClause
 
-        // console.log(res.toString())
+        // console.log('id=', this.id, 'ownerInfo=', res.toString())
         return res
     }
 
