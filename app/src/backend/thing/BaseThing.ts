@@ -210,18 +210,16 @@ export class BaseThing implements Thing {
     toClause(query?: Clause) {
 
         const queryOrEmpty = query ?? emptyClause
-
-        const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
+        // const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
 
         const res = queryOrEmpty
             .flatList()
             .filter(x => x.entities.length === 1 && x.predicate)
             .filter(x => this.isAlready({ predicate: x.predicate?.referent!, args: [] }))
             .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
-            .concat(fillerClause)
+            // .concat(fillerClause)
             .reduce((a, b) => a.and(b), emptyClause)
             .and(this.ownerInfo(queryOrEmpty))
-
 
         // console.log(res.toString())
         return res
