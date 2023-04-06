@@ -116,4 +116,12 @@ BasicClause.ownerInfo() unwittingly asserts wrong non-relational info about this
 
 it broken again!
 
+# instructions as objects / functions
+f is the next 3 instructions.
+the button is red.
+the width of the button is 10vw.
+every div is green.
+
+f runs.
+
 
