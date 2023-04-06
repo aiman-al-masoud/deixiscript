@@ -5,7 +5,6 @@ import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { AstNode } from "../../frontend/parser/interfaces/AstNode";
 import { AstType, Syntax } from "../../frontend/parser/interfaces/Syntax";
 import BasicContext from "./BasicContext";
-import { getConfig } from "./Config";
 
 export interface Context extends Enviro {
 
@@ -22,6 +21,6 @@ export interface Context extends Enviro {
 
 export interface GetContextOpts extends GetEnviroOps { }
 
-export function getNewContext(opts: GetContextOpts): Context {
-    return new BasicContext(getEnviro(opts), getConfig())
+export function getContext(opts: GetContextOpts): Context {
+    return new BasicContext(getEnviro(opts))
 }

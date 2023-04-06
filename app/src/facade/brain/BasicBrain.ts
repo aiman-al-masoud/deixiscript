@@ -1,6 +1,6 @@
-import Thing from "../../backend/wrapper/Thing";
+import Thing from "../../backend/thing/Thing";
 import { getParser } from "../../frontend/parser/interfaces/Parser";
-import { evalAst2 } from "../../middle/evalAst2";
+import { evalAst } from "../../middle/evalAst";
 import { Context } from "../context/Context";
 import Brain from "./Brain";
 
@@ -21,7 +21,10 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            return evalAst2(this.context, ast)
+            const res = evalAst(this.context, ast)
+            this.context.values.forEach(x => x.pointOut(false))
+            res.forEach(x => x.pointOut(true))
+            return res
 
         }).flat()
     }

@@ -1,15 +1,16 @@
 import { Enviro } from "../../backend/enviro/Enviro"
+import { getConfig } from "../../config/Config"
 import { CompositeType } from "../../config/syntaxes"
 import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme"
 import { AstNode } from "../../frontend/parser/interfaces/AstNode"
 import { AstType } from "../../frontend/parser/interfaces/Syntax"
 import { macroToSyntax } from "../../frontend/parser/macroToSyntax"
 import { maxPrecedence } from "../../frontend/parser/maxPrecedence"
-import { Config } from "./Config"
 import { Context } from "./Context"
 
 export default class BasicContext implements Context {
 
+    readonly config = getConfig()
     protected readonly staticDescPrecedence = this.config.staticDescPrecedence
     protected readonly syntaxMap = this.config.syntaxes
     protected _syntaxList: CompositeType[] = this.getSyntaxList()
@@ -21,7 +22,7 @@ export default class BasicContext implements Context {
     readonly root = this.enviro.root
     readonly get = this.enviro.get
 
-    constructor(readonly enviro: Enviro, readonly config: Config) {
+    constructor(readonly enviro: Enviro) {
 
         this.astTypes.forEach(g => {
 
@@ -30,6 +31,10 @@ export default class BasicContext implements Context {
                 type: 'grammar'
             }))
 
+        })
+
+        this.config.things.forEach(t => {
+            this.set(t)
         })
 
     }

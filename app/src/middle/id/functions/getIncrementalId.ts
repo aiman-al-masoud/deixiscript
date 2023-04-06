@@ -1,13 +1,8 @@
-import { toVar } from "./toVar";
 import { Id } from "../Id";
 
-export interface GetIncrementalIdOpts {
-    asVar: boolean
-}
-
-export function getIncrementalId(opts?: GetIncrementalIdOpts): Id {
+export function getIncrementalId(): Id {
     const newId = `id${idGenerator.next().value}`;
-    return opts?.asVar ? toVar(newId) : newId;
+    return newId
 }
 
 const idGenerator = getIncrementalIdGenerator();

@@ -1,5 +1,5 @@
-import { wrap } from "../backend/wrapper/Thing";
 import { Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
+import { buttonThing, colorThing, divThing, redThing, thing } from "./things";
 
 const being: Lexeme = makeLexeme({
     root: 'be',
@@ -17,13 +17,6 @@ const not: Lexeme = makeLexeme({
 })
 
 
-//TODO: put back in prelude!
-const buttonThing = wrap({ id: 'button', object: HTMLButtonElement.prototype })
-buttonThing.setAlias('color', ['style', 'background'])
-buttonThing.setAlias('text', ['textContent'])
-const divThing = wrap({ id: 'div', object: HTMLDivElement.prototype })
-divThing.setAlias('color', ['style', 'background'])
-
 export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
 
     being,
@@ -34,103 +27,21 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     { _root: being, token: 'are', cardinality: '*' }, //TODO! 2+
     { _root: doing, token: 'does', cardinality: 1 },
 
-    {
-        root: 'then',
-        type: 'filler' // filler word, what about partial parsing?
-    },
-
-    {
-        root: '.',
-        type: 'fullstop'
-    },
-
-    {
-        root: 'optional',
-        type: 'adjective',
-        cardinality: '1|0'
-    },
-
-    {
-        root: 'one-or-more',
-        type: 'adjective',
-        cardinality: '+'
-    },
-
-    {
-        root: 'zero-or-more',
-        type: 'adjective',
-        cardinality: '*'
-    },
-
-    {
-        root: 'or',
-        type: 'disjunc'
-    },
-
-    {
-        root: 'subject',
-        type: 'adjective'
-    },
-
-    {
-        root: 'predicate',
-        type: 'adjective'
-    },
-
-    {
-        root: 'object',
-        type: 'adjective'
-    },
-
-    {
-        root: "isn't",
-        type: 'contraction',
-        contractionFor: [being, not]
-    },
-
-    {
-        root: 'and',
-        type: 'nonsubconj'
-    },
-
-    {
-        root: 'left',
-        type: 'adjective'
-    },
-
-    {
-        root: 'right',
-        type: 'adjective'
-    },
-
-    {
-        root: 'condition',
-        type: 'adjective'
-    },
-
-    {
-        root: 'consequence',
-        type: 'adjective'
-    },
-
-    {
-        root: 'thing',
-        type: 'noun',
-        referent: wrap({ id: 'thing', object: {} })
-    },
-    {
-        root: 'button',
-        type: 'noun',
-        referent: buttonThing
-    },
-    {
-        root: 'div',
-        type: 'noun',
-        referent: divThing
-    },
-
-
-    //TODO: put back in prelude!
+    { root: 'then', type: 'filler' },
+    { root: '.', type: 'fullstop' },
+    { root: 'optional', type: 'adjective', cardinality: '1|0' },
+    { root: 'one-or-more', type: 'adjective', cardinality: '+' },
+    { root: 'zero-or-more', type: 'adjective', cardinality: '*' },
+    { root: 'or', type: 'disjunc' },
+    { root: 'subject', type: 'adjective' },
+    { root: 'predicate', type: 'adjective' },
+    { root: 'object', type: 'adjective' },
+    { root: "isn't", type: 'contraction', contractionFor: [being, not] },
+    { root: 'and', type: 'nonsubconj' },
+    { root: 'left', type: 'adjective' },
+    { root: 'right', type: 'adjective' },
+    { root: 'condition', type: 'adjective' },
+    { root: 'consequence', type: 'adjective' },
     { root: 'a', type: 'indefart' },
     { root: 'an', type: 'indefart' },
     { root: 'the', type: 'defart' },
@@ -141,5 +52,11 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     { root: 'of', type: 'preposition' },
     { root: 'that', type: 'relpron' },
     { root: 'it', type: 'pronoun' },
+    { root: 'thing', type: 'noun', referent: thing },
+    { root: 'button', type: 'noun', referent: buttonThing },
+    { root: 'div', type: 'noun', referent: divThing },
+    { root: 'color', type: 'noun', referent: colorThing },
+    { root: 'red', type: 'noun', referent: redThing },
 
 ]
+

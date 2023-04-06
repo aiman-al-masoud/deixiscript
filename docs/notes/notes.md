@@ -103,3 +103,15 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 # [Expression Orientation](./expression-orientation.md)
 
 # background of style of a button is a color
+
+
+solution to inheritance or set prop problem (ambiguity of "to be")
+single inheritance, and rule about "hierarchy of superclass kickout", eg: something that is a color can become a button but not viceversa.
+
+extract Things in own file, link from lexemes via referent. every lexeme should have a referent.
+
+clause should make use of Thing not Lexeme.
+
+BetterBasicClause.ownerInfo() unwittinlgy asserts wrong non-relational info about this object "parroting the query".
+
+

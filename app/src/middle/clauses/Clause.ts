@@ -19,10 +19,8 @@ export interface Clause {
     and(other: Clause, opts?: AndOpts): Clause
     implies(conclusion: Clause): Clause
     flatList(): Clause[]
-    about(id: Id): Clause
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
-    describe(id: Id): Lexeme[]
     query(clause: Clause, opts?: QueryOpts): Map[]
 
     readonly predicate?: Lexeme

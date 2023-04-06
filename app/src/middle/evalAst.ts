@@ -1,186 +1,158 @@
-import { Lexeme } from "../frontend/lexer/Lexeme"
-import { AstNode } from "../frontend/parser/interfaces/AstNode"
-import { Clause, emptyClause, clauseOf } from "./clauses/Clause"
-import { makeAllVars } from "./clauses/functions/makeAllVars"
-import { makeImply } from "./clauses/functions/makeImply"
-import { invertEffect } from "./clauses/functions/invertEffect"
-import { propagateVarsOwned } from "./clauses/functions/propagateVarsOwned"
-import { resolveAnaphora } from "./clauses/functions/resolveAnaphora"
-import { getIncrementalId } from "./id/functions/getIncrementalId"
-import { toVar } from "./id/functions/toVar"
-import { Id } from "./id/Id"
-import { Context } from "../facade/context/Context"
-import Imply from "./clauses/Imply"
-import { wrap } from "../backend/wrapper/Thing"
+import Thing, { wrap } from "../backend/thing/Thing";
+import { Context } from "../facade/context/Context";
+import { AstNode } from "../frontend/parser/interfaces/AstNode";
+import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
+import { getIncrementalId } from "./id/functions/getIncrementalId";
+import { Id } from "./id/Id";
+import { Map } from "./id/Map";
 
+export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 
-interface ToClauseOpts {
-    subject?: Id
-}
-
-export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Clause {
-
-    console.log(ast)
-
-    let result
-    let rel
-
-    if (!ast) {
-        result = emptyClause
-    } else if (ast.lexeme) {
-        result = evalLexeme(context, ast.lexeme, args)
-    } else if (ast.list) {
-        result = evalAstList(context, ast.list, args)
-    } else if (ast?.links?.relpron && ast.links.copula) {
-        result = evalCopulaSubClause(context, ast, args)
-    } else if (ast?.links?.relpron && ast.links.mverb) {
-        result = evalMverbSubClause(context, ast, args)
-    } else if (ast?.links?.copula) {
-        result = evalCopulaSentence(context, ast, args)
-    } else if (ast.links?.nonsubconj) {
-        result = evalAndSentence(context, ast, args)
-    } else if (rel = ast.links?.iverb?.lexeme || ast.links?.mverb?.lexeme || ast.links?.preposition?.lexeme) {
-        result = evalRelation(context, ast, rel, args)
-    } else if (ast.links?.subconj) {
-        result = evalComplexSentence(context, ast, args)
+    if (ast?.links?.copula) {
+        return evalCopulaSentence(context, ast, args)
+    } else if (ast?.links?.iverb?.lexeme || ast?.links?.mverb?.lexeme) {
+        return evalVerbSentence(context, ast, args)
+    } else if (ast?.links?.subconj) {
+        return evalComplexSentence(context, ast, args)
+    } else if (ast?.links?.nonsubconj) {
+        return evalCompoundSentence(context, ast, args)
     } else {
-        result = evalNounPhrase(context, ast, args)
-    }
-
-    if (result) {
-        return adjustClause(result, !!ast?.links?.nonsubconj, !!ast?.links?.negation)
-    }
-
-    console.log({ ast })
-    throw new Error(`Idk what to do with '${ast?.type}'!`)
-
-}
-
-function adjustClause(clause: Clause, hasAnd?: boolean, isNegated?: boolean): Clause {
-    const c0 = hasAnd ? clause : makeImply(clause)
-    const c1 = makeAllVars(c0)
-    const c2 = resolveAnaphora(c1)
-    const c3 = propagateVarsOwned(c2)
-    const c4 = isNegated ? invertEffect(c3) : c3
-    return c4
-}
-
-function evalLexeme(context: Context, lexeme: Lexeme, args?: ToClauseOpts): Clause {
-    if (lexeme.type === 'noun' || lexeme.type === 'adjective' || lexeme.type === 'pronoun' || lexeme.type === 'grammar') {
-        return clauseOf(lexeme, ...args?.subject ? [args?.subject] : [])
-    } else {
-        return emptyClause
+        return evalNounPhrase(context, ast, args)  //nounphrase is the "atom"
     }
 }
 
-function evalAstList(context: Context, asts: AstNode[], args?: ToClauseOpts) {
-    return asts.map(c => evalAst(context, c, args)).reduce((c1, c2) => c1.and(c2), emptyClause)
-}
 
-function evalCopulaSentence(context: Context, copulaSentence: AstNode, args?: ToClauseOpts): Clause {
+function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 
     const subjectId = args?.subject ?? getIncrementalId()
-    const subject = evalAst(context, copulaSentence?.links?.subject, { subject: subjectId })
-    const predicate = evalAst(context, copulaSentence?.links?.predicate, { subject: subjectId })
+    const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: true })
+    const predicate = nounPhraseToClause(ast?.links?.predicate, { subject: subjectId, autovivification: false })//, { subject: subjectId, autovivification: false })
 
-
-    const maps1 = context.query(subject)
-    const maps = !maps1.length ? [{}] : maps1
-    const clause = predicate.flatList()[0] //TODOOOOOOOOOOOOOOOOOO!!!!
-
-    maps.forEach(m => { // TODO: imply vs single
-
-        const argz = clause.args!
-        const predicate = clause.predicate!
-
-        const args = argz
-            .map(id => m[id] ? context.get(m[id])! : context.set(wrap({ id: getIncrementalId() })))
-
-        const subject = args[0]
-
-        subject?.set(predicate, {
-            args: args.slice(1),
-            context,
-            negated: clause.negated
+    subject.forEach(s => {
+        predicate.flatList().forEach(c => {
+            s.set(c.predicate?.referent!, { negated: !!ast?.links?.negation })
         })
+    })
 
-        if (!predicate.referent && predicate.type === 'noun') { // referent of "proper noun" is first to get it 
-            predicate.referent ??= subject
-            context.setLexeme(predicate)
+    subject.forEach(s => context.set(s))
+
+    return []//TODO
+}
+
+function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+    throw 'TODO!'
+}
+
+function evalComplexSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+    throw 'TODO!'
+}
+
+function evalCompoundSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+    throw 'TODO!'
+}
+
+function evalNounPhrase(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+
+    const np = nounPhraseToClause(ast, args)
+
+    // checks for Things that match given nounphrase
+    // 1. in current sentence scope
+    // 2. in broader context
+    const currentScope = ((context as any).currentScope as Clause) ?? emptyClause
+    const maps = currentScope.query(np).concat(context.query(np));                  // const np2 = np.copy({map : maps[0] ?? {}});
+
+    const interestingIds = getInterestingIds(maps);
+
+    // TMP (only) use context to pass around data about "currrent sentence", yuck! POSSIBLE BUGS!
+    (context as any).currentScope = np
+
+    const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x as Thing);
+
+    if (isPlural(ast)) { // if universal quantified, I don't care if there's no match
+        return things
+    }
+
+    if (things.length) { // non-plural, return single existing Thing
+        return things.slice(0, 1)
+    }
+
+    // or else create and returns the Thing
+    return args?.autovivification ? [createThing(context, np)] : []
+
+}
+
+function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+
+    const subjectId = args?.subject ?? getIncrementalId()
+    const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
+    const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
+    const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false })).reduce((a, b) => a.and(b), emptyClause)
+
+    return adjectives.and(nouns).and(complements)
+    //TODO: subclause
+
+}
+
+function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+
+    const subjectId = args?.subject!
+    const objectId = getIncrementalId()
+    const preposition = ast?.links?.preposition?.lexeme!
+    const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false })
+
+    return clauseOf(preposition, subjectId, objectId).and(object)
+
+}
+
+function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+    return emptyClause //TODO!
+}
+
+function isPlural(ast?: AstNode) {
+
+    return ast?.links?.noun?.lexeme?.isPlural
+        || ast?.links?.adjective?.lexeme?.isPlural
+        || ast?.links?.noun?.list?.some(x => x.lexeme?.isPlural)
+        || ast?.links?.adjective?.list?.some(x => x.lexeme?.isPlural)
+        || ast?.links?.subject?.list?.some(x => x.lexeme?.isPlural)
+        || ast?.links?.uniquant
+
+}
+
+function getInterestingIds(maps: Map[]): Id[] {
+
+    // the ones with most dots, because "color of style of button" 
+    // has buttonId.style.color and that's the object the sentence should resolve to
+    // possible problem if "color of button AND button"
+    const ids = maps.flatMap(x => Object.values(x))
+    const maxLen = Math.max(...ids.map(x => getNumberOfDots(x)))
+    return ids.filter(x => getNumberOfDots(x) === maxLen)
+
+}
+
+const getNumberOfDots = (id: Id) => id.split('.').length //-1
+
+function createThing(context: Context, clause: Clause): Thing {
+
+    const thing = wrap({ id: getIncrementalId(), parent: context }) //TODO: don't add to context? implicitly added by thing.set() inherit
+
+    clause.flatList().forEach(c => {
+
+        const lexeme = c.predicate!
+
+        if (!lexeme.referent) {
+            if (lexeme.type === 'noun') lexeme.referent = thing
+            context.setLexeme(lexeme)
+        } else {
+            thing.set(lexeme.referent, { negated: clause.negated })
         }
 
     })
 
-    return subject.and(predicate, { asRheme: true })
+    return thing
 }
 
-function evalCopulaSubClause(context: Context, copulaSubClause: AstNode, args?: ToClauseOpts): Clause {
-
-    const predicate = copulaSubClause?.links?.predicate
-    return evalAst(context, predicate, args)
-}
-
-function evalMverbSubClause(context: Context, ast: AstNode, args?: ToClauseOpts)/* :Clause */ {
-
-    const mverb = ast.links?.mverb?.lexeme!
-    const subjectId = args?.subject!
-    const objectId = getIncrementalId()
-    const object = evalAst(context, ast.links?.object, { subject: objectId }) // 
-
-    return object.and(clauseOf(mverb, subjectId, objectId))
-
-}
-
-function evalNounPhrase(context: Context, nounPhrase: AstNode, opts?: ToClauseOpts): Clause {
-
-    const maybeId = opts?.subject ?? getIncrementalId()
-    const subjectId = nounPhrase?.links?.uniquant ? toVar(maybeId) : maybeId
-    const args = { subject: subjectId }
-
-    return Object.values(nounPhrase.links ?? {})
-        .map(x => evalAst(context, x, args)).reduce((a, b) => a.and(b), emptyClause)
-
-}
-
-function evalRelation(context: Context, ast: AstNode, rel: Lexeme, opts?: ToClauseOpts): Clause {
-
-    const subjId = opts?.subject ?? getIncrementalId()
-    const objId = getIncrementalId()
-
-    const subject = evalAst(context, ast.links?.subject, { subject: subjId })
-    const object = evalAst(context, ast.links?.object, { subject: objId })
-
-    const args = object === emptyClause ? [subjId] : [subjId, objId]
-    const relation = clauseOf(rel, ...args)
-    const relationIsRheme = subject !== emptyClause
-
-    return subject
-        .and(object)
-        .and(relation, { asRheme: relationIsRheme })
-
-}
-
-function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Clause {
-
-    const subconj = ast.links?.subconj?.lexeme
-    const condition = evalAst(context, ast.links?.condition, args)
-    const consequence = evalAst(context, ast.links?.consequence, args)
-    return condition.implies(consequence).copy({ subjconj: subconj })
-
-}
-
-function evalAndSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Clause {
-
-    const left = evalAst(context, ast.links?.left, args)
-    const right = evalAst(context, ast?.links?.right?.list?.[0], args)
-
-    if (ast.links?.left?.type === ast.links?.right?.type) {
-        return left.and(right)
-    } else {
-        const m = { [right.entities[0]]: left.entities[0] }
-        const theme = left.theme.and(right.theme)
-        const rheme = right.rheme.and(right.rheme.copy({ map: m }))
-        return theme.and(rheme, { asRheme: true })
-    }
-
+interface ToClauseOpts {
+    subject?: Id,
+    autovivification: boolean,
 }

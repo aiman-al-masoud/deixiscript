@@ -3,7 +3,6 @@ import { Id } from "../id/Id";
 import { sortIds } from "../id/functions/sortIds";
 import { Map } from "../id/Map";
 import Imply from "./Imply";
-import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
 import { solveMaps } from "./functions/solveMaps";
@@ -42,10 +41,8 @@ export default class And implements Clause {
     }
 
     implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
-    about = (id: Id): Clause => this.clause1.about(id).and(this.clause2.about(id))
     ownedBy = (id: Id): Id[] => this.clause1.ownedBy(id).concat(this.clause2.ownedBy(id))
     ownersOf = (id: Id): Id[] => this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
-    describe = (id: Id): Lexeme[] => this.clause1.describe(id).concat(this.clause2.describe(id))
 
     flatList(): Clause[] {
         return this.negated ? [this] : [...this.clause1.flatList(), ...this.clause2.flatList()]

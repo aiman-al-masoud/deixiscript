@@ -3,7 +3,8 @@ import { newInstance } from "./newInstance"
 export function deepCopy(object: object) {
 
     if (!(object instanceof HTMLElement)) {
-        return undefined
+        // return undefined
+        return { __proto__: object }
     }
 
     try {

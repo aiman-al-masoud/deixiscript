@@ -2,7 +2,7 @@ import { LexemeType } from "../../config/LexemeType"
 import { Cardinality } from "../parser/interfaces/Cardinality"
 import { Context } from "../../facade/context/Context"
 import BaseLexeme from "./BaseLexeme"
-import Thing from "../../backend/wrapper/Thing"
+import Thing from "../../backend/thing/Thing"
 
 
 export interface Lexeme {

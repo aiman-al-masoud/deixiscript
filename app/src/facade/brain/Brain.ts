@@ -1,5 +1,5 @@
-import Thing from "../../backend/wrapper/Thing"
-import { GetContextOpts, getNewContext } from "../context/Context"
+import Thing from "../../backend/thing/Thing"
+import { GetContextOpts, getContext } from "../context/Context"
 import BasicBrain from "./BasicBrain"
 
 /**
@@ -13,5 +13,5 @@ export default interface Brain {
 export interface GetBrainOpts extends GetContextOpts { }
 
 export function getBrain(opts: GetBrainOpts): Brain {
-    return new BasicBrain(getNewContext(opts))
+    return new BasicBrain(getContext(opts))
 }

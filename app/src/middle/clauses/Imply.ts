@@ -38,8 +38,6 @@ export default class Imply implements Clause {
     and = (other: Clause, opts?: AndOpts): Clause => new And(this, other, opts?.asRheme ?? false)
     ownedBy = (id: Id) => this.condition.ownedBy(id).concat(this.consequence.ownedBy(id))
     ownersOf = (id: Id) => this.condition.ownersOf(id).concat(this.consequence.ownersOf(id))
-    describe = (id: Id) => this.consequence.describe(id).concat(this.condition.describe(id))
-    about = (id: Id) => this.condition.about(id).and(this.consequence.about(id))
 
     query(clause: Clause): Map[] {// TODO
         throw new Error('not implemented!')
