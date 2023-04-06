@@ -84,12 +84,15 @@ export class BaseThing implements Thing {
         const lexemes = this.getAllKeys().flatMap(x => {
 
             try {
-                const o = this.get(x)?.unwrap()
+                const o = this.get(x)
+                const unwrapped = o?.unwrap()
 
                 const lex = makeLexeme({
-                    type: typeOf(o),
-                    root: x
+                    type: typeOf(unwrapped),
+                    root: x,
+                    referent : o,
                 })
+                
                 return [lex]
             } catch {
                 return []
