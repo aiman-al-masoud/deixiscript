@@ -26,7 +26,33 @@ export class BaseThing implements Thing {
 
     }
 
+    get(id: Id): Thing | undefined {
 
+        const parts = id.split('.')
+        const p1 = parts[0]
+
+        let o
+
+        try {
+            o = (this as any)[p1] ?? (this.object as any)?.[p1] ?? this.base?.get(p1)
+        } catch {
+            return undefined
+        }
+
+        if (!o) {
+            return undefined
+        }
+
+        const w = o instanceof BaseThing ? o : new BaseThing({ object: o, id: `${this.id}.${p1}`, parent: this })
+        //memoize
+
+        if (parts.length > 1) {
+            return w.get(parts.slice(1).join('.'))
+        }
+
+        return w
+
+    }
 
     copy(opts?: CopyOpts): Thing {
 
@@ -270,33 +296,7 @@ export class BaseThing implements Thing {
 
     // -----------evil ends ---------------------------------------
 
-    get(id: Id): Thing | undefined {
 
-        const parts = id.split('.')
-        const p1 = parts[0]
-
-        let o
-
-        try {
-            o = (this as any)[p1] ?? (this.object as any)?.[p1] ?? this.base?.get(p1)
-        } catch {
-            return undefined
-        }
-
-        if (!o) {
-            return undefined
-        }
-
-        const w = o instanceof BaseThing ? o : new BaseThing({ object: o, id: `${this.id}.${p1}`, parent: this })
-        //memoize
-
-        if (parts.length > 1) {
-            return w.get(parts.slice(1).join('.'))
-        }
-
-        return w
-
-    }
 
 
 }
