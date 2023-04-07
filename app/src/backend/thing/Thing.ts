@@ -17,13 +17,12 @@ export default interface Thing {
     pointOut(doIt: boolean): void
     readonly id: Id
 
-    equals(other: Thing): boolean
     setParent(parent: Context): void
-
     getAllKeys(): string[]
-    isAlready(relation: Relation): boolean
     readonly name: string
-
+    
+    isAlready(relation: Relation): boolean
+    equals(other: Thing): boolean
     extends(thing: Thing): void
 
 }
