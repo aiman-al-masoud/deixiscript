@@ -12,7 +12,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
     if (!args) { //TODO: only cache instructions with side effects
         const instr = wrap({ object: ast, id: getIncrementalId() })
         instr.set(instructionThing)
-        context.set(instr)
+        context.add(instr)
     }
 
     if (ast?.links?.copula) {
@@ -46,7 +46,7 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
     })
 
     subject.forEach(s => {
-        context.set(s)
+        context.add(s)
         s.setParent(context)
     })
 

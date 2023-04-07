@@ -2,14 +2,13 @@ import { thing, colorThing } from '../../config/things';
 import BasicContext from '../../facade/context/BasicContext';
 import { Context } from '../../facade/context/Context';
 import { makeLexeme } from '../../frontend/lexer/Lexeme';
-import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
-import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
-import { getTopLevel } from '../../middle/clauses/functions/topLevel';
+import { Clause, emptyClause } from '../../middle/clauses/Clause';
 import { Id } from '../../middle/id/Id';
 import { Map } from '../../middle/id/Map';
 import { allKeys } from '../../utils/allKeys';
 import { deepCopy } from '../../utils/deepCopy';
-import Thing, { CopyOpts, SetArgs, WrapArgs } from './Thing';
+import { ownerInfo } from './ownerInfo';
+import Thing, { CopyOpts, Relation, relationsEqual, SetArgs, WrapArgs } from './Thing';
 import { typeOf } from './typeOf';
 
 
@@ -64,10 +63,6 @@ export class BaseThing implements Thing {
             base: this.base?.copy(),
         })
 
-    }
-
-    unwrap() {
-        return this.object ?? this.base?.unwrap()
     }
 
     getLexemes = () => {
@@ -168,18 +163,15 @@ export class BaseThing implements Thing {
         this.relations = this.relations.filter(x => !relationsEqual(relation, x))
     }
 
-    protected isAlready(relation: Relation): boolean {
+    isAlready(relation: Relation): boolean {
         return (!relation.args.length && this.equals(relation.predicate))
             || this.relations.some(x => relationsEqual(x, relation))
     }
 
     protected inherit(added: Thing) {
-
         //TODO: prevent re-creation of existing DOM elements
-
         this.base = added.copy({ id: this.id })
         this.superclass = added
-
     }
 
     protected disinherit(expelled: Thing) {
@@ -204,92 +196,30 @@ export class BaseThing implements Thing {
         }
     }
 
-
     // -----------------evil starts below------------------------------------
     toClause(query?: Clause) {
-
         const queryOrEmpty = query ?? emptyClause
-        // const fillerClause = clauseOf(makeLexeme({ root: this.id.toString(), type: 'noun' }), this.id) //TODO
-
         const res = queryOrEmpty
             .flatList()
             .filter(x => x.entities.length === 1 && x.predicate)
             .filter(x => this.isAlready({ predicate: x.predicate?.referent!, args: [] }))
             .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
-            // .concat(fillerClause)
             .reduce((a, b) => a.and(b), emptyClause)
-            .and(this.ownerInfo(queryOrEmpty))
-
-        // console.log(res.toString())
+            .and(ownerInfo(this, queryOrEmpty))
         return res
     }
 
-    protected ownerInfo(q: Clause) {
-
-        //TODO: this unwittinlgy asserts wrong non-relational info about this object "parroting the query".
-
-        const maps = this.query(q)
-        const res = (maps[0] && getOwnershipChain(q, getTopLevel(q)[0]).length > 1) ?
-            q.copy({ map: maps[0] })
-            : emptyClause
-
-        // console.log('id=', this.id, 'ownerInfo=', res.toString())
-        return res
+    query(clause: Clause): Map[] {
+        return []
     }
-
-    query(clause: Clause, parentMap: Map = {}): Map[] {
-
-        const oc = getOwnershipChain(clause, getTopLevel(clause)[0])
-
-        if (oc.length === 1) { //BASECASE: check yourself
-
-            if (this.name === clause.predicate?.root) { //TODO: also handle non-ownership non-intransitive relations!, TODO: handle non BasicClauses!!!! (that don't have ONE predicate!) //problem with comparing referent is that stupid heuristic in getLexemes() does not attempt to query button.style, it just queries button, and so it doesn't get button.styles's lexemes!
-                return [{ ...parentMap, [clause.entities[0]]: this.id }]
-            }
-
-            return [] //TODO
-        }
-
-        // check your children!
-
-        const top = getTopLevel(clause)
-
-        const aboutTopLevel = clause
-            .flatList()
-            .filter(x => top.some(t => x.entities.includes(t)))
-            .filter(x => x.entities.length <= 1)
-            .reduce((a, b) => a.and(b), emptyClause)
-
-        const notOk = aboutTopLevel.flatList().filter(x => !(this.isAlready({ predicate: x.predicate?.referent!, args: [] }) || this.name === x.predicate?.root))
-
-        if (notOk.length) {
-            return []
-        }
-
-        const peeled = clause
-            .flatList()
-            .filter(x => x.entities.every(e => !top.includes(e)))
-            .reduce((a, b) => a.and(b), emptyClause)
-
-        const relevantNames = peeled.flatList().flatMap(x => [x.predicate?.root, x.predicate?.token]).filter(x => x).map(x => x as string)
-
-        const children =
-            this.getAllKeys()
-                .filter(x => relevantNames.includes(x))
-                .map(x => this.get(x)) // .filter(x=>x?.unwrap() !== this)
-                .filter(x => x)
-                .map(x => x as Thing)
-
-        const res = children.flatMap(x => x.query(peeled, { [top[0]]: this.id }))
-        return res
-
-    }
-
     // -----------evil ends ---------------------------------------
-
 
     equals(other: Thing): boolean {
         return other && this.unwrap() === other.unwrap()
+    }
+
+    unwrap() {
+        return this.object ?? this.base?.unwrap()
     }
 
     setParent(parent: Context): void {
@@ -300,19 +230,7 @@ export class BaseThing implements Thing {
     }
 
     get name() {
-        return this.id.split('.').at(-1)
+        return this.id.split('.').at(-1)! //TODO
     }
 
-}
-
-
-type Relation = {
-    predicate: Thing,
-    args: Thing[],//implied subject = this object
-}
-
-function relationsEqual(r1: Relation, r2: Relation) {
-    return r1.predicate.equals(r2.predicate)
-        && r1.args.length === r2.args.length
-        && r1.args.every((x, i) => r2.args[i] === x)
 }

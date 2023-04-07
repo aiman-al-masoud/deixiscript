@@ -13,13 +13,16 @@ export default interface Thing {
     unwrap(): any
     getLexemes(): Lexeme[]
     toClause(query?: Clause): Clause
-    query(clause: Clause, parentMap?: Map): Map[]
+    query(clause: Clause): Map[]
     pointOut(doIt: boolean): void
     readonly id: Id
 
-    // readonly parent?: Thing | Context
     equals(other: Thing): boolean
     setParent(parent: Context): void
+
+    getAllKeys(): string[]
+    isAlready(relation: Relation): boolean
+    readonly name: string
 
 }
 
@@ -42,4 +45,16 @@ export interface WrapArgs {
     parent?: Thing | Context,
     base?: Thing,
     superclass?: Thing,
+}
+
+
+export type Relation = {
+    predicate: Thing,
+    args: Thing[],//implied subject = this object
+}
+
+export function relationsEqual(r1: Relation, r2: Relation) {
+    return r1.predicate.equals(r2.predicate)
+        && r1.args.length === r2.args.length
+        && r1.args.every((x, i) => r2.args[i] === x)
 }

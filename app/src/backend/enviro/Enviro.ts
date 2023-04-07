@@ -7,7 +7,7 @@ import BaseEnviro from "./BaseEnviro";
 export interface Enviro {
     query(clause: Clause): Map[]
     get(id: Id): Thing | undefined
-    set(wrapper: Thing): Thing
+    add(thing: Thing): void
     readonly values: Thing[]
     readonly root?: HTMLElement
 }

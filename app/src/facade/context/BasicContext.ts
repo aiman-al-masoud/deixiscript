@@ -17,7 +17,7 @@ export default class BasicContext implements Context {
     protected _lexemes = this.config.lexemes
     readonly prelude = this.config.prelude
     readonly lexemeTypes = this.config.lexemeTypes
-    readonly set = this.enviro.set
+    readonly add = this.enviro.add
     readonly query = this.enviro.query
     readonly root = this.enviro.root
     readonly get = this.enviro.get
@@ -34,7 +34,7 @@ export default class BasicContext implements Context {
         })
 
         this.config.things.forEach(t => {
-            this.set(t)
+            this.add(t)
         })
 
     }

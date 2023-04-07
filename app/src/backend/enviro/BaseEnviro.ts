@@ -10,7 +10,8 @@ export default class BaseEnviro implements Enviro {
 
     constructor(
         readonly root?: HTMLElement,
-        readonly dictionary: { [id: Id]: Thing } = {}) {
+        readonly dictionary: { [id: Id]: Thing } = {}
+    ) {
 
     }
 
@@ -20,7 +21,7 @@ export default class BaseEnviro implements Enviro {
         const p1 = parts[0]
         const w = this.dictionary[p1]
 
-        if (!w){
+        if (!w) {
             return undefined
         }
 
@@ -36,9 +37,9 @@ export default class BaseEnviro implements Enviro {
         return Object.values(this.dictionary)
     }
 
-    set = (wrapper: Thing): Thing => {
+    add = (wrapper: Thing): void => {
         this.setLastReferenced(wrapper.id)
-        return this.dictionary[wrapper.id] = wrapper
+        this.dictionary[wrapper.id] = wrapper
     }
 
     query = (query: Clause): Map[] => {
