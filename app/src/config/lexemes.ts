@@ -1,5 +1,5 @@
 import { Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
-import { buttonThing, colorThing, divThing, greenThing, instructionThing, redThing, thing } from "./things";
+import { things } from "./things";
 
 const being: Lexeme = makeLexeme({
     root: 'be',
@@ -52,13 +52,13 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     { root: 'of', type: 'preposition' },
     { root: 'that', type: 'relpron' },
     { root: 'it', type: 'pronoun' },
-    { root: 'thing', type: 'noun', referent: thing },
-    { root: 'button', type: 'noun', referent: buttonThing },
-    { root: 'div', type: 'noun', referent: divThing },
-    { root: 'color', type: 'noun', referent: colorThing },
-    { root: 'red', type: 'noun', referent: redThing },
-    { root: 'green', type: 'noun', referent: greenThing },
-    { root: 'instruction', type: 'noun', referent: instructionThing }
+    { root: 'thing', type: 'noun', referent: things.thing },
+    { root: 'button', type: 'noun', referent: things.button },
+    { root: 'div', type: 'noun', referent: things.div },
+    { root: 'color', type: 'noun', referent: things.color },
+    { root: 'red', type: 'noun', referent: things.red },
+    { root: 'green', type: 'noun', referent: things.green },
+    { root: 'instruction', type: 'noun', referent: things.instruction }
 
 ]
 

@@ -1,5 +1,5 @@
 import Thing, { wrap } from "../backend/thing/Thing";
-import { instructionThing } from "../config/things";
+import { things } from "../config/things";
 import { Context } from "../facade/context/Context";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
@@ -11,7 +11,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 
     if (!args) { //TODO: only cache instructions with side effects
         const instr = wrap({ object: ast, id: getIncrementalId() })
-        instr.set(instructionThing)
+        instr.set(things.instruction)
         context.add(instr)
     }
 
@@ -122,7 +122,7 @@ function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return emptyClause //TODO!
 }
 
-function isPlural(ast?: AstNode):boolean {
+function isPlural(ast?: AstNode): boolean {
 
     const x = ast?.links?.noun?.lexeme?.isPlural
         || ast?.links?.adjective?.lexeme?.isPlural
@@ -131,11 +131,11 @@ function isPlural(ast?: AstNode):boolean {
         || ast?.links?.subject?.list?.some(x => x.lexeme?.isPlural)
         || ast?.links?.uniquant
 
-    if (x){
+    if (x) {
         return true
     }
-    
-    return Object.values(ast?.links??{}).concat(ast?.list??[]).some(x=>isPlural(x))
+
+    return Object.values(ast?.links ?? {}).concat(ast?.list ?? []).some(x => isPlural(x))
 }
 
 function getInterestingIds(maps: Map[]): Id[] {

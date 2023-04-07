@@ -1,4 +1,3 @@
-import { thing, colorThing } from '../../config/things';
 import BasicContext from '../../facade/context/BasicContext';
 import { Context } from '../../facade/context/Context';
 import { makeLexeme } from '../../frontend/lexer/Lexeme';
@@ -10,6 +9,7 @@ import { deepCopy } from '../../utils/deepCopy';
 import { ownerInfo } from './ownerInfo';
 import Thing, { CopyOpts, Relation, relationsEqual, SetArgs, WrapArgs } from './Thing';
 import { typeOf } from './typeOf';
+import { things } from '../../config/things';
 
 
 export class BaseThing implements Thing {
@@ -133,12 +133,12 @@ export class BaseThing implements Thing {
 
     protected do = (relation: Relation) => {
 
-        if ((relation.predicate as BaseThing).superclass === colorThing) {
+        if ((relation.predicate as BaseThing).superclass === things.color) {
             this.refreshColor(relation)
             return
         }
 
-        this.inherit(relation.predicate)
+        this.extends(relation.predicate)
     }
 
     protected refreshColor = (relation: Relation) => {
@@ -168,7 +168,7 @@ export class BaseThing implements Thing {
             || this.relations.some(x => relationsEqual(x, relation))
     }
 
-    protected inherit = (added: Thing) => {
+    extends = (added: Thing) => {
         //TODO: prevent re-creation of existing DOM elements
         this.base = added.copy({ id: this.id })
         this.superclass = added
@@ -181,8 +181,8 @@ export class BaseThing implements Thing {
                 this.parent.root?.removeChild(this.base.unwrap())
             }
 
-            this.base = thing.copy()
-            this.superclass = thing
+            this.base = things.thing.copy()
+            this.superclass = things.thing
 
         }
     }

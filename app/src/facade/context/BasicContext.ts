@@ -33,7 +33,7 @@ export default class BasicContext implements Context {
 
         })
 
-        this.config.things.forEach(t => {
+        Object.values(this.config.things).forEach(t => {
             this.add(t)
         })
 

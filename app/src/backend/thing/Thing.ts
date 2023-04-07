@@ -24,6 +24,8 @@ export default interface Thing {
     isAlready(relation: Relation): boolean
     readonly name: string
 
+    extends(thing: Thing): void
+
 }
 
 export interface SetArgs {
