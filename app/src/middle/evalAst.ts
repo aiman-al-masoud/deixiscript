@@ -153,7 +153,7 @@ const getNumberOfDots = (id: Id) => id.split('.').length //-1
 
 function createThing(context: Context, clause: Clause): Thing {
 
-    const thing = wrap({ id: getIncrementalId() })
+    const thing = wrap({ id: getIncrementalId(), object : clause.theme.flatList().map(x=>x.predicate?.root)[0] }) // by default object is a string
 
     clause.flatList().forEach(c => {
 
