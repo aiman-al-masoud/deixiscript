@@ -26,7 +26,7 @@ export class BaseThing implements Thing {
 
     }
 
-    get(id: Id): Thing | undefined {
+    get = (id: Id): Thing | undefined => {
 
         const parts = id.split('.')
         const p1 = parts[0]
@@ -54,7 +54,7 @@ export class BaseThing implements Thing {
 
     }
 
-    copy(opts?: CopyOpts): Thing {
+    copy = (opts?: CopyOpts): Thing => {
 
         return new BaseThing({
             id: opts?.id ?? this.id,
@@ -86,7 +86,7 @@ export class BaseThing implements Thing {
 
     }
 
-    set(predicate: Thing, opts?: SetArgs): Thing[] {
+    set = (predicate: Thing, opts?: SetArgs): Thing[] => {
 
         const relation: Relation = { predicate, args: opts?.args ?? [] }
 
@@ -110,7 +110,7 @@ export class BaseThing implements Thing {
         return this.reinterpret(added, removed, unchanged)
     }
 
-    protected reinterpret(added: Relation[], removed: Relation[], kept: Relation[]): Thing[] {
+    protected reinterpret = (added: Relation[], removed: Relation[], kept: Relation[]): Thing[] => {
 
         removed.forEach(r => {
             this.undo(r)
@@ -127,11 +127,11 @@ export class BaseThing implements Thing {
         return []
     }
 
-    protected getExcludedBy(relation: Relation): Relation[] {
+    protected getExcludedBy = (relation: Relation): Relation[] => {
         return [] //TODO
     }
 
-    protected do(relation: Relation) {
+    protected do = (relation: Relation) => {
 
         if ((relation.predicate as BaseThing).superclass === colorThing) {
             this.refreshColor(relation)
@@ -141,40 +141,40 @@ export class BaseThing implements Thing {
         this.inherit(relation.predicate)
     }
 
-    protected refreshColor(relation: Relation) {
+    protected refreshColor = (relation: Relation) => {
         const style = this.get('style')?.unwrap()
         style ? style.background = relation.predicate.unwrap() : 0
         return
     }
 
-    protected undo(relation: Relation) {
+    protected undo = (relation: Relation) => {
         this.disinherit(relation.predicate)
     }
 
-    protected keep(relation: Relation) {
+    protected keep = (relation: Relation) => {
         this.refreshColor(relation)
     }
 
-    protected addRelation(relation: Relation) {
+    protected addRelation = (relation: Relation) => {
         this.relations.push(relation)
     }
 
-    protected removeRelation(relation: Relation) {
+    protected removeRelation = (relation: Relation) => {
         this.relations = this.relations.filter(x => !relationsEqual(relation, x))
     }
 
-    isAlready(relation: Relation): boolean {
+    isAlready = (relation: Relation): boolean => {
         return (!relation.args.length && this.equals(relation.predicate))
             || this.relations.some(x => relationsEqual(x, relation))
     }
 
-    protected inherit(added: Thing) {
+    protected inherit = (added: Thing) => {
         //TODO: prevent re-creation of existing DOM elements
         this.base = added.copy({ id: this.id })
         this.superclass = added
     }
 
-    protected disinherit(expelled: Thing) {
+    protected disinherit = (expelled: Thing) => {
         if (this.superclass === expelled) {
 
             if (this.base?.unwrap() instanceof HTMLElement && this.parent instanceof BasicContext) {
@@ -189,7 +189,7 @@ export class BaseThing implements Thing {
 
     getAllKeys = () => allKeys(this.object ?? {}).concat(allKeys(this.base?.unwrap() ?? {})).concat(allKeys(this))
 
-    pointOut(doIt: boolean): void {
+    pointOut = (doIt: boolean): void => {
         const x = this.base?.unwrap()
         if (x instanceof HTMLElement) {
             x.style.outline = doIt ? '#f00 solid 2px' : ''
@@ -197,7 +197,7 @@ export class BaseThing implements Thing {
     }
 
     // -----------------evil starts below------------------------------------
-    toClause(query?: Clause) {
+    toClause = (query?: Clause) => {
         const queryOrEmpty = query ?? emptyClause
         const res = queryOrEmpty
             .flatList()
@@ -209,20 +209,20 @@ export class BaseThing implements Thing {
         return res
     }
 
-    query(clause: Clause): Map[] {
+    query = (clause: Clause): Map[] => {
         return []
     }
     // -----------evil ends ---------------------------------------
 
-    equals(other: Thing): boolean {
+    equals = (other: Thing): boolean => {
         return other && this.unwrap() === other.unwrap()
     }
 
-    unwrap() {
+    unwrap = () => {
         return this.object ?? this.base?.unwrap()
     }
 
-    setParent(parent: Context): void {
+    setParent = (parent: Context): void => {
         this.parent = parent
         if (this.base?.unwrap() instanceof HTMLElement && this.parent instanceof BasicContext) {
             this.parent.root?.appendChild(this.base.unwrap())
