@@ -98,5 +98,5 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 # "it" is broken again!
 # Thing.excludes(Thing, {on:Thing})
 # Thing.query() and Thing.ownerInfo() fix
-# unigy Enviro and Thing
+# unify Enviro and Thing
 # isAlready() also for superclass
