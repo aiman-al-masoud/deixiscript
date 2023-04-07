@@ -12,15 +12,13 @@ As well as:
 - console logs x.
 - The previous 2 actions repeat while x < 10.
 
-# Verb (method) definition
+# Function/Method/Verb Definition
 
-with [actions as objects](#actions-as-objects), eg:
-
-- The next 3 actions are blink of a button.
+- f is the next 3 instructions.
 - the button is red.
-- the button is green.
-- the button is red.
-
+- the width of the button is "10vw".
+- every div is green.
+- f runs.
 
 # Every Lexeme must have a referent (Thing), maybe also Lexeme is a Thing
 
@@ -87,41 +85,18 @@ https://stackoverflow.com/questions/12484386/access-javascript-property-case-ins
 Returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't
 declared as an adjective, and is a noun by default. Fixed by allowing for zero or more nouns in a noun-phrase.
 
-# New Inheritance Model: A Thing can have multiple prototypes. Ok methods, what about state?
-
 # Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs)?
-
-# copy: not copying heirlooms. YOU STILL NEED TO FIND A BETTER INHERITANCE SYSTEM!
-
-# Turn Enviro into a Wrapper
-
-# Less Actions, kill CreateLexemeAction.
-
 
 # Thing should know the least possible about Lexemes
 
 # [Expression Orientation](./expression-orientation.md)
 
+# solution to inheritance or set prop problem (ambiguity of "to be") single inheritance, and rule about "hierarchy of superclass kickout", eg: something that is a color can become a button but not viceversa.
+
 # background of style of a button is a color
-
-
-solution to inheritance or set prop problem (ambiguity of "to be")
-single inheritance, and rule about "hierarchy of superclass kickout", eg: something that is a color can become a button but not viceversa.
-
-extract Things in own file, link from lexemes via referent. every lexeme should have a referent.
-
-clause should make use of Thing not Lexeme.
-
-BasicClause.ownerInfo() unwittingly asserts wrong non-relational info about this object "parroting the query". That's BasicClause.query()'s fault.
-
-it broken again!
-
-# instructions as objects / functions
-f is the next 3 instructions.
-the button is red.
-the width of the button is 10vw.
-every div is green.
-
-f runs.
-
-
+# clause should make use of Thing not Lexeme.
+# "it" is broken again!
+# Thing.excludes(Thing, {on:Thing})
+# Thing.query() and Thing.ownerInfo() fix
+# unigy Enviro and Thing
+# isAlready() also for superclass
