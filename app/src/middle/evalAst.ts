@@ -89,7 +89,7 @@ function evalNounPhrase(context: Context, ast?: AstNode, args?: ToClauseOpts): T
     }
 
     // or else create and returns the Thing
-    return args?.autovivification ? [createThing(context, np)] : []
+    return args?.autovivification ? [createThing(np)] : []
 
 }
 
@@ -151,7 +151,7 @@ function getInterestingIds(maps: Map[]): Id[] {
 
 const getNumberOfDots = (id: Id) => id.split('.').length //-1
 
-function createThing(context: Context, clause: Clause): Thing {
+function createThing(clause: Clause): Thing {
     const bases = clause.flatList().map(x => x.predicate?.referent!).filter(x => x)
     const id = getIncrementalId()
     return getThing({ id, bases })
