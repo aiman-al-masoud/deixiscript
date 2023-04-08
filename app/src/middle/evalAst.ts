@@ -17,7 +17,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 
     if (ast?.links?.copula) {
         return evalCopulaSentence(context, ast, args)
-    } else if (ast?.links?.iverb?.lexeme || ast?.links?.mverb?.lexeme) {
+    } else if (ast?.links?.verb) {
         return evalVerbSentence(context, ast, args)
     } else if (ast?.links?.subconj) {
         return evalComplexSentence(context, ast, args)

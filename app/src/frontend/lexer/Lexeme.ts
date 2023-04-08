@@ -23,12 +23,12 @@ export function isPlural(lexeme: Lexeme) {
 }
 
 export function isVerb(lexeme: Lexeme) {
-    return lexeme.type === 'mverb' || lexeme.type === 'iverb'
+    return lexeme.type === 'verb'
 }
 
 export function extrapolate(lexeme: Lexeme, context?: Thing): Lexeme[] {
 
-    if ((lexeme.type === 'noun'/*  || lexeme.type === 'grammar' */) && !isPlural(lexeme)) {
+    if ((lexeme.type === 'noun') && !isPlural(lexeme)) {
         return [makeLexeme({ root: lexeme.root, type: lexeme.type, token: pluralize(lexeme.root), cardinality: '*', referent: lexeme.referent })]
     }
 

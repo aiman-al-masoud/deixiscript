@@ -5,18 +5,15 @@ export type LexemeType = ElementType<typeof lexemeTypes>
 
 export const lexemeTypes = stringLiterals(
   'adjective',
-  'contraction',
   'copula',
   'defart',
   'indefart',
   'fullstop',
   'hverb',
-  'iverb',
-  'mverb',
+  'verb',
   'negation',
   'existquant',
   'uniquant',
-  'filler',
   'relpron',
   'negation',
   'noun',
@@ -25,6 +22,6 @@ export const lexemeTypes = stringLiterals(
   'nonsubconj', // and ...
   'disjunc', // or, but, however ...
   'pronoun',
+  'filler',
   'keyword',
-  // 'any'
 )
