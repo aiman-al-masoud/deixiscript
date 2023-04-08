@@ -1,7 +1,7 @@
 import { Clause, emptyClause } from "../../middle/clauses/Clause";
 import { Id } from "../../middle/id/Id";
 import { Map } from "../../middle/id/Map";
-import Thing from "../thing/Thing";
+import { Thing } from "../thing/Thing";
 import { Enviro, } from "./Enviro";
 
 export default class BaseEnviro implements Enviro {
@@ -38,8 +38,8 @@ export default class BaseEnviro implements Enviro {
     }
 
     add = (wrapper: Thing): void => {
-        this.setLastReferenced(wrapper.id)
-        this.dictionary[wrapper.id] = wrapper
+        this.setLastReferenced(wrapper.getId())
+        this.dictionary[wrapper.getId()] = wrapper
     }
 
     query = (query: Clause): Map[] => {
