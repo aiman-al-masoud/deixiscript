@@ -33,7 +33,7 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 
     const subjectId = args?.subject ?? getIncrementalId()
-    const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: true })
+    const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: false })
     const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true })
 
     //WHAT ABOUT plain old setting!!!!
