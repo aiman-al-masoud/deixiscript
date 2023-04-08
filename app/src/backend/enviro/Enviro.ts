@@ -1,7 +1,7 @@
 import { Clause } from "../../middle/clauses/Clause";
 import { Id } from "../../middle/id/Id";
 import { Map } from "../../middle/id/Map";
-import Thing from "../thing/Thing";
+import { Thing } from "../thing/Thing";
 import BaseEnviro from "./BaseEnviro";
 
 export interface Enviro {
