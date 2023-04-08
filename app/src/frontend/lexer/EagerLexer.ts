@@ -1,7 +1,6 @@
 import Lexer from "./Lexer";
-import { Lexeme } from "./Lexeme";
+import { Lexeme, makeLexeme } from "./Lexeme";
 import { Context } from "../../facade/context/Context";
-import { dynamicLexeme } from "./functions/dynamicLexeme";
 
 export default class EagerLexer implements Lexer {
 
@@ -16,10 +15,11 @@ export default class EagerLexer implements Lexer {
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
 
-        this.tokens = words.flatMap(w => {
-            const lex = context.getLexeme(w) ?? dynamicLexeme(w, context, words)
-            return lex.contractionFor ?? [lex]
-        })
+        const isMacroContext =
+            words.some(x => context.getLexeme(x)?.type === 'grammar')
+            && !words.some(x => ['defart', 'indefart', 'nonsubconj'].includes(context.getLexeme(x)?.type as any))//TODO: why dependencies('macro') doesn't work?!
+
+        this.tokens = words.map(w => context.getLexeme(w) ?? makeLexeme({ root: w, token: w, type: isMacroContext ? 'grammar' : 'noun' }))
 
     }
 

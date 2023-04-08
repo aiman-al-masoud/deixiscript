@@ -1,29 +1,41 @@
 import { LexemeType } from "../../config/LexemeType"
-import { Cardinality } from "../parser/interfaces/Cardinality"
+import { Cardinality, isRepeatable } from "../parser/interfaces/Cardinality"
 import { Context } from "../../facade/context/Context"
-import BaseLexeme from "./BaseLexeme"
 import Thing from "../../backend/thing/Thing"
+import { pluralize } from "./functions/pluralize"
+import { conjugate } from "./functions/conjugate"
 
 
 export interface Lexeme {
-    /**canonical form*/  root: string
-    /**token type*/  type: LexemeType
-    /**form of this instance*/ token?: string
-    /**made up of more lexemes*/  contractionFor?: Lexeme[]
-    /**for quantadj */ cardinality?: Cardinality
-    _root?: Partial<Lexeme>
-    extrapolate(context?: Context): Lexeme[]
-    readonly isPlural: boolean
-    readonly isVerb: boolean
-
+    readonly root: string
+    readonly type: LexemeType
+    readonly token?: string
+    readonly cardinality?: Cardinality
     referent?: Thing
 }
 
-export function makeLexeme(data: Partial<Lexeme> | Lexeme): Lexeme {
+export function makeLexeme(data: Lexeme): Lexeme {
+    return data
+}
 
-    if (data instanceof BaseLexeme) {
-        return data
+export function isPlural(lexeme: Lexeme) {
+    return isRepeatable(lexeme.cardinality)
+}
+
+export function isVerb(lexeme: Lexeme) {
+    return lexeme.type === 'mverb' || lexeme.type === 'iverb'
+}
+
+export function extrapolate(lexeme: Lexeme, context?: Context): Lexeme[] {
+
+    if ((lexeme.type === 'noun' || lexeme.type === 'grammar') && !isPlural(lexeme)) {
+        return [makeLexeme({ root: lexeme.root, type: lexeme.type, token: pluralize(lexeme.root), cardinality: '*', referent: lexeme.referent })]
     }
 
-    return new BaseLexeme(data)
+    if (isVerb(lexeme)) {
+        return conjugate(lexeme.root).map(x => makeLexeme({ root: lexeme.root, type: lexeme.type, token: x, referent: lexeme.referent }))
+    }
+
+    return []
 }
+

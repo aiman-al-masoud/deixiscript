@@ -1,32 +1,13 @@
-import { Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
-import { things } from "./things";
+import { Lexeme } from "../frontend/lexer/Lexeme";
 
-const being: Lexeme = makeLexeme({
-    root: 'be',
-    type: 'copula',
-})
+export const lexemes: Lexeme[] = [
 
-const doing: Partial<Lexeme> = {
-    root: 'do',
-    type: 'hverb',
-}
-
-const not: Lexeme = makeLexeme({
-    root: 'not',
-    type: 'negation',
-})
-
-
-export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
-
-    being,
-    doing,
-    not,
-
-    { _root: being, token: 'is', cardinality: 1 },
-    { _root: being, token: 'are', cardinality: '*' }, //TODO! 2+
-    { _root: doing, token: 'does', cardinality: 1 },
-
+    { root: 'be', type: 'copula' },
+    { root: 'be', type: 'copula', token: 'is', cardinality: 1 },
+    { root: 'be', type: 'copula', token: 'are', cardinality: '*' }, //TODO! 2+
+    { root: 'do', type: 'hverb' },
+    { root: 'do', type: 'hverb', token: 'does', cardinality: 1 },
+    { root: 'not', type: 'negation', },
     { root: 'then', type: 'filler' },
     { root: '.', type: 'fullstop' },
     { root: 'optional', type: 'adjective', cardinality: '1|0' },
@@ -36,7 +17,6 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     { root: 'subject', type: 'adjective' },
     { root: 'predicate', type: 'adjective' },
     { root: 'object', type: 'adjective' },
-    { root: "isn't", type: 'contraction', contractionFor: [being, not] },
     { root: 'and', type: 'nonsubconj' },
     { root: 'left', type: 'adjective' },
     { root: 'right', type: 'adjective' },
@@ -52,13 +32,8 @@ export const lexemes: (Partial<Lexeme> | Lexeme)[] = [
     { root: 'of', type: 'preposition' },
     { root: 'that', type: 'relpron' },
     { root: 'it', type: 'pronoun' },
-    { root: 'thing', type: 'noun', referent: things.thing },
-    { root: 'button', type: 'noun', referent: things.button },
-    { root: 'div', type: 'noun', referent: things.div },
-    { root: 'color', type: 'noun', referent: things.color },
-    { root: 'red', type: 'noun', referent: things.red },
-    { root: 'green', type: 'noun', referent: things.green },
-    { root: 'instruction', type: 'noun', referent: things.instruction }
+    // { root: 'thing', type: 'noun', referent: things.thing },
+    // { root: 'instruction', type: 'noun', referent: things.instruction }
 
 ]
 

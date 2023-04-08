@@ -1,7 +1,7 @@
 import { Enviro } from "../../backend/enviro/Enviro"
 import { getConfig } from "../../config/Config"
 import { CompositeType } from "../../config/syntaxes"
-import { Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme"
+import { extrapolate, Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme"
 import { AstNode } from "../../frontend/parser/interfaces/AstNode"
 import { AstType } from "../../frontend/parser/interfaces/Syntax"
 import { macroToSyntax } from "../../frontend/parser/macroToSyntax"
@@ -14,7 +14,7 @@ export default class BasicContext implements Context {
     protected readonly staticDescPrecedence = this.config.staticDescPrecedence
     protected readonly syntaxMap = this.config.syntaxes
     protected _syntaxList: CompositeType[] = this.getSyntaxList()
-    protected _lexemes = this.config.lexemes
+    protected _lexemes: Lexeme[] = this.config.lexemes.flatMap(l => [l, ...extrapolate(l, this)])
     readonly prelude = this.config.prelude
     readonly lexemeTypes = this.config.lexemeTypes
     readonly add = this.enviro.add
@@ -25,17 +25,15 @@ export default class BasicContext implements Context {
     constructor(readonly enviro: Enviro) {
 
         this.astTypes.forEach(g => {
-
             this.setLexeme(makeLexeme({
                 root: g,
                 type: 'grammar'
             }))
-
         })
 
-        Object.values(this.config.things).forEach(t => {
-            this.add(t)
-        })
+        // Object.values(this.config.things).forEach(t => {
+        //     this.add(t)
+        // })
 
     }
 
@@ -82,7 +80,7 @@ export default class BasicContext implements Context {
         }
 
         this._lexemes.push(lexeme)
-        this._lexemes.push(...lexeme.extrapolate(this))
+        this._lexemes.push(...extrapolate(lexeme, this))
     }
 
     get astTypes(): AstType[] {

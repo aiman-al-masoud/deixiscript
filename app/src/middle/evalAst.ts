@@ -1,6 +1,6 @@
-import Thing, { wrap } from "../backend/thing/Thing";
-import { things } from "../config/things";
+import Thing, { getThing } from "../backend/thing/Thing";
 import { Context } from "../facade/context/Context";
+import { isPlural } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
 import { getIncrementalId } from "./id/functions/getIncrementalId";
@@ -10,9 +10,9 @@ import { Map } from "./id/Map";
 export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] { //TODO: option to disable side effects (for example for if condition)
 
     if (!args) { //TODO: only cache instructions with side effects
-        const instr = wrap({ object: ast, id: getIncrementalId() })
-        instr.set(things.instruction)
-        context.add(instr)
+        // const instr = wrap({ object: ast, id: getIncrementalId() })
+        // instr.set(things.instruction)
+        // context.add(instr)
     }
 
     if (ast?.links?.copula) {
@@ -34,26 +34,24 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
 
     const subjectId = args?.subject ?? getIncrementalId()
     const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: true })
-    const predicate = nounPhraseToClause(ast?.links?.predicate, { subject: subjectId, autovivification: false })//, { subject: subjectId, autovivification: false })
+    const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true })
 
-    // const test = evalAst(context,  ast?.links?.predicate, {subject: subjectId, autovivification:true})
-    // console.log(test)
+    //WHAT ABOUT plain old setting!!!!
 
+    // use predicate to extend subject
     subject.forEach(s => {
-        predicate.flatList().forEach(c => {
-            s.set(c.predicate?.referent!, { negated: !!ast?.links?.negation })
+        predicate.forEach(p => {
+            s.extends(p)
         })
     })
 
-    subject.forEach(s => {
-        context.add(s)
-        s.setParent(context)
-    })
+    // set subject on context, create subject lexeme
 
     return []//TODO
 }
 
 function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+    // context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
     throw new Error('TODO!')
 }
 
@@ -82,7 +80,7 @@ function evalNounPhrase(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 
     const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x as Thing);
 
-    if (isPlural(ast)) { // if universal quantified, I don't care if there's no match
+    if (isAstPlural(ast)) { // if universal quantified, I don't care if there's no match
         return things
     }
 
@@ -122,20 +120,22 @@ function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return emptyClause //TODO!
 }
 
-function isPlural(ast?: AstNode): boolean {
+function isAstPlural(ast?: AstNode): boolean {
 
-    const x = ast?.links?.noun?.lexeme?.isPlural
-        || ast?.links?.adjective?.lexeme?.isPlural
-        || ast?.links?.noun?.list?.some(x => x.lexeme?.isPlural)
-        || ast?.links?.adjective?.list?.some(x => x.lexeme?.isPlural)
-        || ast?.links?.subject?.list?.some(x => x.lexeme?.isPlural)
+    const x =
+        // isPlural(ast?.links?.noun?.lexeme)
+        // ||  isPlural(ast?.links?.adjective?.lexeme)
+        // || 
+        ast?.links?.noun?.list?.some(x => x.lexeme && isPlural(x.lexeme))
+        || ast?.links?.adjective?.list?.some(x => x.lexeme && isPlural(x.lexeme))
+        || ast?.links?.subject?.list?.some(x => x.lexeme && isPlural(x.lexeme))
         || ast?.links?.uniquant
 
     if (x) {
         return true
     }
 
-    return Object.values(ast?.links ?? {}).concat(ast?.list ?? []).some(x => isPlural(x))
+    return Object.values(ast?.links ?? {}).concat(ast?.list ?? []).some(x => isAstPlural(x))
 }
 
 function getInterestingIds(maps: Map[]): Id[] {
@@ -152,23 +152,9 @@ function getInterestingIds(maps: Map[]): Id[] {
 const getNumberOfDots = (id: Id) => id.split('.').length //-1
 
 function createThing(context: Context, clause: Clause): Thing {
-
-    const thing = wrap({ id: getIncrementalId(), object : clause.theme.flatList().map(x=>x.predicate?.root)[0] }) // by default object is a string
-
-    clause.flatList().forEach(c => {
-
-        const lexeme = c.predicate!
-
-        if (!lexeme.referent) {
-            if (lexeme.type === 'noun') lexeme.referent = thing
-            context.setLexeme(lexeme) // TODO: no side effects on context!!!!
-        } else {
-            thing.set(lexeme.referent, { negated: clause.negated })
-        }
-
-    })
-
-    return thing
+    const bases = clause.flatList().map(x => x.predicate?.referent!).filter(x => x)
+    const id = getIncrementalId()
+    return getThing({ id, bases })
 }
 
 interface ToClauseOpts {
