@@ -55,15 +55,15 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
 
 function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
     // context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
-    throw new Error('TODO!')
+    throw new Error('verb sentence!')
 }
 
 function evalComplexSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    throw new Error('TODO!')
+    throw new Error('complex sentence!')
 }
 
 function evalCompoundSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    throw new Error('TODO!')
+    throw new Error('compound sentence!')
 }
 
 function evalNounPhrase(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {

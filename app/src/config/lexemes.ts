@@ -32,6 +32,7 @@ export const lexemes: Lexeme[] = [
     { root: 'of', type: 'preposition' },
     { root: 'that', type: 'relpron' },
     { root: 'it', type: 'pronoun' },
+    {root :'have', type : 'mverb'},//test
     // { root: 'thing', type: 'noun', referent: things.thing },
     // { root: 'instruction', type: 'noun', referent: things.instruction }
 
