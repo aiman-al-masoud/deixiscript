@@ -5,7 +5,7 @@ import { BaseThing } from "./BaseThing"
 
 export interface Thing {
     get(id: Id): Thing | undefined
-    set(id: Id, thing: Thing): void
+    set(id: Id, thing: Thing): void //thing.id???
     clone(): Thing
     toJs(): object
     toClause(query?: Clause): Clause
