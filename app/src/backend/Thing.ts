@@ -1,3 +1,4 @@
+import { Lexeme } from "../frontend/lexer/Lexeme"
 import { Clause } from "../middle/clauses/Clause"
 import { Id } from "../middle/id/Id"
 import { Map } from "../middle/id/Map"
@@ -15,6 +16,8 @@ export interface Thing {
     extends(thing: Thing): void
     unextends(thing: Thing): void
     query(clause: Clause): Map[]
+    setLexeme(lexeme: Lexeme): void
+    getLexeme(rootOrToken: string): Lexeme | undefined
 }
 
 export interface Verb extends Thing {

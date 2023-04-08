@@ -22,9 +22,9 @@ export class BasicContext extends BaseThing implements Context {
         protected readonly syntaxMap = config.syntaxes,
         protected lexemes: Lexeme[] = config.lexemes.flatMap(l => [l, ...extrapolate(l, this)]),
         protected bases: Thing[] = [],
-        protected dictionary: { [id: Id]: Thing } = {}
+        protected children: { [id: Id]: Thing } = {},
     ) {
-        super(id, bases, dictionary,)
+        super(id, bases, children, lexemes)
 
         this.astTypes.forEach(g => { //TODO!
             this.setLexeme(makeLexeme({
@@ -40,12 +40,6 @@ export class BasicContext extends BaseThing implements Context {
 
     getPrelude(): string[] {
         return this.config.prelude
-    }
-
-    getLexeme = (rootOrToken: string): Lexeme | undefined => {
-        return this.lexemes
-            .filter(x => rootOrToken === x.token || rootOrToken === x.root)
-            .at(0)
     }
 
     protected refreshSyntaxList() {
@@ -70,15 +64,6 @@ export class BasicContext extends BaseThing implements Context {
         return this.syntaxMap[name as CompositeType] ?? [{ type: [name], number: 1 }] // TODO: problem, adj is not always 1 !!!!!!
     }
 
-    setLexeme = (lexeme: Lexeme) => {
-
-        if (lexeme.root && !lexeme.token && this.lexemes.some(x => x.root === lexeme.root)) {
-            this.lexemes = this.lexemes.filter(x => x.root !== lexeme.root)
-        }
-
-        this.lexemes.push(lexeme)
-        this.lexemes.push(...extrapolate(lexeme, this))
-    }
 
     get astTypes(): AstType[] {
         const res: AstType[] = this.config.lexemeTypes
@@ -94,7 +79,7 @@ export class BasicContext extends BaseThing implements Context {
             this.syntaxMap,
             this.lexemes,
             this.bases,
-            this.dictionary, //shallow or deep?
+            this.children, //shallow or deep?
         )
     }
 

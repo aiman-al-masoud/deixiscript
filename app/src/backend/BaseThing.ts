@@ -1,3 +1,4 @@
+import { extrapolate, Lexeme } from '../frontend/lexer/Lexeme';
 import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
 import { Id } from '../middle/id/Id';
 import { Map } from '../middle/id/Map';
@@ -9,7 +10,8 @@ export class BaseThing implements Thing {
     constructor(
         protected readonly id: Id,
         protected bases: Thing[] = [],
-        protected readonly dictionary: { [id: Id]: Thing } = {},
+        protected readonly children: { [id: Id]: Thing } = {},
+        protected lexemes: Lexeme[] = [],
     ) {
 
     }
@@ -22,7 +24,7 @@ export class BaseThing implements Thing {
         return new BaseThing(
             this.id, // clones have same id
             this.bases.map(x => x.clone()),
-            Object.entries(this.dictionary).map(e => ({ [e[0]]: e[1].clone() })).reduce((a, b) => ({ ...a, ...b })),
+            Object.entries(this.children).map(e => ({ [e[0]]: e[1].clone() })).reduce((a, b) => ({ ...a, ...b })),
         )
     }
 
@@ -38,43 +40,61 @@ export class BaseThing implements Thing {
     get = (id: Id): Thing | undefined => {
         const parts = id.split('.')
         const p1 = parts[0]
-        const child = this.dictionary[p1]
+        const child = this.children[p1]
         const res = parts.length > 1 ? child.get(parts.slice(1).join('.')) : child
         return res ?? this.bases.find(x => x.get(id))
     }
 
     set(id: Id, thing: Thing): void {
-        this.dictionary[id] = thing
+        this.children[id] = thing
     }
 
     toJs(): object {
         throw new Error('TODO!');
     }
 
-    query(clause: Clause): Map[] {
-        const universe = Object.values(this.dictionary)
-            .map(w => w.toClause(clause))
-            .reduce((a, b) => a.and(b), emptyClause)
-        return universe.query(clause, {/*  it: this.lastReferenced  */ })
+    query(query: Clause): Map[] {
+        // const universe = Object.values(this.children)
+        //     .map(w => w.toClause(clause))
+        //     .reduce((a, b) => a.and(b), emptyClause)
+        // return universe.query(clause, {/*  it: this.lastReferenced  */ })
+        return this.toClause(query).query(query, {/* it: this.lastReferenced  */ })
     }
 
     toClause = (query?: Clause): Clause => {
-        // const queryOrEmpty = query ?? emptyClause
-        // const res = queryOrEmpty
-        //     .flatList()
-        //     .filter(x => x.entities.length === 1 && x.predicate)
-        //     .filter(x => this.isAlready({ predicate: x.predicate?.referent!, args: [] }))
-        //     .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
-        //     .reduce((a, b) => a.and(b), emptyClause)
-        //     .and(ownerInfo(this, queryOrEmpty))
-        // return res
-        throw new Error('TODO!')
+
+        const x = this.lexemes
+            .filter(x => x.referent)
+            .map(x => clauseOf(x, x.referent?.getId()!))
+            .reduce((a, b) => a.and(b), emptyClause)
+
+        const y = Object
+            .keys(this.children)
+            .map(x => clauseOf({ root: 'of', type: 'preposition' }, x, this.id)) // hardcoded english!
+            .reduce((a, b) => a.and(b), emptyClause)
+
+        const z = Object
+            .values(this.children)
+            .map(x => x.toClause(query))
+            .reduce((a, b) => a.and(b), emptyClause)
+
+        return x.and(y).and(z)
     }
 
-    // protected ownerInfo() { //TODO: add in non-rel info
-    //     return Object.keys(this.dictionary)
-    //         .map(x => clauseOf({ root: 'of', type: 'preposition' }, this.id, x)) // hardcoded english!
-    //         .reduce((a, b) => a.and(b), emptyClause)
-    // }
+    setLexeme = (lexeme: Lexeme) => {
 
+        // if (lexeme.root && !lexeme.token && this.lexemes.some(x => x.root === lexeme.root)) {
+        //     this.lexemes = this.lexemes.filter(x => x.root !== lexeme.root)
+        // }
+
+        this.lexemes = this.lexemes.filter(x => x.root !== lexeme.root)
+        this.lexemes.push(lexeme)
+        this.lexemes.push(...extrapolate(lexeme, this))
+    }
+
+    getLexeme = (rootOrToken: string): Lexeme | undefined => {
+        return this.lexemes
+            .filter(x => rootOrToken === x.token || rootOrToken === x.root)
+            .at(0)
+    }
 }
