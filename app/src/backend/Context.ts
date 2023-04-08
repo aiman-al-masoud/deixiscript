@@ -9,16 +9,13 @@ import { BasicContext } from "./BasicContext";
 import { Thing } from "./Thing";
 
 export interface Context extends Thing {
-
     getSyntax(name: AstType): Syntax
     setSyntax(macro: AstNode): void
     setLexeme(lexeme: Lexeme): void
     getLexeme(rootOrToken: string): Lexeme | undefined
-
-    readonly lexemes: Lexeme[]
-    readonly prelude: string[]
-    readonly syntaxList: CompositeType[]
-    readonly lexemeTypes: LexemeType[]
+    getSyntaxList(): CompositeType[]
+    getLexemeTypes(): LexemeType[]
+    getPrelude(): string[]
 }
 
 export function getContext(opts: { id: Id }): Context {

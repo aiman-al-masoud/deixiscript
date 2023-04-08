@@ -23,7 +23,7 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd) {
 
-            const ast = this.tryParse(this.context.syntaxList)
+            const ast = this.tryParse(this.context.getSyntaxList())
 
             if (!ast) {
                 break
@@ -141,7 +141,7 @@ export class KoolParser implements Parser {
     }
 
     protected isLeaf = (t: AstType) => {
-        return this.context.lexemeTypes.includes(t as LexemeType)
+        return this.context.getLexemeTypes().includes(t as LexemeType)
     }
 
     protected simplify(ast: AstNode): AstNode {

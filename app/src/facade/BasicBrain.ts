@@ -10,7 +10,7 @@ export default class BasicBrain implements Brain {
     constructor(
         readonly context: Context,
     ) {
-        this.context.prelude.forEach(c => this.execute(c))
+        this.context.getPrelude().forEach(c => this.execute(c))
     }
 
     execute(natlang: string): Thing[] {
