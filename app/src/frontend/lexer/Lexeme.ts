@@ -3,7 +3,6 @@ import { Cardinality, isRepeatable } from "../parser/interfaces/Cardinality"
 import { pluralize } from "./functions/pluralize"
 import { conjugate } from "./functions/conjugate"
 import { Thing } from "../../backend/Thing"
-import { Context } from "../../backend/Context"
 
 
 export interface Lexeme {
@@ -22,18 +21,25 @@ export function isPlural(lexeme: Lexeme) {
     return isRepeatable(lexeme.cardinality)
 }
 
-export function isVerb(lexeme: Lexeme) {
-    return lexeme.type === 'verb'
-}
-
 export function extrapolate(lexeme: Lexeme, context?: Thing): Lexeme[] {
 
-    if ((lexeme.type === 'noun') && !isPlural(lexeme)) {
-        return [makeLexeme({ root: lexeme.root, type: lexeme.type, token: pluralize(lexeme.root), cardinality: '*', referent: lexeme.referent })]
+    if (lexeme.type === 'noun' && !isPlural(lexeme)) {
+        return [makeLexeme({
+            root: lexeme.root,
+            type: lexeme.type,
+            token: pluralize(lexeme.root),
+            cardinality: '*',
+            referent: lexeme.referent
+        })]
     }
 
-    if (isVerb(lexeme)) {
-        return conjugate(lexeme.root).map(x => makeLexeme({ root: lexeme.root, type: lexeme.type, token: x, referent: lexeme.referent }))
+    if (lexeme.type === 'verb') {
+        return conjugate(lexeme.root).map(x => makeLexeme({
+            root: lexeme.root,
+            type: lexeme.type,
+            token: x,
+            referent: lexeme.referent
+        }))
     }
 
     return []
