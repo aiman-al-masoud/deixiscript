@@ -1,4 +1,4 @@
-import Thing, { getThing } from "../backend/thing/Thing";
+import  { Thing, getThing } from "../backend/thing/Thing";
 import { Context } from "../facade/context/Context";
 import { isPlural } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";

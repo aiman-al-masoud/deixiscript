@@ -1,6 +1,6 @@
 import { Clause } from '../../middle/clauses/Clause';
 import { Id } from '../../middle/id/Id';
-import Thing from './Thing';
+import { Thing } from './Thing';
 
 
 export class BaseThing implements Thing {

@@ -3,7 +3,7 @@ import { Clause } from "../../middle/clauses/Clause"
 import { Context } from "../../facade/context/Context"
 import { BaseThing } from "./BaseThing"
 
-export default interface Thing {
+export interface Thing {
     get(id: Id): Thing | undefined
     set(id: Id, thing: Thing): void
     clone(): Thing
