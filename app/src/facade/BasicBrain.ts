@@ -21,11 +21,7 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            const res = evalAst(this.context, ast)
-            // this.context.values.forEach(x => x.pointOut(false))
-            // res.forEach(x => x.pointOut(true))
-            return res
-
+            return evalAst(this.context, ast)
         }).flat()
     }
 
