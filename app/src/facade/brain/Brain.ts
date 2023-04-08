@@ -1,4 +1,4 @@
-import Thing from "../../backend/thing/Thing"
+import {Thing} from "../../backend/thing/Thing"
 import { GetContextOpts, getContext } from "../context/Context"
 import BasicBrain from "./BasicBrain"
 
