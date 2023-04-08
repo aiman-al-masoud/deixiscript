@@ -33,24 +33,13 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 
     const subjectId = args?.subject ?? getIncrementalId()
-    const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: false, sideEffects:false })
-    const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true, sideEffects:false })
+    const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: false, sideEffects: false })
+    const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true, sideEffects: false })
 
     console.log('copula sentence', ast)
+    //TODO assigment or comparison
     throw new Error('copula sentence!')
 
-    //WHAT ABOUT plain old setting!!!!
-
-    // use predicate to extend subject
-    // subject.forEach(s => {
-    //     predicate.forEach(p => {
-    //         s.extends(p)
-    //     })
-    // })
-
-    // set subject on context, create subject lexeme
-
-    return []//TODO
 }
 
 function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
@@ -101,7 +90,7 @@ function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const subjectId = args?.subject ?? getIncrementalId()
     const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
-    const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false, sideEffects:false })).reduce((a, b) => a.and(b), emptyClause)
+    const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false, sideEffects: false })).reduce((a, b) => a.and(b), emptyClause)
 
     return adjectives.and(nouns).and(complements)
     //TODO: subclause
@@ -113,7 +102,7 @@ function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const subjectId = args?.subject!
     const objectId = getIncrementalId()
     const preposition = ast?.links?.preposition?.lexeme!
-    const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false, sideEffects:false })
+    const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false, sideEffects: false })
 
     return clauseOf(preposition, subjectId, objectId).and(object)
 
