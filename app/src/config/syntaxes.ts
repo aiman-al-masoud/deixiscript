@@ -10,13 +10,13 @@ export const constituentTypes = stringLiterals(
     'taggedunion',
 )
 
-export const staticDescPrecedence:CompositeType[] = ['macro']
+export const staticDescPrecedence: CompositeType[] = ['macro']
 
 export const syntaxes: SyntaxMap = {
 
     'macro': [
         { type: ['keyword'], number: 1 },
-        { type: ['noun' /* , 'grammar' */], number: 1, role: 'subject' },
+        { type: ['noun'], number: 1, role: 'subject' },
         { type: ['copula'], number: 1 },
         { type: ['macropart'], number: '+' },
         { type: ['keyword'], number: 1 },
@@ -27,7 +27,7 @@ export const syntaxes: SyntaxMap = {
         { type: ['filler'], number: '1|0' },
     ],
     'taggedunion': [
-        { type: ['noun' /*grammar' */], number: 1 },
+        { type: ['noun'], number: 1 },
         { type: ['disjunc'], number: '1|0' },
     ],
 
