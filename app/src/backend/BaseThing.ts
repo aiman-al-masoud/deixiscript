@@ -1,4 +1,4 @@
-import { Clause, emptyClause } from '../middle/clauses/Clause';
+import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
 import { Id } from '../middle/id/Id';
 import { Map } from '../middle/id/Map';
 import { Thing } from './Thing';
@@ -55,9 +55,7 @@ export class BaseThing implements Thing {
         const universe = Object.values(this.dictionary)
             .map(w => w.toClause(clause))
             .reduce((a, b) => a.and(b), emptyClause)
-        const maps = universe.query(clause, {/*  it: this.lastReferenced  */ })
-        // console.log('query=', query.toString(), 'universe=', universe.toString(), 'maps=', maps)
-        return maps
+        return universe.query(clause, {/*  it: this.lastReferenced  */ })
     }
 
     toClause = (query?: Clause): Clause => {
@@ -70,7 +68,13 @@ export class BaseThing implements Thing {
         //     .reduce((a, b) => a.and(b), emptyClause)
         //     .and(ownerInfo(this, queryOrEmpty))
         // return res
-        throw new Error('TODO!');
+        throw new Error('TODO!')
     }
+
+    // protected ownerInfo() { //TODO: add in non-rel info
+    //     return Object.keys(this.dictionary)
+    //         .map(x => clauseOf({ root: 'of', type: 'preposition' }, this.id, x)) // hardcoded english!
+    //         .reduce((a, b) => a.and(b), emptyClause)
+    // }
 
 }
