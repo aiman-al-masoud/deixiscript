@@ -1,4 +1,5 @@
 import { Context } from "../backend/Context";
+import { NumberThing } from "../backend/NumberThing";
 import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
 import { isPlural } from "../frontend/lexer/Lexeme";
@@ -37,6 +38,12 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
     const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
     const y = x.join(' ')
+    const z = parseFloat(y)
+
+    if (!Number.isNaN(z)) {
+        return [new NumberThing(z)]
+    }
+
     return [new StringThing(y)]
 }
 
