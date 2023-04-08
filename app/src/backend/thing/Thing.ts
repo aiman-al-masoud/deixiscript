@@ -23,6 +23,6 @@ export function getThing(args: { id: Id, bases: Thing[] }) {
 }
 
 type VerbArgs = 'subject'
-    | 'direct-object'
-    | 'indirect-object'
+    | 'directObject'
+    | 'indirectObject'
     // ...
