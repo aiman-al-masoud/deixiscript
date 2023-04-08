@@ -1,4 +1,4 @@
-import { Context } from "../backend/Context";
+import { getContext } from "../backend/Context";
 import { Thing } from "../backend/Thing";
 import { getParser } from "../frontend/parser/interfaces/Parser";
 import { evalAst } from "../middle/evalAst";
@@ -7,9 +7,9 @@ import Brain from "./Brain";
 
 export default class BasicBrain implements Brain {
 
-    constructor(
-        readonly context: Context,
-    ) {
+    readonly context = getContext({ id: 'global' })
+
+    constructor() {
         this.context.getPrelude().forEach(c => this.execute(c))
     }
 

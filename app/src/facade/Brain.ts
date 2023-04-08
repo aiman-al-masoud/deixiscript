@@ -1,4 +1,3 @@
-import { getContext } from "../backend/Context"
 import { Thing } from "../backend/Thing"
 import BasicBrain from "./BasicBrain"
 
@@ -12,5 +11,5 @@ export default interface Brain {
 
 
 export function getBrain(): Brain {
-    return new BasicBrain(getContext({ id: 'global' }))
+    return new BasicBrain()
 }
