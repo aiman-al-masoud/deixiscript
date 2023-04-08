@@ -29,7 +29,12 @@ export class KoolParser implements Parser {
                 break
             }
 
-            results.push(this.simplify(ast))
+            const simpleAst = this.simplify(ast)
+            results.push(simpleAst)
+
+            if (simpleAst.type === 'macro') {
+                this.context.setSyntax(ast)
+            }
 
             if (this.lexer.peek?.type === 'fullstop') {
                 this.lexer.next()
@@ -41,17 +46,17 @@ export class KoolParser implements Parser {
     }
 
 
-    protected tryParse(types: AstType[], role?: Role) {
+    protected tryParse(types: AstType[], role?: Role) { //problematic
         
         for (const t of types) {
-
+            
             const memento = this.lexer.pos
             const x = this.knownParse(t, role)
-
+            
             if (x) {
                 return x
             }
-
+            
             this.lexer.backTo(memento)
         }
 

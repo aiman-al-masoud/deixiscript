@@ -22,9 +22,9 @@ export const lexemeTypes = stringLiterals(
   'noun',
   'preposition',
   'subconj',
-  'grammar',
   'nonsubconj', // and ...
   'disjunc', // or, but, however ...
   'pronoun',
+  'keyword',
   // 'any'
 )

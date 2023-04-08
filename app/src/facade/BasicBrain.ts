@@ -10,14 +10,13 @@ export default class BasicBrain implements Brain {
     readonly context = getContext({ id: 'global' })
 
     constructor() {
-        this.context.getPrelude().forEach(c => this.execute(c))
+        this.execute(this.context.getPrelude())
     }
 
     execute(natlang: string): Thing[] {
         return getParser(natlang, this.context).parseAll().map(ast => {
 
             if (ast.type === 'macro') {
-                this.context.setSyntax(ast)
                 return []
             }
 

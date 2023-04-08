@@ -29,16 +29,17 @@ export class BasicContext extends BaseThing implements Context {
         this.astTypes.forEach(g => { //TODO!
             this.setLexeme(makeLexeme({
                 root: g,
-                type: 'grammar'
+                type: 'noun',
             }))
         })
+
     }
 
     getLexemeTypes(): LexemeType[] {
         return this.config.lexemeTypes
     }
 
-    getPrelude(): string[] {
+    getPrelude(): string {
         return this.config.prelude
     }
 
@@ -55,7 +56,7 @@ export class BasicContext extends BaseThing implements Context {
 
     setSyntax = (macro: AstNode) => {
         const syntax = macroToSyntax(macro)
-        this.setLexeme(makeLexeme({ type: 'grammar', root: syntax.name }))
+        this.setLexeme(makeLexeme({ type: 'noun', root: syntax.name }))
         this.syntaxMap[syntax.name as CompositeType] = syntax.syntax
         this.syntaxList = this.refreshSyntaxList()
     }
@@ -63,7 +64,6 @@ export class BasicContext extends BaseThing implements Context {
     getSyntax = (name: AstType) => {
         return this.syntaxMap[name as CompositeType] ?? [{ type: [name], number: 1 }] // TODO: problem, adj is not always 1 !!!!!!
     }
-
 
     get astTypes(): AstType[] {
         const res: AstType[] = this.config.lexemeTypes

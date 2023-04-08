@@ -28,7 +28,7 @@ export function isVerb(lexeme: Lexeme) {
 
 export function extrapolate(lexeme: Lexeme, context?: Thing): Lexeme[] {
 
-    if ((lexeme.type === 'noun' || lexeme.type === 'grammar') && !isPlural(lexeme)) {
+    if ((lexeme.type === 'noun'/*  || lexeme.type === 'grammar' */) && !isPlural(lexeme)) {
         return [makeLexeme({ root: lexeme.root, type: lexeme.type, token: pluralize(lexeme.root), cardinality: '*', referent: lexeme.referent })]
     }
 

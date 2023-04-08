@@ -2,6 +2,7 @@ import { Lexeme } from "../frontend/lexer/Lexeme";
 
 export const lexemes: Lexeme[] = [
 
+    { root: 'makro', type: 'keyword' },
     { root: 'be', type: 'copula' },
     { root: 'be', type: 'copula', token: 'is', cardinality: 1 },
     { root: 'be', type: 'copula', token: 'are', cardinality: '*' }, //TODO! 2+
@@ -32,7 +33,7 @@ export const lexemes: Lexeme[] = [
     { root: 'of', type: 'preposition' },
     { root: 'that', type: 'relpron' },
     { root: 'it', type: 'pronoun' },
-    {root :'have', type : 'mverb'},//test
+    { root: 'have', type: 'mverb' },//test
     // { root: 'thing', type: 'noun', referent: things.thing },
     // { root: 'instruction', type: 'noun', referent: things.instruction }
 

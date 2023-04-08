@@ -20,7 +20,7 @@ function macroPartToMember(macroPart: AstNode): Member {
     const adjectives = adjectiveNodes.flatMap(a => a.lexeme ?? [])
 
     const taggedUnions = macroPart.links?.taggedunion?.list ?? []
-    const grammars = taggedUnions.map(x => x.links?.grammar)
+    const grammars = taggedUnions.map(x => x.links?.noun)
 
     const quantadjs = adjectives.filter(a => a.cardinality)
     const qualadjs = adjectives.filter(a => !a.cardinality)

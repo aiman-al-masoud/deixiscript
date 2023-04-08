@@ -1,57 +1,18 @@
-export const prelude: string[] = [
+export const prelude: string =
 
-      // grammar
-      'quantifier is uniquant or existquant',
-      'article is indefart or defart',
-      'complement is preposition then object noun-phrase',
-
-      `copula-sentence is subject noun-phrase 
-        then copula 
-        then optional negation 
-        then predicate noun-phrase`,
-
-      `noun-phrase is optional quantifier 
-        then optional article 
-        then zero-or-more adjectives 
-        then zero-or-more subject noun or pronoun or grammar
-        then optional subclause 
-        then zero-or-more complements `,
-
-      'copulasubclause is relpron then copula then predicate noun-phrase',
-      'mverbsubclause is relpron then mverb then object noun-phrase.',
-      'subclause is copulasubclause or mverbsubclause',
-
-      `and-sentence is left copula-sentence or noun-phrase 
-        then nonsubconj
-        then one-or-more right and-sentence or copula-sentence or noun-phrase`,
-
-      `mverb-sentence is subject noun-phrase 
-		then optional hverb
-		then optional negation
-		then mverb
-		then object noun-phrase`, // TODO complements
-
-      `iverb-sentence is subject noun-phrase 
-		then optional hverb
-		then optional negation
-		then iverb`, // TODO complements
-
-      `simple-sentence is copula-sentence or iverb-sentence or mverb-sentence`,
-
-      `cs2 is consequence simple-sentence
-      then subconj
-      then condition simple-sentence`,
-
-      `cs1 is subconj 
-    then condition simple-sentence 
-    then filler 
-    then consequence simple-sentence`,
-
-      // domain
-      // 'color is a thing',
-      // 'red and blue and black and green and purple are colors',
-
-      // 'color of a button is background of style of it',
-      // 'color of a div is background of style of it',
-      // 'text of a button is textContent of it',
-]
+  `
+  makro quantifier is uniquant or existquant makro. 
+  makro article is indefart or defart makro. 
+  makro complement is preposition then object noun-phrase makro.
+  makro copula-sentence is subject noun-phrase then copula then optional negation then predicate noun-phrase makro.
+  makro noun-phrase is optional quantifier then optional article then zero-or-more adjectives then zero-or-more subject noun or pronoun then optional subclause then zero-or-more complements makro.
+  makro copulasubclause is relpron then copula then predicate noun-phrase makro.
+  makro mverbsubclause is relpron then mverb then object noun-phrase makro.
+  makro subclause is copulasubclause or mverbsubclause makro.
+  makro and-sentence is left copula-sentence or noun-phrase then nonsubconj then one-or-more right and-sentence or copula-sentence or noun-phrase makro.
+  makro mverb-sentence is subject noun-phrase then optional hverb then optional negation then mverb then object noun-phrase makro.
+  makro iverb-sentence is subject noun-phrase then optional hverb then optional negation then iverb makro.
+  makro simple-sentence is copula-sentence or iverb-sentence or mverb-sentence makro.
+  makro cs2 is consequence simple-sentence then subconj then condition simple-sentence makro.
+  makro cs1 is subconj then condition simple-sentence then filler then consequence simple-sentence makro.
+  `

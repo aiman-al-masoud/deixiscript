@@ -12,7 +12,7 @@ export interface Context extends Thing {
     setSyntax(macro: AstNode): void
     getSyntaxList(): CompositeType[]
     getLexemeTypes(): LexemeType[]
-    getPrelude(): string[]
+    getPrelude(): string
     clone(): Context
 }
 

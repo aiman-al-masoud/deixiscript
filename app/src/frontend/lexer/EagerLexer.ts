@@ -4,26 +4,32 @@ import { Context } from "../../backend/Context";
 
 export default class EagerLexer implements Lexer {
 
-    protected readonly tokens: Lexeme[]
+    protected tokens: Lexeme[] = []
+    protected words: string[]
     protected _pos: number = 0
 
     constructor(readonly sourceCode: string, readonly context: Context) {
 
-        const words =
+        this.words =
             sourceCode
                 .trim()
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
 
-        const isMacroContext =
-            words.some(x => context.getLexeme(x)?.type === 'grammar')
-            && !words.some(x => ['defart', 'indefart', 'nonsubconj'].includes(context.getLexeme(x)?.type as any))//TODO: why dependencies('macro') doesn't work?!
+        // const isMacroContext =
+        //     words.some(x => context.getLexeme(x)?.type === 'grammar')
+        //     && !words.some(x => ['defart', 'indefart', 'nonsubconj'].includes(context.getLexeme(x)?.type as any))//TODO: why dependencies('macro') doesn't work?!
 
-        this.tokens = words.map(w => context.getLexeme(w) ?? makeLexeme({ root: w, token: w, type: isMacroContext ? 'grammar' : 'noun' }))
+        this.refreshTokens()
 
     }
 
+    refreshTokens() {
+        this.tokens = this.words.map(w => this.context.getLexeme(w) ?? makeLexeme({ root: w, token: w, type: 'noun' /*grammar' : 'noun' */ }))
+    }
+
     next(): void {
+        this.refreshTokens()
         this._pos++
     }
 
