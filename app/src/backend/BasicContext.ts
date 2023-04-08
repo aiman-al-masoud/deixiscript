@@ -12,14 +12,14 @@ import { LexemeType } from "../config/LexemeType"
 
 export class BasicContext extends BaseThing implements Context {
 
-    protected readonly config = getConfig()
-    protected readonly staticDescPrecedence = this.config.staticDescPrecedence
-    protected readonly syntaxMap = this.config.syntaxes
     protected syntaxList: CompositeType[] = this.refreshSyntaxList()
-    protected lexemes: Lexeme[] = this.config.lexemes.flatMap(l => [l, ...extrapolate(l, this)])
 
     constructor(
-        readonly id: Id
+        readonly id: Id,
+        protected readonly config = getConfig(),
+        protected readonly staticDescPrecedence = config.staticDescPrecedence,
+        protected readonly syntaxMap = config.syntaxes,
+        protected lexemes: Lexeme[] = config.lexemes.flatMap(l => [l, ...extrapolate(l, this)]),
     ) {
         super(id)
 
@@ -81,6 +81,16 @@ export class BasicContext extends BaseThing implements Context {
         const res: AstType[] = this.config.lexemeTypes
         res.push(...this.staticDescPrecedence)
         return res
+    }
+
+    override clone(): Context {
+        return new BasicContext(
+            this.id,
+            this.config,
+            this.staticDescPrecedence,
+            this.syntaxMap,
+            this.lexemes,
+        )
     }
 
 }

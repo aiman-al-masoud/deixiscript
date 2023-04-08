@@ -16,6 +16,7 @@ export interface Context extends Thing {
     getSyntaxList(): CompositeType[]
     getLexemeTypes(): LexemeType[]
     getPrelude(): string[]
+    clone(): Context
 }
 
 export function getContext(opts: { id: Id }): Context {
