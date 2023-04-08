@@ -9,23 +9,17 @@ export default class EagerLexer implements Lexer {
     protected _pos: number = 0
 
     constructor(readonly sourceCode: string, readonly context: Context) {
-
         this.words =
             sourceCode
                 .trim()
                 .split(/\s+|\./)
                 .map(s => !s ? '.' : s)
 
-        // const isMacroContext =
-        //     words.some(x => context.getLexeme(x)?.type === 'grammar')
-        //     && !words.some(x => ['defart', 'indefart', 'nonsubconj'].includes(context.getLexeme(x)?.type as any))//TODO: why dependencies('macro') doesn't work?!
-
         this.refreshTokens()
-
     }
 
     refreshTokens() {
-        this.tokens = this.words.map(w => this.context.getLexeme(w) ?? makeLexeme({ root: w, token: w, type: 'noun' /*grammar' : 'noun' */ }))
+        this.tokens = this.words.map(w => this.context.getLexeme(w) ?? makeLexeme({ root: w, token: w, type: 'noun' }))
     }
 
     next(): void {

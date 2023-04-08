@@ -8,6 +8,7 @@ export const constituentTypes = stringLiterals(
     'macro',
     'macropart',
     'taggedunion',
+    'exceptunion',
 )
 
 export const staticDescPrecedence: CompositeType[] = ['macro']
@@ -24,11 +25,16 @@ export const syntaxes: SyntaxMap = {
     'macropart': [
         { type: ['adjective'], number: '*' },
         { type: ['taggedunion'], number: '+' },
+        { type: ['exceptunion'], number: '1|0' },
         { type: ['filler'], number: '1|0' },
     ],
     'taggedunion': [
         { type: ['noun'], number: 1 },
         { type: ['disjunc'], number: '1|0' },
     ],
+    'exceptunion': [
+        { type: ['except-word'], number: 1 },
+        { type: ['taggedunion'], number: '+' },
+    ]
 
 }

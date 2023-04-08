@@ -25,10 +25,14 @@ function macroPartToMember(macroPart: AstNode): Member {
     const quantadjs = adjectives.filter(a => a.cardinality)
     const qualadjs = adjectives.filter(a => !a.cardinality)
 
+    const exceptUnions = macroPart.links?.exceptunion?.links?.taggedunion?.list ?? []
+    const notGrammars = exceptUnions.map(x => x.links?.noun)
+
     return {
         type: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
         role: qualadjs.at(0)?.root as Role,
-        number: quantadjs.at(0)?.cardinality
+        number: quantadjs.at(0)?.cardinality,
+        exceptType: notGrammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
     }
 
 }

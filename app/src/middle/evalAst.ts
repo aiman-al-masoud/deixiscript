@@ -1,4 +1,5 @@
 import { Context } from "../backend/Context";
+import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
 import { isPlural } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
@@ -15,7 +16,10 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
         // context.add(instr)
     }
 
-    if (ast?.links?.copula) {
+
+    if (ast?.links?.quote) {
+        return evalString(context, ast, args)
+    } else if (ast?.links?.copula) {
         return evalCopulaSentence(context, ast, args)
     } else if (ast?.links?.verb) {
         return evalVerbSentence(context, ast, args)
@@ -29,6 +33,12 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 
 }
 
+
+function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+    const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
+    const y = x.join(' ')
+    return [new StringThing(y)]
+}
 
 function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 

@@ -13,6 +13,7 @@ export type Member = {
     readonly type: AstType[]
     readonly number?: Cardinality
     readonly role?: Role
+    readonly exceptType?: AstType[]
 }
 
 export type AstType = LexemeType | CompositeType

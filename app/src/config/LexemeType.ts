@@ -24,4 +24,6 @@ export const lexemeTypes = stringLiterals(
   'pronoun',
   'filler',
   'keyword',
+  'except-word',
+  'quote',
 )

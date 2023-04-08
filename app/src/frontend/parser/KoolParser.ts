@@ -46,17 +46,17 @@ export class KoolParser implements Parser {
     }
 
 
-    protected tryParse(types: AstType[], role?: Role) { //problematic
-        
+    protected tryParse(types: AstType[], role?: Role, exceptTypes?: AstType[]) { //problematic
+
         for (const t of types) {
 
             const memento = this.lexer.pos
             const x = this.knownParse(t, role)
-            
-            if (x) {
+
+            if (x && !exceptTypes?.includes(x.type)) {
                 return x
             }
-            
+
             this.lexer.backTo(memento)
         }
 
@@ -125,7 +125,7 @@ export class KoolParser implements Parser {
                 break
             }
 
-            const x = this.tryParse(m.type, m.role)
+            const x = this.tryParse(m.type, m.role, m.exceptType)
 
             if (!x) {
                 break

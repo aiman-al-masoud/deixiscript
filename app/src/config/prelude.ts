@@ -1,6 +1,7 @@
 export const prelude: string =
 
   `
+  makro any-lexeme is adjective or copula or defart or indefart or fullstop or hverb or verb or negation or existquant or uniquant or relpron or negation or noun or preposition or subconj or nonsubconj or disjunc or pronoun or filler or keyword or except-word or quote makro.
   makro quantifier is uniquant or existquant makro. 
   makro article is indefart or defart makro. 
   makro complement is preposition then object noun-phrase makro.
@@ -14,4 +15,7 @@ export const prelude: string =
   makro simple-sentence is copula-sentence or verb-sentence makro.
   makro cs2 is consequence simple-sentence then subconj then condition simple-sentence makro.
   makro cs1 is subconj then condition simple-sentence then filler then consequence simple-sentence makro.
+  makro string is quote then one-or-more any-lexeme except quote then quote makro.
   `
+
+
