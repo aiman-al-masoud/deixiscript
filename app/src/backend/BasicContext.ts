@@ -9,6 +9,7 @@ import { maxPrecedence } from "../frontend/parser/maxPrecedence"
 import { Id } from "../middle/id/Id"
 import { Context } from "./Context"
 import { LexemeType } from "../config/LexemeType"
+import { Thing } from "./Thing"
 
 export class BasicContext extends BaseThing implements Context {
 
@@ -20,8 +21,10 @@ export class BasicContext extends BaseThing implements Context {
         protected readonly staticDescPrecedence = config.staticDescPrecedence,
         protected readonly syntaxMap = config.syntaxes,
         protected lexemes: Lexeme[] = config.lexemes.flatMap(l => [l, ...extrapolate(l, this)]),
+        protected bases: Thing[] = [],
+        protected dictionary: { [id: Id]: Thing } = {}
     ) {
-        super(id)
+        super(id, bases, dictionary,)
 
         this.astTypes.forEach(g => { //TODO!
             this.setLexeme(makeLexeme({
@@ -90,6 +93,8 @@ export class BasicContext extends BaseThing implements Context {
             this.staticDescPrecedence,
             this.syntaxMap,
             this.lexemes,
+            this.bases,
+            this.dictionary, //shallow or deep?
         )
     }
 
