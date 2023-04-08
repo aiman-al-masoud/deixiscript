@@ -1,5 +1,6 @@
-import { Clause } from '../../middle/clauses/Clause';
-import { Id } from '../../middle/id/Id';
+import { Clause, emptyClause } from '../middle/clauses/Clause';
+import { Id } from '../middle/id/Id';
+import { Map } from '../middle/id/Map';
 import { Thing } from './Thing';
 
 
@@ -25,25 +26,8 @@ export class BaseThing implements Thing {
         )
     }
 
-    toClause = (query?: Clause): Clause => {
-        // const queryOrEmpty = query ?? emptyClause
-        // const res = queryOrEmpty
-        //     .flatList()
-        //     .filter(x => x.entities.length === 1 && x.predicate)
-        //     .filter(x => this.isAlready({ predicate: x.predicate?.referent!, args: [] }))
-        //     .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
-        //     .reduce((a, b) => a.and(b), emptyClause)
-        //     .and(ownerInfo(this, queryOrEmpty))
-        // return res
-        throw new Error('TODO!');
-    }
-
     extends = (thing: Thing) => {
-
-        // if (this.bases.some(x => x.getId() === thing.getId())) { // or maybe dump old and take new, for example: "the number is 1"
-        //     return
-        // }
-        this.unextends(thing)
+        this.unextends(thing) // or avoid?
         this.bases.push(thing.clone())
     }
 
@@ -64,6 +48,28 @@ export class BaseThing implements Thing {
     }
 
     toJs(): object {
+        throw new Error('TODO!');
+    }
+
+    query(clause: Clause): Map[] {
+        const universe = Object.values(this.dictionary)
+            .map(w => w.toClause(clause))
+            .reduce((a, b) => a.and(b), emptyClause)
+        const maps = universe.query(clause, {/*  it: this.lastReferenced  */ })
+        // console.log('query=', query.toString(), 'universe=', universe.toString(), 'maps=', maps)
+        return maps
+    }
+
+    toClause = (query?: Clause): Clause => {
+        // const queryOrEmpty = query ?? emptyClause
+        // const res = queryOrEmpty
+        //     .flatList()
+        //     .filter(x => x.entities.length === 1 && x.predicate)
+        //     .filter(x => this.isAlready({ predicate: x.predicate?.referent!, args: [] }))
+        //     .map(x => x.copy({ map: { [x.args![0]]: this.id } }))
+        //     .reduce((a, b) => a.and(b), emptyClause)
+        //     .and(ownerInfo(this, queryOrEmpty))
+        // return res
         throw new Error('TODO!');
     }
 

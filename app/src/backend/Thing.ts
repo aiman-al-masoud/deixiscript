@@ -1,7 +1,9 @@
-import { Id } from "../../middle/id/Id"
-import { Clause } from "../../middle/clauses/Clause"
-import { Context } from "../../facade/context/Context"
+import { Clause } from "../middle/clauses/Clause"
+import { Id } from "../middle/id/Id"
+import { Map } from "../middle/id/Map"
 import { BaseThing } from "./BaseThing"
+import { Context } from "./Context"
+
 
 export interface Thing {
     get(id: Id): Thing | undefined
@@ -12,6 +14,7 @@ export interface Thing {
     getId(): Id
     extends(thing: Thing): void
     unextends(thing: Thing): void
+    query(clause: Clause): Map[]
 }
 
 export interface Verb extends Thing {

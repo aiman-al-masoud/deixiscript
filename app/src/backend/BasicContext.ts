@@ -1,14 +1,15 @@
-import { Enviro } from "../../backend/enviro/Enviro"
-import { getConfig } from "../../config/Config"
-import { CompositeType } from "../../config/syntaxes"
-import { extrapolate, Lexeme, makeLexeme } from "../../frontend/lexer/Lexeme"
-import { AstNode } from "../../frontend/parser/interfaces/AstNode"
-import { AstType } from "../../frontend/parser/interfaces/Syntax"
-import { macroToSyntax } from "../../frontend/parser/macroToSyntax"
-import { maxPrecedence } from "../../frontend/parser/maxPrecedence"
+import { BaseThing } from "./BaseThing"
+import { getConfig } from "../config/Config"
+import { CompositeType } from "../config/syntaxes"
+import { extrapolate, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme"
+import { AstNode } from "../frontend/parser/interfaces/AstNode"
+import { AstType } from "../frontend/parser/interfaces/Syntax"
+import { macroToSyntax } from "../frontend/parser/macroToSyntax"
+import { maxPrecedence } from "../frontend/parser/maxPrecedence"
+import { Id } from "../middle/id/Id"
 import { Context } from "./Context"
 
-export default class BasicContext implements Context {
+export class BasicContext extends BaseThing implements Context {
 
     readonly config = getConfig()
     protected readonly staticDescPrecedence = this.config.staticDescPrecedence
@@ -17,28 +18,18 @@ export default class BasicContext implements Context {
     protected _lexemes: Lexeme[] = this.config.lexemes.flatMap(l => [l, ...extrapolate(l, this)])
     readonly prelude = this.config.prelude
     readonly lexemeTypes = this.config.lexemeTypes
-    readonly add = this.enviro.add
-    readonly query = this.enviro.query
-    readonly root = this.enviro.root
-    readonly get = this.enviro.get
 
-    constructor(readonly enviro: Enviro) {
+    constructor(
+        readonly id: Id
+    ) {
+        super(id)
 
-        this.astTypes.forEach(g => {
+        this.astTypes.forEach(g => { //TODO!
             this.setLexeme(makeLexeme({
                 root: g,
                 type: 'grammar'
             }))
         })
-
-        // Object.values(this.config.things).forEach(t => {
-        //     this.add(t)
-        // })
-
-    }
-
-    get values() {
-        return this.enviro.values
     }
 
     getLexeme = (rootOrToken: string): Lexeme | undefined => {

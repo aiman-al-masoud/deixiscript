@@ -1,10 +1,9 @@
-import autotester from "../../tests/autotester"
-import { getBrain } from "../facade/brain/Brain"
+import { getBrain } from "../facade/Brain"
 
 export default function main() {
 
     const state = {
-        brain: getBrain({ root: document.body }),
+        brain: getBrain(),
         promptVisible: false
     }
 
@@ -32,7 +31,6 @@ export default function main() {
             const result = state.brain.executeUnwrapped(textarea.value)
             console.log(result)
         } else if (e.ctrlKey && e.code === 'KeyY') {
-            await autotester()
             main()
         }
 

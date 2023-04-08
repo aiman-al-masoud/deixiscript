@@ -1,7 +1,7 @@
-import {Thing} from "../../backend/thing/Thing";
-import { getParser } from "../../frontend/parser/interfaces/Parser";
-import { evalAst } from "../../middle/evalAst";
-import { Context } from "../context/Context";
+import { Context } from "../backend/Context";
+import { Thing } from "../backend/Thing";
+import { getParser } from "../frontend/parser/interfaces/Parser";
+import { evalAst } from "../middle/evalAst";
 import Brain from "./Brain";
 
 

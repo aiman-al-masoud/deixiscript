@@ -1,5 +1,5 @@
-import  { Thing, getThing } from "../backend/thing/Thing";
-import { Context } from "../facade/context/Context";
+import { Context } from "../backend/Context";
+import { Thing, getThing } from "../backend/Thing";
 import { isPlural } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";

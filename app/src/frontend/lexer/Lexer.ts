@@ -1,4 +1,4 @@
-import { Context } from "../../facade/context/Context"
+import { Context } from "../../backend/Context"
 import EagerLexer from "./EagerLexer"
 import { Lexeme } from "./Lexeme"
 

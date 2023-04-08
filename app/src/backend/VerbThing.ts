@@ -1,8 +1,9 @@
-import { Context } from "../../facade/context/Context";
-import { AstNode } from "../../frontend/parser/interfaces/AstNode";
-import { evalAst } from "../../middle/evalAst";
-import { Id } from "../../middle/id/Id";
+
+import { AstNode } from "../frontend/parser/interfaces/AstNode";
+import { evalAst } from "../middle/evalAst";
+import { Id } from "../middle/id/Id";
 import { BaseThing } from "./BaseThing";
+import { Context } from "./Context";
 import { Thing, Verb } from "./Thing";
 
 export class VerbThing extends BaseThing implements Verb {

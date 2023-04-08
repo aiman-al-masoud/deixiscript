@@ -1,9 +1,9 @@
 import { LexemeType } from "../../config/LexemeType"
 import { Cardinality, isRepeatable } from "../parser/interfaces/Cardinality"
-import { Context } from "../../facade/context/Context"
-import Thing from "../../backend/thing/Thing"
 import { pluralize } from "./functions/pluralize"
 import { conjugate } from "./functions/conjugate"
+import { Thing } from "../../backend/Thing"
+import { Context } from "../../backend/Context"
 
 
 export interface Lexeme {
