@@ -39,11 +39,11 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
     //WHAT ABOUT plain old setting!!!!
 
     // use predicate to extend subject
-    subject.forEach(s => {
-        predicate.forEach(p => {
-            s.extends(p)
-        })
-    })
+    // subject.forEach(s => {
+    //     predicate.forEach(p => {
+    //         s.extends(p)
+    //     })
+    // })
 
     // set subject on context, create subject lexeme
 
