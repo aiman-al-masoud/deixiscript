@@ -36,6 +36,9 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
     const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: false })
     const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true })
 
+    console.log('copula sentence', ast)
+    throw new Error('copula sentence!')
+
     //WHAT ABOUT plain old setting!!!!
 
     // use predicate to extend subject

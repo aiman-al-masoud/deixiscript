@@ -20,7 +20,7 @@ export class BasicContext extends BaseThing implements Context {
         protected readonly config = getConfig(),
         protected readonly staticDescPrecedence = config.staticDescPrecedence,
         protected readonly syntaxMap = config.syntaxes,
-        protected lexemes: Lexeme[] = config.lexemes.flatMap(l => [l, ...extrapolate(l, this)]),
+        protected lexemes: Lexeme[] = config.lexemes.flatMap(l => [l, ...extrapolate(l)]),
         protected bases: Thing[] = [],
         protected children: { [id: Id]: Thing } = {},
     ) {
