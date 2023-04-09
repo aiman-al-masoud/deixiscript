@@ -136,3 +136,6 @@ have is the next instructions
 the scope is have
 the scope is back
 
+
+
+# string (and any atom) should be counted as a nounphrase
