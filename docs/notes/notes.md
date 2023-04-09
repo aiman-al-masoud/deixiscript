@@ -142,3 +142,14 @@ the scope is back
 
 
 # macros should also accept "raw strings" not just lexeme classes
+
+letter is "a" or "b" or "c" ...
+digit is "1" or "2" or "3" ...
+fullstop is "."
+quote is '"'
+character is letter or digit or fullstop or quote
+identifier is one-or-more letters then zero-or-more digits.
+number is one-or-more digits.
+string is quote then zero-or-more characters except quote then quote
+
+cool idea, but currently hard to implement because tokens also have cardinality and may have referents.
