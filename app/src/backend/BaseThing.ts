@@ -50,27 +50,22 @@ export class BaseThing implements Thing {
     }
 
     toJs(): object {
-        throw new Error('TODO!');
+        return this //TODOooooooooOO!
     }
 
     query(query: Clause): Map[] {
-        // const universe = Object.values(this.children)
-        //     .map(w => w.toClause(clause))
-        //     .reduce((a, b) => a.and(b), emptyClause)
-        // return universe.query(clause, {/*  it: this.lastReferenced  */ })
         return this.toClause(query).query(query, {/* it: this.lastReferenced  */ })
     }
 
     toClause = (query?: Clause): Clause => {
 
         const x = this.lexemes
-            .filter(x => x.referent)
-            .map(x => clauseOf(x, x.referent?.getId()!))
+            .flatMap(x => x.referents.map(r => clauseOf(x, r.getId())))
             .reduce((a, b) => a.and(b), emptyClause)
 
         const y = Object
             .keys(this.children)
-            .map(x => clauseOf({ root: 'of', type: 'preposition' }, x, this.id)) // hardcoded english!
+            .map(x => clauseOf({ root: 'of', type: 'preposition', referents: [] }, x, this.id)) // hardcoded english!
             .reduce((a, b) => a.and(b), emptyClause)
 
         const z = Object
@@ -83,13 +78,14 @@ export class BaseThing implements Thing {
 
     setLexeme = (lexeme: Lexeme) => {
 
-        // if (lexeme.root && !lexeme.token && this.lexemes.some(x => x.root === lexeme.root)) {
-        //     this.lexemes = this.lexemes.filter(x => x.root !== lexeme.root)
-        // }
-
+        const old = this.lexemes.filter(x => x.root === lexeme.root)
+        const updated: Lexeme[] = old.map(x => ({ ...x, ...lexeme, referents: [...x.referents, ...lexeme.referents] }))
         this.lexemes = this.lexemes.filter(x => x.root !== lexeme.root)
-        this.lexemes.push(lexeme)
-        this.lexemes.push(...extrapolate(lexeme, this))
+        const toBeAdded = updated.length ? updated : [lexeme]
+        this.lexemes.push(...toBeAdded)
+        const extrapolated = toBeAdded.flatMap(x => extrapolate(x, this))
+        this.lexemes.push(...extrapolated)
+
     }
 
     getLexeme = (rootOrToken: string): Lexeme | undefined => {

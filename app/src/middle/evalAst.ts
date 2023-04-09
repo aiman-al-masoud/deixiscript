@@ -2,7 +2,7 @@ import { Context } from "../backend/Context";
 import { NumberThing } from "../backend/NumberThing";
 import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
-import { isPlural } from "../frontend/lexer/Lexeme";
+import { isPlural, Lexeme } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
@@ -50,14 +50,24 @@ function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing
 
 function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 
+    //TODO assigment or comparison, based on args.sideEffects
+
     const subjectId = args?.subject ?? getIncrementalId()
-    const subject = evalAst(context, ast?.links?.subject, { subject: subjectId, autovivification: false, sideEffects: false })
+
+    const maybeSubject = evalAst(context, ast?.links?.subject)
+    const subject = nounPhraseToClause(ast?.links?.subject)
     const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true, sideEffects: false })
 
-    console.log('copula sentence', ast)
-    //TODO assigment or comparison
-    throw new Error('copula sentence!')
+    if (maybeSubject.length) {
+        return maybeSubject // TODO
+    }
 
+    const newThing = predicate[0]
+    const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
+    context.set(newThing.getId(), newThing)
+    lexemes.forEach(x => context.setLexeme(x))
+
+    return [newThing]
 }
 
 function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
@@ -162,13 +172,13 @@ function getInterestingIds(maps: Map[]): Id[] {
 const getNumberOfDots = (id: Id) => id.split('.').length //-1
 
 function createThing(clause: Clause): Thing {
-    const bases = clause.flatList().map(x => x.predicate?.referent!).filter(x => x)
+    const bases = clause.flatList().map(x => x.predicate?.referents?.[0]!)/* ONLY FIRST? */.filter(x => x)
     const id = getIncrementalId()
     return getThing({ id, bases })
 }
 
 interface ToClauseOpts {
     subject?: Id,
-    autovivification: boolean,
-    sideEffects: boolean,
+    autovivification?: boolean,
+    sideEffects?: boolean,
 }

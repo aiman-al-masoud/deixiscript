@@ -10,7 +10,7 @@ export interface Lexeme {
     readonly type: LexemeType
     readonly token?: string
     readonly cardinality?: Cardinality
-    referent?: Thing
+    referents: Thing[]
 }
 
 export function makeLexeme(data: Lexeme): Lexeme {
@@ -29,7 +29,7 @@ export function extrapolate(lexeme: Lexeme, context?: Thing): Lexeme[] {
             type: lexeme.type,
             token: pluralize(lexeme.root),
             cardinality: '*',
-            referent: lexeme.referent
+            referents: lexeme.referents
         })]
     }
 
@@ -38,7 +38,7 @@ export function extrapolate(lexeme: Lexeme, context?: Thing): Lexeme[] {
             root: lexeme.root,
             type: lexeme.type,
             token: x,
-            referent: lexeme.referent
+            referents: lexeme.referents
         }))
     }
 

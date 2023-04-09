@@ -30,6 +30,7 @@ export class BasicContext extends BaseThing implements Context {
             this.setLexeme(makeLexeme({
                 root: g,
                 type: 'noun',
+                referents: [],
             }))
         })
 
@@ -56,7 +57,7 @@ export class BasicContext extends BaseThing implements Context {
 
     setSyntax = (macro: AstNode) => {
         const syntax = macroToSyntax(macro)
-        this.setLexeme(makeLexeme({ type: 'noun', root: syntax.name }))
+        this.setLexeme(makeLexeme({ type: 'noun', root: syntax.name, referents: [] }))
         this.syntaxMap[syntax.name as CompositeType] = syntax.syntax
         this.syntaxList = this.refreshSyntaxList()
     }
