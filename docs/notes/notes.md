@@ -100,3 +100,6 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 # Thing.query() and Thing.ownerInfo() fix
 # unify Enviro and Thing
 # isAlready() also for superclass
+
+
+# two versions of each verb, one with side effects and one without?
