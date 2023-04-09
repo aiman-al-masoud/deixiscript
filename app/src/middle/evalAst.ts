@@ -3,7 +3,7 @@ import { InstructionThing } from "../backend/InstructionThing";
 import { NumberThing } from "../backend/NumberThing";
 import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
-import { isPlural, Lexeme } from "../frontend/lexer/Lexeme";
+import { isPlural, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
@@ -18,7 +18,7 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
     if (args.sideEffects) { // only cache instructions with side effects
         const instruction = new InstructionThing(ast)
         context.set(instruction.getId(), instruction)
-        context.setLexeme({ root: 'instruction', type: 'noun', referents: [instruction] })
+        context.setLexeme(makeLexeme({ root: 'instruction', type: 'noun', referents: [instruction] }))
     }
 
     if (ast?.links?.copula) {
