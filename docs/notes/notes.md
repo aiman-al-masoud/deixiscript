@@ -102,4 +102,4 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 # isAlready() also for superclass
 
 
-# two versions of each verb, one with side effects and one without?
+# two versions of each verb, one with side effects and one without? or remember verb application and "disapplication"?
