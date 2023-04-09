@@ -96,7 +96,7 @@ export const prelude: string =
   makro.
 
   makro 
-    string is quote then one-or-more any-lexeme except quote then quote 
+    string is quote then one-or-more token any-lexeme except quote then quote 
   makro.
 
   `

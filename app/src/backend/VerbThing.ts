@@ -4,13 +4,14 @@ import { evalAst } from "../middle/evalAst";
 import { Id } from "../middle/id/Id";
 import { BaseThing } from "./BaseThing";
 import { Context } from "./Context";
+import { InstructionThing } from "./InstructionThing";
 import { Thing, Verb } from "./Thing";
 
 export class VerbThing extends BaseThing implements Verb {
 
     constructor(
         readonly id: Id,
-        readonly instructions: AstNode[],
+        readonly instructions: InstructionThing[], //or InstructionThing?
     ) {
         super(id)
     }
@@ -25,12 +26,11 @@ export class VerbThing extends BaseThing implements Verb {
 
         let results: Thing[] = []
 
-        this.instructions.forEach(ast => {
-            results = evalAst(clonedContext, ast)
+        this.instructions.forEach(istruction => {
+            results = evalAst(clonedContext, istruction.value)
         })
 
         return results
     }
-
 
 }

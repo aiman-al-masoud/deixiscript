@@ -1,4 +1,5 @@
 import { Context } from "../backend/Context";
+import { InstructionThing } from "../backend/InstructionThing";
 import { NumberThing } from "../backend/NumberThing";
 import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
@@ -10,18 +11,17 @@ import { getIncrementalId } from "./id/functions/getIncrementalId";
 import { Id } from "./id/Id";
 import { Map } from "./id/Map";
 
-export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] { //TODO: option to disable side effects (for example for if condition)
+export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] { //TODO: option to disable side effects (for example for if condition)
 
-    if (!args) { //TODO: only cache instructions with side effects
-        // const instr = wrap({ object: ast, id: getIncrementalId() })
-        // instr.set(things.instruction)
-        // context.add(instr)
+    args.sideEffects ??= couldHaveSideEffects(ast)
+
+    if (args.sideEffects) { // only cache instructions with side effects
+        const instruction = new InstructionThing(ast)
+        context.set(instruction.getId(), instruction)
+        context.setLexeme({ root: 'instruction', type: 'noun', referents: [instruction] })
     }
 
-
-    if (ast?.links?.quote) {
-        return evalString(context, ast, args)
-    } else if (ast?.links?.copula) {
+    if (ast?.links?.copula) {
         return evalCopulaSentence(context, ast, args)
     } else if (ast?.links?.verb) {
         return evalVerbSentence(context, ast, args)
@@ -29,14 +29,16 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
         return evalComplexSentence(context, ast, args)
     } else if (ast?.links?.nonsubconj) {
         return evalCompoundSentence(context, ast, args)
+    } else if (ast?.links?.quote) {
+        return evalString(context, ast, args)
     } else {
-        return evalNounPhrase(context, ast, args)  //nounphrase is the "atom"
+        return evalNounPhrase(context, ast, args)
     }
 
 }
 
 
-function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
     //TODO assigment or comparison, based on args.sideEffects
 
@@ -66,19 +68,19 @@ function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts
     // return [newThing]
 }
 
-function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
 }
 
-function evalComplexSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     throw new Error('complex sentence!')
 }
 
-function evalCompoundSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     throw new Error('compound sentence!')
 }
 
-function evalNounPhrase(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
     const np = nounPhraseToClause(ast, args)
 
@@ -185,6 +187,9 @@ function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing
     return [new StringThing(y)]
 }
 
+function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphrase COULD have side effects
+    return !!(ast.links?.copula || ast.links?.verb || ast.links?.subconj)
+}
 
 interface ToClauseOpts {
     subject?: Id,

@@ -36,6 +36,8 @@ export const lexemes: Lexeme[] = [
     { root: 'have', type: 'verb', referents: [] },//test
     { root: 'except', type: 'except-word', referents: [] },
     { root: '"', type: 'quote', referents: [] },
+    { root: 'token', type: 'adjective', referents: [] },
+
     // { root: 'thing', type: 'noun', referent: things.thing },
     // { root: 'instruction', type: 'noun', referent: things.instruction }
 ]
