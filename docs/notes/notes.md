@@ -139,3 +139,6 @@ the scope is back
 
 
 # string (and any atom) should be counted as a nounphrase
+
+
+# macros should also accept "raw strings" not just lexeme classes
