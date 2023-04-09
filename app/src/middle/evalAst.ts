@@ -36,47 +36,38 @@ export function evalAst(context: Context, ast?: AstNode, args?: ToClauseOpts): T
 }
 
 
-function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
-    const y = x.join(' ')
-    const z = parseNumber(y)
-
-    if (z) {
-        return [new NumberThing(z)]
-    }
-
-    if (!y.length) {
-        return []
-    }
-
-    return [new StringThing(y)]
-}
-
 function evalCopulaSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
 
     //TODO assigment or comparison, based on args.sideEffects
 
-    const subjectId = args?.subject ?? getIncrementalId()
-
-    const maybeSubject = evalAst(context, ast?.links?.subject)
-    const subject = nounPhraseToClause(ast?.links?.subject)
-    const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true, sideEffects: false })
-
-    if (maybeSubject.length) {
-        return maybeSubject // TODO
+    if (args?.sideEffects) {
+        // assign the right value to the left value
+    } else {
+        // compare the right and left values
     }
 
-    const newThing = predicate[0]
-    const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
-    context.set(newThing.getId(), newThing)
-    lexemes.forEach(x => context.setLexeme(x))
+    throw new Error('copula sentence!')
 
-    return [newThing]
+    // const subjectId = args?.subject ?? getIncrementalId()
+
+    // const maybeSubject = evalAst(context, ast?.links?.subject)
+    // const subject = nounPhraseToClause(ast?.links?.subject)
+    // const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true, sideEffects: false })
+
+    // if (maybeSubject.length) {
+    //     return maybeSubject // TODO
+    // }
+
+    // const newThing = predicate[0]
+    // const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
+    // context.set(newThing.getId(), newThing)
+    // lexemes.forEach(x => context.setLexeme(x))
+
+    // return [newThing]
 }
 
 function evalVerbSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
-    // context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
-    throw new Error('verb sentence!')
+    throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
 }
 
 function evalComplexSentence(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
@@ -147,9 +138,6 @@ function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 function isAstPlural(ast?: AstNode): boolean {
 
     const x =
-        // isPlural(ast?.links?.noun?.lexeme)
-        // ||  isPlural(ast?.links?.adjective?.lexeme)
-        // || 
         ast?.links?.noun?.list?.some(x => x.lexeme && isPlural(x.lexeme))
         || ast?.links?.adjective?.list?.some(x => x.lexeme && isPlural(x.lexeme))
         || ast?.links?.subject?.list?.some(x => x.lexeme && isPlural(x.lexeme))
@@ -180,6 +168,23 @@ function createThing(clause: Clause): Thing {
     const id = getIncrementalId()
     return getThing({ id, bases })
 }
+
+function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+    const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
+    const y = x.join(' ')
+    const z = parseNumber(y)
+
+    if (z) {
+        return [new NumberThing(z)]
+    }
+
+    if (!y.length) {
+        return []
+    }
+
+    return [new StringThing(y)]
+}
+
 
 interface ToClauseOpts {
     subject?: Id,
