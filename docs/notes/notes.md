@@ -129,3 +129,10 @@ makro
 makro.
 ```
 
+
+# how to define functions?
+have is the next n instructions
+have is the next instructions
+the scope is have
+the scope is back
+
