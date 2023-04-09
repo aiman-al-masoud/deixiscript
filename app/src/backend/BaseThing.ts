@@ -2,6 +2,7 @@ import { extrapolate, Lexeme } from '../frontend/lexer/Lexeme';
 import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
 import { Id } from '../middle/id/Id';
 import { Map } from '../middle/id/Map';
+import { uniq } from '../utils/uniq';
 import { Thing } from './Thing';
 
 
@@ -47,6 +48,7 @@ export class BaseThing implements Thing {
 
     set(id: Id, thing: Thing): void {
         this.children[id] = thing
+        this.setLexeme({ root: 'thing', type: 'noun', referents: [thing] }) // every thing is a thing
     }
 
     toJs(): object {
@@ -54,7 +56,7 @@ export class BaseThing implements Thing {
     }
 
     query(query: Clause): Map[] {
-        return this.toClause(query).query(query, {/* it: this.lastReferenced  */ })
+        return uniq(this.toClause(query).query(query, {/* it: this.lastReferenced  */ }))
     }
 
     toClause = (query?: Clause): Clause => {
@@ -73,7 +75,7 @@ export class BaseThing implements Thing {
             .map(x => x.toClause(query))
             .reduce((a, b) => a.and(b), emptyClause)
 
-        return x.and(y).and(z)
+        return x.and(y).and(z).simple
     }
 
     setLexeme = (lexeme: Lexeme) => {
