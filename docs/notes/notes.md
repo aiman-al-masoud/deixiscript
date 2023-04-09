@@ -103,3 +103,29 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 
 
 # two versions of each verb, one with side effects and one without? or remember verb application and "disapplication"?
+
+
+# Modify noun-phrase and verb-sentence
+```
+makro 
+	noun-phrase is optional quantifier 
+	then optional article 
+	then zero-or-more adjectives
+	then optional number 
+	then one-or-more subject noun or pronoun 
+	then optional subclause 
+	then optional of-complement
+makro.
+
+makro
+    of-complement is of-preposition then owner noun-phrase
+makro
+
+makro 
+    verb-sentence is subject noun-phrase 
+    then optional hverb then optional negation 
+    then verb then optional object noun-phrase
+    then zero-or-more complements
+makro.
+```
+
