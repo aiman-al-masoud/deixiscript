@@ -45,6 +45,10 @@ function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing
         return [new NumberThing(z)]
     }
 
+    if (!y.length) {
+        return []
+    }
+
     return [new StringThing(y)]
 }
 
