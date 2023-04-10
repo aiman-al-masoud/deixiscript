@@ -7,6 +7,7 @@ import { isPlural, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
+import { getOwnershipChain } from "./clauses/functions/getOwnershipChain";
 import { getIncrementalId } from "./id/functions/getIncrementalId";
 import { Id } from "./id/Id";
 import { Map } from "./id/Map";
@@ -38,33 +39,75 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
 
 function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
-    //TODO assigment or comparison, based on args.sideEffects
 
-    if (args?.sideEffects) {
-        // assign the right value to the left value
-    } else {
-        // compare the right and left values
+    if (args?.sideEffects) { // assign the right value to the left value
+        const subjectId = args?.subject ?? getIncrementalId()
+        const subject = nounPhraseToClause(ast.links?.subject, { subject: subjectId }).simple
+        const rVal = evalAst(context, ast.links?.predicate!, { subject: subjectId })
+        const ownerChain = getOwnershipChain(subject)
+        const maps = context.query(subject)
+        const lexemes = subject.flatList().map(x => x.predicate!).filter(x => x)
+        const lexemesWithReferent = lexemes.map(x => ({ ...x, referents: rVal }))
+
+        // console.log('subject=', subject.toString(), 'rVal=', rVal, 'ownerChain=', ownerChain, 'maps=', maps)
+
+        if (!maps.length && ownerChain.length <= 1) { // lVal is completely new
+            lexemesWithReferent.forEach(x => context.setLexeme(x))
+            rVal.forEach(x => context.set(x.getId(), x))
+            return rVal
+        }
+
+        // if (ownerChain.length > 1) { // lVal is property of existing object
+        //     const aboutOwner = about(subject, ownerChain.at(-2)!)
+        //     const owners = getInterestingIds(context.query(aboutOwner), aboutOwner).map(id => context.get(id)!).filter(x => x)
+        //     lexemesWithReferent.forEach(x => owners.at(0)?.setLexeme(x))
+        //     const owner = owners.at(0)
+        //     rVal.forEach(x => owner?.set(x.getId(), x))
+        //     return rVal
+        // }
+
+
+    } else { // compare the right and left values
+
+
     }
 
-    // throw new Error('copula sentence!')
+    throw new Error('copula sentence!')
 
-    const subjectId = args?.subject ?? getIncrementalId()
+    // const subjectId = args?.subject ?? getIncrementalId()
 
-    const maybeSubject = evalAst(context, ast?.links?.subject!)
-    const subject = nounPhraseToClause(ast?.links?.subject)
-    const predicate = evalAst(context, ast?.links?.predicate!, { subject: subjectId, autovivification: true, sideEffects: false })
+    // const maybeSubject = evalAst(context, ast?.links?.subject!)
+    // const subject = nounPhraseToClause(ast?.links?.subject)
+    // const predicate = evalAst(context, ast?.links?.predicate!, { subject: subjectId, autovivification: true, sideEffects: false })
 
-    if (maybeSubject.length) {
-        return maybeSubject // TODO
-    }
+    // if (maybeSubject.length) {
+    //     return maybeSubject // TODO
+    // }
 
-    const newThing = predicate[0]
-    const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
-    context.set(newThing.getId(), newThing)
-    lexemes.forEach(x => context.setLexeme(x))
+    // const newThing = predicate[0]
+    // const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
+    // context.set(newThing.getId(), newThing)
+    // lexemes.forEach(x => context.setLexeme(x))
 
-    return [newThing]
+    // return [newThing]
 }
+
+function about(clause: Clause, entity: Id) {
+    return clause.flatList().filter(x => x.entities.includes(entity) && x.entities.length <= 1).reduce((a, b) => a.and(b), emptyClause).simple
+}
+
+// function getProximalOwner(context:Context, clause:Clause, ownerChain:Id[]){
+
+//     const aboutOwner = about(clause, ownerChain[0])
+//     const maps = context.query(aboutOwner)
+
+
+
+//     // console.log('ownerMaps=', maps)
+
+// }
+
+
 
 function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
@@ -78,17 +121,20 @@ function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpt
     throw new Error('compound sentence!')
 }
 
+
+
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
 
     if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
-        return evalString(context, ast.links?.subject?.list[0])
+        return evalString(context, ast.links?.subject?.list[0], args)
     }
 
     const np = nounPhraseToClause(ast, args)
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
-    const interestingIds = getInterestingIds(maps);
+    const interestingIds = getInterestingIds(maps, np)
     const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!)
+    // console.log(np.toString(), 'maps=', maps, 'interestingIds=', interestingIds)
 
     if (isAstPlural(ast) || getAndPhrase(ast)) { // if universal quantified, I don't care if there's no match
         return things
@@ -109,7 +155,7 @@ function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false, sideEffects: false })).reduce((a, b) => a.and(b), emptyClause)
-    const andPhrase = evalAndPhrase(getAndPhrase(ast))
+    const andPhrase = evalAndPhrase(getAndPhrase(ast), args)
     //TODO: relative clauses
 
     return adjectives.and(nouns).and(complements).and(andPhrase)
@@ -125,7 +171,7 @@ function evalAndPhrase(andPhrase?: AstNode, args?: ToClauseOpts) {
         return emptyClause
     }
 
-    return nounPhraseToClause((andPhrase?.links as any)?.['noun-phrase']/* TODO! */, args)
+    return nounPhraseToClause((andPhrase?.links as any)?.['noun-phrase']/* TODO! */, /* args */) // maybe problem if multiple things have same id, query is not gonna find them
 }
 
 function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
@@ -158,14 +204,23 @@ function isAstPlural(ast?: AstNode): boolean {
     return Object.values(ast?.links ?? {}).concat(ast?.list ?? []).some(x => isAstPlural(x))
 }
 
-function getInterestingIds(maps: Map[]): Id[] {
+function getInterestingIds(maps: Map[], clause: Clause): Id[] {
 
     // the ones with most dots, because "color of style of button" 
     // has buttonId.style.color and that's the object the sentence should resolve to
     // possible problem if "color of button AND button"
-    const ids = maps.flatMap(x => Object.values(x))
-    const maxLen = Math.max(...ids.map(x => getNumberOfDots(x)))
-    return ids.filter(x => getNumberOfDots(x) === maxLen)
+    // const ids = maps.flatMap(x => Object.values(x))
+    // const maxLen = Math.max(...ids.map(x => getNumberOfDots(x)))
+    // return ids.filter(x => getNumberOfDots(x) === maxLen)
+
+    const oc = getOwnershipChain(clause)
+
+    if (oc.length <= 1) {
+        return maps.flatMap(x => Object.values(x)) //all
+    }
+
+    // .at(-1)
+    return maps.flatMap(m => m[oc.at(-1)!]) // 
 
 }
 
@@ -178,7 +233,7 @@ function createThing(clause: Clause): Thing {
     return getThing({ id, bases })
 }
 
-function evalString(context: Context, ast?: AstNode): Thing[] {
+function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
     const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
     const y = x.join(' ')
     const z = parseNumber(y)

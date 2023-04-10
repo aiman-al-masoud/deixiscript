@@ -12,12 +12,12 @@ export interface Thing {
     clone(): Thing
     toJs(): object
     toClause(query?: Clause): Clause
-    getId(): Id
     extends(thing: Thing): void
     unextends(thing: Thing): void
     query(clause: Clause): Map[]
     setLexeme(lexeme: Lexeme): void
     getLexeme(rootOrToken: string): Lexeme | undefined
+    getId(): Id
 }
 
 export interface Verb extends Thing {
