@@ -115,6 +115,7 @@ makro
 	then one-or-more subject noun or pronoun 
 	then optional subclause 
 	then optional of-complement
+	then optional nonsubconj noun-phrase
 makro.
 
 makro
@@ -153,3 +154,62 @@ number is one-or-more digits.
 string is quote then zero-or-more characters except quote then quote
 
 cool idea, but currently hard to implement because tokens also have cardinality and may have referents.
+
+# DO THIS
+
+increment is the next instructions.
+the value of the subject is itself + the by-complement.
+increment ends.
+
+x is 1.
+x increments by 2.
+
+---------
+
+increment:
+the value of the subject is itself + the by-complement.
+end.
+
+x is 1.
+x increments by 2.
+
+increment starts.
+the value of the subject is itself + the by-complement.
+increment ends.
+
+
+a house has a string address and a sold boolean.
+
+sell starts.
+sold of the subject is true.
+if for-complement is > 100000 then console logs "hey!".
+sell ends.
+
+x is a house.
+x sells for 100001.
+
+
+a house has a string address and a sold boolean.
+
+sell {
+	sold of the subject is true.
+	if for-complement is > 100000 then console logs "whoah!".
+}
+
+x is a house.
+x sells for 100001.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
