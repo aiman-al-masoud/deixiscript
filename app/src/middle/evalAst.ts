@@ -46,24 +46,24 @@ function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts)
         // compare the right and left values
     }
 
-    throw new Error('copula sentence!')
+    // throw new Error('copula sentence!')
 
-    // const subjectId = args?.subject ?? getIncrementalId()
+    const subjectId = args?.subject ?? getIncrementalId()
 
-    // const maybeSubject = evalAst(context, ast?.links?.subject)
-    // const subject = nounPhraseToClause(ast?.links?.subject)
-    // const predicate = evalAst(context, ast?.links?.predicate, { subject: subjectId, autovivification: true, sideEffects: false })
+    const maybeSubject = evalAst(context, ast?.links?.subject!)
+    const subject = nounPhraseToClause(ast?.links?.subject)
+    const predicate = evalAst(context, ast?.links?.predicate!, { subject: subjectId, autovivification: true, sideEffects: false })
 
-    // if (maybeSubject.length) {
-    //     return maybeSubject // TODO
-    // }
+    if (maybeSubject.length) {
+        return maybeSubject // TODO
+    }
 
-    // const newThing = predicate[0]
-    // const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
-    // context.set(newThing.getId(), newThing)
-    // lexemes.forEach(x => context.setLexeme(x))
+    const newThing = predicate[0]
+    const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
+    context.set(newThing.getId(), newThing)
+    lexemes.forEach(x => context.setLexeme(x))
 
-    // return [newThing]
+    return [newThing]
 }
 
 function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
@@ -80,16 +80,17 @@ function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpt
 
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
+    
     if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
         return evalString(context, ast.links?.subject?.list[0])
     }
-
+    
     const np = nounPhraseToClause(ast, args)
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
     const interestingIds = getInterestingIds(maps);
     const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!)
 
-    if (isAstPlural(ast)) { // if universal quantified, I don't care if there's no match
+    if (isAstPlural(ast) || getAndPhrase(ast)) { // if universal quantified, I don't care if there's no match
         return things
     }
 
@@ -108,10 +109,23 @@ function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false, sideEffects: false })).reduce((a, b) => a.and(b), emptyClause)
+    const andPhrase = evalAndPhrase(getAndPhrase(ast))
+    //TODO: relative clauses
 
-    return adjectives.and(nouns).and(complements)
-    //TODO: subclause
+    return adjectives.and(nouns).and(complements).and(andPhrase)
+}
 
+function getAndPhrase(np?: AstNode): AstNode | undefined {
+    return (np?.links as any)?.['and-phrase']  //TODO!
+}
+
+function evalAndPhrase(andPhrase?: AstNode, args?: ToClauseOpts) {
+
+    if (!andPhrase) {
+        return emptyClause
+    }
+
+    return nounPhraseToClause((andPhrase?.links as any)?.['noun-phrase']/* TODO! */, args)
 }
 
 function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {

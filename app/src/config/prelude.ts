@@ -45,6 +45,10 @@ export const prelude: string =
       then predicate noun-phrase 
   makro.
 
+  makro
+    and-phrase is nonsubconj then noun-phrase
+  makro.
+
   makro 
     noun-phrase is optional quantifier 
       then optional article 
@@ -52,6 +56,7 @@ export const prelude: string =
       then zero-or-more subject noun or pronoun or string
       then optional subclause
       then zero-or-more complements
+      then optional and-phrase
   makro.
 
   makro 
