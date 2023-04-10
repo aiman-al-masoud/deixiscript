@@ -85,19 +85,9 @@ function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Th
     }
 
     const np = nounPhraseToClause(ast, args)
-
-    // checks for Things that match given nounphrase
-    // 1. in current sentence scope
-    // 2. in broader context
-    const currentScope = ((context as any).currentScope as Clause) ?? emptyClause
-    const maps = currentScope.query(np).concat(context.query(np));                  // const np2 = np.copy({map : maps[0] ?? {}});
-
+    const maps = context.query(np) // TODO: intra-sentence anaphora resolution
     const interestingIds = getInterestingIds(maps);
-
-    // TMP (only) use context to pass around data about "currrent sentence", yuck! POSSIBLE BUGS!
-    (context as any).currentScope = np
-
-    const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x as Thing);
+    const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!)
 
     if (isAstPlural(ast)) { // if universal quantified, I don't care if there's no match
         return things
