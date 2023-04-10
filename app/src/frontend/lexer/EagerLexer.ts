@@ -10,10 +10,11 @@ export default class EagerLexer implements Lexer {
 
     constructor(readonly sourceCode: string, readonly context: Context) {
         this.words =
-            sourceCode
+            spaceOut(sourceCode, ['"', '.'])
                 .trim()
-                .split(/\s+|\./)
-                .map(s => !s ? '.' : s)
+                .split(/\s+/)
+
+        console.log(this.words)
 
         this.refreshTokens()
     }
@@ -46,5 +47,13 @@ export default class EagerLexer implements Lexer {
     get isEnd(): boolean {
         return this.pos >= this.tokens.length
     }
+
+}
+
+function spaceOut(sourceCode: string, specialChars: string[]) {
+
+    return sourceCode
+        .split('')
+        .reduce((a, c) => a + (specialChars.includes(c) ? ' ' + c + ' ' : c), '')
 
 }
