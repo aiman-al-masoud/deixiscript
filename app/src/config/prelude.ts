@@ -20,9 +20,9 @@ export const prelude: string =
             or nonsubconj 
             or disjunc 
             or pronoun 
-            or filler 
-            or keyword 
-            or except-word 
+            or then-keyword
+            or makro-keyword 
+            or except-keyword 
             or quote
   makro.
   

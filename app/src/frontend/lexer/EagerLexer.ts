@@ -9,12 +9,11 @@ export default class EagerLexer implements Lexer {
     protected _pos: number = 0
 
     constructor(readonly sourceCode: string, readonly context: Context) {
+
         this.words =
             spaceOut(sourceCode, ['"', '.'])
                 .trim()
                 .split(/\s+/)
-
-        console.log(this.words)
 
         this.refreshTokens()
     }
