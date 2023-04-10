@@ -90,7 +90,7 @@ export const prelude: string =
   makro 
     cs1 is subconj 
       then condition simple-sentence 
-      then filler 
+      then then-keyword
       then consequence simple-sentence
   makro.
 

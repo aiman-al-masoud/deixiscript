@@ -68,11 +68,17 @@ function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts)
 
 
     } else { // compare the right and left values
-
-
+        // console.log('must check condition!')
+        const subject = evalAst(context, ast.links?.subject!, args).at(0)
+        const predicate = evalAst(context, ast.links?.predicate!, args).at(0)
+        // console.log(subject, predicate)
+        const areEqual = subject?.toJs() === predicate?.toJs()
+        return areEqual && (!ast.links?.negation) ? [new NumberThing(1)] : []
     }
 
-    throw new Error('copula sentence!')
+    console.log('problem with copula sentence!')
+    return []
+    // throw new Error('copula sentence!')
 
     // const subjectId = args?.subject ?? getIncrementalId()
 
@@ -114,7 +120,18 @@ function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): 
 }
 
 function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
-    throw new Error('complex sentence!')
+    // throw new Error('complex sentence!')
+
+
+    if (ast.links?.subconj?.lexeme?.root === 'if') {
+
+        if (evalAst(context, ast.links.condition!, { ...args, sideEffects: false }).length) {
+            evalAst(context, ast.links.consequence!, { ...args, sideEffects: true })
+        }
+
+    }
+
+    return []
 }
 
 function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
