@@ -108,14 +108,28 @@ declared as an adjective, and is a noun by default. Fixed by allowing for zero o
 # Modify noun-phrase and verb-sentence
 ```
 makro 
-	noun-phrase is optional quantifier 
+	noun-phrase is 
+	optional quantifier 
 	then optional article 
 	then zero-or-more adjectives
-	then optional number 
+	then optional number
 	then one-or-more subject noun or pronoun 
 	then optional subclause 
 	then optional of-complement
-	then optional nonsubconj noun-phrase
+	then optional and-phrase
+	then optional math-expression
+makro.
+
+makro
+	and-phrase is nonsubconj then noun-phrase
+makro.
+
+makro 
+	addition is noun-phrase plus-operator noun-phrase
+makro.
+
+makro 
+	math-expression is addition
 makro.
 
 makro
@@ -199,6 +213,13 @@ sell {
 x is a house.
 x sells for 100001.
 
+~sell {
+	sold of the subject is false.
+}
+
+interrogative sell {
+	sell returns sold of house.
+}
 
 
 
