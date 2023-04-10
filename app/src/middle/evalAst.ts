@@ -29,8 +29,6 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
         return evalComplexSentence(context, ast, args)
     } else if (ast?.links?.nonsubconj) {
         return evalCompoundSentence(context, ast, args)
-    } else if (ast?.links?.quote) {
-        return evalString(context, ast, args)
     } else {
         return evalNounPhrase(context, ast, args)
     }
@@ -81,6 +79,10 @@ function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpt
 }
 
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
+
+    if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
+        return evalString(context, ast.links?.subject?.list[0])
+    }
 
     const np = nounPhraseToClause(ast, args)
 
@@ -164,6 +166,7 @@ function getInterestingIds(maps: Map[]): Id[] {
 }
 
 const getNumberOfDots = (id: Id) => id.split('.').length //-1
+
 
 function createThing(clause: Clause): Thing {
     const bases = clause.flatList().map(x => x.predicate?.referents?.[0]!)/* ONLY FIRST? */.filter(x => x)

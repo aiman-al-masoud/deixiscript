@@ -49,9 +49,9 @@ export const prelude: string =
     noun-phrase is optional quantifier 
       then optional article 
       then zero-or-more adjectives 
-      then zero-or-more subject noun or pronoun 
-      then optional subclause 
-      then zero-or-more complements 
+      then zero-or-more subject noun or pronoun or string
+      then optional subclause
+      then zero-or-more complements
   makro.
 
   makro 
