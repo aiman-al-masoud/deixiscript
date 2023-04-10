@@ -178,7 +178,7 @@ function createThing(clause: Clause): Thing {
     return getThing({ id, bases })
 }
 
-function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+function evalString(context: Context, ast?: AstNode): Thing[] {
     const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
     const y = x.join(' ')
     const z = parseNumber(y)
