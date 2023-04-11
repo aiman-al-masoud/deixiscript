@@ -8,13 +8,11 @@ function astToEdgeList(
     ast: AstNode,
     parentName?: string,
     edges: EdgeList = [],
-    childPrefix = 0,
-    partOfName = ''): EdgeList {
+): EdgeList {
 
     // !parent ? console.log(ast) : 0
 
-    const astName = ((partOfName ? partOfName + ':' : '') + (ast.role ?? ast.lexeme?.root ?? ast.type) + '_' + childPrefix).replaceAll('-', '_').replaceAll(':', '_aka_').replaceAll('"', "quote")
-    const newChildPrefix = parseInt(100 * Math.random() + '')
+    const astName = ((ast.role ?? ast.lexeme?.root ?? ast.type).replaceAll('-', '_').replaceAll(':', '_aka_').replaceAll('"', "quote")) + random()
 
     const additions: EdgeList = []
 
@@ -29,11 +27,14 @@ function astToEdgeList(
     if (ast.links) {
         return Object
             .entries(ast.links)
-            .flatMap(e => [...additions, ...astToEdgeList(e[1], astName, edges, newChildPrefix, e[0])])
+            .flatMap(e => {
+                const ezero = e[0].replaceAll('-', '_').replaceAll(':', '_aka_').replaceAll('"', "quote") + random()
+                return [...additions, [astName, ezero], ...astToEdgeList(e[1], ezero, edges)]
+            })
     }
 
     if (ast.list) {
-        const list = ast.list.flatMap(x => astToEdgeList(x, astName, edges, newChildPrefix))
+        const list = ast.list.flatMap(x => astToEdgeList(x, astName, edges))
         return [...additions, ...edges, [astName, list.toString().replaceAll(',', '')]]
     }
 
@@ -41,10 +42,15 @@ function astToEdgeList(
 }
 
 export function astToGraphViz(ast: AstNode) {
-    return uniq(astToEdgeList(ast)).map(x => x[0] + ' -> ' + x[1] + ' ;').reduce((a, b) => a + '\n' + b, '')
+    const edges = uniq(astToEdgeList(ast))
+    const labels = uniq(edges.flat()).map(x => x + '[label="' + x.replaceAll(/\d+/g, '') + '"' + '];')
+    return labels.concat(edges.map(x => x[0] + ' -> ' + x[1] + ' ;')).reduce((a, b) => a + '\n' + b, '')
 }
 
 function removeForbiddenChars(string: string, forbidden: { [x: string]: string }): string {
     return Object.entries(forbidden).reduce((a, b) => a.replaceAll(b[0], b[1]), string)
 }
 
+function random() {
+    return parseInt(1000 * Math.random() + '')
+}

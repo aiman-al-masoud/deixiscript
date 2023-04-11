@@ -21,7 +21,7 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            console.log(astToGraphViz(ast))
+            // console.log(astToGraphViz(ast))
             return evalAst(this.context, ast)
         }).flat()
     }
