@@ -1,16 +1,10 @@
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
-import { uniq } from "./uniq";
 
-
-type EdgeList = [string, string][]
-
-function astToEdgeList(
+export function astToEdgeList(
     ast: AstNode,
     parentName?: string,
     edges: EdgeList = [],
 ): EdgeList {
-
-    // !parent ? console.log(ast) : 0
 
     const astName = ((ast.role ?? ast.lexeme?.root ?? ast.type).replaceAll('-', '_').replaceAll(':', '_aka_').replaceAll('"', "quote")) + random()
 
@@ -39,16 +33,6 @@ function astToEdgeList(
     }
 
     return []
-}
-
-export function astToGraphViz(ast: AstNode) {
-    const edges = uniq(astToEdgeList(ast))
-    const labels = uniq(edges.flat()).map(x => x + '[label="' + x.replaceAll(/\d+/g, '') + '"' + '];')
-    return labels.concat(edges.map(x => x[0] + ' -> ' + x[1] + ' ;')).reduce((a, b) => a + '\n' + b, '')
-}
-
-function removeForbiddenChars(string: string, forbidden: { [x: string]: string }): string {
-    return Object.entries(forbidden).reduce((a, b) => a.replaceAll(b[0], b[1]), string)
 }
 
 function random() {

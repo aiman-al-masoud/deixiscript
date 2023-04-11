@@ -1,0 +1,1 @@
+type EdgeList = [string, string][]
