@@ -2,7 +2,7 @@ import { AstNode } from "../frontend/parser/interfaces/AstNode"
 import { astToEdgeList } from "./astToEdgeList"
 import { drawLine } from "./drawLine"
 import { drawNode } from "./drawNode"
-import { getPos } from "./getPos"
+import { getCoords } from "./getCoords"
 
 export function plotAst(context: CanvasRenderingContext2D, ast: AstNode) {
 
@@ -11,12 +11,12 @@ export function plotAst(context: CanvasRenderingContext2D, ast: AstNode) {
     const rect = context.canvas.getBoundingClientRect()
 
     const edges = astToEdgeList(ast)
-    const positions = getPos({ x: rect.x - rect.width / 2, y: rect.y }, edges)
+    const coords = getCoords({ x: rect.x - rect.width / 2, y: rect.y }, edges)
 
-    Object.entries(positions).forEach(e => {
+    Object.entries(coords).forEach(c => {
 
-        const name = e[0]
-        const pos = e[1]
+        const name = c[0]
+        const pos = c[1]
 
         drawNode(context, {
             x: pos.x,
@@ -31,8 +31,8 @@ export function plotAst(context: CanvasRenderingContext2D, ast: AstNode) {
 
     edges.forEach(e => {
 
-        const from = positions[e[0]]
-        const to = positions[e[1]]
+        const from = coords[e[0]]
+        const to = coords[e[1]]
 
         if (from && to) {
             drawLine(context, from, to)
