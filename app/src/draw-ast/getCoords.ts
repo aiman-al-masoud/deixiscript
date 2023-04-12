@@ -2,7 +2,7 @@
 export function getCoords(
     initialPos: Coordinate,
     data: EdgeList,
-    oldCoords: { [x: string]: Coordinate } = {}
+    oldCoords: { [x: string]: Coordinate } = {},
 ): { [x: string]: Coordinate } {
 
     const root = getRoot(data) // node w/out parents
