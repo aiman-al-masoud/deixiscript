@@ -1,16 +1,17 @@
 import { getContext } from "../backend/Context";
 import { Thing } from "../backend/Thing";
-import { plotAst } from "../draw-ast/plotAst";
 import { getParser } from "../frontend/parser/interfaces/Parser";
 import { evalAst } from "../middle/evalAst";
 import Brain from "./Brain";
+import { BrainListener } from "./BrainListener";
 
 
 export default class BasicBrain implements Brain {
 
     readonly context = getContext({ id: 'global' })
+    protected listeners: BrainListener[] = []
 
-    constructor(readonly args?: { canvasContext?: CanvasRenderingContext2D | null }) {
+    constructor() {
         this.execute(this.context.getPrelude())
     }
 
@@ -21,16 +22,24 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            if (this.args?.canvasContext) {
-                plotAst(this.args?.canvasContext, ast)
-            }
+            const results = evalAst(this.context, ast)
 
-            return evalAst(this.context, ast)
+            this.listeners.forEach(l => {
+                l.onUpdate(ast, results)
+            })
+
+            return results
         })
     }
 
     executeUnwrapped(natlang: string): object[] {
         return this.execute(natlang).map(x => x.toJs())
+    }
+
+    addListener(listener: BrainListener): void {
+        if (!this.listeners.includes(listener)) {
+            this.listeners.push(listener)
+        }
     }
 
 }

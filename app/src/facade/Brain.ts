@@ -1,15 +1,16 @@
 import { Thing } from "../backend/Thing"
 import BasicBrain from "./BasicBrain"
+import { BrainListener } from "./BrainListener"
 
 /**
- * The main facade controller.
+ * A facade to the Deixiscript interpreter.
  */
 export default interface Brain {
     execute(natlang: string): Thing[]
     executeUnwrapped(natlang: string): object[]
+    addListener(listener: BrainListener): void
 }
 
-
-export function getBrain(args?: { canvasContext?: CanvasRenderingContext2D | null }): Brain {
-    return new BasicBrain(args)
+export function getBrain(): Brain {
+    return new BasicBrain()
 }
