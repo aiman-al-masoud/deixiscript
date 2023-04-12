@@ -22,7 +22,11 @@ export default class BasicBrain implements Brain {
                 return []
             }
 
-            const results = evalAst(this.context, ast)
+            let results: Thing[] = []
+            try {
+                results = evalAst(this.context, ast)
+            } catch {
+            }
 
             this.listeners.forEach(l => {
                 l.onUpdate(ast, results)
