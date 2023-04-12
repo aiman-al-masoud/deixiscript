@@ -17,8 +17,9 @@ As well as:
 # Negation
 
 Negation as undoing any particular action, requires general solution when no ad
-hoc solution is available. At any edit action A1 on an object X, a new copy is made of X and is kept up to date, except for what happened at A1. When "A1 is negated" the copy is retrieved and it "replaces" (how?) the current object X.
-
+hoc solution is available. At any edit action A1 on an object X, a new copy is
+made of X and is kept up to date, except for what happened at A1. When "A1 is
+negated" the copy is retrieved and it "replaces" (how?) the current object X.
 
 # number literals
 
@@ -32,7 +33,6 @@ First/Last & Biggest/Smallest & Left/Right
 
 # Possessive Adjectives: x is a button and **its** color is red.
 
-
 # All kinds of Subordinate Clauses
 
 # Phatic words, fillers and partial parsing ("uhm", "errm", "ah", "oh", "please"...)
@@ -43,22 +43,29 @@ First/Last & Biggest/Smallest & Left/Right
 
 https://stackoverflow.com/questions/12484386/access-javascript-property-case-insensitively
 
-
 # Adjective as Noun BUG
 
 "x and y are buttons. color of x is yellow. y is red. yellow button."
 
 Returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't
-declared as an adjective, and is a noun by default. Fixed by allowing for zero or more nouns in a noun-phrase.
+declared as an adjective, and is a noun by default. Fixed by allowing for zero
+or more nouns in a noun-phrase.
 
 # Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs)?
 
 # [Expression Orientation](./expression-orientation.md)
 
-
 # two versions of each verb, one with side effects and one without? or remember verb application and "disapplication"? Or just overload and make the system "understand" whether it's the overload with or without side-effects ????
 
 # copy has to be overridden in each BaseThing subclass!
+
+# TODO Thing.equals() only logical equality / "structural equality"
+
+# TODO: copula sentence negation and copula sentence inheritance
+
+# 3 nested (ownership) objects break everything!
+
+# re-think Lexemes and "var names"
 
 # Modify noun-phrase and verb-sentence
 ```
@@ -99,93 +106,53 @@ makro
 makro.
 ```
 
-
 # how to define functions?
-have is the next n instructions
-have is the next instructions
-the scope is have
+
+have is the next n instructions have is the next instructions the scope is have
 the scope is back
-
-
 
 # string (and any atom) should be counted as a nounphrase
 
-
 # macros should also accept "raw strings" not just lexeme classes
 
-letter is "a" or "b" or "c" ...
-digit is "1" or "2" or "3" ...
-fullstop is "."
-quote is '"'
-character is letter or digit or fullstop or quote
-identifier is one-or-more letters then zero-or-more digits.
-number is one-or-more digits.
+letter is "a" or "b" or "c" ... digit is "1" or "2" or "3" ... fullstop is "."
+quote is '"' character is letter or digit or fullstop or quote identifier is
+one-or-more letters then zero-or-more digits. number is one-or-more digits.
 string is quote then zero-or-more characters except quote then quote
 
-cool idea, but currently hard to implement because tokens also have cardinality and may have referents.
+cool idea, but currently hard to implement because tokens also have cardinality
+and may have referents.
 
 # DO THIS
 
-increment is the next instructions.
-the value of the subject is itself + the by-complement.
+increment is the next instructions. the value of the subject is itself + the
+by-complement. increment ends.
+
+x is 1. x increments by 2.
+
+---
+
+increment: the value of the subject is itself + the by-complement. end.
+
+x is 1. x increments by 2.
+
+increment starts. the value of the subject is itself + the by-complement.
 increment ends.
-
-x is 1.
-x increments by 2.
-
----------
-
-increment:
-the value of the subject is itself + the by-complement.
-end.
-
-x is 1.
-x increments by 2.
-
-increment starts.
-the value of the subject is itself + the by-complement.
-increment ends.
-
 
 a house has a string address and a sold boolean.
 
-sell starts.
-sold of the subject is true.
-if for-complement is > 100000 then console logs "hey!".
-sell ends.
+sell starts. sold of the subject is true. if for-complement is > 100000 then
+console logs "hey!". sell ends.
 
-x is a house.
-x sells for 100001.
-
+x is a house. x sells for 100001.
 
 a house has a string address and a sold boolean.
 
-sell {
-	sold of the subject is true.
-	if for-complement is > 100000 then console logs "whoah!".
-}
+sell { sold of the subject is true. if for-complement is > 100000 then console
+logs "whoah!". }
 
-x is a house.
-x sells for 100001.
+x is a house. x sells for 100001.
 
-~sell {
-	sold of the subject is false.
-}
+~sell { sold of the subject is false. }
 
-interrogative sell {
-	sell returns sold of house.
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+interrogative sell { sell returns sold of house. }

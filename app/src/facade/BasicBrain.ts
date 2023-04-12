@@ -25,7 +25,8 @@ export default class BasicBrain implements Brain {
             let results: Thing[] = []
             try {
                 results = evalAst(this.context, ast)
-            } catch {
+            } catch (e) {
+                console.warn(e)
             }
 
             this.listeners.forEach(l => {

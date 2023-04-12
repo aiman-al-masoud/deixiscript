@@ -3,7 +3,7 @@ import { InstructionThing } from "../backend/InstructionThing";
 import { NumberThing } from "../backend/NumberThing";
 import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
-import { isPlural, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
+import { isPlural, makeLexeme } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
@@ -57,14 +57,36 @@ function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts)
             return rVal
         }
 
-        // if (ownerChain.length > 1) { // lVal is property of existing object
-        //     const aboutOwner = about(subject, ownerChain.at(-2)!)
-        //     const owners = getInterestingIds(context.query(aboutOwner), aboutOwner).map(id => context.get(id)!).filter(x => x)
-        //     lexemesWithReferent.forEach(x => owners.at(0)?.setLexeme(x))
-        //     const owner = owners.at(0)
-        //     rVal.forEach(x => owner?.set(x.getId(), x))
-        //     return rVal
-        // }
+        if (ownerChain.length > 1) { // lVal is property of existing object
+
+            // console.log('owner exists!')
+
+            const aboutOwner = about(subject, ownerChain.at(-2)!)
+            const owners = getInterestingIds(context.query(aboutOwner), aboutOwner).map(id => context.get(id)!).filter(x => x)
+            const owner = owners.at(0)
+
+            // console.log('owner=', owner, 'rVal=', rVal)
+
+            const rValClone = rVal.map(x => x.clone({ id: owner?.getId() + '.' + x.getId() }))
+            // console.log('rValClone=', rValClone)
+            const lexemesWithCloneReferent = lexemes.map(x => ({ ...x, referents: rValClone }))
+            lexemesWithCloneReferent.forEach(x => context.setLexeme(x))
+            rValClone.forEach(x => owner?.set(x.getId(), x))
+
+            return rValClone
+
+            // lexemesWithReferent.forEach(x => owner?.setLexeme(x))
+            // const lexemesWith
+            // const lexemesWithCloneReferent = 
+
+
+            // rVal.forEach(x => {
+            //     const xClone = x.clone({ id: owner?.getId() + '.' + x.getId() })
+            //     owner?.set(xClone.getId(), xClone)
+            // })
+
+            // return rVal
+        }
 
 
     } else { // compare the right and left values
@@ -148,10 +170,13 @@ function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Th
     }
 
     const np = nounPhraseToClause(ast, args)
+
+
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
+
     const interestingIds = getInterestingIds(maps, np)
     const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!)
-    // console.log(np.toString(), 'maps=', maps, 'interestingIds=', interestingIds)
+    // console.log('maps=', maps, 'interestingIds=', interestingIds, 'things=', things)
 
     if (isAstPlural(ast) || getAndPhrase(ast)) { // if universal quantified, I don't care if there's no match
         return things
@@ -236,8 +261,8 @@ function getInterestingIds(maps: Map[], clause: Clause): Id[] {
         return maps.flatMap(x => Object.values(x)) //all
     }
 
-    // .at(-1)
-    return maps.flatMap(m => m[oc.at(-1)!]) // 
+    // TODO: problem not returning everything because of getOwnershipChain()
+    return maps.flatMap(m => m[oc.at(-1)!]) // owned leaf
 
 }
 

@@ -21,9 +21,9 @@ export class BaseThing implements Thing {
         return this.id
     }
 
-    clone(): Thing {
+    clone(opts?: { id: Id }): Thing {
         return new BaseThing(
-            this.id, // clones have same id
+            opts?.id ?? this.id, // clones have same id
             this.bases.map(x => x.clone()),
             Object.entries(this.children).map(e => ({ [e[0]]: e[1].clone() })).reduce((a, b) => ({ ...a, ...b })),
         )
@@ -41,8 +41,8 @@ export class BaseThing implements Thing {
     get = (id: Id): Thing | undefined => {
         const parts = id.split('.')
         const p1 = parts[0]
-        const child = this.children[p1]
-        const res = parts.length > 1 ? child.get(parts.slice(1).join('.')) : child
+        const child = this.children[p1] ?? this.children[id]
+        const res = /* parts.length > 1 */ child.getId() !== id ? child.get(id /* parts.slice(1).join('.') */) : child
         return res ?? this.bases.find(x => x.get(id))
     }
 

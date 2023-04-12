@@ -9,7 +9,7 @@ import { Context } from "./Context"
 export interface Thing {
     get(id: Id): Thing | undefined
     set(id: Id, thing: Thing): void //thing.id???
-    clone(): Thing
+    clone(opts?: { id: Id }): Thing
     toJs(): object
     toClause(query?: Clause): Clause
     extends(thing: Thing): void
