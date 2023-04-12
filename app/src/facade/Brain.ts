@@ -10,6 +10,6 @@ export default interface Brain {
 }
 
 
-export function getBrain(): Brain {
-    return new BasicBrain()
+export function getBrain(args?: { canvasContext?: CanvasRenderingContext2D | null }): Brain {
+    return new BasicBrain(args)
 }
