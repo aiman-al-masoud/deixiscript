@@ -16,8 +16,8 @@ export function getCoords(
     const children = getChildrenOf(root, data)
     const rootPos = oldCoords[root] ?? initialPos
 
-    const yOffset = 30
-    const xOffset = 100
+    const yOffset = 50
+    const xOffset = 200
 
     const childCoords = children
         .map((c, i) => ({ [c]: { x: rootPos.x + i * nestingFactor * xOffset * (i % 2 == 0 ? 1 : -1), y: rootPos.y + yOffset * (nestingFactor + 1) } }))
