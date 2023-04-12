@@ -5,7 +5,7 @@ export function getCoords(
     oldCoords: { [x: string]: Coordinate } = {},
 ): { [x: string]: Coordinate } {
 
-    const root = getRoot(data) // node w/out parents
+    const root = getRoot(data) // node w/out a parent
 
     if (!root) {
         return oldCoords
