@@ -34,6 +34,7 @@ export default function main() {
     consoleOutput.style.height = '40vh'
     leftDiv.appendChild(consoleOutput)
 
+
     document.body.addEventListener('keydown', async e => {
 
         if (e.ctrlKey && e.code === 'Enter') {
