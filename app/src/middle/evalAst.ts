@@ -94,8 +94,6 @@ function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): 
 }
 
 function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
-    // throw new Error('complex sentence!')
-
 
     if (ast.links?.subconj?.lexeme?.root === 'if') {
 
