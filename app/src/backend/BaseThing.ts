@@ -49,6 +49,14 @@ export class BaseThing implements Thing {
     set(id: Id, thing: Thing): void {
         this.children[id] = thing
         this.setLexeme({ root: 'thing', type: 'noun', referents: [thing] }) // every thing is a thing
+
+        //TODO
+        if (typeof thing.toJs() === 'string') { //TODO make this polymorphic
+            this.setLexeme({ root: 'string', type: 'noun', referents: [thing] }) 
+        } else if (typeof thing.toJs() === 'number') {
+            this.setLexeme({ root: 'number', type: 'noun', referents: [thing] })
+        }
+
     }
 
     toJs(): object {
