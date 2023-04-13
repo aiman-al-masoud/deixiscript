@@ -55,7 +55,7 @@ or more nouns in a noun-phrase.
 
 # [Expression Orientation](./expression-orientation.md)
 
-# two versions of each verb, one with side effects and one without? or remember verb application and "disapplication"? Or just overload and make the system "understand" whether it's the overload with or without side-effects ????
+# two versions of each verb, one with side effects and one without? or remember verb application and "disapplication"? Or just overload and make the system "understand" whether it's the overload with or without side-effects ???? THREE versions: do, undo and check.
 
 # copy has to be overridden in each BaseThing subclass!
 
