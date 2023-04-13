@@ -101,7 +101,7 @@ export class BaseThing implements Thing {
         this.lexemes = this.lexemes.filter(x => rootOrToken !== x.token && rootOrToken !== x.root)
     }
 
-    equals(other: Thing): boolean {
+    equals(other: Thing): boolean { //TODO: implement nested structural equality
         return this.toJs() === other?.toJs()
     }
 }
