@@ -65,7 +65,7 @@ or more nouns in a noun-phrase.
 
 # 3 nested (ownership) objects break everything!
 
-# re-think Lexemes and "var names"
+# re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
 
 # Modify noun-phrase and verb-sentence
 ```
