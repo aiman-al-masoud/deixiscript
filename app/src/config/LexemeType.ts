@@ -25,5 +25,6 @@ export const lexemeTypes = stringLiterals(
   'makro-keyword',
   'except-keyword',
   'then-keyword',
+  'end-keyword',
   'quote',
 )

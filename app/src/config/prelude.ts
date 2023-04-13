@@ -24,30 +24,30 @@ export const prelude: string =
             or makro-keyword 
             or except-keyword 
             or quote
-  makro.
+  end.
   
   makro 
     quantifier is uniquant or existquant 
-  makro.
+  end.
 
   makro 
     article is indefart or defart 
-  makro.
+  end.
 
   makro 
     complement is preposition then object noun-phrase 
-  makro.
+  end.
 
   makro 
     copula-sentence is subject noun-phrase 
       then copula 
       then optional negation 
       then predicate noun-phrase 
-  makro.
+  end.
 
   makro
     and-phrase is nonsubconj then noun-phrase
-  makro.
+  end.
 
   makro 
     noun-phrase is optional quantifier 
@@ -57,51 +57,51 @@ export const prelude: string =
       then optional subclause
       then zero-or-more complements
       then optional and-phrase
-  makro.
+  end.
 
   makro 
     copulasubclause is relpron then copula then predicate noun-phrase 
-  makro.
+  end.
 
   makro 
     mverbsubclause is relpron then verb then object noun-phrase 
-  makro.
+  end.
 
   makro 
     subclause is copulasubclause or mverbsubclause 
-  makro.
+  end.
 
   makro 
     and-sentence is left copula-sentence or noun-phrase 
       then nonsubconj 
       then one-or-more right and-sentence or copula-sentence or noun-phrase
-  makro.
+  end.
 
   makro 
     verb-sentence is subject noun-phrase 
       then optional hverb then optional negation 
       then verb then optional object noun-phrase 
-  makro.
+  end.
 
   makro 
     simple-sentence is copula-sentence or verb-sentence 
-  makro.
+  end.
 
   makro 
-    cs1 is subconj 
+  complex-sentence-1 is subconj 
       then condition simple-sentence 
       then then-keyword
       then consequence simple-sentence
-  makro.
+  end.
 
   makro 
-    cs2 is consequence simple-sentence 
+    complex-sentence-2 is consequence simple-sentence 
       then subconj 
       then condition simple-sentence
-  makro.
+  end.
 
   makro 
     string is quote then one-or-more token any-lexeme except quote then quote 
-  makro.
+  end.
 
   `

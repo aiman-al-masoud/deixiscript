@@ -42,6 +42,8 @@ export const lexemes: Lexeme[] = [
     { root: 'then', type: 'then-keyword', referents: [] },
     { root: 'except', type: 'except-keyword', referents: [] },
     { root: 'makro', type: 'makro-keyword', referents: [] },
+    { root: 'end', type: 'end-keyword', referents: [] },
+    
 
 ]
 

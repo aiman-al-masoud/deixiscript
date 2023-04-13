@@ -20,7 +20,7 @@ export const syntaxes: SyntaxMap = {
         { type: ['noun'], number: 1, role: 'subject' },
         { type: ['copula'], number: 1 },
         { type: ['macropart'], number: '+' },
-        { type: ['makro-keyword'], number: 1 },
+        { type: ['end-keyword'], number: 1 },
     ],
     'macropart': [
         { type: ['adjective'], number: '*' },
