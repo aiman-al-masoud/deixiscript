@@ -90,9 +90,18 @@ export class BaseThing implements Thing {
 
     }
 
-    getLexeme = (rootOrToken: string): Lexeme | undefined => {
+    getLexemes = (rootOrToken: string): Lexeme[] => {
         return this.lexemes
             .filter(x => rootOrToken === x.token || rootOrToken === x.root)
-            .at(0)
+    }
+
+    removeLexeme(rootOrToken: string): void {
+        const garbage = this.getLexemes(rootOrToken).flatMap(x => x.referents)
+        garbage.forEach(x => delete this.children[x.getId()])
+        this.lexemes = this.lexemes.filter(x => rootOrToken !== x.token && rootOrToken !== x.root)
+    }
+
+    equals(other: Thing): boolean {
+        return this.toJs() === other?.toJs()
     }
 }

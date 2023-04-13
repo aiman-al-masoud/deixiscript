@@ -39,8 +39,8 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
 
 function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
-
     if (args?.sideEffects) { // assign the right value to the left value
+
         const subjectId = args?.subject ?? getIncrementalId()
         const subject = nounPhraseToClause(ast.links?.subject, { subject: subjectId }).simple
         const rVal = evalAst(context, ast.links?.predicate!, { subject: subjectId })
@@ -57,85 +57,37 @@ function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts)
             return rVal
         }
 
+        if (maps.length && ownerChain.length <= 1) { // reassignment
+            lexemes.forEach(x => context.removeLexeme(x.root))
+            lexemesWithReferent.forEach(x => context.setLexeme(x))
+            rVal.forEach(x => context.set(x.getId(), x))
+            return rVal
+        }
+
         if (ownerChain.length > 1) { // lVal is property of existing object
-
-            // console.log('owner exists!')
-
             const aboutOwner = about(subject, ownerChain.at(-2)!)
             const owners = getInterestingIds(context.query(aboutOwner), aboutOwner).map(id => context.get(id)!).filter(x => x)
             const owner = owners.at(0)
-
-            // console.log('owner=', owner, 'rVal=', rVal)
-
             const rValClone = rVal.map(x => x.clone({ id: owner?.getId() + '.' + x.getId() }))
-            // console.log('rValClone=', rValClone)
             const lexemesWithCloneReferent = lexemes.map(x => ({ ...x, referents: rValClone }))
             lexemesWithCloneReferent.forEach(x => context.setLexeme(x))
             rValClone.forEach(x => owner?.set(x.getId(), x))
-
             return rValClone
-
-            // lexemesWithReferent.forEach(x => owner?.setLexeme(x))
-            // const lexemesWith
-            // const lexemesWithCloneReferent = 
-
-
-            // rVal.forEach(x => {
-            //     const xClone = x.clone({ id: owner?.getId() + '.' + x.getId() })
-            //     owner?.set(xClone.getId(), xClone)
-            // })
-
-            // return rVal
         }
 
-
     } else { // compare the right and left values
-        // console.log('must check condition!')
         const subject = evalAst(context, ast.links?.subject!, args).at(0)
         const predicate = evalAst(context, ast.links?.predicate!, args).at(0)
-        // console.log(subject, predicate)
-        const areEqual = subject?.toJs() === predicate?.toJs()
-        return areEqual && (!ast.links?.negation) ? [new NumberThing(1)] : []
+        return subject?.equals(predicate!) && (!ast.links?.negation) ? [new NumberThing(1)] : []
     }
 
     console.log('problem with copula sentence!')
     return []
-    // throw new Error('copula sentence!')
-
-    // const subjectId = args?.subject ?? getIncrementalId()
-
-    // const maybeSubject = evalAst(context, ast?.links?.subject!)
-    // const subject = nounPhraseToClause(ast?.links?.subject)
-    // const predicate = evalAst(context, ast?.links?.predicate!, { subject: subjectId, autovivification: true, sideEffects: false })
-
-    // if (maybeSubject.length) {
-    //     return maybeSubject // TODO
-    // }
-
-    // const newThing = predicate[0]
-    // const lexemes: Lexeme[] = subject.flatList().filter(x => x.predicate).map(x => x.predicate!).map(x => ({ ...x, referents: [newThing] }))
-    // context.set(newThing.getId(), newThing)
-    // lexemes.forEach(x => context.setLexeme(x))
-
-    // return [newThing]
 }
 
 function about(clause: Clause, entity: Id) {
     return clause.flatList().filter(x => x.entities.includes(entity) && x.entities.length <= 1).reduce((a, b) => a.and(b), emptyClause).simple
 }
-
-// function getProximalOwner(context:Context, clause:Clause, ownerChain:Id[]){
-
-//     const aboutOwner = about(clause, ownerChain[0])
-//     const maps = context.query(aboutOwner)
-
-
-
-//     // console.log('ownerMaps=', maps)
-
-// }
-
-
 
 function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
@@ -159,8 +111,6 @@ function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts
 function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     throw new Error('compound sentence!')
 }
-
-
 
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 

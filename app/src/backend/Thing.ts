@@ -15,9 +15,11 @@ export interface Thing {
     extends(thing: Thing): void
     unextends(thing: Thing): void
     query(clause: Clause): Map[]
+    getLexemes(rootOrToken: string): Lexeme[]
+    removeLexeme(rootOrToken: string): void
     setLexeme(lexeme: Lexeme): void
-    getLexeme(rootOrToken: string): Lexeme | undefined
     getId(): Id
+    equals(other: Thing): boolean
 }
 
 export interface Verb extends Thing {

@@ -19,7 +19,7 @@ export default class EagerLexer implements Lexer {
     }
 
     refreshTokens() {
-        this.tokens = this.words.map(w => this.context.getLexeme(w) ?? makeLexeme({ root: w, token: w, type: 'noun', referents: [] }))
+        this.tokens = this.words.map(w => this.context.getLexemes(w).at(0) ?? makeLexeme({ root: w, token: w, type: 'noun', referents: [] }))
     }
 
     next(): void {
