@@ -17,11 +17,11 @@ export interface Clause {
     readonly simple: Clause
     copy(opts?: CopyOpts): Clause
     and(other: Clause, opts?: AndOpts): Clause
-    implies(conclusion: Clause): Clause
     flatList(): Clause[]
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
     query(clause: Clause, opts?: QueryOpts): Map[]
+    // implies(conclusion: Clause): Clause
 
     readonly predicate?: Lexeme
     readonly args?: Id[]

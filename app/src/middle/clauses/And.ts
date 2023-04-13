@@ -2,10 +2,10 @@ import { Clause, AndOpts, CopyOpts, emptyClause, QueryOpts } from "./Clause";
 import { Id } from "../id/Id";
 import { sortIds } from "../id/functions/sortIds";
 import { Map } from "../id/Map";
-import Imply from "./Imply";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
 import { solveMaps } from "./functions/solveMaps";
+// import Imply from "./Imply";
 
 export default class And implements Clause {
 
@@ -40,7 +40,6 @@ export default class And implements Clause {
         return this.negated ? `not${yes}` : yes
     }
 
-    implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
     ownedBy = (id: Id): Id[] => this.clause1.ownedBy(id).concat(this.clause2.ownedBy(id))
     ownersOf = (id: Id): Id[] => this.clause1.ownersOf(id).concat(this.clause2.ownersOf(id))
 
@@ -85,7 +84,8 @@ export default class And implements Clause {
         }
 
         return this.copy({ clause1: c1, clause2: c2 })
-
     }
+
+    // implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
 
 }
