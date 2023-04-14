@@ -123,3 +123,21 @@ x is a house. x sells for 100001.
 ~sell { sold of the subject is false. }
 
 interrogative sell { sell returns sold of house. }
+
+
+# grammar
+
+work on a framework to define complement-related syntax/morphology across different languages using a basic set of "'case' markers" that can be used to extract info back from the parsed AST independently of syntax.
+
+# grammatical cases
+* nominativo ---> subject
+* accusativo/oggetto ---> object
+* genitivo (of, saxon-s) ---> owner
+* dativo (to) ---> receiver
+* ablativo (from) ---> origin
+* stato-in-luogo (in/on/at) ---> location
+* strumentale (by) ---> means
+* compagnia (with) ---> companion
+
+... w/ corresponding prepositions or case markings.
+
