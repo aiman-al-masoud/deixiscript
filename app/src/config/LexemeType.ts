@@ -18,9 +18,10 @@ export const lexemeTypes = stringLiterals(
   'negation',
   'noun',
   'preposition',
+  'genitive-particle',
   'subconj',
-  'nonsubconj', // and ...
-  'disjunc', // or, but, however ...
+  'nonsubconj', // and
+  'disjunc', // or
   'pronoun',
   'makro-keyword',
   'except-keyword',

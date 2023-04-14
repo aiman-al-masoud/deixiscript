@@ -119,7 +119,6 @@ function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Th
 
     const np = nounPhraseToClause(ast, args)
 
-
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
 
     const interestingIds = getInterestingIds(maps, np)
@@ -144,11 +143,13 @@ function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const subjectId = args?.subject ?? getIncrementalId()
     const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
-    const complements = Object.values(ast?.links ?? {}).filter(x => x.list).flatMap(x => x.list!).filter(x => x.links?.preposition).map(x => complementToClause(x, { subject: subjectId, autovivification: false, sideEffects: false })).reduce((a, b) => a.and(b), emptyClause)
+    const genitiveComplement = Object.values(ast?.links ?? {}).filter(x => x.links?.owner).at(0)
+    const genitiveComplementClause = genitiveToClause(genitiveComplement, { subject: subjectId, autovivification: false, sideEffects: false })
+
     const andPhrase = evalAndPhrase(getAndPhrase(ast), args)
     //TODO: relative clauses
 
-    return adjectives.and(nouns).and(complements).and(andPhrase)
+    return adjectives.and(nouns).and(genitiveComplementClause).and(andPhrase)
 }
 
 function getAndPhrase(np?: AstNode): AstNode | undefined {
@@ -164,15 +165,25 @@ function evalAndPhrase(andPhrase?: AstNode, args?: ToClauseOpts) {
     return nounPhraseToClause((andPhrase?.links as any)?.['noun-phrase']/* TODO! */, /* args */) // maybe problem if multiple things have same id, query is not gonna find them
 }
 
-function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+function genitiveToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
 
+    if (!ast) {
+        return emptyClause
+    }
+
+    const ownedId = args?.subject!
+    const ownerId = getIncrementalId()
+    const genitiveParticle = ast?.links?.["genitive-particle"]?.lexeme
+    const owner = nounPhraseToClause(ast?.links?.owner, { subject: ownerId, autovivification: false, sideEffects: false })
+    return clauseOf(genitiveParticle!, ownedId, ownerId).and(owner)
+}
+
+function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     const subjectId = args?.subject!
     const objectId = getIncrementalId()
     const preposition = ast?.links?.preposition?.lexeme!
     const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false, sideEffects: false })
-
     return clauseOf(preposition, subjectId, objectId).and(object)
-
 }
 
 function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {

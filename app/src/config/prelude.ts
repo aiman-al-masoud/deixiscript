@@ -49,13 +49,17 @@ export const prelude: string =
     and-phrase is nonsubconj then noun-phrase
   end.
 
+  makro
+    genitive-complement is genitive-particle then owner noun-phrase
+  end.
+
   makro 
     noun-phrase is optional quantifier 
       then optional article 
       then zero-or-more adjectives 
       then zero-or-more subject noun or pronoun or string
       then optional subclause
-      then zero-or-more complements
+      then optional genitive-complement
       then optional and-phrase
   end.
 
@@ -79,8 +83,11 @@ export const prelude: string =
 
   makro 
     verb-sentence is subject noun-phrase 
-      then optional hverb then optional negation 
-      then verb then optional object noun-phrase 
+      then optional hverb 
+      then optional negation 
+      then verb 
+      then optional object noun-phrase
+      then zero-or-more complements
   end.
 
   makro 

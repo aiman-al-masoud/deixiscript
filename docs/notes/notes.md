@@ -59,13 +59,15 @@ or more nouns in a noun-phrase.
 
 # copy has to be overridden in each BaseThing subclass!
 
-# TODO Thing.equals() only logical equality / "structural equality"
+# Thing.equals() only logical equality / "structural equality"
 
-# TODO: copula sentence negation and copula sentence inheritance
+# copula sentence negation and copula sentence inheritance
 
 # 3 nested (ownership) objects break everything!
 
 # re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
+
+# complements on copula sentence as well "x is of y"
 
 # Modify noun-phrase and verb-sentence
 ```

@@ -16,4 +16,5 @@ export type Role = 'subject'
     | 'consequence'
     | 'left'
     | 'right'
+    | 'owner'
     

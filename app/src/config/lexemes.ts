@@ -14,6 +14,7 @@ export const lexemes: Lexeme[] = [
     { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
     { root: 'zero-or-more', type: 'adjective', cardinality: '*', referents: [] },
 
+    // logical roles of a NP to abstract away word order
     { root: 'subject', type: 'adjective', referents: [] },
     { root: 'predicate', type: 'adjective', referents: [] },
     { root: 'object', type: 'adjective', referents: [] },
@@ -22,6 +23,7 @@ export const lexemes: Lexeme[] = [
     { root: 'condition', type: 'adjective', referents: [] },
     { root: 'consequence', type: 'adjective', referents: [] },
     { root: 'token', type: 'adjective', referents: [] },
+    { root: 'owner', type: 'adjective', referents: [] },
 
     { root: 'or', type: 'disjunc', referents: [] },
     { root: 'and', type: 'nonsubconj', referents: [] },
@@ -32,7 +34,7 @@ export const lexemes: Lexeme[] = [
     { root: 'when', type: 'subconj', referents: [] },
     { root: 'every', type: 'uniquant', referents: [] },
     { root: 'any', type: 'uniquant', referents: [] },
-    { root: 'of', type: 'preposition', referents: [] },
+    { root: 'of', type: 'genitive-particle', referents: [] },
     { root: 'that', type: 'relpron', referents: [] },
     { root: 'it', type: 'pronoun', referents: [] },
 
@@ -43,7 +45,10 @@ export const lexemes: Lexeme[] = [
     { root: 'except', type: 'except-keyword', referents: [] },
     { root: 'makro', type: 'makro-keyword', referents: [] },
     { root: 'end', type: 'end-keyword', referents: [] },
-    
+
+
+    { root: 'to', type: 'preposition', referents: [] },
+    { root: 'on', type: 'preposition', referents: [] },
 
 ]
 
