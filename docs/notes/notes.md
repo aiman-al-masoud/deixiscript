@@ -69,44 +69,9 @@ or more nouns in a noun-phrase.
 
 # complements on copula sentence as well "x is of y"
 
-# Modify noun-phrase and verb-sentence
-```
-makro 
-	noun-phrase is 
-	optional quantifier 
-	then optional article 
-	then zero-or-more adjectives
-	then optional number
-	then one-or-more subject noun or pronoun 
-	then optional subclause 
-	then optional of-complement
-	then optional and-phrase
-	then optional math-expression
-makro.
+# math expressions
 
-makro
-	and-phrase is nonsubconj then noun-phrase
-makro.
-
-makro 
-	addition is noun-phrase plus-operator noun-phrase
-makro.
-
-makro 
-	math-expression is addition
-makro.
-
-makro
-    of-complement is of-preposition then owner noun-phrase
-makro
-
-makro 
-    verb-sentence is subject noun-phrase 
-    then optional hverb then optional negation 
-    then verb then optional object noun-phrase
-    then zero-or-more complements
-makro.
-```
+# number adjectives on noun phrases
 
 # how to define functions?
 
