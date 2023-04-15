@@ -14,16 +14,19 @@ export const lexemes: Lexeme[] = [
     { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
     { root: 'zero-or-more', type: 'adjective', cardinality: '*', referents: [] },
 
-    // logical roles of a NP to abstract away word order
+    // logical roles of a constituent to abstract away word order
     { root: 'subject', type: 'adjective', referents: [] },
     { root: 'predicate', type: 'adjective', referents: [] },
     { root: 'object', type: 'adjective', referents: [] },
-    { root: 'left', type: 'adjective', referents: [] },
-    { root: 'right', type: 'adjective', referents: [] },
     { root: 'condition', type: 'adjective', referents: [] },
     { root: 'consequence', type: 'adjective', referents: [] },
-    { root: 'token', type: 'adjective', referents: [] },
     { root: 'owner', type: 'adjective', referents: [] },
+    { root: 'receiver', type: 'adjective', referents: [] },
+    { root: 'origin', type: 'adjective', referents: [] },
+    { root: 'location', type: 'adjective', referents: [] },
+    { root: 'instrument', type: 'adjective', referents: [] }, //means
+    { root: 'companion', type: 'adjective', referents: [] },
+
 
     { root: 'or', type: 'disjunc', referents: [] },
     { root: 'and', type: 'nonsubconj', referents: [] },
@@ -47,8 +50,15 @@ export const lexemes: Lexeme[] = [
 
 
     { root: 'of', type: 'genitive-particle', referents: [] },
-    { root: 'to', type: 'preposition', referents: [] },
-    { root: 'on', type: 'preposition', referents: [] },
+    { root: 'to', type: 'dative-particle', referents: [] },
+    { root: 'from', type: 'ablative-particle', referents: [] },
+    { root: 'on', type: 'locative-particle', referents: [] },
+    { root: 'in', type: 'locative-particle', referents: [] },
+    { root: 'at', type: 'locative-particle', referents: [] },
+    { root: 'by', type: 'instrumental-particle', referents: [] },
+    { root: 'with', type: 'comitative-particle', referents: [] },
+
+
 
 ]
 

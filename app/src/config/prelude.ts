@@ -34,8 +34,38 @@ export const prelude: string =
     article is indefart or defart 
   end.
 
+  makro
+    genitive-complement is genitive-particle then owner noun-phrase
+  end.
+
+  makro
+    dative-complement is dative-particle then receiver noun-phrase
+  end.
+
+  makro
+    ablative-complement is ablative-particle then origin noun-phrase
+  end.
+
+  makro
+    locative-complement is locative-particle then location noun-phrase
+  end.
+
+  makro
+    instrumental-complement is instrumental-particle then instrument noun-phrase
+  end.
+
+  makro
+    comitative-complement is comitative-particle then companion noun-phrase
+  end.
+
   makro 
-    complement is preposition then object noun-phrase 
+    complement is 
+    genitive-complement or 
+    dative-complement or
+    ablative-complement or
+    locative-complement or
+    instrumental-complement or
+    comitative-complement
   end.
 
   makro 
@@ -47,10 +77,6 @@ export const prelude: string =
 
   makro
     and-phrase is nonsubconj then noun-phrase
-  end.
-
-  makro
-    genitive-complement is genitive-particle then owner noun-phrase
   end.
 
   makro 
@@ -74,7 +100,7 @@ export const prelude: string =
   makro 
     subclause is copulasubclause or mverbsubclause 
   end.
-  
+
   makro 
     verb-sentence is subject noun-phrase 
       then optional hverb 
@@ -102,7 +128,7 @@ export const prelude: string =
   end.
 
   makro 
-    string is quote then one-or-more token any-lexeme except quote then quote 
+    string is quote then one-or-more any-lexeme except quote then quote 
   end.
 
   `

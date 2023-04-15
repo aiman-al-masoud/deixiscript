@@ -14,7 +14,5 @@ export type Role = 'subject'
     | 'predicate'
     | 'condition'
     | 'consequence'
-    | 'left'
-    | 'right'
     | 'owner'
     
