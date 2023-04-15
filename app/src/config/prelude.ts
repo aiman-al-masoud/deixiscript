@@ -74,13 +74,7 @@ export const prelude: string =
   makro 
     subclause is copulasubclause or mverbsubclause 
   end.
-
-  makro 
-    and-sentence is left copula-sentence or noun-phrase 
-      then nonsubconj 
-      then one-or-more right and-sentence or copula-sentence or noun-phrase
-  end.
-
+  
   makro 
     verb-sentence is subject noun-phrase 
       then optional hverb 
