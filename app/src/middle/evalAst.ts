@@ -91,6 +91,7 @@ function about(clause: Clause, entity: Id) {
 
 function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
     // const complements = (ast.links as any)?.['complement']
+    console.log(ast)
     throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
 }
 
