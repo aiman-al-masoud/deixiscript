@@ -180,13 +180,13 @@ function genitiveToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return clauseOf(genitiveParticle!, ownedId, ownerId).and(owner)
 }
 
-function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
-    const subjectId = args?.subject!
-    const objectId = getIncrementalId()
-    const preposition = ast?.links?.preposition?.lexeme!
-    const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false, sideEffects: false })
-    return clauseOf(preposition, subjectId, objectId).and(object)
-}
+// function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+//     const subjectId = args?.subject!
+//     const objectId = getIncrementalId()
+//     const preposition = ast?.links?.preposition?.lexeme!
+//     const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false, sideEffects: false })
+//     return clauseOf(preposition, subjectId, objectId).and(object)
+// }
 
 function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return emptyClause //TODO!
