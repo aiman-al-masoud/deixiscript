@@ -8,11 +8,7 @@ export const lexemes: Lexeme[] = [
     { root: 'do', type: 'hverb', referents: [] },
     { root: 'do', type: 'hverb', token: 'does', cardinality: 1, referents: [] },
     { root: 'have', type: 'verb', referents: [] },//test
-
     { root: 'not', type: 'negation', referents: [] },
-    { root: 'optional', type: 'adjective', cardinality: '1|0', referents: [] },
-    { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
-    { root: 'zero-or-more', type: 'adjective', cardinality: '*', referents: [] },
 
     // logical roles of a constituent to abstract away word order
     { root: 'subject', type: 'adjective', referents: [] },
@@ -26,6 +22,11 @@ export const lexemes: Lexeme[] = [
     { root: 'location', type: 'adjective', referents: [] },
     { root: 'instrument', type: 'adjective', referents: [] }, //means
     { root: 'companion', type: 'adjective', referents: [] },
+
+    // number of times a constituent can appear
+    { root: 'optional', type: 'adjective', cardinality: '1|0', referents: [] },
+    { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
+    { root: 'zero-or-more', type: 'adjective', cardinality: '*', referents: [] },
 
 
     { root: 'or', type: 'disjunc', referents: [] },
