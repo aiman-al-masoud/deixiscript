@@ -6,7 +6,7 @@ export function astToEdgeList(
     edges: EdgeList = [],
 ): EdgeList {
 
-    const astName = ((ast.role ?? ast.lexeme?.root ?? ast.type).replaceAll('-', '_').replaceAll(':', '_aka_').replaceAll('"', "quote")) + random()
+    const astName = (ast.role ?? ast.lexeme?.root ?? ast.type) + random()
 
     const additions: EdgeList = []
 
@@ -22,14 +22,14 @@ export function astToEdgeList(
         return Object
             .entries(ast.links)
             .flatMap(e => {
-                const ezero = e[0].replaceAll('-', '_').replaceAll(':', '_aka_').replaceAll('"', "quote") + random()
+                const ezero = e[0] + random()
                 return [...additions, [astName, ezero], ...astToEdgeList(e[1], ezero, edges)]
             })
     }
 
     if (ast.list) {
         const list = ast.list.flatMap(x => astToEdgeList(x, astName, edges))
-        return [...additions, ...edges, [astName, list.toString().replaceAll(',', '')]]
+        return [...additions, ...edges, ...list]
     }
 
     return []
