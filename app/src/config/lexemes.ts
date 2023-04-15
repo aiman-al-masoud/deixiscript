@@ -34,7 +34,6 @@ export const lexemes: Lexeme[] = [
     { root: 'when', type: 'subconj', referents: [] },
     { root: 'every', type: 'uniquant', referents: [] },
     { root: 'any', type: 'uniquant', referents: [] },
-    { root: 'of', type: 'genitive-particle', referents: [] },
     { root: 'that', type: 'relpron', referents: [] },
     { root: 'it', type: 'pronoun', referents: [] },
 
@@ -47,6 +46,7 @@ export const lexemes: Lexeme[] = [
     { root: 'end', type: 'end-keyword', referents: [] },
 
 
+    { root: 'of', type: 'genitive-particle', referents: [] },
     { root: 'to', type: 'preposition', referents: [] },
     { root: 'on', type: 'preposition', referents: [] },
 
