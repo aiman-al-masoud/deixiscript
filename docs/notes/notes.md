@@ -125,6 +125,14 @@ x is a house. x sells for 100001.
 interrogative sell { sell returns sold of house. }
 
 
+# add numbers to noun-phrase
+# add "next"/"previous" special keywords to noun-phrase
+
+increment covers the next 3 instructions
+increment is the next 3 instructions
+
+
+
 # grammar
 
 work on a framework to define complement-related syntax/morphology across different languages using a basic set of "'case' markers" that can be used to extract info back from the parsed AST independently of syntax.
