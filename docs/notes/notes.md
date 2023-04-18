@@ -92,44 +92,40 @@ and may have referents.
 
 # DO THIS
 
-increment is the next instructions. the value of the subject is itself + the
-by-complement. increment ends.
-
-x is 1. x increments by 2.
-
----
-
-increment: the value of the subject is itself + the by-complement. end.
-
-x is 1. x increments by 2.
-
-increment starts. the value of the subject is itself + the by-complement.
-increment ends.
-
 a house has a string address and a sold boolean.
 
-sell starts. sold of the subject is true. if for-complement is > 100000 then
-console logs "hey!". sell ends.
-
-x is a house. x sells for 100001.
-
-a house has a string address and a sold boolean.
-
-sell { sold of the subject is true. if for-complement is > 100000 then console
-logs "whoah!". }
-
-x is a house. x sells for 100001.
+sold of the subject is true. 
+if for-complement is > 100000 then you log "expensive!".
+sell is the previous "2" instructions.
+x is a house. 
+x sells for 100001.
 
 ~sell { sold of the subject is false. }
-
-interrogative sell { sell returns sold of house. }
-
+?sell { you return sold of house. }
 
 # add numbers to noun-phrase
 # add "next"/"previous" special keywords to noun-phrase
 
+# list comprehensions 
+* 2 + every number
+* 2 + every number of y
+
+# redefining verbs: problem if you put "or verb" in np def because it recognz verb sentences as nps!!!!
+
 increment covers the next 3 instructions
 increment is the next 3 instructions
+
+# last edited
+prelude
+LexemeType
+lexemes
+Thing
+BasicBrain
+VerbThing
+evalAst
+
+
+
 
 
 

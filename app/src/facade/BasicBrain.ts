@@ -1,5 +1,6 @@
 import { getContext } from "../backend/Context";
 import { Thing } from "../backend/Thing";
+import { logVerb } from "../backend/VerbThing";
 import { getParser } from "../frontend/parser/interfaces/Parser";
 import { evalAst } from "../middle/evalAst";
 import Brain from "./Brain";
@@ -13,6 +14,11 @@ export default class BasicBrain implements Brain {
 
     constructor() {
         this.execute(this.context.getPrelude())
+        this.context.set(logVerb.getId(), logVerb)
+        this.context.setLexeme({root : 'log', type : 'verb', referents : [logVerb]})
+
+
+
     }
 
     execute(natlang: string): Thing[] {

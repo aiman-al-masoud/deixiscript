@@ -28,6 +28,9 @@ export const lexemes: Lexeme[] = [
     { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
     { root: 'zero-or-more', type: 'adjective', cardinality: '*', referents: [] },
 
+    // for use in a part of noun-phrase
+    { root: 'next', type: 'next-keyword', referents: [] },
+    { root: 'previous', type: 'previous-keyword', referents: [] },
 
     { root: 'or', type: 'disjunc', referents: [] },
     { root: 'and', type: 'nonsubconj', referents: [] },

@@ -3,7 +3,6 @@ import { Clause } from "../middle/clauses/Clause"
 import { Id } from "../middle/id/Id"
 import { Map } from "../middle/id/Map"
 import { BaseThing } from "./BaseThing"
-import { Context } from "./Context"
 
 
 export interface Thing {
@@ -22,15 +21,7 @@ export interface Thing {
     equals(other: Thing): boolean
 }
 
-export interface Verb extends Thing {
-    run(context: Context, args: { [role in VerbArgs]: Thing }): Thing[] // called directly in evalVerbSentence()
-}
 
 export function getThing(args: { id: Id, bases: Thing[] }) {
     return new BaseThing(args.id, args.bases)
 }
-
-type VerbArgs = 'subject'
-    | 'directObject'
-    | 'indirectObject'
-    // ...

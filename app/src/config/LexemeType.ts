@@ -36,4 +36,7 @@ export const lexemeTypes = stringLiterals(
   'instrumental-particle',
   'comitative-particle',
 
+  'next-keyword',
+  'previous-keyword',
+
 )

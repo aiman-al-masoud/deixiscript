@@ -79,10 +79,15 @@ export const prelude: string =
     and-phrase is nonsubconj then noun-phrase
   end.
 
+  makro
+    limit-phrase is next-keyword or previous-keyword then optional string
+  end.
+
   makro 
     noun-phrase is optional quantifier 
       then optional article 
-      then zero-or-more adjectives 
+      then zero-or-more adjectives
+      then optional limit-phrase 
       then zero-or-more subject noun or pronoun or string
       then optional subclause
       then optional genitive-complement

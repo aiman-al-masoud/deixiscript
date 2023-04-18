@@ -3,7 +3,8 @@ import { InstructionThing } from "../backend/InstructionThing";
 import { NumberThing } from "../backend/NumberThing";
 import { StringThing } from "../backend/StringThing";
 import { Thing, getThing } from "../backend/Thing";
-import { isPlural, makeLexeme } from "../frontend/lexer/Lexeme";
+import { VerbThing } from "../backend/VerbThing";
+import { isPlural, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
 import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
@@ -49,6 +50,15 @@ function evalCopulaSentence(context: Context, ast: AstNode, args?: ToClauseOpts)
         const lexemes = subject.flatList().map(x => x.predicate!).filter(x => x)
         const lexemesWithReferent = lexemes.map(x => ({ ...x, referents: rVal }))
 
+        if (rVal.every(x => x instanceof InstructionThing)) {
+            // console.log('making verb!')
+            const verb = new VerbThing(getIncrementalId(), rVal as InstructionThing[])
+            context.set(verb.getId(), verb)
+            const lexemesWithReferent: Lexeme[] = lexemes.map(x => ({ ...x, referents: [verb], type: 'verb' }))
+            lexemesWithReferent.forEach(x => context.setLexeme(x))
+            return [verb]
+        }
+
         // console.log('subject=', subject.toString(), 'rVal=', rVal, 'ownerChain=', ownerChain, 'maps=', maps)
 
         if (!maps.length && ownerChain.length <= 1) { // lVal is completely new
@@ -90,9 +100,25 @@ function about(clause: Clause, entity: Id) {
 }
 
 function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
-    // const complements = (ast.links as any)?.['complement']
-    console.log(ast)
-    throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
+
+    const verb = ast?.links?.verb?.lexeme?.referents.at(0) as VerbThing | undefined
+    const complements = (ast.links as any)?.['complement'] ?? [] as AstNode[]
+    const subject = ast.links?.subject
+    const object = evalAst(context, ast.links?.object!)
+
+    // console.log(object)
+
+    // console.log('verb=', verb)
+    // console.log('subject=', subject)
+    // console.log('object=', object)
+    // console.log('complements=', complements)
+    
+    // return object.flatMap(o => verb?.run(context, { object: o, subject: {} as Thing }) ?? [])
+    
+    object.forEach(o=>verb?.run(context, {object:o, subject : {} as Thing}))
+    return []
+
+    // throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
 }
 
 function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
@@ -114,21 +140,24 @@ function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpt
 
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
+    // if ((ast.links as any)['limit-phrase']) console.log( (ast.links as any)['limit-phrase'] )
 
     if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
         return evalString(context, ast.links?.subject?.list[0], args)
     }
 
     const np = nounPhraseToClause(ast, args)
-
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
 
     const interestingIds = getInterestingIds(maps, np)
-    const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!)
-    // console.log('maps=', maps, 'interestingIds=', interestingIds, 'things=', things)
+    const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
 
     if (isAstPlural(ast) || getAndPhrase(ast)) { // if universal quantified, I don't care if there's no match
-        return things
+
+        const limit = (ast.links as any)['limit-phrase']?.links.string//TODO!
+        const limitNum: number = evalString(context, limit, args).at(0)?.toJs() as any
+
+        return things.slice(0, limitNum ?? things.length)
     }
 
     if (things.length) { // non-plural, return single existing Thing
@@ -237,6 +266,7 @@ function createThing(clause: Clause): Thing {
 }
 
 function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing[] {
+
     const x = Object.values({ ...ast?.links, 'quote': undefined }).filter(x => x).at(0)?.list?.map(x => x.lexeme?.token) ?? []
     const y = x.join(' ')
     const z = parseNumber(y)
