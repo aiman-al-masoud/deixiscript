@@ -133,6 +133,10 @@ evalAst
 
 work on a framework to define complement-related syntax/morphology across different languages using a basic set of "'case' markers" that can be used to extract info back from the parsed AST independently of syntax.
 
+https://en.wikipedia.org/wiki/List_of_grammatical_cases
+
+maybe make "for" dative.
+
 # grammatical cases
 * nominativo ---> subject
 * accusativo/oggetto ---> object
