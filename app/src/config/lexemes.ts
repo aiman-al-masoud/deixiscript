@@ -23,6 +23,9 @@ export const lexemes: Lexeme[] = [
     { root: 'instrument', type: 'adjective', referents: [] }, //means
     { root: 'companion', type: 'adjective', referents: [] },
 
+    // role of math operator
+    { root: 'operator', type: 'adjective', referents: [] },
+
     // number of times a constituent can appear
     { root: 'optional', type: 'adjective', cardinality: '1|0', referents: [] },
     { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
@@ -62,6 +65,7 @@ export const lexemes: Lexeme[] = [
     { root: 'by', type: 'instrumental-particle', referents: [] },
     { root: 'with', type: 'comitative-particle', referents: [] },
 
+    { root: '+', type: 'plus-operator', referents: [] },
 
 
 ]

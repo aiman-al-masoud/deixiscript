@@ -15,4 +15,5 @@ export type Role = 'subject'
     | 'condition'
     | 'consequence'
     | 'owner'
+    | 'operator'
     

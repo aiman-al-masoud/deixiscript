@@ -83,12 +83,17 @@ export const prelude: string =
     limit-phrase is next-keyword or previous-keyword then optional string
   end.
 
+  makro
+    math-expression is operator plus-operator then noun-phrase
+  end.
+
   makro 
     noun-phrase is optional quantifier 
       then optional article 
       then zero-or-more adjectives
       then optional limit-phrase 
       then zero-or-more subject noun or pronoun or string
+      then optional math-expression
       then optional subclause
       then optional genitive-complement
       then optional and-phrase

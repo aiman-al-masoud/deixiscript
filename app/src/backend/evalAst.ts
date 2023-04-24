@@ -106,20 +106,24 @@ function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): 
 
     const verb = ast?.links?.verb?.lexeme?.referents.at(0) as VerbThing | undefined
     const complements = (ast.links as any)?.['complement'] ?? [] as AstNode[]
-    const subject = ast.links?.subject
-    const object = evalAst(context, ast.links?.object!)
-
-    // console.log(object)
+    const subject = ast.links?.subject ? evalAst(context, ast.links?.subject).at(0) : undefined
+    const object =  ast.links?.object ? evalAst(context, ast.links?.object).at(0) : undefined
 
     // console.log('verb=', verb)
     // console.log('subject=', subject)
     // console.log('object=', object)
     // console.log('complements=', complements)
 
+    if (!verb){
+        throw new Error('no such verb '+ ast?.links?.verb?.lexeme?.root)
+    }
+
+    return verb.run(context, { subject : subject ?? context, object : object ?? context})
+
     // return object.flatMap(o => verb?.run(context, { object: o, subject: {} as Thing }) ?? [])
 
-    object.forEach(o => verb?.run(context, { object: o, subject: {} as Thing }))
-    return []
+    // objects.forEach(o => verb?.run(context, { object: o, subject: {} as Thing }))
+    // return []
 }
 
 function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
@@ -141,24 +145,34 @@ function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpt
 
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
-    // if ((ast.links as any)['limit-phrase']) console.log( (ast.links as any)['limit-phrase'] )
-
-    if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
-        return evalString(context, ast.links?.subject?.list[0], args)
-    }
-
     const np = nounPhraseToClause(ast, args)
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
 
     const interestingIds = getInterestingIds(maps, np)
-    const things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
+
+    let things: Thing[]
+
+    if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
+        things = evalString(context, ast.links?.subject?.list[0], args)
+    } else {
+        things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
+    }
+
+    const mathExpression = (ast.links as any)['math-expression'] as AstNode | undefined
+
+    if (mathExpression) {
+        const left = things
+        const op = mathExpression.links?.operator?.lexeme
+        const right = evalAst(context, (mathExpression.links as any)['noun-phrase'])
+        return evalOperation(left, right, op)
+    }
 
     if (isAstPlural(ast) || getAndPhrase(ast)) { // if universal quantified, I don't care if there's no match
 
         const limit = (ast.links as any)['limit-phrase']?.links.string//TODO!
         const limitNum: number = evalString(context, limit, args).at(0)?.toJs() as any
-
         return things.slice(0, limitNum ?? things.length)
+
     }
 
     if (things.length) { // non-plural, return single existing Thing
@@ -168,6 +182,12 @@ function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Th
     // or else create and returns the Thing
     return args?.autovivification ? [createThing(np)] : []
 
+}
+
+
+function evalOperation(left: Thing[], right: Thing[], op?: Lexeme) {
+    const sums = left.map(x => x.toJs() as any + right.at(0)?.toJs())
+    return sums.map(x => new NumberThing(x))
 }
 
 function nounPhraseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {

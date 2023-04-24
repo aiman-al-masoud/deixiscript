@@ -39,4 +39,6 @@ export const lexemeTypes = stringLiterals(
   'next-keyword',
   'previous-keyword',
 
+  'plus-operator',
+
 )

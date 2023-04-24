@@ -26,8 +26,8 @@ export class VerbThing extends BaseThing implements Verb {
 
         const clonedContext = context.clone()
         // inject args, remove harcoded english!
-        clonedContext.setLexeme({ root: 'subject', type: 'noun', referents: [args.subject] })
-        clonedContext.setLexeme({ root: 'object', type: 'noun', referents: [args.object] })
+        clonedContext.setLexeme({ root: 'subject', type: 'adjective', referents: [args.subject] })
+        clonedContext.setLexeme({ root: 'object', type: 'adjective', referents: [args.object] })
 
         let results: Thing[] = []
 
