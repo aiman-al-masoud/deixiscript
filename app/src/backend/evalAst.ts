@@ -1,17 +1,17 @@
-import { Context } from "../backend/Context";
-import { InstructionThing } from "../backend/InstructionThing";
-import { NumberThing } from "../backend/NumberThing";
-import { StringThing } from "../backend/StringThing";
-import { Thing, getThing } from "../backend/Thing";
-import { VerbThing } from "../backend/VerbThing";
+import { Context } from "./Context";
+import { InstructionThing } from "./InstructionThing";
+import { NumberThing } from "./NumberThing";
+import { StringThing } from "./StringThing";
+import { Thing, getThing } from "./Thing";
+import { VerbThing } from "./VerbThing";
 import { isPlural, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
-import { Clause, clauseOf, emptyClause } from "./clauses/Clause";
-import { getOwnershipChain } from "./clauses/functions/getOwnershipChain";
-import { getIncrementalId } from "./id/functions/getIncrementalId";
-import { Id } from "./id/Id";
-import { Map } from "./id/Map";
+import { Clause, clauseOf, emptyClause } from "../middle/clauses/Clause";
+import { getOwnershipChain } from "../middle/clauses/functions/getOwnershipChain";
+import { getIncrementalId } from "../middle/id/functions/getIncrementalId";
+import { Id } from "../middle/id/Id";
+import { Map } from "../middle/id/Map";
 
 export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] {
 

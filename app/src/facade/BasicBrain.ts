@@ -2,7 +2,7 @@ import { getContext } from "../backend/Context";
 import { Thing } from "../backend/Thing";
 import { logVerb } from "../backend/VerbThing";
 import { getParser } from "../frontend/parser/interfaces/Parser";
-import { evalAst } from "../middle/evalAst";
+import { evalAst } from "../backend/evalAst";
 import Brain from "./Brain";
 import { BrainListener } from "./BrainListener";
 

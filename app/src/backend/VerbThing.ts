@@ -1,5 +1,5 @@
 
-import { evalAst } from "../middle/evalAst";
+import { evalAst } from "./evalAst";
 import { Id } from "../middle/id/Id";
 import { BaseThing } from "./BaseThing";
 import { Context } from "./Context";
