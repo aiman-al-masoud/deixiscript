@@ -117,7 +117,6 @@ evalAst
 
 # In any function, for every instruction, before running it, check if any instruction wants to run before. Put the whole program in a main function automatically.
 
-# add back some TESTS
 
 # grammar
 
@@ -141,3 +140,5 @@ maybe make "for" dative.
 
 ... w/ corresponding prepositions or case markings.
 
+# 1 add location complement to log verb for debugging
+# 2 add back some TESTS
