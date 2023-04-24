@@ -146,8 +146,8 @@ function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpt
 function evalNounPhrase(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
     const np = nounPhraseToClause(ast, args)
-    const maps = context.query(np) // TODO: intra-sentence anaphora resolution
 
+    const maps = context.query(np) // TODO: intra-sentence anaphora resolution
     const interestingIds = getInterestingIds(maps, np)
 
     let things: Thing[]
