@@ -124,10 +124,7 @@ BasicBrain
 VerbThing
 evalAst
 
-
-
-
-
+# In any function, for every instruction, before running it, check if any instruction wants to run before. Put the whole program in a main function automatically.
 
 # grammar
 
