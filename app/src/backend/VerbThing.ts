@@ -25,10 +25,9 @@ export class VerbThing extends BaseThing implements Verb {
     run(context: Context, args: { subject: Thing, object: Thing, }): Thing[] {
 
         const clonedContext = context.clone()
-        // inject subject, directObject etc... with making them retrievable via query, problem: harcoded english!
+        // inject args, remove harcoded english!
         clonedContext.setLexeme({ root: 'subject', type: 'noun', referents: [args.subject] })
         clonedContext.setLexeme({ root: 'object', type: 'noun', referents: [args.object] })
-        // clonedContext.setLexeme({ root: 'indirect-object', type: 'noun', referents: [args.indirectObject] })
 
         let results: Thing[] = []
 
