@@ -73,13 +73,6 @@ or more nouns in a noun-phrase.
 
 # number adjectives on noun phrases
 
-# how to define functions?
-
-have is the next n instructions have is the next instructions the scope is have
-the scope is back
-
-# string (and any atom) should be counted as a nounphrase
-
 # macros should also accept "raw strings" not just lexeme classes
 
 letter is "a" or "b" or "c" ... digit is "1" or "2" or "3" ... fullstop is "."
@@ -104,16 +97,12 @@ x sells for 100001.
 ?sell { you return sold of house. }
 
 # add numbers to noun-phrase
-# add "next"/"previous" special keywords to noun-phrase
 
 # list comprehensions 
 * 2 + every number
 * 2 + every number of y
 
 # redefining verbs: problem if you put "or verb" in np def because it recognz verb sentences as nps!!!!
-
-increment covers the next 3 instructions
-increment is the next 3 instructions
 
 # last edited
 prelude
