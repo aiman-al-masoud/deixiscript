@@ -115,6 +115,8 @@ evalAst
 
 # In any function, for every instruction, before running it, check if any instruction wants to run before. Put the whole program in a main function automatically.
 
+# add back some TESTS
+
 # grammar
 
 work on a framework to define complement-related syntax/morphology across different languages using a basic set of "'case' markers" that can be used to extract info back from the parsed AST independently of syntax.
