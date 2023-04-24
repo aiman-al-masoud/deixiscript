@@ -73,6 +73,8 @@ or more nouns in a noun-phrase.
 
 # number adjectives on noun phrases
 
+# some lexemes have to be "instrinsic" and some "extrinsic" relative to things.
+
 # macros should also accept "raw strings" not just lexeme classes
 
 letter is "a" or "b" or "c" ... digit is "1" or "2" or "3" ... fullstop is "."
