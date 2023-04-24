@@ -85,7 +85,7 @@ and may have referents.
 
 # DO THIS
 
-a house has a string address and a sold boolean.
+a house has "xxx" as address and false as sold.
 
 sold of the subject is true. 
 if for-complement is > 100000 then you log "expensive!".
