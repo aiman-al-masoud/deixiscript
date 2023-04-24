@@ -105,7 +105,7 @@ function about(clause: Clause, entity: Id) {
 function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
 
     const verb = ast?.links?.verb?.lexeme?.referents.at(0) as VerbThing | undefined
-    const complements = (ast.links as any)?.['complement'] ?? [] as AstNode[]
+    const complements = (((ast.links as any)?.['complement'].list ?? []) as AstNode[]).flatMap(x=>Object.values(x.links??{}  )  ).map(x=>({[x.type] : x.links})).reduce((a,b)=>({...a,...b}))
     const subject = ast.links?.subject ? evalAst(context, ast.links?.subject).at(0) : undefined
     const object =  ast.links?.object ? evalAst(context, ast.links?.object).at(0) : undefined
 
