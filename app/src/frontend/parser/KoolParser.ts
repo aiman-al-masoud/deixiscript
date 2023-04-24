@@ -13,7 +13,8 @@ export class KoolParser implements Parser {
     constructor(
         protected readonly sourceCode: string,
         protected readonly context: Context,
-        protected readonly lexer = getLexer(sourceCode, context)) {
+        protected readonly lexer = getLexer(sourceCode, context),
+    ) {
 
     }
 
@@ -31,10 +32,6 @@ export class KoolParser implements Parser {
 
             const simpleAst = this.simplify(ast)
             results.push(simpleAst)
-
-            if (simpleAst.type === 'macro') {
-                this.context.setSyntax(ast)
-            }
 
             if (this.lexer.peek?.type === 'fullstop') {
                 this.lexer.next()
@@ -86,7 +83,7 @@ export class KoolParser implements Parser {
 
     protected parseComposite = (name: CompositeType, role?: Role): AstNode | undefined => {
 
-        const links: any = {}
+        const links: { [x: string]: AstNode } = {}
 
         for (const m of this.context.getSyntax(name)) {
 

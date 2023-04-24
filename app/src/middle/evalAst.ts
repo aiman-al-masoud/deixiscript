@@ -23,7 +23,10 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
         context.setLexeme(makeLexeme({ root: 'instruction', type: 'noun', referents: [instruction] }))
     }
 
-    if (ast?.links?.copula) {
+    if (ast.type === 'macro') {
+        context.setSyntax(ast)
+        return []
+    } else if (ast?.links?.copula) {
         return evalCopulaSentence(context, ast, args)
     } else if (ast?.links?.verb) {
         return evalVerbSentence(context, ast, args)
@@ -112,13 +115,11 @@ function evalVerbSentence(context: Context, ast: AstNode, args?: ToClauseOpts): 
     // console.log('subject=', subject)
     // console.log('object=', object)
     // console.log('complements=', complements)
-    
-    // return object.flatMap(o => verb?.run(context, { object: o, subject: {} as Thing }) ?? [])
-    
-    object.forEach(o=>verb?.run(context, {object:o, subject : {} as Thing}))
-    return []
 
-    // throw new Error('verb sentence!')// context.getLexeme(ast?.links?.mverb?.lexeme?.root!)
+    // return object.flatMap(o => verb?.run(context, { object: o, subject: {} as Thing }) ?? [])
+
+    object.forEach(o => verb?.run(context, { object: o, subject: {} as Thing }))
+    return []
 }
 
 function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
@@ -209,14 +210,6 @@ function genitiveToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return clauseOf(genitiveParticle!, ownedId, ownerId).and(owner)
 }
 
-// function complementToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
-//     const subjectId = args?.subject!
-//     const objectId = getIncrementalId()
-//     const preposition = ast?.links?.preposition?.lexeme!
-//     const object = nounPhraseToClause(ast?.links?.object, { subject: objectId, autovivification: false, sideEffects: false })
-//     return clauseOf(preposition, subjectId, objectId).and(object)
-// }
-
 function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
     return emptyClause //TODO!
 }
@@ -283,6 +276,11 @@ function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing
 }
 
 function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphrase COULD have side effects
+
+    if (ast.type === 'macro') { // this is not ok, it's here just for performance reasons (saving all of the macros is currently expensive) 
+        return false
+    }
+
     return !!(ast.links?.copula || ast.links?.verb || ast.links?.subconj)
 }
 

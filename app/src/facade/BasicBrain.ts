@@ -15,31 +15,30 @@ export default class BasicBrain implements Brain {
     constructor() {
         this.execute(this.context.getPrelude())
         this.context.set(logVerb.getId(), logVerb)
-        this.context.setLexeme({root : 'log', type : 'verb', referents : [logVerb]})
-
-
-
+        this.context.setLexeme({ root: 'log', type: 'verb', referents: [logVerb] })
     }
 
     execute(natlang: string): Thing[] {
-        return getParser(natlang, this.context).parseAll().flatMap(ast => {
 
-            if (ast.type === 'macro') {
-                return []
-            }
+        return natlang.split('.').flatMap(x => {
 
-            let results: Thing[] = []
-            try {
-                results = evalAst(this.context, ast)
-            } catch (e) {
-                console.warn(e)
-            }
+            return getParser(x, this.context).parseAll().flatMap(ast => {
 
-            this.listeners.forEach(l => {
-                l.onUpdate(ast, results)
+                let results: Thing[] = []
+                try {
+                    results = evalAst(this.context, ast)
+                } catch (e) {
+                    console.warn(e)
+                }
+
+                this.listeners.forEach(l => {
+                    l.onUpdate(ast, results)
+                })
+
+                return results
+
             })
 
-            return results
         })
     }
 
