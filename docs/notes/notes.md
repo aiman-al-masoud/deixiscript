@@ -2,12 +2,12 @@
 
 - The next 2 instructions repeat while x < 10.
 - x increments.
-- console logs x.
+- you log x.
 
 As well as:
 
 - x increments.
-- console logs x.
+- you log x.
 - The previous 2 instructions repeat while x < 10.
 
 # https://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
