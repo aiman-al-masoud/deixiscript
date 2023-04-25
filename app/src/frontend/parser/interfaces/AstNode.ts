@@ -133,7 +133,7 @@ export interface VerbSentence extends GeneralAstNode<'verb-sentence'> {
 
 export interface Macro extends GeneralAstNode<'macro'> {
     readonly links: {
-        macropart: { list: Macropart[] } //ListNode<'macropart'>,
+        macropart: { list: Macropart[] },
         subject: AtomNode<'noun'>,
     }
 }
