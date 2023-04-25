@@ -140,11 +140,12 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
     const interestingIds = getInterestingIds(maps, np)
     let things: Thing[]
+    const andPhrase = ast.links['and-phrase'] ? evalAst(context, ast.links['and-phrase'].links['noun-phrase'], args) : []
 
     if (ast.links.subject.type === 'number-literal') {
-        things = evalNumberLiteral(ast.links.subject)
+        things = evalNumberLiteral(ast.links.subject).concat(andPhrase as any)
     } else if (ast.links.subject.type === 'string') {
-        things = evalString(context, ast.links.subject, args)
+        things = evalString(context, ast.links.subject, args).concat(andPhrase)
     } else {
         things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
     }
