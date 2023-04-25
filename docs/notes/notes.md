@@ -41,14 +41,6 @@ First/Last & Biggest/Smallest & Left/Right
 
 https://stackoverflow.com/questions/12484386/access-javascript-property-case-insensitively
 
-# Adjective as Noun BUG
-
-"x and y are buttons. color of x is yellow. y is red. yellow button."
-
-Returns two asts, and highlights both buttons. Reason being that 'yellow' wasn't
-declared as an adjective, and is a noun by default. Fixed by allowing for zero
-or more nouns in a noun-phrase.
-
 # Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs)?
 
 # [Expression Orientation](./expression-orientation.md)
