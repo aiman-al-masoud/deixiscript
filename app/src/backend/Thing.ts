@@ -9,7 +9,7 @@ export interface Thing {
     get(id: Id): Thing | undefined
     set(id: Id, thing: Thing): void //thing.id???
     clone(opts?: { id: Id }): Thing
-    toJs(): object
+    toJs(): object | number
     toClause(query?: Clause): Clause
     extends(thing: Thing): void
     unextends(thing: Thing): void

@@ -5,7 +5,7 @@ import { StringThing } from './StringThing';
 import { Thing, getThing } from './Thing';
 import { VerbThing } from './VerbThing';
 import { isPlural, Lexeme, makeLexeme } from '../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, AstNode2, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode, AstNode2, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
 import { getOwnershipChain } from '../middle/clauses/functions/getOwnershipChain';
@@ -35,8 +35,11 @@ export function evalAst(context: Context, ast: AstNode2, args: ToClauseOpts = {}
     } else if (ast.type === 'noun-phrase') {
         return evalNounPhrase(context, ast, args)
     }
+    // } else if (ast.type === 'number-literal'){
+    //     throw new Error('got number literal!')
+    // }
 
-    throw new Error('evalAst() got unknown ast type: ' + ast.type)
+    throw new Error('evalAst() got unexpected ast type: ' + ast.type)
 
 }
 
@@ -138,13 +141,13 @@ function evalComplexSentence(context: Context, ast: ComplexSentence, args?: ToCl
 function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts): Thing[] {
 
     const np = nounPhraseToClause(ast, args)
-
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
     const interestingIds = getInterestingIds(maps, np)
-
     let things: Thing[]
 
-    if (ast.links.subject.type === 'string') {
+    if (ast.links.subject.type === 'number-literal') {
+        things = evalNumberLiteral(ast.links.subject)
+    } else if (ast.links.subject.type === 'string') {
         things = evalString(context, ast.links.subject, args)
     } else {
         things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
@@ -159,9 +162,10 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
 
     if (isAstPlural(ast) || ast.links['and-phrase']) { // if universal quantified, I don't care if there's no match
 
-        const limit = ast.links['limit-phrase']?.links?.string
-        const limitNum: number = evalString(context, limit, args).at(0)?.toJs() as any
-        return things.slice(0, limitNum ?? things.length)
+        const limit = ast.links['limit-phrase']?.links['number-literal']
+        // console.log('limit=', limit)
+        const limitNum = evalNumberLiteral(limit).at(0)?.toJs() ?? things.length
+        return things.slice(0, limitNum)
 
     }
 
@@ -172,6 +176,28 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
     // or else create and returns the Thing
     return args?.autovivification ? [createThing(np)] : []
 
+}
+
+function evalNumberLiteral(ast?: NumberLiteral): NumberThing[] {
+
+    // console.log(ast)
+
+    if (!ast) {
+        return []
+    }
+
+    const fd = ast.links['first-digit'].lexeme.root
+    const digits = ast.links.digit?.list?.map(x => x.lexeme.root) ?? []
+    const allDigits = [fd].concat(digits)
+    const literal = allDigits.reduce((a, b) => a + b, '')
+
+    const z = parseNumber(literal)
+
+    if (z) {
+        return [new NumberThing(z)]
+    }
+
+    return []
 }
 
 

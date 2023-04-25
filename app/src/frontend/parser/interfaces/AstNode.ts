@@ -3,7 +3,7 @@ import { Lexeme } from "../../lexer/Lexeme"
 import { AstType } from "./Syntax"
 
 
-export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion | StringAst
+export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion | StringAst | NumberLiteral
 
 
 /**
@@ -32,7 +32,7 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
     readonly links: {
         quantifier?: AtomNode<'uniquant' | 'existquant'>,
         article?: AtomNode<'defart' | 'indefart'>,
-        subject: AtomNode<'noun' | 'pronoun'> | StringAst
+        subject: AtomNode<'noun' | 'pronoun'> | StringAst | NumberLiteral
         adjective?: { list: AtomNode<'adjective'>[] },
         subclause?: AstNode,
         'genitive-complement'?: GenitiveComplement,
@@ -53,7 +53,7 @@ export interface AndPhrase extends GeneralAstNode<'and-phrase'> {
 export interface LimitPhrase extends GeneralAstNode<'limit-phrase'> {
     readonly links: {
         /* TODO: name not in runtime! */nextOrPrevKeyword: AtomNode<'next-keyword' | 'previous-keyword'>,
-        string?: StringAst,
+        'number-literal'?: NumberLiteral,
     }
 }
 
@@ -169,6 +169,13 @@ export interface ComplexSentence extends GeneralAstNode<'complex-sentence'> {
 export interface StringAst extends GeneralAstNode<'string'> {
     readonly links: {
         'string-token': { list: AtomNode<LexemeType>[] }
+    }
+}
+
+export interface NumberLiteral extends GeneralAstNode<'number-literal'> {
+    readonly links: {
+        'first-digit': AtomNode<'digit'>,
+        'digit': { list: AtomNode<'digit'>[] }
     }
 }
 

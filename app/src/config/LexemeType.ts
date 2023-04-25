@@ -41,4 +41,6 @@ export const lexemeTypes = stringLiterals(
 
   'plus-operator',
 
+  'digit',
+
 )

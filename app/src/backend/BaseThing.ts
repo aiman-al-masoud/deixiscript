@@ -59,7 +59,7 @@ export class BaseThing implements Thing {
 
     }
 
-    toJs(): object {
+    toJs(): object | number {
         return this //TODOooooooooOO!
     }
 

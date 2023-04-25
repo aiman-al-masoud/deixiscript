@@ -6,8 +6,8 @@ export class NumberThing extends BaseThing {
         super(value + '')
     }
 
-    toJs(): object {
-        return this.value as any
+    toJs(): number {
+        return this.value
     }
 
 }

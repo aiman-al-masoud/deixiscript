@@ -7,7 +7,7 @@ import { BrainListener } from "./BrainListener"
  */
 export default interface Brain {
     execute(natlang: string): Thing[]
-    executeUnwrapped(natlang: string): object[]
+    executeUnwrapped(natlang: string): (object|number)[]
     addListener(listener: BrainListener): void
 }
 

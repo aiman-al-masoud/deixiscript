@@ -45,7 +45,7 @@ export default class BasicBrain implements Brain {
         })
     }
 
-    executeUnwrapped(natlang: string): object[] {
+    executeUnwrapped(natlang: string): (object|number)[] {
         return this.execute(natlang).map(x => x.toJs())
     }
 

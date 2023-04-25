@@ -11,7 +11,7 @@ export default class EagerLexer implements Lexer {
     constructor(readonly sourceCode: string, readonly context: Context) {
 
         this.words =
-            spaceOut(sourceCode, ['"', '.'])
+            spaceOut(sourceCode, ['"', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
                 .trim()
                 .split(/\s+/)
 

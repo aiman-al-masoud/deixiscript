@@ -80,7 +80,7 @@ export const prelude: string =
   end.
 
   makro
-    limit-phrase is next-keyword or previous-keyword then optional string
+    limit-phrase is next-keyword or previous-keyword then optional number-literal
   end.
 
   makro
@@ -92,7 +92,7 @@ export const prelude: string =
       then optional article 
       then zero-or-more adjectives
       then optional limit-phrase 
-      then subject noun or pronoun or string
+      then subject noun or pronoun or string or number-literal
       then optional math-expression
       then optional subclause
       then optional genitive-complement
@@ -125,7 +125,7 @@ export const prelude: string =
   end.
 
   makro 
-  complex-sentence-1 is 
+  complex-sentence-one is 
       subconj 
       then condition simple-sentence 
       then then-keyword
@@ -133,18 +133,19 @@ export const prelude: string =
   end.
 
   makro 
-    complex-sentence-2 is 
+    complex-sentence-two is 
       consequence simple-sentence 
       then subconj 
       then condition simple-sentence
   end.
 
   makro 
-    complex-sentence is complex-sentence-1 or complex-sentence-2
+    complex-sentence is complex-sentence-one or complex-sentence-two
   end.
 
   makro 
     string is quote then one-or-more string-token any-lexeme except quote then quote 
   end.
+
 
   `

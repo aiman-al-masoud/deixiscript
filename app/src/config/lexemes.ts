@@ -70,5 +70,16 @@ export const lexemes: Lexeme[] = [
     { root: '+', type: 'plus-operator', referents: [] },
 
 
+    { root: '0', type: 'digit', referents: [] },
+    { root: '1', type: 'digit', referents: [] },
+    { root: '2', type: 'digit', referents: [] },
+    { root: '3', type: 'digit', referents: [] },
+    { root: '4', type: 'digit', referents: [] },
+    { root: '5', type: 'digit', referents: [] },
+    { root: '6', type: 'digit', referents: [] },
+    { root: '7', type: 'digit', referents: [] },
+    { root: '8', type: 'digit', referents: [] },
+    { root: '9', type: 'digit', referents: [] },
+
 ]
 

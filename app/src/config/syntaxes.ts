@@ -1,3 +1,4 @@
+import { Role } from "../frontend/parser/interfaces/AstNode"
 import { SyntaxMap } from "../frontend/parser/interfaces/Syntax"
 import { ElementType } from "../utils/ElementType"
 import { stringLiterals } from "../utils/stringLiterals"
@@ -19,14 +20,14 @@ export const constituentTypes = stringLiterals(
     'verb-sentence',
     'string',
     'complex-sentence',
-    
+
     'genitive-complement',
     'dative-complement',
     'ablative-complement',
     'locative-complement',
     'instrumental-complement',
-    'comitative-complement',    
-
+    'comitative-complement',
+    'number-literal',
 
 )
 
@@ -69,5 +70,10 @@ export const syntaxes: SyntaxMap = {
     "ablative-complement": [],
     "locative-complement": [],
     "instrumental-complement": [],
-    "comitative-complement": []
+    "comitative-complement": [],
+    'number-literal': [
+        { type: ['digit'], number: 1, role : 'first-digit' as Role },
+        { type: ['digit'], number: '*' },
+    ],
+
 }

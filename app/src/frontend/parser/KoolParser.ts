@@ -88,17 +88,17 @@ export class KoolParser implements Parser {
         for (const m of this.context.getSyntax(name)) {
 
             const ast = this.parseMember(m)
-
+            
             if (!ast && isNecessary(m.number)) {
                 return undefined
             }
-
+            
             if (!ast) {
                 continue
             }
-
+            
             links[m.role ?? ast.type] = ast
-
+            
         }
 
         if (Object.keys(links).length <= 0) {
