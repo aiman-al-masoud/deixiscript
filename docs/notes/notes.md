@@ -121,6 +121,8 @@ maybe make "for" dative.
 
 ... w/ corresponding prepositions or case markings.
 
+# 0 remove AstNode replacing it with more precise interfaces
+# 0.5 remove .links and maybe .list
 # 1 add location complement to log verb for debugging
 # 2 add back some TESTS
 
