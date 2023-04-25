@@ -24,6 +24,7 @@ export const prelude: string =
             or makro-keyword 
             or except-keyword 
             or quote
+            or digit
   end.
   
   makro 

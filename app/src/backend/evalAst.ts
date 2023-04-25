@@ -5,7 +5,7 @@ import { StringThing } from './StringThing';
 import { Thing, getThing } from './Thing';
 import { VerbThing } from './VerbThing';
 import { isPlural, Lexeme, makeLexeme } from '../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, AstNode2, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode2, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
 import { getOwnershipChain } from '../middle/clauses/functions/getOwnershipChain';
@@ -161,12 +161,9 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
     }
 
     if (isAstPlural(ast) || ast.links['and-phrase']) { // if universal quantified, I don't care if there's no match
-
         const limit = ast.links['limit-phrase']?.links['number-literal']
-        // console.log('limit=', limit)
         const limitNum = evalNumberLiteral(limit).at(0)?.toJs() ?? things.length
         return things.slice(0, limitNum)
-
     }
 
     if (things.length) { // non-plural, return single existing Thing
@@ -247,20 +244,18 @@ function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause
     return clauseOf(genitiveParticle, ownedId, ownerId).and(owner)
 }
 
-function isAstPlural(ast?: NounPhrase): boolean {//TODO: type is not just NounPhrase
+function isAstPlural(ast: AstNode2): boolean {
 
-    const x =
-        // ast?.links?.noun?.list?.some(x => x.lexeme && isPlural(x.lexeme))
-        /* || */ ast?.links?.adjective?.list?.some(x => x.lexeme && isPlural(x.lexeme))
-        // || ast?.links?.subject?.list?.some(x => x.lexeme && isPlural(x.lexeme))
-        || ((ast?.links?.subject?.type === 'noun' || ast?.links?.subject?.type === 'pronoun') && isPlural(ast.links.subject.lexeme))
-        || (ast?.links as any)?.uniquant
-
-    if (x) {
-        return true
+    if (ast.type === 'noun-phrase') {
+        return (ast.links as any).uniquant
+            || Object.values(ast.links ?? {}).some(x => isAstPlural(x as any))
     }
 
-    return Object.values(ast?.links ?? {})/*. concat(ast?.list ?? []) */.some(x => isAstPlural(x as NounPhrase))
+    if (ast.type === 'pronoun' || ast.type === 'noun') {
+        return isPlural(ast.lexeme)
+    }
+
+    return false
 }
 
 function getInterestingIds(maps: Map[], clause: Clause): Id[] {
@@ -300,16 +295,6 @@ function evalString(context: Context, ast?: StringAst, args?: ToClauseOpts): Thi
 
     const x = ast.links['string-token'].list.map(x => x.lexeme.token)
     const y = x.join(' ')
-    const z = parseNumber(y)
-
-    if (z) {
-        return [new NumberThing(z)]
-    }
-
-    if (!y.length) {
-        return []
-    }
-
     return [new StringThing(y)]
 }
 

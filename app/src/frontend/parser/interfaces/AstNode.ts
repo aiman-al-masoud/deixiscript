@@ -3,7 +3,7 @@ import { Lexeme } from "../../lexer/Lexeme"
 import { AstType } from "./Syntax"
 
 
-export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion | StringAst | NumberLiteral
+export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion | StringAst | NumberLiteral | AtomNode<'defart'> | AtomNode<'noun'> | AtomNode<'pronoun'> 
 
 
 /**
@@ -34,7 +34,7 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
         article?: AtomNode<'defart' | 'indefart'>,
         subject: AtomNode<'noun' | 'pronoun'> | StringAst | NumberLiteral
         adjective?: { list: AtomNode<'adjective'>[] },
-        subclause?: AstNode,
+        subclause?: AstNode2,
         'genitive-complement'?: GenitiveComplement,
         'and-phrase'?: AndPhrase,
         'math-expression'?: MathExpression,
