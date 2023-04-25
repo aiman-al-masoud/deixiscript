@@ -24,8 +24,7 @@ export function evalAst(context: Context, ast: AstNode2, args: ToClauseOpts = {}
     }
 
     if (ast.type === 'macro') {
-        context.setSyntax(ast)
-        return []
+        context.setSyntax(ast); return []
     } else if (ast.type === 'copula-sentence') {
         return evalCopulaSentence(context, ast, args)
     } else if (ast.type === 'verb-sentence') {
@@ -35,9 +34,6 @@ export function evalAst(context: Context, ast: AstNode2, args: ToClauseOpts = {}
     } else if (ast.type === 'noun-phrase') {
         return evalNounPhrase(context, ast, args)
     }
-    // } else if (ast.type === 'number-literal'){
-    //     throw new Error('got number literal!')
-    // }
 
     throw new Error('evalAst() got unexpected ast type: ' + ast.type)
 
