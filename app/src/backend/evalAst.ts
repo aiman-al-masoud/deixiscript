@@ -161,12 +161,10 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
         things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
     }
 
-    const mathExpression = ast.links['math-expression']
-
-    if (mathExpression) {
+    if (ast.links['math-expression']) {
         const left = things
-        const op = mathExpression.links?.operator?.lexeme
-        const right = evalAst(context, mathExpression.links["noun-phrase"])
+        const op = ast.links['math-expression'].links.operator.lexeme
+        const right = evalAst(context, ast.links['math-expression'].links["noun-phrase"])
         return evalOperation(left, right, op)
     }
 
