@@ -3,28 +3,28 @@ export const prelude: string =
   `
   makro 
     any-lexeme is adjective 
-            or copula 
-            or defart 
-            or indefart 
-            or fullstop 
-            or hverb 
-            or verb 
-            or negation 
-            or existquant 
-            or uniquant 
-            or relpron 
-            or negation 
-            or noun 
-            or preposition 
-            or subconj 
-            or nonsubconj 
-            or disjunc 
-            or pronoun 
-            or then-keyword
-            or makro-keyword 
-            or except-keyword 
-            or quote
-            or digit
+    or copula 
+    or defart 
+    or indefart 
+    or fullstop 
+    or hverb 
+    or verb 
+    or negation 
+    or existquant 
+    or uniquant 
+    or relpron 
+    or negation 
+    or noun 
+    or preposition 
+    or subconj 
+    or nonsubconj 
+    or disjunc 
+    or pronoun 
+    or then-keyword
+    or makro-keyword 
+    or except-keyword 
+    or quote
+    or digit
   end.
   
   makro 
@@ -71,9 +71,9 @@ export const prelude: string =
 
   makro 
     copula-sentence is subject noun-phrase 
-      then copula 
-      then optional negation 
-      then predicate noun-phrase 
+    then copula 
+    then optional negation 
+    then predicate noun-phrase 
   end.
 
   makro
@@ -89,15 +89,16 @@ export const prelude: string =
   end.
 
   makro 
-    noun-phrase is optional quantifier 
-      then optional article 
-      then zero-or-more adjectives
-      then optional limit-phrase 
-      then subject noun or pronoun or string or number-literal
-      then optional math-expression
-      then optional subclause
-      then optional genitive-complement
-      then optional and-phrase
+    noun-phrase is 
+    optional quantifier 
+    then optional article 
+    then zero-or-more adjectives
+    then optional limit-phrase 
+    then subject noun or pronoun or string or number-literal
+    then optional math-expression
+    then optional subclause
+    then optional genitive-complement
+    then optional and-phrase
   end.
 
   makro 
@@ -113,12 +114,13 @@ export const prelude: string =
   end.
 
   makro 
-    verb-sentence is subject noun-phrase 
-      then optional hverb 
-      then optional negation 
-      then verb 
-      then optional object noun-phrase
-      then zero-or-more complements
+    verb-sentence is 
+    subject noun-phrase 
+    then optional hverb 
+    then optional negation 
+    then verb 
+    then optional object noun-phrase
+    then zero-or-more complements
   end.
 
   makro 
@@ -127,17 +129,17 @@ export const prelude: string =
 
   makro 
   complex-sentence-one is 
-      subconj 
-      then condition simple-sentence 
-      then then-keyword
-      then consequence simple-sentence
+    subconj 
+    then condition simple-sentence 
+    then then-keyword
+    then consequence simple-sentence
   end.
 
   makro 
     complex-sentence-two is 
-      consequence simple-sentence 
-      then subconj 
-      then condition simple-sentence
+    consequence simple-sentence 
+    then subconj 
+    then condition simple-sentence
   end.
 
   makro 

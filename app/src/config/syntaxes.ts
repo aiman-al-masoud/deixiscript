@@ -11,14 +11,12 @@ export const constituentTypes = stringLiterals(
     'taggedunion',
     'exceptunion',
 
-
     'noun-phrase',
     'and-phrase',
     'limit-phrase',
     'math-expression',
     'copula-sentence',
     'verb-sentence',
-    'string',
     'complex-sentence',
 
     'genitive-complement',
@@ -27,9 +25,10 @@ export const constituentTypes = stringLiterals(
     'locative-complement',
     'instrumental-complement',
     'comitative-complement',
-    'number-literal',
     'copula-subordinate-clause',
 
+    'string',
+    'number-literal',
 )
 
 export const staticDescPrecedence: CompositeType[] = ['macro']
@@ -56,8 +55,10 @@ export const syntaxes: SyntaxMap = {
         { type: ['except-keyword'], number: 1 },
         { type: ['taggedunion'], number: '+' },
     ],
-
-
+    'number-literal': [
+        { type: ['digit'], number: 1, role: 'first-digit' as Role },
+        { type: ['digit'], number: '*' },
+    ],
     'noun-phrase': [],
     'and-phrase': [],
     'limit-phrase': [],
@@ -72,10 +73,5 @@ export const syntaxes: SyntaxMap = {
     "locative-complement": [],
     "instrumental-complement": [],
     "comitative-complement": [],
-    'copula-subordinate-clause' : [],
-    'number-literal': [
-        { type: ['digit'], number: 1, role : 'first-digit' as Role },
-        { type: ['digit'], number: '*' },
-    ],
-
+    'copula-subordinate-clause': [],
 }
