@@ -21,8 +21,6 @@ hoc solution is available. At any edit action A1 on an object X, a new copy is
 made of X and is kept up to date, except for what happened at A1. When "A1 is
 negated" the copy is retrieved and it "replaces" (how?) the current object X.
 
-# number literals
-
 # Context Dependent/Relative Predicates
 
 First/Last & Biggest/Smallest & Left/Right
@@ -71,8 +69,6 @@ or more nouns in a noun-phrase.
 
 # math expressions
 
-# number adjectives on noun phrases
-
 # some lexemes have to be "instrinsic" and some "extrinsic" relative to things.
 
 # macros should also accept "raw strings" not just lexeme classes
@@ -106,17 +102,7 @@ x sells for 100001.
 
 # redefining verbs: problem if you put "or verb" in np def because it recognz verb sentences as nps!!!!
 
-# last edited
-prelude
-LexemeType
-lexemes
-Thing
-BasicBrain
-VerbThing
-evalAst
-
 # In any function, for every instruction, before running it, check if any instruction wants to run before. Put the whole program in a main function automatically.
-
 
 # grammar
 
