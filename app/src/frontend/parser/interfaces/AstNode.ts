@@ -162,7 +162,6 @@ export interface ComplexSentence extends GeneralAstNode<'complex-sentence'> {
     readonly links: {
         condition: CopulaSentence | VerbSentence,
         consequence: CopulaSentence | VerbSentence,
-        'then-keyword': AtomNode<'then-keyword'>,
         subconj: AtomNode<'subconj'>,
     }
 }
