@@ -22,16 +22,9 @@ export interface AstNode extends GeneralAstNode<AstType> { // to be phased out
 }
 
 
-
-
-
 export interface AtomNode<T extends LexemeType> extends GeneralAstNode<T> {
     readonly lexeme: Lexeme
     readonly role?: Role
-}
-
-export interface ListNode<T extends AstType> extends GeneralAstNode<T> {
-    readonly list: AstNode[]
 }
 
 export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
@@ -39,8 +32,8 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
     readonly links: {
         quantifier?: AtomNode<'uniquant' | 'existquant'>,
         article?: AtomNode<'defart' | 'indefart'>,
-        subject?: ListNode<'noun' | 'pronoun' | 'string'>,
-        adjective?: ListNode<'adjective'>,
+        subject?: { list: AtomNode<'noun' | 'pronoun'>[] } //string!!
+        adjective?: { list: AtomNode<'adjective'>[] },
         subclause?: AstNode,
         'genitive-complement'?: GenitiveComplement,
         'and-phrase'?: AndPhrase,
@@ -71,10 +64,50 @@ export interface MathExpression extends GeneralAstNode<'math-expression'> {
     }
 }
 
-export interface GenitiveComplement extends GeneralAstNode<'genitive-complement'> {
+
+export interface Complement<T extends AstType> extends GeneralAstNode<T> {
+}
+
+export interface GenitiveComplement extends Complement<'genitive-complement'> {
     readonly links: {
         'genitive-particle': AtomNode<'genitive-particle'>,
         owner: NounPhrase,
+    }
+}
+
+
+export interface DativeComplement extends Complement<'dative-complement'> {
+    readonly links: {
+        'dative-particle': AtomNode<'dative-particle'>,
+        owner: NounPhrase,
+    }
+}
+
+export interface AblativeComplement extends Complement<'ablative-complement'> {
+    readonly links: {
+        'ablative-particle': AtomNode<'ablative-particle'>,
+        origin: NounPhrase,
+    }
+}
+
+export interface LocativeComplement extends Complement<'locative-complement'> {
+    readonly links: {
+        'locative-particle': AtomNode<'locative-particle'>,
+        location: NounPhrase,
+    }
+}
+
+export interface InstrumentalComplement extends Complement<'instrumental-complement'> {
+    readonly links: {
+        'instrumental-particle': AtomNode<'instrumental-particle'>,
+        instrument: NounPhrase,
+    }
+}
+
+export interface ComitativeComplement extends Complement<'comitative-complement'> {
+    readonly links: {
+        'comitative-particle': AtomNode<'comitative-particle'>,
+        companion: NounPhrase,
     }
 }
 
@@ -94,28 +127,34 @@ export interface VerbSentence extends GeneralAstNode<'verb-sentence'> {
         negation?: AtomNode<'negation'>,
         verb: AtomNode<'verb'>,
         object?: NounPhrase,
-        complement?: ListNode<AstType>, //TODO
+        complement?: { list: (DativeComplement | AblativeComplement | LocativeComplement | ComitativeComplement | InstrumentalComplement)[] },
     }
 }
 
 export interface Macro extends GeneralAstNode<'macro'> {
     readonly links: {
-        macropart: ListNode<'macropart'>,
+        macropart: { list: Macropart[] } //ListNode<'macropart'>,
         subject: AtomNode<'noun'>,
     }
 }
 
 export interface Macropart extends GeneralAstNode<'macropart'> {
     readonly links: {
-        adjective: ListNode<'adjective'>,
-        taggedunion: ListNode<'taggedunion'>,
+        adjective: { list: AtomNode<'adjective'>[] },
+        taggedunion: { list: Taggedunion[] },
         exceptunion: Exceptunion,
     }
 }
 
 export interface Exceptunion extends GeneralAstNode<'exceptunion'> {
     readonly links: {
-        taggedunion: ListNode<'taggedunion'>,
+        taggedunion: { list: Taggedunion[] },
+    }
+}
+
+export interface Taggedunion extends GeneralAstNode<'taggedunion'> {
+    readonly links: {
+        noun: AtomNode<'noun'>
     }
 }
 

@@ -15,17 +15,24 @@ export const constituentTypes = stringLiterals(
     'and-phrase',
     'limit-phrase',
     'math-expression',
-    'genitive-complement',
     'copula-sentence',
     'verb-sentence',
     'string',
     'complex-sentence',
+    
+    'genitive-complement',
+    'dative-complement',
+    'ablative-complement',
+    'locative-complement',
+    'instrumental-complement',
+    'comitative-complement',    
+
+
 )
 
 export const staticDescPrecedence: CompositeType[] = ['macro']
 
 export const syntaxes: SyntaxMap = {
-
     'macro': [
         { type: ['makro-keyword'], number: 1 },
         { type: ['noun'], number: 1, role: 'subject' },
@@ -53,10 +60,14 @@ export const syntaxes: SyntaxMap = {
     'and-phrase': [],
     'limit-phrase': [],
     'math-expression': [],
-    'genitive-complement' : [],
-    'copula-sentence' : [],
-    'verb-sentence' : [],
+    'genitive-complement': [],
+    'copula-sentence': [],
+    'verb-sentence': [],
     'string': [],
-    'complex-sentence' : [],
-
+    'complex-sentence': [],
+    "dative-complement": [],
+    "ablative-complement": [],
+    "locative-complement": [],
+    "instrumental-complement": [],
+    "comitative-complement": []
 }

@@ -111,6 +111,7 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
     const subject = ast.links?.subject ? evalAst(context, ast.links.subject).at(0) : undefined
     const object = ast.links?.object ? evalAst(context, ast.links.object).at(0) : undefined
 
+
     // console.log('verb=', verb)
     // console.log('subject=', subject)
     // console.log('object=', object)
@@ -129,7 +130,7 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
 }
 
 function evalComplexSentence(context: Context, ast: ComplexSentence, args?: ToClauseOpts): Thing[] {
-    
+
     if (ast.links.subconj.lexeme.root === 'if') {
 
         if (evalAst(context, ast.links.condition, { ...args, sideEffects: false }).length) {
@@ -154,7 +155,7 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
 
     let things: Thing[]
 
-    if (ast.links?.subject?.list?.some(x => x.links?.quote)) {
+    if (ast.links?.subject?.list?.some(x => (x as any).links?.quote)) {//TODO!
         things = evalString(context, ast.links?.subject?.list[0], args)
     } else {
         things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
@@ -291,13 +292,13 @@ function evalString(context: Context, ast?: AstNode, args?: ToClauseOpts): Thing
     return [new StringThing(y)]
 }
 
-function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphrase COULD have side effects
+function couldHaveSideEffects(ast: AstNode2) { // anything that is not a nounphrase COULD have side effects
 
     if (ast.type === 'macro') { // this is not ok, it's here just for performance reasons (saving all of the macros is currently expensive) 
         return false
     }
 
-    return !!(ast.links?.copula || ast.links?.verb || ast.links?.subconj)
+    return !!(ast.type === 'copula-sentence' || ast.type === 'verb-sentence' || (ast as any).links?.subconj)
 }
 
 interface ToClauseOpts {
