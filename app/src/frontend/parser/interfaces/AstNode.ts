@@ -27,9 +27,7 @@ export interface ListNode extends GeneralAstNode<AstType> {
 }
 
 export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
-
-    readonly type: 'noun-phrase',
-
+    
     readonly links: {
         quantifier?: AtomNode<'uniquant' | 'existquant'>,
         article?: AtomNode<'defart' | 'indefart'>,
