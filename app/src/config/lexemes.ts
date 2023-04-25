@@ -23,6 +23,8 @@ export const lexemes: Lexeme[] = [
     { root: 'instrument', type: 'adjective', referents: [] }, //means
     { root: 'companion', type: 'adjective', referents: [] },
 
+    { root: 'string-token', type: 'adjective', referents: [] },
+
     // role of math operator
     { root: 'operator', type: 'adjective', referents: [] },
 

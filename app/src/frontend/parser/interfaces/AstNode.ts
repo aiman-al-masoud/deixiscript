@@ -3,7 +3,7 @@ import { Lexeme } from "../../lexer/Lexeme"
 import { AstType } from "./Syntax"
 
 
-export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion
+export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion | StringAst
 
 
 /**
@@ -32,7 +32,7 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
     readonly links: {
         quantifier?: AtomNode<'uniquant' | 'existquant'>,
         article?: AtomNode<'defart' | 'indefart'>,
-        subject?: { list: AtomNode<'noun' | 'pronoun'>[] } //string!!
+        subject: AtomNode<'noun' | 'pronoun'> | StringAst
         adjective?: { list: AtomNode<'adjective'>[] },
         subclause?: AstNode,
         'genitive-complement'?: GenitiveComplement,
@@ -53,7 +53,7 @@ export interface AndPhrase extends GeneralAstNode<'and-phrase'> {
 export interface LimitPhrase extends GeneralAstNode<'limit-phrase'> {
     readonly links: {
         /* TODO: name not in runtime! */nextOrPrevKeyword: AtomNode<'next-keyword' | 'previous-keyword'>,
-        string?: AstNode,
+        string?: StringAst,
     }
 }
 
@@ -163,6 +163,12 @@ export interface ComplexSentence extends GeneralAstNode<'complex-sentence'> {
         condition: CopulaSentence | VerbSentence,
         consequence: CopulaSentence | VerbSentence,
         subconj: AtomNode<'subconj'>,
+    }
+}
+
+export interface StringAst extends GeneralAstNode<'string'> {
+    readonly links: {
+        'string-token': { list: AtomNode<LexemeType>[] }
     }
 }
 

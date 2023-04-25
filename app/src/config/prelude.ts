@@ -92,7 +92,7 @@ export const prelude: string =
       then optional article 
       then zero-or-more adjectives
       then optional limit-phrase 
-      then zero-or-more subject noun or pronoun or string
+      then subject noun or pronoun or string
       then optional math-expression
       then optional subclause
       then optional genitive-complement
@@ -144,7 +144,7 @@ export const prelude: string =
   end.
 
   makro 
-    string is quote then one-or-more any-lexeme except quote then quote 
+    string is quote then one-or-more string-token any-lexeme except quote then quote 
   end.
 
   `
