@@ -170,7 +170,7 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
 
     if (isAstPlural(ast) || ast.links["and-phrase"]) { // if universal quantified, I don't care if there's no match
 
-        const limit = ast.links?.['limit-phrase']?.links?.string
+        const limit = ast.links['limit-phrase']?.links?.string
         const limitNum: number = evalString(context, limit, args).at(0)?.toJs() as any
         return things.slice(0, limitNum ?? things.length)
 
