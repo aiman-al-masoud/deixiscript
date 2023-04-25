@@ -17,7 +17,7 @@ export interface AstNode extends GeneralAstNode<AstType> { // to be phased out
     readonly role?: Role
 }
 
-export interface AtomNode extends GeneralAstNode<LexemeType> {
+export interface AtomNode<T extends LexemeType> extends GeneralAstNode<T> {
     readonly lexeme: Lexeme
     readonly role?: Role
 }
@@ -27,12 +27,12 @@ export interface ListNode extends GeneralAstNode<AstType> {
 }
 
 export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
-    
-    readonly type:'noun-phrase',
+
+    readonly type: 'noun-phrase',
 
     readonly links: {
-        quantifier?: AtomNode,
-        article?: AtomNode,
+        quantifier?: AtomNode<'uniquant' | 'existquant'>,
+        article?: AtomNode<'defart' | 'indefart'>,
         subject?: ListNode,
         adjective?: ListNode,
         subclause?: AstNode,
@@ -46,28 +46,28 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
 
 export interface AndPhrase extends GeneralAstNode<'and-phrase'> {
     readonly links: {
-        nonsubconj: AtomNode,
+        nonsubconj: AtomNode<'nonsubconj'>,
         'noun-phrase': NounPhrase,
     }
 }
 
 export interface LimitPhrase extends GeneralAstNode<'limit-phrase'> {
     readonly links: {
-        nextOrPrevKeyword: AtomNode,
+        /* TODO: name not in runtime! */nextOrPrevKeyword: AtomNode<'next-keyword' | 'previous-keyword'>,
         string?: AstNode,
     }
 }
 
 export interface MathExpression extends GeneralAstNode<'math-expression'> {
     readonly links: {
-        operator: AtomNode,
+        operator: AtomNode<'plus-operator'>,
         'noun-phrase': NounPhrase,
     }
 }
 
 export interface GenitiveComplement extends GeneralAstNode<'genitive-complement'> {
     readonly links: {
-        'genitive-particle': AtomNode,
+        'genitive-particle': AtomNode<'genitive-particle'>,
         owner: NounPhrase,
     }
 }
@@ -75,8 +75,8 @@ export interface GenitiveComplement extends GeneralAstNode<'genitive-complement'
 export interface CopulaSentence extends GeneralAstNode<'copula-sentence'> {
     readonly links: {
         subject: NounPhrase,
-        copula: AtomNode,
-        negation?: AtomNode,
+        copula: AtomNode<'copula'>,
+        negation?: AtomNode<'negation'>,
         predicate: NounPhrase,
     }
 }
@@ -84,9 +84,9 @@ export interface CopulaSentence extends GeneralAstNode<'copula-sentence'> {
 export interface VerbSentence extends GeneralAstNode<'verb-sentence'> {
     readonly links: {
         subject: NounPhrase,
-        hverb?: AtomNode,
-        negation?: AtomNode,
-        verb: AtomNode,
+        hverb?: AtomNode<'hverb'>,
+        negation?: AtomNode<'negation'>,
+        verb: AtomNode<'verb'>,
         object?: NounPhrase,
         complement?: ListNode,
     }
