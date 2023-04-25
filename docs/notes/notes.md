@@ -122,6 +122,9 @@ evalAst
 
 Make PRECISE AstNode interfaces for cleaner evalAst.
 
+error out if trying to define CST for unknown kind of AST.
+philosophy: fixed ASTs, custom CSTs.
+
 work on a framework to define complement-related syntax/morphology across different languages using a basic set of "'case' markers" that can be used to extract info back from the parsed AST independently of syntax.
 
 https://en.wikipedia.org/wiki/List_of_grammatical_cases
@@ -142,3 +145,5 @@ maybe make "for" dative.
 
 # 1 add location complement to log verb for debugging
 # 2 add back some TESTS
+
+
