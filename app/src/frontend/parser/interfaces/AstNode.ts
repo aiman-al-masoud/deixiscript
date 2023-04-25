@@ -2,6 +2,10 @@ import { LexemeType } from "../../../config/LexemeType"
 import { Lexeme } from "../../lexer/Lexeme"
 import { AstType } from "./Syntax"
 
+
+export type AstNode2 = NounPhrase | AndPhrase | LimitPhrase | MathExpression | GenitiveComplement | CopulaSentence | VerbSentence | Macro | Macropart | Exceptunion
+
+
 /**
 * philosophy: fixed ASTs, custom CSTs.
 */
@@ -17,22 +21,26 @@ export interface AstNode extends GeneralAstNode<AstType> { // to be phased out
     readonly role?: Role
 }
 
+
+
+
+
 export interface AtomNode<T extends LexemeType> extends GeneralAstNode<T> {
     readonly lexeme: Lexeme
     readonly role?: Role
 }
 
-export interface ListNode extends GeneralAstNode<AstType> {
+export interface ListNode<T extends AstType> extends GeneralAstNode<T> {
     readonly list: AstNode[]
 }
 
 export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
-    
+
     readonly links: {
         quantifier?: AtomNode<'uniquant' | 'existquant'>,
         article?: AtomNode<'defart' | 'indefart'>,
-        subject?: ListNode,
-        adjective?: ListNode,
+        subject?: ListNode<'noun' | 'pronoun' | 'string'>,
+        adjective?: ListNode<'adjective'>,
         subclause?: AstNode,
         'genitive-complement'?: GenitiveComplement,
         'and-phrase'?: AndPhrase,
@@ -86,10 +94,39 @@ export interface VerbSentence extends GeneralAstNode<'verb-sentence'> {
         negation?: AtomNode<'negation'>,
         verb: AtomNode<'verb'>,
         object?: NounPhrase,
-        complement?: ListNode,
+        complement?: ListNode<AstType>, //TODO
     }
 }
 
+export interface Macro extends GeneralAstNode<'macro'> {
+    readonly links: {
+        macropart: ListNode<'macropart'>,
+        subject: AtomNode<'noun'>,
+    }
+}
+
+export interface Macropart extends GeneralAstNode<'macropart'> {
+    readonly links: {
+        adjective: ListNode<'adjective'>,
+        taggedunion: ListNode<'taggedunion'>,
+        exceptunion: Exceptunion,
+    }
+}
+
+export interface Exceptunion extends GeneralAstNode<'exceptunion'> {
+    readonly links: {
+        taggedunion: ListNode<'taggedunion'>,
+    }
+}
+
+export interface ComplexSentence extends GeneralAstNode<'complex-sentence'> {
+    readonly links: {
+        condition: CopulaSentence | VerbSentence,
+        consequence: CopulaSentence | VerbSentence,
+        'then-keyword': AtomNode<'then-keyword'>,
+        subconj: AtomNode<'subconj'>,
+    }
+}
 
 
 export type Role = 'subject'

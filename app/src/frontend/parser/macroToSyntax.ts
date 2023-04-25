@@ -1,11 +1,11 @@
-import { AstNode, Role } from "./interfaces/AstNode"
+import { AstNode, Macro, Macropart, Role } from "./interfaces/AstNode"
 import { Member, AstType } from "./interfaces/Syntax"
 
-export function macroToSyntax(macro: AstNode) {
+export function macroToSyntax(macro: Macro) {
 
-    const macroparts = macro?.links?.macropart?.list ?? []
-    const syntax = macroparts.map(m => macroPartToMember(m))
-    const name = macro?.links?.subject?.lexeme?.root
+    const macroparts = macro.links.macropart.list ?? []
+    const syntax = macroparts.map(m => macroPartToMember(m as Macropart))
+    const name = macro.links.subject.lexeme.root
 
     if (!name) {
         throw new Error('Anonymous syntax!')
@@ -14,7 +14,7 @@ export function macroToSyntax(macro: AstNode) {
     return { name, syntax }
 }
 
-function macroPartToMember(macroPart: AstNode): Member {
+function macroPartToMember(macroPart: Macropart): Member {
 
     const adjectiveNodes = macroPart.links?.adjective?.list ?? []
     const adjectives = adjectiveNodes.flatMap(a => a.lexeme ?? [])

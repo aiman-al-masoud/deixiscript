@@ -18,6 +18,8 @@ export const constituentTypes = stringLiterals(
     'genitive-complement',
     'copula-sentence',
     'verb-sentence',
+    'string',
+    'complex-sentence',
 )
 
 export const staticDescPrecedence: CompositeType[] = ['macro']
@@ -54,5 +56,7 @@ export const syntaxes: SyntaxMap = {
     'genitive-complement' : [],
     'copula-sentence' : [],
     'verb-sentence' : [],
+    'string': [],
+    'complex-sentence' : [],
 
 }

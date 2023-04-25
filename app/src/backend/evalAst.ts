@@ -5,17 +5,16 @@ import { StringThing } from "./StringThing";
 import { Thing, getThing } from "./Thing";
 import { VerbThing } from "./VerbThing";
 import { isPlural, Lexeme, makeLexeme } from "../frontend/lexer/Lexeme";
-import { AndPhrase, AstNode, CopulaSentence, GeneralAstNode, GenitiveComplement, NounPhrase, VerbSentence } from "../frontend/parser/interfaces/AstNode";
+import { AndPhrase, AstNode, AstNode2, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, VerbSentence } from "../frontend/parser/interfaces/AstNode";
 import { parseNumber } from "../utils/parseNumber";
 import { Clause, clauseOf, emptyClause } from "../middle/clauses/Clause";
 import { getOwnershipChain } from "../middle/clauses/functions/getOwnershipChain";
 import { getIncrementalId } from "../middle/id/functions/getIncrementalId";
 import { Id } from "../middle/id/Id";
 import { Map } from "../middle/id/Map";
-import { AstType } from "../frontend/parser/interfaces/Syntax";
 
-export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] {
-    
+export function evalAst(context: Context, ast: AstNode2, args: ToClauseOpts = {}): Thing[] {
+
     args.sideEffects ??= couldHaveSideEffects(ast)
 
     if (args.sideEffects) { // only cache instructions with side effects
@@ -27,17 +26,19 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
     if (ast.type === 'macro') {
         context.setSyntax(ast)
         return []
-    } else if (ast?.links?.copula) {
-        return evalCopulaSentence(context, ast as CopulaSentence, args)
-    } else if (ast?.links?.verb) {
-        return evalVerbSentence(context, ast as VerbSentence, args)
-    } else if (ast?.links?.subconj) {
-        return evalComplexSentence(context, ast, args)
-    } else if (ast?.links?.nonsubconj) {
-        return evalCompoundSentence(context, ast, args)
-    } else {
-        return evalNounPhrase(context, ast as NounPhrase, args)
+    } else if (ast.type === 'copula-sentence') {
+        return evalCopulaSentence(context, ast, args)
+    } else if (ast.type === 'verb-sentence') {
+        return evalVerbSentence(context, ast, args)
+    } else if ((ast as any).links?.subconj) {
+        return evalComplexSentence(context, ast as any, args)
+        // } else if (ast?.links?.nonsubconj) {
+        // return evalCompoundSentence(context, ast, args)
+    } else if (ast.type === 'noun-phrase') {
+        return evalNounPhrase(context, ast, args)
     }
+
+    throw new Error('evalAst() got unknown ast type: ' + ast.type)
 
 }
 
@@ -48,7 +49,7 @@ function evalCopulaSentence(context: Context, ast: CopulaSentence, args?: ToClau
 
         const subjectId = args?.subject ?? getIncrementalId()
         const subject = nounPhraseToClause(ast.links?.subject, { subject: subjectId }).simple
-        const rVal = evalAst(context, ast.links?.predicate as AstNode, { subject: subjectId })
+        const rVal = evalAst(context, ast.links?.predicate, { subject: subjectId })
         const ownerChain = getOwnershipChain(subject)
         const maps = context.query(subject)
         const lexemes = subject.flatList().map(x => x.predicate!).filter(x => x)
@@ -90,8 +91,8 @@ function evalCopulaSentence(context: Context, ast: CopulaSentence, args?: ToClau
         }
 
     } else { // compare the right and left values
-        const subject = evalAst(context, ast.links?.subject as AstNode, args).at(0)
-        const predicate = evalAst(context, ast.links?.predicate as AstNode, args).at(0)
+        const subject = evalAst(context, ast.links?.subject, args).at(0)
+        const predicate = evalAst(context, ast.links?.predicate, args).at(0)
         return subject?.equals(predicate!) && (!ast.links?.negation) ? [new NumberThing(1)] : []
     }
 
@@ -107,8 +108,8 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
 
     const verb = ast?.links?.verb?.lexeme?.referents.at(0) as VerbThing | undefined
     // const complements = (((ast.links as any)?.['complement'].list ?? []) as AstNode[]).flatMap(x=>Object.values(x.links??{}  )  ).map(x=>({[x.type] : x.links})).reduce((a,b)=>({...a,...b}))
-    const subject = ast.links?.subject ? evalAst(context, ast.links.subject as AstNode).at(0) : undefined
-    const object = ast.links?.object ? evalAst(context, ast.links.object as AstNode).at(0) : undefined
+    const subject = ast.links?.subject ? evalAst(context, ast.links.subject).at(0) : undefined
+    const object = ast.links?.object ? evalAst(context, ast.links.object).at(0) : undefined
 
     // console.log('verb=', verb)
     // console.log('subject=', subject)
@@ -127,12 +128,12 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
     // return []
 }
 
-function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
+function evalComplexSentence(context: Context, ast: ComplexSentence, args?: ToClauseOpts): Thing[] {
+    
+    if (ast.links.subconj.lexeme.root === 'if') {
 
-    if (ast.links?.subconj?.lexeme?.root === 'if') {
-
-        if (evalAst(context, ast.links.condition!, { ...args, sideEffects: false }).length) {
-            evalAst(context, ast.links.consequence!, { ...args, sideEffects: true })
+        if (evalAst(context, ast.links.condition, { ...args, sideEffects: false }).length) {
+            evalAst(context, ast.links.consequence, { ...args, sideEffects: true })
         }
 
     }
@@ -140,9 +141,9 @@ function evalComplexSentence(context: Context, ast: AstNode, args?: ToClauseOpts
     return []
 }
 
-function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
-    throw new Error('compound sentence!')
-}
+// function evalCompoundSentence(context: Context, ast: AstNode, args?: ToClauseOpts): Thing[] {
+//     throw new Error('compound sentence!')
+// }
 
 function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts): Thing[] {
 
@@ -164,7 +165,7 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
     if (mathExpression) {
         const left = things
         const op = mathExpression.links?.operator?.lexeme
-        const right = evalAst(context, mathExpression.links["noun-phrase"] as AstNode)
+        const right = evalAst(context, mathExpression.links["noun-phrase"])
         return evalOperation(left, right, op)
     }
 
@@ -225,9 +226,9 @@ function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause
     return clauseOf(genitiveParticle, ownedId, ownerId).and(owner)
 }
 
-function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
-    return emptyClause //TODO!
-}
+// function relativeClauseToClause(ast?: AstNode, args?: ToClauseOpts): Clause {
+//     return emptyClause //TODO!
+// }
 
 function isAstPlural(ast?: NounPhrase): boolean {
 

@@ -125,16 +125,22 @@ export const prelude: string =
   end.
 
   makro 
-  complex-sentence-1 is subconj 
+  complex-sentence-1 is 
+      subconj 
       then condition simple-sentence 
       then then-keyword
       then consequence simple-sentence
   end.
 
   makro 
-    complex-sentence-2 is consequence simple-sentence 
+    complex-sentence-2 is 
+      consequence simple-sentence 
       then subconj 
       then condition simple-sentence
+  end.
+
+  makro 
+    complex-sentence is complex-sentence-1 or complex-sentence-2
   end.
 
   makro 
