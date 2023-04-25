@@ -1,4 +1,4 @@
-import { AstNode, AstNode2 } from "../frontend/parser/interfaces/AstNode";
+import { AstNode2 } from "../frontend/parser/interfaces/AstNode";
 import { getIncrementalId } from "../middle/id/functions/getIncrementalId";
 import { BaseThing } from "./BaseThing";
 

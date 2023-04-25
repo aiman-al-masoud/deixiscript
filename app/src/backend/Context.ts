@@ -1,7 +1,7 @@
 
 import { LexemeType } from "../config/LexemeType";
 import { CompositeType } from "../config/syntaxes";
-import { AstNode, Macro } from "../frontend/parser/interfaces/AstNode";
+import { Macro } from "../frontend/parser/interfaces/AstNode";
 import { AstType, Syntax } from "../frontend/parser/interfaces/Syntax";
 import { Id } from "../middle/id/Id";
 import { BasicContext } from "./BasicContext";

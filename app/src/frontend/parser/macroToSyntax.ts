@@ -1,4 +1,4 @@
-import { AstNode, Macro, Macropart, Role } from "./interfaces/AstNode"
+import { Macro, Macropart, Role } from "./interfaces/AstNode"
 import { Member, AstType } from "./interfaces/Syntax"
 
 export function macroToSyntax(macro: Macro) {
