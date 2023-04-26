@@ -43,8 +43,8 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
     'and-phrase'?: AndPhrase
     'math-expression'?: MathExpression
     'limit-phrase'?: LimitPhrase
-    readonly role: Role
-    readonly list?: undefined
+    role: Role
+    list?: undefined
 }
 
 export interface AndPhrase extends GeneralAstNode<'and-phrase'> {
