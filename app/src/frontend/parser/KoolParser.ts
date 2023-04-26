@@ -63,7 +63,7 @@ export class KoolParser implements Parser {
 
         const members = this.context.getSyntax(name)
 
-        if (members.length === 1 && members[0].type.every(t => this.isLeaf(t))) {
+        if (members.length === 1 && members[0].types.every(t => this.isLeaf(t))) {
             return this.parseLeaf(members[0])
         } else {
             return this.parseComposite(name as CompositeType, role)
@@ -73,7 +73,7 @@ export class KoolParser implements Parser {
 
     protected parseLeaf = (m: Member): AstNode | undefined => {
 
-        if (m.type.includes(this.lexer.peek.type)) {
+        if (m.types.includes(this.lexer.peek.type)) {
             const x = this.lexer.peek
             this.lexer.next()
             return { type: x.type, lexeme: x }
@@ -122,7 +122,7 @@ export class KoolParser implements Parser {
                 break
             }
 
-            const x = this.tryParse(m.type, m.role, m.exceptType)
+            const x = this.tryParse(m.types, m.role, m.exceptTypes)
 
             if (!x) {
                 break

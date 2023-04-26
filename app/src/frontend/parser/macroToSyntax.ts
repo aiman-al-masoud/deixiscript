@@ -29,10 +29,10 @@ function macroPartToMember(macroPart: Macropart): Member {
     const notGrammars = exceptUnions.map(x => x?.noun)
 
     return {
-        type: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
+        types: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
         role: qualadjs.at(0)?.root as Role,
         number: quantadjs.at(0)?.cardinality,
-        exceptType: notGrammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
+        exceptTypes: notGrammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
     }
 
 }

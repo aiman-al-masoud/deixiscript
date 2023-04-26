@@ -30,7 +30,7 @@ export function dependencies(a: CompositeType, syntaxes: SyntaxMap, visited: Ast
 
     const members = syntaxes[a] ?? []
 
-    return members.flatMap(m => m.type).flatMap(t => {
+    return members.flatMap(m => m.types).flatMap(t => {
 
         if (visited.includes(t)) {
             return []

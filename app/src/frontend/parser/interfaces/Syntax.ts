@@ -10,10 +10,10 @@ export type SyntaxMap = {
 }
 
 export type Member = {
-    readonly type: AstType[]
+    readonly types: AstType[]
     readonly number?: Cardinality
     readonly role?: Role
-    readonly exceptType?: AstType[]
+    readonly exceptTypes?: AstType[]
 }
 
 export type AstType = LexemeType | CompositeType
