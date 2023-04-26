@@ -88,6 +88,8 @@ x sells for 100001.
 
 # add numbers to noun-phrase
 
+# single noun vs adjectives problem, make noun usable as adjective.
+
 # list comprehensions 
 * 2 + every number
 * 2 + every number of y
