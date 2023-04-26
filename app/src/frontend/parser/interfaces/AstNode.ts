@@ -62,15 +62,12 @@ export interface MathExpression extends GeneralAstNode<'math-expression'> {
     'noun-phrase': NounPhrase
 }
 
-
-export interface Complement<T extends AstType> extends GeneralAstNode<T> {
-}
+export interface Complement<T extends AstType> extends GeneralAstNode<T> { }
 
 export interface GenitiveComplement extends Complement<'genitive-complement'> {
     'genitive-particle': AtomNode<'genitive-particle'>
     owner: NounPhrase
 }
-
 
 export interface DativeComplement extends Complement<'dative-complement'> {
     'dative-particle': AtomNode<'dative-particle'>
