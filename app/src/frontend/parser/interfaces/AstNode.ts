@@ -28,7 +28,6 @@ export interface GeneralAstNode<T extends AstType> {
 
 export interface AtomNode<T extends LexemeType> extends GeneralAstNode<T> {
     readonly lexeme: Lexeme
-    readonly role?: Role
     readonly list?: undefined
 }
 
