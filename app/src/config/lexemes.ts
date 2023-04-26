@@ -4,6 +4,7 @@ export const lexemes: Lexeme[] = [
 
     { root: 'be', type: 'copula', referents: [] },
     { root: 'be', type: 'copula', token: 'is', cardinality: 1, referents: [] },
+    { root: 'be', type: 'copula', token: '=', cardinality: '*', referents: [] },
     { root: 'be', type: 'copula', token: 'are', cardinality: '*', referents: [] }, //TODO! 2+
     { root: 'do', type: 'hverb', referents: [] },
     { root: 'do', type: 'hverb', token: 'does', cardinality: 1, referents: [] },
