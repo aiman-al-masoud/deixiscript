@@ -128,4 +128,4 @@ maybe make "for" dative.
 # 1 add location complement to log verb for debugging
 # 2 add back some TESTS
 
-
+# syntaxmap should be a {[astType:AstType] : Syntax[]}, multiple possible syntaxes for each AST.
