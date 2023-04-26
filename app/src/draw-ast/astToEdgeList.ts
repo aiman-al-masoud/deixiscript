@@ -6,6 +6,8 @@ export function astToEdgeList(
     edges: EdgeList = [],
 ): EdgeList {
 
+    const links = Object.entries(ast).filter(e => e[1] && e[1].type)
+
     const astName = (ast.role ?? ast.lexeme?.root ?? ast.type) + random()
 
     const additions: EdgeList = []
@@ -14,13 +16,12 @@ export function astToEdgeList(
         additions.push([parentName, astName])
     }
 
-    if (!ast.links && !ast.list) { // leaf!
+    if (!links.length && !ast.list) { // leaf!
         return [...edges, ...additions]
     }
 
-    if (ast.links) {
-        return Object
-            .entries(ast.links)
+    if (links.length) {
+        return links
             .flatMap(e => {
                 const ezero = e[0] + random()
                 return [...additions, [astName, ezero], ...astToEdgeList(e[1], ezero, edges)]
