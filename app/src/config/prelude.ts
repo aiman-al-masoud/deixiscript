@@ -96,21 +96,9 @@ export const prelude: string =
     then optional limit-phrase 
     then subject noun or pronoun or string or number-literal
     then optional math-expression
-    then optional subclause
+    then optional subordinate-clause
     then optional genitive-complement
     then optional and-phrase
-  end.
-
-  makro 
-    copulasubclause is relpron then copula then predicate noun-phrase 
-  end.
-
-  makro 
-    mverbsubclause is relpron then verb then object noun-phrase 
-  end.
-
-  makro 
-    subclause is copulasubclause or mverbsubclause 
   end.
 
   makro 
