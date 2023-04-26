@@ -25,7 +25,6 @@ export const constituentTypes = stringLiterals(
     'locative-complement',
     'instrumental-complement',
     'comitative-complement',
-    'copula-subordinate-clause',
 
     'string',
     'number-literal',
@@ -73,5 +72,4 @@ export const syntaxes: SyntaxMap = {
     "locative-complement": [],
     "instrumental-complement": [],
     "comitative-complement": [],
-    'copula-subordinate-clause': [],
 }
