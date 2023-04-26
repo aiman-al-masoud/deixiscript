@@ -5,7 +5,7 @@ import { getParser } from "../frontend/parser/interfaces/Parser";
 import { evalAst } from "../backend/evalAst";
 import Brain from "./Brain";
 import { BrainListener } from "./BrainListener";
-import { AstNode2 } from "../frontend/parser/interfaces/AstNode";
+import { AstNode } from "../frontend/parser/interfaces/AstNode";
 
 
 export default class BasicBrain implements Brain {
@@ -29,7 +29,7 @@ export default class BasicBrain implements Brain {
 
                 let results: Thing[] = []
                 try {
-                    results = evalAst(this.context, ast as AstNode2)
+                    results = evalAst(this.context, ast as AstNode)
                 } catch (e) {
                     console.warn(e)
                 }

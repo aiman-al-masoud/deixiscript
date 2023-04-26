@@ -5,7 +5,7 @@ import { StringThing } from './StringThing';
 import { Thing, getThing } from './Thing';
 import { VerbThing } from './VerbThing';
 import { isPlural, Lexeme, makeLexeme } from '../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode2, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
 import { getOwnershipChain } from '../middle/clauses/functions/getOwnershipChain';
@@ -13,7 +13,8 @@ import { getIncrementalId } from '../middle/id/functions/getIncrementalId';
 import { Id } from '../middle/id/Id';
 import { Map } from '../middle/id/Map';
 
-export function evalAst(context: Context, ast: AstNode2, args: ToClauseOpts = {}): Thing[] {
+
+export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] {
 
     args.sideEffects ??= couldHaveSideEffects(ast)
 
@@ -240,7 +241,7 @@ function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause
     return clauseOf(genitiveParticle, ownedId, ownerId).and(owner)
 }
 
-function isAstPlural(ast: AstNode2): boolean {
+function isAstPlural(ast: AstNode): boolean {
 
     if (!ast) {
         return false
@@ -298,7 +299,7 @@ function evalString(context: Context, ast?: StringAst, args?: ToClauseOpts): Thi
     return [new StringThing(y)]
 }
 
-function couldHaveSideEffects(ast: AstNode2) { // anything that is not a nounphrase COULD have side effects
+function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphrase COULD have side effects
 
     if (ast.type === 'macro') { // this is not ok, it's here just for performance reasons (saving all of the macros is currently expensive) 
         return false

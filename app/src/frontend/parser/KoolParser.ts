@@ -109,12 +109,12 @@ export class KoolParser implements Parser {
             type: name,
             role: role,
             ...links
-        }
+        } as any // TODO!
     }
 
     protected parseMember = (m: Member, role?: Role): AstNode | undefined => {
 
-        const list: AstNode[] = []
+        const list: any[] = [] // TODO!
 
         while (!this.lexer.isEnd) {
 
@@ -148,11 +148,6 @@ export class KoolParser implements Parser {
 
     protected simplify(ast: AstNode): AstNode {
 
-
-        // // if (!ast.links) {
-        //     // return ast
-        // // }
-
         if (this.isLeaf(ast.type) || ast.list) { // if no links return ast
             return ast
         }
@@ -160,28 +155,17 @@ export class KoolParser implements Parser {
         const syntax = this.context.getSyntax(ast.type)
 
         if (syntax.length === 1) {
-            const v = Object.values(ast).filter(x => typeof x !== 'string').filter(x => x)
-            // console.log('ast=',ast)
-            // console.log('v=',v)
-            // console.log('v[0]=',v[0])
-            return v[0] as AstNode
+            const v = Object.values(ast).filter(x => x && x.type).filter(x => x)
+            return v[0]
         }
-
-        // const links = Object.values( {...ast, 'list' : undefined, 'lexeme' :undefined, 'role' : undefined  } ).filter(x=>x)
-
-        // if (syntax.length === 1 && links /* Object.values(ast.links) */.length === 1) {
-        //     console.log(links)
-        //     return this.simplify(/* Object.values(ast.links) */links[0] as any)
-        // }
 
         const simpleLinks = Object
             .entries(ast)
-            // .filter(x=> x[0] !== 'list' && x[0] !== 'lexeme' && x[0] !== 'role' )
             .filter(x => (x as any).type)
             .map(l => ({ [l[0]]: this.simplify(l[1]) }))
             .reduce((a, b) => ({ ...a, ...b }), {})
 
-        return { ...ast,/*  links:  */ ...simpleLinks }
+        return { ...ast, ...simpleLinks }
 
     }
 
