@@ -45,8 +45,8 @@ function evalCopulaSentence(context: Context, ast: CopulaSentence, args?: ToClau
     if (args?.sideEffects) { // assign the right value to the left value
 
         const subjectId = args?.subject ?? getIncrementalId()
-        const subject = nounPhraseToClause(ast.links?.subject, { subject: subjectId }).simple
-        const rVal = evalAst(context, ast.links?.predicate, { subject: subjectId })
+        const subject = nounPhraseToClause(ast.subject, { subject: subjectId }).simple
+        const rVal = evalAst(context, ast.predicate, { subject: subjectId })
         const ownerChain = getOwnershipChain(subject)
         const maps = context.query(subject)
         const lexemes = subject.flatList().map(x => x.predicate!).filter(x => x)
@@ -88,9 +88,9 @@ function evalCopulaSentence(context: Context, ast: CopulaSentence, args?: ToClau
         }
 
     } else { // compare the right and left values
-        const subject = evalAst(context, ast.links?.subject, args).at(0)
-        const predicate = evalAst(context, ast.links?.predicate, args).at(0)
-        return subject?.equals(predicate!) && (!ast.links?.negation) ? [new NumberThing(1)] : []
+        const subject = evalAst(context, ast.subject, args).at(0)
+        const predicate = evalAst(context, ast.predicate, args).at(0)
+        return subject?.equals(predicate!) && (!ast.negation) ? [new NumberThing(1)] : []
     }
 
     console.log('problem with copula sentence!')
@@ -103,11 +103,10 @@ function about(clause: Clause, entity: Id) {
 
 function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOpts): Thing[] { //TODO: multiple subjects/objects
 
-    const verb = ast?.links?.verb?.lexeme?.referents.at(0) as VerbThing | undefined
+    const verb = ast.verb.lexeme.referents.at(0) as VerbThing | undefined
     // const complements = (((ast.links as any)?.['complement'].list ?? []) as AstNode[]).flatMap(x=>Object.values(x.links??{}  )  ).map(x=>({[x.type] : x.links})).reduce((a,b)=>({...a,...b}))
-    const subject = ast.links?.subject ? evalAst(context, ast.links.subject).at(0) : undefined
-    const object = ast.links?.object ? evalAst(context, ast.links.object).at(0) : undefined
-
+    const subject = ast.subject ? evalAst(context, ast.subject).at(0) : undefined
+    const object = ast.object ? evalAst(context, ast.object).at(0) : undefined
 
     // console.log('verb=', verb)
     // console.log('subject=', subject)
@@ -115,7 +114,7 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
     // console.log('complements=', complements)
 
     if (!verb) {
-        throw new Error('no such verb ' + ast?.links?.verb?.lexeme?.root)
+        throw new Error('no such verb ' + ast.verb.lexeme.root)
     }
 
     return verb.run(context, { subject: subject ?? context, object: object ?? context })
@@ -123,10 +122,10 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
 
 function evalComplexSentence(context: Context, ast: ComplexSentence, args?: ToClauseOpts): Thing[] {
 
-    if (ast.links.subconj.lexeme.root === 'if') {
+    if (ast.subconj.lexeme.root === 'if') {
 
-        if (evalAst(context, ast.links.condition, { ...args, sideEffects: false }).length) {
-            evalAst(context, ast.links.consequence, { ...args, sideEffects: true })
+        if (evalAst(context, ast.condition, { ...args, sideEffects: false }).length) {
+            evalAst(context, ast.consequence, { ...args, sideEffects: true })
         }
 
     }
@@ -140,25 +139,25 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
     const maps = context.query(np) // TODO: intra-sentence anaphora resolution
     const interestingIds = getInterestingIds(maps, np)
     let things: Thing[]
-    const andPhrase = ast.links['and-phrase'] ? evalAst(context, ast.links['and-phrase'].links['noun-phrase'], args) : []
+    const andPhrase = ast['and-phrase'] ? evalAst(context, ast['and-phrase']?.['noun-phrase'], args) : []
 
-    if (ast.links.subject.type === 'number-literal') {
-        things = evalNumberLiteral(ast.links.subject).concat(andPhrase as any)
-    } else if (ast.links.subject.type === 'string') {
-        things = evalString(context, ast.links.subject, args).concat(andPhrase)
+    if (ast.subject.type === 'number-literal') {
+        things = evalNumberLiteral(ast.subject).concat(andPhrase as any)
+    } else if (ast.subject.type === 'string') {
+        things = evalString(context, ast.subject, args).concat(andPhrase)
     } else {
         things = interestingIds.map(id => context.get(id)).filter(x => x).map(x => x!) // TODO sort by id
     }
 
-    if (ast.links['math-expression']) {
+    if (ast['math-expression']) {
         const left = things
-        const op = ast.links['math-expression'].links.operator.lexeme
-        const right = evalAst(context, ast.links['math-expression'].links['noun-phrase'])
+        const op = ast['math-expression'].operator.lexeme
+        const right = evalAst(context, ast['math-expression']?.['noun-phrase'])
         return evalOperation(left, right, op)
     }
 
-    if (isAstPlural(ast) || ast.links['and-phrase']) { // if universal quantified, I don't care if there's no match
-        const limit = ast.links['limit-phrase']?.links['number-literal']
+    if (isAstPlural(ast) || ast['and-phrase']) { // if universal quantified, I don't care if there's no match
+        const limit = ast['limit-phrase']?.['number-literal']
         const limitNum = evalNumberLiteral(limit).at(0)?.toJs() ?? things.length
         return things.slice(0, limitNum)
     }
@@ -180,8 +179,8 @@ function evalNumberLiteral(ast?: NumberLiteral): NumberThing[] {
         return []
     }
 
-    const fd = ast.links['first-digit'].lexeme.root
-    const digits = ast.links.digit?.list?.map(x => x.lexeme.root) ?? []
+    const fd = ast['first-digit'].lexeme.root
+    const digits = ast.digit?.list?.map(x => x.lexeme.root) ?? []
     const allDigits = [fd].concat(digits)
     const literal = allDigits.reduce((a, b) => a + b, '')
 
@@ -203,17 +202,17 @@ function evalOperation(left: Thing[], right: Thing[], op?: Lexeme) {
 function nounPhraseToClause(ast?: NounPhrase, args?: ToClauseOpts): Clause {
 
     const subjectId = args?.subject ?? getIncrementalId()
-    const adjectives = (ast?.links?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
+    const adjectives = (ast?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
     // const nouns = (ast?.links?.subject?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
 
     let noun = emptyClause
 
-    if (ast?.links.subject.type === 'noun' || ast?.links.subject.type === 'pronoun') {
-        noun = clauseOf(ast.links.subject.lexeme, subjectId)
+    if (ast?.subject.type === 'noun' || ast?.subject.type === 'pronoun') {
+        noun = clauseOf(ast.subject.lexeme, subjectId)
     }
 
-    const genitiveComplement = genitiveToClause(ast?.links['genitive-complement'], { subject: subjectId, autovivification: false, sideEffects: false })
-    const andPhrase = evalAndPhrase(ast?.links['and-phrase'], args)
+    const genitiveComplement = genitiveToClause(ast?.['genitive-complement'], { subject: subjectId, autovivification: false, sideEffects: false })
+    const andPhrase = evalAndPhrase(ast?.['and-phrase'], args)
     //TODO: relative clauses
 
     return adjectives.and(noun).and(genitiveComplement).and(andPhrase)
@@ -225,7 +224,7 @@ function evalAndPhrase(andPhrase?: AndPhrase, args?: ToClauseOpts) {
         return emptyClause
     }
 
-    return nounPhraseToClause(andPhrase.links['noun-phrase'] /* TODO! args */) // maybe problem if multiple things have same id, query is not gonna find them
+    return nounPhraseToClause(andPhrase['noun-phrase'] /* TODO! args */) // maybe problem if multiple things have same id, query is not gonna find them
 }
 
 function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause {
@@ -236,16 +235,20 @@ function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause
 
     const ownedId = args?.subject!
     const ownerId = getIncrementalId()
-    const genitiveParticle = ast.links['genitive-particle'].lexeme
-    const owner = nounPhraseToClause(ast.links.owner, { subject: ownerId, autovivification: false, sideEffects: false })
+    const genitiveParticle = ast['genitive-particle'].lexeme
+    const owner = nounPhraseToClause(ast.owner, { subject: ownerId, autovivification: false, sideEffects: false })
     return clauseOf(genitiveParticle, ownedId, ownerId).and(owner)
 }
 
 function isAstPlural(ast: AstNode2): boolean {
 
+    if (!ast) {
+        return false
+    }
+
     if (ast.type === 'noun-phrase') {
-        return (ast.links as any).uniquant
-            || Object.values(ast.links ?? {}).some(x => isAstPlural(x as any))
+        return (ast/* .links */ as any).uniquant
+            || Object.values(ast/* .links */ ?? {}).some(x => isAstPlural(x as any))
     }
 
     if (ast.type === 'pronoun' || ast.type === 'noun') {
@@ -290,7 +293,7 @@ function evalString(context: Context, ast?: StringAst, args?: ToClauseOpts): Thi
         return []
     }
 
-    const x = ast.links['string-token'].list.map(x => x.lexeme.token)
+    const x = ast['string-token'].list.map(x => x.lexeme.token)
     const y = x.join(' ')
     return [new StringThing(y)]
 }

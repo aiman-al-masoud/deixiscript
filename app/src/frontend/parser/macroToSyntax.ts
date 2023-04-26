@@ -3,9 +3,9 @@ import { Member, AstType } from "./interfaces/Syntax"
 
 export function macroToSyntax(macro: Macro) {
 
-    const macroparts = macro.links.macropart.list ?? []
+    const macroparts = macro.macropart.list ?? []
     const syntax = macroparts.map(m => macroPartToMember(m))
-    const name = macro.links.subject.lexeme.root
+    const name = macro.subject.lexeme.root
 
     if (!name) {
         throw new Error('Anonymous syntax!')
@@ -16,17 +16,17 @@ export function macroToSyntax(macro: Macro) {
 
 function macroPartToMember(macroPart: Macropart): Member {
 
-    const adjectiveNodes = macroPart.links?.adjective?.list ?? []
+    const adjectiveNodes = macroPart?.adjective?.list ?? []
     const adjectives = adjectiveNodes.flatMap(a => a.lexeme ?? [])
 
-    const taggedUnions = macroPart.links?.taggedunion?.list ?? []
-    const grammars = taggedUnions.map(x => x.links?.noun)
+    const taggedUnions = macroPart?.taggedunion?.list ?? []
+    const grammars = taggedUnions.map(x => x?.noun)
 
     const quantadjs = adjectives.filter(a => a.cardinality)
     const qualadjs = adjectives.filter(a => !a.cardinality)
 
-    const exceptUnions = macroPart.links?.exceptunion?.links?.taggedunion?.list ?? []
-    const notGrammars = exceptUnions.map(x => x.links?.noun)
+    const exceptUnions = macroPart?.exceptunion?.taggedunion?.list ?? []
+    const notGrammars = exceptUnions.map(x => x?.noun)
 
     return {
         type: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),

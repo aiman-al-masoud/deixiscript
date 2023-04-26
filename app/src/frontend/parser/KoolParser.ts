@@ -88,17 +88,17 @@ export class KoolParser implements Parser {
         for (const m of this.context.getSyntax(name)) {
 
             const ast = this.parseMember(m)
-            
+
             if (!ast && isNecessary(m.number)) {
                 return undefined
             }
-            
+
             if (!ast) {
                 continue
             }
-            
+
             links[m.role ?? ast.type] = ast
-            
+
         }
 
         if (Object.keys(links).length <= 0) {
@@ -108,7 +108,7 @@ export class KoolParser implements Parser {
         return {
             type: name,
             role: role,
-            links: links
+            ...links
         }
     }
 
@@ -148,22 +148,40 @@ export class KoolParser implements Parser {
 
     protected simplify(ast: AstNode): AstNode {
 
-        if (!ast.links) {
+
+        // // if (!ast.links) {
+        //     // return ast
+        // // }
+
+        if (this.isLeaf(ast.type) || ast.list) { // if no links return ast
             return ast
         }
 
         const syntax = this.context.getSyntax(ast.type)
 
-        if (syntax.length === 1 && Object.values(ast.links).length === 1) {
-            return this.simplify(Object.values(ast.links)[0])
+        if (syntax.length === 1) {
+            const v = Object.values(ast).filter(x => typeof x !== 'string').filter(x => x)
+            // console.log('ast=',ast)
+            // console.log('v=',v)
+            // console.log('v[0]=',v[0])
+            return v[0] as AstNode
         }
 
-        const simpleLinks = Object
-            .entries(ast.links)
-            .map(l => ({ [l[0]]: this.simplify(l[1]) }))
-            .reduce((a, b) => ({ ...a, ...b }))
+        // const links = Object.values( {...ast, 'list' : undefined, 'lexeme' :undefined, 'role' : undefined  } ).filter(x=>x)
 
-        return { ...ast, links: simpleLinks }
+        // if (syntax.length === 1 && links /* Object.values(ast.links) */.length === 1) {
+        //     console.log(links)
+        //     return this.simplify(/* Object.values(ast.links) */links[0] as any)
+        // }
+
+        const simpleLinks = Object
+            .entries(ast)
+            // .filter(x=> x[0] !== 'list' && x[0] !== 'lexeme' && x[0] !== 'role' )
+            .filter(x => (x as any).type)
+            .map(l => ({ [l[0]]: this.simplify(l[1]) }))
+            .reduce((a, b) => ({ ...a, ...b }), {})
+
+        return { ...ast,/*  links:  */ ...simpleLinks }
 
     }
 
