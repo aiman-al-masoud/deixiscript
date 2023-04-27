@@ -1,4 +1,4 @@
-import { Macro, Macropart, Role } from "../../frontend/parser/interfaces/AstNode"
+import { Macro, Macropart } from "../../frontend/parser/interfaces/AstNode"
 import { Member, AstType } from "../../frontend/parser/interfaces/Syntax"
 
 export function macroToSyntax(macro: Macro) {
@@ -16,22 +16,16 @@ export function macroToSyntax(macro: Macro) {
 
 function macroPartToMember(macroPart: Macropart): Member {
 
-    const adjectiveNodes = macroPart?.adjective?.list ?? []
-    const adjectives = adjectiveNodes.flatMap(a => a.lexeme ?? [])
-
     const taggedUnions = macroPart?.taggedunion?.list ?? []
     const grammars = taggedUnions.map(x => x?.noun)
-
-    const quantadjs = adjectives.filter(a => a.cardinality)
-    const qualadjs = adjectives.filter(a => !a.cardinality)
 
     const exceptUnions = macroPart?.exceptunion?.taggedunion?.list ?? []
     const notGrammars = exceptUnions.map(x => x?.noun)
 
     return {
         types: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
-        role: qualadjs.at(0)?.root as Role,
-        number: quantadjs.at(0)?.cardinality,
+        role: macroPart["grammar-role"]?.lexeme?.root,
+        number: macroPart.cardinality?.lexeme?.cardinality,
         exceptTypes: notGrammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
     }
 

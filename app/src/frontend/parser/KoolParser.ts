@@ -1,4 +1,4 @@
-import { AstNode, Role } from "./interfaces/AstNode"
+import { AstNode } from "./interfaces/AstNode"
 import { Parser } from "./interfaces/Parser"
 import { isNecessary, isRepeatable } from "./interfaces/Cardinality"
 import { AstType, Member, Syntax } from "./interfaces/Syntax"
@@ -43,7 +43,7 @@ export class KoolParser implements Parser {
     }
 
 
-    protected tryParse(types: AstType[], role?: Role, exceptTypes?: AstType[]) { //problematic
+    protected tryParse(types: AstType[], role?: string, exceptTypes?: AstType[]) { //problematic
 
         for (const t of types) {
 
@@ -59,7 +59,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected knownParse = (name: AstType, role?: Role): AstNode | undefined => {
+    protected knownParse = (name: AstType, role?: string): AstNode | undefined => {
 
         const syntax = this.context.getSyntax(name)
         // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
@@ -83,7 +83,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: CompositeType, syntax: Syntax, role?: Role): AstNode | undefined => {
+    protected parseComposite = (name: CompositeType, syntax: Syntax, role?: string): AstNode | undefined => {
 
         const links: { [x: string]: AstNode } = {}
 
@@ -114,7 +114,7 @@ export class KoolParser implements Parser {
         } as any // TODO!
     }
 
-    protected parseMember = (m: Member, role?: Role): AstNode | undefined => {
+    protected parseMember = (m: Member, role?: string): AstNode | undefined => {
 
         const list: any[] = [] // TODO!
 

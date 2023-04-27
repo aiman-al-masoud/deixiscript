@@ -1,4 +1,3 @@
-import { Role } from "../frontend/parser/interfaces/AstNode"
 import { SyntaxMap } from "../frontend/parser/interfaces/Syntax"
 import { ElementType } from "../utils/ElementType"
 import { stringLiterals } from "../utils/stringLiterals"
@@ -43,7 +42,8 @@ export const syntaxes: SyntaxMap = {
         { types: ['end-keyword'], number: 1 },
     ],
     'macropart': [
-        { types: ['adjective'], number: '*' },
+        { types: ['cardinality'], number: '1|0' },
+        { types: ['grammar-role'], number: '1|0' },
         { types: ['taggedunion'], number: '+' },
         { types: ['exceptunion'], number: '1|0' },
         { types: ['then-keyword'], number: '1|0' },
@@ -57,7 +57,7 @@ export const syntaxes: SyntaxMap = {
         { types: ['taggedunion'], number: '+' },
     ],
     'number-literal': [
-        { types: ['digit'], number: 1, role: 'first-digit' as Role },
+        { types: ['digit'], number: 1, role: 'first-digit' },
         { types: ['digit'], number: '*' },
     ],
     'noun-phrase': [],

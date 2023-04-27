@@ -22,7 +22,7 @@ export type AstNode =
 export interface GeneralAstNode<T extends AstType> {
     readonly type: T
     readonly lexeme?: Lexeme
-    readonly role?: Role
+    readonly role?: string //TODO
     readonly list?: any[]
 }
 
@@ -32,9 +32,6 @@ export interface AtomNode<T extends LexemeType> extends GeneralAstNode<T> {
 }
 
 export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
-
-    // quantifier?: AtomNode<'uniquant' | 'existquant'>
-    // article?: AtomNode<'defart' | 'indefart'>
     uniquant?: AtomNode<'uniquant'>
     existquant?: AtomNode<'existquant'>
     defart?: AtomNode<'defart'>
@@ -46,7 +43,6 @@ export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
     'and-phrase'?: AndPhrase
     'math-expression'?: MathExpression
     'limit-phrase'?: LimitPhrase
-    role: Role
     list?: undefined
 }
 
@@ -119,7 +115,8 @@ export interface Macro extends GeneralAstNode<'macro'> {
 }
 
 export interface Macropart extends GeneralAstNode<'macropart'> {
-    adjective: { list: AtomNode<'adjective'>[] }
+    cardinality?: AtomNode<'cardinality'>
+    'grammar-role'?: AtomNode<'grammar-role'>
     taggedunion: { list: Taggedunion[] }
     exceptunion: Exceptunion
 }
@@ -146,11 +143,3 @@ export interface NumberLiteral extends GeneralAstNode<'number-literal'> {
     'first-digit': AtomNode<'digit'>
     'digit': { list: AtomNode<'digit'>[] }
 }
-
-export type Role = 'subject'
-    | 'object'
-    | 'predicate'
-    | 'condition'
-    | 'consequence'
-    | 'owner'
-    | 'operator'

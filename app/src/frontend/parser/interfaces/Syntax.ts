@@ -1,5 +1,5 @@
 import { Cardinality } from "./Cardinality"
-import { Role } from "./AstNode"
+// import { Role } from "./AstNode"
 import { LexemeType } from "../../../config/LexemeType"
 import { CompositeType } from "../../../config/syntaxes"
 
@@ -12,7 +12,7 @@ export type SyntaxMap = {
 export type Member = {
     readonly types: AstType[]
     readonly number?: Cardinality
-    readonly role?: Role
+    readonly role?: string
     readonly exceptTypes?: AstType[]
 }
 

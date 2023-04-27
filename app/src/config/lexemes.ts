@@ -12,27 +12,24 @@ export const lexemes: Lexeme[] = [
     { root: 'not', type: 'negation', referents: [] },
 
     // logical roles of a constituent to abstract away word order
-    { root: 'subject', type: 'adjective', referents: [] },
-    { root: 'predicate', type: 'adjective', referents: [] },
-    { root: 'object', type: 'adjective', referents: [] },
-    { root: 'condition', type: 'adjective', referents: [] },
-    { root: 'consequence', type: 'adjective', referents: [] },
-    { root: 'owner', type: 'adjective', referents: [] },
-    { root: 'receiver', type: 'adjective', referents: [] },
-    { root: 'origin', type: 'adjective', referents: [] },
-    { root: 'location', type: 'adjective', referents: [] },
-    { root: 'instrument', type: 'adjective', referents: [] }, //means
-    { root: 'companion', type: 'adjective', referents: [] },
-
-    { root: 'string-token', type: 'adjective', referents: [] },
-
-    // role of math operator
-    { root: 'operator', type: 'adjective', referents: [] },
+    { root: 'subject', type: 'grammar-role', referents: [] },
+    { root: 'predicate', type: 'grammar-role', referents: [] },
+    { root: 'object', type: 'grammar-role', referents: [] },
+    { root: 'condition', type: 'grammar-role', referents: [] },
+    { root: 'consequence', type: 'grammar-role', referents: [] },
+    { root: 'owner', type: 'grammar-role', referents: [] },
+    { root: 'receiver', type: 'grammar-role', referents: [] },
+    { root: 'origin', type: 'grammar-role', referents: [] },
+    { root: 'location', type: 'grammar-role', referents: [] },
+    { root: 'instrument', type: 'grammar-role', referents: [] }, //means
+    { root: 'companion', type: 'grammar-role', referents: [] },
+    { root: 'string-token', type: 'grammar-role', referents: [] },
+    { root: 'operator', type: 'grammar-role', referents: [] },
 
     // number of times a constituent can appear
-    { root: 'optional', type: 'adjective', cardinality: '1|0', referents: [] },
-    { root: 'one-or-more', type: 'adjective', cardinality: '+', referents: [] },
-    { root: 'zero-or-more', type: 'adjective', cardinality: '*', referents: [] },
+    { root: 'optional', type: 'cardinality', cardinality: '1|0', referents: [] },
+    { root: 'one-or-more', type: 'cardinality', cardinality: '+', referents: [] },
+    { root: 'zero-or-more', type: 'cardinality', cardinality: '*', referents: [] },
 
     // for use in a part of noun-phrase
     { root: 'next', type: 'next-keyword', referents: [] },
