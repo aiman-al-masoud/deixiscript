@@ -8,7 +8,7 @@ export class NumberThing extends BaseThing {
         super(id)
     }
 
-    toJs(): number {
+    override toJs(): number {
         return this.value
     }
 

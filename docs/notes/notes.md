@@ -129,3 +129,8 @@ maybe make "for" dative.
 # 2 add back some TESTS
 
 # syntaxmap should be a {[astType:AstType] : Syntax[]}, multiple possible syntaxes for each AST.
+
+# remove anys from
+* evalAst
+* KoolParser
+* AstNode

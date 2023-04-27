@@ -1,6 +1,6 @@
 
 /**
- * Checks if string has any non-digit char (except for ".") before
+ * Checks if string has some non-digit char (except for ".") before
  * converting to number.
  */
 export function parseNumber(string: string): number | undefined {

@@ -8,12 +8,11 @@ export class StringThing extends BaseThing {
         super(id)
     }
 
-    toJs(): object {
-        return this.value as any //js sucks
+    override toJs(): string {
+        return this.value
     }
 
     clone(opts?: { id: string } | undefined): Thing { //TODO!
-        // const x = super.clone(opts)
         return new StringThing(this.value, opts?.id)
     }
 

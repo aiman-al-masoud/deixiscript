@@ -25,8 +25,6 @@ export default class BasicBrain implements Brain {
 
             return getParser(x, this.context).parseAll().flatMap(ast => {
 
-                // console.log(ast)
-
                 let results: Thing[] = []
                 try {
                     results = evalAst(this.context, ast as AstNode)
@@ -45,7 +43,7 @@ export default class BasicBrain implements Brain {
         })
     }
 
-    executeUnwrapped(natlang: string): (object|number)[] {
+    executeUnwrapped(natlang: string): (object | number | string)[] {
         return this.execute(natlang).map(x => x.toJs())
     }
 

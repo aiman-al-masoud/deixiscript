@@ -1,10 +1,10 @@
-export function setNested(object: any, path: string[], value: string) {
+// export function setNested(object: any, path: string[], value: string) {
 
-    let x = object
+//     let x = object
 
-    path.slice(0, -1).forEach(p => {
-        x = x[p]
-    })
+//     path.slice(0, -1).forEach(p => {
+//         x = x[p]
+//     })
 
-    x[path.at(-1)!] = value
-}
+//     x[path.at(-1)!] = value
+// }

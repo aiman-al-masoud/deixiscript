@@ -52,14 +52,14 @@ export class BaseThing implements Thing {
 
         //TODO
         if (typeof thing.toJs() === 'string') { //TODO make this polymorphic
-            this.setLexeme({ root: 'string', type: 'noun', referents: [thing] }) 
+            this.setLexeme({ root: 'string', type: 'noun', referents: [thing] })
         } else if (typeof thing.toJs() === 'number') {
             this.setLexeme({ root: 'number', type: 'noun', referents: [thing] })
         }
 
     }
 
-    toJs(): object | number {
+    toJs(): object | number | string {
         return this //TODOooooooooOO!
     }
 
