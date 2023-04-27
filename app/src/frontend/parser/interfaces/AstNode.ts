@@ -36,7 +36,6 @@ export interface NounPhrase extends CompositeNode<'noun-phrase'> {
     'and-phrase'?: AndPhrase
     'math-expression'?: MathExpression
     'limit-phrase'?: LimitPhrase
-    list?: undefined
 }
 
 export interface AndPhrase extends CompositeNode<'and-phrase'> {
