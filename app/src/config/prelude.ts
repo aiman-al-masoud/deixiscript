@@ -105,4 +105,11 @@ export const prelude: string =
   makro 
     string is quote then one-or-more string-token any-lexeme except quote then quote 
   end.
+
+  makro
+    number-literal is
+    first-digit digit
+    then zero-or-more digits
+  end.
+
   `

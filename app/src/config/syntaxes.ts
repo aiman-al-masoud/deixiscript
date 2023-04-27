@@ -56,10 +56,7 @@ export const syntaxes: SyntaxMap = {
         { types: ['except-keyword'], number: 1 },
         { types: ['taggedunion'], number: '+' },
     ],
-    'number-literal': [
-        { types: ['digit'], number: 1, role: 'first-digit' },
-        { types: ['digit'], number: '*' },
-    ],
+    'number-literal': [],
     'noun-phrase': [],
     'and-phrase': [],
     'limit-phrase': [],
