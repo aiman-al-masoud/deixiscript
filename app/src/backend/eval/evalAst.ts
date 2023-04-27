@@ -38,6 +38,7 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
         return evalNounPhrase(context, ast, args)
     }
 
+    console.warn(ast)
     throw new Error('evalAst() got unexpected ast type: ' + ast.type)
 
 }
