@@ -43,12 +43,12 @@ export class KoolParser implements Parser {
     }
 
 
-    protected tryParse(types: AstType[], role?: string, exceptTypes?: AstType[]) { //problematic
+    protected tryParse(types: AstType[], exceptTypes?: AstType[]) { //problematic
 
         for (const t of types) {
 
             const memento = this.lexer.pos
-            const x = this.knownParse(t, role)
+            const x = this.knownParse(t)
 
             if (x && !exceptTypes?.includes(x.type)) {
                 return x
@@ -59,7 +59,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected knownParse = (name: AstType, role?: string): AstNode | undefined => {
+    protected knownParse = (name: AstType): AstNode | undefined => {
 
         const syntax = this.context.getSyntax(name)
         // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
@@ -68,7 +68,7 @@ export class KoolParser implements Parser {
         if (this.isLeaf(name)) {
             return this.parseLeaf(name)
         } else {
-            return this.parseComposite(name as CompositeType, syntax, role)
+            return this.parseComposite(name as CompositeType, syntax)
         }
 
     }
@@ -83,7 +83,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: CompositeType, syntax: Syntax, role?: string): AstNode | undefined => {
+    protected parseComposite = (name: CompositeType, syntax: Syntax): AstNode | undefined => {
 
         const links: { [x: string]: AstNode } = {}
 
@@ -113,7 +113,7 @@ export class KoolParser implements Parser {
         } as any // TODO!
     }
 
-    protected parseMember = (m: Member, role?: string): AstNode | undefined => {
+    protected parseMember = (m: Member): AstNode | undefined => {
 
         const list: any[] = [] // TODO!
 
@@ -123,7 +123,7 @@ export class KoolParser implements Parser {
                 break
             }
 
-            const x = this.tryParse(m.types, m.role, m.exceptTypes)
+            const x = this.tryParse(m.types, m.exceptTypes)
 
             if (!x) {
                 break
