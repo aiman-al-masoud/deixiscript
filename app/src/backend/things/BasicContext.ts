@@ -2,11 +2,9 @@ import { getConfig } from "../../config/Config"
 import { LexemeType } from "../../config/LexemeType"
 import { CompositeType } from "../../config/syntaxes"
 import { Lexeme, extrapolate, makeLexeme } from "../../frontend/lexer/Lexeme"
-import { Macro } from "../../frontend/parser/interfaces/AstNode"
-import { AstType } from "../../frontend/parser/interfaces/Syntax"
+import { AstType, Syntax } from "../../frontend/parser/interfaces/Syntax"
 import { maxPrecedence } from "../../frontend/parser/maxPrecedence"
 import { Id } from "../../middle/id/Id"
-import { macroToSyntax } from "../eval/macroToSyntax"
 import { BaseThing } from "./BaseThing"
 import { Context } from "./Context"
 import { Thing } from "./Thing"
@@ -55,10 +53,9 @@ export class BasicContext extends BaseThing implements Context {
         return this.syntaxList
     }
 
-    setSyntax = (macro: Macro) => {
-        const syntax = macroToSyntax(macro)
-        this.setLexeme(makeLexeme({ type: 'noun', root: syntax.name, referents: [] }))
-        this.syntaxMap[syntax.name as CompositeType] = syntax.syntax
+    setSyntax = (name: string, syntax: Syntax) => {
+        this.setLexeme(makeLexeme({ type: 'noun', root: name, referents: [] }))
+        this.syntaxMap[name as CompositeType] = syntax
         this.syntaxList = this.refreshSyntaxList()
     }
 

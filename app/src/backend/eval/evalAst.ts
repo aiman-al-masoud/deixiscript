@@ -1,6 +1,6 @@
 
 import { isPlural, Lexeme, makeLexeme } from '../../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, Macro, Macropart, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
 import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
@@ -13,6 +13,7 @@ import { NumberThing } from '../things/NumberThing';
 import { StringThing } from '../things/StringThing';
 import { Thing, getThing } from '../things/Thing';
 import { VerbThing } from '../things/VerbThing';
+import { Member, AstType } from '../../frontend/parser/interfaces/Syntax';
 
 
 export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] {
@@ -26,7 +27,7 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
     }
 
     if (ast.type === 'macro') {
-        context.setSyntax(ast); return []
+        return evalMacro(context, ast)
     } else if (ast.type === 'copula-sentence') {
         return evalCopulaSentence(context, ast, args)
     } else if (ast.type === 'verb-sentence') {
@@ -301,4 +302,35 @@ interface ToClauseOpts {
     subject?: Id,
     autovivification?: boolean,
     sideEffects?: boolean,
+}
+
+export function evalMacro(context: Context, macro: Macro): Thing[] {
+
+    const macroparts = macro.macropart.list ?? []
+    const syntax = macroparts.map(m => macroPartToMember(m))
+    const name = macro.subject.lexeme.root
+
+    if (!name) {
+        throw new Error('Anonymous syntax!')
+    }
+
+    context.setSyntax(name, syntax)
+    return []
+}
+
+function macroPartToMember(macroPart: Macropart): Member {
+
+    const taggedUnions = macroPart?.taggedunion?.list ?? []
+    const grammars = taggedUnions.map(x => x?.noun)
+
+    const exceptUnions = macroPart?.exceptunion?.taggedunion?.list ?? []
+    const notGrammars = exceptUnions.map(x => x?.noun)
+
+    return {
+        types: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
+        role: macroPart["grammar-role"]?.lexeme?.root,
+        number: macroPart.cardinality?.lexeme?.cardinality,
+        exceptTypes: notGrammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
+    }
+
 }
