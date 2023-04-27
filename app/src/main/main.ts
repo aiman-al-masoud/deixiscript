@@ -1,3 +1,5 @@
+import { runTests } from "../../tests/runTests";
+import { clearDom } from "../../tests/utils/clearDom";
 import { AstCanvas } from "../draw-ast/AstCanvas"
 import { getBrain } from "../facade/Brain"
 
@@ -42,6 +44,7 @@ export default function main() {
             consoleOutput.value = result.toString()
             console.log(result)
         } else if (e.ctrlKey && e.code === 'KeyY') {
+            await runTests()
             main()
         }
 
