@@ -60,7 +60,7 @@ export class BasicContext extends BaseThing implements Context {
     }
 
     getSyntax = (name: AstType) => {
-        return this.syntaxMap[name as CompositeType] ?? [{ types: [name], number: 1 }] // TODO: problem, adj is not always 1 !!!!!!
+        return this.syntaxMap[name as CompositeType] //?? [{ types: [name], number: 1 }] // TODO: problem, adj is not always 1 !!!!!!
     }
 
     get astTypes(): AstType[] {
