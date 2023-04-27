@@ -2,7 +2,7 @@ import { LexemeType } from "../../config/LexemeType"
 import { Cardinality, isRepeatable } from "../parser/interfaces/Cardinality"
 import { pluralize } from "./functions/pluralize"
 import { conjugate } from "./functions/conjugate"
-import { Thing } from "../../backend/Thing"
+import { Thing } from "../../backend/things/Thing"
 
 
 export interface Lexeme {

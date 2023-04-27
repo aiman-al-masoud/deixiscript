@@ -1,4 +1,4 @@
-import { Context } from "../../backend/Context"
+import { Context } from "../../backend/things/Context"
 import EagerLexer from "./EagerLexer"
 import { Lexeme } from "./Lexeme"
 

@@ -1,8 +1,8 @@
-import { extrapolate, Lexeme } from '../frontend/lexer/Lexeme';
-import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
-import { Id } from '../middle/id/Id';
-import { Map } from '../middle/id/Map';
-import { uniq } from '../utils/uniq';
+import { extrapolate, Lexeme } from '../../frontend/lexer/Lexeme';
+import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
+import { Id } from '../../middle/id/Id';
+import { Map } from '../../middle/id/Map';
+import { uniq } from '../../utils/uniq';
 import { Thing } from './Thing';
 
 

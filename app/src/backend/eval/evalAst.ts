@@ -1,17 +1,18 @@
-import { Context } from './Context';
-import { InstructionThing } from './InstructionThing';
-import { NumberThing } from './NumberThing';
-import { StringThing } from './StringThing';
-import { Thing, getThing } from './Thing';
-import { VerbThing } from './VerbThing';
-import { isPlural, Lexeme, makeLexeme } from '../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../frontend/parser/interfaces/AstNode';
-import { parseNumber } from '../utils/parseNumber';
-import { Clause, clauseOf, emptyClause } from '../middle/clauses/Clause';
-import { getOwnershipChain } from '../middle/clauses/functions/getOwnershipChain';
-import { getIncrementalId } from '../middle/id/functions/getIncrementalId';
-import { Id } from '../middle/id/Id';
-import { Map } from '../middle/id/Map';
+
+import { isPlural, Lexeme, makeLexeme } from '../../frontend/lexer/Lexeme';
+import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
+import { parseNumber } from '../../utils/parseNumber';
+import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
+import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
+import { getIncrementalId } from '../../middle/id/functions/getIncrementalId';
+import { Id } from '../../middle/id/Id';
+import { Map } from '../../middle/id/Map';
+import { Context } from '../things/Context';
+import { InstructionThing } from '../things/InstructionThing';
+import { NumberThing } from '../things/NumberThing';
+import { StringThing } from '../things/StringThing';
+import { Thing, getThing } from '../things/Thing';
+import { VerbThing } from '../things/VerbThing';
 
 
 export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] {

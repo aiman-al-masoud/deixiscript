@@ -1,7 +1,8 @@
-import { Lexeme } from "../frontend/lexer/Lexeme"
-import { Clause } from "../middle/clauses/Clause"
-import { Id } from "../middle/id/Id"
-import { Map } from "../middle/id/Map"
+
+import { Lexeme } from "../../frontend/lexer/Lexeme"
+import { Clause } from "../../middle/clauses/Clause"
+import { Id } from "../../middle/id/Id"
+import { Map } from "../../middle/id/Map"
 import { BaseThing } from "./BaseThing"
 
 

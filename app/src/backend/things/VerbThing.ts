@@ -1,6 +1,6 @@
 
-import { evalAst } from "./evalAst";
-import { Id } from "../middle/id/Id";
+import { Id } from "../../middle/id/Id";
+import { evalAst } from "../eval/evalAst";
 import { BaseThing } from "./BaseThing";
 import { Context } from "./Context";
 import { InstructionThing } from "./InstructionThing";

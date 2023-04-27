@@ -1,5 +1,5 @@
-import { Macro, Macropart, Role } from "./interfaces/AstNode"
-import { Member, AstType } from "./interfaces/Syntax"
+import { Macro, Macropart, Role } from "../../frontend/parser/interfaces/AstNode"
+import { Member, AstType } from "../../frontend/parser/interfaces/Syntax"
 
 export function macroToSyntax(macro: Macro) {
 

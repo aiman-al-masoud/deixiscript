@@ -5,7 +5,7 @@ import { AstType, Member, Syntax } from "./interfaces/Syntax"
 import { LexemeType } from "../../config/LexemeType"
 import { CompositeType } from "../../config/syntaxes"
 import { getLexer } from "../lexer/Lexer"
-import { Context } from "../../backend/Context"
+import { Context } from "../../backend/things/Context"
 
 
 export class KoolParser implements Parser {

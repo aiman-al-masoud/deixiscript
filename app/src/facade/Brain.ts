@@ -1,4 +1,4 @@
-import { Thing } from "../backend/Thing"
+import { Thing } from "../backend/things/Thing"
 import BasicBrain from "./BasicBrain"
 import { BrainListener } from "./BrainListener"
 

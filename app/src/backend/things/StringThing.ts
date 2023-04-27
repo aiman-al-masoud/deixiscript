@@ -1,4 +1,4 @@
-import { Id } from "../middle/id/Id"
+import { Id } from "../../middle/id/Id"
 import { BaseThing } from "./BaseThing"
 import { Thing } from "./Thing"
 

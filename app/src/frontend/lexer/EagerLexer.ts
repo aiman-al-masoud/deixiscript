@@ -1,6 +1,6 @@
 import Lexer from "./Lexer";
 import { Lexeme, makeLexeme } from "./Lexeme";
-import { Context } from "../../backend/Context";
+import { Context } from "../../backend/things/Context";
 
 export default class EagerLexer implements Lexer {
 

@@ -1,11 +1,12 @@
-import { getContext } from "../backend/Context";
-import { Thing } from "../backend/Thing";
-import { logVerb } from "../backend/VerbThing";
+
 import { getParser } from "../frontend/parser/interfaces/Parser";
-import { evalAst } from "../backend/evalAst";
+import { evalAst } from "../backend/eval/evalAst";
 import Brain from "./Brain";
 import { BrainListener } from "./BrainListener";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
+import { getContext } from "../backend/things/Context";
+import { Thing } from "../backend/things/Thing";
+import { logVerb } from "../backend/things/VerbThing";
 
 
 export default class BasicBrain implements Brain {

@@ -1,4 +1,4 @@
-import { Thing } from "../backend/Thing";
+import { Thing } from "../backend/things/Thing";
 import { BrainListener } from "../facade/BrainListener";
 import { AstNode } from "../frontend/parser/interfaces/AstNode";
 import { plotAst } from "./plotAst";
