@@ -77,22 +77,20 @@ and may have referents.
 
 a house has "xxx" as address and false as sold.
 
-sold of the subject is true. 
-if for-complement is > 100000 then you log "expensive!".
-sell is the previous "2" instructions.
-x is a house. 
-x sells for 100001.
+sold of the subject is true. if for-complement is > 100000 then you log
+"expensive!". sell is the previous "2" instructions. x is a house. x sells
+for 100001.
 
-~sell { sold of the subject is false. }
-?sell { you return sold of house. }
+~sell { sold of the subject is false. } ?sell { you return sold of house. }
 
 # add numbers to noun-phrase
 
 # single noun vs adjectives problem, make noun usable as adjective.
 
-# list comprehensions 
-* 2 + every number
-* 2 + every number of y
+# list comprehensions
+
+- 2 + every number
+- 2 + every number of y
 
 # redefining verbs: problem if you put "or verb" in np def because it recognz verb sentences as nps!!!!
 
@@ -102,35 +100,38 @@ x sells for 100001.
 
 Make PRECISE AstNode interfaces for cleaner evalAst.
 
-error out if trying to define CST for unknown kind of AST.
-philosophy: fixed ASTs, custom CSTs.
+error out if trying to define CST for unknown kind of AST. philosophy: fixed
+ASTs, custom CSTs.
 
-work on a framework to define complement-related syntax/morphology across different languages using a basic set of "'case' markers" that can be used to extract info back from the parsed AST independently of syntax.
+work on a framework to define complement-related syntax/morphology across
+different languages using a basic set of "'case' markers" that can be used to
+extract info back from the parsed AST independently of syntax.
 
 https://en.wikipedia.org/wiki/List_of_grammatical_cases
 
 maybe make "for" dative.
 
 # grammatical cases
-* nominativo ---> subject
-* accusativo/oggetto ---> object
-* genitivo (of, saxon-s) ---> owner
-* dativo (to) ---> receiver
-* ablativo (from) ---> origin
-* stato-in-luogo (in/on/at) ---> location
-* strumentale (by) ---> means
-* compagnia (with) ---> companion
+
+- nominativo ---> subject
+- accusativo/oggetto ---> object
+- genitivo (of, saxon-s) ---> owner
+- dativo (to) ---> receiver
+- ablativo (from) ---> origin
+- stato-in-luogo (in/on/at) ---> location
+- strumentale (by) ---> means
+- compagnia (with) ---> companion
 
 ... w/ corresponding prepositions or case markings.
 
-# 0 remove AstNode replacing it with more precise interfaces
-# 0.5 remove .links and maybe .list
+# 0.5 AstNode.list
+
 # 1 add location complement to log verb for debugging
-# 2 add back some TESTS
 
 # syntaxmap should be a {[astType:AstType] : Syntax[]}, multiple possible syntaxes for each AST.
 
-# remove anys from
-* evalAst
-* KoolParser
-* AstNode
+# remove anys from:
+
+- evalAst
+- KoolParser
+- AstNode
