@@ -65,7 +65,7 @@ export class KoolParser implements Parser {
         // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
         // actual AST and pass it down to parse composite
 
-        if (syntax.length === 1 && syntax[0].types.every(t => this.isLeaf(t))) {
+        if (this.isLeaf(name) /* syntax.length === 1 && syntax[0].types.every(t => this.isLeaf(t)) */) {
             return this.parseLeaf(syntax[0])
         } else {
             return this.parseComposite(name as CompositeType, syntax, role)

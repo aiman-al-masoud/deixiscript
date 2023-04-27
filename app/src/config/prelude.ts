@@ -1,14 +1,6 @@
 export const prelude: string =
 
-  `  
-  makro 
-    quantifier is uniquant or existquant 
-  end.
-
-  makro 
-    article is indefart or defart 
-  end.
-
+  ` 
   makro
     genitive-complement is genitive-particle then owner noun-phrase
   end.
@@ -64,8 +56,8 @@ export const prelude: string =
 
   makro 
     noun-phrase is 
-    optional quantifier 
-    then optional article 
+    optional uniquant or existquant
+    then optional indefart or defart
     then zero-or-more adjectives
     then optional limit-phrase 
     then subject noun or pronoun or string or number-literal
