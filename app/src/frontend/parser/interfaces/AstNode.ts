@@ -140,6 +140,5 @@ export interface StringAst extends GeneralAstNode<'string'> {
 }
 
 export interface NumberLiteral extends GeneralAstNode<'number-literal'> {
-    'first-digit': AtomNode<'digit'>
     'digit': { list: AtomNode<'digit'>[] }
 }

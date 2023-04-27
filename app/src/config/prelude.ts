@@ -107,9 +107,7 @@ export const prelude: string =
   end.
 
   makro
-    number-literal is
-    first-digit digit
-    then zero-or-more digits
+    number-literal is one-or-more digits
   end.
 
   `

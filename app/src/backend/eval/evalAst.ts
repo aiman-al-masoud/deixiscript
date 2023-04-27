@@ -175,10 +175,8 @@ function evalNumberLiteral(ast?: NumberLiteral): NumberThing[] {
         return []
     }
 
-    const fd = ast['first-digit'].lexeme.root
-    const digits = ast.digit?.list?.map(x => x.lexeme.root) ?? []
-    const allDigits = [fd].concat(digits)
-    const literal = allDigits.reduce((a, b) => a + b, '')
+    const digits = ast.digit.list.map(x => x.lexeme.root) ?? []
+    const literal = digits.reduce((a, b) => a + b, '')
 
     const z = parseNumber(literal)
 

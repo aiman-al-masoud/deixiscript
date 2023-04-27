@@ -25,7 +25,6 @@ export const lexemes: Lexeme[] = [
     { root: 'companion', type: 'grammar-role', referents: [] },
     { root: 'string-token', type: 'grammar-role', referents: [] },
     { root: 'operator', type: 'grammar-role', referents: [] },
-    { root: 'first-digit', type: 'grammar-role', referents: [] },
 
     // number of times a constituent can appear
     { root: 'optional', type: 'cardinality', cardinality: '1|0', referents: [] },
@@ -65,7 +64,6 @@ export const lexemes: Lexeme[] = [
     { root: 'at', type: 'locative-particle', referents: [] },
     { root: 'by', type: 'instrumental-particle', referents: [] },
     { root: 'with', type: 'comitative-particle', referents: [] },
-
     { root: '+', type: 'plus-operator', referents: [] },
 
 
