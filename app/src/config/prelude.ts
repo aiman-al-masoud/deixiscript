@@ -1,32 +1,6 @@
 export const prelude: string =
 
-  `
-  makro 
-    any-lexeme is adjective 
-    or copula 
-    or defart 
-    or indefart 
-    or fullstop 
-    or hverb 
-    or verb 
-    or negation 
-    or existquant 
-    or uniquant 
-    or relpron 
-    or negation 
-    or noun 
-    or preposition 
-    or subconj 
-    or nonsubconj 
-    or disjunc 
-    or pronoun 
-    or then-keyword
-    or makro-keyword 
-    or except-keyword 
-    or quote
-    or digit
-  end.
-  
+  `  
   makro 
     quantifier is uniquant or existquant 
   end.
@@ -137,6 +111,4 @@ export const prelude: string =
   makro 
     string is quote then one-or-more string-token any-lexeme except quote then quote 
   end.
-
-
   `

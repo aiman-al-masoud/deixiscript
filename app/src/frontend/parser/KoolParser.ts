@@ -75,7 +75,7 @@ export class KoolParser implements Parser {
 
     protected parseLeaf = (m: Member): AstNode | undefined => {
 
-        if (m.types.includes(this.lexer.peek.type)) {
+        if (m.types.includes(this.lexer.peek.type) || m.types.includes('any-lexeme')) {
             const x = this.lexer.peek
             this.lexer.next()
             return { type: x.type, lexeme: x }

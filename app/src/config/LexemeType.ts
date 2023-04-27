@@ -4,6 +4,8 @@ import { stringLiterals } from "../utils/stringLiterals"
 export type LexemeType = ElementType<typeof lexemeTypes>
 
 export const lexemeTypes = stringLiterals(
+  
+  'any-lexeme',
   'adjective',
   'copula',
   'defart',
