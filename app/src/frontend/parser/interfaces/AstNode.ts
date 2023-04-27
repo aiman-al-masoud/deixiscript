@@ -33,8 +33,12 @@ export interface AtomNode<T extends LexemeType> extends GeneralAstNode<T> {
 
 export interface NounPhrase extends GeneralAstNode<'noun-phrase'> {
 
-    quantifier?: AtomNode<'uniquant' | 'existquant'>
-    article?: AtomNode<'defart' | 'indefart'>
+    // quantifier?: AtomNode<'uniquant' | 'existquant'>
+    // article?: AtomNode<'defart' | 'indefart'>
+    uniquant?: AtomNode<'uniquant'>
+    existquant?: AtomNode<'existquant'>
+    defart?: AtomNode<'defart'>
+    indefart?: AtomNode<'indefart'>
     subject: AtomNode<'noun' | 'pronoun'> | StringAst | NumberLiteral
     adjective?: { list: AtomNode<'adjective'>[] }
     subclause?: AstNode

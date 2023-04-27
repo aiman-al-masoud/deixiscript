@@ -56,8 +56,10 @@ export const prelude: string =
 
   makro 
     noun-phrase is 
-    optional uniquant or existquant
-    then optional indefart or defart
+    optional uniquant
+    optional existquant
+    optional indefart
+    optional defart
     then zero-or-more adjectives
     then optional limit-phrase 
     then subject noun or pronoun or string or number-literal

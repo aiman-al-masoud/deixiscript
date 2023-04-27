@@ -240,8 +240,7 @@ function isAstPlural(ast: AstNode): boolean {
     }
 
     if (ast.type === 'noun-phrase') {
-        return (ast as any).uniquant
-            || Object.values(ast ?? {}).some(x => isAstPlural(x as any))
+        return !!ast.uniquant || Object.values(ast ?? {}).some(x => isAstPlural(x as any))
     }
 
     if (ast.type === 'pronoun' || ast.type === 'noun') {
