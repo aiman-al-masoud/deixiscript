@@ -65,17 +65,17 @@ export class KoolParser implements Parser {
         // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
         // actual AST and pass it down to parse composite
 
-        if (this.isLeaf(name) /* syntax.length === 1 && syntax[0].types.every(t => this.isLeaf(t)) */) {
-            return this.parseLeaf(syntax[0])
+        if (this.isLeaf(name)) {
+            return this.parseLeaf(name)
         } else {
             return this.parseComposite(name as CompositeType, syntax, role)
         }
 
     }
 
-    protected parseLeaf = (m: Member): AstNode | undefined => {
+    protected parseLeaf = (name: AstType): AstNode | undefined => {
 
-        if (m.types.includes(this.lexer.peek.type) || m.types.includes('any-lexeme')) {
+        if (name === this.lexer.peek.type || name === 'any-lexeme') {
             const x = this.lexer.peek
             this.lexer.next()
             return { type: x.type, lexeme: x }
