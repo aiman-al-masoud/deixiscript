@@ -1,5 +1,4 @@
 import { Cardinality } from "./Cardinality"
-// import { Role } from "./AstNode"
 import { LexemeType } from "../../../config/LexemeType"
 import { CompositeType } from "../../../config/syntaxes"
 
