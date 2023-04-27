@@ -36,7 +36,8 @@ export const prelude: string =
   end.
 
   makro 
-    copula-sentence is subject noun-phrase 
+    copula-sentence is 
+    subject noun-phrase 
     then copula 
     then optional negation 
     then predicate noun-phrase 
@@ -103,7 +104,10 @@ export const prelude: string =
   end.
 
   makro 
-    string is quote then one-or-more string-token any-lexeme except quote then quote 
+    string is 
+    quote 
+    then one-or-more string-token any-lexeme except quote 
+    then quote 
   end.
 
   makro
