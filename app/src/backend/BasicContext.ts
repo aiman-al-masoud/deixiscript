@@ -67,7 +67,7 @@ export class BasicContext extends BaseThing implements Context {
     }
 
     get astTypes(): AstType[] {
-        const res: AstType[] = this.config.lexemeTypes
+        const res: AstType[] = this.config.lexemeTypes.slice() //copy!
         res.push(...this.staticDescPrecedence)
         return res
     }
