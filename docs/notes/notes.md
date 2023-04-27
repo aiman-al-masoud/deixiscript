@@ -135,3 +135,7 @@ maybe make "for" dative.
 - evalAst
 - KoolParser
 - AstNode
+
+
+* [lexemes](./the-question-of-lexemes.md)
+* [macors](./the-question-of-macros.md)
