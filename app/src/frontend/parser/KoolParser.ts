@@ -1,4 +1,4 @@
-import { AstNode } from "./interfaces/AstNode"
+import { AstNode, CompositeNode } from "./interfaces/AstNode"
 import { Parser } from "./interfaces/Parser"
 import { isNecessary, isRepeatable } from "./interfaces/Cardinality"
 import { AstType, Member, Syntax } from "./interfaces/Syntax"
@@ -78,7 +78,8 @@ export class KoolParser implements Parser {
         if (name === this.lexer.peek.type || name === 'any-lexeme') {
             const x = this.lexer.peek
             this.lexer.next()
-            return { type: x.type, lexeme: x }
+            // return { type: x.type, lexeme: x }
+            return x
         }
 
     }
@@ -150,13 +151,9 @@ export class KoolParser implements Parser {
 
     protected simplify(ast: AstNode): AstNode {
 
-        if (this.isLeaf(ast.type) || ast.list) { // if no links return ast
+        if (this.isLeaf(ast.type) || (ast as CompositeNode).list) { // if no links return ast
             return ast
         }
-
-        // const astLinks = Object.values(ast).filter(x => x && x.type).filter(x => x)
-        // astLinks.length === 1
-        // return astLinks[0]
 
         const syntax = this.context.getSyntax(ast.type)
 

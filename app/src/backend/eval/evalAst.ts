@@ -1,6 +1,6 @@
 
 import { isPlural, Lexeme, makeLexeme } from '../../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, Macro, Macropart, NounPhrase, NumberLiteral, StringAst, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, Macro, Macropart, NounPhrase, NumberLiteral, StringLiteral, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
 import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
@@ -104,7 +104,7 @@ function about(clause: Clause, entity: Id) {
 
 function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOpts): Thing[] { //TODO: multiple subjects/objects
 
-    const verb = ast.verb.lexeme.referents.at(0) as VerbThing | undefined
+    const verb = ast.verb.referents.at(0) as VerbThing | undefined
     const subject = ast.subject ? evalAst(context, ast.subject).at(0) : undefined
     const object = ast.object ? evalAst(context, ast.object).at(0) : undefined
 
@@ -114,7 +114,7 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
     // console.log('complements=', complements)
 
     if (!verb) {
-        throw new Error('no such verb ' + ast.verb.lexeme.root)
+        throw new Error('no such verb ' + ast.verb.root)
     }
 
     return verb.run(context, { subject: subject ?? context, object: object ?? context })
@@ -122,7 +122,7 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
 
 function evalComplexSentence(context: Context, ast: ComplexSentence, args?: ToClauseOpts): Thing[] {
 
-    if (ast.subconj.lexeme.root === 'if') {
+    if (ast.subconj.root === 'if') {
 
         if (evalAst(context, ast.condition, { ...args, sideEffects: false }).length) {
             evalAst(context, ast.consequence, { ...args, sideEffects: true })
@@ -151,7 +151,7 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
 
     if (ast['math-expression']) {
         const left = things
-        const op = ast['math-expression'].operator.lexeme
+        const op = ast['math-expression'].operator
         const right = evalAst(context, ast['math-expression']?.['noun-phrase'])
         return evalOperation(left, right, op)
     }
@@ -177,7 +177,7 @@ function evalNumberLiteral(ast?: NumberLiteral): NumberThing[] {
         return []
     }
 
-    const digits = ast.digit.list.map(x => x.lexeme.root) ?? []
+    const digits = ast.digit.list.map(x => x.root) ?? []
     const literal = digits.reduce((a, b) => a + b, '')
 
     const z = parseNumber(literal)
@@ -198,12 +198,12 @@ function evalOperation(left: Thing[], right: Thing[], op?: Lexeme) {
 function nounPhraseToClause(ast?: NounPhrase, args?: ToClauseOpts): Clause {
 
     const subjectId = args?.subject ?? getIncrementalId()
-    const adjectives = (ast?.adjective?.list ?? []).map(x => x.lexeme!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
+    const adjectives = (ast?.adjective?.list ?? []).map(x => x!).filter(x => x).map(x => clauseOf(x, subjectId)).reduce((a, b) => a.and(b), emptyClause)
 
     let noun = emptyClause
 
     if (ast?.subject.type === 'noun' || ast?.subject.type === 'pronoun') {
-        noun = clauseOf(ast.subject.lexeme, subjectId)
+        noun = clauseOf(ast.subject, subjectId)
     }
 
     const genitiveComplement = genitiveToClause(ast?.['genitive-complement'], { subject: subjectId, autovivification: false, sideEffects: false })
@@ -229,7 +229,7 @@ function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause
 
     const ownedId = args?.subject!
     const ownerId = getIncrementalId()
-    const genitiveParticle = ast['genitive-particle'].lexeme
+    const genitiveParticle = ast['genitive-particle']
     const owner = nounPhraseToClause(ast.owner, { subject: ownerId, autovivification: false, sideEffects: false })
     return clauseOf(genitiveParticle, ownedId, ownerId).and(owner)
 }
@@ -245,7 +245,7 @@ function isAstPlural(ast: AstNode): boolean {
     }
 
     if (ast.type === 'pronoun' || ast.type === 'noun') {
-        return isPlural(ast.lexeme)
+        return isPlural(ast)
     }
 
     return false
@@ -279,13 +279,13 @@ function createThing(clause: Clause): Thing {
     return getThing({ id, bases })
 }
 
-function evalString(context: Context, ast?: StringAst, args?: ToClauseOpts): Thing[] {
+function evalString(context: Context, ast?: StringLiteral, args?: ToClauseOpts): Thing[] {
 
     if (!ast) {
         return []
     }
 
-    const x = ast['string-token'].list.map(x => x.lexeme.token)
+    const x = ast['string-token'].list.map(x => x.token)
     const y = x.join(' ')
     return [new StringThing(y)]
 }
@@ -309,7 +309,7 @@ export function evalMacro(context: Context, macro: Macro): Thing[] {
 
     const macroparts = macro.macropart.list ?? []
     const syntax = macroparts.map(m => macroPartToMember(m))
-    const name = macro.subject.lexeme.root
+    const name = macro.subject.root
 
     if (!name) {
         throw new Error('Anonymous syntax!')
@@ -328,10 +328,10 @@ function macroPartToMember(macroPart: Macropart): Member {
     const notGrammars = exceptUnions.map(x => x?.noun)
 
     return {
-        types: grammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
-        role: macroPart["grammar-role"]?.lexeme?.root,
-        number: macroPart.cardinality?.lexeme?.cardinality,
-        exceptTypes: notGrammars.flatMap(g => (g?.lexeme?.root as AstType) ?? []),
+        types: grammars.flatMap(g => (g?.root as AstType) ?? []),
+        role: macroPart["grammar-role"]?.root,
+        number: macroPart.cardinality?.cardinality,
+        exceptTypes: notGrammars.flatMap(g => (g?.root as AstType) ?? []),
     }
 
 }

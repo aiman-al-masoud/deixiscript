@@ -1,4 +1,5 @@
-import { AstNode } from "../frontend/parser/interfaces/AstNode";
+import { Lexeme } from "../frontend/lexer/Lexeme";
+import { AstNode, CompositeNode } from "../frontend/parser/interfaces/AstNode";
 
 export function astToEdgeList(
     ast: AstNode,
@@ -8,7 +9,7 @@ export function astToEdgeList(
 
     const links = Object.entries(ast).filter(e => e[1] && e[1].type)
 
-    const astName = (ast.role ?? ast.lexeme?.root ?? ast.type) + random()
+    const astName = (ast as CompositeNode).role ?? (ast as Lexeme).root ?? ast.type + random()
 
     const additions: EdgeList = []
 
@@ -16,7 +17,7 @@ export function astToEdgeList(
         additions.push([parentName, astName])
     }
 
-    if (!links.length && !ast.list) { // leaf!
+    if (!links.length && !(ast as CompositeNode).list) { // leaf!
         return [...edges, ...additions]
     }
 
@@ -28,9 +29,9 @@ export function astToEdgeList(
             })
     }
 
-    if (ast.list) {
-        const list = ast.list.flatMap(x => astToEdgeList(x, astName, edges))
-        return [...additions, ...edges, ...list]
+    if ((ast as CompositeNode).list) {
+        const list = (ast as CompositeNode).list?.flatMap(x => astToEdgeList(x, astName, edges))
+        return [...additions, ...edges, ...list ?? []]
     }
 
     return []

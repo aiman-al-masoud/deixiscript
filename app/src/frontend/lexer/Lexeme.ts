@@ -5,9 +5,9 @@ import { conjugate } from "./functions/conjugate"
 import { Thing } from "../../backend/things/Thing"
 
 
-export interface Lexeme {
+export interface Lexeme<T extends LexemeType = LexemeType> {
     readonly root: string
-    readonly type: LexemeType
+    readonly type: T
     readonly token?: string
     readonly cardinality?: Cardinality
     referents: Thing[]
