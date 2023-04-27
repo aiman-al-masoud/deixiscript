@@ -1,7 +1,7 @@
 import { AstNode, Role } from "./interfaces/AstNode"
 import { Parser } from "./interfaces/Parser"
 import { isNecessary, isRepeatable } from "./interfaces/Cardinality"
-import { AstType, Member } from "./interfaces/Syntax"
+import { AstType, Member, Syntax } from "./interfaces/Syntax"
 import { LexemeType } from "../../config/LexemeType"
 import { CompositeType } from "../../config/syntaxes"
 import { getLexer } from "../lexer/Lexer"
@@ -61,12 +61,14 @@ export class KoolParser implements Parser {
 
     protected knownParse = (name: AstType, role?: Role): AstNode | undefined => {
 
-        const members = this.context.getSyntax(name)
+        const syntax = this.context.getSyntax(name)
+        // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
+        // actual AST and pass it down to parse composite
 
-        if (members.length === 1 && members[0].types.every(t => this.isLeaf(t))) {
-            return this.parseLeaf(members[0])
+        if (syntax.length === 1 && syntax[0].types.every(t => this.isLeaf(t))) {
+            return this.parseLeaf(syntax[0])
         } else {
-            return this.parseComposite(name as CompositeType, role)
+            return this.parseComposite(name as CompositeType, syntax, role)
         }
 
     }
@@ -81,11 +83,11 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: CompositeType, role?: Role): AstNode | undefined => {
+    protected parseComposite = (name: CompositeType, syntax: Syntax, role?: Role): AstNode | undefined => {
 
         const links: { [x: string]: AstNode } = {}
 
-        for (const m of this.context.getSyntax(name)) {
+        for (const m of syntax) {
 
             const ast = this.parseMember(m)
 
@@ -151,6 +153,10 @@ export class KoolParser implements Parser {
         if (this.isLeaf(ast.type) || ast.list) { // if no links return ast
             return ast
         }
+
+        // const astLinks = Object.values(ast).filter(x => x && x.type).filter(x => x)
+        // astLinks.length === 1
+        // return astLinks[0]
 
         const syntax = this.context.getSyntax(ast.type)
 
