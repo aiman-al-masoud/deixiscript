@@ -103,7 +103,7 @@ function about(clause: Clause, entity: Id) {
 function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOpts): Thing[] { //TODO: multiple subjects/objects
 
     const verb = ast.verb.lexeme.referents.at(0) as VerbThing | undefined
-    const subject = evalAst(context, ast.subject).at(0)
+    const subject = ast.subject ? evalAst(context, ast.subject).at(0) : undefined
     const object = ast.object ? evalAst(context, ast.object).at(0) : undefined
 
     // console.log('verb=', verb)

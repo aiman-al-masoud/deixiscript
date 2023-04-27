@@ -105,7 +105,7 @@ export interface CopulaSentence extends GeneralAstNode<'copula-sentence'> {
 }
 
 export interface VerbSentence extends GeneralAstNode<'verb-sentence'> {
-    subject: NounPhrase
+    subject?: NounPhrase
     hverb?: AtomNode<'hverb'>
     negation?: AtomNode<'negation'>
     verb: AtomNode<'verb'>

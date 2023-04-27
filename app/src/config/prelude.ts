@@ -71,7 +71,7 @@ export const prelude: string =
 
   makro 
     verb-sentence is 
-    subject noun-phrase 
+    optional subject noun-phrase 
     then optional hverb 
     then optional negation 
     then verb 
