@@ -140,7 +140,7 @@ function evalNounPhrase(context: Context, ast: NounPhrase, args?: ToClauseOpts):
     const andPhrase = ast['and-phrase'] ? evalAst(context, ast['and-phrase']?.['noun-phrase'], args) : []
 
     if (ast.subject.type === 'number-literal') {
-        things = evalNumberLiteral(ast.subject).concat(andPhrase as any)
+        things = andPhrase.concat(evalNumberLiteral(ast.subject))
     } else if (ast.subject.type === 'string') {
         things = evalString(context, ast.subject, args).concat(andPhrase)
     } else {
