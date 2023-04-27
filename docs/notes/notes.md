@@ -41,7 +41,7 @@ First/Last & Biggest/Smallest & Left/Right
 
 https://stackoverflow.com/questions/12484386/access-javascript-property-case-insensitively
 
-# Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs)?
+# Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs), duration property of verb/event?
 
 # [Expression Orientation](./expression-orientation.md)
 
@@ -55,8 +55,6 @@ https://stackoverflow.com/questions/12484386/access-javascript-property-case-ins
 
 # 3 nested (ownership) objects break everything!
 
-# re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
-
 # complements on copula sentence as well "x is of y"
 
 # math expressions
@@ -64,11 +62,6 @@ https://stackoverflow.com/questions/12484386/access-javascript-property-case-ins
 # some lexemes have to be "instrinsic" and some "extrinsic" relative to things.
 
 # macros should also accept "raw strings" not just lexeme classes
-
-letter is "a" or "b" or "c" ... digit is "1" or "2" or "3" ... fullstop is "."
-quote is '"' character is letter or digit or fullstop or quote identifier is
-one-or-more letters then zero-or-more digits. number is one-or-more digits.
-string is quote then zero-or-more characters except quote then quote
 
 cool idea, but currently hard to implement because tokens also have cardinality
 and may have referents.
@@ -83,14 +76,7 @@ for 100001.
 
 ~sell { sold of the subject is false. } ?sell { you return sold of house. }
 
-# add numbers to noun-phrase
-
 # single noun vs adjectives problem, make noun usable as adjective.
-
-# list comprehensions
-
-- 2 + every number
-- 2 + every number of y
 
 # redefining verbs: problem if you put "or verb" in np def because it recognz verb sentences as nps!!!!
 
@@ -137,5 +123,7 @@ maybe make "for" dative.
 - AstNode
 
 
+# re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
 * [lexemes](./the-question-of-lexemes.md)
+
 * [macors](./the-question-of-macros.md)
