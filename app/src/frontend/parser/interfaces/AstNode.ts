@@ -21,7 +21,6 @@ export type AstNode =
 
 export interface CompositeNode<T extends CompositeType = CompositeType> {
     readonly type: T
-    readonly role?: string //TODO
     readonly list?: any[]
 }
 

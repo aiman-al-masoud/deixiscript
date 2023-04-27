@@ -78,7 +78,6 @@ export class KoolParser implements Parser {
         if (name === this.lexer.peek.type || name === 'any-lexeme') {
             const x = this.lexer.peek
             this.lexer.next()
-            // return { type: x.type, lexeme: x }
             return x
         }
 
@@ -110,7 +109,6 @@ export class KoolParser implements Parser {
 
         return {
             type: name,
-            role: role,
             ...links
         } as any // TODO!
     }

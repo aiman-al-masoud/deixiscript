@@ -9,7 +9,7 @@ export function astToEdgeList(
 
     const links = Object.entries(ast).filter(e => e[1] && e[1].type)
 
-    const astName = (ast as CompositeNode).role ?? (ast as Lexeme).root ?? ast.type + random()
+    const astName = ((ast as Lexeme).root ?? ast.type) + random()
 
     const additions: EdgeList = []
 
