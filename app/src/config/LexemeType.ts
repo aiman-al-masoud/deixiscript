@@ -48,4 +48,9 @@ export const lexemeTypes = stringLiterals(
 
   'cardinality',
   'grammar-role',
+
+
+  'not-ast-keyword',
+  'expand-keyword',
+
 )

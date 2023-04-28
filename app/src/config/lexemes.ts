@@ -78,5 +78,10 @@ export const lexemes: Lexeme[] = [
     { root: '8', type: 'digit', referents: [] },
     { root: '9', type: 'digit', referents: [] },
 
+
+    { root: 'not-ast', type: 'not-ast-keyword', referents: [] },
+    { root: 'expand', type: 'expand-keyword', referents: [] },
+
+
 ]
 

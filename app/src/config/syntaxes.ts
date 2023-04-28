@@ -42,6 +42,8 @@ export const syntaxes: SyntaxMap = {
         { types: ['end-keyword'], number: 1 },
     ],
     'macropart': [
+        { types: ['expand-keyword'], number: '1|0' },
+        { types: ['not-ast-keyword'], number: '1|0' },
         { types: ['cardinality'], number: '1|0' },
         { types: ['grammar-role'], number: '1|0' },
         { types: ['taggedunion'], number: '+' },

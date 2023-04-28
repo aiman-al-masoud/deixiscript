@@ -111,6 +111,8 @@ export interface Macropart extends CompositeNode<'macropart'> {
     'grammar-role'?: Lexeme<'grammar-role'>
     taggedunion: { list: Taggedunion[] }
     exceptunion: Exceptunion
+    'expand-keyword'?: Lexeme<'expand-keyword'>
+    'not-ast-keyword'?: Lexeme<'not-ast-keyword'>
 }
 
 export interface Exceptunion extends CompositeNode<'exceptunion'> {

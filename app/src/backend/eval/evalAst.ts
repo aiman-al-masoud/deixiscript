@@ -326,12 +326,14 @@ function macroPartToMember(macroPart: Macropart): Member {
 
     const exceptUnions = macroPart?.exceptunion?.taggedunion?.list ?? []
     const notGrammars = exceptUnions.map(x => x?.noun)
-
+    
     return {
         types: grammars.flatMap(g => (g?.root as AstType) ?? []),
         role: macroPart["grammar-role"]?.root,
         number: macroPart.cardinality?.cardinality,
         exceptTypes: notGrammars.flatMap(g => (g?.root as AstType) ?? []),
+        notAst: !!macroPart['not-ast-keyword'],
+        expand: !!macroPart['expand-keyword'],
     }
 
 }

@@ -77,7 +77,7 @@ export const prelude: string =
     then optional negation 
     then verb 
     then optional object noun-phrase
-    then zero-or-more complements
+    then expand zero-or-more complements
   end.
 
   makro 
@@ -88,7 +88,7 @@ export const prelude: string =
     complex-sentence-one is 
     subconj 
     then condition simple-sentence 
-    then then-keyword
+    then not-ast then-keyword
     then consequence simple-sentence
   end.
 
@@ -100,14 +100,14 @@ export const prelude: string =
   end.
 
   makro 
-    complex-sentence is complex-sentence-one or complex-sentence-two
+    complex-sentence is expand complex-sentence-one or complex-sentence-two
   end.
 
   makro 
     string is 
-    quote 
+    not-ast quote 
     then one-or-more string-token any-lexeme except quote 
-    then quote 
+    then not-ast quote 
   end.
 
   makro
