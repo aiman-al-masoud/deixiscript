@@ -44,19 +44,24 @@ to dialects, partial parsing?...).
 noun-phrase ... then (optional owner noun-phrase then "'s") then
 ... then (optional "of" then owner noun-phrase).
 
-saxon-genitive = owner noun-phrase then not-ast "'s"
-noun-phrase = ... then optional expand saxon-genitive ... then optional expand of-genitive.
+saxon-genitive = owner noun-phrase then not-ast "'s".
+of-genitive = not-ast "of" then owner noun-phrase.
+
+noun-phrase = ...
+... then optional expand saxon-genitive 
+...
+... then optional expand of-genitive.
 
 # any-order members
+### can ALSO be done with expand+not-ast:
+
+dative = not-ast "to" then receiver noun-phrase
+ablative = not-ast "from" then origin noun-phrase
+locative = not-ast "at" then location noun-phrase
+
+complement = dative or ablative or locative
 
 verb-sentence is ...
-then optional any-order "to" receiver noun-phrase
-                    "from" origin noun-phrase
-                    "with" instrument noun-phrase
-                    "at" location noun-phrase
-
-can be done with expand:
-
-the zero-or-more expand complements
-
+then zero-or-more expand complements
+...
 
