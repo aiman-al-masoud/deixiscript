@@ -34,10 +34,18 @@ You don't really care about lisp-style macros (to define new semantics), you
 care about a generalized morphosyntax with predefined logical ASTs (translation
 to dialects, partial parsing?...).
 
+
+# discard parent, keep child in ast ?
+
 # co-optional sequential members
+### can be made with: expand-children-into-parent-in-ast keyword
+### exclude-from-ast keyword
 
 noun-phrase ... then (optional owner noun-phrase then "'s") then
 ... then (optional "of" then owner noun-phrase).
+
+saxon-genitive = owner noun-phrase then not-ast "'s"
+noun-phrase = ... then optional expand saxon-genitive ... then optional expand of-genitive.
 
 # any-order members
 
@@ -47,12 +55,8 @@ then optional any-order "to" receiver noun-phrase
                     "with" instrument noun-phrase
                     "at" location noun-phrase
 
-# exclude-from-ast keyword
+can be done with expand:
 
-# expand-children-into-parent-in-ast keyword
+the zero-or-more expand complements
 
-# opposite of previous
-
-
-# replace complements
 
