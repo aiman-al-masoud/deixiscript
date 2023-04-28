@@ -127,3 +127,6 @@ maybe make "for" dative.
 * [lexemes](./the-question-of-lexemes.md)
 
 * [macors](./the-question-of-macros.md)
+
+
+rename Member to CstNode
