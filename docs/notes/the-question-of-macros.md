@@ -27,3 +27,36 @@ this requires a change in getSyntax() -> getSyntaxes() but it eliminates KoolPar
 
 You don't really care about lisp-style macros (to define new semantics), you care about a generalized morphosyntax with predefined logical ASTs (translation to dialects, partial parsing?...).
 
+// co-optional sequential members
+
+  makro 
+    noun-phrase is 
+    optional uniquant
+    then optional existquant
+    then optional indefart
+    then optional defart
+    then (optional owner noun-phrase then "'s")
+    then zero-or-more adjectives
+    then optional limit-phrase 
+    then subject noun or pronoun or string or number-literal
+    then optional math-expression
+    then optional subordinate-clause
+    then (optional "of" then owner noun-phrase)
+    then optional and-phrase
+  end.
+
+
+// any-order members
+
+  makro 
+    verb-sentence is 
+    optional subject noun-phrase 
+    then optional hverb 
+    then optional negation 
+    then verb 
+    then optional object noun-phrase
+    then optional any-order "to" receiver noun-phrase
+    		            "from" origin noun-phrase
+    		            "with" instrument noun-phrase
+    		            "at" location noun-phrase    		            
+  end.
