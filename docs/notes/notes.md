@@ -129,4 +129,4 @@ maybe make "for" dative.
 * [macors](./the-question-of-macros.md)
 
 
-rename Member to CstNode
+# fix BROKEN simple-sentence, complete transition to no-ast and expand!

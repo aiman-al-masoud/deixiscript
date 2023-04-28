@@ -59,7 +59,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected knownParse = (name: AstType): AstNode | undefined => {
+    protected knownParse = (name: AstType): Cst | undefined => {
 
         const syntax = this.context.getSyntax(name)
         // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
@@ -73,7 +73,7 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseLeaf = (name: AstType): AstNode | undefined => {
+    protected parseLeaf = (name: AstType): Cst | undefined => {
 
         if (name === this.lexer.peek.type || name === 'any-lexeme') {
             const x = this.lexer.peek
@@ -83,9 +83,9 @@ export class KoolParser implements Parser {
 
     }
 
-    protected parseComposite = (name: CompositeType, syntax: Syntax): AstNode | undefined => {
+    protected parseComposite = (name: CompositeType, syntax: Syntax): Cst | undefined => {
 
-        const links: { [x: string]: AstNode } = {}
+        const links: { [x: string]: Cst } = {}
 
         for (const m of syntax) {
 
@@ -113,7 +113,7 @@ export class KoolParser implements Parser {
         } as any // TODO!
     }
 
-    protected parseMember = (m: Member): AstNode | undefined => {
+    protected parseMember = (m: Member): Cst | undefined => {
 
         const list: any[] = [] // TODO!
 
@@ -138,8 +138,14 @@ export class KoolParser implements Parser {
 
         return isRepeatable(m.number) ? ({
             type: list[0].type,
-            list: list
-        }) : list[0]
+            list: list,
+            notAst: m.notAst,
+            expand: m.expand,
+        }) : {
+            ...list[0],
+            notAst: m.notAst,
+            expand: m.expand,
+        }
 
     }
 
@@ -147,27 +153,47 @@ export class KoolParser implements Parser {
         return this.context.getLexemeTypes().includes(t as LexemeType)
     }
 
-    protected simplify(ast: AstNode): AstNode {
+    protected simplify(cst: Cst): AstNode {
 
-        if (this.isLeaf(ast.type) || (ast as CompositeNode).list) { // if no links return ast
-            return ast
+        if (cst.type === 'macro') {
+            return cst
         }
 
-        const syntax = this.context.getSyntax(ast.type)
-
-        if (syntax.length === 1) {
-            const v = Object.values(ast).filter(x => x && x.type).filter(x => x)
-            return v[0]
+        if (this.isLeaf(cst.type)) {
+            return cst
         }
 
-        const simpleLinks = Object
-            .entries(ast)
-            .filter(x => (x as any).type)
-            .map(l => ({ [l[0]]: this.simplify(l[1]) }))
-            .reduce((a, b) => ({ ...a, ...b }), {})
+        const type = cst.type
+        const links = linksOf(cst)
+        console.log(type, 'links=', links)
+        const expanded = links.flatMap(e => e[1].expand ? linksOf(e[1]) : [e])
+        console.log(type, 'expanded=', expanded)
+        const simplified = expanded.map(e => [e[0], this.simplify(e[1]) as Cst] as const)
+        console.log(type, 'simplified=', simplified)
+        const astLinks = simplified.filter(e => !e[1].notAst)
+        console.log(type, 'astLinks=', astLinks)
+        const ast: AstNode = Object.fromEntries(astLinks) as any
+        console.log(type, 'ast=', ast)
+        const astWithType = { ...ast, type } as AstNode
+        console.log(type, 'astWithType=', astWithType)
 
-        return { ...ast, ...simpleLinks }
-
+        return astWithType
     }
 
 }
+
+function linksOf(cst: Cst): [string, Cst][] {
+
+    const list = (cst as CompositeNode).list as Cst[] | undefined
+
+    if (list) {
+        const flattened = list.flatMap(x => linksOf(x))
+        console.log('trying to expand list!', list, flattened)
+        return flattened
+    }
+
+    return Object.entries(cst).filter(e => e[1] && e[1].type)
+}
+
+
+type Cst = AstNode & { notAst?: boolean, expand?: boolean }
