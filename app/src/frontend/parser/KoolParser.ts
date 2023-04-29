@@ -62,8 +62,6 @@ export class KoolParser implements Parser {
     protected knownParse = (name: AstType): Cst | undefined => {
 
         const syntax = this.context.getSyntax(name)
-        // if the syntax is an "unofficial" AST, aka a CST, get the name of the 
-        // actual AST and pass it down to parse composite
 
         if (this.isLeaf(name)) {
             return this.parseLeaf(name)
