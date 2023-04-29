@@ -295,7 +295,7 @@ function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphra
         return false
     }
 
-    return !!(ast.type === 'simple-sentence' || ast.type === 'complex-sentence')
+    return ast.type === 'simple-sentence' || ast.type === 'complex-sentence'
 }
 
 interface ToClauseOpts {
