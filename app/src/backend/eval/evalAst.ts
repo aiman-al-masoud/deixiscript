@@ -32,8 +32,8 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
         return evalCopulaSentence(context, ast, args)
     } else if (ast.type === 'verb-sentence') {
         return evalVerbSentence(context, ast, args)
-    } else if ((ast as ComplexSentence).subconj) {
-        return evalComplexSentence(context, ast as ComplexSentence, args)
+    } else if (ast.type === 'complex-sentence') {
+        return evalComplexSentence(context, ast, args)
     } else if (ast.type === 'noun-phrase') {
         return evalNounPhrase(context, ast, args)
     }
@@ -295,7 +295,7 @@ function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphra
         return false
     }
 
-    return !!(ast.type === 'copula-sentence' || ast.type === 'verb-sentence' || (ast as ComplexSentence).subconj)
+    return !!(ast.type === 'copula-sentence' || ast.type === 'verb-sentence' || ast.type === 'complex-sentence')
 }
 
 interface ToClauseOpts {
