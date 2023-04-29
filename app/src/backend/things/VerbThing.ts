@@ -29,7 +29,7 @@ export class VerbThing extends BaseThing implements Verb {
         //TOO I guess setting context on context subject results in an inf loop/max too much recursion error
         // clonedContext.set(args.subject.getId(), args.subject)
         clonedContext.set(args.object.getId(), args.object)
-        clonedContext.setLexeme({ root: 'subject', type: 'adjective', referents: [args.subject] })
+        clonedContext.setLexeme({ root: 'subject', type: 'adjective', referents: [args.subject] }) //TODO: adjective or grammar-role ?
         clonedContext.setLexeme({ root: 'object', type: 'adjective', referents: [args.object] })
 
         let results: Thing[] = []
