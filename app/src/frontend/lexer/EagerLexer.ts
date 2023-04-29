@@ -14,6 +14,7 @@ export default class EagerLexer implements Lexer {
             spaceOut(sourceCode, ['"', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
                 .trim()
                 .split(/\s+/)
+                .filter(x=>x)
 
         this.refreshTokens()
     }
