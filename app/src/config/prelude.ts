@@ -73,7 +73,7 @@ export const prelude: string =
   makro 
     verb-sentence is 
     optional subject noun-phrase 
-    then optional hverb 
+    then not-ast optional hverb 
     then optional negation 
     then verb 
     then optional object noun-phrase
