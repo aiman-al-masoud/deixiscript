@@ -56,6 +56,8 @@ function evalCopulaSentence(context: Context, ast: SimpleSentence, args?: ToClau
         const lexemes = subject.flatList().map(x => x.predicate!).filter(x => x)
         const lexemesWithReferent = lexemes.map(x => ({ ...x, referents: rVal }))
 
+        // ast.subject?.owner // TODO: use NounPhrase.owner maybe!?
+
         if (rVal.every(x => x instanceof InstructionThing)) { // make verb from instructions
             const verb = new VerbThing(getIncrementalId(), rVal as InstructionThing[])
             context.set(verb.getId(), verb)
