@@ -33,9 +33,9 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
         // } else if (ast.type === 'verb-sentence') {
         // return evalVerbSentence(context, ast, args)
     } else if (ast.type === 'simple-sentence' && ast.verborcopula.type === 'copula') {
-        evalCopulaSentence(context, ast, args)
+        return evalCopulaSentence(context, ast, args)
     } else if (ast.type === 'simple-sentence' && ast.verborcopula.type === 'verb') {
-        evalVerbSentence(context, ast, args)
+        return evalVerbSentence(context, ast, args)
     } else if (ast.type === 'complex-sentence') {
         return evalComplexSentence(context, ast, args)
     } else if (ast.type === 'noun-phrase') {
