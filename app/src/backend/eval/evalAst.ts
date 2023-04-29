@@ -16,9 +16,11 @@ import { VerbThing } from '../things/VerbThing';
 import { Member, AstType } from '../../frontend/parser/interfaces/Syntax';
 
 
-export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {}): Thing[] {
-
-    args.sideEffects ??= couldHaveSideEffects(ast)
+export function evalAst(
+    context: Context,
+    ast: AstNode,
+    args: ToClauseOpts = { sideEffects: couldHaveSideEffects(ast) },
+): Thing[] {
 
     if (args.sideEffects) { // only cache instructions with side effects
         const instruction = new InstructionThing(ast)
