@@ -110,11 +110,6 @@ function evalVerbSentence(context: Context, ast: SimpleSentence, args?: ToClause
     const subject = ast.subject ? evalAst(context, ast.subject).at(0) : undefined
     const object = ast.object ? evalAst(context, ast.object).at(0) : undefined
 
-    // console.log('verb=', verb)
-    // console.log('subject=', subject)
-    // console.log('object=', object)
-    // console.log('complements=', complements)
-
     if (!verb) {
         throw new Error('no such verb ' + ast.verborcopula.root)
     }
