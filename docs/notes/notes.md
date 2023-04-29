@@ -35,8 +35,6 @@ First/Last & Biggest/Smallest & Left/Right
 
 # Phatic words, fillers and partial parsing ("uhm", "errm", "ah", "oh", "please"...)
 
-# Morphology: support languages that are more synthetic than English.
-
 # Case Insensitivity
 
 https://stackoverflow.com/questions/12484386/access-javascript-property-case-insensitively
@@ -54,10 +52,6 @@ https://stackoverflow.com/questions/12484386/access-javascript-property-case-ins
 # copula sentence negation and copula sentence inheritance
 
 # 3 nested (ownership) objects break everything!
-
-# complements on copula sentence as well "x is of y"
-
-# math expressions
 
 # some lexemes have to be "instrinsic" and some "extrinsic" relative to things.
 
@@ -84,37 +78,13 @@ for 100001.
 
 # grammar
 
-Make PRECISE AstNode interfaces for cleaner evalAst.
-
-error out if trying to define CST for unknown kind of AST. philosophy: fixed
-ASTs, custom CSTs.
-
-work on a framework to define complement-related syntax/morphology across
-different languages using a basic set of "'case' markers" that can be used to
-extract info back from the parsed AST independently of syntax.
+AST vs CST, unify morphology + syntax = morphosyntax
 
 https://en.wikipedia.org/wiki/List_of_grammatical_cases
 
 maybe make "for" dative.
 
-# grammatical cases
-
-- nominativo ---> subject
-- accusativo/oggetto ---> object
-- genitivo (of, saxon-s) ---> owner
-- dativo (to) ---> receiver
-- ablativo (from) ---> origin
-- stato-in-luogo (in/on/at) ---> location
-- strumentale (by) ---> means
-- compagnia (with) ---> companion
-
-... w/ corresponding prepositions or case markings.
-
-# 0.5 AstNode.list
-
-# 1 add location complement to log verb for debugging
-
-# syntaxmap should be a {[astType:AstType] : Syntax[]}, multiple possible syntaxes for each AST.
+# Add location complement to log verb for debugging
 
 # remove anys from:
 
@@ -122,9 +92,8 @@ maybe make "for" dative.
 - KoolParser
 - AstNode
 
-
 # re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
-* [lexemes](./the-question-of-lexemes.md)
 
-* [macors](./the-question-of-macros.md)
+- [lexemes](./the-question-of-lexemes.md)
 
+- [macors](./the-question-of-macros.md)
