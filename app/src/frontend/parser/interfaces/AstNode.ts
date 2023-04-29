@@ -61,7 +61,6 @@ export interface CopulaSentence extends CompositeNode<'copula-sentence'> {
 
 export interface VerbSentence extends CompositeNode<'verb-sentence'> {
     subject?: NounPhrase
-    hverb?: Lexeme<'hverb'>
     negation?: Lexeme<'negation'>
     verb: Lexeme<'verb'>
     object?: NounPhrase
