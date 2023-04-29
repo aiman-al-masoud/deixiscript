@@ -41,9 +41,7 @@ https://stackoverflow.com/questions/12484386/access-javascript-property-case-ins
 
 # Events: onclick of button triggers addtion of "click" verb predicate to button's own predicates list for some milliseconds (and then removal) so that when's setInterval can pick up on the click event. More generally, when invoking any method (BaseWrapper.call()) you may tmp add predicate (with specific args, how to?) NEW PROBLEM: now relation is getting saved permanently in BaseWrapper.relations Maybe ephemeral vs permanent relations (verbs), duration property of verb/event?
 
-# [Expression Orientation](./expression-orientation.md)
-
-# two versions of each verb, one with side effects and one without? or remember verb application and "disapplication"? Or just overload and make the system "understand" whether it's the overload with or without side-effects ???? THREE versions: do, undo and check.
+# Three versions of each verb: do, undo and check. (Can infer side effects?)
 
 # copy has to be overridden in each BaseThing subclass!
 
@@ -97,3 +95,5 @@ maybe make "for" dative.
 - [lexemes](./the-question-of-lexemes.md)
 
 - [macors](./the-question-of-macros.md)
+
+# [Expression Orientation](./expression-orientation.md)
