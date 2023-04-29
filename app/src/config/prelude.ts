@@ -2,37 +2,27 @@ export const prelude: string =
 
   ` 
   makro
-    genitive-complement is genitive-particle then owner noun-phrase
+    genitive is not-ast genitive-particle then owner noun-phrase
   end.
 
   makro
-    dative-complement is dative-particle then receiver noun-phrase
+    dative is not-ast dative-particle then receiver noun-phrase
   end.
 
   makro
-    ablative-complement is ablative-particle then origin noun-phrase
+    ablative is not-ast ablative-particle then origin noun-phrase
   end.
 
   makro
-    locative-complement is locative-particle then location noun-phrase
+    locative is not-ast locative-particle then location noun-phrase
   end.
 
   makro
-    instrumental-complement is instrumental-particle then instrument noun-phrase
+    instrumental is not-ast instrumental-particle then instrument noun-phrase
   end.
 
   makro
-    comitative-complement is comitative-particle then companion noun-phrase
-  end.
-
-  makro 
-    complement is 
-    genitive-complement or 
-    dative-complement or
-    ablative-complement or
-    locative-complement or
-    instrumental-complement or
-    comitative-complement
+    comitative is not-ast comitative-particle then companion noun-phrase
   end.
 
   makro 
@@ -66,7 +56,7 @@ export const prelude: string =
     then subject noun or pronoun or string or number-literal
     then optional math-expression
     then optional subordinate-clause
-    then optional genitive-complement
+    then expand optional genitive
     then optional and-phrase
   end.
 
@@ -77,7 +67,7 @@ export const prelude: string =
     then optional negation 
     then verb 
     then optional object noun-phrase
-    then expand zero-or-more complements
+    then expand zero-or-more dative or ablative or locative or instrumental or comitative
   end.
 
   makro 

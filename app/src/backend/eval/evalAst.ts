@@ -1,6 +1,6 @@
 
 import { isPlural, Lexeme, makeLexeme } from '../../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, GenitiveComplement, Macro, Macropart, NounPhrase, NumberLiteral, StringLiteral, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, Macro, Macropart, NounPhrase, NumberLiteral, StringLiteral, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
 import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
@@ -206,7 +206,7 @@ function nounPhraseToClause(ast?: NounPhrase, args?: ToClauseOpts): Clause {
         noun = clauseOf(ast.subject, subjectId)
     }
 
-    const genitiveComplement = genitiveToClause(ast?.['genitive-complement'], { subject: subjectId, autovivification: false, sideEffects: false })
+    const genitiveComplement = genitiveToClause(ast?.owner, { subject: subjectId, autovivification: false, sideEffects: false })
     const andPhrase = evalAndPhrase(ast?.['and-phrase'], args)
 
     return adjectives.and(noun).and(genitiveComplement).and(andPhrase)
@@ -221,7 +221,7 @@ function evalAndPhrase(andPhrase?: AndPhrase, args?: ToClauseOpts) {
     return nounPhraseToClause(andPhrase['noun-phrase'] /* TODO! args */) // maybe problem if multiple things have same id, query is not gonna find them
 }
 
-function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause {
+function genitiveToClause(ast?: NounPhrase, args?: ToClauseOpts): Clause {
 
     if (!ast) {
         return emptyClause
@@ -229,9 +229,8 @@ function genitiveToClause(ast?: GenitiveComplement, args?: ToClauseOpts): Clause
 
     const ownedId = args?.subject!
     const ownerId = getIncrementalId()
-    const genitiveParticle = ast['genitive-particle']
     const owner = nounPhraseToClause(ast.owner, { subject: ownerId, autovivification: false, sideEffects: false })
-    return clauseOf(genitiveParticle, ownedId, ownerId).and(owner)
+    return clauseOf({ root: 'of', type: 'genitive-particle', referents: [] } /* genitiveParticle */, ownedId, ownerId).and(owner)
 }
 
 function isAstPlural(ast: AstNode): boolean {
@@ -326,7 +325,7 @@ function macroPartToMember(macroPart: Macropart): Member {
 
     const exceptUnions = macroPart?.exceptunion?.taggedunion?.list ?? []
     const notGrammars = exceptUnions.map(x => x?.noun)
-    
+
     return {
         types: grammars.flatMap(g => (g?.root as AstType) ?? []),
         role: macroPart["grammar-role"]?.root,

@@ -65,7 +65,7 @@ export const lexemes: Lexeme[] = [
     { root: 'by', type: 'instrumental-particle', referents: [] },
     { root: 'with', type: 'comitative-particle', referents: [] },
     { root: '+', type: 'plus-operator', referents: [] },
-
+    
 
     { root: '0', type: 'digit', referents: [] },
     { root: '1', type: 'digit', referents: [] },
