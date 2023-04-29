@@ -28,10 +28,6 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
 
     if (ast.type === 'macro') {
         return evalMacro(context, ast)
-        // } else if (ast.type === 'copula-sentence') {
-        // return evalCopulaSentence(context, ast, args)
-        // } else if (ast.type === 'verb-sentence') {
-        // return evalVerbSentence(context, ast, args)
     } else if (ast.type === 'simple-sentence' && ast.verborcopula.type === 'copula') {
         return evalCopulaSentence(context, ast, args)
     } else if (ast.type === 'simple-sentence' && ast.verborcopula.type === 'verb') {
