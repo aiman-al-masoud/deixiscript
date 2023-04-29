@@ -6,7 +6,7 @@ import { Lexeme } from "../../frontend/lexer/Lexeme"
 
 /**
  * An unambiguous predicate-logic-like intermediate representation
- * of the programmer's intent.
+ * of a query.
 */
 export interface Clause {
 
