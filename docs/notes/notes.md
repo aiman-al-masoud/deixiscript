@@ -128,5 +128,3 @@ maybe make "for" dative.
 
 * [macors](./the-question-of-macros.md)
 
-
-# fix BROKEN simple-sentence, complete transition to no-ast and expand!
