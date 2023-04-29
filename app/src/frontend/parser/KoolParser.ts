@@ -165,17 +165,17 @@ export class KoolParser implements Parser {
 
         const type = cst.type
         const links = linksOf(cst)
-        console.log(type, 'links=', links)
+        // console.log(type, 'links=', links)
         const expanded = links.flatMap(e => e[1].expand ? linksOf(e[1]) : [e])
-        console.log(type, 'expanded=', expanded)
+        // console.log(type, 'expanded=', expanded)
         const simplified = expanded.map(e => [e[0], this.simplify(e[1]) as Cst] as const)
-        console.log(type, 'simplified=', simplified)
+        // console.log(type, 'simplified=', simplified)
         const astLinks = simplified.filter(e => !e[1].notAst)
-        console.log(type, 'astLinks=', astLinks)
+        // console.log(type, 'astLinks=', astLinks)
         const ast: AstNode = Object.fromEntries(astLinks) as any
-        console.log(type, 'ast=', ast)
+        // console.log(type, 'ast=', ast)
         const astWithType = { ...ast, type } as AstNode
-        console.log(type, 'astWithType=', astWithType)
+        // console.log(type, 'astWithType=', astWithType)
 
         return astWithType
     }
@@ -188,7 +188,7 @@ function linksOf(cst: Cst): [string, Cst][] {
 
     if (list) {
         const flattened = list.flatMap(x => linksOf(x))
-        console.log('trying to expand list!', list, flattened)
+        // console.log('trying to expand list!', list, flattened)
         return flattened
     }
 
