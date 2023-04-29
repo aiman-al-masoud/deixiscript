@@ -92,8 +92,8 @@ maybe make "for" dative.
 
 # re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
 
-- [lexemes](./the-question-of-lexemes.md)
+- [Lexemes](./the-question-of-lexemes.md)
 
-- [macors](./the-question-of-macros.md)
+- [Macros](./the-question-of-macros.md)
 
 # [Expression Orientation](./expression-orientation.md)
