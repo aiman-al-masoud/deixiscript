@@ -21,7 +21,6 @@ export interface Clause {
     ownedBy(id: Id): Id[]
     ownersOf(id: Id): Id[]
     query(clause: Clause, opts?: QueryOpts): Map[]
-    // implies(conclusion: Clause): Clause
 
     readonly predicate?: Lexeme
     readonly args?: Id[]

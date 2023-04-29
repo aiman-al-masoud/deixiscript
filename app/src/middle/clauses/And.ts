@@ -5,7 +5,6 @@ import { Map } from "../id/Map";
 import { hashString } from "../../utils/hashString";
 import { uniq } from "../../utils/uniq";
 import { solveMaps } from "./functions/solveMaps";
-// import Imply from "./Imply";
 
 export default class And implements Clause {
 
@@ -85,7 +84,5 @@ export default class And implements Clause {
 
         return this.copy({ clause1: c1, clause2: c2 })
     }
-
-    // implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
 
 }

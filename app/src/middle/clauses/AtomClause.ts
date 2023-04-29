@@ -5,7 +5,6 @@ import And from "./And";
 import { Lexeme } from "../../frontend/lexer/Lexeme";
 import { uniq } from "../../utils/uniq";
 import { hashString } from "../../utils/hashString";
-// import Imply from "./Imply";
 
 export class AtomClause implements Clause {
 
@@ -35,7 +34,7 @@ export class AtomClause implements Clause {
     flatList = () => [this]
     ownedBy = (id: Id) => this.predicate.root === 'of' && this.args[1] === id ? [this.args[0]] : []
     ownersOf = (id: Id) => this.predicate.root === 'of' && this.args[0] === id ? [this.args[1]] : []
-    
+
     toString() {
         const yes = `${this.predicate.root}(${this.args})`
         return this.negated ? `not(${yes})` : yes
@@ -52,12 +51,10 @@ export class AtomClause implements Clause {
         }
 
         const map = query.args
-        .map((x, i) => ({ [x]: this.args[i] }))
+            .map((x, i) => ({ [x]: this.args[i] }))
             .reduce((a, b) => ({ ...a, ...b }))
 
         return [map]
     }
 
-    // implies = (conclusion: Clause): Clause => new Imply(this, conclusion)
-    
 }
