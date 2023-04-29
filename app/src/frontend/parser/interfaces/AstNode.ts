@@ -8,8 +8,7 @@ export type AstNode =
     | AndPhrase
     | LimitPhrase
     | MathExpression
-    | CopulaSentence
-    | VerbSentence
+    | SimpleSentence
     | Macro
     | Macropart
     | Exceptunion
@@ -52,17 +51,10 @@ export interface MathExpression extends CompositeNode<'math-expression'> {
     'noun-phrase': NounPhrase
 }
 
-export interface CopulaSentence extends CompositeNode<'copula-sentence'> {
-    subject: NounPhrase
-    copula: Lexeme<'copula'>
-    negation?: Lexeme<'negation'>
-    predicate: NounPhrase
-}
-
-export interface VerbSentence extends CompositeNode<'verb-sentence'> {
+export interface SimpleSentence extends CompositeNode<'simple-sentence'> {
     subject?: NounPhrase
     negation?: Lexeme<'negation'>
-    verb: Lexeme<'verb'>
+    verborcopula: Lexeme<'verb' | 'copula'>
     object?: NounPhrase
     receiver?: NounPhrase
     origin?: NounPhrase
@@ -94,8 +86,8 @@ export interface Taggedunion extends CompositeNode<'taggedunion'> {
 }
 
 export interface ComplexSentence extends CompositeNode<'complex-sentence'> {
-    condition: CopulaSentence | VerbSentence
-    consequence: CopulaSentence | VerbSentence
+    condition: SimpleSentence
+    consequence: SimpleSentence
     subconj: Lexeme<'subconj'>
 }
 

@@ -14,14 +14,13 @@ export const constituentTypes = stringLiterals(
     'and-phrase',
     'limit-phrase',
     'math-expression',
-    'copula-sentence',
-    'verb-sentence',
     'complex-sentence',
 
     'subordinate-clause',
 
     'string',
     'number-literal',
+    'simple-sentence',
 )
 
 export const staticDescPrecedence: CompositeType[] = ['macro']
@@ -56,8 +55,7 @@ export const syntaxes: SyntaxMap = {
     'and-phrase': [],
     'limit-phrase': [],
     'math-expression': [],
-    'copula-sentence': [],
-    'verb-sentence': [],
+    'simple-sentence': [],
     'string': [],
     'complex-sentence': [],
     'subordinate-clause': [],

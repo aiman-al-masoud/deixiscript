@@ -25,13 +25,7 @@ export const prelude: string =
     comitative is not-ast comitative-particle then companion noun-phrase
   end.
 
-  makro 
-    copula-sentence is 
-    subject noun-phrase 
-    then copula 
-    then optional negation 
-    then predicate noun-phrase 
-  end.
+
 
   makro
     and-phrase is nonsubconj then noun-phrase
@@ -61,19 +55,16 @@ export const prelude: string =
   end.
 
   makro 
-    verb-sentence is 
+    simple-sentence is 
     optional subject noun-phrase 
     then not-ast optional hverb 
     then optional negation 
-    then verb 
+    then verborcopula verb or copula 
+    then optional negation 
     then optional object noun-phrase
     then expand zero-or-more dative or ablative or locative or instrumental or comitative
   end.
-
-  makro 
-    simple-sentence is copula-sentence or verb-sentence 
-  end.
-
+  
   makro 
     complex-sentence-one is 
     subconj 

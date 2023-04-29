@@ -1,6 +1,6 @@
 
 import { isPlural, Lexeme, makeLexeme } from '../../frontend/lexer/Lexeme';
-import { AndPhrase, AstNode, ComplexSentence, CopulaSentence, Macro, Macropart, NounPhrase, NumberLiteral, StringLiteral, VerbSentence } from '../../frontend/parser/interfaces/AstNode';
+import { AndPhrase, AstNode, ComplexSentence, Macro, Macropart, NounPhrase, NumberLiteral, StringLiteral, SimpleSentence } from '../../frontend/parser/interfaces/AstNode';
 import { parseNumber } from '../../utils/parseNumber';
 import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
 import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
@@ -28,10 +28,14 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
 
     if (ast.type === 'macro') {
         return evalMacro(context, ast)
-    } else if (ast.type === 'copula-sentence') {
-        return evalCopulaSentence(context, ast, args)
-    } else if (ast.type === 'verb-sentence') {
-        return evalVerbSentence(context, ast, args)
+        // } else if (ast.type === 'copula-sentence') {
+        // return evalCopulaSentence(context, ast, args)
+        // } else if (ast.type === 'verb-sentence') {
+        // return evalVerbSentence(context, ast, args)
+    } else if (ast.type === 'simple-sentence' && ast.verborcopula.type === 'copula') {
+        evalCopulaSentence(context, ast, args)
+    } else if (ast.type === 'simple-sentence' && ast.verborcopula.type === 'verb') {
+        evalVerbSentence(context, ast, args)
     } else if (ast.type === 'complex-sentence') {
         return evalComplexSentence(context, ast, args)
     } else if (ast.type === 'noun-phrase') {
@@ -44,13 +48,13 @@ export function evalAst(context: Context, ast: AstNode, args: ToClauseOpts = {})
 }
 
 
-function evalCopulaSentence(context: Context, ast: CopulaSentence, args?: ToClauseOpts): Thing[] {
+function evalCopulaSentence(context: Context, ast: SimpleSentence, args?: ToClauseOpts): Thing[] {
 
     if (args?.sideEffects) { // assign the right value to the left value
 
         const subjectId = args?.subject ?? getIncrementalId()
         const subject = nounPhraseToClause(ast.subject, { subject: subjectId }).simple
-        const rVal = evalAst(context, ast.predicate, { subject: subjectId })
+        const rVal = evalAst(context, ast.object!, { subject: subjectId })
         const ownerChain = getOwnershipChain(subject)
         const maps = context.query(subject)
         const lexemes = subject.flatList().map(x => x.predicate!).filter(x => x)
@@ -89,8 +93,8 @@ function evalCopulaSentence(context: Context, ast: CopulaSentence, args?: ToClau
         }
 
     } else { // compare the right and left values
-        const subject = evalAst(context, ast.subject, args).at(0)
-        const predicate = evalAst(context, ast.predicate, args).at(0)
+        const subject = evalAst(context, ast.subject!, args).at(0)
+        const predicate = evalAst(context, ast.object!, args).at(0)
         return subject?.equals(predicate!) && (!ast.negation) ? [new NumberThing(1)] : []
     }
 
@@ -102,9 +106,9 @@ function about(clause: Clause, entity: Id) {
     return clause.flatList().filter(x => x.entities.includes(entity) && x.entities.length <= 1).reduce((a, b) => a.and(b), emptyClause).simple
 }
 
-function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOpts): Thing[] { //TODO: multiple subjects/objects
+function evalVerbSentence(context: Context, ast: SimpleSentence, args?: ToClauseOpts): Thing[] { //TODO: multiple subjects/objects
 
-    const verb = ast.verb.referents.at(0) as VerbThing | undefined
+    const verb = ast.verborcopula.referents.at(0) as VerbThing | undefined
     const subject = ast.subject ? evalAst(context, ast.subject).at(0) : undefined
     const object = ast.object ? evalAst(context, ast.object).at(0) : undefined
 
@@ -114,7 +118,7 @@ function evalVerbSentence(context: Context, ast: VerbSentence, args?: ToClauseOp
     // console.log('complements=', complements)
 
     if (!verb) {
-        throw new Error('no such verb ' + ast.verb.root)
+        throw new Error('no such verb ' + ast.verborcopula.root)
     }
 
     return verb.run(context, { subject: subject ?? context, object: object ?? context })
@@ -295,7 +299,7 @@ function couldHaveSideEffects(ast: AstNode) { // anything that is not a nounphra
         return false
     }
 
-    return !!(ast.type === 'copula-sentence' || ast.type === 'verb-sentence' || ast.type === 'complex-sentence')
+    return !!(ast.type === 'simple-sentence' || ast.type === 'complex-sentence')
 }
 
 interface ToClauseOpts {
