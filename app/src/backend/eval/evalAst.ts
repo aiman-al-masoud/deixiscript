@@ -6,7 +6,6 @@ import { Clause, clauseOf, emptyClause } from '../../middle/clauses/Clause';
 import { getOwnershipChain } from '../../middle/clauses/functions/getOwnershipChain';
 import { getIncrementalId } from '../../middle/id/functions/getIncrementalId';
 import { Id } from '../../middle/id/Id';
-import { Map } from '../../middle/id/Map';
 import { Context } from '../things/Context';
 import { InstructionThing } from '../things/InstructionThing';
 import { NumberThing } from '../things/NumberThing';
@@ -14,6 +13,8 @@ import { StringThing } from '../things/StringThing';
 import { Thing, getThing } from '../things/Thing';
 import { VerbThing } from '../things/VerbThing';
 import { Member, AstType } from '../../frontend/parser/interfaces/Syntax';
+import { about } from '../../middle/clauses/functions/about';
+import { getInterestingIds } from '../../middle/clauses/functions/getInterestingIds';
 
 
 export function evalAst(
@@ -44,7 +45,6 @@ export function evalAst(
     throw new Error('evalAst() got unexpected ast type: ' + ast.type)
 
 }
-
 
 function evalCopulaSentence(context: Context, ast: SimpleSentence, args?: ToClauseOpts): Thing[] {
 
@@ -102,9 +102,6 @@ function evalCopulaSentence(context: Context, ast: SimpleSentence, args?: ToClau
     return []
 }
 
-function about(clause: Clause, entity: Id) {
-    return clause.flatList().filter(x => x.entities.includes(entity) && x.entities.length <= 1).reduce((a, b) => a.and(b), emptyClause).simple
-}
 
 function evalVerbSentence(context: Context, ast: SimpleSentence, args?: ToClauseOpts): Thing[] { //TODO: multiple subjects/objects
 
@@ -188,7 +185,6 @@ function evalNumberLiteral(ast?: NumberLiteral): NumberThing[] {
     return []
 }
 
-
 function evalOperation(left: Thing[], right: Thing[], op?: Lexeme) {
     const sums = left.map(x => x.toJs() as any + right.at(0)?.toJs())
     return sums.map(x => new NumberThing(x))
@@ -248,28 +244,6 @@ function isAstPlural(ast: AstNode): boolean {
 
     return false
 }
-
-function getInterestingIds(maps: Map[], clause: Clause): Id[] {
-
-    // const getNumberOfDots = (id: Id) => id.split('.').length //-1
-    // the ones with most dots, because 'color of style of button' 
-    // has buttonId.style.color and that's the object the sentence should resolve to
-    // possible problem if 'color of button AND button'
-    // const ids = maps.flatMap(x => Object.values(x))
-    // const maxLen = Math.max(...ids.map(x => getNumberOfDots(x)))
-    // return ids.filter(x => getNumberOfDots(x) === maxLen)
-
-    const oc = getOwnershipChain(clause)
-
-    if (oc.length <= 1) {
-        return maps.flatMap(x => Object.values(x)) //all
-    }
-
-    // TODO: problem not returning everything because of getOwnershipChain()
-    return maps.flatMap(m => m[oc.at(-1)!]) // owned leaf
-
-}
-
 
 function createThing(clause: Clause): Thing {
     const bases = clause.flatList().map(x => x.predicate?.referents?.[0]!)/* ONLY FIRST? */.filter(x => x)
