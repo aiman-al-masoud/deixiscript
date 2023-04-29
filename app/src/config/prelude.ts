@@ -24,9 +24,7 @@ export const prelude: string =
   makro
     comitative is not-ast comitative-particle then companion noun-phrase
   end.
-
-
-
+  
   makro
     and-phrase is nonsubconj then noun-phrase
   end.
@@ -64,7 +62,7 @@ export const prelude: string =
     then optional object noun-phrase
     then expand zero-or-more dative or ablative or locative or instrumental or comitative
   end.
-  
+
   makro 
     complex-sentence-one is 
     subconj 
