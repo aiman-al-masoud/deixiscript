@@ -24,14 +24,14 @@ export class KoolParser implements Parser {
 
         while (!this.lexer.isEnd) {
 
-            const ast = this.tryParse(this.context.getSyntaxList())
+            const cst = this.tryParse(this.context.getSyntaxList())
 
-            if (!ast) {
+            if (!cst) {
                 break
             }
 
-            const simpleAst = this.simplify(ast)
-            results.push(simpleAst)
+            const ast = this.simplify(cst)
+            results.push(ast)
 
             if (this.lexer.peek?.type === 'fullstop') {
                 this.lexer.next()
