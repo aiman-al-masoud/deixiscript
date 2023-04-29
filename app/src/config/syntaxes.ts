@@ -18,13 +18,6 @@ export const constituentTypes = stringLiterals(
     'verb-sentence',
     'complex-sentence',
 
-    'genitive-complement',
-    'dative-complement',
-    'ablative-complement',
-    'locative-complement',
-    'instrumental-complement',
-    'comitative-complement',
-
     'subordinate-clause',
 
     'string',
@@ -63,15 +56,9 @@ export const syntaxes: SyntaxMap = {
     'and-phrase': [],
     'limit-phrase': [],
     'math-expression': [],
-    'genitive-complement': [],
     'copula-sentence': [],
     'verb-sentence': [],
     'string': [],
     'complex-sentence': [],
-    "dative-complement": [],
-    "ablative-complement": [],
-    "locative-complement": [],
-    "instrumental-complement": [],
-    "comitative-complement": [],
     'subordinate-clause': [],
 }
