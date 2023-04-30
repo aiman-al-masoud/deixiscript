@@ -37,7 +37,6 @@ export interface NounPhrase extends CompositeNode<'noun-phrase'> {
 }
 
 export interface AndPhrase extends CompositeNode<'and-phrase'> {
-    nonsubconj: Lexeme<'nonsubconj'>
     'noun-phrase': NounPhrase
 }
 

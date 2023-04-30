@@ -26,7 +26,7 @@ export const prelude: string =
   end.
   
   makro
-    and-phrase is nonsubconj then noun-phrase
+    and-phrase is not-ast nonsubconj then noun-phrase
   end.
 
   makro
