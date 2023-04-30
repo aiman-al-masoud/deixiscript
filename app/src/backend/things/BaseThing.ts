@@ -75,7 +75,7 @@ export class BaseThing implements Thing {
 
         const y = Object
             .keys(this.children)
-            .map(x => clauseOf({ root: 'of', type: 'preposition', referents: [] }, x, this.id)) // hardcoded english!
+            .map(x => clauseOf({ root: 'of', type: 'preposition', referents: [] }, x, this.id)) // hardcoded english! preposition, old!
             .reduce((a, b) => a.and(b), emptyClause)
 
         const z = Object
