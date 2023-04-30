@@ -20,3 +20,6 @@ referents is bad because:
 	removeLexeme() is complicated
 	
 some lexemes should be "intrinsic" (memorized by the object they describe) and some should be "extrinsic" (memorized by the object's parent)
+
+
+hardcoded lexemes in clauses should go away
