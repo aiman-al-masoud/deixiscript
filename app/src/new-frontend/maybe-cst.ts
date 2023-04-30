@@ -1,10 +1,9 @@
 const SPACE = { or: [' '], excludeFromAst: true, number: '+' }
 
 
-// type StringLiteral = {
-//     'string-chars': string[]
-// }
-
+type StringLiteral = {
+    stringChars: string[]
+}
 
 const stringLiteral = {
 
@@ -12,9 +11,13 @@ const stringLiteral = {
 
     and: [
         { or: ['"'], number: 1, excludeFromAst: true },
-        { or: ['any-symbol'], role: 'string-chars', exceptFor: ['"'], number: '*', },
+        { or: ['any-symbol'], role: 'stringChars', exceptFor: ['"'], number: '*', },
         { or: ['"'], number: 1, excludeFromAst: true },
     ]
+}
+
+type NumberLiteral = {
+    numberChars: string[]
 }
 
 const numberLiteral = {
@@ -22,8 +25,19 @@ const numberLiteral = {
     astType: 'number-literal',
 
     and: [
-        { or: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], role: 'number-chars', number: '+' },
+        { or: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], role: 'numberChars', number: '+' },
     ]
+}
+
+type NounPhrase = {
+    pluralizer?: boolean
+    anaphoraOperator?: boolean
+    newOperator?: boolean
+    limitKeyword?: string
+    limitNumber?: number
+    modifiers?: string[]
+    head: string
+    owner?: NounPhrase
 }
 
 const nounPhrase = {
@@ -33,15 +47,16 @@ const nounPhrase = {
     and: [
         { or: ['every', 'any'], role: 'pluralizer', number: '1|0' },
         SPACE,
-        { or: ['the', 'old'], role: 'anaphora-operator', number: '1|0' },
+        { or: ['the', 'old'], role: ' anaphoraOperator', number: '1|0' },
         SPACE,
-        { or: ['a', 'an', 'new'], role: 'new-operator', number: '1|0' },
+        { or: ['a', 'an', 'new'], role: 'newOperator', number: '1|0' },
         SPACE,
         {
+            expand: true,
             number: '1|0',
             and: [
-                { or: ['first', 'last'], number: 1 },
-                { or: ['number'], number: '1|0' },
+                { or: ['first', 'last'], role: 'limitKeyword', number: 1 },
+                { or: ['number-literal'], role: 'limitNumber', number: '1|0' },
             ]
         },
         SPACE,
@@ -63,16 +78,22 @@ const nounPhrase = {
 
 }
 
+type MulExpression = {
+    leftOperand: NounPhrase
+    operator: string
+    rightOperand?: NounPhrase
+}
+
 const mulExpression = {
 
     astType: 'mul-expression',
 
     and: [
-        { or: ['noun-phrase'], role: 'left-operand', number: 1 },
+        { or: ['noun-phrase'], role: 'leftOperand', number: 1 },
         SPACE,
-        { or: ['*', '/'], role: 'mul-operator', number: 1 },
+        { or: ['*', '/'], role: 'operator', number: 1 },
         SPACE,
-        { or: ['noun-phrase'], role: 'right-operand', number: '1|0' },
+        { or: ['noun-phrase'], role: 'rightOperand', number: '1|0' },
     ]
 
 }
@@ -83,11 +104,11 @@ const sumExpression = {
     astType: 'sum-expression',
 
     and: [
-        { or: ['mul-expression'], role: 'left-operand', number: 1 },
+        { or: ['mul-expression'], role: 'leftOperand', number: 1 },
         SPACE,
-        { or: ['+', '-'], role: 'sum-operator', number: 1 },
+        { or: ['+', '-'], role: 'operator', number: 1 },
         SPACE,
-        { or: ['mul-expression'], role: 'right-operand', number: '1|0' },
+        { or: ['mul-expression'], role: 'rightOperand', number: '1|0' },
     ]
 
 }
@@ -110,7 +131,7 @@ const andExpression = {
 const expression = {
     astType: 'expression',
     and: [
-        { or: ['and-expression'], number: 1 }
+        { or: ['and-expression'], number: 1, expand: true }
     ]
 }
 
