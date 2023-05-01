@@ -41,24 +41,33 @@ class BaseCharStream implements CharStream {
     }
 
     next(): void {
-        throw new Error("Method not implemented.")
-    }
+        if (this.isEnd()) {
+            return
+        }
 
-    peekAcc(): string {
-        throw new Error("Method not implemented.")
+        this.acc += this.sourceCode[this.pos]
+        this.pos++
     }
 
     clearAcc(): void {
-        throw new Error("Method not implemented.")
+        this.acc = ''
     }
+
+    peekAcc(): string {
+        return this.acc
+    }
+
     backTo(pos: number): void {
-        throw new Error("Method not implemented.")
+        this.pos = pos
+        this.clearAcc()
     }
+
     getPos(): number {
-        throw new Error("Method not implemented.")
+        return this.pos
     }
+
     isEnd(): boolean {
-        throw new Error("Method not implemented.")
+        return this.pos >= this.sourceCode.length
     }
 
 }
