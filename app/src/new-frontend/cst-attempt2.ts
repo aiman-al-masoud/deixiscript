@@ -3,11 +3,6 @@ import { stringLiterals } from "../utils/stringLiterals"
 
 export type Syntax = Member[] // CstModel
 
-export type Cardinality = '*' // zero or more
-    | '1|0' // one or zero
-    | '+' // one or more
-    | 'all-but-last'
-    | number // currently only supports =1
 
 export const roles = stringLiterals(
     'id',
@@ -86,6 +81,20 @@ export const astTypes = stringLiterals(
     'any-symbol',
 )
 
+export type Cardinality = '*' // zero or more
+    | '1|0' // one or zero
+    | '+' // one or more
+    | 'all-but-last'
+    | number // currently only supports =1
+
+export const isNecessary = (c?: Cardinality) =>
+    c === undefined // necessary by default
+    || c == '+'
+    || +c >= 1
+
+export const isRepeatable = (c?: Cardinality) =>
+    c == '+'
+    || c == '*'
 
 export const syntaxes: { [x in AstType]: Syntax } = {
 

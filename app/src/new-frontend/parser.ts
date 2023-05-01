@@ -1,7 +1,7 @@
 import { CharStream } from "./char-stream";
 import { LiteralMember, Member, Role, Syntax, TypeMember } from "./cst-attempt2";
 
-type St = { [x in Role]?: St }
+type St = { [x in Role]?: St | string }
 
 export function parseKnown(cs: CharStream, syntax: Syntax) {
 
@@ -33,8 +33,8 @@ function parseMember(cs: CharStream, member: Member): St | undefined {
 }
 
 function parseLiteral(cs: CharStream, member: LiteralMember): St | undefined {
-    throw new Error('capra!')
-    
+    // throw new Error('capra!')
+
 }
 
 function parseType(cs: CharStream, member: TypeMember): St | undefined {

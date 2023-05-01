@@ -17,9 +17,13 @@ export interface CharStream {
      */
     backTo(pos: number): void
     /**
-     * Get the current position
+     * Get the current position.
      */
     getPost(): number
+    /**
+     * Reached end of charstream.
+     */
+    isEnd(): boolean
 }
 
 
