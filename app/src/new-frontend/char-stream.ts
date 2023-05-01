@@ -37,7 +37,7 @@ class BaseCharStream implements CharStream {
         protected pos = 0,
         protected acc = '',
     ) {
-
+        this.next()
     }
 
     next(): void {

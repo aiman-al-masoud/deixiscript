@@ -19,6 +19,10 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
         const syntax = syntaxes[syntaxName] // state!
         const tree = knownParse(syntax, cs)
 
+
+        // console.log(cs.isEnd())
+        // console.log('tree=', tree)
+
         if (tree) {
             return tree
         }
@@ -30,13 +34,14 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
 
 function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
-    
+
     const st: SyntaxTree = {}
-    
+
     for (const member of syntax) {
-        
+
 
         const node = parseMemberRepeated(member, cs)
+
 
         if (!node && isNecessary(member.number)) {
             return undefined
@@ -64,12 +69,13 @@ function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | Synta
     while (!cs.isEnd()) {
 
         const st = parseMemberSingle(member, cs)
+        // console.log( 'member=', member,  'isEnd=', cs.isEnd(), 'st=', st, 'list=', list )
 
         if (!st && !list.length) {
             return undefined
         }
 
-        if (!st){
+        if (!st) {
             break
         }
 
@@ -97,17 +103,27 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
 
 function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string | undefined {
 
-    while (!cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
+    const tok = cs.peekAcc()
+
+    if (leaf.literals.includes(tok)) {
+        cs.clearAcc()
         cs.next()
+        return tok
     }
 
-    if (cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
-        return undefined
-    }
+    // while (!cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
+    //     cs.next()
+    //     // console.log('acc=', cs.peekAcc(), 'literals=', leaf.literals)
+    // }
 
-    const result = cs.peekAcc()
-    cs.clearAcc()
-    return result
+    // if (cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
+    //     return undefined
+    // }
+
+    // const result = cs.peekAcc()
+    // // console.log('result=', result)
+    // cs.clearAcc()
+    // return result
 }
 
 function parseComposite(composite: Omit<TypeMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
