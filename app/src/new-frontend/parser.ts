@@ -1,15 +1,16 @@
 import { CharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./cst-attempt2";
 
-type SyntaxTree = { [x in Role]?: SyntaxTree | string }
+type SyntaxTree = { [x in Role]?: SyntaxTree | SyntaxTree[] | string | string[] }
 
 
-function tryParse(syntaxList: AstType[], syntaxes: { [x in AstType]: Syntax }, cs: CharStream) {
+
+function tryParse(syntaxList: AstType[], cs: CharStream) {
 
     for (const syntaxName of syntaxList) {
 
         const memento = cs.getPos()
-        const syntax = syntaxes[syntaxName]
+        const syntax = syntaxes[syntaxName] // state!
         const tree = knownParse(syntax, cs)
 
         if (tree) {
@@ -29,8 +30,12 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
         const node = parseMemberRepeated(member, cs)
 
-        if (isNecessary(member.number) && !node) {
+        if (!node && isNecessary(member.number)) {
             return undefined
+        }
+
+        if (!node) {
+            continue
         }
 
         if (member.role) {
@@ -43,12 +48,32 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
 }
 
-function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | undefined {
+function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | SyntaxTree[] | string | undefined {
     // isNecessary has already been taken care of
-    throw new Error('not implemented!')
+
+    const list: SyntaxTree[] = []
+
+    while (!cs.isEnd()) {
+
+        const st = parseMemberSingle(member, cs)
+
+        if (!st) {
+            return undefined
+        }
+
+        list.push(st)
+
+        if (!isRepeatable(member.number)) {
+            return st
+        }
+
+        // member.sep ??????
+    }
+
+    return list
 }
 
-function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | undefined {
+function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string | undefined {
     // doesn't have to take care about number
 
     if (member.literals) {
@@ -57,13 +82,19 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | undefin
         return parseComposite(member, cs)
     }
 
-    // throw new Error('not implemented!')
 }
 
-function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
-    throw new Error('not implemented!')
+function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string | undefined {
+
+    while (!cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
+        cs.next()
+    }
+
+    const result = cs.peekAcc()
+    cs.clearAcc()
+    return result
 }
 
 function parseComposite(composite: Omit<TypeMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
-    throw new Error('not implemented!')
+    return tryParse(composite.types, cs)
 }
