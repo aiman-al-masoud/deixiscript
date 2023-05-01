@@ -3,8 +3,6 @@ import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMem
 
 //TODO any-symbol and exceptForLiterals
 //TODO all-but-last
-//TODO expand
-
 
 type SyntaxTree =
     string
@@ -48,6 +46,8 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
         if (!node) { // and not necessary
             continue
         }
+
+        //TODO expand probably goes here
 
         if (member.role) {
             st[member.role] = node
