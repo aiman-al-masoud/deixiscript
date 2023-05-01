@@ -1,46 +1,59 @@
 import { CharStream } from "./char-stream";
-import { LiteralMember, Member, Role, Syntax, TypeMember } from "./cst-attempt2";
+import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./cst-attempt2";
 
-type St = { [x in Role]?: St | string }
+type SyntaxTree = { [x in Role]?: SyntaxTree | string }
 
-export function parseKnown(cs: CharStream, syntax: Syntax) {
 
-    const cst: St = {}
+function tryParse(syntaxList: AstType[], syntaxes: { [x in AstType]: Syntax }, cs: CharStream) {
+
+    for (const syntaxName of syntaxList) {
+
+        const memento = cs.getPos()
+        const syntax = syntaxes[syntaxName]
+        const tree = knownParse(syntax, cs)
+
+        if (tree) {
+            return tree
+        }
+
+        cs.backTo(memento)
+    }
+
+}
+
+function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
+
+    const st: SyntaxTree = {}
 
     for (const member of syntax) {
 
-        const result = parseMember(cs, member)
+        const node = parseMember(member, cs)
+
+        if (isNecessary(member.number) && !node) {
+            return undefined
+        }
 
         if (member.role) {
-            cst[member.role] = result
+            st[member.role] = node
         }
 
     }
 
-    return cst
+    return st
 
 }
 
-function parseMember(cs: CharStream, member: Member): St | undefined {
-
-    if (member.literals) {
-        return parseLiteral(cs, member)
-    } else if (member.types) {
-        return parseType(cs, member)
-    }
-
-    throw new Error('capra!')
+function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
+    throw new Error('not implemented!')
 }
 
-function parseLiteral(cs: CharStream, member: LiteralMember): St | undefined {
-    // throw new Error('capra!')
-
+function parseComposite(composite: Omit<TypeMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
+    throw new Error('not implemented!')
 }
 
-function parseType(cs: CharStream, member: TypeMember): St | undefined {
-    throw new Error('capra!')
+function parseMember(member: Member, cs: CharStream): SyntaxTree | undefined {
+    // isNecessary has already been taken care of
+    throw new Error('not implemented!')
 }
-
-
 
 

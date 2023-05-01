@@ -19,7 +19,7 @@ export interface CharStream {
     /**
      * Get the current position.
      */
-    getPost(): number
+    getPos(): number
     /**
      * Reached end of charstream.
      */
