@@ -39,20 +39,25 @@ export type Role = ElementType<typeof roles>
 
 
 type BaseMember = {
-    readonly exceptForLiterals?: string[]
     readonly number?: Cardinality // no number ---> 1
     readonly role?: Role // no role --> exclude from ast
-    readonly expand?: boolean
     readonly sep?: string
 }
 
-export type Member = BaseMember & {
-    readonly types: AstType[]
-    readonly literals?: undefined
-} | BaseMember & {
+export type LiteralMember = BaseMember & {
+
     readonly literals: string[]
     readonly types?: undefined
 }
+
+export type TypeMember = BaseMember & {
+    readonly types: AstType[]
+    readonly literals?: undefined
+    readonly exceptForLiterals?: string[]
+    readonly expand?: boolean
+}
+
+export type Member = LiteralMember | TypeMember
 
 export type AstType = ElementType<typeof astTypes>
 

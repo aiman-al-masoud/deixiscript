@@ -1,5 +1,5 @@
 import { CharStream } from "./char-stream";
-import { Member, Role, Syntax } from "./cst-attempt2";
+import { LiteralMember, Member, Role, Syntax, TypeMember } from "./cst-attempt2";
 
 type St = { [x in Role]?: St }
 
@@ -24,18 +24,20 @@ export function parseKnown(cs: CharStream, syntax: Syntax) {
 function parseMember(cs: CharStream, member: Member): St | undefined {
 
     if (member.literals) {
-        
+        return parseLiteral(member)
+    } else if (member.types) {
+        return parseType(member)
     }
 
     throw new Error('capra!')
 }
 
-function parseLiteralMember() {
-
+function parseLiteral(member: LiteralMember): St | undefined {
+    throw new Error('capra!')
 }
 
-function parseCompositeMember() {
-
+function parseType(member: TypeMember): St | undefined {
+    throw new Error('capra!')
 }
 
 
