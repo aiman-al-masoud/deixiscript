@@ -3,6 +3,8 @@ import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMem
 
 //TODO any-symbol and exceptForLiterals
 //TODO all-but-last
+//TODO expand
+
 
 type SyntaxTree =
     string
