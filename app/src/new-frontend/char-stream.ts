@@ -26,7 +26,7 @@ export interface CharStream {
     isEnd(): boolean
 }
 
-function getCharStream(sourceCode: string) {
+export function getCharStream(sourceCode: string) {
     return new BaseCharStream(sourceCode)
 }
 

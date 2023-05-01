@@ -11,7 +11,7 @@ type SyntaxTree =
     | { [x in Role]?: SyntaxTree }
 
 
-function tryParse(syntaxList: AstType[], cs: CharStream) {
+export function tryParse(syntaxList: AstType[], cs: CharStream) {
 
     for (const syntaxName of syntaxList) {
 
