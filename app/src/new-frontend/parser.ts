@@ -24,19 +24,20 @@ export function parseKnown(cs: CharStream, syntax: Syntax) {
 function parseMember(cs: CharStream, member: Member): St | undefined {
 
     if (member.literals) {
-        return parseLiteral(member)
+        return parseLiteral(cs, member)
     } else if (member.types) {
-        return parseType(member)
+        return parseType(cs, member)
     }
 
     throw new Error('capra!')
 }
 
-function parseLiteral(member: LiteralMember): St | undefined {
+function parseLiteral(cs: CharStream, member: LiteralMember): St | undefined {
     throw new Error('capra!')
+    
 }
 
-function parseType(member: TypeMember): St | undefined {
+function parseType(cs: CharStream, member: TypeMember): St | undefined {
     throw new Error('capra!')
 }
 
