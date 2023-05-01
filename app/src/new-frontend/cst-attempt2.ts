@@ -2,7 +2,7 @@ import { LexemeType } from "../config/LexemeType"
 import { ElementType } from "../utils/ElementType"
 import { stringLiterals } from "../utils/stringLiterals"
 
-export type Syntax = Member[]
+export type Syntax = Member[] // CstModel
 
 export type Cardinality = '*' // zero or more
     | '1|0' // one or zero
