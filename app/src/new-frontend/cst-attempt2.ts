@@ -1,4 +1,3 @@
-import { LexemeType } from "../config/LexemeType"
 import { ElementType } from "../utils/ElementType"
 import { stringLiterals } from "../utils/stringLiterals"
 
@@ -39,15 +38,25 @@ export const roles = stringLiterals(
 export type Role = ElementType<typeof roles>
 
 
-
 export type Member = {
-    readonly or: string[]
-    readonly exceptFor?: string[]
+    readonly types: AstType[]
+    readonly literals?: undefined
+    readonly exceptForLiterals?: string[]
+    readonly number?: Cardinality // no number --> 1
+    readonly role?: Role // no role, no ast
+    readonly expand?: boolean
+    readonly sep?: string
+} | {
+    readonly literals: string[]
+    readonly types?: undefined
+    readonly exceptForLiterals?: string[]
     readonly number?: Cardinality // no number --> 1
     readonly role?: Role // no role, no ast
     readonly expand?: boolean
     readonly sep?: string
 }
+
+
 
 export type AstType = ElementType<typeof astTypes>
 
@@ -73,121 +82,126 @@ export const astTypes = stringLiterals(
     'complement',
     'complex-sentence-one',
     'complex-sentence-two',
+    'any-symbol',
 )
 
 
 export const syntaxes: { [x in AstType]: Syntax } = {
+
     space: [
-        { number: '+', or: [' ', '\n', '\t'] }
+        { number: '+', literals: [' ', '\n', '\t'] }
     ],
     identifier: [
-        { number: '+', role: 'id', or: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
+        { number: '+', role: 'id', literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
     ],
     'number-literal': [
-        { number: '+', role: 'digits', or: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
+        { number: '+', role: 'digits', literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
     ],
     'string-literal': [
-        { or: ['"'] },
-        { or: ['any-symbol'], exceptFor: ['"'], role: 'chars' },
-        { or: ['"'] },
+        { literals: ['"'] },
+        { types: ['any-symbol'], exceptForLiterals: ['"'], role: 'chars' },
+        { literals: ['"'] },
     ],
     'noun-phrase': [
-        { or: ['every', 'any'], role: 'pluralizer', number: '1|0' },
-        { or: ['space'] },
-        { or: ['the', 'old'], role: 'anaphoraOperator', number: '1|0' },
-        { or: ['space'] },
-        { or: ['a', 'an', 'new'], role: 'newOperator', number: '1|0' },
-        { or: ['space'] },
-        { or: ['limit-phrase'], expand: true, number: '1|0' },
-        { or: ['space'] },
-        { or: ['identifier'], role: 'modifiers', sep: 'space', number: 'all-but-last' },
-        { or: ['space'] },
-        { or: ['identifier', 'string', 'number'], role: 'head', number: 1 },
-        { or: ['s'], role: 'pluralizer', number: '1|0' },
-        { or: ['space'] },
-        { or: ['genitive'], expand: true, number: '1|0' },
+        { literals: ['every', 'any'], role: 'pluralizer', number: '1|0' },
+        { types: ['space'] },
+        { literals: ['the', 'old'], role: 'anaphoraOperator', number: '1|0' },
+        { types: ['space'] },
+        { literals: ['a', 'an', 'new'], role: 'newOperator', number: '1|0' },
+        { types: ['space'] },
+        { types: ['limit-phrase'], expand: true, number: '1|0' },
+        { types: ['space'] },
+        { types: ['identifier'], role: 'modifiers', sep: 'space', number: 'all-but-last' },
+        { types: ['space'] },
+        { types: ['identifier', 'string-literal', 'number-literal'], role: 'head', number: 1 },
+        { literals: ['s'], role: 'pluralizer', number: '1|0' },
+        { types: ['space'] },
+        { types: ['genitive'], expand: true, number: '1|0' },
     ],
     'limit-phrase': [
-        { or: ['first', 'last'], role: 'limitKeyword', number: 1 },
-        { or: ['space'] },
-        { or: ['number-literal'], role: 'limitNumber', number: '1|0' },
+        { literals: ['first', 'last'], role: 'limitKeyword', number: 1 },
+        { types: ['space'] },
+        { types: ['number-literal'], role: 'limitNumber', number: '1|0' },
     ],
     'math-expression': [
-        { or: ['noun-phrase'], role: 'leftOperand' },
-        { or: ['space'], number: '*' },
-        { or: ['+', '-', '*', '/'], role: 'operator', number: '1|0' },
-        { or: ['space'], number: '*' },
-        { or: ['noun-phrase'], role: 'rightOperand', number: '1|0' }
+        { types: ['noun-phrase'], role: 'leftOperand' },
+        { types: ['space'], number: '*' },
+        { literals: ['+', '-', '*', '/'], role: 'operator', number: '1|0' },
+        { types: ['space'], number: '*' },
+        { types: ['noun-phrase'], role: 'rightOperand', number: '1|0' }
     ],
     "expression": [
-        { or: ['math-expression'], role: 'leftOperand' },
-        { or: ['space'] },
-        { or: ['and'], number: '1|0' },
-        { or: ['space'] },
-        { or: ['math-expression'], role: 'rightOperand', number: '1|0' }
+        { types: ['math-expression'], role: 'leftOperand' },
+        { types: ['space'] },
+        { literals: ['and'], number: '1|0' },
+        { types: ['space'] },
+        { types: ['math-expression'], role: 'rightOperand', number: '1|0' }
     ],
 
     'genitive': [
-        { or: ['of'] },
-        { or: ['space'] },
-        { or: ['noun-phrase'], role: 'owner', number: 1 },
+        { literals: ['of'] },
+        { types: ['space'] },
+        { types: ['noun-phrase'], role: 'owner', number: 1 },
     ],
 
     'accusative': [
-        { or: ['noun-phrase'], role: 'object', number: 1 },
+        { types: ['noun-phrase'], role: 'object', number: 1 },
     ],
 
     'dative': [
-        { or: ['to'] },
-        { or: ['space'] },
-        { or: ['noun-phrase'], role: 'receiver', number: 1 },
+        { literals: ['to'] },
+        { types: ['space'] },
+        { types: ['noun-phrase'], role: 'receiver', number: 1 },
     ],
 
     'instrumental': [
-        { or: ['by'] },
-        { or: ['space'] },
-        { or: ['noun-phrase'], role: 'instrument', number: 1 },
+        { literals: ['by'] },
+        { types: ['space'] },
+        { types: ['noun-phrase'], role: 'instrument', number: 1 },
     ],
 
     'complement': [
-        { or: ['accusative', 'dative', 'instrumental'], expand: true, number: '*' }
+        { types: ['accusative', 'dative', 'instrumental'], expand: true, number: '*' }
     ],
 
     'simple-sentence': [
-        { or: ['expression'], role: 'subject', number: '1|0' },
-        { or: ['verb'], expand: true },
-        { or: ['complement'], number: '*', expand: true },
+        { types: ['expression'], role: 'subject', number: '1|0' },
+        { types: ['verb'], expand: true },
+        { types: ['complement'], number: '*', expand: true },
     ],
 
     verb: [
-        { or: ['copula', 'do-verb'], expand: true }
+        { types: ['copula', 'do-verb'], expand: true }
     ],
 
     'do-verb': [
-        { or: ['do', 'does'] },
-        { or: ['not'], role: 'negation', number: '1|0' },
-        { or: ['identifier'], role: 'verb' }
+        { literals: ['do', 'does'] },
+        { literals: ['not'], role: 'negation', number: '1|0' },
+        { types: ['identifier'], role: 'verb' }
     ],
 
     copula: [
-        { or: ['is', 'be', 'are'], role: 'verb' },
-        { or: ['not'], role: 'negation', number: '1|0' },
+        { literals: ['is', 'be', 'are'], role: 'verb' },
+        { literals: ['not'], role: 'negation', number: '1|0' },
     ],
 
     'complex-sentence': [
-        { or: ['complex-sentence-one', 'complex-sentence-two'], expand: true }
+        { types: ['complex-sentence-one', 'complex-sentence-two'], expand: true }
     ],
 
     'complex-sentence-one': [
-        { or: ['if', 'when'], role: 'subordinating-conjunction' },
-        { or: ['simple-sentence'], role: 'condition' },
-        { or: ['then', ','] },
-        { or: ['simple-sentence'], role: 'consequence' },
+        { literals: ['if', 'when'], role: 'subordinating-conjunction' },
+        { types: ['simple-sentence'], role: 'condition' },
+        { literals: ['then', ','] },
+        { types: ['simple-sentence'], role: 'consequence' },
     ],
 
     'complex-sentence-two': [
-        { or: ['simple-sentence'], role: 'consequence' },
-        { or: ['if', 'when'], role: 'subordinating-conjunction' },
-        { or: ['simple-sentence'], role: 'condition' },
+        { types: ['simple-sentence'], role: 'consequence' },
+        { literals: ['if', 'when'], role: 'subordinating-conjunction' },
+        { types: ['simple-sentence'], role: 'condition' },
     ],
+
+    'any-symbol': [],
+
 }

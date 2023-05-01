@@ -22,7 +22,22 @@ export function parseKnown(cs: CharStream, syntax: Syntax) {
 }
 
 function parseMember(cs: CharStream, member: Member): St | undefined {
+
+    if (member.literals) {
+
+    }
+
     throw new Error('capra!')
 }
+
+function parseLiteralMember() {
+
+}
+
+function parseCompositeMember() {
+
+}
+
+
 
 
