@@ -113,19 +113,6 @@ function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string 
         return tok
     }
 
-    // while (!cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
-    //     cs.next()
-    //     // console.log('acc=', cs.peekAcc(), 'literals=', leaf.literals)
-    // }
-
-    // if (cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
-    //     return undefined
-    // }
-
-    // const result = cs.peekAcc()
-    // // console.log('result=', result)
-    // cs.clearAcc()
-    // return result
 }
 
 function parseComposite(composite: Omit<TypeMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
