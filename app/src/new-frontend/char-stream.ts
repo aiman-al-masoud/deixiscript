@@ -1,11 +1,11 @@
 export interface CharStream {
 
     /**
-     * Add the next char to the accumulator
+     * Move to the next character if any.
      */
     next(): void
     /**
-     * Read the accumulated value
+     * Read the current character.
      */
     peek(): string
     /**
@@ -32,7 +32,7 @@ class BaseCharStream implements CharStream {
         readonly sourceCode: string,
         protected pos = 0,
     ) {
-        
+
     }
 
     next(): void {
