@@ -30,9 +30,11 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
 
 function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
+    
     const st: SyntaxTree = {}
-
+    
     for (const member of syntax) {
+        
 
         const node = parseMemberRepeated(member, cs)
 
@@ -63,8 +65,12 @@ function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | Synta
 
         const st = parseMemberSingle(member, cs)
 
-        if (!st) {
+        if (!st && !list.length) {
             return undefined
+        }
+
+        if (!st){
+            break
         }
 
         if (!isRepeatable(member.number)) {
