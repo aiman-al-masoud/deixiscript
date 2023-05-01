@@ -21,10 +21,6 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
         const syntax = syntaxes[syntaxName] // state!
         const tree = knownParse(syntax, cs)
 
-
-        // console.log(cs.isEnd())
-        // console.log('tree=', tree)
-
         if (tree) {
             return tree
         }
@@ -105,14 +101,30 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
 
 function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | string | undefined {
 
-    const singleLetterLiterals = member.literals.filter(x => x.length <= 1)
-    const multiLetterLiterals = member.literals.filter(x => x.length > 1)
+    const singleLetterLiterals =
+        member
+            .literals
+            .filter(x => x.length <= 1)
 
-    console.log('singleLetterLiterals=', singleLetterLiterals)
-    console.log('multiLetterLiterals=', multiLetterLiterals)
+    for (const x of singleLetterLiterals) {
+        const r = parseChar({ literals: [x] }, cs)
+        if (r) {
+            return r
+        }
+    }
 
-    if (member.literals.every(x => x.length <= 1)) {
-        return parseChar(member, cs)
+    const multiLetterLiterals: Syntax[] = member
+        .literals
+        .filter(x => x.length > 1)
+        .map(x => x.split('').map(c => ({ literals: [c] })))
+
+    // console.log('must go to', 'multiLetterLiterals=', multiLetterLiterals)
+
+    for (const x of multiLetterLiterals) {
+        const r = knownParse(x, cs)
+        if (r) {
+            return r
+        }
     }
 
 }

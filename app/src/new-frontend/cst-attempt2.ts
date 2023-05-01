@@ -176,7 +176,9 @@ export const syntaxes: { [x in AstType]: Syntax } = {
 
     'simple-sentence': [
         { types: ['expression'], role: 'subject', number: '1|0' },
+        { types: ['space'] },
         { types: ['verb'], expand: true },
+        { types: ['space'] },
         { types: ['complement'], number: '*', expand: true },
     ],
 
@@ -186,7 +188,9 @@ export const syntaxes: { [x in AstType]: Syntax } = {
 
     'do-verb': [
         { literals: ['do', 'does'] },
+        { types: ['space'] },
         { literals: ['not'], role: 'negation', number: '1|0' },
+        { types: ['space'] },
         { types: ['identifier'], role: 'verb' }
     ],
 

@@ -4,18 +4,12 @@ import { tryParse } from "./src/new-frontend/parser";
 
 // main()
 
-// console.log(cstModelToAstModel(NOUN_PHRASE))
-
-// const x = tryParse(['identifier'], cs)
-
+// EXAMPLE 0 
 // const cs = getCharStream('12    mondo ')
 // const x = tryParse(['number-literal'], cs)
-// // console.log(cs, cs.isEnd())
 // const y = tryParse(['space'], cs)
 // const z = tryParse(['identifier'], cs)
 // console.log(x, y, z)
-
-
 
 // EXAMPLE 1
 // const cs = getCharStream('12    mondo ')
