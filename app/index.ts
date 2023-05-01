@@ -6,6 +6,6 @@ import { tryParse } from "./src/new-frontend/parser";
 
 // console.log(cstModelToAstModel(NOUN_PHRASE))
 
-const cs = getCharStream('12 ')
-const x = tryParse(['number-literal'], cs)
+const cs = getCharStream('ciao ')
+const x = tryParse(['identifier'], cs)
 console.log(x)
