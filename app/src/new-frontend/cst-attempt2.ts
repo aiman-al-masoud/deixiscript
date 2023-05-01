@@ -11,11 +11,36 @@ export type Cardinality = '*' // zero or more
     | number // currently only supports =1
 
 
+export type Role = 'id'
+    | 'digits'
+    | 'chars'
+    | 'pluralizer'
+    | 'anaphoraOperator'
+    | 'newOperator'
+    | 'modifiers'
+    | 'head'
+    | 'limitKeyword'
+    | 'limitNumber'
+    | 'leftOperand'
+    | 'rightOperand'
+    | 'operator'
+    | 'owner'
+    | 'object'
+    | 'receiver'
+    | 'instrument'
+    | 'subject'
+    | 'verb'
+    | 'negation'
+    | 'condition'
+    | 'consequence'
+    | 'subordinating-conjunction'
+
+
 export type Member = {
     readonly or: string[]
     readonly exceptFor?: string[]
     readonly number?: Cardinality // no number --> 1
-    readonly role?: string // no role, no ast
+    readonly role?: Role // no role, no ast
     readonly expand?: boolean
     readonly sep?: string
 }
@@ -67,13 +92,13 @@ export const syntaxes: { [x in CompositeType]: Syntax } = {
     'noun-phrase': [
         { or: ['every', 'any'], role: 'pluralizer', number: '1|0' },
         { or: ['space'] },
-        { or: ['the', 'old'], role: ' anaphoraOperator', number: '1|0' },
+        { or: ['the', 'old'], role: 'anaphoraOperator', number: '1|0' },
         { or: ['space'] },
         { or: ['a', 'an', 'new'], role: 'newOperator', number: '1|0' },
         { or: ['space'] },
         { or: ['limit-phrase'], expand: true, number: '1|0' },
         { or: ['space'] },
-        { or: ['identifier'], role: 'modifier', sep: 'space', number: 'all-but-last' },
+        { or: ['identifier'], role: 'modifiers', sep: 'space', number: 'all-but-last' },
         { or: ['space'] },
         { or: ['identifier', 'string', 'number'], role: 'head', number: 1 },
         { or: ['s'], role: 'pluralizer', number: '1|0' },
