@@ -38,25 +38,21 @@ export const roles = stringLiterals(
 export type Role = ElementType<typeof roles>
 
 
-export type Member = {
-    readonly types: AstType[]
-    readonly literals?: undefined
+type BaseMember = {
     readonly exceptForLiterals?: string[]
-    readonly number?: Cardinality // no number --> 1
-    readonly role?: Role // no role, no ast
-    readonly expand?: boolean
-    readonly sep?: string
-} | {
-    readonly literals: string[]
-    readonly types?: undefined
-    readonly exceptForLiterals?: string[]
-    readonly number?: Cardinality // no number --> 1
-    readonly role?: Role // no role, no ast
+    readonly number?: Cardinality // no number ---> 1
+    readonly role?: Role // no role --> exclude from ast
     readonly expand?: boolean
     readonly sep?: string
 }
 
-
+export type Member = BaseMember & {
+    readonly types: AstType[]
+    readonly literals?: undefined
+} | BaseMember & {
+    readonly literals: string[]
+    readonly types?: undefined
+}
 
 export type AstType = ElementType<typeof astTypes>
 
