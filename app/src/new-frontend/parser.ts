@@ -1,8 +1,12 @@
 import { CharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./cst-attempt2";
 
-type SyntaxTree = { [x in Role]?: SyntaxTree | SyntaxTree[] | string | string[] }
 
+type SyntaxTree =
+    string
+    | string[]
+    | SyntaxTree[]
+    | { [x in Role]?: SyntaxTree }
 
 
 function tryParse(syntaxList: AstType[], cs: CharStream) {
