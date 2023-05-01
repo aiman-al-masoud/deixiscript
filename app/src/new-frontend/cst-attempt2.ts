@@ -10,31 +10,33 @@ export type Cardinality = '*' // zero or more
     | 'all-but-last'
     | number // currently only supports =1
 
+export const roles = stringLiterals(
+    'id',
+    'digits',
+    'chars',
+    'pluralizer',
+    'anaphoraOperator',
+    'newOperator',
+    'modifiers',
+    'head',
+    'limitKeyword',
+    'limitNumber',
+    'leftOperand',
+    'rightOperand',
+    'operator',
+    'owner',
+    'object',
+    'receiver',
+    'instrument',
+    'subject',
+    'verb',
+    'negation',
+    'condition',
+    'consequence',
+    'subordinating-conjunction', // BAD
+)
 
-export type Role = 'id'
-    | 'digits'
-    | 'chars'
-    | 'pluralizer'
-    | 'anaphoraOperator'
-    | 'newOperator'
-    | 'modifiers'
-    | 'head'
-    | 'limitKeyword'
-    | 'limitNumber'
-    | 'leftOperand'
-    | 'rightOperand'
-    | 'operator'
-    | 'owner'
-    | 'object'
-    | 'receiver'
-    | 'instrument'
-    | 'subject'
-    | 'verb'
-    | 'negation'
-    | 'condition'
-    | 'consequence'
-    | 'subordinating-conjunction'
-
+export type Role = ElementType<typeof roles>
 
 export type Member = {
     readonly or: string[]
