@@ -1,12 +1,14 @@
-const SPACE = { or: [' '], excludeFromAst: true, number: '+' }
+export const SPACE = { or: [' '], excludeFromAst: true, number: '+' }
+export const START_ANY_ORDER = { startAnyOrder: true, separator: SPACE, number: '*' }
+export const END_ANY_ORDER = { endAnyOrder: true }
+export const START_OPTIONAL = { startOptional: true, number: '1|0' }
+export const END_OPTIONAL = { endOptional: true }
 
+// excludeFromAst or role is redundant?
 
 type StringLiteral = {
     stringChars: string[]
 }
-
-
-
 
 
 // "CIAO MONDo"
@@ -36,31 +38,33 @@ type NounPhrase = {
     owner?: NounPhrase
 }
 
-const nounPhrase = [
+export const nounPhrase = [
     { or: ['every', 'any'], role: 'pluralizer', number: '1|0' },
     SPACE,
     { or: ['the', 'old'], role: ' anaphoraOperator', number: '1|0' },
     SPACE,
     { or: ['a', 'an', 'new'], role: 'newOperator', number: '1|0' },
     SPACE,
+    START_OPTIONAL,
     [
-        { number: '1|0' },
         { or: ['first', 'last'], role: 'limitKeyword', number: 1 },
         SPACE,
         { or: ['number-literal'], role: 'limitNumber', number: '1|0' },
     ],
+    END_OPTIONAL,
     SPACE,
     { or: ['noun'], role: 'modifier', separator: SPACE, number: 'all-but-last' },
     SPACE,
     { or: ['noun', 'string', 'number'], role: 'head', number: 1 },
     { or: ['s'], role: 'pluralizer', number: '1|0' },
     SPACE,
+    START_OPTIONAL,
     [
-        { number: '1|0' },
         { or: ['of'], excludeFromAst: true },
         SPACE,
         { or: ['noun-phrase'], role: 'owner', number: 1 },
     ],
+    END_OPTIONAL,
 ]
 
 type MulExpression = {
@@ -118,21 +122,21 @@ const simpleSentence = [
     SPACE,
     { or: ['not'], role: 'negation', number: '1|0' },
     SPACE,
-    {
-        exor: [
-            { or: ['verb', 'copula'], role: 'verb-or-copula', number: 1 }
-        ]
-    },
+    { or: ['verb', 'copula'], role: 'verb-or-copula', number: 1 },
+    SPACE,
     { or: ['not'], role: 'negation', number: '1|0' },
     SPACE,
     { or: ['noun-phrase'], role: 'object', number: '1|0' },
     SPACE,
+    START_ANY_ORDER,
     [
-        { anyOrder: true, separator: SPACE, number: '*' },
         DATIVE,
         INSTRUMENTAL,
     ],
+    END_ANY_ORDER,
 ]
+
+
 
 
 
@@ -183,3 +187,18 @@ const command = {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
