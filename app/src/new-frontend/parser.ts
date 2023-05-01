@@ -27,7 +27,7 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
     for (const member of syntax) {
 
-        const node = parseMember(member, cs)
+        const node = parseMemberRepeated(member, cs)
 
         if (isNecessary(member.number) && !node) {
             return undefined
@@ -43,6 +43,23 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
 }
 
+function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | undefined {
+    // isNecessary has already been taken care of
+    throw new Error('not implemented!')
+}
+
+function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | undefined {
+    // doesn't have to take care about number
+
+    if (member.literals) {
+        return parseLeaf(member, cs)
+    } else {
+        return parseComposite(member, cs)
+    }
+
+    // throw new Error('not implemented!')
+}
+
 function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
     throw new Error('not implemented!')
 }
@@ -50,10 +67,3 @@ function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): SyntaxT
 function parseComposite(composite: Omit<TypeMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
     throw new Error('not implemented!')
 }
-
-function parseMember(member: Member, cs: CharStream): SyntaxTree | undefined {
-    // isNecessary has already been taken care of
-    throw new Error('not implemented!')
-}
-
-
