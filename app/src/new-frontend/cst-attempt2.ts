@@ -38,6 +38,8 @@ export const roles = stringLiterals(
 
 export type Role = ElementType<typeof roles>
 
+
+
 export type Member = {
     readonly or: string[]
     readonly exceptFor?: string[]
@@ -47,9 +49,7 @@ export type Member = {
     readonly sep?: string
 }
 
-export type AstType = LexemeType | CompositeType
-
-export type CompositeType = ElementType<typeof astTypes>
+export type AstType = ElementType<typeof astTypes>
 
 export const astTypes = stringLiterals(
     'space',
@@ -76,7 +76,7 @@ export const astTypes = stringLiterals(
 )
 
 
-export const syntaxes: { [x in CompositeType]: Syntax } = {
+export const syntaxes: { [x in AstType]: Syntax } = {
     space: [
         { number: '+', or: [' ', '\n', '\t'] }
     ],
