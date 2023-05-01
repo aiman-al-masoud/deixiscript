@@ -26,7 +26,39 @@ export interface CharStream {
     isEnd(): boolean
 }
 
+function getCharStream(sourceCode: string) {
+    return new BaseCharStream(sourceCode)
+}
 
-// class BaseCharStream implements CharStream {
+class BaseCharStream implements CharStream {
 
-// }
+    constructor(
+        readonly sourceCode: string,
+        protected pos = 0,
+        protected acc = '',
+    ) {
+
+    }
+
+    next(): void {
+        throw new Error("Method not implemented.")
+    }
+
+    peekAcc(): string {
+        throw new Error("Method not implemented.")
+    }
+
+    clearAcc(): void {
+        throw new Error("Method not implemented.")
+    }
+    backTo(pos: number): void {
+        throw new Error("Method not implemented.")
+    }
+    getPos(): number {
+        throw new Error("Method not implemented.")
+    }
+    isEnd(): boolean {
+        throw new Error("Method not implemented.")
+    }
+
+}
