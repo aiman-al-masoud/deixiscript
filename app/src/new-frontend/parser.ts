@@ -2,6 +2,7 @@ import { CharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./cst-attempt2";
 
 //TODO any-symbol and exceptForLiterals
+//TODO all-but-last
 
 type SyntaxTree =
     string
