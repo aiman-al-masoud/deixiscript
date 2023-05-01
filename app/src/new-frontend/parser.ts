@@ -105,6 +105,18 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
 
 function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string | undefined {
 
+
+    // a parseLiteral() then calls either parseLeaf() or parseMultiLetterLiteral()
+    // if (leaf.literals.some(x => x.length > 1)) {
+    //     console.log('multiletter literals!')
+    //     knownParse([
+    //         { literals: ['a'] },
+    //         { literals: ['b'] },
+    //     ], cs)
+    // } else {
+    //     console.log('NO multiletter literals!')
+    // }
+
     const tok = cs.peek()
 
     if (leaf.literals.includes(tok)) {
