@@ -12,7 +12,7 @@ type StringLiteral = {
 
 
 // "CIAO MONDo"
-const stringLiteral = [
+const STRING_LITERAL = [
     { or: ['"'], number: 1, excludeFromAst: true },
     { or: ['any-symbol'], role: 'stringChars', exceptFor: ['"'], number: '*', },
     { or: ['"'], number: 1, excludeFromAst: true },
@@ -22,7 +22,7 @@ type NumberLiteral = {
     numberChars: string[]
 }
 
-const numberLiteral = [
+const NUMBER_LITERAL = [
     { or: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], role: 'numberChars', number: '+' },
 ]
 
@@ -38,7 +38,7 @@ type NounPhrase = {
     owner?: NounPhrase
 }
 
-export const nounPhrase = [
+export const NOUN_PHRASE = [
     { or: ['every', 'any'], role: 'pluralizer', number: '1|0' },
     SPACE,
     { or: ['the', 'old'], role: ' anaphoraOperator', number: '1|0' },
@@ -73,7 +73,7 @@ type MulExpression = {
     rightOperand?: NounPhrase
 }
 
-const mulExpression = [
+const MUL_EXPRESSION = [
     { or: ['noun-phrase'], role: 'leftOperand', number: 1 },
     SPACE,
     { or: ['*', '/'], role: 'operator', number: 1 },
@@ -81,7 +81,7 @@ const mulExpression = [
     { or: ['noun-phrase'], role: 'rightOperand', number: '1|0' },
 ]
 
-const sumExpression = [
+const SUM_EXPRESSION = [
     { or: ['mul-expression'], role: 'leftOperand', number: 1 },
     SPACE,
     { or: ['+', '-'], role: 'operator', number: 1 },
@@ -91,7 +91,7 @@ const sumExpression = [
 
 
 
-const andExpression = [
+const AND_EXPRESSION = [
     { or: ['sum-expression'], role: 'left-operand', number: 1 },
     SPACE,
     { or: ['and'], number: 1 },
@@ -115,7 +115,7 @@ const INSTRUMENTAL = [
     { or: ['noun-phrase'], role: 'instrument' },
 ]
 
-const simpleSentence = [
+const SIMPLE_SENTENCE = [
     { or: ['noun-phrase'], role: 'subject', number: '1|0' },
     SPACE,
     { or: ['do', 'does'], number: '1|0', excludeFromAst: true },
@@ -140,7 +140,7 @@ const simpleSentence = [
 
 
 
-const complexSentence1 = [
+const COMPLEX_SENTENCE1 = [
     { or: ['simple-sentence'], role: 'condition', number: 1 },
     SPACE,
     { or: ['if', 'when'], role: 'subordinating-conjunction', number: 1 },
@@ -150,7 +150,7 @@ const complexSentence1 = [
 
 
 
-const complexSentence2 = [
+const COMPLEX_SENTENCE2 = [
     { or: ['if', 'when'], role: 'subordinating-conjunction', number: 1 },
     SPACE,
     { or: ['simple-sentence'], role: 'condition', number: 1 },
@@ -160,6 +160,8 @@ const complexSentence2 = [
     { or: ['simple-sentence'], role: 'consequence', number: 1 },
 ]
 
+
+type CstModel = typeof STRING_LITERAL | typeof NUMBER_LITERAL | typeof NOUN_PHRASE 
 
 
 
