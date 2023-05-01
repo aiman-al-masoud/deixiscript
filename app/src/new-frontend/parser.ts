@@ -38,7 +38,7 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
             return undefined
         }
 
-        if (!node) {
+        if (!node) { // and not necessary
             continue
         }
 
@@ -65,12 +65,11 @@ function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | Synta
             return undefined
         }
 
-        list.push(st)
-
         if (!isRepeatable(member.number)) {
             return st
         }
 
+        list.push(st)
         // member.sep ??????
     }
 
@@ -92,6 +91,10 @@ function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string 
 
     while (!cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
         cs.next()
+    }
+
+    if (cs.isEnd() && !leaf.literals.includes(cs.peekAcc())) {
+        return undefined
     }
 
     const result = cs.peekAcc()
