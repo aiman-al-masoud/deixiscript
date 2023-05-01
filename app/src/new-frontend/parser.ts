@@ -105,6 +105,12 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
 
 function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | string | undefined {
 
+    const singleLetterLiterals = member.literals.filter(x => x.length <= 1)
+    const multiLetterLiterals = member.literals.filter(x => x.length > 1)
+
+    console.log('singleLetterLiterals=', singleLetterLiterals)
+    console.log('multiLetterLiterals=', multiLetterLiterals)
+
     if (member.literals.every(x => x.length <= 1)) {
         return parseChar(member, cs)
     }
