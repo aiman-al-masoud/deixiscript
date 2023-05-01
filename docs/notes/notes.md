@@ -90,6 +90,8 @@ maybe make "for" dative.
 - KoolParser
 - AstNode
 
+# reactive programming
+
 # re-think Lexemes and "var names", reassignment clashes with inheritance, consider using indefart for disambiguation
 
 - [Lexemes](./the-question-of-lexemes.md)
