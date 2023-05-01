@@ -30,20 +30,17 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
 
 function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
 
-
     const st: SyntaxTree = {}
 
     for (const member of syntax) {
 
-
         const node = parseMemberRepeated(member, cs)
-
 
         if (!node && isNecessary(member.number)) {
             return undefined
         }
 
-        if (!node) { // and not necessary
+        if (!node) { // and not isNecessary
             continue
         }
 
@@ -67,7 +64,6 @@ function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | Synta
     while (!cs.isEnd()) {
 
         const st = parseMemberSingle(member, cs)
-        // console.log( 'member=', member,  'isEnd=', cs.isEnd(), 'st=', st, 'list=', list )
 
         if (!st && !list.length) {
             return undefined
@@ -96,7 +92,6 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
     } else {
         return parseComposite(member, cs)
     }
-
 }
 
 function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | string | undefined {
@@ -117,8 +112,6 @@ function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | strin
         .literals
         .filter(x => x.length > 1)
         .map(x => x.split('').map(c => ({ literals: [c] })))
-
-    // console.log('must go to', 'multiLetterLiterals=', multiLetterLiterals)
 
     for (const x of multiLetterLiterals) {
         const r = knownParse(x, cs)
