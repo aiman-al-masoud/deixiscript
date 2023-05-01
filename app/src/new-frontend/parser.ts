@@ -105,10 +105,9 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
 
 function parseLeaf(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string | undefined {
 
-    const tok = cs.peekAcc()
+    const tok = cs.peek()
 
     if (leaf.literals.includes(tok)) {
-        cs.clearAcc()
         cs.next()
         return tok
     }

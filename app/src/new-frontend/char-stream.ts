@@ -7,13 +7,9 @@ export interface CharStream {
     /**
      * Read the accumulated value
      */
-    peekAcc(): string
+    peek(): string
     /**
-     * Clear the accumulated value
-     */
-    clearAcc(): void
-    /**
-     * Go back AND clear the accumulated value.
+     * Go back.
      */
     backTo(pos: number): void
     /**
@@ -35,9 +31,8 @@ class BaseCharStream implements CharStream {
     constructor(
         readonly sourceCode: string,
         protected pos = 0,
-        protected acc = '',
     ) {
-        this.next()
+        
     }
 
     next(): void {
@@ -45,21 +40,15 @@ class BaseCharStream implements CharStream {
             return
         }
 
-        this.acc += this.sourceCode[this.pos]
         this.pos++
     }
 
-    clearAcc(): void {
-        this.acc = ''
-    }
-
-    peekAcc(): string {
-        return this.acc
+    peek(): string {
+        return this.sourceCode[this.pos]
     }
 
     backTo(pos: number): void {
         this.pos = pos
-        this.clearAcc()
     }
 
     getPos(): number {
