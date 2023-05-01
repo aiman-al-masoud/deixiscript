@@ -188,9 +188,9 @@ export const syntaxes: { [x in AstType]: Syntax } = {
 
     'do-verb': [
         { literals: ['do', 'does'] },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { literals: ['not'], role: 'negation', number: '1|0' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'verb' }
     ],
 
