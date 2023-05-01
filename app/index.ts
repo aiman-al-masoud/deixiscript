@@ -8,8 +8,8 @@ import { tryParse } from "./src/new-frontend/parser";
 
 // const x = tryParse(['identifier'], cs)
 
-const cs = getCharStream('ciao    mondo ')
-const x = tryParse(['identifier'], cs)
+const cs = getCharStream('12    mondo ')
+const x = tryParse(['number-literal'], cs)
 // console.log(cs, cs.isEnd())
 const y = tryParse(['space'], cs)
 const z = tryParse(['identifier'], cs)
