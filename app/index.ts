@@ -12,17 +12,17 @@ import { parseSyntax, parseTry } from "./src/new-frontend/parser";
 // console.log(x, y, z)
 
 // EXAMPLE 1
-// const cs = getCharStream('12    mondo ')
-// const x = parseTry(['number-literal'], cs)
-// console.log(x)
+const cs = getCharStream('12    mondo ')
+const x = parseTry(['number-literal'], cs)
+console.log(x)
 // EXAMPLE 2
-// const cs = getCharStream('do not make ')// also try without not
-// const x = tryParse(['do-verb'], cs)
-// console.log(x)
+const cs2 = getCharStream('do not make ')// also try without not
+const x2 = parseTry(['do-verb'], cs2)
+console.log(x2)
 // EXAMPLE 3
-// const cs = getCharStream('" ciao "xxx')
-// const x = parseTry(['string-literal'], cs)
-// console.log(x)
+const cs3 = getCharStream('" ciao "xxx')
+const x3 = parseTry(['string-literal'], cs3)
+console.log(x3)
 // EXAMPLE 4
 const cs4 = getCharStream('ciao mondo buruf')
 const x4 = parseSyntax([{ types: ['identifier'], sep: 'space', number: 'all-but-last', role: 'anything' as any }], cs4)
