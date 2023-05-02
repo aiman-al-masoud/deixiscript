@@ -1,6 +1,6 @@
 // import main from "./src/main/main";
 import { getCharStream } from "./src/new-frontend/char-stream";
-import { parseTry } from "./src/new-frontend/parser";
+import { parseSyntax, parseTry } from "./src/new-frontend/parser";
 
 // main()
 
@@ -13,14 +13,18 @@ import { parseTry } from "./src/new-frontend/parser";
 
 // EXAMPLE 1
 // const cs = getCharStream('12    mondo ')
-// const x = tryParse(['number-literal'], cs)
+// const x = parseTry(['number-literal'], cs)
+// console.log(x)
 // EXAMPLE 2
 // const cs = getCharStream('do not make ')// also try without not
 // const x = tryParse(['do-verb'], cs)
 // console.log(x)
 // EXAMPLE 3
-const cs = getCharStream('" ciao "xxx')
-const x = parseTry(['string-literal'], cs)
-console.log(x)
-
+// const cs = getCharStream('" ciao "xxx')
+// const x = parseTry(['string-literal'], cs)
+// console.log(x)
+// EXAMPLE 4
+const cs4 = getCharStream('ciao mondo ciao')
+const x4 = parseSyntax([{ types: ['identifier'], sep: 'space', number: '+', role: 'anything' as any }], cs4)
+console.log(x4)
 

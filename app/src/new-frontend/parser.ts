@@ -3,7 +3,6 @@ import { CharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, syntaxes, AstType } from "./csts";
 
 //TODO all-but-last
-//TODO sep
 
 type AstNode =
     string
@@ -29,7 +28,7 @@ export function parseTry(syntaxList: AstType[], cs: CharStream) {
 
 }
 
-function parseSyntax(syntax: Syntax, cs: CharStream): AstNode | undefined {
+export function parseSyntax(syntax: Syntax, cs: CharStream): AstNode | undefined {
 
     const ast: AstNode = {}
 
@@ -79,8 +78,14 @@ function parseMemberRepeated(member: Member, cs: CharStream): AstNode | AstNode[
         }
 
         list.push(st)
-        // member.sep ??????
+
+        if (member.sep) {
+            parseMemberSingle({ types: [member.sep] }, cs)
+        }
+
     }
+
+    // member.number === 'all-but-last'
 
     return list
 }

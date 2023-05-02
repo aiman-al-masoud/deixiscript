@@ -36,7 +36,7 @@ export type Role = ElementType<typeof roles>
 type BaseMember = {
     readonly number?: Cardinality // no number ---> 1
     readonly role?: Role // no role --> exclude from ast
-    readonly sep?: string
+    readonly sep?: AstType
 }
 
 export type LiteralMember = BaseMember & {
