@@ -1,15 +1,15 @@
 import { first } from "../utils/first";
 import { CharStream } from "./char-stream";
-import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./csts";
+import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, syntaxes, AstType } from "./csts";
 
 //TODO all-but-last
 //TODO sep
 
-type SyntaxTree =
+type AstNode =
     string
     | string[]
-    | SyntaxTree[]
-    | { [x in Role]?: SyntaxTree }
+    | AstNode[]
+    | { [x in Role]?: AstNode }
 
 
 export function tryParse(syntaxList: AstType[], cs: CharStream) {
@@ -18,7 +18,7 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
 
         const memento = cs.getPos()
         const syntax = syntaxes[syntaxName] // state!
-        const tree = knownParse(syntax, cs)
+        const tree = parseSyntax(syntax, cs)
 
         if (tree) {
             return tree //{ ...tree, type: syntaxName } as SyntaxTree // remove cast // TODO: add type
@@ -29,9 +29,9 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
 
 }
 
-function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
+function parseSyntax(syntax: Syntax, cs: CharStream): AstNode | undefined {
 
-    const st: SyntaxTree = {}
+    const ast: AstNode = {}
 
     for (const member of syntax) {
 
@@ -48,19 +48,19 @@ function knownParse(syntax: Syntax, cs: CharStream): SyntaxTree | undefined {
         //TODO expand probably goes here
 
         if (member.role) {
-            st[member.role] = node
+            ast[member.role] = node
         }
 
     }
 
-    return st
+    return ast
 
 }
 
-function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | SyntaxTree[] | string | undefined {
+function parseMemberRepeated(member: Member, cs: CharStream): AstNode | AstNode[] | string | undefined {
     // isNecessary has already been taken care of
 
-    const list: SyntaxTree[] = []
+    const list: AstNode[] = []
 
     while (!cs.isEnd()) {
 
@@ -85,17 +85,17 @@ function parseMemberRepeated(member: Member, cs: CharStream): SyntaxTree | Synta
     return list
 }
 
-function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string | undefined {
+function parseMemberSingle(member: Member, cs: CharStream): AstNode | string | undefined {
     // doesn't have to take care about number
 
     if (member.literals) {
         return parseLiteral(member, cs)
     } else {
-        return parseComposite(member, cs)
+        return tryParse(member.types, cs)
     }
 }
 
-function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | string | undefined {
+function parseLiteral(member: LiteralMember, cs: CharStream): AstNode | string | undefined {
 
     if (member.isAnyChar) {
         return parseChar(member, cs)
@@ -112,7 +112,7 @@ function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | strin
         .filter(x => x.length > 1)
         .map(x => x.split('').map(c => ({ literals: [c] })))
 
-    const r2 = first(multiLetterLiterals, x => knownParse(x, cs))
+    const r2 = first(multiLetterLiterals, x => parseSyntax(x, cs))
 
     if (r2) {
         return r2
@@ -129,8 +129,4 @@ function parseChar(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string 
         return char
     }
 
-}
-
-function parseComposite(composite: Omit<TypeMember, 'number'>, cs: CharStream): SyntaxTree | undefined {
-    return tryParse(composite.types, cs)
 }
