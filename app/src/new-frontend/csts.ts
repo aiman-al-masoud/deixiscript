@@ -38,6 +38,8 @@ type BaseMember = {
     readonly role?: Role // no role --> exclude from ast
     readonly sep?: AstType
     readonly expand?: boolean
+
+    readonly reduce?:boolean
 }
 
 export type LiteralMember = BaseMember & {
@@ -71,13 +73,15 @@ export const astTypes = stringLiterals(
     'genitive',
     'dative',
     'instrumental',
-    'accusative',
     'verb',
     'copula',
     'do-verb',
     'complement',
     'complex-sentence-one',
     'complex-sentence-two',
+
+
+    // 'genitive-expression',
 )
 
 export type Cardinality = '*' // zero or more
@@ -102,10 +106,10 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { number: '+', literals: [' ', '\n', '\t'] }
     ],
     identifier: [
-        { number: '+', role: 'id', literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
+        { number: '+', role: 'id', reduce:true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
     ],
     'number-literal': [
-        { number: '+', role: 'digits', literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
+        { number: '+', role: 'digits', reduce:true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
     ],
     'string-literal': [
         { literals: ['"'] },
@@ -114,18 +118,18 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
     'noun-phrase': [
         { literals: ['every', 'any'], role: 'pluralizer', number: '1|0' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { literals: ['the', 'old'], role: 'anaphoraOperator', number: '1|0' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { literals: ['a', 'an', 'new'], role: 'newOperator', number: '1|0' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { types: ['limit-phrase'], expand: true, number: '1|0' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'modifiers', sep: 'space', number: 'all-but-last' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { types: ['identifier', 'string-literal', 'number-literal'], role: 'head', number: 1 },
         { literals: ['s'], role: 'pluralizer', number: '1|0' },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
         { types: ['genitive'], expand: true, number: '1|0' },
     ],
     'limit-phrase': [
@@ -133,12 +137,24 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['space'] },
         { types: ['number-literal'], role: 'limitNumber', number: '1|0' },
     ],
+
+    // 'genitive-expression' : [
+    //     {types : ['noun-phrase'], role : 'id'},//TODOOOOO!
+    //     { types: ['space'] },
+    //     {literals : ['of'] },
+    //     { types: ['space'] },
+    //     {types : ['noun-phrase'], role : 'owner'},
+    // ],
+
     'math-expression': [
+        // { types: ['genitive-expression'], role: 'leftOperand' },
         { types: ['noun-phrase'], role: 'leftOperand' },
         { types: ['space'], number: '*' },
-        { literals: ['+', '-', '*', '/'], role: 'operator', number: '1|0' },
+        { literals: ['+', '-', '*', '/'], role: 'operator', number: 1 },
         { types: ['space'], number: '*' },
+        // { types: ['genitive-expression'], role: 'rightOperand', number: '1|0' }
         { types: ['noun-phrase'], role: 'rightOperand', number: '1|0' }
+
     ],
     "expression": [
         { types: ['math-expression'], role: 'leftOperand' },
@@ -151,11 +167,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     'genitive': [
         { literals: ['of'] },
         { types: ['space'] },
-        { types: ['noun-phrase'], role: 'owner', number: 1 },
-    ],
-
-    'accusative': [
-        { types: ['noun-phrase'], role: 'object', number: 1 },
+        { types: ['expression'], role: 'owner', number: 1 },
     ],
 
     'dative': [
@@ -171,14 +183,15 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
 
     'complement': [
-        { types: ['accusative', 'dative', 'instrumental'], expand: true, number: '*' }
+        { types: ['dative', 'instrumental'], expand: true, number: 1 }
     ],
 
     'simple-sentence': [
         { types: ['expression'], role: 'subject', number: '1|0' },
         { types: ['space'] },
         { types: ['verb'], expand: true },
-        { types: ['space'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['expression'], role: 'object', number: '1|0' },
         { types: ['complement'], number: '*', expand: true },
     ],
 
