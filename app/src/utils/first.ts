@@ -7,7 +7,7 @@ export function first<T, U>(iterable: T[], predicate: (x: T) => U): U | undefine
 
     for (const e of iterable) {
         const maybeResult = predicate(e)
-
+                
         if (maybeResult !== undefined && maybeResult !== null) {
             return maybeResult
         }

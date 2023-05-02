@@ -37,18 +37,19 @@ type BaseMember = {
     readonly number?: Cardinality // no number ---> 1
     readonly role?: Role // no role --> exclude from ast
     readonly sep?: AstType
+    readonly expand?: boolean
 }
 
 export type LiteralMember = BaseMember & {
     readonly literals: string[]
     readonly types?: undefined
     readonly anyCharExceptFor?: string[]
+    readonly expand?: undefined
 }
 
 export type TypeMember = BaseMember & {
     readonly types: AstType[]
     readonly literals?: undefined
-    readonly expand?: boolean
 }
 
 export type Member = LiteralMember | TypeMember
@@ -186,7 +187,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
 
     'do-verb': [
-        { literals: ['do', 'does'] },
+        { literals: ['does', 'do'] }, // order matters! superstring first!
         { types: ['space'], number: '1|0' },
         { literals: ['not'], role: 'negation', number: '1|0' },
         { types: ['space'], number: '1|0' },
