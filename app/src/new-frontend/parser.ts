@@ -38,7 +38,7 @@ export function parseSyntax(syntax: Syntax, cs: CharStream): AstNode | undefined
             return undefined
         }
 
-        if (!node) { // and not isNecessary
+        if (!node) { // and isNecessary=false
             continue
         }
 
