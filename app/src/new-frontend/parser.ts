@@ -111,41 +111,14 @@ function parseMemberSingle(member: Member, cs: CharStream): AstNode | string | u
 }
 
 function parseLiteral(member: LiteralMember, cs: CharStream): AstNode | string | undefined {
+    const char = cs.peek()
 
-    //TODO: anylexeme!
-
-    if (member.anyCharExceptFor) {
-        return parseChar(member, cs)
+    if (member.anyCharExceptFor && !member.anyCharExceptFor.includes(char)) {
+        cs.next()
+        return char
     }
 
     return first(member.literals, x => parseLiteralSingle(x, cs))
-
-    // if (member.anyCharExceptFor) {
-    //     return parseChar(member, cs)
-    // }
-
-    // const singleLetterLiterals = member.literals.filter(x => x.length <= 1)
-    // const r1 = first(singleLetterLiterals, x => parseChar({ literals: [x], role: member.role }, cs))
-
-    // if (r1) {
-    //     return r1
-    // }
-
-
-    // const multiLetterLiterals: Syntax[] = member.literals
-    //     .filter(x => x.length > 1)
-    //     .map(x => x.split('').map(c => ({ literals: [c] })))
-
-
-    // // OK TILL HERE
-    // const r2 = first(multiLetterLiterals, x => parseSyntax(x, cs))
-
-    // // if (member.literals.includes('not')) console.log('member=', member, 'multiLetterLiterals=', multiLetterLiterals, 'r2=', r2)
-
-    // if (r2) {
-    //     return r2
-    // }
-
 }
 
 function parseLiteralSingle(literal: string, cs: CharStream) {
@@ -164,16 +137,4 @@ function parseLiteralSingle(literal: string, cs: CharStream) {
     }
 
     return literal
-}
-
-function parseChar(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string | undefined {
-
-    const char = cs.peek()
-
-    if (leaf.literals.includes(char)
-        || leaf.anyCharExceptFor && !leaf.anyCharExceptFor.includes(char)) {
-        cs.next()
-        return char
-    }
-
 }
