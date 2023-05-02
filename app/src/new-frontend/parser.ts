@@ -78,9 +78,8 @@ class KoolerParser implements Parser {
                 throw new Error('expanding member with role currently not supported!')
             }
 
-            if (member.role && member.reduce && node instanceof Array) {
-                ast[member.role] = node.map(x => x.toString()).reduce((a, b) => a + b)
-                continue
+            if (member.reduce) {
+                return node
             }
 
             if (member.role) {
@@ -133,9 +132,17 @@ class KoolerParser implements Parser {
             this.cs.backTo(memento)
         }
 
-        const result = list.length ? list : undefined
+        if (!list.length) {
+            return undefined
+        }
 
-        return result
+        if (member.reduce) {
+            return list.map(x => x.toString()).reduce((a, b) => a + b)
+        }
+
+        // const result = list.length ? list : undefined
+        // return result
+        return list
     }
 
     parseMemberSingle(member: Member): AstNode | string | undefined {

@@ -39,7 +39,7 @@ type BaseMember = {
     readonly sep?: AstType
     readonly expand?: boolean
 
-    readonly reduce?:boolean
+    readonly reduce?: boolean
 }
 
 export type LiteralMember = BaseMember & {
@@ -106,10 +106,10 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { number: '+', literals: [' ', '\n', '\t'] }
     ],
     identifier: [
-        { number: '+', role: 'id', reduce:true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
+        { number: '+', role: 'id', reduce: true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
     ],
     'number-literal': [
-        { number: '+', role: 'digits', reduce:true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
+        { number: '+', role: 'digits', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
     ],
     'string-literal': [
         { literals: ['"'] },
