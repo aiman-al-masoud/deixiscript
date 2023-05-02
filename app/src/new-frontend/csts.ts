@@ -108,7 +108,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
     'string-literal': [
         { literals: ['"'] },
-        { isAnyChar: true, literals: [], exceptForLiterals: ['"'], role: 'chars', number: '*' },
+        { isAnyChar: true, literals: [], exceptForLiterals: ['"'], role: 'chars', number: '*' }, //anyCharExceptFor
         { literals: ['"'] },
     ],
     'noun-phrase': [
