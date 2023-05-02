@@ -41,9 +41,9 @@ export function parseSyntax(syntax: Syntax, cs: CharStream): AstNode | undefined
         if (!node) { // and not isNecessary
             continue
         }
-                
+
         if (member.role && member.expand){
-            throw new Error('expading member with role currently not supported!')
+            throw new Error('expanding member with role currently not supported!')
         }
 
         if (member.role) {
