@@ -12,7 +12,7 @@ type AstNode =
     | { [x in Role]?: AstNode }
 
 
-export function tryParse(syntaxList: AstType[], cs: CharStream) {
+export function parseTry(syntaxList: AstType[], cs: CharStream) {
 
     for (const syntaxName of syntaxList) {
 
@@ -91,7 +91,7 @@ function parseMemberSingle(member: Member, cs: CharStream): AstNode | string | u
     if (member.literals) {
         return parseLiteral(member, cs)
     } else {
-        return tryParse(member.types, cs)
+        return parseTry(member.types, cs)
     }
 }
 

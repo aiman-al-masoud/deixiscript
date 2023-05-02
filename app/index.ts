@@ -1,6 +1,6 @@
 // import main from "./src/main/main";
 import { getCharStream } from "./src/new-frontend/char-stream";
-import { tryParse } from "./src/new-frontend/parser";
+import { parseTry } from "./src/new-frontend/parser";
 
 // main()
 
@@ -20,7 +20,7 @@ import { tryParse } from "./src/new-frontend/parser";
 // console.log(x)
 // EXAMPLE 3
 const cs = getCharStream('" ciao "xxx')
-const x = tryParse(['string-literal'], cs)
+const x = parseTry(['string-literal'], cs)
 console.log(x)
 
 
