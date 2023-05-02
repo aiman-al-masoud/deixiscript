@@ -133,7 +133,6 @@ function parseLiteralSingle(literal: string, cs: CharStream) {
         }
 
         cs.next()
-
     }
 
     return literal
