@@ -2,8 +2,6 @@ import { first } from "../utils/first";
 import { CharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, syntaxes, AstType } from "./csts";
 
-//TODO all-but-last
-
 type AstNode =
     string
     | string[]
@@ -60,9 +58,11 @@ function parseMemberRepeated(member: Member, cs: CharStream): AstNode | AstNode[
     // isNecessary has already been taken care of
 
     const list: AstNode[] = []
+    let memento = cs.getPos()
 
     while (!cs.isEnd()) {
 
+        memento = cs.getPos()
         const st = parseMemberSingle(member, cs)
 
         if (!st && !list.length) {
@@ -85,7 +85,10 @@ function parseMemberRepeated(member: Member, cs: CharStream): AstNode | AstNode[
 
     }
 
-    // member.number === 'all-but-last'
+    if (member.number === 'all-but-last') {
+        list.pop()
+        cs.backTo(memento)
+    }
 
     return list
 }

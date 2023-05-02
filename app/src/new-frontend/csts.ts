@@ -93,6 +93,7 @@ export const isNecessary = (c?: Cardinality) =>
 export const isRepeatable = (c?: Cardinality) =>
     c == '+'
     || c == '*'
+    || c === 'all-but-last'
 
 export const syntaxes: { [x in AstType]: Syntax } = {
 

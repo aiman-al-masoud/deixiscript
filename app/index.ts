@@ -24,7 +24,8 @@ import { parseSyntax, parseTry } from "./src/new-frontend/parser";
 // const x = parseTry(['string-literal'], cs)
 // console.log(x)
 // EXAMPLE 4
-const cs4 = getCharStream('ciao mondo ciao')
-const x4 = parseSyntax([{ types: ['identifier'], sep: 'space', number: '+', role: 'anything' as any }], cs4)
-console.log(x4)
+const cs4 = getCharStream('ciao mondo buruf')
+const x4 = parseSyntax([{ types: ['identifier'], sep: 'space', number: 'all-but-last', role: 'anything' as any }], cs4)
+const x40 = parseTry(['identifier'], cs4)
+console.log(x4, x40)
 
