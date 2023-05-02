@@ -1,6 +1,6 @@
 import { first } from "../utils/first";
 import { CharStream } from "./char-stream";
-import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./cst-attempt2";
+import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./csts";
 
 //TODO all-but-last
 //TODO sep
