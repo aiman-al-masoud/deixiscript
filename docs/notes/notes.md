@@ -103,3 +103,18 @@ maybe make "for" dative.
 # [2023-04-29.md](./2023-04-29.md)
 
 # [2023-04-30.md](./2023-04-30.md)
+
+
+
+Finish up the new parser by this week (1-6 may)
+	Finish up the new parser
+	refactor
+	rm KoolParser and EagerLexer
+	rm Lexeme
+	rm macros (temprorarily)
+
+
+Replace search algorithm (7-13).
+	rm solveMaps()
+	rm Clause & subclasses
+	add simple noun-phrase based search algo that gets Thing[]

@@ -1,8 +1,9 @@
+import { first } from "../utils/first";
 import { CharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, TypeMember, syntaxes, AstType } from "./cst-attempt2";
 
-//TODO any-symbol and exceptForLiterals
 //TODO all-but-last
+//TODO sep
 
 type SyntaxTree =
     string
@@ -20,7 +21,7 @@ export function tryParse(syntaxList: AstType[], cs: CharStream) {
         const tree = knownParse(syntax, cs)
 
         if (tree) {
-            return tree
+            return tree //{ ...tree, type: syntaxName } as SyntaxTree // remove cast // TODO: add type
         }
 
         cs.backTo(memento)
@@ -96,28 +97,25 @@ function parseMemberSingle(member: Member, cs: CharStream): SyntaxTree | string 
 
 function parseLiteral(member: LiteralMember, cs: CharStream): SyntaxTree | string | undefined {
 
-    const singleLetterLiterals =
-        member
-            .literals
-            .filter(x => x.length <= 1)
-
-    for (const x of singleLetterLiterals) {
-        const r = parseChar({ literals: [x] }, cs)
-        if (r) {
-            return r
-        }
+    if (member.isAnyChar) {
+        return parseChar(member, cs)
     }
 
-    const multiLetterLiterals: Syntax[] = member
-        .literals
+    const singleLetterLiterals = member.literals.filter(x => x.length <= 1)
+    const r1 = first(singleLetterLiterals, x => parseChar({ literals: [x] }, cs))
+
+    if (r1) {
+        return r1
+    }
+
+    const multiLetterLiterals: Syntax[] = member.literals
         .filter(x => x.length > 1)
         .map(x => x.split('').map(c => ({ literals: [c] })))
 
-    for (const x of multiLetterLiterals) {
-        const r = knownParse(x, cs)
-        if (r) {
-            return r
-        }
+    const r2 = first(multiLetterLiterals, x => knownParse(x, cs))
+
+    if (r2) {
+        return r2
     }
 
 }
@@ -126,7 +124,7 @@ function parseChar(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string 
 
     const char = cs.peek()
 
-    if (leaf.literals.includes(char)) {
+    if (leaf.literals.includes(char) || leaf.isAnyChar && !leaf.exceptForLiterals?.includes(char)) {
         cs.next()
         return char
     }

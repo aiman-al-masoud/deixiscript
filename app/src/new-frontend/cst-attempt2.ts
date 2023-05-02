@@ -40,15 +40,15 @@ type BaseMember = {
 }
 
 export type LiteralMember = BaseMember & {
-
     readonly literals: string[]
     readonly types?: undefined
+    readonly isAnyChar?: boolean
+    readonly exceptForLiterals?: string[]
 }
 
 export type TypeMember = BaseMember & {
     readonly types: AstType[]
     readonly literals?: undefined
-    readonly exceptForLiterals?: string[]
     readonly expand?: boolean
 }
 
@@ -78,7 +78,6 @@ export const astTypes = stringLiterals(
     'complement',
     'complex-sentence-one',
     'complex-sentence-two',
-    'any-symbol',
 )
 
 export type Cardinality = '*' // zero or more
@@ -109,7 +108,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
     'string-literal': [
         { literals: ['"'] },
-        { types: ['any-symbol'], exceptForLiterals: ['"'], role: 'chars' },
+        { isAnyChar: true, literals: [], exceptForLiterals: ['"'], role: 'chars', number: '*' },
         { literals: ['"'] },
     ],
     'noun-phrase': [
@@ -214,8 +213,5 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['simple-sentence'], role: 'consequence' },
         { literals: ['if', 'when'], role: 'subordinating-conjunction' },
         { types: ['simple-sentence'], role: 'condition' },
-    ],
-
-    'any-symbol': [],
-
+    ]
 }
