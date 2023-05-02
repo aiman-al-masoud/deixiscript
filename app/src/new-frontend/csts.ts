@@ -42,8 +42,7 @@ type BaseMember = {
 export type LiteralMember = BaseMember & {
     readonly literals: string[]
     readonly types?: undefined
-    readonly isAnyChar?: boolean
-    readonly exceptForLiterals?: string[]
+    readonly anyCharExceptFor?: string[]
 }
 
 export type TypeMember = BaseMember & {
@@ -108,7 +107,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
     'string-literal': [
         { literals: ['"'] },
-        { isAnyChar: true, literals: [], exceptForLiterals: ['"'], role: 'chars', number: '*' }, //anyCharExceptFor
+        { anyCharExceptFor: ['"'], literals: [], role: 'chars', number: '*' },
         { literals: ['"'] },
     ],
     'noun-phrase': [

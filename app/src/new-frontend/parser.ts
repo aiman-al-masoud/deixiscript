@@ -97,7 +97,7 @@ function parseMemberSingle(member: Member, cs: CharStream): AstNode | string | u
 
 function parseLiteral(member: LiteralMember, cs: CharStream): AstNode | string | undefined {
 
-    if (member.isAnyChar) {
+    if (member.anyCharExceptFor) {
         return parseChar(member, cs)
     }
 
@@ -124,7 +124,8 @@ function parseChar(leaf: Omit<LiteralMember, 'number'>, cs: CharStream): string 
 
     const char = cs.peek()
 
-    if (leaf.literals.includes(char) || leaf.isAnyChar && !leaf.exceptForLiterals?.includes(char)) {
+    if (leaf.literals.includes(char)
+        || leaf.anyCharExceptFor && !leaf.anyCharExceptFor.includes(char)) {
         cs.next()
         return char
     }
