@@ -15,8 +15,7 @@ const cs = getCharStream('12    mondo ')
 const x = parseTry(['number-literal'], cs)
 console.log(1, x)
 // EXAMPLE 2
-// problem with "do", because second option after "does" and NO BACKTRACKING with memento because parseLiteral invokes parseSyntax, not parseTry
-const cs2 = getCharStream('does not make ') //problem with "do" // also try without not
+const cs2 = getCharStream('do  make ')
 const x2 = parseTry(['do-verb'], cs2)
 console.log(2, x2)
 // EXAMPLE 3
