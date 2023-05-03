@@ -92,7 +92,7 @@ class KoolerParser implements Parser {
                 entries.forEach(e => roles.includes(e[0] as Role) && (ast[e[0] as Role] = e[1]))
             }
 
-            if (member.expand && (node instanceof Array)){
+            if (member.expand && (node instanceof Array)) {
                 console.log('EXPAND ARRAY!', node, 'on', ast)
             }
 
@@ -126,7 +126,7 @@ class KoolerParser implements Parser {
                 break
             }
 
-            if (node){
+            if (node) {
                 memento = mementoBuf
             }
 
@@ -149,7 +149,7 @@ class KoolerParser implements Parser {
             // } else {
             //     this.cs.backTo(memento)
             // }
-            
+
             this.cs.backTo(memento)
 
             console.log(top, 'backtrack, parseMemberRepeated pop from list of=', member.role ?? member.literals ?? member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
@@ -194,11 +194,11 @@ class KoolerParser implements Parser {
             return char
         }
 
-        const result = first(member.literals, x => this.parseLiteralSingle(x, top))
+        const result = first(member.literals, x => this.parseLiteralSingle(x, member.notEndWith))
         return result
     }
 
-    parseLiteralSingle(literal: string, top = 0) {
+    parseLiteralSingle(literal: string, notEndWith?: string) {
 
         const memento = this.cs.getPos()
 
@@ -210,6 +210,11 @@ class KoolerParser implements Parser {
             }
 
             this.cs.next()
+        }
+
+        if (notEndWith && literal.endsWith(notEndWith)) {
+            this.cs.backTo(memento)
+            return undefined
         }
 
         return literal

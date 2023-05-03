@@ -38,8 +38,8 @@ type BaseMember = {
     readonly role?: Role // no role --> exclude from ast
     readonly sep?: AstType
     readonly expand?: boolean
-
     readonly reduce?: boolean
+    readonly notEndWith?: string
 }
 
 export type LiteralMember = BaseMember & {
@@ -106,7 +106,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { number: '+', literals: [' ', '\n', '\t'] }
     ],
     identifier: [
-        { number: '+', role: 'id', reduce: true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }
+        { number: '+', role: 'id', reduce: true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], notEndWith: 's' }
     ],
     'number-literal': [
         { number: '+', role: 'digits', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
@@ -188,7 +188,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
 
     'simple-sentence': [
         { types: ['noun-phrase'], role: 'subject', number: '1|0' },
-        { types: ['space'], number : '1|0' },
+        { types: ['space'], number: '1|0' },
         { types: ['verb'], expand: true },
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object', number: '1|0' },
