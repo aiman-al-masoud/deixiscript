@@ -64,7 +64,7 @@ import { getParser } from "./src/new-frontend/parser";
 // console.log(x1)
 
 
-const x1 = getParser('buruf of house of me', syntaxes).parseTry(['noun-phrase'])
+const x1 = getParser('bad buruf of house of me', syntaxes).parseTry(['noun-phrase'])
 console.log(x1)
-const x2 = getParser('bad person', syntaxes).parseTry(['noun-phrase'])
-console.log(x2)
+// const x2 = getParser('bad person', syntaxes).parseTry(['noun-phrase'])
+// console.log(x2)

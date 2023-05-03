@@ -110,18 +110,22 @@ class KoolerParser implements Parser {
 
         const list: AstNode[] = []
         let memento = this.cs.getPos()
-        const oldMemento = this.cs.getPos()
+        // const oldMemento = this.cs.getPos()
 
         while (!this.cs.isEnd()) {
 
-            memento = this.cs.getPos()
-            const st = this.parseMemberSingle(member, top)
+            const mementoBuf = this.cs.getPos()
+            const node = this.parseMemberSingle(member, top)
 
-            if (!st) {
+            if (!node) {
                 break
             }
 
-            list.push(st)
+            if (node){
+                memento = mementoBuf
+            }
+
+            list.push(node)
 
             if (member.sep) {
                 console.log(top, 'parseMemberRepeated before skipping a separator=', 'pos=', this.cs.getPos())
@@ -135,11 +139,13 @@ class KoolerParser implements Parser {
             console.log(top, 'have to backtrack, old list len=', list.length, 'pos=', this.cs.getPos())
             list.pop()
 
-            if (!list.length) {
-                this.cs.backTo(oldMemento)
-            } else {
-                this.cs.backTo(memento)
-            }
+            // if (!list.length) {
+            //     this.cs.backTo(oldMemento)
+            // } else {
+            //     this.cs.backTo(memento)
+            // }
+            
+            this.cs.backTo(memento)
 
             console.log(top, 'backtrack, parseMemberRepeated pop from list of=', member.role ?? member.literals ?? member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
         }
