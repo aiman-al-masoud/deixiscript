@@ -65,12 +65,12 @@ class KoolerParser implements Parser {
 
             if (!node && isNecessary(member.number)) {
                 // console.log(syntaxName, 'failed because', member, 'was not found!')
-                console.log(top, 'syntaxName=', syntaxName, 'failed because required', member.role??member.literals??member.types, 'is missing')
+                console.log(top, 'syntaxName=', syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
                 return undefined
             }
 
             if (!node) { // and isNecessary=false
-                console.log(top, 'syntaxName=', syntaxName, 'unrequired', member.role??member.literals??member.types, 'not found, ignored', 'pos=', this.cs.getPos())
+                console.log(top, 'syntaxName=', syntaxName, 'unrequired', member.role ?? member.literals ?? member.types, 'not found, ignored', 'pos=', this.cs.getPos())
                 continue
             }
 
@@ -101,10 +101,11 @@ class KoolerParser implements Parser {
 
         const list: AstNode[] = []
         let memento = this.cs.getPos()
+        const oldMemento = this.cs.getPos()
 
         while (!this.cs.isEnd()) {
 
-            // memento = this.cs.getPos()
+            memento = this.cs.getPos()
             const st = this.parseMemberSingle(member, top)
 
             if (!st && !list.length) {
@@ -116,35 +117,42 @@ class KoolerParser implements Parser {
                 break
             }
 
+
             if (!isRepeatable(member.number)) {
-                console.log(top, 'parseMemberRepeated found a single=', member.role??member.literals??member.types, 'pos=', this.cs.getPos())
+                console.log(top, 'parseMemberRepeated found a single=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
                 return st
             }
 
             list.push(st)
 
-            // if (member.sep) {
-            //     console.log(top, 'parseMemberRepeated before skipping a separator=','pos=', this.cs.getPos())
-            //     this.parseMemberSingle({ types: [member.sep] }, top)
-            //     console.log(top, 'parseMemberRepeated skipped a separator=', member.role??member.literals??member.types, 'pos=', this.cs.getPos())
-            // }
+            if (member.sep) {
+                console.log(top, 'parseMemberRepeated before skipping a separator=', 'pos=', this.cs.getPos())
+                this.parseMemberSingle({ types: [member.sep] }, top)
+                console.log(top, 'parseMemberRepeated skipped a separator=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
+            }
 
         }
 
         if (member.number === 'all-but-last' /* && (list.length > 1) */) { // 
             console.log(top, 'have to backtrack, old list len=', list.length, 'pos=', this.cs.getPos())
             list.pop()
-            this.cs.backTo(memento)
-            console.log(top, 'backtrack, parseMemberRepeated pop from list of=', member.role??member.literals??member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
+
+            if (!list.length) {
+                this.cs.backTo(oldMemento)
+            } else {
+                this.cs.backTo(memento)
+            }
+
+            console.log(top, 'backtrack, parseMemberRepeated pop from list of=', member.role ?? member.literals ?? member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
         }
 
         if (!list.length) {
-            console.log(top, 'parseMemberRepeated empty list for=', member.role??member.literals??member.types, 'pos=', this.cs.getPos())
+            console.log(top, 'parseMemberRepeated empty list for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
             return undefined
         }
 
         if (member.reduce) {
-            console.log(top, 'parseMemberRepeated found ok list for=', member.role??member.literals??member.types, 'list=', list.toString() ,'pos=', this.cs.getPos())
+            console.log(top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
             return list.map(x => x.toString()).reduce((a, b) => a + b)
         }
 
@@ -161,8 +169,8 @@ class KoolerParser implements Parser {
         } else {
             const result = this.parseTry(member.types, top + 1)
 
-            if (this.keywords.includes(result as string)){
-                console.log(top, 'returning undefined because a keyword is being trated as identifier! for=', member.role??member.literals??member.types, 'pos=', this.cs.getPos())
+            if (this.keywords.includes(result as string)) {
+                console.log(top, 'returning undefined because a keyword is being trated as identifier! for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
                 return undefined
             }
 
