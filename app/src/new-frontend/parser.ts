@@ -88,7 +88,12 @@ class KoolerParser implements Parser {
 
             if (member.expand && !(node instanceof Array)) { // dictionary ast case
                 const entries = Object.entries(node)
+                // console.log('EXPAND!', entries, 'on', ast)
                 entries.forEach(e => roles.includes(e[0] as Role) && (ast[e[0] as Role] = e[1]))
+            }
+
+            if (member.expand && (node instanceof Array)){
+                console.log('EXPAND ARRAY!', node, 'on', ast)
             }
 
         }

@@ -187,11 +187,12 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     ],
 
     'simple-sentence': [
-        { types: ['expression'], role: 'subject', number: '1|0' },
-        { types: ['space'] },
+        { types: ['noun-phrase'], role: 'subject', number: '1|0' },
+        { types: ['space'], number : '1|0' },
         { types: ['verb'], expand: true },
         { types: ['space'], number: '1|0' },
-        { types: ['expression'], role: 'object', number: '1|0' },
+        { types: ['noun-phrase'], role: 'object', number: '1|0' },
+        { types: ['space'], number: '1|0' },
         { types: ['complement'], number: '*', expand: true },
     ],
 
