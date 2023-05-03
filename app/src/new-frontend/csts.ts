@@ -167,7 +167,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
     'genitive': [
         { literals: ['of'] },
         { types: ['space'] },
-        { types: ['expression'], role: 'owner', number: 1 },
+        { types: ['noun-phrase'], role: 'owner', number: 1 },
     ],
 
     'dative': [

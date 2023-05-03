@@ -49,11 +49,21 @@ import { getParser } from "./src/new-frontend/parser";
 // const x = getParser('bad blue bird', syntaxes).parse()
 // console.log(x)
 
-const x1 = getParser('every bad blue bird', syntaxes).parse()
-console.log(x1)
+// const x1 = getParser('every bad blue bird', syntaxes).parse()
+// console.log(x1)
 
 // const x2 = getParser('bad blue birds', syntaxes).parse() //PROBLEM!
 // console.log(x2)
 
 // const x3 = getParser('bad blue bird of the x ', syntaxes).parse() //PROBLEM!
 // console.log(x3)
+
+// const x1 = getParser('x of y', syntaxes).parseTry(['noun-phrase'])
+// console.log(x1)
+
+// console.log(x1)
+
+
+// const x1 = getParser('buruf of house of me', syntaxes).parseTry(['noun-phrase'])
+const x1 = getParser('bad person', syntaxes).parseTry(['noun-phrase'])
+console.log(x1)
