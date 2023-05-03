@@ -61,7 +61,7 @@ class KoolerParser implements Parser {
 
         for (const member of syntax) {
 
-            const node = this.parseMemberRepeated(member, top)
+            const node = this.parseMemberMaybeRepeated(member, top)
 
             if (!node && isNecessary(member.number)) {
                 // console.log(syntaxName, 'failed because', member, 'was not found!')
@@ -96,8 +96,17 @@ class KoolerParser implements Parser {
         return ast
     }
 
-    parseMemberRepeated(member: Member, top = 0): AstNode | AstNode[] | string | undefined {
+    parseMemberMaybeRepeated(member: Member, top = 0) {
         // isNecessary has already been taken care of
+
+        if (isRepeatable(member.number)) {
+            return this.parseMemberRepeated(member, top)
+        } else {
+            return this.parseMemberSingle(member, top)
+        }
+    }
+
+    parseMemberRepeated(member: Member, top = 0): AstNode[] | string | undefined {
 
         const list: AstNode[] = []
         let memento = this.cs.getPos()
@@ -108,19 +117,8 @@ class KoolerParser implements Parser {
             memento = this.cs.getPos()
             const st = this.parseMemberSingle(member, top)
 
-            if (!st && !list.length) {
-                // console.log(top, 'parseMemberRepeated did not find=', member.role??member.literals??member.types, 'pos=', this.cs.getPos())
-                return undefined
-            }
-
             if (!st) {
                 break
-            }
-
-
-            if (!isRepeatable(member.number)) {
-                console.log(top, 'parseMemberRepeated found a single=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
-                return st
             }
 
             list.push(st)
@@ -133,7 +131,7 @@ class KoolerParser implements Parser {
 
         }
 
-        if (member.number === 'all-but-last' /* && (list.length > 1) */) { // 
+        if (member.number === 'all-but-last') {
             console.log(top, 'have to backtrack, old list len=', list.length, 'pos=', this.cs.getPos())
             list.pop()
 
@@ -156,8 +154,6 @@ class KoolerParser implements Parser {
             return list.map(x => x.toString()).reduce((a, b) => a + b)
         }
 
-        // const result = list.length ? list : undefined
-        // return result
         return list
     }
 
