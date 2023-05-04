@@ -4,11 +4,12 @@ import { getCharStream } from "./char-stream";
 import { isNecessary, isRepeatable, LiteralMember, Member, Role, Syntax, AstType, roles } from "./csts";
 import { maxPrecedence } from "./max-precedence";
 
+
 type AstNode =
     string
     | string[]
     | AstNode[]
-    | { [x in Role]?: AstNode }
+    | { [x in Role]?: AstNode } & { type?: AstType }
 
 
 export interface Parser {
@@ -46,8 +47,12 @@ class KoolerParser implements Parser {
             const syntax = this.syntaxes[syntaxName] // state!
             const tree = this.parseSyntax(syntax, syntaxName, top)
 
+            if (tree && tree instanceof Object) {
+                return { ...tree, type: syntaxName }
+            }
+
             if (tree) {
-                return tree //{ ...tree, type: syntaxName } as SyntaxTree // remove cast // TODO: add type
+                return tree
             }
 
             this.cs.backTo(memento)
