@@ -45,14 +45,14 @@ class KoolerParser implements Parser {
 
             const memento = this.cs.getPos()
             const syntax = this.syntaxes[syntaxName]
-            const tree = this.parseSyntax(syntax, syntaxName, top)
+            const ast = this.parseSyntax(syntax, syntaxName, top)
 
-            if (tree && tree instanceof Object) {
-                return { ...tree, type: syntaxName }
+            if (ast && ast instanceof Object) {
+                return { ...ast, type: syntaxName }
             }
 
-            if (tree) {
-                return tree
+            if (ast) {
+                return ast
             }
 
             this.cs.backTo(memento)
