@@ -139,7 +139,7 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['space'], number: '*' },
         { literals: ['+', '-', '*', '/'], role: 'operator', number: 1 },
         { types: ['space'], number: '*' },
-        { types: ['noun-phrase'], role: 'rightOperand', number: '1|0' }
+        { types: ['math-expression'], role: 'rightOperand', number: '1|0' }
     ],
     "expression": [
         { types: ['math-expression'], role: 'leftOperand' },
@@ -167,11 +167,11 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['dative', 'instrumental'], expand: true, number: 1 }
     ],
     'simple-sentence': [
-        { types: ['noun-phrase'], role: 'subject', number: '1|0' },
+        { types: ['math-expression', 'noun-phrase'], role: 'subject', number: '1|0' },
         { types: ['space'], number: '1|0' },
         { types: ['verb'], expand: true },
         { types: ['space'], number: '1|0' },
-        { types: ['noun-phrase'], role: 'object', number: '1|0' },
+        { types: ['math-expression', 'noun-phrase'], role: 'object', number: '1|0' },
         { types: ['space'], number: '1|0' },
         { types: ['complement'], number: '*', expand: true },
     ],
