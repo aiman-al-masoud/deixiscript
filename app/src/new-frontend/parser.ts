@@ -22,7 +22,7 @@ export function getParser(sourceCode: string, syntaxes: { [x in AstType]: Syntax
 class KoolerParser implements Parser {
 
     readonly syntaxList = Object.keys(this.syntaxes) as AstType[]
-    readonly keywords = uniq(Object.values(this.syntaxes).flatMap(x => x.flatMap(x => x.literals ?? [])).filter(x => x.length > 1))
+    readonly keywords = uniq(Object.values(this.syntaxes).flatMap(x => x.flatMap(x => x.literals ?? [])))
 
     constructor(
         readonly sourceCode: string,
@@ -64,7 +64,6 @@ class KoolerParser implements Parser {
             const node = this.parseMemberMaybeRepeated(member, top)
 
             if (!node && isNecessary(member.number)) {
-                // console.log(syntaxName, 'failed because', member, 'was not found!')
                 console.log(top, 'syntaxName=', syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
                 return undefined
             }
@@ -88,7 +87,6 @@ class KoolerParser implements Parser {
 
             if (member.expand && !(node instanceof Array)) { // dictionary ast case
                 const entries = Object.entries(node)
-                // console.log('EXPAND!', entries, 'on', ast)
                 entries.forEach(e => roles.includes(e[0] as Role) && (ast[e[0] as Role] = e[1]))
             }
 
@@ -115,7 +113,6 @@ class KoolerParser implements Parser {
 
         const list: AstNode[] = []
         let memento = this.cs.getPos()
-        // const oldMemento = this.cs.getPos()
 
         while (!this.cs.isEnd()) {
 
@@ -143,15 +140,7 @@ class KoolerParser implements Parser {
         if (member.number === 'all-but-last') {
             console.log(top, 'have to backtrack, old list len=', list.length, 'pos=', this.cs.getPos())
             list.pop()
-
-            // if (!list.length) {
-            //     this.cs.backTo(oldMemento)
-            // } else {
-            //     this.cs.backTo(memento)
-            // }
-
             this.cs.backTo(memento)
-
             console.log(top, 'backtrack, parseMemberRepeated pop from list of=', member.role ?? member.literals ?? member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
         }
 
