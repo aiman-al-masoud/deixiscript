@@ -74,5 +74,9 @@ import { getParser } from "./src/new-frontend/parser";
 
 
 // problem with multiple modifiers!
-const x4 = getParser('the bad capras of rivanazzano of lombardia are buruf', syntaxes).parse()
+// const x4 = getParser('the bad capras of rivanazzano of lombardia are buruf', syntaxes).parse()
+// console.log(x4)
+
+
+const x4 = getParser('xa + xb', syntaxes).parse()//.parseTry(['noun-phrase'])
 console.log(x4)
