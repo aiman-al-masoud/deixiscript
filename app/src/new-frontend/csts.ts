@@ -79,9 +79,6 @@ export const astTypes = stringLiterals(
     'complement',
     'complex-sentence-one',
     'complex-sentence-two',
-
-
-    // 'genitive-expression',
 )
 
 export type Cardinality = '*' // zero or more
@@ -137,24 +134,12 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['space'] },
         { types: ['number-literal'], role: 'limitNumber', number: '1|0' },
     ],
-
-    // 'genitive-expression' : [
-    //     {types : ['noun-phrase'], role : 'id'},//TODOOOOO!
-    //     { types: ['space'] },
-    //     {literals : ['of'] },
-    //     { types: ['space'] },
-    //     {types : ['noun-phrase'], role : 'owner'},
-    // ],
-
     'math-expression': [
-        // { types: ['genitive-expression'], role: 'leftOperand' },
         { types: ['noun-phrase'], role: 'leftOperand' },
         { types: ['space'], number: '*' },
         { literals: ['+', '-', '*', '/'], role: 'operator', number: 1 },
         { types: ['space'], number: '*' },
-        // { types: ['genitive-expression'], role: 'rightOperand', number: '1|0' }
         { types: ['noun-phrase'], role: 'rightOperand', number: '1|0' }
-
     ],
     "expression": [
         { types: ['math-expression'], role: 'leftOperand' },
@@ -163,29 +148,24 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['space'] },
         { types: ['math-expression'], role: 'rightOperand', number: '1|0' }
     ],
-
     'genitive': [
         { literals: ['of'] },
         { types: ['space'] },
         { types: ['noun-phrase'], role: 'owner', number: 1 },
     ],
-
     'dative': [
         { literals: ['to'] },
         { types: ['space'] },
         { types: ['noun-phrase'], role: 'receiver', number: 1 },
     ],
-
     'instrumental': [
         { literals: ['by'] },
         { types: ['space'] },
         { types: ['noun-phrase'], role: 'instrument', number: 1 },
     ],
-
     'complement': [
         { types: ['dative', 'instrumental'], expand: true, number: 1 }
     ],
-
     'simple-sentence': [
         { types: ['noun-phrase'], role: 'subject', number: '1|0' },
         { types: ['space'], number: '1|0' },
@@ -195,11 +175,9 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['space'], number: '1|0' },
         { types: ['complement'], number: '*', expand: true },
     ],
-
     verb: [
         { types: ['copula', 'do-verb'], expand: true }
     ],
-
     'do-verb': [
         { literals: ['does', 'do'] }, // order matters! superstring first!
         { types: ['space'], number: '1|0' },
@@ -207,23 +185,19 @@ export const syntaxes: { [x in AstType]: Syntax } = {
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'verb' }
     ],
-
     copula: [
         { literals: ['is', 'be', 'are'], role: 'verb' },
         { literals: ['not'], role: 'negation', number: '1|0' },
     ],
-
     'complex-sentence': [
         { types: ['complex-sentence-one', 'complex-sentence-two'], expand: true }
     ],
-
     'complex-sentence-one': [
         { literals: ['if', 'when'], role: 'subordinating-conjunction' },
         { types: ['simple-sentence'], role: 'condition' },
         { literals: ['then', ','] },
         { types: ['simple-sentence'], role: 'consequence' },
     ],
-
     'complex-sentence-two': [
         { types: ['simple-sentence'], role: 'consequence' },
         { literals: ['if', 'when'], role: 'subordinating-conjunction' },
