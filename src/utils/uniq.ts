@@ -1,5 +1,6 @@
 /**
- * Remove duplicates from an array. Equality by JSON.stringify.
+ * Return copy of array with deduplicated elements in the same order
+ * as first occurrence in original array. Equality by JSON.stringify.
  */
 export function uniq<T>(seq: T[]): T[] {
     const seen: { [key: string]: boolean } = {}
