@@ -7,7 +7,7 @@ key-press-event
 text-content
 color
 mouse-click-event
-image-content
+image
 location
 time
 event
