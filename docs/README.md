@@ -13,6 +13,10 @@ The world model together with the ASTs is used to generate standalone javascript
 * Mind, Long Term Memory ~ AST processing, Conceptual Model
 * Short Term Memory ~ World Model
 
+# AST Patterns
+* if-statement
+* ...
+
 # Conceptual Model Entities
 * drawable
 * input-field
