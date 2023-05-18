@@ -6,7 +6,7 @@ Compile-time translation, rather than runtime interpretation. Just re-compile ev
 
 The compiler takes a bunch of sentences, it splits them by dot, and parses each one of them. You get a list of ASTs.
 
-A world model is generated and validated against the conceptual model
+A World Model is generated from the ASTs and validated against the Conceptual Model
 
 The world model together with the ASTs is used to generate standalone javascript code.
 
