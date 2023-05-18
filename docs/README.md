@@ -1,5 +1,6 @@
 # World Model Entities
 drawable
+input-field
 text-field
 button
 change-event
