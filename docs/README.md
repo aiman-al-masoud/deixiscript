@@ -1,4 +1,16 @@
-# World Model Entities
+Compile time translation, rather than runtime interpretation. Just re-compile everything all the time.
+
+* Mind: associate command templates to meaning (program code templates)
+* Long Term Memory: recognize and process world model information
+* Short Term Memory: resolve anaphora and contextual references.
+
+The compiler takes a bunch of sentences, it splits them by dot, and parses each one of them. You get a list of ASTs.
+
+A world model is generated and validated against the conceptual model
+
+The world model together with the ASTs is used to generate standalone javascript code.
+
+# Conceptual Model Entities
 drawable
 input-field
 text-field
