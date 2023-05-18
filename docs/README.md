@@ -11,3 +11,6 @@ image-content
 location
 time
 event
+width
+length
+
