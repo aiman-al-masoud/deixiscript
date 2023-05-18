@@ -15,7 +15,7 @@ The world model together with the ASTs is used to generate standalone javascript
 
 # AST Patterns
 * if-statement
-* ...
+* (non copula) verb sentence could be modelled as method invocation
 
 # Conceptual Model Entities
 * drawable
