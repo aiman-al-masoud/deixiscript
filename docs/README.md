@@ -36,3 +36,6 @@ The world model together with the ASTs is used to generate standalone javascript
 * length
 * sound
 * key
+
+# Derived Props
+* happenBefore, happenAfter for naturalistic control flow
