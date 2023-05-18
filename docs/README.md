@@ -1,6 +1,6 @@
 Compile-time translation, rather than runtime interpretation. Just re-compile everything all the time.
 
-* Mind: associate command templates to meaning (program code templates)
+* Mind: associate command templates to *meaning* (program code templates)
 * Long Term Memory: recognize and process world model information
 * Short Term Memory: resolve anaphora and contextual references.
 
