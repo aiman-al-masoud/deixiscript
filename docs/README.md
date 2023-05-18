@@ -10,6 +10,9 @@ A World Model is generated from the ASTs and validated against the Conceptual Mo
 
 The world model together with the ASTs is used to generate standalone javascript code.
 
+* Mind, Long Term Memory ~ AST processing, Conceptual Model
+* Short Term Memory ~ World Model
+
 # Conceptual Model Entities
 drawable
 input-field
