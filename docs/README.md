@@ -1,4 +1,4 @@
-Compile time translation, rather than runtime interpretation. Just re-compile everything all the time.
+Compile-time translation, rather than runtime interpretation. Just re-compile everything all the time.
 
 * Mind: associate command templates to meaning (program code templates)
 * Long Term Memory: recognize and process world model information
