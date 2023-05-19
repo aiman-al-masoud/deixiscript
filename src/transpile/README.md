@@ -23,6 +23,7 @@ Reflects the capabilities and limitations of a typical modern day high level pro
 * Creation of objects/variables
 * Definition of functions
 * Definition of classes/structs
+* Variable Reassignments
 * ...
 ## Property Assignments (has)
 * ...
