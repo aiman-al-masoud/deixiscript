@@ -61,6 +61,8 @@ const code = compile(`
 x is a red button. 
 if x is red then y is a big blue button.
 color of x is green.
+the red button is big.
+if the color of x is blue then the address of john is buruf.
 `)
 
 console.log(code)
