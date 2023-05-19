@@ -37,8 +37,9 @@ Reflects the capabilities and limitations of a typical modern day high level pro
 ## Decisions
 * if
 ## Concurrency
+* do once then stop
+* keep on doing until
 * ...
-
 
 
 # Translation from Deixiscript AST to Intermediate AST
