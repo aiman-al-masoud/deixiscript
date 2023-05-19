@@ -61,6 +61,16 @@ To simplify things, we could treat the intermediate AST as the JS AST and genera
 * ...
 ## Assignments (has)
 * ...
-## Actions
+## Actions (do-verbs)
 * ...
+## Repeated Actions
+* for loops
+* while loops
+* threads
+## Expressions
+* maths
+* ...
+
+
+
 
