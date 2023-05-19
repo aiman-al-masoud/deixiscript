@@ -6,9 +6,9 @@ Compile-time translation, rather than runtime interpretation. Just re-compile ev
 
 The compiler takes a bunch of sentences, it splits them by dot, and parses each one of them. You get a list of ASTs.
 
-A World Model is generated from the ASTs and validated against the Conceptual Model
+A World Model is generated from the ASTs and validated against the Conceptual Model.
 
-The World Model together with each AST, is used to generate standalone javascript code. One full JS statement per AST.
+The World Model together with each AST, is used to generate standalone javascript code. One full JS statement per AST (in general, but not always).
 
 * Mind, Long Term Memory ~ AST processing, Conceptual Model
 * Short Term Memory ~ World Model
