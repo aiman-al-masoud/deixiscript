@@ -77,6 +77,14 @@ The AST will represent the capabilities of a typical modern day high level progr
 * if ...
 
 
+# Translation from Deixiscript AST to Intermediate AST
+
+Will require a bit of work.
+
+# Translation from Intermediate AST to JS
+
+This is the easy part.
+
 
 
 
