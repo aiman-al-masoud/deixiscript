@@ -3,12 +3,12 @@ The input is a piece of text composed of sentences separated by dots.
 Compile-time translation, rather than runtime interpretation. Just re-compile everything all the time.
 
 # Stages
-1. Split text by dots.
-2. Parse each sentence and obtain a list of Deixiscript ASTs.
+1. Split text by dots. **(EASY)**
+2. Parse each sentence and obtain a list of Deixiscript ASTs. **(EASY)**
 3. Construct a World Model of the entities from the Deixiscript ASTs.
 4. Validate against Conceptual Model.
 5. Translate each Deixiscript AST into one or more Intermediate AST(s).
-6. Translate the Intermediate ASTs into runnable JS code.
+6. Translate the Intermediate ASTs into runnable JS code. **(EASY)**
 
 # Deixiscript AST
 

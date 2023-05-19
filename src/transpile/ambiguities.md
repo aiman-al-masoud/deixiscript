@@ -8,23 +8,23 @@ They all mostly have to do with unclear associativity.
 “software fault tolerance”, can be tolerance to software faults or fault tolerance achieved by
 software.
 
-(software fault) tolerance
-software (fault tolerance)
+* (software fault) tolerance
+* software (fault tolerance)
 
 
 ## Attachment Ambiguity
 “I go to visit a friend with a red car” means either that I go with the red car or that the friend I’m visiting has a red car.
 
-(I go to visit (a friend with a red car))
-(I go to visit (a friend) (with a red car))
+* (I go to visit (a friend with a red car))
+* (I go to visit (a friend) (with a red car))
 
 
 ## Coordinator Ambiguity
 “She likes red cars and bikes”, where it is not clear whether she likes all bikes or
 only red ones (two coordinators in a sentence)
 
-She likes (red (cars and bikes))
-She likes (red cars) and (bikes)
+* She likes (red (cars and bikes))
+* She likes (red cars) and (bikes)
 
 
 # Anaphoric Ambiguity
