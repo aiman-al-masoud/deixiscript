@@ -50,6 +50,8 @@ Derived Properties may also be part of the Conceptual Model.
 
 The deixiscript AST can be transformed into an intermediate AST (perhaps with the help of the Conceptual and World Models) which in turn can be translated into a JS AST which in turn can be translated into JS code.
 
+"we navigate all the data definitions present in the source code and, for each of them, we create a global variable in the intermediate AST"
+
 To simplify things, we could treat the intermediate AST as the JS AST and generalize later if needed.
 
 ## Declarations
@@ -61,6 +63,4 @@ To simplify things, we could treat the intermediate AST as the JS AST and genera
 * ...
 ## Actions
 * ...
-
-"we navigate all the data definitions present in the source code and, for each of them, we create a global variable in the intermediate AST"
 
