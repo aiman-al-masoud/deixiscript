@@ -3,6 +3,10 @@ import { getParser } from "./parser.ts"
 
 export function toJs(ast: any, context: any, sideEfct = false): string {
 
+    if (typeof ast === 'string') {
+        return ast
+    }
+
     switch (ast.type) {
         case 'noun-phrase':
             if (sideEfct) {
@@ -62,7 +66,7 @@ x is a red button.
 if x is red then y is a big blue button.
 color of x is green.
 the red button is big.
-if the color of x is blue then the address of john is buruf.
+if the color of x is blue then the john's address is buruf.
 `)
 
 console.log(code)
