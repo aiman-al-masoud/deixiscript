@@ -44,17 +44,19 @@ class ExpBuilder<T extends Ast> {
 
     }
 
-    has(term: string): ExpBuilder<HasFormula> {
+    has(term: string | ExpBuilder<Atom>): ExpBuilder<HasFormula> {
 
         if (!isAtom(this.exp)) {
             throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of HasSentence`)
         }
 
+        const atom = typeof term === 'string' ? makeAtom(term) : term.$
+
         return new ExpBuilder({
             type: 'has-formula',
             t1: this.exp,
-            t2: makeAtom(term),
-            as: makeAtom(term),
+            t2: atom,
+            as: atom,
             after: { type: 'list-literal', list: [] },
         })
 
