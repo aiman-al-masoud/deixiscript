@@ -81,7 +81,7 @@ The AST will represent the capabilities of a typical modern day high level progr
 
 Will require a bit of work.
 
-The same type of Deixiscript AST can map to different types of Intermediate AST. Based on:
+The same type of Deixiscript AST can map to different types of Intermediate ASTs. Based on:
 
 * context (side effect vs non-side effect)
 * context (anaphora, cataphora, deixis)
