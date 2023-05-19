@@ -89,7 +89,7 @@ The same type of Deixiscript AST can map to different types of Intermediate ASTs
 
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST nodes, due to:
 
-* limited expressivity of JS, eg: lack of universal quantification
+* limited expressivity of JS, eg: lack of universal quantification. (although JS has querySelector for DOM)
 
 
 # Translation from Intermediate AST to JS
