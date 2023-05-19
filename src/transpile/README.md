@@ -81,10 +81,15 @@ The AST will represent the capabilities of a typical modern day high level progr
 
 Will require a bit of work.
 
+The same type of Deixiscript AST can map to different types of Intermediate AST. Based on:
+
+* context (side effect vs non-side effect)
+* context (anaphora, cataphora, deixis)
+
+
+
 # Translation from Intermediate AST to JS
 
-This is the easy part.
-
-
+This is the easy part. Still some JS specific things to work out, for example DOM classes in JS cannot be instantiated using the constructor.
 
 
