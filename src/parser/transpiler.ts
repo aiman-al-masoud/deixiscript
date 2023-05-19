@@ -66,7 +66,7 @@ x is a red button.
 if x is red then y is a big blue button.
 color of x is green.
 the red button is big.
-if the color of x is blue then the john's address is buruf.
+if the color of x is blue then john's address is buruf.
 `)
 
 console.log(code)
