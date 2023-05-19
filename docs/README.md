@@ -8,10 +8,12 @@ The compiler takes a bunch of sentences, it splits them by dot, and parses each 
 
 A World Model is generated from the ASTs and validated against the Conceptual Model
 
-The world model together with the ASTs is used to generate standalone javascript code.
+The World Model together with the ASTs is used to generate standalone javascript code.
 
 * Mind, Long Term Memory ~ AST processing, Conceptual Model
 * Short Term Memory ~ World Model
+
+Derived Properties may also be part of the Conceptual Model.
 
 # AST Patterns
 * if-statement
