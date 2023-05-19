@@ -78,7 +78,7 @@ Anaphora are resolved during this stage, requiring also knowledge from the Conce
 
 # Validate Against Conceptual Model
 
-Check that the relationships between the entities in the World Model don't conflict with the constraints from the Conceptual Model.
+Check that the relationships between the entities in the World Model don't conflict with the constraints imposed by the Conceptual Model.
 
 # Generate updated Deixiscript ASTs
 
