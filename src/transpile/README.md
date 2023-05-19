@@ -80,6 +80,10 @@ Anaphora are resolved during this stage, requiring also knowledge from the Conce
 
 Check that the relationships between the entities in the World Model don't conflict with the constraints from the Conceptual Model.
 
+# Generate updated Deixiscript ASTs
+
+Replace anaphoric references with explicit references. Re-sort the instructions in the right order of execution.
+
 -----------------------
 -----------------------
 -----------------------
