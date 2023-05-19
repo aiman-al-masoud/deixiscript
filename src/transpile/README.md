@@ -28,14 +28,14 @@ Reflects the capabilities and limitations of a typical modern day high level pro
 ## Function/Method Calls (do-verbs)
 * ...
 ## Loops
-* for loops
-* while loops
+* for
+* while
 ## Expressions
 * arithmetic
 * comparisons
 * ...
 ## Decisions
-* if ...
+* if
 ## Concurrency
 * ...
 
