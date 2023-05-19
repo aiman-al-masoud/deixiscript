@@ -21,6 +21,8 @@ Derived Properties may also be part of the Conceptual Model.
 * 
 
 # Conceptual Model Entities
+* concept
+* individual
 * drawable
 * input-field
 * text-field
