@@ -7,6 +7,7 @@ Compile-time translation, rather than runtime interpretation. Just re-compile ev
 2. Parse each sentence and obtain a list of Deixiscript ASTs. **(EASY)**
 3. Construct a World Model of the entities from the Deixiscript ASTs.
 4. Validate against Conceptual Model.
+4. (??) Generate new Deixiscript ASTs (??)
 5. Translate each Deixiscript AST into one or more Intermediate AST(s).
 6. Translate the Intermediate ASTs into runnable JS code. **(EASY)**
 
@@ -74,6 +75,10 @@ Go through each Deixiscript AST, add entities and relationships to World Model.
 Example: "Print the second element of the third row of the matrix", should produce a world model that has: a matrix, a third row and a second element, with the relevant relations between those 3 entities.
 
 Anaphora are resolved during this stage, requiring also knowledge from the Conceptual Model, for example when entities are referred to anaphorically by superclass type.
+
+# Validate Against Conceptual Model
+
+Check that the relationships between the entities in the World Model don't conflict with the constraints from the Conceptual Model.
 
 -----------------------
 -----------------------
