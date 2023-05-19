@@ -1,3 +1,5 @@
+> From: Language and Communication Problems in Formalization: A Natural Language Approach (Alessandro Fantechi et al)
+
 # Syntactic
 
 They all mostly have to do with unclear associativity.
