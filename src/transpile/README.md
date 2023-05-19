@@ -23,20 +23,22 @@ Reflects the capabilities and limitations of a typical modern day high level pro
 * Definition of functions
 * Definition of classes/types
 * ...
-## Assignments (has)
+## Property Assignments (has)
 * ...
 ## Function/Method Calls (do-verbs)
 * ...
-## Repeated Actions
+## Loops
 * for loops
 * while loops
-* threads
 ## Expressions
 * arithmetic
 * comparisons
 * ...
 ## Decisions
 * if ...
+## Concurrency
+* ...
+
 
 
 # Translation from Deixiscript AST to Intermediate AST
