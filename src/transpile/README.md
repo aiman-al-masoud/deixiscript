@@ -68,7 +68,8 @@ To simplify things, we could treat the intermediate AST as the JS AST and genera
 * while loops
 * threads
 ## Expressions
-* maths
+* arithmetic
+* comparisons
 * ...
 ## Decisions
 * if ...
