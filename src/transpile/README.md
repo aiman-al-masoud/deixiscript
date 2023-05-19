@@ -87,6 +87,9 @@ The same type of Deixiscript AST can map to different types of Intermediate ASTs
 * context (anaphora, cataphora, deixis)
 * ambiguity of the verb "to be" (variable declaration vs property assignment)
 
+Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST nodes, due to:
+
+* universal quantification ("every button is red")
 
 
 # Translation from Intermediate AST to JS
