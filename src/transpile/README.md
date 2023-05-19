@@ -48,11 +48,10 @@ The same type of Deixiscript AST can map to different types of Intermediate ASTs
 * context (side effect vs non-side effect)
 * context (anaphora, cataphora, deixis)
 * ambiguity of the verb "to be" (variable declaration vs property assignment)
-* ambiguity of articles (refering to single thing or class of things)
+* ambiguity of referring to individual thing or to concept.
 * ambiguity of articles (refering to new or old entity)
 * ambiguity of the natlang parse tree itself (multiple possible parse trees)
 * side-effectish sentence with a disjunction (what action should be executed?)
-* ambiguity of referring to individual thing or to concept.
 
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST nodes, due to:
 
