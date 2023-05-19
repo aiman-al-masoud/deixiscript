@@ -16,7 +16,7 @@ The World Model together with each AST, is used to generate standalone javascrip
 Derived Properties may also be part of the Conceptual Model.
 
 # AST Patterns
-* if-statement
+* if-sentence --> if-statement
 * (non copula) verb sentence could be modelled as method invocation (open to specification by further instructions)
 * 
 
