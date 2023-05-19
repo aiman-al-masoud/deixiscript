@@ -70,6 +70,9 @@ To simplify things, we could treat the intermediate AST as the JS AST and genera
 ## Expressions
 * maths
 * ...
+## Decisions
+* if ...
+
 
 
 
