@@ -54,7 +54,7 @@ The deixiscript AST can be transformed into an intermediate AST (perhaps with th
 
 To simplify things, we could treat the intermediate AST as the JS AST and generalize later if needed.
 
-## Declarations
+## Declarations/Definitions
 * Creation of objects/variables
 * Creation of functions
 * Creation of classes/types
