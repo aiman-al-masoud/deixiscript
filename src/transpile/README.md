@@ -85,6 +85,7 @@ The same type of Deixiscript AST can map to different types of Intermediate AST.
 
 * context (side effect vs non-side effect)
 * context (anaphora, cataphora, deixis)
+* ambiguity of the verb "to be" (variable declaration vs property assignment)
 
 
 
