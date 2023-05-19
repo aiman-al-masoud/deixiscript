@@ -57,7 +57,7 @@ To simplify things, we could treat the intermediate AST as the JS AST and genera
 ## Declarations
 * Creation of objects/variables
 * Creation of functions
-* Creation of classes
+* Creation of classes/types
 * ...
 ## Assignments (has)
 * ...
