@@ -52,7 +52,7 @@ The same type of Deixiscript AST can map to different types of Intermediate ASTs
 * ambiguity of universal quantifier, referring to concept or to all individuals.
 * ambiguity of articles (refering to new or old entity)
 * ambiguity of the natlang parse tree itself (multiple possible parse trees)
-* side-effectish sentence with a disjunction (what action should be executed?)
+* side-effectish sentence with a disjunction (what ORred action should be executed?)
 
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST nodes, due to:
 
