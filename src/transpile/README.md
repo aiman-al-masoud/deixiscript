@@ -67,6 +67,14 @@ Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST n
 This is the easy part. Still some JS specific things to work out, for example DOM classes in JS cannot be instantiated using the constructor.
 
 
+# World Model Construction
+
+Go through each Deixiscript AST, add entities and relationships to World Model.
+
+Example: "Print the second element of the third row of the matrix", should produce a world model that has: a matrix, a third row and a second element, with the relevant relations between those 3 entities.
+
+Anaphora are resolved during this stage, requiring also knowledge from the Conceptual Model, for example when entities are referred to anaphorically by superclass type.
+
 -----------------------
 -----------------------
 -----------------------
