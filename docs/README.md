@@ -1,7 +1,7 @@
 Compile-time translation, rather than runtime interpretation. Just re-compile everything all the time.
 
 * Mind: associate AST templates to *meaning* (program code templates)
-* Long Term Memory: recognize and process world model information
+* Long Term Memory: recognize and process World Model information
 * Short Term Memory: resolve anaphora and contextual references.
 
 The compiler takes a bunch of sentences, it splits them by dot, and parses each one of them. You get a list of ASTs.
