@@ -7,7 +7,7 @@ Compile-time translation, rather than runtime interpretation. Just re-compile ev
 2. Parse each sentence and obtain a list of Deixiscript ASTs. **(EASY)**
 3. Construct a World Model of the entities from the Deixiscript ASTs.
 4. Validate against Conceptual Model.
-4. (??) Generate new Deixiscript ASTs (??)
+4. (??) Generate updated Deixiscript ASTs (??)
 5. Translate each Deixiscript AST into one or more Intermediate AST(s).
 6. Translate the Intermediate ASTs into runnable JS code. **(EASY)**
 
