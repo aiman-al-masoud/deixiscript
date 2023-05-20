@@ -89,3 +89,33 @@ export type IfSentence = {
     condition: Sentence
     consequence: Sentence
 }
+
+
+function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: string]: string[] } = {}) {
+
+    syntaxes[syntaxName].forEach(m => {
+
+        if (m.role && m.types) {
+
+            if (ast[m.role]) {
+                ast[m.role].push(...m.types)
+            } else {
+                ast[m.role] = m.types
+            }
+
+        }
+
+        if (m.expand) {
+            m.types?.forEach(x => generateAstType(x, syntaxes, ast))
+            // m.types
+            // generateAstType()
+        }
+
+    })
+
+    return ast
+}
+
+
+console.log(generateAstType('noun-phrase', syntaxes))
+// console.log(generateAstType('copula-sentence', syntaxes))
