@@ -76,6 +76,7 @@ Reflects the capabilities and limitations of a typical modern day high level pro
 ## Expressions
 * arithmetic
 * comparisons
+* call to class constructor 
 * ...
 ## Decisions
 * if
