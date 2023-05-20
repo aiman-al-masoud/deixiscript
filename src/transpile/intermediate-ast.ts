@@ -1,7 +1,9 @@
+type Expression = IArithmeticExp | IComparisonExp | IConsCallExp
+
 type IVarDeclaration = {
     type: 'variable-declaration'
     name: string
-    // rval:    
+    rval: Expression
 }
 
 type IFuncDefinition = {
@@ -19,25 +21,25 @@ type ITypeDefinition = {
 type IVarReassignment = {
     type: 'variable-reassignment'
     name: string
-    // rval:    
+    rval: Expression
 }
 
 type IPropAssignment = {
     type: 'property-assignment'
     name: string
     variable: string
-    // rval:    
+    rval: Expression
 }
 
 type IFuncCall = {
     type: 'function-call'
     name: string
-    // arguments:
+    arguments: Expression[]
 }
 
 type IWhileLoop = {
     type: 'while-loop'
-    // condition:
+    endCondition: Expression
     // block:
 }
 
@@ -51,14 +53,16 @@ type IComparisonExp = {
 
 }
 
-type IConsCall = {
+type IConsCallExp = {
     type: 'constructor-call'
 
 }
 
 type IIfElse = {
     type: 'if-else'
-
+    condition: Expression
+    // then:
+    // otherwise:
 }
 
 type ISingleTask = {
