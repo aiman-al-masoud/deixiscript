@@ -2,16 +2,18 @@ import { SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
 
-export const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'space', 'identifier', 'number-literal', 'genitive', 'if-sentence', 'sentence', 'saxon')
-export type AstType = ElementType<typeof astTypes>
+export const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'if-sentence')
+const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
+export const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation')
 
+export type AstType = ElementType<typeof astTypes>
+export type StType = AstType | ElementType<typeof cstTypes>
+export type Role = ElementType<typeof roles>
 
 export const syntaxes: SyntaxMap<
-    'id' | 'digits' | 'subject' | 'object' | 'head' | 'owner' | 'modifiers' | 'condition' | 'consequence' | 'negation',
-    AstType
->
-    = {
-
+    Role,
+    StType
+> = {
     space: [
         { number: '+', literals: [' ', '\n', '\t'] }
     ],
@@ -26,18 +28,18 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'modifiers', number: 'all-but-last', sep: 'space' },
         { types: ['space'], number: '1|0' },
-        { types: ['saxon'], number: '1|0', expand: true },
+        { types: ['saxon-genitive'], number: '1|0', expand: true },
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'head' },
         { types: ['space'], number: '1|0' },
-        { types: ['genitive'], number: '1|0', expand: true },
+        { types: ['of-genitive'], number: '1|0', expand: true },
     ],
-    'genitive': [
+    'of-genitive': [
         { literals: ['of'] },
         { types: ['space'] },
         { types: ['noun-phrase'], role: 'owner' },
     ],
-    'saxon': [
+    'saxon-genitive': [
         { types: ['identifier'], role: 'owner' },
         { literals: ["'s"] },
     ],
