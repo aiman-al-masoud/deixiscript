@@ -9,7 +9,7 @@ type Expression = IArithmeticExp
 
 type Statement = IVarDeclaration
     | IFuncDefinition
-    | ReturnStmnt
+    | IReturnStmnt
     | IVarReassignment
     | IPropAssignment
     | IWhileLoop
@@ -17,7 +17,7 @@ type Statement = IVarDeclaration
     | ITypeDefinition
     | ISingleTask
     | IRepeatedTask
-    | Block
+    | IBlock
 
 type IVarDeclaration = {
     type: 'variable-declaration'
@@ -29,7 +29,7 @@ type IFuncDefinition = {
     type: 'function-definition'
     name: string
     parameters: string[]
-    block: Block
+    block: IBlock
 }
 
 type ITypeDefinition = {
@@ -62,7 +62,7 @@ type IFuncCall = {
 type IWhileLoop = {
     type: 'while-loop'
     stopCondition: Expression
-    block: Block
+    block: IBlock
 }
 
 type IArithmeticExp = {
@@ -98,27 +98,27 @@ type IStringExp = {
 type IIfElse = {
     type: 'if-else'
     condition: Expression
-    then: Block
-    otherwise: Block
+    then: IBlock
+    otherwise: IBlock
 }
 
 type ISingleTask = {
     type: 'single-task'
-    block: Block
+    block: IBlock
 }
 
 type IRepeatedTask = {
     type: 'repeated-task'
     stopCondition: Expression
-    block: Block
+    block: IBlock
 }
 
-type Block = {
+type IBlock = {
     type: 'block'
     statements: Statement[]
 }
 
-type ReturnStmnt = {
+type IReturnStmnt = {
     type: 'return-statement'
     expression: Expression
 }
