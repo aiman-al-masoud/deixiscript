@@ -3,7 +3,7 @@ import { syntaxes } from "./grammar.ts"
 
 type AstType = {
     name: string
-    fields: Field[]
+    fields: { [role: string]: Field }
 }
 
 type Field = {
@@ -21,10 +21,12 @@ function typeToTs(type: AstType): string {
 
     return `
     type ${safeName(type.name)} = {
-        ${type.fields.map(x => fieldToTs(x)).reduce((a, b) => a + '\n\t' + b)}
+        ${Object.values(type.fields).map(x => fieldToTs(x)).reduce((a, b) => a + '\n\t' + b)}
     }
     `
+
 }
+
 
 function fieldToTs(field: Field): string {
 
@@ -55,18 +57,35 @@ function fieldToTs(field: Field): string {
 function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
 
     const syntax = syntaxes[syntaxName]
-    const result: AstType = { name: syntaxName, fields: [] }
+    const result: AstType = { name: syntaxName, fields: {} }
 
     for (const member of syntax) {
 
         if (member.role) {
             const field = generateField(member, syntaxes)
-            result.fields.push(field)
+            // result.fields.push(field)
+            result.fields[field.name] = field
         }
 
         if (member.expand && member.types) {
-            const expandedFields = member.types.flatMap(x => generateType(x, syntaxes).fields).map(f => ({ ...f, optional: !isNecessary(member.number) }))
-            result.fields.push(...expandedFields)
+
+            const fields = member.types.flatMap(x => Object.values(generateType(x, syntaxes).fields))
+            const fields2 = fields.map(f => ({ ...f, optional: !isNecessary(member.number) }))
+
+            fields2.forEach(f => {
+                const old = result.fields[f.name]
+
+                if (!old) {
+                    result.fields[f.name] = f
+                    return
+                }
+
+                result.fields[f.name] = { ...f, types: f.types.concat(old.types) }
+            })
+
+            // const expandedFields = member.types.flatMap(x => generateType(x, syntaxes).fields).map(f => ({ ...f, optional: !isNecessary(member.number) }))
+            // result.fields.push(...expandedFields)
+
         }
 
     }
@@ -99,6 +118,7 @@ function isLiteral(syntax: Syntax) {
     return syntax.length === 1 && syntax[0].reduce
 }
 
+console.log(typeToTs(generateType('noun-phrase', syntaxes)))
 
 
 // export function generateAstType(
@@ -160,4 +180,4 @@ function isLiteral(syntax: Syntax) {
 // }
 
 
-console.log(generateType('noun-phrase', syntaxes))
+// console.log(generateType('noun-phrase', syntaxes))
