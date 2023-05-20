@@ -1,4 +1,18 @@
-type Expression = IArithmeticExp | IComparisonExp | IConsCallExp
+
+
+type Expression = IArithmeticExp | IComparisonExp | IConsCallExp | IFuncCall
+
+type Statement = IVarDeclaration
+    | IFuncDefinition
+    | ReturnStmnt
+    | IVarReassignment
+    | IPropAssignment
+    | IWhileLoop
+    | IIfElse
+    | ITypeDefinition
+    | ISingleTask
+    | IRepeatedTask
+    | Block
 
 type IVarDeclaration = {
     type: 'variable-declaration'
@@ -41,7 +55,7 @@ type IFuncCall = {
 
 type IWhileLoop = {
     type: 'while-loop'
-    endCondition: Expression
+    stopCondition: Expression
     block: Block
 }
 
@@ -74,21 +88,23 @@ type IIfElse = {
 
 type ISingleTask = {
     type: 'single-task'
+    block: Block
 }
 
 type IRepeatedTask = {
     type: 'repeated-task'
+    stopCondition: Expression
+    block: Block
 }
 
 type Block = {
     type: 'block'
-    expressions: (Expression | ReturnStmnt)[]
+    statements: Statement[]
 }
 
 type ReturnStmnt = {
     type: 'return-statement'
     expression: Expression
 }
-
 
 
