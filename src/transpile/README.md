@@ -77,6 +77,7 @@ Reflects the capabilities and limitations of a typical modern day imperative/OOP
 * arithmetic
 * comparisons
 * call to class constructor 
+* literals
 * ...
 ## Decisions
 * if

@@ -1,6 +1,11 @@
 
 
-type Expression = IArithmeticExp | IComparisonExp | IConsCallExp | IFuncCall
+type Expression = IArithmeticExp
+    | IComparisonExp
+    | IConsCallExp
+    | IFuncCall
+    | INumberExp
+    | IStringExp
 
 type Statement = IVarDeclaration
     | IFuncDefinition
@@ -78,6 +83,16 @@ type IConsCallExp = {
     type: 'constructor-call'
     name: string
     arguments: Expression[]
+}
+
+type INumberExp = {
+    type: 'number-expression'
+    value: number
+}
+
+type IStringExp = {
+    type: 'number-expression'
+    value: string
 }
 
 type IIfElse = {
