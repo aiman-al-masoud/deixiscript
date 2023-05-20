@@ -1,7 +1,7 @@
 import { SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
-import { generateAstType, toTsTypeFull } from './generate-types.ts'
+// import { generateAstType, toTsTypeFull } from './generate-types.ts'
 
 const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'if-sentence')
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
@@ -92,7 +92,7 @@ export const syntaxes: SyntaxMap<
 // }
 
 
-astTypes.forEach(t => {
-    console.log('---', t, '---')
-    console.log(toTsTypeFull(generateAstType(t, syntaxes)))
-})
+// astTypes.forEach(t => {
+//     console.log('---', t, '---')
+//     console.log(toTsTypeFull(generateAstType(t, syntaxes)))
+// })
