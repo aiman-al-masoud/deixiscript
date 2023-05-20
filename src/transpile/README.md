@@ -88,6 +88,7 @@ Reflects the capabilities and limitations of a typical modern day high level pro
 * ...
 ## Statements
 * return
+* (all of the others)...
 
 # Translation from Intermediate AST to JS
 
