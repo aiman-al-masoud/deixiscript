@@ -23,6 +23,7 @@ type IVarDeclaration = {
 type IFuncDefinition = {
     type: 'function-definition'
     name: string
+    parameters: string[]
     block: Block
 }
 
