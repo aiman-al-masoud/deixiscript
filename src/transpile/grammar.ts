@@ -66,3 +66,26 @@ export const syntaxes: SyntaxMap<
     ]
 }
 
+
+export type AstNode = NounPhrase | Sentence
+export type Sentence = CopulaSentence | IfSentence
+
+export type NounPhrase = {
+    type: 'noun-phrase'
+    modifiers: string[]
+    head: string
+    owner?: NounPhrase | string
+}
+
+export type CopulaSentence = {
+    type: 'copula-sentence'
+    subject: NounPhrase
+    negation?: string
+    object: NounPhrase
+}
+
+export type IfSentence = {
+    type: 'if-sentence'
+    condition: Sentence
+    consequence: Sentence
+}
