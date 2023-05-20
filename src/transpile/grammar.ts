@@ -97,11 +97,11 @@ function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: 
 
         if (m.role && m.types) {
 
-            if (ast[m.role]) {
-                ast[m.role].push(...m.types)
-            } else {
-                ast[m.role] = m.types
+            if (!ast[m.role]){
+                ast[m.role] = []
             }
+
+            ast[m.role].push(...m.types)
 
         }
 
