@@ -1,4 +1,5 @@
-import { isRepeatable, SyntaxMap } from "../parser/types.ts"
+import { isNecessary, isRepeatable, Member, Syntax, SyntaxMap } from "../parser/types.ts"
+import { syntaxes } from "./grammar.ts"
 
 type AstType = {
     name: string
@@ -41,15 +42,62 @@ function fieldToTs(field: Field): string {
     return `${name}: ${types}`
 }
 
-console.log(typeToTs({
-    name: 'noun-phrase',
-    fields: [
-        { name: 'head', types: ['string'], optional: false, multiple: false },
-        { name: 'modifiers', types: ['string'], optional: false, multiple: true },
-        { name: 'owner', types: ['string', 'noun-phrase'], optional: true, multiple: false },
-    ]
-}))
+// console.log(typeToTs({
+//     name: 'noun-phrase',
+//     fields: [
+//         { name: 'head', types: ['string'], optional: false, multiple: false },
+//         { name: 'modifiers', types: ['string'], optional: false, multiple: true },
+//         { name: 'owner', types: ['string', 'noun-phrase'], optional: true, multiple: false },
+//     ]
+// }))
 
+
+function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
+
+    const syntax = syntaxes[syntaxName]
+    const result: AstType = { name: syntaxName, fields: [] }
+
+    for (const member of syntax) {
+
+        if (member.role) {
+            const field = generateField(member, syntaxes)
+            result.fields.push(field)
+        }
+
+        if (member.expand && member.types) {
+            const expandedFields = member.types.flatMap(x => generateType(x, syntaxes).fields).map(f => ({ ...f, optional: !isNecessary(member.number) }))
+            result.fields.push(...expandedFields)
+        }
+
+    }
+
+    return result
+}
+
+function generateField(member: Member, syntaxes: SyntaxMap): Field {
+
+    if (member.literals) {
+        return {
+            name: member.role!,
+            types: ['string'],
+            optional: !isNecessary(member.number),
+            multiple: isRepeatable(member.number),
+        }
+    }
+
+    return {
+        name: member.role!,
+        types: member.types.map(t => isLiteral(syntaxes[t]) ? 'string' : t),
+        optional: !isNecessary(member.number),
+        multiple: isRepeatable(member.number),
+    }
+
+}
+
+
+function isLiteral(syntax: Syntax) {
+    return syntax.length === 1 && syntax[0].reduce
+}
 
 
 
@@ -112,3 +160,4 @@ console.log(typeToTs({
 // }
 
 
+console.log(generateType('noun-phrase', syntaxes))
