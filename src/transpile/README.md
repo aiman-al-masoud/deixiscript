@@ -54,7 +54,7 @@ The same type of Deixiscript AST can map to different types of Intermediate ASTs
 
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST nodes, due to:
 
-* limited expressivity of JS, eg: lack of universal quantification. (although JS has querySelector for DOM)
+* limited expressivity of JS, eg: lack of universal quantification. (although JS has querySelector for DOM) BTW, if entities are created dynamically at runtime, you can't just spawn multiple ASTs to edit them all.
 
 # Intermediate AST
 
