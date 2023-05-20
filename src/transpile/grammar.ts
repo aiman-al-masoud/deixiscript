@@ -1,4 +1,4 @@
-import { SyntaxMap } from '../parser/types.ts'
+import { isRepeatable, SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
 
@@ -91,24 +91,27 @@ export type IfSentence = {
 }
 
 
-function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: string]: string[] } = {}) {
+type TypeDesc = { /* optional:boolean, */ many: boolean, types: string[] }
+
+function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: string]: TypeDesc } = {}) {
 
     syntaxes[syntaxName].forEach(m => {
 
         if (m.role && m.types) {
 
-            if (!ast[m.role]){
-                ast[m.role] = []
+            if (!ast[m.role]) {
+                ast[m.role] = { many: isRepeatable(m.number), types: [] }
             }
 
-            ast[m.role].push(...m.types)
+            m.types.forEach(t => {
+                const isString = syntaxes[t].length === 1 && syntaxes[t][0].reduce
+                ast[m.role!].types.push(isString ? 'string' : t)
+            })
 
         }
 
         if (m.expand && m.types) {
             m.types.forEach(x => generateAstType(x, syntaxes, ast))
-            // m.types
-            // generateAstType()
         }
 
     })
@@ -117,5 +120,38 @@ function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: 
 }
 
 
-console.log(generateAstType('noun-phrase', syntaxes))
+// console.log(generateAstType('noun-phrase', syntaxes))
 // console.log(generateAstType('copula-sentence', syntaxes))
+// console.log(generateAstType('if-sentence', syntaxes))
+
+function toTsType(td: TypeDesc) {
+
+    // console.log(td)
+
+    const taggedUnion = td.types.map(x => x.replace('-', '_')).reduce((a, b) => a + ' | ' + b)
+
+    if (td.many && td.types.length > 1) {
+        return `(${taggedUnion})[]`
+    }
+
+    if (td.many && td.types.length === 1) {
+        return `${taggedUnion}[]`
+    }
+
+
+    return taggedUnion
+
+}
+
+function toTsTypeFull(t: { [role: string]: TypeDesc }) {
+
+    const x = Object.entries(t).map(e => `${e[0]} : ${toTsType(e[1])};`).reduce((a, b) => a + '\n' + b, '')
+    return `{
+        ${x}
+    }`
+}
+
+astTypes.forEach(t => {
+    console.log('---', t, '---')
+    console.log(toTsTypeFull(generateAstType(t, syntaxes)))
+})
