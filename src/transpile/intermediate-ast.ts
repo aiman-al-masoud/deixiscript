@@ -9,13 +9,15 @@ type IVarDeclaration = {
 type IFuncDefinition = {
     type: 'function-definition'
     name: string
-    // block:
+    block: Block
 }
 
 type ITypeDefinition = {
     type: 'type-definition'
     name: string
-    // ...
+    fields: IVarDeclaration[]
+    constructor: IFuncDefinition
+    methods: IFuncDefinition[]
 }
 
 type IVarReassignment = {
@@ -40,29 +42,34 @@ type IFuncCall = {
 type IWhileLoop = {
     type: 'while-loop'
     endCondition: Expression
-    // block:
+    block: Block
 }
 
 type IArithmeticExp = {
     type: 'arithmetic-expression'
-
+    op: '+' | '-' | '*' | '/'
+    left: Expression
+    right: Expression
 }
 
 type IComparisonExp = {
     type: 'comparison-expression'
-
+    comparator: '==' | '>' | '<' | '>=' | '<='
+    left: Expression
+    right: Expression
 }
 
 type IConsCallExp = {
     type: 'constructor-call'
-
+    name: string
+    arguments: Expression[]
 }
 
 type IIfElse = {
     type: 'if-else'
     condition: Expression
-    // then:
-    // otherwise:
+    then: Block
+    otherwise: Block
 }
 
 type ISingleTask = {
@@ -73,10 +80,15 @@ type IRepeatedTask = {
     type: 'repeated-task'
 }
 
+type Block = {
+    type: 'block'
+    expressions: (Expression | ReturnStmnt)[]
+}
 
-
-
-
+type ReturnStmnt = {
+    type: 'return-statement'
+    expression: Expression
+}
 
 
 
