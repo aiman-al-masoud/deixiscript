@@ -58,7 +58,7 @@ Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST n
 
 # Intermediate AST
 
-Reflects the capabilities and limitations of a typical modern day high level programming language.
+Reflects the capabilities and limitations of a typical modern day imperative/OOP high level programming language.
 
 ## Declarations/Definitions
 * Creation of objects/variables
