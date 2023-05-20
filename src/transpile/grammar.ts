@@ -105,8 +105,8 @@ function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: 
 
         }
 
-        if (m.expand) {
-            m.types?.forEach(x => generateAstType(x, syntaxes, ast))
+        if (m.expand && m.types) {
+            m.types.forEach(x => generateAstType(x, syntaxes, ast))
             // m.types
             // generateAstType()
         }
