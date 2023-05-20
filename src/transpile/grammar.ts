@@ -1,14 +1,15 @@
-import { isRepeatable, SyntaxMap } from '../parser/types.ts'
+import { SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
+import { generateAstType, toTsTypeFull } from './generate-types.ts'
 
-export const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'if-sentence')
+const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'if-sentence')
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
-export const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation')
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation')
 
-export type AstType = ElementType<typeof astTypes>
-export type StType = AstType | ElementType<typeof cstTypes>
-export type Role = ElementType<typeof roles>
+type AstType = ElementType<typeof astTypes>
+type StType = AstType | ElementType<typeof cstTypes>
+type Role = ElementType<typeof roles>
 
 export const syntaxes: SyntaxMap<
     Role,
@@ -67,89 +68,29 @@ export const syntaxes: SyntaxMap<
 }
 
 
-export type AstNode = NounPhrase | Sentence
-export type Sentence = CopulaSentence | IfSentence
+// export type AstNode = NounPhrase | Sentence
+// export type Sentence = CopulaSentence | IfSentence
 
-export type NounPhrase = {
-    type: 'noun-phrase'
-    modifiers: string[]
-    head: string
-    owner?: NounPhrase | string
-}
+// export type NounPhrase = {
+//     type: 'noun-phrase'
+//     modifiers: string[]
+//     head: string
+//     owner?: NounPhrase | string
+// }
 
-export type CopulaSentence = {
-    type: 'copula-sentence'
-    subject: NounPhrase
-    negation?: string
-    object: NounPhrase
-}
+// export type CopulaSentence = {
+//     type: 'copula-sentence'
+//     subject: NounPhrase
+//     negation?: string
+//     object: NounPhrase
+// }
 
-export type IfSentence = {
-    type: 'if-sentence'
-    condition: Sentence
-    consequence: Sentence
-}
+// export type IfSentence = {
+//     type: 'if-sentence'
+//     condition: Sentence
+//     consequence: Sentence
+// }
 
-
-type TypeDesc = { /* optional:boolean, */ many: boolean, types: string[] }
-
-function generateAstType(syntaxName: string, syntaxes: SyntaxMap, ast: { [role: string]: TypeDesc } = {}) {
-
-    syntaxes[syntaxName].forEach(m => {
-
-        if (m.role && m.types) {
-
-            if (!ast[m.role]) {
-                ast[m.role] = { many: isRepeatable(m.number), types: [] }
-            }
-
-            m.types.forEach(t => {
-                const isString = syntaxes[t].length === 1 && syntaxes[t][0].reduce
-                ast[m.role!].types.push(isString ? 'string' : t)
-            })
-
-        }
-
-        if (m.expand && m.types) {
-            m.types.forEach(x => generateAstType(x, syntaxes, ast))
-        }
-
-    })
-
-    return ast
-}
-
-
-// console.log(generateAstType('noun-phrase', syntaxes))
-// console.log(generateAstType('copula-sentence', syntaxes))
-// console.log(generateAstType('if-sentence', syntaxes))
-
-function toTsType(td: TypeDesc) {
-
-    // console.log(td)
-
-    const taggedUnion = td.types.map(x => x.replace('-', '_')).reduce((a, b) => a + ' | ' + b)
-
-    if (td.many && td.types.length > 1) {
-        return `(${taggedUnion})[]`
-    }
-
-    if (td.many && td.types.length === 1) {
-        return `${taggedUnion}[]`
-    }
-
-
-    return taggedUnion
-
-}
-
-function toTsTypeFull(t: { [role: string]: TypeDesc }) {
-
-    const x = Object.entries(t).map(e => `${e[0]} : ${toTsType(e[1])};`).reduce((a, b) => a + '\n' + b, '')
-    return `{
-        ${x}
-    }`
-}
 
 astTypes.forEach(t => {
     console.log('---', t, '---')
