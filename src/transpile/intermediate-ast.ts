@@ -6,6 +6,7 @@ type Expression = IArithmeticExp
     | IFuncCall
     | INumberExp
     | IStringExp
+    | IPropReadExp
 
 type Statement = IVarDeclaration
     | IFuncDefinition
@@ -70,6 +71,12 @@ type IArithmeticExp = {
     op: '+' | '-' | '*' | '/'
     left: Expression
     right: Expression
+}
+
+type IPropReadExp = {
+    type: 'property-read',
+    name:string,
+    variable:string,
 }
 
 type IComparisonExp = {
