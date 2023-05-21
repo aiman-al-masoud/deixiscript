@@ -68,5 +68,7 @@ export const syntaxes: SyntaxMap<
 }
 
 
-console.log(generateTypes([...astTypes, 'sentence'], syntaxes))
 
+if (import.meta.main) {
+    console.log(generateTypes([...astTypes, 'sentence'], syntaxes))
+}
