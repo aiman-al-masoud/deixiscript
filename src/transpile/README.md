@@ -11,7 +11,7 @@ everything all the time.
 4. Construct a World Model of the entities, including instructions.
 5. Validate against Conceptual Model.
 6. Sort instructions by order of execution.
-7. (??) Generate updated Deixiscript ASTs (??)
+7. Generate updated Deixiscript ASTs
 8. Translate each Deixiscript AST into one or more Intermediate AST(s).
 9. Translate the Intermediate ASTs into runnable JS code. **(EASY)**
 
