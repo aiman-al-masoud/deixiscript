@@ -1,7 +1,7 @@
 import { SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
-// import { generateAstType, toTsTypeFull } from './generate-types.ts'
+import { generateTypes } from './generate-types.ts'
 
 const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'if-sentence')
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
@@ -68,31 +68,5 @@ export const syntaxes: SyntaxMap<
 }
 
 
-// export type AstNode = NounPhrase | Sentence
-// export type Sentence = CopulaSentence | IfSentence
+console.log(generateTypes(astTypes, syntaxes))
 
-// export type NounPhrase = {
-//     type: 'noun-phrase'
-//     modifiers: string[]
-//     head: string
-//     owner?: NounPhrase | string
-// }
-
-// export type CopulaSentence = {
-//     type: 'copula-sentence'
-//     subject: NounPhrase
-//     negation?: string
-//     object: NounPhrase
-// }
-
-// export type IfSentence = {
-//     type: 'if-sentence'
-//     condition: Sentence
-//     consequence: Sentence
-// }
-
-
-// astTypes.forEach(t => {
-//     console.log('---', t, '---')
-//     console.log(toTsTypeFull(generateAstType(t, syntaxes)))
-// })

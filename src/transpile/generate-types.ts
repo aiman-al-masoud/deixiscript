@@ -17,6 +17,7 @@ function typeToTs(type: AstType): string {
 
     return `
     type ${safeName(type.name)} = {
+        type : '${type.name}'
         ${Object.values(type.fields).map(x => fieldToTs(x)).reduce((a, b) => a + '\n\t' + b)}
     }
     `
@@ -99,4 +100,13 @@ function isLiteral(syntax: Syntax) {
     return syntax.length === 1 && syntax[0].reduce
 }
 
-console.log(typeToTs(generateType('noun-phrase', syntaxes)))
+export function generateTypes(syntaxNames: string[], syntaxes: SyntaxMap) {
+    let result = ''
+
+    syntaxNames.forEach(t => {
+        result += typeToTs(generateType(t, syntaxes)) + '\n\n'
+    })
+
+    return result
+}
+
