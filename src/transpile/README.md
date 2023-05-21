@@ -60,36 +60,36 @@ Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST n
 
 Reflects the capabilities and limitations of a typical modern day imperative/OOP high level programming language.
 
-## Declarations/Definitions
-* Creation of objects/variables
-* Definition of functions
-* Definition of classes/structs
-* Variable Reassignments
-* ...
-## Property Assignments (has)
-* ...
-## Function/Method Calls (do-verbs)
-* ...
-## Loops
-* for
-* while
-## Expressions
-* arithmetic
-* comparisons
-* call to class constructor 
-* literals
-* ...
-## Decisions
-* if
-## Concurrency
-* do once then stop
-* keep on doing until
-* ...
-## Blocks
-* ...
-## Statements
-* return
-* (all of the other non-expressions)...
+1. Declarations/Definitions
+    1. Creation of objects/variables
+    1. Definition of functions
+    1. Definition of classes/structs
+    1. Variable Reassignments
+    1. ...
+1. Property Assignments (has)
+    1. ...
+1. Function/Method Calls (do-verbs)
+    1. ...
+1. Loops
+    1. for
+    1. while
+1. Expressions
+    1. arithmetic
+    1. comparisons
+    1. call to class constructor 
+    1. literals
+    1. ...
+1. Decisions
+    1. if
+1. Concurrency
+    1. do once then stop
+    1. keep on doing until
+    1. ...
+1. Blocks
+    1. ...
+1. Statements
+    1. return
+    1. (all of the other non-expressions)...
 
 # Translation from Intermediate AST to JS
 
