@@ -58,8 +58,6 @@ Re-sort the instructions in the right order of execution, using a topological so
 
 # Translation from Deixiscript AST to Intermediate AST
 
-Will require a bit of work.
-
 The same type of Deixiscript AST can map to different types of Intermediate
 ASTs. Based on:
 
