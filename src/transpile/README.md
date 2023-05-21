@@ -36,6 +36,9 @@ superclass type.
 
 In case of multiple matches in the queue, issue a warning.
 
+In case of a universally quantified reference?
+In case of a MAYBE universally quantified reference?
+
 # World Model Construction
 
 Go through each updated Deixiscript AST, add entities and relationships to World Model.
