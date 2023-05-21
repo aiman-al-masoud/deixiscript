@@ -7,7 +7,7 @@ everything all the time.
 
 1. Split text by dots. **(EASY)**
 2. Parse each sentence and obtain a list of Deixiscript ASTs. **(EASY)**
-3. Resolve deixes, generate unique ids for entities. Possible user involvement.
+3. Resolve implicit references, generate unique ids for entities. Possible user involvement.
 4. Construct a World Model of the entities, including instructions.
 5. Validate against Conceptual Model.
 6. Sort instructions by order of execution.
