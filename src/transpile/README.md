@@ -27,6 +27,8 @@ Example: "Print the second element of the third row of the matrix", should produ
 
 Anaphora are resolved during this stage, requiring also knowledge from the Conceptual Model, for example when entities are referred to anaphorically by superclass type.
 
+Instructions are also treated as entities, and they are related to program objects by usage/definition relations.
+
 # Validate Against Conceptual Model
 
 Check that the relationships between the entities in the World Model don't conflict with the constraints imposed by the Conceptual Model.
