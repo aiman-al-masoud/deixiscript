@@ -62,7 +62,7 @@ The same type of Deixiscript AST can map to different types of Intermediate
 ASTs. Based on:
 
 - context (side effect vs non-side effect)
-- context (anaphora, cataphora, deixis)
+- context (anaphora, cataphora, deixis) SOLVED IN PREVIOUS STEP
 - ambiguity of the verb "to be" (variable declaration vs property assignment)
 - ambiguity of referring to individual thing or to concept.
 - ambiguity of universal quantifier, referring to concept or to all individuals.
