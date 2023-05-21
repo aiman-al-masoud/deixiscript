@@ -34,6 +34,8 @@ Go through the list of Deixiscript ASTs in order. Whenever you find a noun phras
 Resolving implicit references may require knowledge from the Conceptual Model, for example for example when entities are referred to anaphorically by
 superclass type.
 
+In case of multiple matches in the queue, you may ask the user for delucidation.
+
 # World Model Construction
 
 Go through each updated Deixiscript AST, add entities and relationships to World Model.
