@@ -11,7 +11,7 @@ Compile-time translation, rather than runtime interpretation. Just re-compile ev
 5. Translate each Deixiscript AST into one or more Intermediate AST(s).
 6. Translate the Intermediate ASTs into runnable JS code. **(EASY)**
 
-# Parsing a Deixiscript sentence
+# Parsing a Deixiscript Sentence
 
 Is done through the configurable parser, which directly produces an AST from a source code string. It can be configured to parse different "dialects" of Deixiscript. The parser has a typescript type codegen facility, to automatically generate AST types for static type checking, or maybe validate new CST definitions against required AST structures.
 
