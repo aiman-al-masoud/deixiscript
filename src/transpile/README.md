@@ -88,8 +88,9 @@ high level programming language.
    1. Definition of classes/structs
    1. Variable Reassignments
    1. ...
-1. Property Assignments (has)
-   1. ...
+1. Property Access (has)
+   1. property read
+   1. property write
 1. Function/Method Calls (do-verbs)
    1. ...
 1. Loops
