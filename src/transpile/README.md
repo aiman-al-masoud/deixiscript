@@ -73,11 +73,11 @@ ASTs. Based on:
 - [and more](./ambiguities.md)
 
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST
-nodes, due to:
+nodes, due to limited expressivity of JS:
 
-- limited expressivity of JS, eg: lack of universal quantification. (although JS
-  has querySelector for DOM) BTW, if entities are created dynamically at
-  runtime, you can't just spawn multiple ASTs to edit them all.
+- Lack of universal quantification. (although JS has querySelector for DOM). BTW, if entities are created dynamically at runtime, you can't just spawn multiple ASTs to edit them all.
+
+- Initialization with head and modifiers treated as: call to constructor and then property assigments as two or more separate commands.
 
 # Intermediate AST
 
