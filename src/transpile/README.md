@@ -73,7 +73,7 @@ ASTs. Based on:
 - [and more](./ambiguities.md)
 
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST
-nodes, due to limited expressivity of JS:
+nodes, due to the limited expressivity of JS:
 
 - Lack of universal quantification. (although JS has querySelector for DOM). BTW, if entities are created dynamically at runtime, you can't just spawn multiple ASTs to edit them all.
 
