@@ -27,6 +27,10 @@ definitions against required AST structures.
 
 An abstract representation of a natural language sentence.
 
+# Resolve Implicit References
+
+Go through the list of Deixiscript ASTs in order. Whenever you find a noun phrase, try searching for a corresponding entity in the queue, if you don't find it then create a new entity and place it in the queue. 
+
 # World Model Construction
 
 Go through each Deixiscript AST, add entities and relationships to World Model.
