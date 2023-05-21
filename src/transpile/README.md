@@ -13,7 +13,7 @@ Compile-time translation, rather than runtime interpretation. Just re-compile ev
 
 # Parsing a Deixiscript sentence
 
-Is done through the configurable parser, which directly produces an AST from a source code string. It can be configured to parse different "dialects" of Deixiscript. The parser has a typescript type codegen facility, to automatically generate AST types for static type checking.
+Is done through the configurable parser, which directly produces an AST from a source code string. It can be configured to parse different "dialects" of Deixiscript. The parser has a typescript type codegen facility, to automatically generate AST types for static type checking, or maybe validate new CST definitions against required AST structures.
 
 # Deixiscript AST
 
