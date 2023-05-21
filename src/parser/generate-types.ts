@@ -11,7 +11,7 @@ export function generateTypes(syntaxNames: string[], syntaxes: SyntaxMap) {
         result += typeToTs(generateType(t, syntaxes)) + '\n\n'
     })
 
-    result += `type ast_node = ${syntaxNames.map(x => safeName(x)).reduce((a, b) => a + '|' + b)}`
+    result += `export type ast_node = ${syntaxNames.map(x => safeName(x)).reduce((a, b) => a + '|' + b)}`
 
     return result
 }
