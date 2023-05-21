@@ -1,5 +1,4 @@
 import { isNecessary, isRepeatable, Member, Syntax, SyntaxMap } from "../parser/types.ts"
-import { syntaxes } from "./grammar.ts"
 
 type AstType = {
     name: string
