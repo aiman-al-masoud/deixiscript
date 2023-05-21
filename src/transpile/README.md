@@ -23,6 +23,8 @@ Deixiscript. The parser has a typescript type codegen facility, to automatically
 generate AST types for static type checking, or maybe validate new CST
 definitions against required AST structures.
 
+There is still no mechanism to solve the problem of syntactic ambiguities in natural language, ie: multiple parse trees.
+
 # Deixiscript AST
 
 An abstract representation of a natural language sentence.
