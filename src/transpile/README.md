@@ -31,17 +31,16 @@ An abstract representation of a natural language sentence.
 
 Go through the list of Deixiscript ASTs in order. Whenever you find a noun phrase, try searching for a corresponding entity in the "queue", if you don't find it then create a new entity and place it in the "queue". Produce updated Deixiscript ASTs with explicit references.
 
+Resolving implicit references may require knowledge from the Conceptual Model, for example for example when entities are referred to anaphorically by
+superclass type.
+
 # World Model Construction
 
-Go through each Deixiscript AST, add entities and relationships to World Model.
+Go through each updated Deixiscript AST, add entities and relationships to World Model.
 
 Example: "Print the second element of the third row of the matrix", should
 produce a world model that has: a matrix, a third row and a second element, with
 the relevant relations between those 3 entities.
-
-Anaphora are resolved during this stage, requiring also knowledge from the
-Conceptual Model, for example when entities are referred to anaphorically by
-superclass type.
 
 Instructions are also treated as entities, and they are related to program
 objects by usage/definition relations.
@@ -51,10 +50,9 @@ objects by usage/definition relations.
 Check that the relationships between the entities in the World Model don't
 conflict with the constraints imposed by the Conceptual Model.
 
-# Generate updated Deixiscript ASTs
+# Sort list of Deixiscript ASTs by order of execution
 
-Replace anaphoric references with explicit references. Re-sort the instructions
-in the right order of execution.
+Re-sort the instructions in the right order of execution, using a topological sort algorithm.
 
 # Translation from Deixiscript AST to Intermediate AST
 
