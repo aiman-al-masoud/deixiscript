@@ -33,4 +33,4 @@
 
 type sentence = copula_sentence|if_sentence
 
-type ast_node = copula_sentence|noun_phrase|number_literal|if_sentence|sentence
+export type ast_node = copula_sentence|noun_phrase|number_literal|if_sentence|sentence
