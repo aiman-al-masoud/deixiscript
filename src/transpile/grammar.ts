@@ -68,5 +68,5 @@ export const syntaxes: SyntaxMap<
 }
 
 
-console.log(generateTypes(astTypes, syntaxes))
+console.log(generateTypes([...astTypes, 'sentence'], syntaxes))
 

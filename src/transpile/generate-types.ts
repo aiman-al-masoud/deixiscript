@@ -3,6 +3,7 @@ import { isNecessary, isRepeatable, Member, Syntax, SyntaxMap } from "../parser/
 type AstType = {
     name: string
     fields: { [role: string]: Field }
+    taggedUnion?:string[]
 }
 
 type Field = {
@@ -13,6 +14,10 @@ type Field = {
 }
 
 function typeToTs(type: AstType): string {
+
+    if (type.taggedUnion){
+        return `type ${type.name} = ${type.taggedUnion.reduce((a,b)=>a+'|'+b)}`
+    }
 
     return `
     type ${safeName(type.name)} = {
@@ -48,6 +53,15 @@ function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
         if (member.role) {
             const field = generateField(member, syntaxes)
             result.fields[field.name] = field
+        }
+
+        if (member.expand === 'keep-specific-type'){
+           
+            return {
+                name:syntaxName,
+                taggedUnion : member.types?.map(x=>safeName(x)),
+                fields:{},
+            }
         }
 
         if (member.expand && member.types) {
