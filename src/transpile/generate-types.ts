@@ -13,10 +13,6 @@ type Field = {
     types: string[]
 }
 
-function safeName(name: string) {
-    return name.replace('-', '_')
-}
-
 function typeToTs(type: AstType): string {
 
     return `
@@ -24,9 +20,7 @@ function typeToTs(type: AstType): string {
         ${Object.values(type.fields).map(x => fieldToTs(x)).reduce((a, b) => a + '\n\t' + b)}
     }
     `
-
 }
-
 
 function fieldToTs(field: Field): string {
 
@@ -44,16 +38,6 @@ function fieldToTs(field: Field): string {
     return `${name}: ${types}`
 }
 
-// console.log(typeToTs({
-//     name: 'noun-phrase',
-//     fields: [
-//         { name: 'head', types: ['string'], optional: false, multiple: false },
-//         { name: 'modifiers', types: ['string'], optional: false, multiple: true },
-//         { name: 'owner', types: ['string', 'noun-phrase'], optional: true, multiple: false },
-//     ]
-// }))
-
-
 function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
 
     const syntax = syntaxes[syntaxName]
@@ -63,7 +47,6 @@ function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
 
         if (member.role) {
             const field = generateField(member, syntaxes)
-            // result.fields.push(field)
             result.fields[field.name] = field
         }
 
@@ -82,10 +65,6 @@ function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
 
                 result.fields[f.name] = { ...f, types: f.types.concat(old.types) }
             })
-
-            // const expandedFields = member.types.flatMap(x => generateType(x, syntaxes).fields).map(f => ({ ...f, optional: !isNecessary(member.number) }))
-            // result.fields.push(...expandedFields)
-
         }
 
     }
@@ -95,89 +74,29 @@ function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
 
 function generateField(member: Member, syntaxes: SyntaxMap): Field {
 
-    if (member.literals) {
-        return {
-            name: member.role!,
-            types: ['string'],
-            optional: !isNecessary(member.number),
-            multiple: isRepeatable(member.number),
-        }
-    }
-
-    return {
+    const partRes = {
         name: member.role!,
-        types: member.types.map(t => isLiteral(syntaxes[t]) ? 'string' : t),
         optional: !isNecessary(member.number),
         multiple: isRepeatable(member.number),
     }
 
+    if (member.literals) {
+        return { ...partRes, types: ['string'] }
+    }
+
+    return {
+        ...partRes,
+        types: member.types.map(t => isLiteral(syntaxes[t]) ? 'string' : t),
+    }
+
 }
 
+function safeName(name: string) {
+    return name.replace('-', '_')
+}
 
 function isLiteral(syntax: Syntax) {
     return syntax.length === 1 && syntax[0].reduce
 }
 
 console.log(typeToTs(generateType('noun-phrase', syntaxes)))
-
-
-// export function generateAstType(
-//     syntaxName: string,
-//     syntaxes: SyntaxMap,
-//     ast: Type = {},
-// ) {
-
-//     syntaxes[syntaxName].forEach(m => {
-
-//         if (m.role && m.types) {
-
-//             if (!ast[m.role]) {
-//                 ast[m.role] = { multiple: isRepeatable(m.number), types: [] }
-//             }
-
-//             m.types.forEach(t => {
-//                 const isString = syntaxes[t].length === 1 && syntaxes[t][0].reduce
-//                 ast[m.role!].types.push(isString ? 'string' : t)
-//             })
-
-//         }
-
-//         if (m.expand && m.types) {
-//             m.types.forEach(x => generateAstType(x, syntaxes, ast))
-//         }
-
-//     })
-
-//     return ast
-// }
-
-
-// export function toTsType(td: Field) {
-
-//     // console.log(td)
-
-//     const taggedUnion = td.types.map(x => x.replace('-', '_')).reduce((a, b) => a + ' | ' + b)
-
-//     if (td.multiple && td.types.length > 1) {
-//         return `(${taggedUnion})[]`
-//     }
-
-//     if (td.multiple && td.types.length === 1) {
-//         return `${taggedUnion}[]`
-//     }
-
-
-//     return taggedUnion
-
-// }
-
-// export function toTsTypeFull(t: { [role: string]: Field }) {
-
-//     const x = Object.entries(t).map(e => `${e[0]} : ${toTsType(e[1])};`).reduce((a, b) => a + '\n' + b, '')
-//     return `{
-//         ${x}
-//     }`
-// }
-
-
-// console.log(generateType('noun-phrase', syntaxes))
