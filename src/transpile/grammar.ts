@@ -68,7 +68,10 @@ export const syntaxes: SyntaxMap<
 }
 
 
-
+/**
+ * REMEMBER to re-run this file whenever you edit the syntaxes, so as 
+ * to update the typescript AST types.
+ */
 if (import.meta.main) {
     console.log(generateTypes([...astTypes, 'sentence'], syntaxes))
 }
