@@ -1,9 +1,25 @@
 import { isNecessary, isRepeatable, Member, Syntax, SyntaxMap } from "../parser/types.ts"
 
+
+/**
+ * Automatic codegen of the AST types, based on the definition of the CSTs. 
+ */
+export function generateTypes(syntaxNames: string[], syntaxes: SyntaxMap) {
+    let result = ''
+
+    syntaxNames.forEach(t => {
+        result += typeToTs(generateType(t, syntaxes)) + '\n\n'
+    })
+
+    result += `type ast_node = ${syntaxNames.map(x => safeName(x)).reduce((a, b) => a + '|' + b)}`
+
+    return result
+}
+
 type AstType = {
     name: string
     fields: { [role: string]: Field }
-    taggedUnion?:string[]
+    taggedUnion?: string[]
 }
 
 type Field = {
@@ -15,8 +31,8 @@ type Field = {
 
 function typeToTs(type: AstType): string {
 
-    if (type.taggedUnion){
-        return `type ${type.name} = ${type.taggedUnion.reduce((a,b)=>a+'|'+b)}`
+    if (type.taggedUnion) {
+        return `type ${type.name} = ${type.taggedUnion.reduce((a, b) => a + '|' + b)}`
     }
 
     return `
@@ -55,12 +71,12 @@ function generateType(syntaxName: string, syntaxes: SyntaxMap): AstType {
             result.fields[field.name] = field
         }
 
-        if (member.expand === 'keep-specific-type'){
-           
+        if (member.expand === 'keep-specific-type') {
+
             return {
-                name:syntaxName,
-                taggedUnion : member.types?.map(x=>safeName(x)),
-                fields:{},
+                name: syntaxName,
+                taggedUnion: member.types?.map(x => safeName(x)),
+                fields: {},
             }
         }
 
@@ -113,16 +129,4 @@ function isLiteral(syntax: Syntax) {
     return syntax.length === 1 && syntax[0].reduce
 }
 
-export function generateTypes(syntaxNames: string[], syntaxes: SyntaxMap) {
-    let result = ''
-
-    syntaxNames.forEach(t => {
-        result += typeToTs(generateType(t, syntaxes)) + '\n\n'
-    })
-
-    
-    result+=`type ast_node = ${syntaxNames.map(x=>safeName(x)).reduce((a,b)=>a+'|'+b)}`
-    
-    return result
-}
 
