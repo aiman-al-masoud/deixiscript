@@ -9,7 +9,7 @@ export function $(x: string | string[]): ExpBuilder<Atom> {
     return new ExpBuilder(makeAtom(x))
 }
 
-class ExpBuilder<T extends Ast> {
+export class ExpBuilder<T extends Ast> {
 
     constructor(readonly exp: T) {
 
