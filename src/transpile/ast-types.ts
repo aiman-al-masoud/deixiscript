@@ -8,7 +8,7 @@
     
 
 
-    type noun_phrase = {
+    export type noun_phrase = {
         type : 'noun-phrase'
         modifiers?: string[]
 	owner?: noun_phrase | string

@@ -7,7 +7,8 @@ everything all the time.
 
 1. Split text by dots. **(EASY)**
 2. Parse each sentence and obtain a list of Deixiscript ASTs. **(EASY)**
-3. Resolve implicit references, generate unique ids for entities. Possible user involvement.
+3. Resolve implicit references, generate unique ids for entities. Possible user
+   involvement.
 4. Construct a World Model of the entities, including instructions.
 5. Validate against Conceptual Model.
 6. Sort instructions by order of execution.
@@ -23,7 +24,8 @@ Deixiscript. The parser has a typescript type codegen facility, to automatically
 generate AST types for static type checking, or maybe validate new CST
 definitions against required AST structures.
 
-There is still no mechanism to solve the problem of syntactic ambiguities in natural language, ie: multiple parse trees.
+There is still no mechanism to solve the problem of syntactic ambiguities in
+natural language, ie: multiple parse trees.
 
 # Deixiscript AST
 
@@ -31,19 +33,25 @@ An abstract representation of a natural language sentence.
 
 # Resolve Implicit References
 
-Go through the list of Deixiscript ASTs in order. Whenever you find a noun phrase, try searching for a corresponding entity in the "queue", if you don't find it then create a new entity and place it in the "queue". Produce updated Deixiscript ASTs with explicit references.
+Go through the list of Deixiscript ASTs in order. Whenever you find a noun
+phrase, try searching for a corresponding entity in the "queue", if you don't
+find it then create a new entity and place it in the "queue". Produce updated
+Deixiscript ASTs with explicit references.
 
-Resolving implicit references may require knowledge from the Conceptual Model, for example for example when entities are referred to anaphorically by
-superclass type.
+Requires knowledge from the Conceptual Model: 
+- when entities are referred to anaphorically by superclass type. 
+- For derived properties, "the red button" == "the button with red as color".
 
 In case of multiple matches in the queue, issue a warning.
 
 In case of a universally quantified reference?
+
 In case of a MAYBE universally quantified reference?
 
 # World Model Construction
 
-Go through each updated Deixiscript AST, add entities and relationships to World Model.
+Go through each updated Deixiscript AST, add entities and relationships to World
+Model.
 
 Example: "Print the second element of the third row of the matrix", should
 produce a world model that has: a matrix, a third row and a second element, with
@@ -59,7 +67,8 @@ conflict with the constraints imposed by the Conceptual Model.
 
 # Sort list of Deixiscript ASTs by order of execution
 
-Re-sort the instructions in the right order of execution, using a topological sort algorithm.
+Re-sort the instructions in the right order of execution, using a topological
+sort algorithm.
 
 # Translation from Deixiscript AST to Intermediate AST
 
@@ -80,9 +89,12 @@ ASTs. Based on:
 Furthermore, a single Deixiscript AST node may spawn multiple Intermediate AST
 nodes, due to the limited expressivity of JS:
 
-- Lack of universal quantification. (although JS has querySelector for DOM). BTW, if entities are created dynamically at runtime, you can't just spawn multiple ASTs to edit them all.
+- Lack of universal quantification. (although JS has querySelector for DOM).
+  BTW, if entities are created dynamically at runtime, you can't just spawn
+  multiple ASTs to edit them all.
 
-- Initialization with head and modifiers treated as: call to constructor and then property assigments as two or more separate commands.
+- Initialization with head and modifiers treated as: call to constructor and
+  then property assigments as two or more separate commands.
 
 # Intermediate AST
 
