@@ -92,3 +92,17 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test6',
+    fn: () => {
+        const r = $('the cat does eat the rat').parse()
+        console.log(r)
+        assertObjectMatch(r as object, {
+            subject: { head: "cat", type: "noun-phrase" },
+            verb: "eat",
+            object: { head: "rat", type: "noun-phrase" },
+            type: "verb-sentence"
+        })
+    }
+})
+

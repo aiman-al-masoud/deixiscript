@@ -3,9 +3,9 @@ import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
-const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'if-sentence')
+const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence',)
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
-const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation')
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb')
 
 type AstType = ElementType<typeof astTypes>
 type StType = AstType | ElementType<typeof cstTypes>
@@ -53,6 +53,17 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object' },
     ],
+    'verb-sentence': [
+        { types: ['noun-phrase'], role: 'subject' },
+        { types: ['space'], number: '1|0' },
+        { literals: ['does', 'do'] },
+        { types: ['space'], number: '1|0' },
+        { literals: ['not'], role: 'negation', number: '1|0' },
+        { types: ['space'], number: '1|0' },
+        { types: ['identifier'], role: 'verb' },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'object' },
+    ],
     'if-sentence': [
         { literals: ['if'] },
         { types: ['space'], number: '1|0' },
@@ -63,7 +74,7 @@ export const syntaxes: SyntaxMap<
         { types: ['sentence'], role: 'consequence' },
     ],
     'sentence': [
-        { types: ['copula-sentence', 'if-sentence'], expand: 'keep-specific-type' }
+        { types: ['copula-sentence', 'if-sentence', 'verb-sentence'], expand: 'keep-specific-type' }
     ]
 }
 
