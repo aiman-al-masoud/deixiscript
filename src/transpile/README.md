@@ -40,6 +40,9 @@ An abstract representation of a natural language sentence.
 1. When Sentence
 1. And Sentence
 1. Or Sentence
+1. Past Participle
+1. Comparative
+1. Superlative
 
 
 # Resolve Implicit References
