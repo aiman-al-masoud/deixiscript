@@ -62,7 +62,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'verb' },
         { types: ['space'], number: '1|0' },
-        { types: ['noun-phrase'], role: 'object' },
+        { types: ['noun-phrase'], role: 'object', number:'1|0' },
     ],
     'if-sentence': [
         { literals: ['if'] },
