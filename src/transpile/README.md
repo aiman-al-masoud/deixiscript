@@ -43,6 +43,7 @@ An abstract representation of a natural language sentence.
 1. Past Participle
 1. Comparative
 1. Superlative
+1. Simple Math Expressions
 
 
 # Resolve Implicit References
