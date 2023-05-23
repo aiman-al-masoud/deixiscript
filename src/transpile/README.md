@@ -38,6 +38,9 @@ An abstract representation of a natural language sentence.
 1. There Is Sentence
 1. If Sentence
 1. When Sentence
+1. And Sentence
+1. Or Sentence
+
 
 # Resolve Implicit References
 
