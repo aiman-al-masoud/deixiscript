@@ -31,6 +31,13 @@ natural language, ie: multiple parse trees.
 
 An abstract representation of a natural language sentence.
 
+1. Noun Phrase
+1. Copula Sentence
+1. Has Sentence
+1. Verb Sentence
+1. If Sentence
+1. When Sentence
+
 # Resolve Implicit References
 
 Go through the list of Deixiscript ASTs in order. Whenever you find a noun
@@ -38,8 +45,9 @@ phrase, try searching for a corresponding entity in the "queue", if you don't
 find it then create a new entity and place it in the "queue". Produce updated
 Deixiscript ASTs with explicit references.
 
-Requires knowledge from the Conceptual Model: 
-- when entities are referred to anaphorically by superclass type. 
+Requires knowledge from the Conceptual Model:
+
+- when entities are referred to anaphorically by superclass type.
 - For derived properties, "the red button" == "the button with red as color".
 
 In case of multiple matches in the queue, issue a warning.
