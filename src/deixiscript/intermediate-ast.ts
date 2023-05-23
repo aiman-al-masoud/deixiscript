@@ -1,6 +1,6 @@
+export type IAst = IExpression | IStatement
 
-
-type Expression = IArithmeticExp
+type IExpression = IArithmeticExp
     | IComparisonExp
     | IConsCallExp
     | IFuncCall
@@ -8,7 +8,7 @@ type Expression = IArithmeticExp
     | IStringExp
     | IPropReadExp
 
-type Statement = IVarDeclaration
+type IStatement = IVarDeclaration
     | IFuncDefinition
     | IReturnStmnt
     | IVarReassignment
@@ -23,7 +23,7 @@ type Statement = IVarDeclaration
 type IVarDeclaration = {
     type: 'variable-declaration'
     name: string
-    rval: Expression
+    rval: IExpression
 }
 
 type IFuncDefinition = {
@@ -44,33 +44,33 @@ type ITypeDefinition = {
 type IVarReassignment = {
     type: 'variable-reassignment'
     name: string
-    rval: Expression
+    rval: IExpression
 }
 
 type IPropAssignment = {
     type: 'property-assignment'
     name: string
     variable: string
-    rval: Expression
+    rval: IExpression
 }
 
 type IFuncCall = {
     type: 'function-call'
     name: string
-    arguments: Expression[]
+    arguments: IExpression[]
 }
 
 type IWhileLoop = {
     type: 'while-loop'
-    stopCondition: Expression
+    stopCondition: IExpression
     block: IBlock
 }
 
 type IArithmeticExp = {
     type: 'arithmetic-expression'
     op: '+' | '-' | '*' | '/'
-    left: Expression
-    right: Expression
+    left: IExpression
+    right: IExpression
 }
 
 type IPropReadExp = {
@@ -82,14 +82,14 @@ type IPropReadExp = {
 type IComparisonExp = {
     type: 'comparison-expression'
     comparator: '==' | '>' | '<' | '>=' | '<='
-    left: Expression
-    right: Expression
+    left: IExpression
+    right: IExpression
 }
 
 type IConsCallExp = {
     type: 'constructor-call'
     name: string
-    arguments: Expression[]
+    arguments: IExpression[]
 }
 
 type INumberExp = {
@@ -104,7 +104,7 @@ type IStringExp = {
 
 type IIfElse = {
     type: 'if-else'
-    condition: Expression
+    condition: IExpression
     then: IBlock
     otherwise: IBlock
 }
@@ -116,18 +116,18 @@ type ISingleTask = {
 
 type IRepeatedTask = {
     type: 'repeated-task'
-    stopCondition: Expression
+    stopCondition: IExpression
     block: IBlock
 }
 
 type IBlock = {
     type: 'block'
-    statements: Statement[]
+    statements: IStatement[]
 }
 
 type IReturnStmnt = {
     type: 'return-statement'
-    expression: Expression
+    expression: IExpression
 }
 
 
