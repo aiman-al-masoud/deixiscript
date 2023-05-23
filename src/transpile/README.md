@@ -40,9 +40,9 @@ An abstract representation of a natural language sentence.
 1. When Sentence
 1. And Sentence
 1. Or Sentence
-1. Past Participle
-1. Comparative
-1. Superlative
+1. Past Participle (root + -ed)
+1. Comparative (root + -er, more + root)
+1. Superlative (root + -est, -most, most + root)
 1. Simple Math Expressions
 
 
@@ -87,6 +87,8 @@ Re-sort the instructions in the right order of execution, using a topological
 sort algorithm.
 
 # Translation from Deixiscript AST to Intermediate AST
+
+[Semantics](./semantics.md)
 
 The same type of Deixiscript AST can map to different types of Intermediate
 ASTs. Based on:
