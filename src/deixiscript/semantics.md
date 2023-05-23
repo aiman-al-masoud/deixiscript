@@ -7,7 +7,7 @@ When Sentence
 - add action listener
 
 If Sentence
-- define a predicate function/method ("a man is tall if his height is greater than 1.8")
+- define a predicate function/method ("a man is tall if his height is greater than 1.8"), also "when" could fit here
 - if statement
 
 
