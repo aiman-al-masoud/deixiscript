@@ -35,6 +35,7 @@ An abstract representation of a natural language sentence.
 1. Copula Sentence
 1. Has Sentence
 1. Verb Sentence
+1. There Is Sentence
 1. If Sentence
 1. When Sentence
 
