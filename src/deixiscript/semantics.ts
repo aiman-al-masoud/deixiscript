@@ -13,7 +13,7 @@
 import { $ } from "../machines-like-us/exp-builder.ts";
 import { ast_node, copula_sentence } from "./ast-types.ts";
 import { IAst } from "./intermediate-ast.ts";
-import { parse } from "./transpile.ts";
+import { parse } from "./deixis.ts";
 
 type DeixiAstType = ast_node['type']
 type IAstType = IAst['type']
