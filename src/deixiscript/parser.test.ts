@@ -106,3 +106,17 @@ Deno.test({
     }
 })
 
+
+Deno.test({
+    name: 'test7',
+    fn: () => {
+        const r = $('x is more stupid than y').parse()
+        console.log(r)
+        assertObjectMatch(r as object, {
+            subject: { head: "x", type: "noun-phrase" },
+            comparison: "stupid",
+            object: { head: "y", type: "noun-phrase" },
+            type: "comparative-sentence"
+        })
+    }
+})

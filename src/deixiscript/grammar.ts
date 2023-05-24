@@ -3,9 +3,9 @@ import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
-const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence',)
+const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence',)
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
-const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb')
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison',)
 
 type AstType = ElementType<typeof astTypes>
 type StType = AstType | ElementType<typeof cstTypes>
@@ -62,7 +62,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'verb' },
         { types: ['space'], number: '1|0' },
-        { types: ['noun-phrase'], role: 'object', number:'1|0' },
+        { types: ['noun-phrase'], role: 'object', number: '1|0' },
     ],
     'if-sentence': [
         { literals: ['if'] },
@@ -75,6 +75,19 @@ export const syntaxes: SyntaxMap<
     ],
     'sentence': [
         { types: ['copula-sentence', 'if-sentence', 'verb-sentence'], expand: 'keep-specific-type' }
+    ],
+    'comparative-sentence': [
+        { types: ['noun-phrase'], role: 'subject' },
+        { types: ['space'], number: '1|0' },
+        { literals: ['is', 'are', 'be'] },
+        { types: ['space'], number: '1|0' },
+        { literals: ['more'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['identifier'], role: 'comparison' },
+        { types: ['space'], number: '1|0' },
+        { literals: ['than'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'object' },
     ]
 }
 
