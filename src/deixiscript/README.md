@@ -40,7 +40,7 @@ An abstract representation of a natural language sentence.
 1. When Sentence
 1. And Sentence
 1. Or Sentence
-1. Past Participle (root + -ed)
+1. Past Participle (root + -ed) / analytic past with "did"
 1. Comparative (root + -er, more + root)
 1. Superlative (root + -est, -most, most + root)
 1. Simple Math Expressions
