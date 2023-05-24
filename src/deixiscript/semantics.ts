@@ -18,26 +18,6 @@ import { parse } from "./deixis.ts";
 type DeixiAstType = ast_node['type']
 type IAstType = IAst['type']
 
-// type AstMap = {
-//     source: DeixiAstType
-//     target: IAst[]
-// }
-
-// const s = {} as copula_sentence
-
-// const x: AstMap = {
-//     source: 'copula-sentence',
-//     target: [
-//         {
-//             type: 'variable-declaration',
-//             name: 'source.subject#random', rval: {
-//                 type: 'constructor-call',
-//                 name: 'source.subject',
-//                 arguments: [],
-//             }
-//         }
-//     ]
-// }
 
 function f10(ast: copula_sentence): IAst[] {
 
@@ -57,7 +37,7 @@ function f10(ast: copula_sentence): IAst[] {
             type: 'property-assignment' as const,
             name: 'attribOf(' + x + ')',
             variable: varname,
-            rval: x as any
+            rval: { type: 'string-expression' as const, value: x }
         })) ?? []
     ]
 }
@@ -81,24 +61,3 @@ function toJS(iast: IAst): string {
 
     return iast.toString()
 }
-
-// f10(parse('x is a red cat')[0] as copula_sentence).forEach(x=>console.log(toJS(x)))
-
-
-// function translate(ast: ast_node, map: AstMap): IAst[] {
-//     return map.target.map(x => {
-
-//     })
-// }
-
-// console.log(translate(parse('the cat is cat')[0], x))
-
-
-// const mappings: { [t in x]: AstMap[] } = {
-//     'copula-sentence': [
-
-//     ],
-//     'if-sentence': [],
-//     'noun-phrase': [],
-//     'number-literal': []
-// }

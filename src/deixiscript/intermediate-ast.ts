@@ -98,7 +98,7 @@ type INumberExp = {
 }
 
 type IStringExp = {
-    type: 'number-expression'
+    type: 'string-expression'
     value: string
 }
 
