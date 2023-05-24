@@ -3,9 +3,9 @@ import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
-const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence',)
+const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence',)
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
-const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison',)
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer')
 
 type AstType = ElementType<typeof astTypes>
 type StType = AstType | ElementType<typeof cstTypes>
@@ -32,6 +32,7 @@ export const syntaxes: SyntaxMap<
         { types: ['saxon-genitive'], number: '1|0', expand: true },
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'head' },
+        { literals: ['s'], number: '1|0', role: 'pluralizer' },
         { types: ['space'], number: '1|0' },
         { types: ['of-genitive'], number: '1|0', expand: true },
     ],
@@ -74,7 +75,7 @@ export const syntaxes: SyntaxMap<
         { types: ['sentence'], role: 'consequence' },
     ],
     'sentence': [
-        { types: ['copula-sentence', 'if-sentence', 'verb-sentence', 'comparative-sentence'], expand: 'keep-specific-type' }
+        { types: ['copula-sentence', 'if-sentence', 'verb-sentence', 'comparative-sentence', 'has-sentence'], expand: 'keep-specific-type' }
     ],
     'comparative-sentence': [
         { types: ['noun-phrase'], role: 'subject' },
@@ -88,7 +89,20 @@ export const syntaxes: SyntaxMap<
         { literals: ['than'] },
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object' },
+    ],
+    'has-sentence': [
+        { types: ['noun-phrase'], role: 'subject' },
+        { types: ['space'], number: '1|0' },
+        { literals: ['has', 'have'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'object' },
+        { types: ['space'], number: '1|0' },
+        { literals: ['as'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'role' },
     ]
+
+
 }
 
 

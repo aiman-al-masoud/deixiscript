@@ -120,3 +120,18 @@ Deno.test({
         })
     }
 })
+
+
+Deno.test({
+    name: 'test8',
+    fn: () => {
+        const r = $('a counter has a number as a value').parse()
+        console.log(r)
+        assertObjectMatch(r as object, {
+            subject: { head: "counter", type: "noun-phrase" },
+            object: { head: "number", type: "noun-phrase" },
+            role: { head: "value", type: "noun-phrase" },
+            type: "has-sentence"
+        })
+    }
+})
