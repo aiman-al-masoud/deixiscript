@@ -21,12 +21,10 @@ type IAstType = IAst['type']
 
 function f10(ast: copula_sentence): IAst[] {
 
-    const varname = ast.subject.head + parseInt(Math.random() * 100 + '')
-
     return [
         {
             type: 'variable-declaration',
-            name: varname,
+            name: ast.subject.head,
             rval: {
                 type: 'constructor-call',
                 name: ast.object.head,
@@ -36,7 +34,7 @@ function f10(ast: copula_sentence): IAst[] {
         ...ast.object.modifiers?.map(x => ({
             type: 'property-assignment' as const,
             name: 'attribOf(' + x + ')',
-            variable: varname,
+            variable: ast.subject.head,
             rval: { type: 'string-expression' as const, value: x }
         })) ?? []
     ]
