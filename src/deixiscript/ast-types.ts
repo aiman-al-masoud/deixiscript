@@ -1,5 +1,5 @@
 
-    type copula_sentence = {
+    export type copula_sentence = {
         type : 'copula-sentence'
         subject: noun_phrase
 	negation?: string

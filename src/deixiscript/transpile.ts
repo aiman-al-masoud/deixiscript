@@ -9,7 +9,7 @@ import { Ast, WorldModel } from '../machines-like-us/types.ts'
 import { findAll } from '../machines-like-us/findAll.ts'
 
 
-function parse(sourceCode: string): ast_node[] {
+export function parse(sourceCode: string): ast_node[] {
 
     const results: AstNode[] = []
 
