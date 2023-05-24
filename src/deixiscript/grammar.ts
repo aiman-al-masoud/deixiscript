@@ -74,7 +74,7 @@ export const syntaxes: SyntaxMap<
         { types: ['sentence'], role: 'consequence' },
     ],
     'sentence': [
-        { types: ['copula-sentence', 'if-sentence', 'verb-sentence'], expand: 'keep-specific-type' }
+        { types: ['copula-sentence', 'if-sentence', 'verb-sentence', 'comparative-sentence'], expand: 'keep-specific-type' }
     ],
     'comparative-sentence': [
         { types: ['noun-phrase'], role: 'subject' },
