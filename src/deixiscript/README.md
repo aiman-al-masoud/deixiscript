@@ -1,6 +1,6 @@
 # General Idea
 
-Bring the natural language AST closer to the JS AST through a number of simple iterated AST transformations and expansions, until you have a list of natural language ASTs where each can translate to a single JS AST.
+Bring the natural language AST closer to the JS AST through a number of simple iterated AST transformations and expansions, until you have a list of natural language ASTs where each can translate to a single JS AST (of multiple possible types).
 
 # Stages
 
