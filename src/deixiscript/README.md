@@ -1,3 +1,7 @@
+# General Idea
+
+Bring the natural language AST closer to the JS AST through a number of simple iterated AST transformations and expansions, until you have a list of natural language ASTs where each can translate to a single JS AST.
+
 # Stages
 
 1. parse each sentence as a Deixiscript AST.
@@ -6,7 +10,7 @@
 1. expand modifers to Deixiscript ASTs of their own.
 1. change copular sentences into property assignments when needed.
 1. sort instructions (Deixiscript ASTs) in the world model by use-def.
-1. translate Deixiscript ASTs to JS ASTs (one to many or one to one?)
+1. translate Deixiscript ASTs to JS ASTs (one to one)
 1. translate JS ASTs to JS code
 
 # Parsing a Deixiscript Sentence
