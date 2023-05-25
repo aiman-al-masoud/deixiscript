@@ -1,6 +1,6 @@
 # General Idea
 
-Bring Deixiscript ASTs closer and closer to JS ASTs, through several successive simple AST transformations, until you can translate each Deixiscript AST to at most one JS AST (of multiple possible types).
+Bring Deixiscript ASTs closer and closer to JS ASTs, through a series of simple successive AST transformations, until you can translate each Deixiscript AST to at most one JS AST (of multiple possible types).
 
 # AST Transformations
 
