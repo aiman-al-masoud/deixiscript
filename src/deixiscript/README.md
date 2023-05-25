@@ -1,15 +1,21 @@
 # General Idea
 
-Bring the natural language AST closer to the JS AST through a number of simple iterated AST transformations and expansions, until you have a list of natural language ASTs where each can translate to a single JS AST (of multiple possible types).
+Bring Deixiscript ASTs closer and closer to JS ASTs, through several successive simple AST transformations, until you can translate each Deixiscript AST to at most one JS AST (of multiple possible types).
+
+# AST Transformations
+
+* modifier expansion (context free)
+* syntactic decompression (context free)
+* implicit reference resolution (context dependent)
+* semantic decompression (context dependent)
+* universal quantifier expansion (context dependent)
+* conversion of copula sentence to has sentence when needed (context dependent)
+* sort ASTs by order of execution (context dependent, needs explicit references)
 
 # Stages
 
-1. parse each sentence as a Deixiscript AST.
-1. resolve implicit references, replace them with unique ids in Deixiscript
-   ASTs, update world model.
-1. expand modifers to Deixiscript ASTs of their own.
-1. change copular sentences into property assignments when needed.
-1. sort instructions (Deixiscript ASTs) in the world model by use-def.
+1. parse each sentence as a Deixiscript AST
+1. go through the AST transformations
 1. translate Deixiscript ASTs to JS ASTs (one to one)
 1. translate JS ASTs to JS code
 
@@ -73,7 +79,7 @@ Requires knowledge from the Conceptual Model:
 
 Concerning modifiers in sentences with side effects.
 
-"there is a red button" --> "there is a button. the button is red."
+"there is a red button" --> "there is a button AND the button is red."
 
 In sentences without side effects, modifiers are part of implicit references,
 which should have been eliminated and replaced by explicit references.
