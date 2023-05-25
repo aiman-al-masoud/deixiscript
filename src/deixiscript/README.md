@@ -55,7 +55,7 @@ An abstract representation of a natural language sentence.
 1. Superlative (root + -est, -most, most + root)
 1. Simple Math Expressions
 
-# Resolve Implicit References
+# Implicit Reference Resolution
 
 Go through the list of Deixiscript ASTs in order. Whenever you find a noun
 phrase, try searching for a corresponding entity in the world model, if you don't
@@ -75,7 +75,7 @@ Requires knowledge from the Conceptual Model:
 * In case of a universally quantified reference?
 * In case of a MAYBE universally quantified reference?
 
-# Expand Modifiers
+# Modifier Expansion
 
 Concerning modifiers in sentences with side effects.
 
@@ -84,7 +84,7 @@ Concerning modifiers in sentences with side effects.
 In sentences without side effects, modifiers are part of implicit references,
 which should have been eliminated and replaced by explicit references.
 
-# Copular Sentence Assignments
+# Copula Sentence to Has Sentence
 
 "the button is red" --> "the button has red as color"
 
