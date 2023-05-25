@@ -37,23 +37,18 @@ required AST structures.
 There is still no mechanism to solve the problem of syntactic ambiguities in
 natural language, ie: multiple parse trees.
 
-# Deixiscript AST
+# Modifier Expansion
 
-An abstract representation of a natural language sentence.
+Concerning modifiers in sentences with side effects.
 
-1. Noun Phrase
-1. Copula Sentence
-1. Has Sentence
-1. Verb Sentence
-1. There Is Sentence
-1. If Sentence
-1. When Sentence
-1. And Sentence
-1. Or Sentence
-1. Comparative Sentence (root + -er, more + root)
-1. Past Participle (root + -ed) / analytic past with "did"
-1. Superlative (root + -est, -most, most + root)
-1. Simple Math Expressions
+"there is a red button" --> "there is a button AND the button is red."
+
+In sentences without side effects, modifiers are part of implicit references,
+which should have been eliminated and replaced by explicit references.
+
+# Syntactic Decompression
+
+"do print the string and the number" --> "do print the string AND do print the number".
 
 # Implicit Reference Resolution
 
@@ -74,15 +69,6 @@ Requires knowledge from the Conceptual Model:
 * In case of multiple matches in the queue, issue a warning.
 * In case of a universally quantified reference?
 * In case of a MAYBE universally quantified reference?
-
-# Modifier Expansion
-
-Concerning modifiers in sentences with side effects.
-
-"there is a red button" --> "there is a button AND the button is red."
-
-In sentences without side effects, modifiers are part of implicit references,
-which should have been eliminated and replaced by explicit references.
 
 # Copula Sentence to Has Sentence
 
@@ -120,6 +106,24 @@ to the limited expressivity of JS:
 
 - Initialization with head and modifiers treated as: call to constructor and
   then property assigments as two or more separate commands.
+
+# Deixiscript AST
+
+An abstract representation of a natural language sentence.
+
+1. Noun Phrase
+1. Copula Sentence
+1. Has Sentence
+1. Verb Sentence
+1. There Is Sentence
+1. If Sentence
+1. When Sentence
+1. And Sentence
+1. Or Sentence
+1. Comparative Sentence (root + -er, more + root)
+1. Past Participle (root + -ed) / analytic past with "did"
+1. Superlative (root + -est, -most, most + root)
+1. Simple Math Expressions
 
 # JS AST
 
