@@ -46,9 +46,19 @@ Concerning modifiers in sentences with side effects.
 In sentences without side effects, modifiers are part of implicit references,
 which should have been eliminated and replaced by explicit references.
 
+Add a "such that" clause to noun-phrase.
+
+"a red button" --> "x such that x is a button and x is red".
+
 # Syntactic Decompression
 
 "do print the string and the number" --> "do print the string AND do print the number".
+
+# Copula Sentence to Has Sentence
+
+"the button is red" --> "the button has red as color"
+
+how to get "color": search for a thing that is a property of "button" that is a superconcept of "red".
 
 # Implicit Reference Resolution
 
@@ -69,12 +79,6 @@ Requires knowledge from the Conceptual Model:
 * In case of multiple matches in the queue, issue a warning.
 * In case of a universally quantified reference?
 * In case of a MAYBE universally quantified reference?
-
-# Copula Sentence to Has Sentence
-
-"the button is red" --> "the button has red as color"
-
-how to get "color": search for a thing that is a property of "button" that is a superconcept of "red".
 
 # Sort list of Deixiscript ASTs by order of execution
 
