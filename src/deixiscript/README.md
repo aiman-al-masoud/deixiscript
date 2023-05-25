@@ -6,10 +6,10 @@ Bring Deixiscript ASTs closer and closer to JS ASTs, through several successive 
 
 * modifier expansion (context free)
 * syntactic decompression (context free)
+* conversion of copula sentence to has sentence when needed (context dependent)
 * implicit reference resolution (context dependent)
 * semantic decompression (context dependent)
 * universal quantifier expansion (context dependent)
-* conversion of copula sentence to has sentence when needed (context dependent)
 * sort ASTs by order of execution (context dependent, needs explicit references)
 
 # Stages
