@@ -74,6 +74,8 @@ Requires knowledge from the Conceptual Model:
 
 "the button is red" --> "the button has red as color"
 
+how to get "color": search for a thing that is a property of "button" that is a superconcept of "red".
+
 # Sort list of Deixiscript ASTs by order of execution
 
 Re-sort the instructions in the right order of execution, using a topological
