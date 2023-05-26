@@ -4,8 +4,8 @@ import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
 const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence')
-const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase',)
-const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat',)
+const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative',)
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat', 'receiver',)
 
 type AstType = ElementType<typeof astTypes>
 type StType = AstType | ElementType<typeof cstTypes>
@@ -59,6 +59,8 @@ export const syntaxes: SyntaxMap<
         { literals: ['not'], role: 'negation', number: '1|0' },
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object' },
+        { types: ['space'], number: '1|0' },
+        { types: ['to-dative'], expand: true, number: '1|0' },
     ],
     'verb-sentence': [
         { types: ['noun-phrase'], role: 'subject' },
@@ -70,6 +72,8 @@ export const syntaxes: SyntaxMap<
         { types: ['identifier'], role: 'verb' },
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object', number: '1|0' },
+        { types: ['space'], number: '1|0' },
+        { types: ['to-dative'], expand: true, number: '1|0' },
     ],
     'if-sentence': [
         { literals: ['if'] },
@@ -113,6 +117,11 @@ export const syntaxes: SyntaxMap<
         { literals: ['and'] },
         { types: ['space'], number: '1|0' },
         { types: ['sentence', 'and-sentence'], role: 'second' },
+    ],
+    'to-dative': [
+        { literals: ['to'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'receiver' },
     ]
 
 }

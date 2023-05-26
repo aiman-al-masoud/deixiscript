@@ -161,9 +161,33 @@ Deno.test({
 })
 
 Deno.test({
-    name:'test10',
-    fn : ()=>{
+    name: 'test10',
+    fn: () => {
         const r = $('a button where it is green').parse()
         console.log(r)
+        assertObjectMatch(r as object, {
+            head: "button",
+            suchThat: {
+                subject: { head: "it", type: "noun-phrase" },
+                object: { head: "green", type: "noun-phrase" },
+                type: "copula-sentence"
+            },
+            type: "noun-phrase"
+        })
+    }
+})
+
+Deno.test({
+    name: 'test11',
+    fn: () => {
+        const r = $('you do give a five to me').parse()
+        console.log(r)
+        assertObjectMatch(r as object, {
+            subject: { head: "you", type: "noun-phrase" },
+            verb: "give",
+            object: { head: "five", type: "noun-phrase" },
+            receiver: { head: "me", type: "noun-phrase" },
+            type: "verb-sentence"
+        })
     }
 })
