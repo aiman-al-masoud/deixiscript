@@ -39,6 +39,8 @@ required AST structures.
 There is still no mechanism to solve the problem of syntactic ambiguities in
 natural language, ie: multiple parse trees.
 
+Short term plan is to use parentheses to delimit noun-phrases, which only works in writing.
+
 # Modifier Expansion
 
 Add a "such that" clause to noun-phrase:
