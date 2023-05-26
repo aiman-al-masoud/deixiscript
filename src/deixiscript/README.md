@@ -1,16 +1,18 @@
 # General Idea
 
-Bring Deixiscript ASTs closer and closer to JS ASTs, through a series of simple successive AST transformations, until you can translate each Deixiscript AST to at most one JS AST (of multiple possible types).
+Bring Deixiscript ASTs closer and closer to JS ASTs, through a series of simple
+successive AST transformations, until you can translate each Deixiscript AST to
+at most one JS AST (of multiple possible types).
 
 # AST Transformations
 
-* modifier expansion (context free)
-* syntactic decompression (context free)
-* conversion of copula sentence to has sentence when needed (context dependent)
-* implicit reference resolution (context dependent)
-* semantic decompression (context dependent)
-* universal quantifier expansion (context dependent)
-* sort ASTs by order of execution (context dependent, needs explicit references)
+- modifier expansion (context free)
+- syntactic decompression (context free)
+- conversion of copula sentence to has sentence when needed (context dependent)
+- implicit reference resolution (context dependent)
+- semantic decompression (context dependent)
+- universal quantifier expansion (context dependent)
+- sort ASTs by order of execution (context dependent, needs explicit references)
 
 # Stages
 
@@ -41,25 +43,27 @@ natural language, ie: multiple parse trees.
 
 Add a "such that" clause to noun-phrase:
 
-* "a red button" --> "a button such that the button is red".
-* "there is a red button" --> "there is a button such that the button is red"
+- "a red button" --> "a button such that the button is red".
+- "there is a red button" --> "there is a button such that the button is red"
 
 # Syntactic Decompression
 
-"do print the string and the number" --> "do print the string AND do print the number".
+"do print the string and the number" --> "do print the string AND do print the
+number".
 
 # Copula Sentence to Has Sentence
 
 "the button is red" --> "the button has red as color"
 
-how to get "color": search for a thing that is a property of "button" that is a superconcept of "red".
+how to get "color": search for a thing that is a property of "button" that is a
+superconcept of "red".
 
 # Implicit Reference Resolution
 
 Go through the list of Deixiscript ASTs in order. Whenever you find a noun
-phrase, try searching for a corresponding entity in the world model, if you don't
-find it then create a new entity and place it in the world model. Produce updated
-Deixiscript ASTs with explicit references.
+phrase, try searching for a corresponding entity in the world model, if you
+don't find it then create a new entity and place it in the world model. Produce
+updated Deixiscript ASTs with explicit references.
 
 Instructions are also treated as entities, and they are related to program
 objects by usage/definition relations.
@@ -70,9 +74,10 @@ Requires knowledge from the Conceptual Model:
 - For derived properties, "the red button" == "the button with red as color".
 
 ## Special Cases
-* In case of multiple matches in the queue, issue a warning.
-* In case of a universally quantified reference?
-* In case of a MAYBE universally quantified reference?
+
+- In case of multiple matches in the queue, issue a warning.
+- In case of a universally quantified reference?
+- In case of a MAYBE universally quantified reference?
 
 # Sort list of Deixiscript ASTs by order of execution
 
@@ -87,9 +92,12 @@ The same type of Deixiscript AST can map to different types of JS ASTs. Based
 on:
 
 - ~~context (anaphora, cataphora, deixis) SOLVED IN PREVIOUS STEP~~
-- ~~ambiguity of the natlang parse tree itself (multiple possible parse trees) SOLVED IN PREVIOUS STEP.~~
-- ~~ambiguity of articles (refering to new or old entity) SOLVED IN PREVIOUS STEP.~~
-- ~~ambiguity of the verb "to be" (variable declaration vs property assignment) SOLVED IN PREVIOUS STEP~~
+- ~~ambiguity of the natlang parse tree itself (multiple possible parse trees)
+  SOLVED IN PREVIOUS STEP.~~
+- ~~ambiguity of articles (refering to new or old entity) SOLVED IN PREVIOUS
+  STEP.~~
+- ~~ambiguity of the verb "to be" (variable declaration vs property assignment)
+  SOLVED IN PREVIOUS STEP~~
 - context (side effect vs non-side effect)
 - ambiguity of referring to individual thing vs to concept.
 - ambiguity of universal quantifier, referring to concept vs to all individuals.

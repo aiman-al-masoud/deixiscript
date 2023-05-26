@@ -1,5 +1,5 @@
 
-type copula_sentence = {
+export type copula_sentence = {
     type: 'copula-sentence'
     subject: noun_phrase
     negation?: string
@@ -62,13 +62,13 @@ type has_sentence = {
 
 
 
-type and_sentence = {
+export type and_sentence = {
     type: 'and-sentence'
     first: sentence
     second: sentence | and_sentence
 }
 
 
-type sentence = copula_sentence | if_sentence | verb_sentence | comparative_sentence | has_sentence
+export type sentence = copula_sentence | if_sentence | verb_sentence | comparative_sentence | has_sentence
 
 export type ast_node = copula_sentence | noun_phrase | number_literal | verb_sentence | if_sentence | comparative_sentence | has_sentence | and_sentence | sentence
