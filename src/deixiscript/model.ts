@@ -109,8 +109,10 @@ const wm: WorldModel = [
 ]
 
 // the red button --> button with red BACKGROUND ...
-const query = $('red').isa('x:thing').$
+const query = $('red').isa('x:thing').and($('button').has('x:thing').as('background')).$
+
 const r = findAll(query, [$('x:thing').$], { wm, derivClauses: [] })
+
 console.log(r)
 
 
