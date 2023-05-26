@@ -106,7 +106,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { literals: ['and'] },
         { types: ['space'], number: '1|0' },
-        { types: ['sentence'], role: 'second' },
+        { types: ['sentence', 'and-sentence'], role: 'second' },
     ]
 
 }
