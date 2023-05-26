@@ -98,21 +98,22 @@
 
 import { $ } from '../machines-like-us/exp-builder.ts'
 import { WorldModel } from '../machines-like-us/types.ts'
-import { getParts } from '../machines-like-us/wm-funcs.ts'
 import { findAll } from '../machines-like-us/findAll.ts'
 
 const wm: WorldModel = [
+    ['background', 'thing'],
     ['button', 'thing'],
     ['color', 'thing'],
     ['button', 'color', 'background'],
     ['red', 'color'],
+    // ['foreground', 'thing'],
+    // ['button', 'color', 'foreground'],
 ]
 
 // the red button --> button with red BACKGROUND ...
-const query = $('red').isa('x:thing').and($('button').has('x:thing').as('background')).$
-
-const r = findAll(query, [$('x:thing').$], { wm, derivClauses: [] })
-
+// what are the s superconcept and r role such that "red" is an s AND button has s as r
+const query = $('red').isa('s:thing').and($('button').has('s:thing').as('r:thing')).$
+const r = findAll(query, [$('s:thing').$, $('r:thing').$], { wm, derivClauses: [] })
 console.log(r)
 
 
