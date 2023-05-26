@@ -60,9 +60,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object' },
         { types: ['space'], number: '1|0' },
-        // { types: ['to-dative'], expand: true, number: '1|0' },
-        // { types: ['in-locative'], expand: true, number: '1|0' },
-        {types:['complement'], expand:true, number:'*'},
+        { types: ['complement'], expand: true, number: '*' },
     ],
     'verb-sentence': [
         { types: ['noun-phrase'], role: 'subject' },
@@ -75,9 +73,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object', number: '1|0' },
         { types: ['space'], number: '1|0' },
-        {types:['complement'], expand:true, number:'*'},
-        // { types: ['to-dative'], expand: true, number: '1|0' },
-        // { types: ['in-locative'], expand: true, number: '1|0' },
+        { types: ['complement'], expand: true, number: '*' },
     ],
     'if-sentence': [
         { literals: ['if'] },
