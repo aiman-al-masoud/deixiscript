@@ -4,8 +4,8 @@ import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
 const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence')
-const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier')
-const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second',)
+const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase',)
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat',)
 
 type AstType = ElementType<typeof astTypes>
 type StType = AstType | ElementType<typeof cstTypes>
@@ -35,6 +35,12 @@ export const syntaxes: SyntaxMap<
         { literals: ['s'], number: '1|0', role: 'pluralizer' },
         { types: ['space'], number: '1|0' },
         { types: ['of-genitive'], number: '1|0', expand: true },
+        { types: ['space'], number: '1|0' },
+        { types: ['such-that-phrase'], number: '1|0', expand: true }
+    ],
+    'such-that-phrase': [
+        { literals: ['where'] },
+        { types: ['sentence'], role: 'suchThat' },
     ],
     'of-genitive': [
         { literals: ['of'] },

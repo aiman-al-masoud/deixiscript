@@ -159,3 +159,11 @@ Deno.test({
         })
     }
 })
+
+Deno.test({
+    name:'test10',
+    fn : ()=>{
+        const r = $('a button where it is green').parse()
+        console.log(r)
+    }
+})
