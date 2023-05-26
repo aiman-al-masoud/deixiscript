@@ -135,3 +135,27 @@ Deno.test({
         })
     }
 })
+
+
+Deno.test({
+    name: 'test9',
+    fn: () => {
+        const r = $('the cat does eat the mouse and the cat does enjoy it').parse()
+        console.log(r)
+        assertObjectMatch(r as object, {
+            first: {
+                subject: { head: "cat", type: "noun-phrase" },
+                verb: "eat",
+                object: { head: "mouse", type: "noun-phrase" },
+                type: "verb-sentence"
+            },
+            second: {
+                subject: { head: "cat", type: "noun-phrase" },
+                verb: "enjoy",
+                object: { head: "it", type: "noun-phrase" },
+                type: "verb-sentence"
+            },
+            type: "and-sentence"
+        })
+    }
+})
