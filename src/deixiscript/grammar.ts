@@ -4,8 +4,8 @@ import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
 const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence')
-const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative',)
-const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat', 'receiver',)
+const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative', 'in-locative', 'complement',)
+const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat', 'receiver', 'location',)
 
 type AstType = ElementType<typeof astTypes>
 type StType = AstType | ElementType<typeof cstTypes>
@@ -60,7 +60,9 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object' },
         { types: ['space'], number: '1|0' },
-        { types: ['to-dative'], expand: true, number: '1|0' },
+        // { types: ['to-dative'], expand: true, number: '1|0' },
+        // { types: ['in-locative'], expand: true, number: '1|0' },
+        {types:['complement'], expand:true, number:'*'},
     ],
     'verb-sentence': [
         { types: ['noun-phrase'], role: 'subject' },
@@ -73,7 +75,9 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'object', number: '1|0' },
         { types: ['space'], number: '1|0' },
-        { types: ['to-dative'], expand: true, number: '1|0' },
+        {types:['complement'], expand:true, number:'*'},
+        // { types: ['to-dative'], expand: true, number: '1|0' },
+        // { types: ['in-locative'], expand: true, number: '1|0' },
     ],
     'if-sentence': [
         { literals: ['if'] },
@@ -122,7 +126,16 @@ export const syntaxes: SyntaxMap<
         { literals: ['to'] },
         { types: ['space'], number: '1|0' },
         { types: ['noun-phrase'], role: 'receiver' },
+    ],
+    'in-locative': [
+        { literals: ['in'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'location' },
+    ],
+    'complement': [
+        { types: ['to-dative', 'in-locative'], expand: true, sep: 'space' }
     ]
+
 
 }
 
