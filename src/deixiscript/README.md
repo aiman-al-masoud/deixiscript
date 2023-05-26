@@ -39,16 +39,10 @@ natural language, ie: multiple parse trees.
 
 # Modifier Expansion
 
-Concerning modifiers in sentences with side effects.
+Add a "such that" clause to noun-phrase:
 
-"there is a red button" --> "there is a button such that the button is red"
-
-In sentences without side effects, modifiers are part of implicit references,
-which should have been eliminated and replaced by explicit references.
-
-Add a "such that" clause to noun-phrase.
-
-"a red button" --> "a button such that the button is red".
+* "a red button" --> "a button such that the button is red".
+* "there is a red button" --> "there is a button such that the button is red"
 
 # Syntactic Decompression
 
