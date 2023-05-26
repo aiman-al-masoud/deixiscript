@@ -13,7 +13,8 @@ export function findAll(
     kb: KnowledgeBase,
 ): DeepMap<Variable, Constant>[] {
 
-    const constants = uniq(kb.wm.map(x => x[0])).map(c => $(c).$)
+    const constants = uniq(kb.wm.flatMap(x => x)).map(c => $(c).$)
+    // console.log(constants)
 
     const varToCands = variables.map(v => {
         const candidates = constants.filter(c => getSupers(c.value, kb.wm).includes(v.varType))
@@ -25,6 +26,7 @@ export function findAll(
 
     const results = allCombos.filter(c => {
         const sub = substAll(formula, c)
+        // console.log('sub=', sub)
         return test(sub, kb)
     })
 
