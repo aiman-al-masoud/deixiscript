@@ -96,3 +96,22 @@
 // // ]
 
 
+import { $ } from '../machines-like-us/exp-builder.ts'
+import { WorldModel } from '../machines-like-us/types.ts'
+import { getParts } from '../machines-like-us/wm-funcs.ts'
+import { findAll } from '../machines-like-us/findAll.ts'
+
+const wm: WorldModel = [
+    ['button', 'thing'],
+    ['color', 'thing'],
+    ['button', 'color', 'background'],
+    ['red', 'color'],
+]
+
+// the red button --> button with red BACKGROUND ...
+const query = $('red').isa('x:thing').$
+const r = findAll(query, [$('x:thing').$], { wm, derivClauses: [] })
+console.log(r)
+
+
+
