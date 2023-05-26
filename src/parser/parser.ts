@@ -108,7 +108,13 @@ class KoolerParser {
             }
 
             if (member.expand && (node instanceof Array)) {
-                console.log('EXPAND ARRAY!', node, 'on', ast)
+                // console.log('EXPAND ARRAY!', node, 'on', ast)
+                node.forEach(n => {
+                    const entries = Object.entries(n).filter(e => e[0] !== 'type')
+                    entries.forEach(e => {
+                        ast[e[0]] = e[1]
+                    })
+                })
             }
 
         }
