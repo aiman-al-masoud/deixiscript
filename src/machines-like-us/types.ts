@@ -13,7 +13,7 @@ export type KnowledgeBase = {
 
 /* LANGUAGE */
 
-export type Ast = Atom | Formula
+export type LLangAst = Atom | Formula
 export type Atom = Term | ListPattern | ListLiteral
 export type Term = Constant | Variable | Boolean
 
@@ -99,20 +99,20 @@ export type Negation = {
 export type ExistentialQuantification = {
     type: 'existquant',
     variable: Variable,
-    where: Ast,
+    where: LLangAst,
 }
 
 export type DerivationClause = {
     type: 'derived-prop',
     conseq: AtomicFormula,
-    when: Ast,
+    when: LLangAst,
 }
 
 export type IfElse = {
     type: 'if-else',
     condition: Formula,
     then: Formula,
-    otherwise: Ast,
+    otherwise: LLangAst,
 }
 
 export function isVar(t: Atom): t is Variable {
@@ -153,13 +153,13 @@ export function isHasSentence(s: IsASentence | HasSentence): s is HasSentence {
     return s.length === 3
 }
 
-export function isAtom(ast: Ast): ast is Atom {
+export function isAtom(ast: LLangAst): ast is Atom {
     return ast.type === 'variable'
         || ast.type === 'constant'
         || ast.type === 'list-literal'
         || ast.type === 'list-pattern'
 }
 
-export function isAtomicFormula(ast: Ast): ast is AtomicFormula {
+export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
 }

@@ -101,16 +101,17 @@ import { WorldModel } from '../machines-like-us/types.ts'
 import { findAll } from '../machines-like-us/findAll.ts'
 import { ast_node } from './ast-types.ts'
 import { parse } from './parse.ts'
+import { wm } from './example-world-model.ts'
 
-const wm: WorldModel = [
-    ['background', 'thing'],
-    ['button', 'thing'],
-    ['color', 'thing'],
-    ['button', 'color', 'background'],
-    ['red', 'color'],
-    // ['foreground', 'thing'],
-    // ['button', 'color', 'foreground'],
-]
+// const wm: WorldModel = [
+//     ['background', 'thing'],
+//     ['button', 'thing'],
+//     ['color', 'thing'],
+//     ['button', 'color', 'background'],
+//     ['red', 'color'],
+//     // ['foreground', 'thing'],
+//     // ['button', 'color', 'foreground'],
+// ]
 
 // the red button --> button with red BACKGROUND ...
 // what are the s superconcept and r role such that "red" is an s AND button has s as r

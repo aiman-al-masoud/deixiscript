@@ -1,4 +1,4 @@
-import { Ast, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -9,7 +9,7 @@ export function $(x: string | string[]): ExpBuilder<Atom> {
     return new ExpBuilder(makeAtom(x))
 }
 
-export class ExpBuilder<T extends Ast> {
+export class ExpBuilder<T extends LLangAst> {
 
     constructor(readonly exp: T) {
 

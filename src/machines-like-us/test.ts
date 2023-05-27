@@ -1,10 +1,10 @@
-import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isTerm, isListLiteral, atomsEqual, Variable, isHasSentence, Ast, isAtomicFormula } from "./types.ts";
+import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isTerm, isListLiteral, atomsEqual, Variable, isHasSentence, LLangAst, isAtomicFormula } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 
-export function test(formula: Ast, kb: KnowledgeBase): boolean {
+export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
     switch (formula.type) {
         case 'boolean':

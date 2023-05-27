@@ -1,20 +1,20 @@
-import { Ast, Atom, atomsEqual, isVar, Variable, VarMap } from "./types.ts";
+import { LLangAst, Atom, atomsEqual, isVar, Variable, VarMap } from "./types.ts";
 
 
-export function substAll<T extends Ast>(formula: T, map: VarMap): T
+export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
 
-export function substAll(formula: Ast, map: VarMap): Ast {
+export function substAll(formula: LLangAst, map: VarMap): LLangAst {
     const subs = Array.from(map.entries())
     return subs.reduce((f, s) => subst(f, s[0], s[1]), formula)
 }
 
-function subst<T extends Ast>(formula: T, variable: Variable, replacement: Atom): T
+function subst<T extends LLangAst>(formula: T, variable: Variable, replacement: Atom): T
 
 function subst(
-    ast: Ast,
+    ast: LLangAst,
     variable: Variable,
     replacement: Atom,
-): Ast {
+): LLangAst {
 
     if (!isVar(variable)) {//TODO: remove
         throw new Error('subst() got a non-var as a variable!')

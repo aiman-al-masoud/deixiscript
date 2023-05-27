@@ -1,4 +1,4 @@
-import { Ast, Constant, KnowledgeBase, Variable } from "./types.ts";
+import { LLangAst, Constant, KnowledgeBase, Variable } from "./types.ts";
 import { substAll } from "./subst.ts";
 import { test } from "./test.ts";
 import { uniq } from "../utils/uniq.ts";
@@ -8,7 +8,7 @@ import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from './exp-builder.ts'
 
 export function findAll(
-    formula: Ast,
+    formula: LLangAst,
     variables: Variable[],
     kb: KnowledgeBase,
 ): DeepMap<Variable, Constant>[] {
