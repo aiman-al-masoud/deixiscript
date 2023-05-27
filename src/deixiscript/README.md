@@ -4,6 +4,13 @@ Bring Deixiscript ASTs closer and closer to JS ASTs, through a series of simple
 successive AST transformations, until you can translate each Deixiscript AST to
 at most one JS AST (of multiple possible types).
 
+# Stages
+
+1. parse each sentence as a Deixiscript AST
+1. go through the AST transformations
+1. translate Deixiscript ASTs to JS ASTs (one to one)
+1. translate JS ASTs to JS code
+
 # AST Transformations
 
 - modifier expansion (context free)
@@ -13,13 +20,6 @@ at most one JS AST (of multiple possible types).
 - semantic decompression (context dependent)
 - universal quantifier expansion (context dependent)
 - sort ASTs by order of execution (context dependent, needs explicit references)
-
-# Stages
-
-1. parse each sentence as a Deixiscript AST
-1. go through the AST transformations
-1. translate Deixiscript ASTs to JS ASTs (one to one)
-1. translate JS ASTs to JS code
 
 # Parsing a Deixiscript Sentence
 
