@@ -94,12 +94,9 @@ The same type of Deixiscript AST can map to different types of JS ASTs. Based
 on:
 
 - ~~context (anaphora, cataphora, deixis) SOLVED IN PREVIOUS STEP~~
-- ~~ambiguity of the natlang parse tree itself (multiple possible parse trees)
-  SOLVED IN PREVIOUS STEP.~~
-- ~~ambiguity of articles (refering to new or old entity) SOLVED IN PREVIOUS
-  STEP.~~
-- ~~ambiguity of the verb "to be" (variable declaration vs property assignment)
-  SOLVED IN PREVIOUS STEP~~
+- ~~ambiguity of the natlang parse tree itself (multiple possible parse trees) SOLVED IN PREVIOUS STEP.~~
+- ~~ambiguity of articles (refering to new or old entity) SOLVED IN PREVIOUS STEP.~~
+- ~~ambiguity of the verb "to be" (variable declaration vs property assignment) SOLVED IN PREVIOUS STEP~~
 - context (side effect vs non-side effect)
 - ambiguity of referring to individual thing vs to concept.
 - ambiguity of universal quantifier, referring to concept vs to all individuals.
