@@ -118,8 +118,7 @@ const query = $('red').isa('s:thing').and($('button').has('s:thing').as('r:thing
 const r = findAll(query, [$('s:thing').$, $('r:thing').$], { wm, derivClauses: [] })
 console.log(r)
 
-
-function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
+export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
     switch (ast.type) {
         case 'copula-sentence':
 
