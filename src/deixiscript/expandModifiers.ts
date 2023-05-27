@@ -1,4 +1,4 @@
-import { and_sentence, ast_node, copula_sentence, sentence } from './ast-types.ts'
+import { ast_node, copula_sentence, } from './ast-types.ts'
 import { parse } from './parse.ts'
 
 export function expandModifiers<T extends ast_node>(ast: T): T {
@@ -52,8 +52,6 @@ function makeCopular(modifier: string, head: string): copula_sentence {
 }
 
 // function makeAnd(sentences: sentence[]): and_sentence {
-
-// }
 
 const r = parse('the red button')
 console.log(r)
