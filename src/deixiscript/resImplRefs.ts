@@ -94,10 +94,10 @@ function astToQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
     throw new Error('not implemented!')
 }
 
+function generateRandom() {
+    return parseInt(100 * Math.random() + '')
+}
 
 const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
 console.log(astToQuery(ast, 'button1:button'))
 
-function generateRandom() {
-    return parseInt(100 * Math.random() + '')
-}
