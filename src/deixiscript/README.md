@@ -13,10 +13,10 @@ at most one JS AST (of multiple possible types).
 
 # AST Transformations
 
-- modifier expansion (context free)
+- [modifier expansion (context free)](./expandModifiers.ts)
 - syntactic decompression (context free)
-- conversion of copula sentence to has sentence when needed (context dependent)
-- implicit reference resolution (context dependent)
+- [copula to "has", when needed (context dependent)](./copulaToHas.ts)
+- [implicit reference resolution (context dependent)](./deixis.ts)
 - semantic decompression (context dependent)
 - universal quantifier expansion (context dependent)
 - sort ASTs by order of execution (context dependent, needs explicit references)
