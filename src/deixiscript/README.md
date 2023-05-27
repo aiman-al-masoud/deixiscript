@@ -16,7 +16,7 @@ at most one JS AST (of multiple possible types).
 - [modifier expansion (context free)](./expandModifiers.ts)
 - syntactic decompression (context free)
 - [copula to "has", when needed (context dependent)](./copulaToHas.ts)
-- [implicit reference resolution (context dependent)](./deixis.ts)
+- [implicit reference resolution (context dependent)](./resImplRefs.ts)
 - semantic decompression (context dependent)
 - universal quantifier expansion (context dependent)
 - sort ASTs by order of execution (context dependent, needs explicit references)
