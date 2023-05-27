@@ -22,17 +22,21 @@ function oneStep(ast: ast_node, wm: WorldModel): ast_node {
 
     findNounPhrases(ast).forEach(np => {
 
-        const query = convert(np)
-        const result = findAll(query.$, [] /* what vars?? */, { wm, derivClauses: [] })
+        const variable = `${np.head}${generateRandom()}:${np.head}` as const
+        const query = makeQuery(np, variable)
+        const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })
 
         if (result.length > 1 && !np.pluralizer) {
             throw new Error('ambiguous: multiple anaphoric matches!')
         } else if (result.length === 1) {
-            // return nounphrase with explicit reference
-            const match = result[0]
+            const map = result[0]
+            const match = map.get($(variable).$)
+
         } else if (!result.length) {
             updateWorldModel(np, wm)
         }
+
+        // return nounphrase with explicit reference
 
     })
 
@@ -46,7 +50,7 @@ function findNounPhrases(ast: ast_node): noun_phrase[] {
     throw new Error('not implemented error!')
 }
 
-function convert(ast: ast_node): ExpBuilder<LLangAst> {
+function makeQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
 
     switch (ast.type) {
         case 'noun-phrase':
@@ -55,17 +59,17 @@ function convert(ast: ast_node): ExpBuilder<LLangAst> {
             if (ast.owner !== undefined) throw new Error('noun phrase has owner!')
 
             {
-                let query: ExpBuilder<LLangAst> = $('x:thing').isa(ast.head)
+                let query: ExpBuilder<LLangAst> = $(variable).isa(ast.head)
 
                 if (ast.suchThat) {
-                    query = query.and(convert(ast.suchThat) as ExpBuilder<Conjunction>)
+                    query = query.and(makeQuery(ast.suchThat, variable) as ExpBuilder<Conjunction>)
                 }
 
                 return query
             }
 
         case 'has-sentence':
-            return $('x:thing').has(ast.object.head).as(ast.role.head)
+            return $(variable).has(ast.object.head).as(ast.role.head)
 
     }
 
@@ -74,4 +78,9 @@ function convert(ast: ast_node): ExpBuilder<LLangAst> {
 
 
 const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
-console.log(convert(ast))
+console.log(makeQuery(ast))
+
+
+function generateRandom() {
+    return parseInt(100 * Math.random() + '')
+}
