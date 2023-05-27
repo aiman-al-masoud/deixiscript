@@ -18,38 +18,54 @@ export function resImplRefs(
     ]
 }
 
+function oneStep<T extends ast_node>(ast: ast_node, wm: WorldModel): T
 function oneStep(ast: ast_node, wm: WorldModel): ast_node {
 
-    findNounPhrases(ast).forEach(np => {
+    switch (ast.type) {
+        case 'noun-phrase':
+            {
+                const variable = `${ast.head}${generateRandom()}:${ast.head}` as const
+                const query = astToQuery(ast, variable)
+                const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })
+                let id: string
 
-        const variable = `${np.head}${generateRandom()}:${np.head}` as const
-        const query = astToQuery(np, variable)
-        const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })
-        let id: string
+                if (result.length > 1 && !ast.pluralizer) {
+                    throw new Error('ambiguous: multiple anaphoric matches!')
+                } else if (result.length === 1) {
+                    const map = result[0]
+                    const match = map.get($(variable).$)
+                    id = match?.value!
+                } else if (!result.length) {
+                    id = ast.head + generateRandom()
+                    updateWorldModel(ast, wm, id)
+                }
 
-        if (result.length > 1 && !np.pluralizer) {
-            throw new Error('ambiguous: multiple anaphoric matches!')
-        } else if (result.length === 1) {
-            const map = result[0]
-            const match = map.get($(variable).$)
-            id = match?.value!
-        } else if (!result.length) {
-            id = np.head + generateRandom()
-            updateWorldModel(np, wm, id)
-        }
+                return {
+                    type: 'noun-phrase',
+                    head: id!,
+                }
+            }
+        case 'copula-sentence':
+            return {
+                type: 'copula-sentence',
+                subject: oneStep(ast.subject, wm),
+                object: oneStep(ast.object, wm),
+            }
+        case 'has-sentence':
+            return {
+                type: 'has-sentence',
+                subject: oneStep(ast.subject, wm),
+                object: oneStep(ast.object, wm),
+                role: oneStep(ast.role, wm),
+            }
 
-        // return nounphrase with explicit reference
+    }
 
-    })
-
+    throw new Error('not implemented!')
 }
 
 function updateWorldModel(np: noun_phrase, wm: WorldModel, id: string) {
 
-}
-
-function findNounPhrases(ast: ast_node): noun_phrase[] {
-    throw new Error('not implemented error!')
 }
 
 function astToQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
