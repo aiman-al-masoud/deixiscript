@@ -66,6 +66,11 @@ function oneStep(ast: ast_node, wm: WorldModel): ast_node {
 
 function updateWorldModel(np: noun_phrase, wm: WorldModel, id: string) {
     wm.push([id, np.head])
+
+    switch (np.suchThat?.type) {
+        case 'has-sentence':
+            wm.push([id, np.suchThat.object.head, np.suchThat.role.head])
+    }
 }
 
 function astToQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
@@ -99,8 +104,8 @@ function generateRandom() {
 }
 
 const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
-const ast2 = parse('the button')
+// const ast2 = parse('the button')
 // console.log(astToQuery(ast, 'button1:button'))
 console.log(oneStep(ast, wm))
 console.log(wm)
-console.log(oneStep(ast2, wm))
+console.log(oneStep(ast, wm))
