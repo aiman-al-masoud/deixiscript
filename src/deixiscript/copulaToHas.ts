@@ -148,6 +148,11 @@ export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
                 }
 
             }
+        case 'noun-phrase':
+            return {
+                ...ast,
+                suchThat: copulaToHas(ast.suchThat!, wm) as any
+            }
     }
 
     throw new Error('not implemented!')

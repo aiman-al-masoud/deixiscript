@@ -3,6 +3,12 @@
 // import { ast_node, noun_phrase } from './ast-types.ts'
 // import { syntaxes } from './grammar.ts'
 
+import { Ast, WorldModel } from "../machines-like-us/types.ts";
+import { noun_phrase } from "./ast-types.ts";
+import { copulaToHas } from "./copulaToHas.ts";
+import { expandModifiers } from "./expandModifiers.ts";
+import { parse } from "./parse.ts";
+
 // import { $, ExpBuilder } from '../machines-like-us/exp-builder.ts'
 // import { Ast, WorldModel } from '../machines-like-us/types.ts'
 // // import { getParts } from '../machines-like-us/wm-funcs.ts'
@@ -92,4 +98,24 @@
 
 // // }
 
+const wm: WorldModel = [
+    ['background', 'thing'],
+    ['button', 'thing'],
+    ['color', 'thing'],
+    ['button', 'color', 'background'],
+    ['red', 'color'],
+    // ['foreground', 'thing'],
+    // ['button', 'color', 'foreground'],
+]
 
+console.log(copulaToHas(expandModifiers(parse('the red button')), wm))
+
+
+// function convert(np: noun_phrase): Ast {
+
+//     if (np.modifiers) {
+//         throw new Error('noun phrase has modifiers!')
+//     }
+
+
+// }
