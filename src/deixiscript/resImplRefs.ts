@@ -99,7 +99,8 @@ function generateRandom() {
 }
 
 const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
+const ast2 = parse('the button')
 // console.log(astToQuery(ast, 'button1:button'))
 console.log(oneStep(ast, wm))
 console.log(wm)
-
+console.log(oneStep(ast2, wm))
