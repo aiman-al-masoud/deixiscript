@@ -9,7 +9,7 @@ import { findAll } from "../machines-like-us/findAll.ts";
 
 export function resImplRefs(
     asts: ast_node[],
-    wm: WorldModel
+    wm: WorldModel,
 ): [ast_node[], WorldModel] {
 
     return [
