@@ -23,17 +23,19 @@ function oneStep(ast: ast_node, wm: WorldModel): ast_node {
     findNounPhrases(ast).forEach(np => {
 
         const variable = `${np.head}${generateRandom()}:${np.head}` as const
-        const query = makeQuery(np, variable)
+        const query = astToQuery(np, variable)
         const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })
+        let id: string
 
         if (result.length > 1 && !np.pluralizer) {
             throw new Error('ambiguous: multiple anaphoric matches!')
         } else if (result.length === 1) {
             const map = result[0]
             const match = map.get($(variable).$)
-
+            id = match?.value!
         } else if (!result.length) {
-            updateWorldModel(np, wm)
+            id = np.head + generateRandom()
+            updateWorldModel(np, wm, id)
         }
 
         // return nounphrase with explicit reference
@@ -42,7 +44,7 @@ function oneStep(ast: ast_node, wm: WorldModel): ast_node {
 
 }
 
-function updateWorldModel(np: noun_phrase, wm: WorldModel) {
+function updateWorldModel(np: noun_phrase, wm: WorldModel, id: string) {
 
 }
 
@@ -50,7 +52,7 @@ function findNounPhrases(ast: ast_node): noun_phrase[] {
     throw new Error('not implemented error!')
 }
 
-function makeQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
+function astToQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
 
     switch (ast.type) {
         case 'noun-phrase':
@@ -62,7 +64,7 @@ function makeQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
                 let query: ExpBuilder<LLangAst> = $(variable).isa(ast.head)
 
                 if (ast.suchThat) {
-                    query = query.and(makeQuery(ast.suchThat, variable) as ExpBuilder<Conjunction>)
+                    query = query.and(astToQuery(ast.suchThat, variable) as ExpBuilder<Conjunction>)
                 }
 
                 return query
@@ -78,8 +80,7 @@ function makeQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
 
 
 const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
-console.log(makeQuery(ast))
-
+console.log(astToQuery(ast, 'button1:button'))
 
 function generateRandom() {
     return parseInt(100 * Math.random() + '')
