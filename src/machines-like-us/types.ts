@@ -123,10 +123,6 @@ export function isConst(t: Atom): t is Constant {
     return t.type === 'constant'
 }
 
-// export function getVarType(v: Variable) {
-//     return v.varType
-// }
-
 export function isTerm(a: Atom): a is Term {
     return isVar(a) || isConst(a)
 }
