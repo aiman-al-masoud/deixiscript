@@ -1,4 +1,4 @@
-import { ast_node, copula_sentence, } from './ast-types.ts'
+import { ast_node, copula_sentence, sentence, } from './ast-types.ts'
 import { parse } from './parse.ts'
 
 export function expandModifiers<T extends ast_node>(ast: T): T {
@@ -12,17 +12,11 @@ export function expandModifiers<T extends ast_node>(ast: T): T {
 
             const copulaSentences = ast.modifiers.map(m => makeCopular(m, ast.head))
 
-            if (copulaSentences.length === 1) {
-
-                return {
-                    ...ast,
-                    suchThat: copulaSentences[0],
-                    modifiers: undefined,
-                }
-
+            return {
+                ...ast,
+                suchThat: makeAnd(copulaSentences),
+                modifiers: undefined,
             }
-
-            throw new Error('not implemented!')
 
         case 'copula-sentence':
             return {
@@ -50,9 +44,21 @@ function makeCopular(modifier: string, head: string): copula_sentence {
     }
 }
 
-// function makeAnd(sentences: sentence[]): and_sentence {
+function makeAnd(sentences: sentence[]): ast_node {
 
-const r = parse('the red button')
+    if (sentences.length === 1) {
+        return sentences[0]
+    }
+
+    return {
+        type: 'and-sentence',
+        first: sentences[0],
+        second: makeAnd(sentences.slice(1)) as sentence
+    }
+
+}
+
+const r = parse('the red big button')
 console.log(r)
 const r2 = expandModifiers(r)
 console.log(r2)
