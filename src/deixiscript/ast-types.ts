@@ -7,7 +7,6 @@ export type copula_sentence = {
 }
 
 
-
 export type noun_phrase = {
     type: 'noun-phrase'
     modifiers?: string[]
@@ -53,7 +52,7 @@ type comparative_sentence = {
 
 
 
-type has_sentence = {
+export type has_sentence = {
     type: 'has-sentence'
     subject: noun_phrase
     object: noun_phrase
