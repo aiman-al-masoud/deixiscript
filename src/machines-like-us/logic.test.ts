@@ -4,6 +4,7 @@ import { findAll } from "./findAll.ts";
 import { test } from "./test.ts";
 import { KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
+import { getParts } from "./wm-funcs.ts";
 
 export const model: WorldModel = [
 
@@ -162,3 +163,29 @@ Deno.test({
     }
 })
 
+
+Deno.test({
+    name: 'test6',
+    fn: () => {
+
+        // this fails because the logic that checks inheritance of properties
+        // is missing.
+
+        const wm: WorldModel = [
+            ['speed', 'thing'],
+            ['fast', 'speed'],
+            ['slow', 'speed'],
+            ['animal', 'speed'],
+            ['cat', 'animal'],
+            ['animal', 'speed', 'speed'],
+            ['speed', 'thing'],
+        ]
+
+        const query = $('fast').isa('s:thing')
+            .and($('cat').has('s:thing').as('r:thing'))
+
+        const r = findAll(query.$, [$('s:thing').$, $('r:thing').$], { wm, derivClauses: [] })
+        assert(r[0]?.get($('s:thing').$)?.value === 'speed')
+
+    }
+})
