@@ -32,11 +32,11 @@ type Field = {
 function typeToTs(type: AstType): string {
 
     if (type.taggedUnion) {
-        return `type ${type.name} = ${type.taggedUnion.reduce((a, b) => a + '|' + b)}`
+        return `export type ${type.name} = ${type.taggedUnion.reduce((a, b) => a + '|' + b)}`
     }
 
     return `
-    type ${safeName(type.name)} = {
+    export type ${safeName(type.name)} = {
         type : '${type.name}'
         ${Object.values(type.fields).map(x => fieldToTs(x)).reduce((a, b) => a + '\n\t' + b)}
     }
@@ -122,7 +122,7 @@ function generateField(member: Member, syntaxes: SyntaxMap): Field {
 }
 
 function safeName(name: string) {
-    return name.replace('-', '_')
+    return name.replaceAll('-', '_')
 }
 
 function isLiteral(syntax: Syntax) {
