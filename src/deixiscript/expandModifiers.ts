@@ -1,4 +1,4 @@
-import { ast_node, copula_sentence, sentence, } from './ast-types.ts'
+import { and_sentence, ast_node, copula_sentence, sentence, } from './ast-types.ts'
 import { parse } from './parse.ts'
 
 export function expandModifiers<T extends ast_node>(ast: T): T
@@ -45,7 +45,7 @@ function makeCopular(modifier: string, head: string): copula_sentence {
     }
 }
 
-function makeAnd(sentences: sentence[]): ast_node {
+function makeAnd(sentences: sentence[]): sentence | and_sentence {
 
     if (sentences.length === 1) {
         return sentences[0]
@@ -54,7 +54,7 @@ function makeAnd(sentences: sentence[]): ast_node {
     return {
         type: 'and-sentence',
         first: sentences[0],
-        second: makeAnd(sentences.slice(1)) as sentence
+        second: makeAnd(sentences.slice(1))
     }
 
 }
