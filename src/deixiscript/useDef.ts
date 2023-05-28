@@ -20,6 +20,7 @@ function oneStep(astNumber: number, ast: ast_node, wm: WorldModel): WorldModel {
     switch (ast.type) {
         case 'verb-sentence':
             wmCopy.push([instructionId, ast.subject.head, 'use'])
+            if (ast.receiver) wmCopy.push([instructionId, ast.receiver.head, 'use'])
             if (ast.object) wmCopy.push([instructionId, ast.object.head, 'use'])
             break
         case 'there-is-sentence':

@@ -25,6 +25,14 @@ export function expandModifiers(ast: ast_node): ast_node {
                 subject: expandModifiers(ast.subject),
                 object: expandModifiers(ast.object),
             }
+        case 'verb-sentence':
+            return {
+                type: 'verb-sentence',
+                subject: expandModifiers(ast.subject),
+                object: ast.object ? expandModifiers(ast.object) : undefined,
+                receiver : ast.receiver ? expandModifiers(ast.receiver) : undefined,
+                verb: ast.verb,
+            }
     }
 
     throw new Error('not implemented!')
@@ -59,7 +67,7 @@ function makeAnd(sentences: sentence[]): sentence | and_sentence {
 
 }
 
-const r = parse('the red big button is blue')
-console.log(r)
-const r2 = expandModifiers(r)
-console.log(r2)
+// const r = parse('the red big button is blue')
+// console.log(r)
+// const r2 = expandModifiers(r)
+// console.log(r2)

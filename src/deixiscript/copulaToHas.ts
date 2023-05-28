@@ -42,7 +42,15 @@ export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
             return {
                 type: 'noun-phrase',
                 head: ast.head,
-                suchThat: copulaToHas(ast.suchThat!, wm),
+                suchThat: ast.suchThat ? copulaToHas(ast.suchThat, wm) : undefined,
+            }
+        case 'verb-sentence':
+            return {
+                type: 'verb-sentence',
+                verb: ast.verb,
+                subject: copulaToHas(ast.subject, wm),
+                object: ast.object ? copulaToHas(ast.object, wm) : undefined,
+                receiver: ast.receiver ? copulaToHas(ast.receiver, wm) : undefined,
             }
     }
 
@@ -50,6 +58,6 @@ export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
 }
 
 
-console.log(copulaToHas(parse('the button is red'), wm))
+// console.log(copulaToHas(parse('the button is red'), wm))
 
 

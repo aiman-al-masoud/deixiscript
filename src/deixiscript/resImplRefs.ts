@@ -7,8 +7,8 @@ import { wm } from './example-world-model.ts'
 import { $, ExpBuilder } from "../machines-like-us/exp-builder.ts";
 import { findAll } from "../machines-like-us/findAll.ts";
 
-function resImpRefs<T extends ast_node>(ast: ast_node, wm: WorldModel): T
-function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
+export function resImpRefs<T extends ast_node>(ast: T, wm: WorldModel): T
+export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
 
     switch (ast.type) {
         case 'noun-phrase':
@@ -44,6 +44,14 @@ function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
                 subject: resImpRefs(ast.subject, wm),
                 object: resImpRefs(ast.object, wm),
                 role: resImpRefs(ast.role, wm),
+            }
+        case 'verb-sentence':
+            return {
+                type: 'verb-sentence',
+                verb: ast.verb,
+                subject: resImpRefs(ast.subject, wm),
+                object: ast.object ? resImpRefs(ast.object, wm) : undefined,
+                receiver: ast.receiver ? resImpRefs(ast.receiver, wm) : undefined,
             }
 
     }
@@ -87,9 +95,9 @@ function generateRandom() {
     return parseInt(100 * Math.random() + '')
 }
 
-const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
-// const ast2 = parse('the button')
-// console.log(astToQuery(ast, 'button1:button'))
-console.log(resImpRefs(ast, wm))
-console.log(wm)
-console.log(resImpRefs(ast, wm))
+// const ast = copulaToHas(expandModifiers(parse('the red button')), wm)
+// // const ast2 = parse('the button')
+// // console.log(astToQuery(ast, 'button1:button'))
+// console.log(resImpRefs(ast, wm))
+// console.log(wm)
+// console.log(resImpRefs(ast, wm))
