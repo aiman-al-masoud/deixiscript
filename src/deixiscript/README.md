@@ -19,6 +19,7 @@ at most one JS AST (of multiple possible types).
 - [implicit reference resolution (context dependent)](./resImplRefs.ts)
 - semantic decompression (context dependent)
 - universal quantifier expansion (context dependent)
+- add instructions and use/def relationships to world model
 - sort ASTs by order of execution (context dependent, needs explicit references)
 
 # Parsing a Deixiscript Sentence
