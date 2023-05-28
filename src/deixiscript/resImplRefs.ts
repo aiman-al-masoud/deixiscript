@@ -88,7 +88,7 @@ function astToQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
 
     }
 
-    throw new Error('not implemented!')
+    throw new Error('not implemented: '+ ast.type)
 }
 
 function generateRandom() {

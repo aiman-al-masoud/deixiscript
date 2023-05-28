@@ -6,13 +6,17 @@ import { useDef } from "./useDef.ts";
 import { WorldModel } from "../machines-like-us/types.ts";
 
 const sourceCode = `
-the player does jump to the enemy.
+the fast player does jump to the enemy.
 the player is a sprite.
 the player does die.
 `
 
-let wm1: WorldModel = [
-    ['sprite', 'thing'],
+let wm1: WorldModel = [ //TODO: inheritance of roles is broken
+    ['player', 'thing'],
+    ['speed', 'thing'],
+    ['fast', 'speed'],
+    ['slow', 'speed'],
+    ['player', 'speed', 'speed'],
 ]
 
 const sentences = sourceCode.split('.').map(x => x.trim()).filter(x => x)
