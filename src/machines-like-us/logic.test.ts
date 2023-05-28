@@ -189,3 +189,26 @@ Deno.test({
 
     }
 })
+
+
+Deno.test({
+    name: 'test7',
+    fn: () => {
+
+        const wm: WorldModel = [
+            ['speed', 'thing'],
+            ['fast', 'speed'],
+            ['slow', 'speed'],
+            ['animal', 'speed'],
+            ['cat', 'animal'],
+            ['animal', 'speed', 'part'],
+            ['animal', 'vr#1', 'part'],
+            ['vr#1', 'value-restriction'],
+            ['vr#1', 'speed', 'subject'],
+            ['vr#1', 'speed', 'object'],
+            ['speed', 'thing'],
+        ]
+
+        console.log(getParts('cat', wm))
+    }
+})
