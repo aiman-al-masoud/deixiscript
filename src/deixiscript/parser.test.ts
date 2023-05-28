@@ -192,3 +192,15 @@ Deno.test({
         })
     }
 })
+
+Deno.test({
+    name: 'test12',
+    fn: () => {
+        const r = $('there is a red cat').parse()
+        console.log(r)
+        assertObjectMatch(r as object, {
+            subject: { modifiers: ["red"], head: "cat", type: "noun-phrase" },
+            type: "there-is-sentence"
+        })
+    }
+})

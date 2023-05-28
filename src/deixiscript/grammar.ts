@@ -3,7 +3,7 @@ import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
 import { generateTypes } from '../parser/generate-types.ts'
 
-const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence')
+const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence', 'there-is-sentence')
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative', 'in-locative', 'complement',)
 const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat', 'receiver', 'location',)
 
@@ -130,8 +130,12 @@ export const syntaxes: SyntaxMap<
     ],
     'complement': [
         { types: ['to-dative', 'in-locative'], expand: true, sep: 'space' }
+    ],
+    'there-is-sentence': [
+        { literals: ['there is'] },
+        { types: ['space'], number: '1|0' },
+        { types: ['noun-phrase'], role: 'subject' },
     ]
-
 
 }
 
