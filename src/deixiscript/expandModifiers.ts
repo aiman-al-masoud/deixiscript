@@ -2,29 +2,28 @@ import { ast_node, copula_sentence, } from './ast-types.ts'
 import { parse } from './parse.ts'
 
 export function expandModifiers<T extends ast_node>(ast: T): T {
-
     switch (ast.type) {
+
         case 'noun-phrase':
 
             if (!ast.modifiers) {
                 return ast
             }
 
-            {
-                const x = ast.modifiers.map(m => makeCopular(m, ast.head))
+            const copulaSentences = ast.modifiers.map(m => makeCopular(m, ast.head))
 
-                if (x.length === 1) {
+            if (copulaSentences.length === 1) {
 
-                    return {
-                        ...ast,
-                        suchThat: x[0],
-                        modifiers: undefined,
-                    }
-
+                return {
+                    ...ast,
+                    suchThat: copulaSentences[0],
+                    modifiers: undefined,
                 }
 
-                throw new Error('not implemented!')
             }
+
+            throw new Error('not implemented!')
+
         case 'copula-sentence':
             return {
                 ...ast,

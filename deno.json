@@ -1,0 +1,9 @@
+{
+    "lint": {
+        "rules": {
+            "tags": [ "recommended" ],
+            "include": [ "ban-untagged-todo" ],
+            "exclude": [ "no-case-declarations" ]
+        }
+    }
+}
