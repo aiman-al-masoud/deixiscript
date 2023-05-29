@@ -25,6 +25,7 @@ const asts2 = asts.map(x => expandModifiers(x))
 const asts3 = asts2.map(x => copulaToHas(x, wm1))
 const asts4 = asts3.map(x => resImpRefs(x, wm1))
 wm1 = useDef(asts4, wm1)
+console.log(asts4)
 console.log(wm1)
 
 
