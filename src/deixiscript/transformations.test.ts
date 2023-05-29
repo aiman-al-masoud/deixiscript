@@ -12,7 +12,7 @@ the player does die.
 there is an enemy.
 `
 
-let wm1: WorldModel = [ //TODO: inheritance of roles is broken
+let wm: WorldModel = [ //TODO: inheritance of roles is broken
     ['enemy', 'thing'],
     ['player', 'thing'],
     ['speed', 'thing'],
@@ -24,10 +24,10 @@ let wm1: WorldModel = [ //TODO: inheritance of roles is broken
 const sentences = sourceCode.split('.').map(x => x.trim()).filter(x => x)
 const asts = sentences.map(x => parse(x))
 const asts2 = asts.map(x => expandModifiers(x))
-const asts3 = asts2.map(x => copulaToHas(x, wm1))
-const asts4 = asts3.map(x => resImpRefs(x, wm1))
-wm1 = useDef(asts4, wm1)
+const asts3 = asts2.map(x => copulaToHas(x, wm))
+const asts4 = asts3.map(x => resImpRefs(x, wm))
+wm = useDef(asts4, wm)
 console.log(asts4)
-console.log(wm1)
+console.log(wm)
 
 
