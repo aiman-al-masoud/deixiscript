@@ -119,6 +119,11 @@ to the limited expressivity of JS:
 - Initialization with head and modifiers treated as: call to constructor and
   then property assigments as two or more separate commands.
 
+
+Also, a bunch of distant Deixiscript ASTs may all extend and refine a single JS structure:
+
+- when a X Y does V to a W Z then ... when a A Y does V to a B Z  then ...
+
 # Deixiscript AST
 
 An abstract representation of a natural language sentence.
