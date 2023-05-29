@@ -25,7 +25,7 @@ export const syntaxes: SyntaxMap<
         { number: '+', role: 'digits', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
     ],
     'noun-phrase': [
-        { literals: ['the', 'a', 'an'], number: '1|0' },
+        { literals: ['the', 'an', 'a',], number: '1|0' }, // an comes first! very important!
         { types: ['space'], number: '1|0' },
         { types: ['identifier'], role: 'modifiers', number: 'all-but-last', sep: 'space' },
         { types: ['space'], number: '1|0' },

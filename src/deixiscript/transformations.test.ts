@@ -9,9 +9,11 @@ const sourceCode = `
 the fast player does jump to the enemy.
 the player is a sprite.
 the player does die.
+there is an enemy.
 `
 
 let wm1: WorldModel = [ //TODO: inheritance of roles is broken
+    ['enemy', 'thing'],
     ['player', 'thing'],
     ['speed', 'thing'],
     ['fast', 'speed'],

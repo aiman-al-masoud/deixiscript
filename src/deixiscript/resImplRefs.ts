@@ -1,9 +1,5 @@
 import { Conjunction, LLangAst, WorldModel } from "../machines-like-us/types.ts";
 import { ast_node, noun_phrase } from "./ast-types.ts";
-import { copulaToHas } from "./copulaToHas.ts";
-import { expandModifiers } from "./expandModifiers.ts";
-import { parse } from "./parse.ts";
-import { wm } from './example-world-model.ts'
 import { $, ExpBuilder } from "../machines-like-us/exp-builder.ts";
 import { findAll } from "../machines-like-us/findAll.ts";
 
@@ -14,6 +10,9 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
         case 'noun-phrase':
             const variable = `${ast.head}${generateRandom()}:${ast.head}` as const
             const query = astToQuery(ast, variable)
+            
+            if (variable.includes('enemy')) console.log('query=', query)
+
             const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })
             let id: string
 
@@ -53,6 +52,11 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
                 object: ast.object ? resImpRefs(ast.object, wm) : undefined,
                 receiver: ast.receiver ? resImpRefs(ast.receiver, wm) : undefined,
             }
+        case 'there-is-sentence':
+            return {
+                type: 'there-is-sentence',
+                subject: resImpRefs(ast.subject, wm),
+            }
 
     }
 
@@ -85,10 +89,11 @@ function astToQuery(ast: ast_node, variable: string): ExpBuilder<LLangAst> {
             return query
         case 'has-sentence':
             return $(variable).has(ast.object.head).as(ast.role.head)
-
+        case 'copula-sentence':
+            return $(variable).isa(ast.object.head)
     }
 
-    throw new Error('not implemented: '+ ast.type)
+    throw new Error('not implemented: ' + ast.type)
 }
 
 function generateRandom() {

@@ -2,8 +2,6 @@ import { $ } from '../machines-like-us/exp-builder.ts'
 import { WorldModel } from '../machines-like-us/types.ts'
 import { findAll } from '../machines-like-us/findAll.ts'
 import { ast_node, copula_sentence, has_sentence } from './ast-types.ts'
-import { parse } from './parse.ts'
-import { wm } from './example-world-model.ts'
 
 
 export function copulaToHas<T extends ast_node>(ast: T, wm: WorldModel): T
@@ -51,6 +49,11 @@ export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
                 subject: copulaToHas(ast.subject, wm),
                 object: ast.object ? copulaToHas(ast.object, wm) : undefined,
                 receiver: ast.receiver ? copulaToHas(ast.receiver, wm) : undefined,
+            }
+        case 'there-is-sentence':
+            return {
+                type: 'there-is-sentence',
+                subject: copulaToHas(ast.subject, wm),
             }
     }
 

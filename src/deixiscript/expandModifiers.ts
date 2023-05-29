@@ -1,5 +1,4 @@
 import { and_sentence, ast_node, copula_sentence, sentence, } from './ast-types.ts'
-import { parse } from './parse.ts'
 
 export function expandModifiers<T extends ast_node>(ast: T): T
 export function expandModifiers(ast: ast_node): ast_node {
@@ -30,8 +29,13 @@ export function expandModifiers(ast: ast_node): ast_node {
                 type: 'verb-sentence',
                 subject: expandModifiers(ast.subject),
                 object: ast.object ? expandModifiers(ast.object) : undefined,
-                receiver : ast.receiver ? expandModifiers(ast.receiver) : undefined,
+                receiver: ast.receiver ? expandModifiers(ast.receiver) : undefined,
                 verb: ast.verb,
+            }
+        case 'there-is-sentence':
+            return {
+                type: 'there-is-sentence',
+                subject: expandModifiers(ast.subject),
             }
     }
 
