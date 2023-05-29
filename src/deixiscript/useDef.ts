@@ -1,5 +1,5 @@
 import { WorldModel } from "../machines-like-us/types.ts";
-import { ast_node } from "./ast-types.ts";
+import { ast_node } from "./deixi-ast.ts";
 
 export function useDef(asts: ast_node[], wm: WorldModel): WorldModel {
 

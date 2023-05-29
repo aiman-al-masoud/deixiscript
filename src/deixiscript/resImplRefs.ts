@@ -1,5 +1,5 @@
 import { Conjunction, LLangAst, WorldModel } from "../machines-like-us/types.ts";
-import { ast_node, noun_phrase } from "./ast-types.ts";
+import { ast_node, noun_phrase } from "./deixi-ast.ts";
 import { $, ExpBuilder } from "../machines-like-us/exp-builder.ts";
 import { findAll } from "../machines-like-us/findAll.ts";
 
@@ -10,7 +10,7 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
         case 'noun-phrase':
             const variable = `${ast.head}${generateRandom()}:${ast.head}` as const
             const query = astToQuery(ast, variable)
-            
+
             if (variable.includes('enemy')) console.log('query=', query)
 
             const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })

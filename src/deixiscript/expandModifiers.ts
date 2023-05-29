@@ -1,4 +1,4 @@
-import { and_sentence, ast_node, copula_sentence, sentence, } from './ast-types.ts'
+import { and_sentence, ast_node, copula_sentence, sentence, } from './deixi-ast.ts'
 
 export function expandModifiers<T extends ast_node>(ast: T): T
 export function expandModifiers(ast: ast_node): ast_node {

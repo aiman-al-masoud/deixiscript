@@ -1,7 +1,7 @@
 import { $ } from '../machines-like-us/exp-builder.ts'
 import { WorldModel } from '../machines-like-us/types.ts'
 import { findAll } from '../machines-like-us/findAll.ts'
-import { ast_node, copula_sentence, has_sentence } from './ast-types.ts'
+import { ast_node, copula_sentence, has_sentence } from './deixi-ast.ts'
 
 
 export function copulaToHas<T extends ast_node>(ast: T, wm: WorldModel): T

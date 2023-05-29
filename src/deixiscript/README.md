@@ -89,7 +89,11 @@ sort algorithm.
 
 # Translation from Deixiscript AST to JS AST
 
-[Programmatic Semantics](./semantics.md)
+Programmatic Semantics: a mapping between natural linguistic structures and basic programming language structures.
+
+You need a general data format to configure the mapping between Deixiscript (natlang-like) AST types and Intermediate (JS-like) AST types.
+
+[semantics](./semantics.md)
 
 The same type of Deixiscript AST can map to different types of JS ASTs. Based
 on:
