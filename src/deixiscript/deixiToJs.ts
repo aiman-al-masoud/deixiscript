@@ -19,7 +19,7 @@ export function deixiToJs(deixi: ast_node): JsAst {
                 type: 'method-call',
                 variable : deixi.subject.head,
                 name: deixi.verb,
-                arguments: {}
+                arguments: {receiver: deixi.receiver?.head as any}
             }
         case 'copula-sentence':
             return {
