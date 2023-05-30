@@ -1,7 +1,20 @@
 import { WorldModel } from "../machines-like-us/types.ts";
 import { uniq } from "../utils/uniq.ts";
 
-export function instructionSort(wm: WorldModel): (readonly [string, string])[] {
+export function instructionSort(wm: WorldModel, instructions: unknown[]) {
+
+    const dg = getDependencyGraph(wm)
+    const k = kahn(dg)
+    // console.log(k)
+    // return k
+    const result = k.map(i =>  instructions.at(parseInt(i.match(/\d+/)?.toString()!)) )
+    // console.log('result=', result)
+    return result
+    // return results
+}
+
+
+function getDependencyGraph(wm: WorldModel) {
 
     const data = wm.filter(x => x[2] === 'use' || x[2] === 'def')
     const instructions = uniq(data.map(x => x[0]))
@@ -16,16 +29,13 @@ export function instructionSort(wm: WorldModel): (readonly [string, string])[] {
         return res
     })
 
-    const k = kahn(results)
-    console.log(k)
-
     return results
-}
 
+}
 
 function kahn(edgeList: (readonly [string, string])[]) {
 
-    console.log(edgeList)
+    // console.log(edgeList)
 
     const l: string[] = []
     const dependents = uniq(edgeList.map(x => x[1]))
@@ -49,8 +59,11 @@ function kahn(edgeList: (readonly [string, string])[]) {
 
     }
 
-    console.log(edgeList)
-    console.log(l)
+    if (edgeList.length) throw new Error('failed to find order!')
+
+    // console.log(edgeList)
+    // console.log(l)
+    return l
 }
 
 

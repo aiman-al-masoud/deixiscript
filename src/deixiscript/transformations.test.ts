@@ -28,8 +28,8 @@ const asts2 = asts.map(x => expandModifiers(x))
 const asts3 = asts2.map(x => copulaToHas(x, wm))
 const asts4 = asts3.map(x => resImpRefs(x, wm))
 wm = useDef(asts4, wm)
-instructionSort(wm)
-console.log(asts4)
+const asts5 = instructionSort(wm, asts4)
+console.log(asts5)
 console.log(wm)
 
 
