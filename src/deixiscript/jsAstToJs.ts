@@ -9,7 +9,8 @@ export function jsAstToJs(jsAst: JsAst): string {
         case 'function-call':
             return `${jsAst.name}(${jsAst.arguments})`
         case 'method-call':
-            return `${jsAst.variable}.${jsAst.name}(${JSON.stringify(jsAst.arguments)})`
+            // @ts-ignore
+            return `${jsAst.variable}.${jsAst.name}({receiver:${jsAst.arguments['receiver'].name}})`
 
     }
 

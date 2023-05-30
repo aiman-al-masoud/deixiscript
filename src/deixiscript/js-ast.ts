@@ -7,6 +7,7 @@ type JsExpression = JsArithmeticExp
     | JsMethodCall
     | JsNumberExp
     | JsStringExp
+    | JsVarExp
     | JsPropReadExp
 
 type JsStatement = JsVarDeclaration
@@ -58,14 +59,14 @@ type JsPropAssignment = {
 type JsFuncCall = {
     type: 'function-call'
     name: string
-    arguments: JsExpression[] | {[name:string]:JsExpression}
+    arguments: JsExpression[] | { [name: string]: JsExpression }
 }
 
 type JsMethodCall = {
-    type : 'method-call'
-    variable:string
-    name:string
-    arguments: JsExpression[] | {[name:string]:JsExpression}
+    type: 'method-call'
+    variable: string
+    name: string
+    arguments: JsExpression[] | { [name: string]: JsExpression }
 }
 
 type JsWhileLoop = {
@@ -136,6 +137,11 @@ type JsBlock = {
 type JsReturnStmnt = {
     type: 'return-statement'
     expression: JsExpression
+}
+
+type JsVarExp = {
+    type: 'variable',
+    name: string
 }
 
 
