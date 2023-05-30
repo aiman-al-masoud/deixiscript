@@ -10,9 +10,6 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
         case 'noun-phrase':
             const variable = `${ast.head}${generateRandom()}:${ast.head}` as const
             const query = astToQuery(ast, variable)
-
-            if (variable.includes('enemy')) console.log('query=', query)
-
             const result = findAll(query.$, [$(variable).$], { wm, derivClauses: [] })
             let id: string
 
