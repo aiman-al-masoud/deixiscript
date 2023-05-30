@@ -1,13 +1,21 @@
 Has Sentence
+
 - property assignment
 - property assignment on prototype/class (is it different?)
 
 When Sentence
+
 - method definition
 - add action listener
 
 If Sentence
-- define a predicate function/method ("a man is tall if his height is greater than 1.8"), also "when" could fit here
+
+- define a predicate function/method ("a man is tall if his height is greater
+  than 1.8"), also "when" could fit here
 - if statement
 
+Verb Sentence
 
+- method invocation
+- or function invocation?
+- (with named rather than positional arguments)
