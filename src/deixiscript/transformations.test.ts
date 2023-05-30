@@ -4,6 +4,7 @@ import { copulaToHas } from "./copulaToHas.ts";
 import { resImpRefs } from "./resImplRefs.ts";
 import { useDef } from "./useDef.ts";
 import { WorldModel } from "../machines-like-us/types.ts";
+import { instructionSort } from "./instructionSort.ts";
 
 const sourceCode = `
 the fast player does jump to the enemy.
@@ -27,6 +28,7 @@ const asts2 = asts.map(x => expandModifiers(x))
 const asts3 = asts2.map(x => copulaToHas(x, wm))
 const asts4 = asts3.map(x => resImpRefs(x, wm))
 wm = useDef(asts4, wm)
+instructionSort(wm)
 console.log(asts4)
 console.log(wm)
 
