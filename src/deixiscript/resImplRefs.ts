@@ -35,7 +35,7 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
             return {
                 type: 'copula-sentence',
                 subject: resImpRefs(ast.subject, wm),
-                object: resImpRefs(ast.object, wm),
+                object: ast.object/* resImpRefs(ast.object, wm) */,
             }
         case 'has-sentence':
             return {
