@@ -1,13 +1,13 @@
 import { WorldModel } from "../machines-like-us/types.ts";
 import { uniq } from "../utils/uniq.ts";
 
-export function instructionSort(wm: WorldModel, instructions: unknown[]) {
+export function instructionSort<T>(wm: WorldModel, instructions: T[]) {
 
     const dg = getDependencyGraph(wm)
     const k = kahn(dg)
     // console.log(k)
     // return k
-    const result = k.map(i =>  instructions.at(parseInt(i.match(/\d+/)?.toString()!)) )
+    const result = k.map(i =>  instructions.at(parseInt(i.match(/\d+/)?.toString()!))! )
     // console.log('result=', result)
     return result
     // return results
