@@ -16,9 +16,10 @@ export function deixiToJs(deixi: ast_node): JsAst {
             }
         case 'verb-sentence':
             return {
-                type: 'function-call',
+                type: 'method-call',
+                variable : deixi.subject.head,
                 name: deixi.verb,
-                arguments: []
+                arguments: {}
             }
         case 'copula-sentence':
             return {

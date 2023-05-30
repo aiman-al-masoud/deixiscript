@@ -4,6 +4,7 @@ type JsExpression = JsArithmeticExp
     | JsComparisonExp
     | JsConsCallExp
     | JsFuncCall
+    | JsMethodCall
     | JsNumberExp
     | JsStringExp
     | JsPropReadExp
@@ -57,7 +58,14 @@ type JsPropAssignment = {
 type JsFuncCall = {
     type: 'function-call'
     name: string
-    arguments: JsExpression[]
+    arguments: JsExpression[] | {[name:string]:JsExpression}
+}
+
+type JsMethodCall = {
+    type : 'method-call'
+    variable:string
+    name:string
+    arguments: JsExpression[] | {[name:string]:JsExpression}
 }
 
 type JsWhileLoop = {
