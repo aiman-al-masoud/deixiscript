@@ -1,6 +1,6 @@
-import { LLangAst, Term } from "./types.ts";
+import { Atom, LLangAst, Term } from "./types.ts";
 
-export function getTerms(ast: LLangAst): Term[] {
+export function getTerms(ast: LLangAst): Atom[] {
     switch (ast.type) {
         case 'if-else':
             return getTerms(ast.condition).concat(getTerms(ast.otherwise)).concat(getTerms(ast.then))
@@ -20,9 +20,11 @@ export function getTerms(ast: LLangAst): Term[] {
         case 'existquant':
             return [ast.variable, ...getTerms(ast.where)]
         case 'list-literal':
-            return ast.list.flatMap(x => getTerms(x))
+            // return ast.list.flatMap(x => getTerms(x))
+            return [ast]
         case 'list-pattern':
-            return [ast.seq, ast.tail]
+            // return [ast.seq, ast.tail]
+            return [ast]
         case 'constant':
         case 'variable':
         case 'boolean':

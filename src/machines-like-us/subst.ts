@@ -84,12 +84,15 @@ function subst(
         case 'list-pattern':
             if (replacement.type !== 'list-literal') return ast
             if (!atomsEqual(variable, ast)) return ast
+            
+            // console.log('seq=', replacement.list.slice(0,-1), 'tail=', replacement.list.at(-1))
 
             return {
                 type: 'list-pattern',
                 seq: replacement.list.slice(0, -1) as any,
                 tail: replacement.list.at(-1) as any,
             }
+
         case 'variable':
             return atomsEqual(ast, variable) ? replacement : ast
         case 'constant':
