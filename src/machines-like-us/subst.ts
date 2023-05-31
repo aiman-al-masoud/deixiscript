@@ -83,14 +83,16 @@ function subst(
             }
         case 'list-pattern':
             if (!atomsEqual(variable, ast)) return ast
-            if (replacement.type !== 'list-literal') return ast
-            // if (replacement.type !== 'list-literal') return replacement
 
-            return {
+            if (replacement.type === 'list-literal') return {
                 type: 'list-pattern',
                 seq: { list: replacement.list.slice(0, -1), type: 'list-literal' },// as any,
                 tail: replacement.list.at(-1)! //as any,
             }
+
+            if (replacement.type==='list-pattern') return replacement
+
+            throw new Error('error!')
 
         case 'variable':
             return atomsEqual(ast, variable) ? replacement : ast
