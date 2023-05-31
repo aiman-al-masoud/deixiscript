@@ -31,32 +31,32 @@ export function match(template: LLangAst, formula: LLangAst) {
 
         return equals
     })
-        .map(unCrapify)
+    // .map(unCrapify)
 
     return result
 }
 
 
 
-function unCrapify(v: VarMap) {
-    const newEntries: [Variable, Atom][] = []
+// function unCrapify(v: VarMap) {
+//     const newEntries: [Variable, Atom][] = []
 
-    v.forEach((v, k) => {
-        if (k.type === 'list-pattern') {
+//     v.forEach((v, k) => {
+//         if (k.type === 'list-pattern') {
 
-            if (v.type !== 'list-literal') throw new Error('error! ' + v.type);
-            if (v.list.length < 1) throw new Error('error!')
+//             if (v.type !== 'list-literal') throw new Error('error! ' + v.type);
+//             if (v.list.length < 1) throw new Error('error!')
 
-            newEntries.push([k.seq as Variable, { type: 'list-literal', list: v.list.slice(0, -1) }])
-            newEntries.push([k.tail as Variable, v.list.at(-1)!])
+//             newEntries.push([k.seq as Variable, { type: 'list-literal', list: v.list.slice(0, -1) }])
+//             newEntries.push([k.tail as Variable, v.list.at(-1)!])
 
-        } else {
-            newEntries.push([k, v])
-        }
-    })
+//         } else {
+//             newEntries.push([k, v])
+//         }
+//     })
 
-    return deepMapOf(newEntries)
-}
+//     return deepMapOf(newEntries)
+// }
 
 
 

@@ -7,6 +7,8 @@ import { match } from "./match.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
+    console.log(formula)
+
     switch (formula.type) {
         case 'boolean':
             return formula.value
@@ -56,9 +58,10 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
         }
 
         const map = oldMatch(dc.conseq, formula)
-        
-        const newMap = match(dc.conseq, formula).at(0)
-        if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
+        // const map = match(dc.conseq, formula).at(0)
+
+        // const newMap = match(dc.conseq, formula).at(0)
+        // if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
 
         if (!map) {
             return false

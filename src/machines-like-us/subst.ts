@@ -83,8 +83,8 @@ function subst(
             }
         case 'list-pattern':
             if (!atomsEqual(variable, ast)) return ast
-            // if (replacement.type !== 'list-literal') return ast
-            if (replacement.type !== 'list-literal') return replacement
+            if (replacement.type !== 'list-literal') return ast
+            // if (replacement.type !== 'list-literal') return replacement
 
             return {
                 type: 'list-pattern',
