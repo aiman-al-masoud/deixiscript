@@ -271,9 +271,6 @@ function makeAtom(x: number | string | string[]): Atom {
         return { type: 'variable', name, varType }
     } else if (['true', 'false'].includes(x)) {
         return { type: 'boolean', value: x === 'true' ? true : false }
-        // } else if (parseNumber(x) !== undefined) {
-        //     console.log('LOOKKK HERE!', x)
-        //     return { type: 'number', value: parseNumber(x)! }
     } else {
         return { type: 'constant', value: x }
     }
