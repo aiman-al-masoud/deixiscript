@@ -81,14 +81,14 @@ function subst(
                 type: 'list-literal',
                 list: ast.list.map(e => subst(e, variable, replacement)),
             }
+
+        case 'list-pattern':
+            throw new Error('not implemented!')
         case 'variable':
             return atomsEqual(ast, variable) ? replacement : ast
         case 'constant':
-            return ast
-        case 'list-pattern':
-            throw new Error('not implemented!')
         case 'boolean':
-            throw new Error('not implemented!')
+            return ast
         case 'derived-prop':
             throw new Error('not implemented!')
 
