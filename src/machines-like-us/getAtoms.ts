@@ -34,4 +34,4 @@ export function getAtoms(ast: LLangAst): Atom[] {
 
 // import { $ } from "./exp-builder.ts";
 // const x = $('x:thing').isa('y').after('s:thing|e:thing').$
-// console.log(getTerms(x))
+// console.log(getAtoms(x))
