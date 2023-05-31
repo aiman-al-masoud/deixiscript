@@ -194,6 +194,22 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test8',
+    fn: () => {
+        const dp = $({ subject: 'x:thing', isSmallerThan: 'y:thing' }).when(
+            $('y:thing').isGreaterThan('x:thing')
+        ).$
+
+        const kb: KnowledgeBase = {
+            wm: [],
+            derivClauses: [dp],
+        }
+
+        assert(test($({ subject: 1, isSmallerThan: 2 }).$, kb))
+    }
+})
+
 // Deno.test({
 //     name: 'test6',
 //     fn: () => {

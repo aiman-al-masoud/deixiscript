@@ -6,15 +6,15 @@ export function $(x: Var): ExpBuilder<Variable>
 export function $(x: string[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Constant>
 export function $(x: number): ExpBuilder<Number>
-export function $(x: { [key: string]: string }): ExpBuilder<GeneralizedSimpleFormula>
+export function $(x: { [key: string]: string | number }): ExpBuilder<GeneralizedSimpleFormula>
 
-export function $(x: number | string | string[] | { [key: string]: string }): ExpBuilder<LLangAst> {
+export function $(x: number | string | string[] | { [key: string]: string | number }): ExpBuilder<LLangAst> {
 
     if (typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
         return new ExpBuilder(makeAtom(x as any))
     }
 
-    const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1])]))
+    const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1] as any)]))
     return new ExpBuilder({ type: 'generalized', keys: keys })
 }
 
@@ -209,14 +209,14 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isGreaterThan(formula: ExpBuilder<Formula> | number): ExpBuilder<GreaterThenFormula> {
+    isGreaterThan(atom: number | string): ExpBuilder<GreaterThenFormula> {
 
-        const f = typeof formula === 'number' ? makeAtom(formula) : formula.$
+        // const f = typeof formula === 'number' ? makeAtom(formula) : formula.$
 
         return new ExpBuilder({
             type: 'greater-than',
-            greater: this.exp,
-            lesser: f,
+            greater: this.exp as Atom,
+            lesser: makeAtom(atom as any),
         })
 
     }
@@ -282,6 +282,5 @@ function makeAtom(x: number | string | string[]): Atom {
 
 
 // console.log($({ first: 'x:thing', greaterThan: 'y:thing' }).$)
-
-console.log($(1).isGreaterThan(2).$)
+// console.log($(1).isGreaterThan(2).$)
 

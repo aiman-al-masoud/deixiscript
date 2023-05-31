@@ -110,7 +110,11 @@ function subst(
                 keys: newKeys
             }
         case 'greater-than':
-            throw new Error('not implemented!')
+            return {
+                type: 'greater-than',
+                greater: atomsEqual(variable, ast.greater) ? replacement : ast.greater,
+                lesser: atomsEqual(variable, ast.lesser) ? replacement : ast.lesser,
+            }
 
     }
 

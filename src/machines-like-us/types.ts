@@ -57,8 +57,8 @@ export type GeneralizedSimpleFormula = {
 
 export type GreaterThenFormula = {
     type: 'greater-than',
-    greater: LLangAst,
-    lesser: LLangAst,
+    greater: Atom,
+    lesser: Atom,
 }
 
 export type Number = {
