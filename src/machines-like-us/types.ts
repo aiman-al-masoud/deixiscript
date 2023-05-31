@@ -111,7 +111,7 @@ export type ExistentialQuantification = {
 
 export type DerivationClause = {
     type: 'derived-prop',
-    conseq: AtomicFormula,
+    conseq: SimpleFormula,
     when: LLangAst,
 }
 
@@ -185,4 +185,8 @@ export function isTruthy(atom: Atom) {
     } else {
         return !!atom
     }
+}
+
+export function isSimple(ast: LLangAst): ast is SimpleFormula {
+    return isAtomicFormula(ast) || ast.type === 'equality' || ast.type === 'generalized'
 }

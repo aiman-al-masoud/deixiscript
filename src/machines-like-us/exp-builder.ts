@@ -1,4 +1,4 @@
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, WorldModel } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, WorldModel, isSimple } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -100,8 +100,8 @@ export class ExpBuilder<T extends LLangAst> {
 
     when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
 
-        if (!isAtomicFormula(this.exp)) {
-            throw new Error(`the 'conseq' of a DerivationClause must be an AtomicFormula not a ${this.exp.type}`)
+        if (!isSimple(this.exp)) {
+            throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
         }
 
         return new ExpBuilder({

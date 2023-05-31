@@ -163,6 +163,29 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test6',
+    fn: () => {
+
+        const dp = $({ isStupid: 'x:thing' }).when(
+            $('x:thing').has('stupid').as('intelligence')
+        ).$
+
+        const kb: KnowledgeBase = {
+            wm: [
+                ['capra', 'animal'],
+                ['cat', 'animal'],
+                ['capra', 'stupid', 'intelligence'],
+                ['cat', 'smart', 'intelligence'],
+            ],
+            derivClauses: [dp]
+        }
+
+        assert(test($({ isStupid: 'capra' }).$, kb))
+        assert(!test($({ isStupid: 'cat' }).$, kb))
+
+    }
+})
 
 // Deno.test({
 //     name: 'test6',
@@ -212,3 +235,4 @@ Deno.test({
 //         console.log(getParts('cat', wm))
 //     }
 // })
+
