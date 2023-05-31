@@ -3,6 +3,9 @@ import { LLangAst } from "./types.ts"
 
 export function formulasEqual(f1: LLangAst, f2: LLangAst): boolean {
 
+    // console.log(f1.type, f2.type)
+
+
     if (f1.type === 'list-literal' && f2.type === 'list-pattern') {
         return f1.list.length >= 2
     } else if (f2.type === 'list-literal' && f1.type === 'list-pattern') {

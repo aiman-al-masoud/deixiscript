@@ -57,8 +57,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
         const map = oldMatch(dc.conseq, formula)
         
-        // const newMap = match(dc.conseq, formula).at(0)
-        // if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
+        const newMap = match(dc.conseq, formula).at(0)
+        if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
 
         if (!map) {
             return false
