@@ -15,7 +15,7 @@ export type KnowledgeBase = {
 
 export type LLangAst = Atom | Formula
 export type Atom = Term | ListPattern | ListLiteral
-export type Term = Constant | Variable | Boolean
+export type Term = Constant | Variable | Boolean | Number
 
 export type ListLiteral = {
     type: 'list-literal',
@@ -45,7 +45,7 @@ export type Boolean = {
 }
 
 export type Formula = SimpleFormula | CompositeFormula
-export type SimpleFormula = AtomicFormula | Equality | GeneralizedSimpleFormula
+export type SimpleFormula = AtomicFormula | Equality | GeneralizedSimpleFormula | GreaterThenFormula
 export type AtomicFormula = IsAFormula | HasFormula
 
 export type GeneralizedSimpleFormula = {
@@ -53,6 +53,17 @@ export type GeneralizedSimpleFormula = {
     keys: {
         [key: string]: Atom
     }
+}
+
+export type GreaterThenFormula = {
+    type: 'greater-than',
+    greater: LLangAst,
+    lesser: LLangAst,
+}
+
+export type Number = {
+    type : 'number',
+    value : number,
 }
 
 export type VarMap = DeepMap<Variable, Atom>

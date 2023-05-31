@@ -187,6 +187,13 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test7',
+    fn: () => {
+        assert(test($(2).isGreaterThan(1).$, { wm: [], derivClauses: [] }))
+    }
+})
+
 // Deno.test({
 //     name: 'test6',
 //     fn: () => {

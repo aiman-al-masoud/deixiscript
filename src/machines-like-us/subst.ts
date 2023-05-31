@@ -98,6 +98,7 @@ function subst(
             return atomsEqual(ast, variable) ? replacement : ast
         case 'constant':
         case 'boolean':
+        case 'number':
             return ast
         case 'derived-prop':
             throw new Error('not implemented!')
@@ -108,6 +109,9 @@ function subst(
                 type: 'generalized',
                 keys: newKeys
             }
+        case 'greater-than':
+            throw new Error('not implemented!')
+
     }
 
 }

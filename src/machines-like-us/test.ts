@@ -46,6 +46,12 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             break
         case 'if-else':
             return test(formula.condition, kb) ? test(formula.then, kb) : test(formula.otherwise, kb)
+        case 'greater-than':
+            if (
+                formula.greater.type === 'number'
+                && formula.lesser.type === 'number'
+            ) return formula.greater.value > formula.lesser.value
+
     }
 
     return kb.derivClauses.some(dc => {

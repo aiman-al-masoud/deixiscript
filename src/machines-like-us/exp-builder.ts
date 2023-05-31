@@ -1,15 +1,17 @@
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, WorldModel, isSimple } from "./types.ts"
+import { parseNumber } from "../utils/parseNumber.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, WorldModel, isSimple, Number, GreaterThenFormula } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: string[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Constant>
+export function $(x: number): ExpBuilder<Number>
 export function $(x: { [key: string]: string }): ExpBuilder<GeneralizedSimpleFormula>
 
-export function $(x: string | string[] | { [key: string]: string }): ExpBuilder<LLangAst> {
+export function $(x: number | string | string[] | { [key: string]: string }): ExpBuilder<LLangAst> {
 
-    if (typeof x === 'string' || x instanceof Array) {
-        return new ExpBuilder(makeAtom(x))
+    if (typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
+        return new ExpBuilder(makeAtom(x as any))
     }
 
     const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1])]))
@@ -207,6 +209,18 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
+    isGreaterThan(formula: ExpBuilder<Formula> | number): ExpBuilder<GreaterThenFormula> {
+
+        const f = typeof formula === 'number' ? makeAtom(formula) : formula.$
+
+        return new ExpBuilder({
+            type: 'greater-than',
+            greater: this.exp,
+            lesser: f,
+        })
+
+    }
+
     get $(): T {
         return this.exp
     }
@@ -228,11 +242,14 @@ function makeAtom(x: ListPat): ListPattern
 function makeAtom(x: Var): Variable
 function makeAtom(x: string[]): ListLiteral
 function makeAtom(x: string): Constant
+function makeAtom(x: number): Number
 function makeAtom(x: string | string[]): Atom
 
-function makeAtom(x: string | string[]): Atom {
+function makeAtom(x: number | string | string[]): Atom {
 
-    if (x instanceof Array) {
+    if (typeof x === 'number') {
+        return { type: 'number', value: x }
+    } else if (x instanceof Array) {
         return {
             type: 'list-literal',
             list: x.map(e => makeAtom(e))
@@ -254,6 +271,9 @@ function makeAtom(x: string | string[]): Atom {
         return { type: 'variable', name, varType }
     } else if (['true', 'false'].includes(x)) {
         return { type: 'boolean', value: x === 'true' ? true : false }
+        // } else if (parseNumber(x) !== undefined) {
+        //     console.log('LOOKKK HERE!', x)
+        //     return { type: 'number', value: parseNumber(x)! }
     } else {
         return { type: 'constant', value: x }
     }
@@ -262,3 +282,6 @@ function makeAtom(x: string | string[]): Atom {
 
 
 // console.log($({ first: 'x:thing', greaterThan: 'y:thing' }).$)
+
+console.log($(1).isGreaterThan(2).$)
+
