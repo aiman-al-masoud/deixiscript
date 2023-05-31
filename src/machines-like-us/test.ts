@@ -1,4 +1,4 @@
-import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isTerm, isListLiteral, atomsEqual, Variable, isHasSentence, LLangAst, isAtomicFormula } from "./types.ts";
+import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isTerm, isListLiteral, atomsEqual, Variable, isHasSentence, LLangAst, isAtomicFormula, isAtomTruthy } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
@@ -107,13 +107,3 @@ function match(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
 
 }
 
-function isAtomTruthy(atom: Atom) {
-
-    if (isTerm(atom)) {
-        return !!atom
-    } else if (atom.type === 'list-literal') {
-        return !!atom.list.length
-    } else {
-        return !!atom
-    }
-}
