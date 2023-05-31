@@ -81,7 +81,6 @@ function subst(
                 type: 'list-literal',
                 list: ast.list.map(e => subst(e, variable, replacement)),
             }
-
         case 'list-pattern':
             throw new Error('not implemented!')
         case 'variable':
