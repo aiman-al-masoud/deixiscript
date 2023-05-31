@@ -1,3 +1,4 @@
+import { $ } from "./exp-builder.ts"
 import { HasSentence, IsASentence } from "./types.ts"
 
 type SideEffectAst = Individual
@@ -133,6 +134,22 @@ console.log(sideEffectAstToGraph({
     id: 'vr#1'
 }))
 
+
+// vr#2: a mother of a birth-event is a woman
+// [ast.concept, ast.id, 'part'],
+// [ast.id, 'value-restriction'],
+// [ast.id, ast.property, 'subject'],
+// [ast.id, ast.value, 'object'],
+
+/* vr:value-restriction: p:thing of x:concept is a v:thing   if */ 
+$('x:concept').has('vr:value-restriction').as('part')
+    .and($('vr:value-restriction').isa('value-restriction'))
+    .and($('vr:value-restriction').has('p:thing').as('subject'))
+    .and($('vr:value-restriction').has('v:thing').as('object'))
+
+// $('vr:value-restriction').$(':').('p:thing').$('of').$('x:concept').$('isa').('v:thing')
+
+// generalized LLAST with any kinds of symbols
 
 // class Builder {
 
