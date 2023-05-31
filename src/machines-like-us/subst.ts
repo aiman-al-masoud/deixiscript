@@ -85,8 +85,13 @@ function subst(
             return atomsEqual(ast, variable) ? replacement : ast
         case 'constant':
             return ast
+        case 'list-pattern':
+            throw new Error('not implemented!')
+        case 'boolean':
+            throw new Error('not implemented!')
+        case 'derived-prop':
+            throw new Error('not implemented!')
 
     }
 
-    throw new Error(`subst() doesn't know how to handle type=${ast.type}`)
 }
