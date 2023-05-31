@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isAtomicFormula } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
@@ -51,15 +51,13 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
     return kb.derivClauses.some(dc => {
 
         const map = match(dc.conseq, formula)
-        // const newMap = match(dc.conseq, formula).at(0)
-        // if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
 
         if (!map) {
             return false
         }
 
-        const qPrime = substAll(dc.when, map)
-        return test(qPrime, kb)
+        const whenn = substAll(dc.when, map)
+        return test(whenn, kb)
     })
 
 }
