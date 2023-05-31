@@ -48,7 +48,7 @@ export type Formula = SimpleFormula | CompositeFormula
 export type SimpleFormula = AtomicFormula | Equality
 export type AtomicFormula = IsAFormula | HasFormula
 
-export type VarMap = DeepMap<Variable | ListPattern, Atom>
+export type VarMap = DeepMap<Variable, Atom>
 
 export type CompositeFormula =
     Conjunction
@@ -119,9 +119,9 @@ export function isVar(t: Atom): t is Variable {
     return t.type === 'variable'
 }
 
-export function isVarish(a: Atom): a is Variable | ListPattern {
-    return a.type === 'variable' || a.type === 'list-pattern'
-}
+// export function isVarish(a: Atom): a is Variable | ListPattern {
+//     return a.type === 'variable' || a.type === 'list-pattern'
+// }
 
 export function isConst(t: Atom): t is Constant {
     return t.type === 'constant'

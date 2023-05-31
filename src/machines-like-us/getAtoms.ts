@@ -23,8 +23,8 @@ export function getAtoms(ast: LLangAst): Atom[] {
             // return ast.list.flatMap(x => getTerms(x))
             return [ast]
         case 'list-pattern':
-            // return [ast.seq, ast.tail]
-            return [ast]
+            return [ast.seq, ast.tail]
+            // return [ast]
         case 'constant':
         case 'variable':
         case 'boolean':

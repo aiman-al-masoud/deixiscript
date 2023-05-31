@@ -4,11 +4,11 @@ import { $ } from "./exp-builder.ts";
 import { formulasEqual } from "./formulasEqual.ts";
 import { getAtoms } from "./getAtoms.ts";
 import { substAll } from "./subst.ts";
-import { Atom, AtomicFormula, atomsEqual, isAtom, isAtomTruthy, isConst, isListLiteral, isVar, isVarish, LLangAst, Variable, VarMap } from "./types.ts";
+import { Atom, AtomicFormula, atomsEqual, isAtom, isAtomTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap } from "./types.ts";
 
 export function match(template: LLangAst, formula: LLangAst) {
 
-    const templateVars = getAtoms(template).filter(isVarish)
+    const templateVars = getAtoms(template).filter(isVar)
     const formulaTerms = getAtoms(formula)
     const varsToCands = templateVars.map(v => formulaTerms.map(t => [v, t] as const))
     const allCombos = cartesian(...varsToCands).map(x => deepMapOf(x))
@@ -83,9 +83,9 @@ export function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | un
         afterMap = deepMapOf(template.after.list
             .filter(isVar)
             .map((x, i) => [x, fAfter.list[i]]))
-    } else if(isVar(template.after.seq)&&isVar(template.after.tail)){
+    } else if (isVar(template.after.seq) && isVar(template.after.tail)) {
         afterMap = deepMapOf([[template.after.seq, { type: 'list-literal', list: fAfter.list.slice(0, -1) }], [template.after.tail, fAfter.list.at(-1)!]])
-    }else{
+    } else {
         afterMap = deepMapOf()
     }
 

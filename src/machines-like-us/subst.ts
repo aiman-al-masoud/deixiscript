@@ -1,4 +1,4 @@
-import { LLangAst, Atom, atomsEqual, Variable, VarMap, ListPattern, isVarish } from "./types.ts";
+import { LLangAst, Atom, atomsEqual, Variable, VarMap, ListPattern, isVar } from "./types.ts";
 
 
 export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
@@ -16,7 +16,7 @@ function subst(
     replacement: Atom,
 ): LLangAst {
 
-    if (!isVarish(variable)) {//TODO: remove
+    if (!isVar(variable)) {//TODO: remove
         throw new Error('subst() got a non-var and non-list-pattern as a varish!')
     }
 
