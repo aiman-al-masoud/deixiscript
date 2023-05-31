@@ -6,6 +6,8 @@ import { $ } from "./exp-builder.ts";
 // import { substAll } from "./subst.ts";
 import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap, SimpleFormula, isAtomicFormula } from "./types.ts";
 
+import { intersection } from '../utils/intersection.ts'
+
 // export function match(template: LLangAst, formula: LLangAst) {
 
 //     const templateVars = getAtoms(template).filter(isVar)
@@ -32,6 +34,30 @@ import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiter
 // console.log(x)
 
 export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
+
+    if (template.type === 'generalized' && f.type === 'generalized') {
+        const templateKeys = Object.keys(template.keys)
+        const fKeys = Object.keys(f.keys)
+        const intersect = intersection(templateKeys, fKeys)
+
+        if (intersect.length !== templateKeys.length || intersect.length !== fKeys.length) {
+            return
+        }
+
+        const zipped = templateKeys.map(k => [template.keys[k], f.keys[k]] as const)
+
+        // TODO: DUPLICATE CODE!
+        const disagree = zipped.some(e => (!e[0] || !e[1]) || isConst(e[0]) && isConst(e[1]) && !atomsEqual(e[0], e[1]))
+        const reduced = zipped.filter(e => e[0] !== e[1]).filter(e => isVar(e[0])) as [Variable, Atom][]
+
+        if (!disagree){
+            return deepMapOf(reduced)
+        }
+    
+        // console.log(e)
+
+        throw new Error('not implemented!')
+    }
 
     if (!isAtomicFormula(f) || !isAtomicFormula(template)) {
         return
@@ -75,3 +101,5 @@ export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
 
 }
 
+
+// console.log(match($({crap:'x:ciao'}).$, $({crap:'ccapra'}).$))
