@@ -1,4 +1,4 @@
-import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isTerm, isListLiteral, atomsEqual, Variable, isHasSentence, LLangAst, isAtomicFormula, isAtomTruthy } from "./types.ts";
+import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isListLiteral, atomsEqual, Variable, isHasSentence, LLangAst, isAtomicFormula, isAtomTruthy } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
