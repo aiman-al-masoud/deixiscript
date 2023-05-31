@@ -133,6 +133,10 @@ export function isListLiteral(a: Atom): a is ListLiteral {
 
 export function atomsEqual(a1: Atom, a2: Atom): boolean {
 
+    if (a1.type === 'list-pattern' && a2.type === 'list-pattern') {
+        return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.tail, a2.tail)
+    }
+
     if (isVar(a1) && isVar(a2)) {
         return a1.name === a2.name && a1.varType === a2.varType
     }
@@ -170,4 +174,8 @@ export function isAtomTruthy(atom: Atom) {
     } else {
         return !!atom
     }
+}
+
+export function formulasEqual(f1: LLangAst, f2: LLangAst) {
+    return JSON.stringify(f1) === JSON.stringify(f2)
 }

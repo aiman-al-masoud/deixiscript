@@ -16,9 +16,9 @@ function subst(
     replacement: Atom,
 ): LLangAst {
 
-    if (!isVar(variable)) {//TODO: remove
-        throw new Error('subst() got a non-var as a variable!')
-    }
+    // if (!isVar(variable)) {//TODO: remove
+    // throw new Error('subst() got a non-var as a variable!')
+    // }
 
     switch (ast.type) {
         case 'equality':
@@ -82,7 +82,14 @@ function subst(
                 list: ast.list.map(e => subst(e, variable, replacement)),
             }
         case 'list-pattern':
-            throw new Error('not implemented!')
+            if (replacement.type !== 'list-literal') throw new Error('error!')
+            if (!atomsEqual(variable, ast)) return ast
+
+            return {
+                type: 'list-pattern',
+                seq: replacement.list.slice(0, -1) as any,
+                tail: replacement.list.at(-1) as any,
+            }
         case 'variable':
             return atomsEqual(ast, variable) ? replacement : ast
         case 'constant':
@@ -94,3 +101,12 @@ function subst(
     }
 
 }
+
+
+// import { $ } from "./exp-builder.ts";
+// import { deepMapOf } from "../utils/DeepMap.ts";
+// const x = $('s:sequence|y:event').$
+// const f = $('x:capra').isa('y').after('s:sequence|y:event').$
+// const m: VarMap = deepMapOf([[x as any as Variable, $(['e1', 'e2']).$]])
+// console.log(substAll(f, m))
+
