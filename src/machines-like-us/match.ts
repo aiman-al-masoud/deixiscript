@@ -21,17 +21,22 @@ export function match(template: LLangAst, formula: LLangAst) {
         // console.log('sub=', sub)
         // const equal = JSON.stringify(sub) === JSON.stringify(formula)
         // return equal
-        return formulasEqual(sub, formula)
+        const equals = formulasEqual(sub, formula)
+
+        // if (equals) console.log('sub=', sub, 'formula=', formula, '\n\n\n\n--------------')
+
+        return equals
     })
 
     return result
 }
 
-const x = match($('x:thing').isa('animal').$, $('capra').isa('animal').$)
+// const x = match($('x:thing').isa('animal').$, $('capra').isa('animal').$)
 
-// const x = match(
-//     $('x:thing').isa('animal').after('s:seq|e:event').$,
-//     $('capra').isa('animal').after(['event#1', 'event#2']).$
-// )
+const x = match(
+    $('x:thing').isa('animal').after('s:seq|e:event').$,
+    $('capra').isa('animal').after(['event#1', 'event#2']).$
+)
+
 console.log(x)
 
