@@ -10,25 +10,12 @@ export function match(template: LLangAst, formula: LLangAst) {
 
     const templateVars = getAtoms(template).filter(isVarish)
     const formulaTerms = getAtoms(formula)
-
-    // console.log('templateVars=', templateVars)
-
     const varsToCands = templateVars.map(v => formulaTerms.map(t => [v, t] as const))
     const allCombos = cartesian(...varsToCands).map(x => deepMapOf(x))
 
     const result = allCombos.filter(c => {
-        // console.log('---------')
         const sub = substAll(template, c)
-        // console.log('sub=',sub)
-        // console.log('sub=', sub)
-        // const equal = JSON.stringify(sub) === JSON.stringify(formula)
-        // return equal
         const equals = formulasEqual(sub, formula)
-
-
-        // if (equals) console.log(c, '----------') //console.log('sub=', sub, '\n', 'formula=', formula, '\n--------------')
-
-
         return equals
     })
     // .map(unCrapify)
