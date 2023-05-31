@@ -31,7 +31,7 @@ import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiter
 
 // console.log(x)
 
-export function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
+export function match(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
 
     if (!isListLiteral(f.after)) {
         return undefined

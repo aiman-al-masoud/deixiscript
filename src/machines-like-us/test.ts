@@ -2,7 +2,7 @@ import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isAtomicFo
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
-import { oldMatch } from "./match.ts";
+import { match } from "./match.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
@@ -54,7 +54,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             return false
         }
 
-        const map = oldMatch(dc.conseq, formula)
+        const map = match(dc.conseq, formula)
         // const newMap = match(dc.conseq, formula).at(0)
         // if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
 
