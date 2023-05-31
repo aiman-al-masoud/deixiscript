@@ -1,26 +1,26 @@
-import { cartesian } from "../utils/cartesian.ts";
+// import { cartesian } from "../utils/cartesian.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { $ } from "./exp-builder.ts";
-import { formulasEqual } from "./formulasEqual.ts";
-import { getAtoms } from "./getAtoms.ts";
-import { substAll } from "./subst.ts";
+// import { $ } from "./exp-builder.ts";
+// import { formulasEqual } from "./formulasEqual.ts";
+// import { getAtoms } from "./getAtoms.ts";
+// import { substAll } from "./subst.ts";
 import { Atom, AtomicFormula, atomsEqual, isAtom, isAtomTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap } from "./types.ts";
 
-export function match(template: LLangAst, formula: LLangAst) {
+// export function match(template: LLangAst, formula: LLangAst) {
 
-    const templateVars = getAtoms(template).filter(isVar)
-    const formulaTerms = getAtoms(formula)
-    const varsToCands = templateVars.map(v => formulaTerms.map(t => [v, t] as const))
-    const allCombos = cartesian(...varsToCands).map(x => deepMapOf(x))
+//     const templateVars = getAtoms(template).filter(isVar)
+//     const formulaTerms = getAtoms(formula)
+//     const varsToCands = templateVars.map(v => formulaTerms.map(t => [v, t] as const))
+//     const allCombos = cartesian(...varsToCands).map(x => deepMapOf(x))
 
-    const result = allCombos.filter(c => {
-        const sub = substAll(template, c)
-        const equals = formulasEqual(sub, formula)
-        return equals
-    })
+//     const result = allCombos.filter(c => {
+//         const sub = substAll(template, c)
+//         const equals = formulasEqual(sub, formula)
+//         return equals
+//     })
 
-    return result
-}
+//     return result
+// }
 
 // const x = match($('x:thing').isa('animal').$, $('capra').isa('animal').$)
 
