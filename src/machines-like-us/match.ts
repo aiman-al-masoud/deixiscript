@@ -1,9 +1,10 @@
 import { cartesian } from "../utils/cartesian.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from "./exp-builder.ts";
+import { formulasEqual } from "./formulasEqual.ts";
 import { getAtoms } from "./getAtoms.ts";
 import { substAll } from "./subst.ts";
-import { Atom, formulasEqual, isVarish, LLangAst, Variable, VarMap } from "./types.ts";
+import { Atom, isVarish, LLangAst, Variable, VarMap } from "./types.ts";
 
 export function match(template: LLangAst, formula: LLangAst) {
 
