@@ -82,7 +82,7 @@ function subst(
                 list: ast.list.map(e => subst(e, variable, replacement)),
             }
         case 'list-pattern':
-            if (replacement.type !== 'list-literal') throw new Error('error!')
+            if (replacement.type !== 'list-literal') return ast
             if (!atomsEqual(variable, ast)) return ast
 
             return {

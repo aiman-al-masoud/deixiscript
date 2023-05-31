@@ -3,6 +3,7 @@ import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { match } from "./match.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
@@ -54,7 +55,10 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             return false
         }
 
-        const map = match(dc.conseq, formula)
+        const map = oldMatch(dc.conseq, formula)
+        
+        // const newMap = match(dc.conseq, formula).at(0)
+        // if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
 
         if (!map) {
             return false
@@ -69,7 +73,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
 }
 
-function match(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
+function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
 
     if (!isListLiteral(f.after)) {
         return undefined
