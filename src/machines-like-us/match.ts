@@ -4,7 +4,7 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 // import { formulasEqual } from "./formulasEqual.ts";
 // import { getAtoms } from "./getAtoms.ts";
 // import { substAll } from "./subst.ts";
-import { Atom, AtomicFormula, atomsEqual, isAtom, isAtomTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap } from "./types.ts";
+import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap } from "./types.ts";
 
 // export function match(template: LLangAst, formula: LLangAst) {
 
@@ -40,7 +40,7 @@ export function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | un
     const fAfter = f.after
     let afterMap: VarMap
 
-    if (isAtomTruthy(template.after) && !isAtomTruthy(f.after)) {
+    if (isTruthy(template.after) && !isTruthy(f.after)) {
         return undefined
     }
 

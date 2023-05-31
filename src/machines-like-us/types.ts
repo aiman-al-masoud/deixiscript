@@ -168,7 +168,7 @@ export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
 }
 
-export function isAtomTruthy(atom: Atom) {
+export function isTruthy(atom: Atom) {
     if (atom.type === 'boolean') {
         return atom.value === true
     } else if (isTerm(atom)) {
