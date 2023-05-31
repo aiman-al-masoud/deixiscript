@@ -1,13 +1,10 @@
-import { AtomicFormula, isConst, isVar, KnowledgeBase, Atom, VarMap, isListLiteral, atomsEqual, Variable, isHasSentence, LLangAst, isAtomicFormula, isAtomTruthy } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isAtomicFormula } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
-import { deepMapOf } from "../utils/DeepMap.ts";
-import { match, oldMatch } from "./match.ts";
+import { oldMatch } from "./match.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
-
-    console.log(formula)
 
     switch (formula.type) {
         case 'boolean':
@@ -58,8 +55,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
         }
 
         const map = oldMatch(dc.conseq, formula)
-        // const map = match(dc.conseq, formula).at(0)
-
         // const newMap = match(dc.conseq, formula).at(0)
         // if (!!map !== !!newMap) console.log('oldMap=', map, 'newMap=', newMap, )
 
@@ -68,9 +63,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
         }
 
         const qPrime = substAll(dc.when, map)
-        // console.log('qPrime=', JSON.stringify(qPrime))
-        // console.log('--------------------')
-
         return test(qPrime, kb)
     })
 
