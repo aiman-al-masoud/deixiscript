@@ -90,7 +90,7 @@ function subst(
                 tail: replacement.list.at(-1)! //as any,
             }
 
-            if (replacement.type==='list-pattern') return replacement
+            if (replacement.type === 'list-pattern') return replacement
 
             throw new Error('error!')
 
@@ -101,7 +101,13 @@ function subst(
             return ast
         case 'derived-prop':
             throw new Error('not implemented!')
-
+        case 'generalized':
+            const newEntries = Object.entries(ast.keys).map(e => [e[0], atomsEqual(e[1], variable) ? replacement : e[1]] as const)
+            const newKeys = Object.fromEntries(newEntries)
+            return {
+                type: 'generalized',
+                keys: newKeys
+            }
     }
 
 }

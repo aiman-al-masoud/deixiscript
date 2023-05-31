@@ -1,12 +1,19 @@
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, WorldModel } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: string[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Constant>
+export function $(x: { [key: string]: string }): ExpBuilder<GeneralizedSimpleFormula>
 
-export function $(x: string | string[]): ExpBuilder<Atom> {
-    return new ExpBuilder(makeAtom(x))
+export function $(x: string | string[] | { [key: string]: string }): ExpBuilder<LLangAst> {
+
+    if (typeof x === 'string' || x instanceof Array) {
+        return new ExpBuilder(makeAtom(x))
+    }
+
+    const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1])]))
+    return new ExpBuilder({ type: 'generalized', keys: keys })
 }
 
 export class ExpBuilder<T extends LLangAst> {
@@ -204,6 +211,10 @@ export class ExpBuilder<T extends LLangAst> {
         return this.exp
     }
 
+    // get $S():WorldModel{
+    //     return []
+    // }
+
 }
 
 type Var = `${string}:${string}`
@@ -248,3 +259,6 @@ function makeAtom(x: string | string[]): Atom {
     }
 
 }
+
+
+// console.log($({ first: 'x:thing', greaterThan: 'y:thing' }).$)

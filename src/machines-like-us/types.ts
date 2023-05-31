@@ -45,8 +45,15 @@ export type Boolean = {
 }
 
 export type Formula = SimpleFormula | CompositeFormula
-export type SimpleFormula = AtomicFormula | Equality
+export type SimpleFormula = AtomicFormula | Equality | GeneralizedSimpleFormula
 export type AtomicFormula = IsAFormula | HasFormula
+
+export type GeneralizedSimpleFormula = {
+    type: 'generalized',
+    keys: {
+        [key: string]: Atom
+    }
+}
 
 export type VarMap = DeepMap<Variable, Atom>
 

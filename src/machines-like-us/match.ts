@@ -4,7 +4,7 @@ import { $ } from "./exp-builder.ts";
 // import { formulasEqual } from "./formulasEqual.ts";
 // import { getAtoms } from "./getAtoms.ts";
 // import { substAll } from "./subst.ts";
-import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap } from "./types.ts";
+import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap, SimpleFormula, isAtomicFormula } from "./types.ts";
 
 // export function match(template: LLangAst, formula: LLangAst) {
 
@@ -31,7 +31,11 @@ import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiter
 
 // console.log(x)
 
-export function match(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
+export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
+
+    if (!isAtomicFormula(f) || !isAtomicFormula(template)) {
+        return
+    }
 
     if (!isListLiteral(f.after)) {
         return undefined
