@@ -24,8 +24,8 @@ export type ListLiteral = {
 
 export type ListPattern = {
     type: 'list-pattern',
-    seq: Variable,
-    tail: Variable
+    seq: Atom,
+    tail: Atom,
 }
 
 export type Constant = {
@@ -48,7 +48,7 @@ export type Formula = SimpleFormula | CompositeFormula
 export type SimpleFormula = AtomicFormula | Equality
 export type AtomicFormula = IsAFormula | HasFormula
 
-export type VarMap = DeepMap<Variable, Atom>
+export type VarMap = DeepMap<Variable | ListPattern, Atom>
 
 export type CompositeFormula =
     Conjunction
@@ -117,6 +117,10 @@ export type IfElse = {
 
 export function isVar(t: Atom): t is Variable {
     return t.type === 'variable'
+}
+
+export function isVarish(a: Atom): a is Variable | ListPattern {
+    return a.type === 'variable' || a.type === 'list-pattern'
 }
 
 export function isConst(t: Atom): t is Constant {

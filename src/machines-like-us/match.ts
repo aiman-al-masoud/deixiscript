@@ -1,14 +1,14 @@
 import { cartesian } from "../utils/cartesian.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from "./exp-builder.ts";
-import { getTerms } from "./getTerms.ts";
+import { getAtoms } from "./getAtoms.ts";
 import { substAll } from "./subst.ts";
-import { formulasEqual, isVar, LLangAst, Variable } from "./types.ts";
+import { formulasEqual, isVarish, LLangAst } from "./types.ts";
 
 export function match(template: LLangAst, formula: LLangAst) {
 
-    const templateVars = getTerms(template) /* as Variable[] */.filter(isVar)
-    const formulaTerms = getTerms(formula)
+    const templateVars = getAtoms(template).filter(isVarish)
+    const formulaTerms = getAtoms(formula)
 
     // console.log('templateVars=', templateVars)
 

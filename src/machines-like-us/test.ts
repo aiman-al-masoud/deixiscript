@@ -94,8 +94,10 @@ function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | undefined
         afterMap = deepMapOf(template.after.list
             .filter(isVar)
             .map((x, i) => [x, fAfter.list[i]]))
-    } else {
+    } else if(isVar(template.after.seq)&&isVar(template.after.tail)){
         afterMap = deepMapOf([[template.after.seq, { type: 'list-literal', list: fAfter.list.slice(0, -1) }], [template.after.tail, fAfter.list.at(-1)!]])
+    }else{
+        afterMap = deepMapOf()
     }
 
     const templateTerms = [template.t1, template.t2, ...(template.type === 'has-formula' ? [template.as] : [])]

@@ -1,4 +1,4 @@
-import { LLangAst, Atom, atomsEqual, isVar, Variable, VarMap } from "./types.ts";
+import { LLangAst, Atom, atomsEqual, Variable, VarMap, ListPattern, isVarish } from "./types.ts";
 
 
 export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
@@ -8,17 +8,17 @@ export function substAll(formula: LLangAst, map: VarMap): LLangAst {
     return subs.reduce((f, s) => subst(f, s[0], s[1]), formula)
 }
 
-function subst<T extends LLangAst>(formula: T, variable: Variable, replacement: Atom): T
+function subst<T extends LLangAst>(formula: T, variable: Variable | ListPattern, replacement: Atom): T
 
 function subst(
     ast: LLangAst,
-    variable: Variable,
+    variable: Variable | ListPattern,
     replacement: Atom,
 ): LLangAst {
 
-    // if (!isVar(variable)) {//TODO: remove
-    // throw new Error('subst() got a non-var as a variable!')
-    // }
+    if (!isVarish(variable)) {//TODO: remove
+        throw new Error('subst() got a non-var and non-list-pattern as a varish!')
+    }
 
     switch (ast.type) {
         case 'equality':
@@ -84,13 +84,11 @@ function subst(
         case 'list-pattern':
             if (replacement.type !== 'list-literal') return ast
             if (!atomsEqual(variable, ast)) return ast
-            
-            // console.log('seq=', replacement.list.slice(0,-1), 'tail=', replacement.list.at(-1))
 
             return {
                 type: 'list-pattern',
-                seq: replacement.list.slice(0, -1) as any,
-                tail: replacement.list.at(-1) as any,
+                seq: { list: replacement.list.slice(0, -1), type: 'list-literal' },// as any,
+                tail: replacement.list.at(-1)! //as any,
             }
 
         case 'variable':
