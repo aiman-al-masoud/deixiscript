@@ -57,11 +57,6 @@ export function match(template: LLangAst, formula: LLangAst) {
 // console.log(x)
 
 
-
-
-
-
-
 export function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | undefined {
 
     if (!isListLiteral(f.after)) {
