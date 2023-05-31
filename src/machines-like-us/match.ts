@@ -1,6 +1,6 @@
 // import { cartesian } from "../utils/cartesian.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-// import { $ } from "./exp-builder.ts";
+import { $ } from "./exp-builder.ts";
 // import { formulasEqual } from "./formulasEqual.ts";
 // import { getAtoms } from "./getAtoms.ts";
 // import { substAll } from "./subst.ts";
@@ -37,23 +37,23 @@ export function oldMatch(template: AtomicFormula, f: AtomicFormula): VarMap | un
         return undefined
     }
 
-    const fAfter = f.after
-    let afterMap: VarMap
-
     if (isTruthy(template.after) && !isTruthy(f.after)) {
         return undefined
     }
 
+    let afterMap: VarMap
+
     if (isVar(template.after)) {
-        afterMap = deepMapOf([[template.after, { type: 'list-literal', list: fAfter.list.slice(0, -1) }]])
+        afterMap = deepMapOf([[template.after, { type: 'list-literal', list: f.after.list.slice(0, -1) }]])
     } else if (isConst(template.after) || template.after.type === 'boolean') {
         afterMap = deepMapOf()
     } else if (template.after.type === 'list-literal') {
+        const list = f.after.list
         afterMap = deepMapOf(template.after.list
             .filter(isVar)
-            .map((x, i) => [x, fAfter.list[i]]))
+            .map((x, i) => [x, list[i]]))
     } else if (isVar(template.after.seq) && isVar(template.after.tail)) {
-        afterMap = deepMapOf([[template.after.seq, { type: 'list-literal', list: fAfter.list.slice(0, -1) }], [template.after.tail, fAfter.list.at(-1)!]])
+        afterMap = deepMapOf([[template.after.seq, { type: 'list-literal', list: f.after.list.slice(0, -1) }], [template.after.tail, f.after.list.at(-1)!]])
     } else {
         afterMap = deepMapOf()
     }
