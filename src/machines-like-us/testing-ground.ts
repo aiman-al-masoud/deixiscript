@@ -49,6 +49,17 @@ const test5 = $({ ann: 'ann#22', cancel: 'vr#33', fromConcept: 'capra' }).$
 
 console.log(dumpWorldModel(test5, { wm: [], derivClauses: [x5] }))
 
+const x6 = $({ ann: 'ann:thing', property: 'prop:thing', ofConcept: 'concept:thing', defaultsTo: 'default:thing' }).when(
+    $('concept:thing').has('ann:thing').as('part')
+        .and($('ann:thing').isa('default-annotation'))
+        .and($('ann:thing').has('prop:thing').as('subject'))
+        .and($('ann:thing').has('default:thing').as('object'))
+).$
+
+const test6 = $({ ann: 'ann#44', property: 'locomotion', ofConcept: 'bird', defaultsTo: 'fly' }).$
+
+console.log(dumpWorldModel(test6, { wm: [], derivClauses: [x6] }))
+
 // import { $ } from "./exp-builder.ts"
 // import { HasSentence, IsASentence } from "./types.ts"
 
