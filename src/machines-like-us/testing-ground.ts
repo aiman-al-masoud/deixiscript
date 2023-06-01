@@ -39,13 +39,13 @@ const test4 = $({ nr: 'nr#1', part: 'mother', ofConcept: 'birth', amountsTo: 1 }
 console.log(dumpWorldModel(test4, { wm: [], derivClauses: [x4] }))
 
 
-const x5 = $({ ann: 'ann:thing', cancel: 'old:thing', fromConcept: 'concept:thing' }).when(
+const x5 = $({ ann: 'ann:thing', cancels: 'old:thing', fromConcept: 'concept:thing' }).when(
     $('concept:thing').has('ann:thing').as('part')
         .and($('ann:thing').isa('cancel-annotation'))
         .and($('ann:thing').has('old:thing').as('subject'))
 ).$
 
-const test5 = $({ ann: 'ann#22', cancel: 'vr#33', fromConcept: 'capra' }).$
+const test5 = $({ ann: 'ann#22', cancels: 'vr#33', fromConcept: 'capra' }).$
 
 console.log(dumpWorldModel(test5, { wm: [], derivClauses: [x5] }))
 
