@@ -33,37 +33,22 @@ export function dumpWorldModel(ast: LLangAst, kb: KnowledgeBase): WorldModel {
             const whenn = substAll(dc.when, map)
             return dumpWorldModel(whenn, kb)
         }
-        // if (!map) {
-        //     return false
-        // }
     }
-
-    // kb.derivClauses.some(dc => {
-
-    //     const map = match(dc.conseq, ast)
-
-    //     if (!map) {
-    //         return false
-    //     }
-
-    //     const whenn = substAll(dc.when, map)
-
-    // })
 
     throw new Error('not implemented! ' + ast.type)
 }
 
 
-console.log(dumpWorldModel($('x').isa('y').$, { wm: [], derivClauses: [] }))
-console.log(dumpWorldModel($('x').has('capra').as('y').$, { wm: [], derivClauses: [] }))
+// console.log(dumpWorldModel($('x').isa('y').$, { wm: [], derivClauses: [] }))
+// console.log(dumpWorldModel($('x').has('capra').as('y').$, { wm: [], derivClauses: [] }))
 
-console.log(dumpWorldModel($({ isStupid: 'capra' }).$, {
-    wm: [],
-    derivClauses: [
-        $({ isStupid: 'x:thing' }).when(
-            $('x:thing').has('stupid').as('intelligence')
-                .and($('x:thing').has('crazy').as('status'))
-        ).$
-    ]
-})
-)
+// console.log(dumpWorldModel($({ isStupid: 'capra' }).$, {
+//     wm: [],
+//     derivClauses: [
+//         $({ isStupid: 'x:thing' }).when(
+//             $('x:thing').has('stupid').as('intelligence')
+//                 .and($('x:thing').has('crazy').as('status'))
+//         ).$
+//     ]
+// })
+// )

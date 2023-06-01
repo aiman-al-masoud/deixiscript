@@ -62,8 +62,8 @@ export type GreaterThenFormula = {
 }
 
 export type Number = {
-    type : 'number',
-    value : number,
+    type: 'number',
+    value: number,
 }
 
 export type VarMap = DeepMap<Variable, Atom>
@@ -137,12 +137,8 @@ export function isVar(t: Atom): t is Variable {
     return t.type === 'variable'
 }
 
-// export function isVarish(a: Atom): a is Variable | ListPattern {
-//     return a.type === 'variable' || a.type === 'list-pattern'
-// }
-
 export function isConst(t: Atom): t is Constant {
-    return t.type === 'constant'
+    return t.type === 'constant' || t.type === 'number' || t.type === 'boolean'
 }
 
 export function isTerm(a: Atom): a is Term {

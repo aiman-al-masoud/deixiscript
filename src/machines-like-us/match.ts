@@ -1,37 +1,7 @@
 // import { cartesian } from "../utils/cartesian.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { $ } from "./exp-builder.ts";
-// import { formulasEqual } from "./formulasEqual.ts";
-// import { getAtoms } from "./getAtoms.ts";
-// import { substAll } from "./subst.ts";
-import { Atom, AtomicFormula, atomsEqual, isAtom, isTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap, SimpleFormula, isAtomicFormula } from "./types.ts";
-
+import { Atom, atomsEqual, isTruthy, isConst, isListLiteral, isVar, LLangAst, Variable, VarMap, isAtomicFormula } from "./types.ts";
 import { intersection } from '../utils/intersection.ts'
-
-// export function match(template: LLangAst, formula: LLangAst) {
-
-//     const templateVars = getAtoms(template).filter(isVar)
-//     const formulaTerms = getAtoms(formula)
-//     const varsToCands = templateVars.map(v => formulaTerms.map(t => [v, t] as const))
-//     const allCombos = cartesian(...varsToCands).map(x => deepMapOf(x))
-
-//     const result = allCombos.filter(c => {
-//         const sub = substAll(template, c)
-//         const equals = formulasEqual(sub, formula)
-//         return equals
-//     })
-
-//     return result
-// }
-
-// const x = match($('x:thing').isa('animal').$, $('capra').isa('animal').$)
-
-// const x = match(
-//     $('x:thing').isa('animal').after('s:seq|e:event').$,
-//     $('capra').isa('animal').after(['event#1', 'event#2']).$
-// )
-
-// console.log(x)
 
 export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
 
@@ -50,11 +20,9 @@ export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
         const disagree = zipped.some(e => (!e[0] || !e[1]) || isConst(e[0]) && isConst(e[1]) && !atomsEqual(e[0], e[1]))
         const reduced = zipped.filter(e => e[0] !== e[1]).filter(e => isVar(e[0])) as [Variable, Atom][]
 
-        if (!disagree){
+        if (!disagree) {
             return deepMapOf(reduced)
         }
-    
-        // console.log(e)
 
         throw new Error('not implemented!')
     }
@@ -100,6 +68,3 @@ export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
     }
 
 }
-
-
-// console.log(match($({crap:'x:ciao'}).$, $({crap:'ccapra'}).$))
