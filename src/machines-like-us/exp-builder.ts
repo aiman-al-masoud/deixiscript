@@ -1,5 +1,4 @@
-import { parseNumber } from "../utils/parseNumber.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, WorldModel, isSimple, Number, GreaterThenFormula } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
