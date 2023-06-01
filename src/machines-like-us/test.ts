@@ -66,9 +66,9 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
     }
 
     return kb.derivClauses.some(dc => {
-
-
         const map = match(dc.conseq, formula)
+
+        // TODO: pass down new state of the world to correctly evaluate sequences of events
 
         if (!map) {
             return false
