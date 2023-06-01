@@ -171,6 +171,11 @@ export function isHasSentence(s: IsASentence | HasSentence): s is HasSentence {
     return s.length === 3
 }
 
+export function isIsASentence(s: IsASentence | HasSentence): s is IsASentence {
+    return s.length === 2
+}
+
+
 export function isAtom(ast: LLangAst): ast is Atom {
     return ast.type === 'variable'
         || ast.type === 'constant'

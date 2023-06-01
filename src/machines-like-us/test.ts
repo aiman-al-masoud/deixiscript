@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isIsASentence } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupers } from "./wm-funcs.ts";
@@ -16,6 +16,12 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
                 break
             }
         case 'is-a-formula':
+            // if (kb.wm.filter(isIsASentence).find(ias => {
+            //     return isConst(formula.t1)
+            //         && isConst(formula.t2)
+            //         && formula.t1.value === ias[0]
+            //         && formula.t2.value === ias[1]
+            // })) return true
             if (
                 isConst(formula.t1)
                 && isConst(formula.t2)
