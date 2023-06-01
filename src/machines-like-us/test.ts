@@ -22,6 +22,10 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             //         && formula.t1.value === ias[0]
             //         && formula.t2.value === ias[1]
             // })) return true
+            if (isConst(formula.t2)) {
+                if (formula.t1.type === formula.t2.value) return true
+            }
+
             if (
                 isConst(formula.t1)
                 && isConst(formula.t2)
@@ -48,6 +52,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             if (test(formula.f1, kb) || test(formula.f2, kb)) return true
             break
         case 'existquant':
+            // console.log('existquant=', formula, '\n---------\n')
             if (findAll(formula.where, [formula.variable], kb).length) return true
             break
         case 'if-else':
@@ -62,6 +67,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
     return kb.derivClauses.some(dc => {
 
+
         const map = match(dc.conseq, formula)
 
         if (!map) {
@@ -69,6 +75,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
         }
 
         const whenn = substAll(dc.when, map)
+        // console.log('dc.conseq=', dc.conseq, 'formula=', formula, 'map=', map, 'whenn=', JSON.stringify(whenn))
         return test(whenn, kb)
     })
 

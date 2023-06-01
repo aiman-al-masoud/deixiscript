@@ -22,8 +22,10 @@ export function findAll(
 
     const allCombos = cartesian(...varToCands).map(x => deepMapOf(x))
 
+
     const results = allCombos.filter(c => {
         const sub = substAll(formula, c)
+        // console.log('sub=', sub)
         return test(sub, kb)
     })
 

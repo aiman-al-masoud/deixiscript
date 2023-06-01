@@ -181,6 +181,8 @@ export function isAtom(ast: LLangAst): ast is Atom {
         || ast.type === 'constant'
         || ast.type === 'list-literal'
         || ast.type === 'list-pattern'
+        || ast.type === 'boolean'
+        || ast.type === 'number'
 }
 
 export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
