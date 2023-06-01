@@ -60,6 +60,8 @@ export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
     const fTerms = [f.t1, f.t2, ...(f.type === 'has-formula' ? [f.as] : [])]
 
     const zipped = templateTerms.map((x, i) => [x, fTerms[i]] as const)
+
+    // TODO: DUPLICATE CODE!
     const disagree = zipped.some(e => (!e[0] || !e[1]) || isConst(e[0]) && isConst(e[1]) && !atomsEqual(e[0], e[1]))
     const reduced = zipped.filter(e => e[0] !== e[1]).filter(e => isVar(e[0])) as [Variable, Atom][]
 
