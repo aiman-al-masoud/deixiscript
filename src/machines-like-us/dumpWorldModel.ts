@@ -1,4 +1,3 @@
-import { $ } from "./exp-builder.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { isConst, KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
@@ -39,9 +38,9 @@ export function dumpWorldModel(ast: LLangAst, kb: KnowledgeBase): WorldModel {
 }
 
 
+// import { $ } from "./exp-builder.ts";
 // console.log(dumpWorldModel($('x').isa('y').$, { wm: [], derivClauses: [] }))
 // console.log(dumpWorldModel($('x').has('capra').as('y').$, { wm: [], derivClauses: [] }))
-
 // console.log(dumpWorldModel($({ isStupid: 'capra' }).$, {
 //     wm: [],
 //     derivClauses: [
