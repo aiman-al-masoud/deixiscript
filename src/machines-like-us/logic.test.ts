@@ -167,14 +167,6 @@ Deno.test({
         const results = findAll(find1, [$('e:event').$], kb)
         assertEquals(results[0].get($('e:event').$)?.value, 'door-opening-event#1')
 
-        // const x = $('x:thing').$
-        // const y = $('y:thing').$
-        // const z = $('z:thing').$
-        // const f1 = $('x:thing').has('y:thing').as('z:thing')
-        // const f4 = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
-        // console.log(findAll(f4.$, [x, y, z], kb))
-
-
     }
 })
 
