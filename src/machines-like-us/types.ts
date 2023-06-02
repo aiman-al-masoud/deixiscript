@@ -22,7 +22,7 @@ export type Constant = Entity | Boolean | Number
 export type SimpleFormula = AtomicFormula
     | Equality
     | GeneralizedSimpleFormula
-    | GreaterThenFormula
+    | GreaterThanFormula
 export type AtomicFormula = IsAFormula | HasFormula
 export type CompositeFormula = Conjunction
     | Disjunction
@@ -70,7 +70,7 @@ export type GeneralizedSimpleFormula = {
     }
 }
 
-export type GreaterThenFormula = {
+export type GreaterThanFormula = {
     type: 'greater-than',
     greater: Atom,
     lesser: Atom,

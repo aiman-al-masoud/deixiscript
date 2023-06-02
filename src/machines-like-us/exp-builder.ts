@@ -1,5 +1,5 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula, Boolean, WmAtom, isWmAtom } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom } from "./types.ts"
 
 type GeneralizedInput = { [key: string]: string | number }
 
@@ -214,7 +214,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isGreaterThan(atom: number | string): ExpBuilder<GreaterThenFormula> {
+    isGreaterThan(atom: number | string): ExpBuilder<GreaterThanFormula> {
 
         return new ExpBuilder({
             type: 'greater-than',
