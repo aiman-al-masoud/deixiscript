@@ -1,4 +1,4 @@
-import { LLangAst, Atom, atomsEqual, Variable, VarMap, ListPattern, isVar } from "./types.ts";
+import { LLangAst, Atom, atomsEqual, Variable, VarMap, isVar } from "./types.ts";
 
 
 export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
@@ -8,11 +8,11 @@ export function substAll(formula: LLangAst, map: VarMap): LLangAst {
     return subs.reduce((f, s) => subst(f, s[0], s[1]), formula)
 }
 
-function subst<T extends LLangAst>(formula: T, variable: Variable | ListPattern, replacement: Atom): T
+function subst<T extends LLangAst>(formula: T, variable: Variable, replacement: Atom): T
 
 function subst(
     ast: LLangAst,
-    variable: Variable | ListPattern,
+    variable: Variable,
     replacement: Atom,
 ): LLangAst {
 
