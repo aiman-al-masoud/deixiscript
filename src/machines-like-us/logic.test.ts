@@ -74,6 +74,7 @@ export const model: WorldModel = [
     ['multiple-birth-event', 'ann#1', 'part'],
 
     ['open', 'state'],
+    ['closed', 'state'],
     ['state', 'thing'],
 ]
 

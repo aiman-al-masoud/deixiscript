@@ -25,6 +25,7 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 }
 
 happen('door-opening-event#1', kb)
+// happen('door-closing-event#1', kb)
 
 export function getTerms(ast: LLangAst): Atom[] {
     switch (ast.type) {
