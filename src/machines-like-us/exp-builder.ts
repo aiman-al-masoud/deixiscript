@@ -8,7 +8,6 @@ export function $(x: string[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Constant>
 export function $(x: number): ExpBuilder<Number>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedSimpleFormula>
-// export function $(x: unknown): ExpBuilder<LLangAst>
 
 export function $(x: number | string | string[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
