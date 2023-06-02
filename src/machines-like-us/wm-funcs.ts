@@ -1,7 +1,7 @@
-import { WorldModel } from "./types.ts";
+import { WorldModel, WmAtom } from "./types.ts";
 
 
-export function getParts(concept: string, cm: WorldModel): string[] {
+export function getParts(concept: string, cm: WorldModel): WmAtom[] {
 
     const parts = getAllParts(concept, cm)
     const cancelAnnotations = parts.filter(x => getSupers(x, cm).includes('cancel-annotation'))
@@ -22,7 +22,7 @@ export function getParts(concept: string, cm: WorldModel): string[] {
 
 }
 
-function getAllParts(concept: string, cm: WorldModel): string[] {
+function getAllParts(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
     const supers = getSupers(concept, cm)
 
@@ -34,7 +34,7 @@ function getAllParts(concept: string, cm: WorldModel): string[] {
 
 }
 
-export function getSupers(concept: string, cm: WorldModel): string[] {
+export function getSupers(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
     const supers = cm
         .filter(x => x[0] === concept && x.length === 2)
@@ -48,7 +48,7 @@ export function getSupers(concept: string, cm: WorldModel): string[] {
 
 }
 
-function subjectOf(concept: string, cm: WorldModel): string | undefined {
+function subjectOf(concept: WmAtom, cm: WorldModel): WmAtom | undefined {
     return cm.filter(x =>
         x.length === 3
         && x[2] === 'subject'

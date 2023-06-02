@@ -79,9 +79,14 @@ const dc = [
 const wm: WorldModel = [
     ['bucket#1', 'thing'],
     ['apple#1', 'thing'],
-    ['bucket#1', 2 as any, 'volume'],
-    ['apple#1', 1 as any, 'volume'],
+    ['bucket#1', 2, 'volume'],
+    ['apple#1', 1, 'volume'],
 ]
+
+// $('bucket#1').isa('thing')
+//     .and($('apple#1').isa('thing'))
+//     .and($('bucket#1').has(2).as('volume'))
+//     .and($('apple#1').has(1).as('volume'))
 
 const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
 const wrong1 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).$

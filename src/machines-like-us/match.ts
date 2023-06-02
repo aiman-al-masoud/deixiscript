@@ -43,7 +43,7 @@ export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
 
     if (isVar(template.after)) {
         afterMap = deepMapOf([[template.after, { type: 'list-literal', list: f.after.list.slice(0, -1) }]])
-    } else if (isConst(template.after) || template.after.type === 'boolean' || template.after.type === 'number') {
+    } else if (isConst(template.after)/*  || template.after.type === 'boolean' || template.after.type === 'number' */) {
         afterMap = deepMapOf()
     } else if (template.after.type === 'list-literal') {
         const list = f.after.list

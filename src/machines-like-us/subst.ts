@@ -125,6 +125,6 @@ function subst(
 // import { deepMapOf } from "../utils/DeepMap.ts";
 // const x = $('s:sequence|y:event').$
 // const f = $('x:capra').isa('y').after('s:sequence|y:event').$
-// const m: VarMap = deepMapOf([[x as any as Variable, $(['e1', 'e2']).$]])
+// const m: VarMap = deepMapOf([[x, $(['e1', 'e2']).$]])
 // console.log(substAll(f, m))
 

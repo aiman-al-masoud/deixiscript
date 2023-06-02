@@ -2,8 +2,9 @@
 
 import { DeepMap } from "../utils/DeepMap.ts"
 
-export type IsASentence = [string, string]
-export type HasSentence = [string, string, string]
+export type WmAtom = string | number | boolean
+export type IsASentence = [WmAtom, WmAtom]
+export type HasSentence = [WmAtom, WmAtom, WmAtom]
 export type WorldModel = (IsASentence | HasSentence)[]
 
 export type KnowledgeBase = {
@@ -28,7 +29,9 @@ export type ListPattern = {
     tail: Atom,
 }
 
-export type Constant = {
+export type Constant = Entity | Boolean | Number
+
+export type Entity = {
     type: 'constant',
     value: string
 }
@@ -138,7 +141,9 @@ export function isVar(t: Atom): t is Variable {
 }
 
 export function isConst(t: Atom): t is Constant {
-    return t.type === 'constant' || t.type === 'number' || t.type === 'boolean'
+    return t.type === 'constant'
+        || t.type === 'number'
+        || t.type === 'boolean'
 }
 
 export function isTerm(a: Atom): a is Term {
@@ -174,7 +179,6 @@ export function isHasSentence(s: IsASentence | HasSentence): s is HasSentence {
 export function isIsASentence(s: IsASentence | HasSentence): s is IsASentence {
     return s.length === 2
 }
-
 
 export function isAtom(ast: LLangAst): ast is Atom {
     return ast.type === 'variable'

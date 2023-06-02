@@ -1,4 +1,4 @@
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula, Boolean, WmAtom } from "./types.ts"
 
 type GeneralizedInput = { [key: string]: string | number }
 
@@ -7,9 +7,12 @@ export function $(x: Var): ExpBuilder<Variable>
 export function $(x: string[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Constant>
 export function $(x: number): ExpBuilder<Number>
+export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedSimpleFormula>
+export function $(x: WmAtom): ExpBuilder<Constant>
+export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
 
-export function $(x: number | string | string[] | GeneralizedInput): ExpBuilder<LLangAst> {
+export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
     if (typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
         return new ExpBuilder(makeAtom(x))
@@ -256,6 +259,8 @@ function makeAtom(x: number | string | string[]): Atom {
 
     if (typeof x === 'number') {
         return { type: 'number', value: x }
+    } else if (typeof x === 'boolean') {
+        return { type: 'boolean', value: x }
     } else if (x instanceof Array) {
         return {
             type: 'list-literal',
@@ -276,8 +281,6 @@ function makeAtom(x: number | string | string[]): Atom {
     } else if (isVar(x)) {
         const [name, varType] = x.split(':')
         return { type: 'variable', name, varType }
-    } else if (['true', 'false'].includes(x)) {
-        return { type: 'boolean', value: x === 'true' ? true : false }
     } else {
         return { type: 'constant', value: x }
     }
@@ -287,4 +290,3 @@ function makeAtom(x: number | string | string[]): Atom {
 
 // console.log($({ first: 'x:thing', greaterThan: 'y:thing' }).$)
 // console.log($(1).isGreaterThan(2).$)
-
