@@ -16,20 +16,11 @@ export type KnowledgeBase = {
 
 export type LLangAst = Atom | Formula
 export type Atom = Term | ListPattern | ListLiteral
-export type Term = Constant | Variable | Boolean | Number
-
-export type ListLiteral = {
-    type: 'list-literal',
-    list: Atom[]
-}
-
-export type ListPattern = {
-    type: 'list-pattern',
-    seq: Atom,
-    tail: Atom,
-}
-
+export type Formula = SimpleFormula | CompositeFormula
+export type Term = Constant | Variable
 export type Constant = Entity | Boolean | Number
+export type SimpleFormula = AtomicFormula | Equality | GeneralizedSimpleFormula | GreaterThenFormula
+export type AtomicFormula = IsAFormula | HasFormula
 
 export type Entity = {
     type: 'constant',
@@ -52,9 +43,16 @@ export type Variable = {
     varType: string
 }
 
-export type Formula = SimpleFormula | CompositeFormula
-export type SimpleFormula = AtomicFormula | Equality | GeneralizedSimpleFormula | GreaterThenFormula
-export type AtomicFormula = IsAFormula | HasFormula
+export type ListLiteral = {
+    type: 'list-literal',
+    list: Atom[]
+}
+
+export type ListPattern = {
+    type: 'list-pattern',
+    seq: Atom,
+    tail: Atom,
+}
 
 export type GeneralizedSimpleFormula = {
     type: 'generalized',
