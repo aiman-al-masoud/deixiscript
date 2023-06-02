@@ -26,6 +26,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
                 if (formula.t1.type === formula.t2.value) return true
             }
 
+            if (isConst(formula.t2) && formula.t2.value === 'thing') return true
+
             if (
                 isConst(formula.t1)
                 && isConst(formula.t2)

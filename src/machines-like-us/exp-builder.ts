@@ -210,14 +210,19 @@ export class ExpBuilder<T extends LLangAst> {
 
     isGreaterThan(atom: number | string): ExpBuilder<GreaterThenFormula> {
 
-        // const f = typeof formula === 'number' ? makeAtom(formula) : formula.$
-
         return new ExpBuilder({
             type: 'greater-than',
             greater: this.exp as Atom,
             lesser: makeAtom(atom as any),
         })
 
+    }
+
+    get isNotTheCase() {
+        return new ExpBuilder({
+            type: 'negation',
+            f1: this.exp as Formula
+        })
     }
 
     get $(): T {

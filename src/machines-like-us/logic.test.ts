@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { assert, assertEquals, assertObjectMatch } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { test } from "./test.ts";
@@ -72,7 +72,21 @@ export const model: WorldModel = [
     ['ann#1', 'cancel-annotation'],
     ['ann#1', 'nr#2', 'subject'],
     ['multiple-birth-event', 'ann#1', 'part'],
+
+    ['open', 'thing'],
+    ['state', 'thing'],
 ]
+
+const dc = $('d:door').has('z:state').as('state').after('s:seq|e:event').when(
+    $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
+        .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object')))
+            .else($('d:door').has('z:state').as('state').after('s:seq')))
+).$
+
+const kb: KnowledgeBase = {
+    wm: model,
+    derivClauses: [dc]
+}
 
 
 Deno.test({
@@ -132,11 +146,7 @@ Deno.test({
     name: 'test5',
     fn: () => {
 
-        const dc = $('d:door').has('z:state').as('state').after('s:seq|e:event').when(
-            $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
-                .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object')))
-                    .else($('d:door').has('z:state').as('state').after('s:seq')))
-        ).$
+
 
         const kb: KnowledgeBase = { wm: model, derivClauses: [dc] }
         const ok = $('door#1').has('open').as('state').after(['door-opening-event#1']).$
@@ -159,6 +169,16 @@ Deno.test({
         assert(!test(no3, kb))
         const results = findAll(find1, [$('e:event').$], kb)
         assertEquals(results[0].get($('e:event').$)?.value, 'door-opening-event#1')
+
+
+
+        // const x = $('x:thing').$
+        // const y = $('y:thing').$
+        // const z = $('z:thing').$
+        // const f1 = $('x:thing').has('y:thing').as('z:thing')
+        // const f4 = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
+        // console.log(findAll(f4.$, [x, y, z], kb))
+
 
     }
 })
@@ -207,6 +227,26 @@ Deno.test({
         }
 
         assert(test($({ subject: 1, isSmallerThan: 2 }).$, kb))
+    }
+})
+
+Deno.test({
+    name: 'test9',
+    fn: () => {
+
+        // getting the side effects of an event 
+        // (the relations caused to exist by the occurrence of an event)
+        const x = $('x:thing').$
+        const y = $('y:thing').$
+        const z = $('z:thing').$
+        const f1 = $('x:thing').has('y:thing').as('z:thing')
+        const f4 = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
+        const m = findAll(f4.$, [x, y, z], kb)[0]
+        assertObjectMatch(m.get(x) as object, $('door#1').$)
+        assertObjectMatch(m.get(y) as object, $('open').$)
+        assertObjectMatch(m.get(z) as object, $('state').$)
+        // console.log([m.get(x)?.value, m.get(y)?.value, m.get(z)?.value])
+
     }
 })
 
