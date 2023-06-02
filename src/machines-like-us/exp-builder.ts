@@ -1,4 +1,5 @@
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula, Boolean, WmAtom } from "./types.ts"
+import { dumpWorldModel } from "./dumpWorldModel.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula, Boolean, WmAtom, isWmAtom } from "./types.ts"
 
 type GeneralizedInput = { [key: string]: string | number }
 
@@ -28,7 +29,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    is(term: string): ExpBuilder<Equality> {
+    is(term: WmAtom): ExpBuilder<Equality> {
 
         if (!isAtom(this.exp)) {
             throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of equality`)
@@ -42,7 +43,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isa(term: string): ExpBuilder<IsAFormula> {
+    isa(term: WmAtom): ExpBuilder<IsAFormula> {
 
         if (!isAtom(this.exp)) {
             throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of IsASentence`)
@@ -57,13 +58,13 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    has(term: string | ExpBuilder<Atom>): ExpBuilder<HasFormula> {
+    has(term: WmAtom | ExpBuilder<Atom>): ExpBuilder<HasFormula> {
 
         if (!isAtom(this.exp)) {
             throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of HasSentence`)
         }
 
-        const atom = typeof term === 'string' ? makeAtom(term) : term.$
+        const atom = isWmAtom(term) ? makeAtom(term) : term.$
 
         return new ExpBuilder({
             type: 'has-formula',
@@ -75,7 +76,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    as(role: string): ExpBuilder<HasFormula> {
+    as(role: WmAtom): ExpBuilder<HasFormula> {
 
         if (this.exp.type !== 'has-formula') {
             throw new Error(`'as' does not apply to ${this.exp.type}, only to HasFormula`)
@@ -234,9 +235,9 @@ export class ExpBuilder<T extends LLangAst> {
         return this.exp
     }
 
-    // get $S():WorldModel{
-    //     return []
-    // }
+    dump(dcs?: DerivationClause[]) {
+        return dumpWorldModel(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
+    }
 
 }
 
@@ -253,9 +254,9 @@ function makeAtom(x: string[]): ListLiteral
 function makeAtom(x: string): Constant
 function makeAtom(x: number): Number
 function makeAtom(x: string | string[]): Atom
-function makeAtom(x: number | string | string[]): Atom
+function makeAtom(x: number | string | boolean | string[]): Atom
 
-function makeAtom(x: number | string | string[]): Atom {
+function makeAtom(x: number | string | boolean | string[]): Atom {
 
     if (typeof x === 'number') {
         return { type: 'number', value: x }

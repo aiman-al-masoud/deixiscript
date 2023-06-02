@@ -208,3 +208,7 @@ export function isTruthy(atom: Atom) {
 export function isSimple(ast: LLangAst): ast is SimpleFormula {
     return isAtomicFormula(ast) || ast.type === 'equality' || ast.type === 'generalized'
 }
+
+export function isWmAtom(x: unknown): x is WmAtom {
+    return typeof x === 'string' || typeof x === 'boolean' || typeof x === 'number'
+}
