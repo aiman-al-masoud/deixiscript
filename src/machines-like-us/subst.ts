@@ -8,9 +8,9 @@ export function substAll(formula: LLangAst, map: VarMap): LLangAst {
     return subs.reduce((f, s) => subst(f, s[0], s[1]), formula)
 }
 
-function subst<T extends LLangAst>(formula: T, variable: Variable, replacement: Atom): T
+export function subst<T extends LLangAst>(formula: T, variable: Variable, replacement: Atom): T
 
-function subst(
+export function subst(
     ast: LLangAst,
     variable: Variable,
     replacement: Atom,

@@ -73,7 +73,7 @@ export const model: WorldModel = [
     ['ann#1', 'nr#2', 'subject'],
     ['multiple-birth-event', 'ann#1', 'part'],
 
-    ['open', 'thing'],
+    ['open', 'state'],
     ['state', 'thing'],
 ]
 
@@ -83,7 +83,7 @@ const dc = $('d:door').has('z:state').as('state').after('s:seq|e:event').when(
             .else($('d:door').has('z:state').as('state').after('s:seq')))
 ).$
 
-const kb: KnowledgeBase = {
+export const kb: KnowledgeBase = {
     wm: model,
     derivClauses: [dc]
 }
