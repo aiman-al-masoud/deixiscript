@@ -13,17 +13,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             if (atomsEqual(formula.t1, formula.t2)) return true
             break
         case 'is-a-formula':
-            // if (kb.wm.filter(isIsASentence).find(ias => {
-            //     return isConst(formula.t1)
-            //         && isConst(formula.t2)
-            //         && formula.t1.value === ias[0]
-            //         && formula.t2.value === ias[1]
-            // })) return true
-            if (isConst(formula.t2)) {
-                if (formula.t1.type === formula.t2.value) return true
-            }
-
             if (isConst(formula.t2) && formula.t2.value === 'thing') return true
+            if (isConst(formula.t2) && formula.t1.type === formula.t2.value) return true
 
             if (
                 isConst(formula.t1)
