@@ -1,19 +1,22 @@
 import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThenFormula } from "./types.ts"
 
+type GeneralizedInput = { [key: string]: string | number }
+
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: string[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Constant>
 export function $(x: number): ExpBuilder<Number>
-export function $(x: { [key: string]: string | number }): ExpBuilder<GeneralizedSimpleFormula>
+export function $(x: GeneralizedInput): ExpBuilder<GeneralizedSimpleFormula>
+// export function $(x: unknown): ExpBuilder<LLangAst>
 
-export function $(x: number | string | string[] | { [key: string]: string | number }): ExpBuilder<LLangAst> {
+export function $(x: number | string | string[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
     if (typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
-        return new ExpBuilder(makeAtom(x as any))
+        return new ExpBuilder(makeAtom(x))
     }
 
-    const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1] as any)]))
+    const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1])]))
     return new ExpBuilder({ type: 'generalized', keys: keys })
 }
 
@@ -213,7 +216,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'greater-than',
             greater: this.exp as Atom,
-            lesser: makeAtom(atom as any),
+            lesser: makeAtom(atom),
         })
 
     }
@@ -248,6 +251,7 @@ function makeAtom(x: string[]): ListLiteral
 function makeAtom(x: string): Constant
 function makeAtom(x: number): Number
 function makeAtom(x: string | string[]): Atom
+function makeAtom(x: number | string | string[]): Atom
 
 function makeAtom(x: number | string | string[]): Atom {
 
