@@ -15,7 +15,7 @@ the player does die.
 there is an enemy.
 `
 
-let wm: WorldModel = [ //TODO: inheritance of roles is broken
+let wm: WorldModel = [
     ['enemy', 'thing'],
     ['player', 'thing'],
     ['speed', 'thing'],
