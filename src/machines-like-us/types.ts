@@ -19,8 +19,17 @@ export type Atom = Term | ListPattern | ListLiteral
 export type Formula = SimpleFormula | CompositeFormula
 export type Term = Constant | Variable
 export type Constant = Entity | Boolean | Number
-export type SimpleFormula = AtomicFormula | Equality | GeneralizedSimpleFormula | GreaterThenFormula
+export type SimpleFormula = AtomicFormula
+    | Equality
+    | GeneralizedSimpleFormula
+    | GreaterThenFormula
 export type AtomicFormula = IsAFormula | HasFormula
+export type CompositeFormula = Conjunction
+    | Disjunction
+    | Negation
+    | ExistentialQuantification
+    | DerivationClause
+    | IfElse
 
 export type Entity = {
     type: 'constant',
@@ -68,14 +77,6 @@ export type GreaterThenFormula = {
 }
 
 export type VarMap = DeepMap<Variable, Atom>
-
-export type CompositeFormula =
-    Conjunction
-    | Disjunction
-    | Negation
-    | ExistentialQuantification
-    | DerivationClause
-    | IfElse
 
 export type Equality = {
     type: 'equality',
