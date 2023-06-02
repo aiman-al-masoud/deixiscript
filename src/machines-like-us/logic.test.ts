@@ -240,8 +240,8 @@ Deno.test({
         const y = $('y:thing').$
         const z = $('z:thing').$
         const f1 = $('x:thing').has('y:thing').as('z:thing')
-        const f4 = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
-        const m = findAll(f4.$, [x, y, z], kb)[0]
+        const q = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
+        const m = findAll(q.$, [x, y, z], kb)[0]
         assertObjectMatch(m.get(x) as object, $('door#1').$)
         assertObjectMatch(m.get(y) as object, $('open').$)
         assertObjectMatch(m.get(z) as object, $('state').$)
