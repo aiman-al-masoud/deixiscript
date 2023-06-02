@@ -166,8 +166,7 @@ door#1 has open as state after [door-opening-event#1]
 
 ### Recursive derivation clause expressed without syntactic sugar
 
-*pg: 178*
-
+_pg: 178_
 
 ```
 Door:d has State:z as a doorState after Seq:s|Event:e
@@ -177,7 +176,8 @@ Door:d has State:z as a doorState after Seq:s|Event:e
 	or Door:d has State:z as a doorState after Seq:s.
 ```
 
-Problem: this is not equivalent to the derivation clause shown by the authors on page 178, what they really mean is this:
+Problem: this is not equivalent to the derivation clause shown by the authors on
+page 178, what they really mean is this:
 
 ```
 Door:d has State:z as a doorState after Seq:s|Event:e
@@ -191,8 +191,10 @@ else Door:d has State:z as a doorState after Seq:s.
 
 > return is equivalent to then
 
-You have to return, not fall through, in case you find the right event with right conditions, asserting the "correct" value of State:z in that case. Otherwise you will end up finding an older event in the sequence that matches, but it is older: it should've been overriden by a new one checked before!
-
+You have to return, not fall through, in case you find the right event with
+right conditions, asserting the "correct" value of State:z in that case.
+Otherwise you will end up finding an older event in the sequence that matches,
+but it is older: it should've been overriden by a new one checked before!
 
 > **NB: Event:e is the LAST EVENT IN THE CHAIN!!!**
 
@@ -202,15 +204,16 @@ You have to return, not fall through, in case you find the right event with righ
 >
 > Because it can be:
 >
-> * an explicit list of terms
-> * sequence variable and tail variable
-> * only a sequence variable
+> - an explicit list of terms
+> - sequence variable and tail variable
+> - only a sequence variable
 
 ## Planning for Change
 
 An "action" is an event that is caused by an agent.
 
-The possibility of a "primitive" event relative to an agent can be defined like so:
+The possibility of a "primitive" event relative to an agent can be defined like
+so:
 
 ```
 Event:e is possible for Agent:x
@@ -244,10 +247,12 @@ Seq:s is a possibleSequence for Agent:x and
 Event:e is possible for Agent:x after Seq:s.
 ```
 
-But what about the side effects on the world model that events could cause and rely on as preconditions? They are not taken into account by this derivation clause.
+But what about the side effects on the world model that events could cause and
+rely on as preconditions? They are not taken into account by this derivation
+clause.
 
+## Finding a sequence of actions of fixed length that achieves a goal
 
-## Finding a sequence of actions of fixed length that achieves a goal 
 ```
 [Event:u,Event:v] is a possibleSequence for Person#17
 and Door#58 has “closed” as a doorState after
@@ -311,28 +316,20 @@ Note that FIND-ALL can be used to compute PLAN, provided that:
 
 # My Notes
 
-- It would be nice for a role to be automatically promoted to a concept when
-  needed. Or is it even necessary given derived properties?
-
 - Is the default annotation filler an existing object or a brand new object, or
-  either of the two depending on the context?
+  either of the two depending on the context? It is a concept. This is because
+  it is part of the conceptual model. The default filler concept can be
+  instantiated just like the parent concept.
 
 - What about circular inheritance graphs?
 
 - Problem with cancelling annotations by id, if you imagine the input is natural
   language from the user, you first need to find the restriction's id based on
-  its name and props, then cancel it. Do I even need a restriction id???
+  its name and props, then cancel it. Do I even need a restriction id? Yes, you
+  need it. It makes it easier to reference the restriction/annotation.
 
-- What about using Restrictions in place of CancelAnnotations, with the rule
-  that Restrictions placed further down the hierarchy override more general
-  Restrictions in case the two are incompatible?
+- Providing a proof by logging the passages of test for debugging purposes,
+  similar to writer monad
 
-- Is the type of a variable actually ever getting used?
-
-- Providing a proof by logging the passages of test for debugging purposes, similar to writer monad
-
-- Existential quantification: better keep one var in AST representation, or multiple vars?
-
-- is subst() supposed to be able to substitute a variable for another variable?
-
-- inheritance chains and inherited props, how does test() take them into account?
+- inheritance chains AND INHERITED PROPS, how does test() take them into
+  account?
