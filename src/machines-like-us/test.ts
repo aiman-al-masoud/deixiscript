@@ -10,11 +10,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
         case 'boolean':
             return formula.value
         case 'equality':
-            {
-                const t1 = atomsEqual(formula.t1, formula.t2)
-                if (t1) return true
-                break
-            }
+            if (atomsEqual(formula.t1, formula.t2)) return true
+            break
         case 'is-a-formula':
             // if (kb.wm.filter(isIsASentence).find(ias => {
             //     return isConst(formula.t1)
