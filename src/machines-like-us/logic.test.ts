@@ -229,8 +229,8 @@ Deno.test({
     name: 'test9',
     fn: () => {
 
-        // getting the side effects of an event 
-        // (the relations caused to exist by the occurrence of an event)
+        // getting the side effects of an event.
+        // very slow because findAll() is very expensive, especially with 3 variables.
         const x = $('x:thing').$
         const y = $('y:thing').$
         const z = $('z:thing').$
