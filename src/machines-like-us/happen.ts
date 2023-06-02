@@ -18,6 +18,7 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
         // console.log(x)
 
         console.log(findAll(x, vs, kb))
+        console.log(x)
     })
 
     return []
