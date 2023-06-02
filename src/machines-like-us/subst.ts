@@ -86,8 +86,8 @@ function subst(
 
             if (replacement.type === 'list-literal') return {
                 type: 'list-pattern',
-                seq: { list: replacement.list.slice(0, -1), type: 'list-literal' },// as any,
-                tail: replacement.list.at(-1)! //as any,
+                seq: { list: replacement.list.slice(0, -1), type: 'list-literal' },
+                tail: replacement.list.at(-1)!
             }
 
             if (replacement.type === 'list-pattern') return replacement

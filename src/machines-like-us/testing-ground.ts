@@ -77,10 +77,6 @@ const dc = [
 ]
 
 const wm: WorldModel = [
-    // ['volume#1', 2 as any],
-    // ['volume#2', 1 as any],
-    // ['volume#1', 'number'],
-    // ['volume#2', 'number'],
     ['bucket#1', 'thing'],
     ['apple#1', 'thing'],
     ['bucket#1', 2 as any, 'volume'],
