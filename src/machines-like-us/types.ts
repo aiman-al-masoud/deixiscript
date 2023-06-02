@@ -33,15 +33,20 @@ export type Constant = {
     value: string
 }
 
+export type Boolean = {
+    type: 'boolean',
+    value: boolean,
+}
+
+export type Number = {
+    type: 'number',
+    value: number,
+}
+
 export type Variable = {
     type: 'variable',
     name: string,
     varType: string
-}
-
-export type Boolean = {
-    type: 'boolean',
-    value: boolean,
 }
 
 export type Formula = SimpleFormula | CompositeFormula
@@ -59,11 +64,6 @@ export type GreaterThenFormula = {
     type: 'greater-than',
     greater: Atom,
     lesser: Atom,
-}
-
-export type Number = {
-    type: 'number',
-    value: number,
 }
 
 export type VarMap = DeepMap<Variable, Atom>
