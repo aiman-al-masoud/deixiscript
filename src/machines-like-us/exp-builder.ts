@@ -250,13 +250,13 @@ function isVar(x: string): x is Var {
 
 function makeAtom(x: ListPat): ListPattern
 function makeAtom(x: Var): Variable
-function makeAtom(x: string[]): ListLiteral
-function makeAtom(x: string): Constant
+function makeAtom(x: WmAtom[]): ListLiteral
 function makeAtom(x: number): Number
-function makeAtom(x: string | string[]): Atom
-function makeAtom(x: number | string | boolean | string[]): Atom
+function makeAtom(x: boolean): Boolean
+function makeAtom(x: string): Constant
+function makeAtom(x: WmAtom | WmAtom[]): Atom
 
-function makeAtom(x: number | string | boolean | string[]): Atom {
+function makeAtom(x: WmAtom | WmAtom[]): Atom {
 
     if (typeof x === 'number') {
         return { type: 'number', value: x }
