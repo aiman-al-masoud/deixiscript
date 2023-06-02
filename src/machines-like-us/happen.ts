@@ -1,10 +1,26 @@
-import { Atom, AtomicFormula, Formula, isAtom, isAtomicFormula, isVar, KnowledgeBase, LLangAst, Term, WorldModel } from './types.ts'
+import { Atom, Formula, isVar, KnowledgeBase, LLangAst, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
-import { test } from './test.ts'
-import { subst, substAll } from './subst.ts'
 
+/**
+ * Better performance than the naive query:
+ * 
+ *  const f1 = $('x:thing').has('y:thing').as('z:thing')
+ *  const query = f1.isNotTheCase.and(f1.after(['my-event#1']))
+ * 
+ * Because it tends to reduce the number of free variables in the query,
+ * therefore making findAll() less expensive. The cost of findAll() is 
+ * proportional to the cost of a cartesian product between x sets, which 
+ * is O(n^x), where 1<=x<=3 (world model formulas have 3 terms at most), 
+ * bringing it down to even just x=2 is a significant improvement.
+ * 
+ * Also because it tends to specify the types of the variables involved,
+ * therefore filtering out the irrelevant ones, reducing the size of the sets, 
+ * and therefore reducing the constant factor.
+ *
+ *
+ */
 export function happen(event: string, kb: KnowledgeBase): WorldModel {
     kb.derivClauses.map(dc => {
 
@@ -15,7 +31,6 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 
         const vs = getTerms(x).filter(isVar)
         // console.log(vs)
-        // console.log(x)
 
         console.log(findAll(x, vs, kb))
         console.log(x)
