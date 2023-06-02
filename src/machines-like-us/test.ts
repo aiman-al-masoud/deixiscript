@@ -51,7 +51,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             if (test(formula.f1, kb) || test(formula.f2, kb)) return true
             break
         case 'existquant':
-            // console.log('existquant=', formula, '\n---------\n')
             if (findAll(formula.where, [formula.variable], kb).length) return true
             break
         case 'if-else':
