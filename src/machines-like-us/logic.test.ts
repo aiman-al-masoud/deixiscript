@@ -146,9 +146,6 @@ Deno.test({
     name: 'test5',
     fn: () => {
 
-
-
-        const kb: KnowledgeBase = { wm: model, derivClauses: [dc] }
         const ok = $('door#1').has('open').as('state').after(['door-opening-event#1']).$
         const ok2 = $('door#1').has('closed').as('state').after(['door-closing-event#1']).$
         const ok3 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'door-opening-event#1']).$
@@ -169,8 +166,6 @@ Deno.test({
         assert(!test(no3, kb))
         const results = findAll(find1, [$('e:event').$], kb)
         assertEquals(results[0].get($('e:event').$)?.value, 'door-opening-event#1')
-
-
 
         // const x = $('x:thing').$
         // const y = $('y:thing').$
