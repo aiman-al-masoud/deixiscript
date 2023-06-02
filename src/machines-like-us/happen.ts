@@ -4,6 +4,8 @@ import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
 
 /**
+ * Recomputes a world model with the changes brought forward by an event.
+ * 
  * Better performance than the naive query:
  * 
  *  const f1 = $('x:thing').has('y:thing').as('z:thing')
