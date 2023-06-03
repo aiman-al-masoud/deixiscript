@@ -4,12 +4,12 @@ import { findAll } from "./findAll.ts";
 import { test } from "./test.ts";
 import { KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
-import { getParts } from "./wm-funcs.ts";
 
 export const model: WorldModel = [
 
     /* World Model */
-    ['event#1', 'birth-event'], // is-a
+    // ['event#1', 'birth-event'], // is-a
+    ...$('event#1').isa('birth-event').dump(),
     ['event#1', 'person#1', 'baby'], // event#1 has person#1 as baby
     ['event#1', 'person#2', 'mother'],
     ['event#1', 'time-point#1', 'time'],
