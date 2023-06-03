@@ -1,4 +1,4 @@
-import { Atom, Formula, HasSentence, IsASentence, isConst, isVar, KnowledgeBase, LLangAst, WorldModel } from './types.ts'
+import { Atom, Formula, isVar, KnowledgeBase, LLangAst, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
@@ -36,14 +36,18 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 
         const variables = getTerms(x).filter(isVar)
         const results = findAll(x, variables, kb)
-        const sub = substAll(x, results[0])
-        return dumpWorldModel(sub, kb)
+
+        return results.map(r => substAll(x, r))
+            .flatMap(x => dumpWorldModel(x, kb))
     })
 
 }
 
-console.log(happen('door-opening-event#1', kb))
-// console.log(happen('door-closing-event#1', kb))
+const wm1 = happen('door-opening-event#1', kb)
+console.log(wm1)
+// TODO need a way of dealing with mutually exclusive properties
+const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
+console.log(wm2)
 
 export function getTerms(ast: LLangAst): Atom[] {
     switch (ast.type) {
