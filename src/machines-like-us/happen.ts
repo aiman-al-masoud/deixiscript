@@ -43,7 +43,7 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 }
 
 console.log(happen('door-opening-event#1', kb))
-// happen('door-closing-event#1', kb)
+// console.log(happen('door-closing-event#1', kb))
 
 export function getTerms(ast: LLangAst): Atom[] {
     switch (ast.type) {
