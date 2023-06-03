@@ -218,8 +218,38 @@ Deno.test({
     }
 })
 
+
 Deno.test({
     name: 'test9',
+    fn: () => {
+
+        const dc = [
+            $({ subject: 'x:thing', isLargerThan: 'y:thing' }).when(
+                $('v1:number').exists.where($('v2:number').exists.where(
+                    $('x:thing').has('v1:number').as('volume')
+                        .and($('y:thing').has('v2:number').as('volume'))
+                        .and($('v1:number').isGreaterThan('v2:number'))
+                ))
+            ).$
+        ]
+
+        const wm = $('bucket#1').isa('bucket')
+            .and($('apple#1').isa('apple'))
+            .and($('bucket#1').has(2).as('volume'))
+            .and($('apple#1').has(1).as('volume'))
+            .dump()
+
+        const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
+        const wrong1 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).$
+
+        assert(test(test1, { wm: wm, derivClauses: dc }))
+        assert(!test(wrong1, { wm: wm, derivClauses: dc }))
+
+    }
+})
+
+Deno.test({
+    name: 'testN',
     fn: () => {
 
         // getting the side effects of an event.

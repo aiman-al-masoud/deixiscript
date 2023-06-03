@@ -62,31 +62,3 @@ console.log(dumpWorldModel(test5, kb))
 // 6 default annotation
 const test6 = $({ ann: 'ann#44', property: 'locomotion', ofConcept: 'bird', defaultsTo: 'fly' }).$
 console.log(dumpWorldModel(test6, kb))
-
-
-//--------------------------------
-import { test } from './test.ts'
-const dc = [
-    $({ subject: 'x:thing', isLargerThan: 'y:thing' }).when(
-        $('v1:number').exists.where($('v2:number').exists.where(
-            $('x:thing').has('v1:number').as('volume')
-                .and($('y:thing').has('v2:number').as('volume'))
-                .and($('v1:number').isGreaterThan('v2:number'))
-        ))
-    ).$
-]
-
-const wm = $('bucket#1').isa('bucket')
-    .and($('apple#1').isa('apple'))
-    .and($('bucket#1').has(2).as('volume'))
-    .and($('apple#1').has(1).as('volume'))
-    .dump()
-
-const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
-const wrong1 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).$
-
-// console.log(test1)
-console.log(test(test1, { wm: wm, derivClauses: dc }))
-console.log(test(wrong1, { wm: wm, derivClauses: dc }))
-
-
