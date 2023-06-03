@@ -37,18 +37,19 @@ export const model: WorldModel = [
     ['city', 'thing'],
     ['multiple-birth-event', 'birth-event'],
 
-    ...$({ subject: 'birth-event', canHaveA: 'mother' }).dump(derivationClauses),
-    ...$({ subject: 'birth-event', canHaveA: 'baby' }).dump(derivationClauses),
-    ...$({ subject: 'birth-event', canHaveA: 'time' }).dump(derivationClauses),
-    ...$({ subject: 'birth-event', canHaveA: 'location' }).dump(derivationClauses),
-    ...$({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }).dump(derivationClauses),
-    ...$({ nr: 'nr#1', part: 'mother', ofConcept: 'birth-event', amountsTo: 1 }).dump(derivationClauses),
-    ...$({ nr: 'nr#2', part: 'baby', ofConcept: 'birth-event', amountsTo: 1 }).dump(derivationClauses),
-    ...$({ subject: 'person', canHaveA: 'birth' }).dump(derivationClauses),
-    ...$({ vr: 'vr#2', part: 'birth', ofConcept: 'person', isA: 'birth-event' }).dump(derivationClauses),
-    ...$({ subject: 'open', isAKindOf: 'state' }).dump(derivationClauses),
-    ...$({ subject: 'closed', isAKindOf: 'state' }).dump(derivationClauses),
-    ...$({ subject: 'state', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'birth-event', canHaveA: 'mother' })
+    .and($({ subject: 'birth-event', canHaveA: 'baby' }))
+    .and($({ subject: 'birth-event', canHaveA: 'time' }))
+    .and($({ subject: 'birth-event', canHaveA: 'location' }))
+    .and($({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }))
+    .and($({ nr: 'nr#1', part: 'mother', ofConcept: 'birth-event', amountsTo: 1 }))
+    .and($({ nr: 'nr#2', part: 'baby', ofConcept: 'birth-event', amountsTo: 1 }))
+    .and($({ subject: 'person', canHaveA: 'birth' }))
+    .and($({ vr: 'vr#2', part: 'birth', ofConcept: 'person', isA: 'birth-event' }))
+    .and($({ subject: 'open', isAKindOf: 'state' }))
+    .and($({ subject: 'closed', isAKindOf: 'state' }))
+    .and($({ subject: 'state', isAKindOf: 'thing' }))
+    .dump(derivationClauses)
 
 ]
 
