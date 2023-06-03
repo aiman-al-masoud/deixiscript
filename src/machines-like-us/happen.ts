@@ -53,5 +53,6 @@ console.log(wm1)
 // $({nr:'nr#1', part:'state', ofConcept:'door', amountsTo:1})
 // $({ nr: 'nr:number-restriction', part: 'state', ofConcept: 'door', amountsTo: 1 })
 // also query for possible cancellations
+// getParts() and check if there is a cancel-annotation with subject = 'state'
 const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
 console.log(wm2)
