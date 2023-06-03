@@ -1,4 +1,4 @@
-import { Atom, Formula, isVar, KnowledgeBase, LLangAst, WorldModel } from './types.ts'
+import { Formula, isVar, KnowledgeBase, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
