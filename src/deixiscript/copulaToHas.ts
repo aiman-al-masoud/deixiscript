@@ -31,7 +31,7 @@ export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
                     type: 'noun-phrase',
                 },
                 role: {
-                    head: role,
+                    head: role+'',
                     type: 'noun-phrase',
                 }
             }
