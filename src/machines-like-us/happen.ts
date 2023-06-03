@@ -1,7 +1,9 @@
-import { Atom, Formula, isVar, KnowledgeBase, LLangAst, WorldModel } from './types.ts'
+import { Atom, Formula, HasSentence, IsASentence, isConst, isVar, KnowledgeBase, LLangAst, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
+import { substAll } from './subst.ts'
+import { dumpWorldModel } from './dumpWorldModel.ts'
 
 /**
  * Recomputes a world model with the changes brought forward by an event.
@@ -24,7 +26,8 @@ import { findAll } from './findAll.ts'
  *
  */
 export function happen(event: string, kb: KnowledgeBase): WorldModel {
-    kb.derivClauses.map(dc => {
+
+    return kb.derivClauses.flatMap(dc => {
 
         const x = {
             ...dc.conseq,
@@ -32,16 +35,14 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
         } as Formula
 
         const vs = getTerms(x).filter(isVar)
-        // console.log(vs)
-
-        console.log(findAll(x, vs, kb))
-        console.log(x)
+        const results = findAll(x, vs, kb)
+        const sub = substAll(x, results[0])
+        return dumpWorldModel(sub, kb)
     })
 
-    return []
 }
 
-happen('door-opening-event#1', kb)
+console.log(happen('door-opening-event#1', kb))
 // happen('door-closing-event#1', kb)
 
 export function getTerms(ast: LLangAst): Atom[] {
