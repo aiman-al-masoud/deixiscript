@@ -43,11 +43,12 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
     })
 
     return changes
-    
+
 }
 
 const wm1 = happen('door-opening-event#1', kb)
 console.log(wm1)
 // TODO need a way of dealing with mutually exclusive properties
+// mabe use number-restriction.
 const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
 console.log(wm2)
