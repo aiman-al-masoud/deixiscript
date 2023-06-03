@@ -4,6 +4,7 @@ import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
 import { dumpWorldModel } from './dumpWorldModel.ts'
+import { getAtoms } from './getTerms.ts'
 
 /**
  * Recomputes a world model with the changes brought forward by an event.
@@ -34,7 +35,7 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
             after: { type: 'list-literal', list: [$(event).$] }
         } as Formula
 
-        const variables = getTerms(x).filter(isVar)
+        const variables = getAtoms(x).filter(isVar)
         const results = findAll(x, variables, kb)
 
         return results.map(r => substAll(x, r))
@@ -48,35 +49,3 @@ console.log(wm1)
 // TODO need a way of dealing with mutually exclusive properties
 const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
 console.log(wm2)
-
-export function getTerms(ast: LLangAst): Atom[] {
-    switch (ast.type) {
-        case 'if-else':
-            return getTerms(ast.condition).concat(getTerms(ast.otherwise)).concat(getTerms(ast.then))
-        case 'derived-prop':
-            return getTerms(ast.conseq).concat(getTerms(ast.when))
-        case 'disjunction':
-        case 'conjunction':
-            return getTerms(ast.f1).concat(getTerms(ast.f2))
-        case 'negation':
-            return getTerms(ast.f1)
-        case 'has-formula':
-            return getTerms(ast.t1).concat(getTerms(ast.t2)).concat(getTerms(ast.as)).concat(getTerms(ast.after))
-        case 'is-a-formula':
-            return getTerms(ast.t1).concat(getTerms(ast.t2)).concat(getTerms(ast.after))
-        case 'equality':
-            return getTerms(ast.t1).concat(getTerms(ast.t2))
-        case 'existquant':
-            return [ast.variable, ...getTerms(ast.where)]
-        case 'list-literal':
-            return ast.list.flatMap(x => getTerms(x))
-        case 'list-pattern':
-            return [ast.seq, ast.tail]
-        case 'constant':
-        case 'variable':
-        case 'boolean':
-            return [ast]
-    }
-
-    throw new Error('not implemented!')
-}
