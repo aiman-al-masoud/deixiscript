@@ -34,8 +34,8 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
             after: { type: 'list-literal', list: [$(event).$] }
         } as Formula
 
-        const vs = getTerms(x).filter(isVar)
-        const results = findAll(x, vs, kb)
+        const variables = getTerms(x).filter(isVar)
+        const results = findAll(x, variables, kb)
         const sub = substAll(x, results[0])
         return dumpWorldModel(sub, kb)
     })
