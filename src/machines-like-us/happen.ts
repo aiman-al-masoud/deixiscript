@@ -28,7 +28,7 @@ import { getAtoms } from './getTerms.ts'
  */
 export function happen(event: string, kb: KnowledgeBase): WorldModel {
 
-    return kb.derivClauses.flatMap(dc => {
+    const changes = kb.derivClauses.flatMap(dc => {
 
         const x = {
             ...dc.conseq,
@@ -42,6 +42,8 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
             .flatMap(x => dumpWorldModel(x, kb))
     })
 
+    return changes
+    
 }
 
 const wm1 = happen('door-opening-event#1', kb)
