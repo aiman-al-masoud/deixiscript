@@ -2,7 +2,9 @@ import { dumpWorldModel } from "./dumpWorldModel.ts";
 import { $ } from "./exp-builder.ts";
 import { DerivationClause, KnowledgeBase } from "./types.ts";
 
-const derivationClauses: DerivationClause[] = [
+export const derivationClauses: DerivationClause[] = [
+
+    /* conceptual mode shorthands */
 
     $({ subject: 'c:thing', isAKindOf: 'sc:thing' }).when(
         $('c:thing').has('sc:thing').as('superconcept')
@@ -38,6 +40,16 @@ const derivationClauses: DerivationClause[] = [
             .and($('ann:thing').has('prop:thing').as('subject'))
             .and($('ann:thing').has('default:thing').as('object'))
     ).$,
+
+
+    /* others */
+
+    $('d:door').has('z:state').as('state').after('s:seq|e:event').when(
+        $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
+            .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object')))
+                .else($('d:door').has('z:state').as('state').after('s:seq')))
+    ).$
+
 
 ]
 

@@ -2,6 +2,7 @@ import { assert, assertEquals, assertObjectMatch } from "https://deno.land/std@0
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { test } from "./test.ts";
+import { derivationClauses } from "./testing-ground.ts";
 import { KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 
@@ -26,8 +27,6 @@ export const model: WorldModel = [
     ['door-closing-event#1', 'door-closing-event'],
     ['door-closing-event#1', 'door#1', 'object'],
 
-
-
     /* Conceptual Model */
     ['person', 'thing'], // is-a
     ['woman', 'person'],
@@ -46,24 +45,29 @@ export const model: WorldModel = [
     ['fly', 'move'],
     ['swim', 'move'],
 
-    ['birth-event', 'mother', 'part'],// birth-event has mother as a part
-    ['birth-event', 'baby', 'part'],
-    ['birth-event', 'time', 'part'],
-    ['birth-event', 'location', 'part'],
-    ['birth-event', 'vr#1', 'part'],
-    ['birth-event', 'nr#2', 'part'],
+    ...$({ subject: 'birth-event', canHaveA: 'mother' }).dump(derivationClauses),
+    ...$({ subject: 'birth-event', canHaveA: 'baby' }).dump(derivationClauses),
+    ...$({ subject: 'birth-event', canHaveA: 'time' }).dump(derivationClauses),
+    ...$({ subject: 'birth-event', canHaveA: 'location' }).dump(derivationClauses),
+    ...$({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }).dump(derivationClauses),
 
+
+    // ['birth-event', 'baby', 'part'],
+    // ['birth-event', 'time', 'part'],
+    // ['birth-event', 'location', 'part'],
+    // ['birth-event', 'vr#1', 'part'],
+    ['birth-event', 'nr#2', 'part'],
 
     ['person', 'birth-event', 'birth'], // person has birth-event as birth
 
-    ['mother', 'role'],// maybe uneeded
-    ['baby', 'role'],// maybe uneeded
-    ['time', 'role'],// maybe uneeded
-    ['location', 'role'],// maybe uneeded
+    // ['mother', 'role'],// maybe uneeded
+    // ['baby', 'role'],// maybe uneeded
+    // ['time', 'role'],// maybe uneeded
+    // ['location', 'role'],// maybe uneeded
 
-    ['vr#1', 'value-restriction'],
-    ['vr#1', 'mother', 'subject'], // vr#1 has mother as a subject
-    ['vr#1', 'woman', 'object'],
+    // ['vr#1', 'value-restriction'],
+    // ['vr#1', 'mother', 'subject'], // vr#1 has mother as a subject
+    // ['vr#1', 'woman', 'object'],
 
     ['nr#2', 'number-restriction'],
     ['nr#2', 'baby', 'subject'],
@@ -78,17 +82,10 @@ export const model: WorldModel = [
     ['state', 'thing'],
 ]
 
-const dc = $('d:door').has('z:state').as('state').after('s:seq|e:event').when(
-    $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
-        .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object')))
-            .else($('d:door').has('z:state').as('state').after('s:seq')))
-).$
-
 export const kb: KnowledgeBase = {
     wm: model,
-    derivClauses: [dc]
+    derivClauses: derivationClauses
 }
-
 
 Deno.test({
     name: 'test1',
