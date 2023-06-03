@@ -18,6 +18,17 @@ export function useDef(astNumber: number, ast: ast_node, wm: WorldModel): WorldM
         case 'copula-sentence':
             wmCopy.push([instructionId, ast.subject.head, 'def'])
             break
+        case 'if-sentence':
+            switch (ast.condition.type) {
+                case 'copula-sentence':
+                    wmCopy.push([instructionId, ast.condition.subject.head, 'use'])
+                    wmCopy.push([instructionId, ast.condition.object.head, 'use'])
+            }
+            switch(ast.consequence.type){
+                case 'copula-sentence':
+                    wmCopy.push([instructionId, ast.consequence.subject.head, 'use'])
+                    wmCopy.push([instructionId, ast.consequence.object.head, 'use'])
+            }
 
     }
 

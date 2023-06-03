@@ -37,6 +37,12 @@ export function expandModifiers(ast: ast_node): ast_node {
                 type: 'there-is-sentence',
                 subject: expandModifiers(ast.subject),
             }
+        case 'if-sentence':
+            return {
+                type :'if-sentence',
+                condition : expandModifiers(ast.condition),
+                consequence : expandModifiers(ast.consequence),
+            }
     }
 
     throw new Error('not implemented!')

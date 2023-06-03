@@ -13,6 +13,8 @@ the fast player does jump to the enemy.
 the player is a sprite.
 the player does die.
 there is an enemy.
+there is a button.
+if the button is big then the div is small.
 `
 
 let wm: WorldModel = [
@@ -29,6 +31,7 @@ const asts = sentences.map(x => parse(x))
 const asts2 = asts.map(x => expandModifiers(x))
 const asts3 = asts2.map(x => copulaToHas(x, wm))
 const asts4 = asts3.map(x => resImpRefs(x, wm))
+console.log('asts4=', asts4)
 asts4.forEach((x, i) => wm = useDef(i, x, wm))
 const asts5 = instructionSort(wm, asts4)
 const jsasts = asts5.map(x => deixiToJs(x))

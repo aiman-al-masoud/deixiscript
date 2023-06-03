@@ -5,12 +5,8 @@ export function instructionSort<T>(wm: WorldModel, instructions: T[]) {
 
     const dg = getDependencyGraph(wm).map(e=>[e[0]+'', e[1]+''] as const)
     const k = kahn(dg)
-    // console.log(k)
-    // return k
     const result = k.map(i => instructions.at(parseInt(i.match(/\d+/)?.toString()!))!)
-    // console.log('result=', result)
     return result
-    // return results
 }
 
 

@@ -19,7 +19,7 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
             } else if (result.length === 1) {
                 const map = result[0]
                 const match = map.get($(variable).$)
-                id = match?.value!+''
+                id = match?.value! + ''
             } else if (result.length > 1 && !ast.pluralizer) {
                 throw new Error('ambiguous: multiple anaphoric matches!')
             }
@@ -53,6 +53,12 @@ export function resImpRefs(ast: ast_node, wm: WorldModel): ast_node {
             return {
                 type: 'there-is-sentence',
                 subject: resImpRefs(ast.subject, wm),
+            }
+        case 'if-sentence':
+            return {
+                type: 'if-sentence',
+                condition: resImpRefs(ast.condition, wm),
+                consequence: resImpRefs(ast.consequence, wm),
             }
 
     }

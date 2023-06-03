@@ -31,6 +31,13 @@ export function deixiToJs(deixi: ast_node): JsAst {
                     arguments: [],
                 }
             }
+        case 'if-sentence':
+            return {
+                type : 'if-else',
+                condition : deixiToJs(deixi.condition) as any,
+                then : deixiToJs(deixi.consequence) as any,
+                otherwise : {} as any
+            }
     }
 
     throw new Error('errror!')

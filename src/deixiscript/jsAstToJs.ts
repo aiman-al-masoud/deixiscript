@@ -11,6 +11,8 @@ export function jsAstToJs(jsAst: JsAst): string {
         case 'method-call':
             // @ts-ignore
             return `${jsAst.variable}.${jsAst.name}({receiver:${jsAst.arguments['receiver'].name}})`
+        case 'if-else':
+            return `if(${jsAstToJs(jsAst.condition)}){ ${jsAstToJs(jsAst.then)} }`
 
     }
 

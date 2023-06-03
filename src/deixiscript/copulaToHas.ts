@@ -55,6 +55,12 @@ export function copulaToHas(ast: ast_node, wm: WorldModel): ast_node {
                 type: 'there-is-sentence',
                 subject: copulaToHas(ast.subject, wm),
             }
+        case 'if-sentence':
+            return {
+                type : 'if-sentence',
+                condition : copulaToHas(ast.condition, wm),
+                consequence : copulaToHas(ast.consequence, wm),
+            }
     }
 
     throw new Error('not implemented!')
