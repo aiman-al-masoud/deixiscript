@@ -50,5 +50,8 @@ const wm1 = happen('door-opening-event#1', kb)
 console.log(wm1)
 // TODO need a way of dealing with mutually exclusive properties
 // mabe use number-restriction.
+// $({nr:'nr#1', part:'state', ofConcept:'door', amountsTo:1})
+// $({ nr: 'nr:number-restriction', part: 'state', ofConcept: 'door', amountsTo: 1 })
+// also query for possible cancellations
 const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
 console.log(wm2)
