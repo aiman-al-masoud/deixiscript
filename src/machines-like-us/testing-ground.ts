@@ -1,6 +1,6 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts";
 import { $ } from "./exp-builder.ts";
-import { DerivationClause, KnowledgeBase, WorldModel } from "./types.ts";
+import { DerivationClause, KnowledgeBase } from "./types.ts";
 
 const derivationClauses: DerivationClause[] = [
 
