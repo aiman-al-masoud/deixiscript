@@ -9,7 +9,6 @@ import { WorldModel } from "./types.ts";
 export const model: WorldModel = [
 
     /* World Model */
-    // ['event#1', 'birth-event'], // is-a
     ...$('event#1').isa('birth-event').dump(),
     ['event#1', 'person#1', 'baby'], // event#1 has person#1 as baby
     ['event#1', 'person#2', 'mother'],
@@ -37,49 +36,20 @@ export const model: WorldModel = [
     ['point-in-space', 'thing'],
     ['city', 'thing'],
     ['multiple-birth-event', 'birth-event'],
-    ['animal', 'thing'],
-    ['bird', 'animal'],
-    ['penguin', 'bird'],
-    ['canary', 'bird'],
-    ['move', 'thing'],
-    ['fly', 'move'],
-    ['swim', 'move'],
 
     ...$({ subject: 'birth-event', canHaveA: 'mother' }).dump(derivationClauses),
     ...$({ subject: 'birth-event', canHaveA: 'baby' }).dump(derivationClauses),
     ...$({ subject: 'birth-event', canHaveA: 'time' }).dump(derivationClauses),
     ...$({ subject: 'birth-event', canHaveA: 'location' }).dump(derivationClauses),
     ...$({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }).dump(derivationClauses),
+    ...$({ nr: 'nr#1', part: 'mother', ofConcept: 'birth-event', amountsTo: 1 }).dump(derivationClauses),
+    ...$({ nr: 'nr#2', part: 'baby', ofConcept: 'birth-event', amountsTo: 1 }).dump(derivationClauses),
+    ...$({ subject: 'person', canHaveA: 'birth' }).dump(derivationClauses),
+    ...$({ vr: 'vr#2', part: 'birth', ofConcept: 'person', isA: 'birth-event' }).dump(derivationClauses),
+    ...$({ subject: 'open', isAKindOf: 'state' }).dump(derivationClauses),
+    ...$({ subject: 'closed', isAKindOf: 'state' }).dump(derivationClauses),
+    ...$({ subject: 'state', isAKindOf: 'thing' }).dump(derivationClauses),
 
-
-    // ['birth-event', 'baby', 'part'],
-    // ['birth-event', 'time', 'part'],
-    // ['birth-event', 'location', 'part'],
-    // ['birth-event', 'vr#1', 'part'],
-    ['birth-event', 'nr#2', 'part'],
-
-    ['person', 'birth-event', 'birth'], // person has birth-event as birth
-
-    // ['mother', 'role'],// maybe uneeded
-    // ['baby', 'role'],// maybe uneeded
-    // ['time', 'role'],// maybe uneeded
-    // ['location', 'role'],// maybe uneeded
-
-    // ['vr#1', 'value-restriction'],
-    // ['vr#1', 'mother', 'subject'], // vr#1 has mother as a subject
-    // ['vr#1', 'woman', 'object'],
-
-    ['nr#2', 'number-restriction'],
-    ['nr#2', 'baby', 'subject'],
-    ['nr#2', '1', 'object'],
-
-    ['ann#1', 'cancel-annotation'],
-    ['ann#1', 'nr#2', 'subject'],
-    ['multiple-birth-event', 'ann#1', 'part'],
-
-    ['open', 'state'],
-    ['closed', 'state'],
-    ['state', 'thing'],
 ]
 
 export const kb: KnowledgeBase = {
