@@ -1,4 +1,4 @@
-import { AtomicFormula, HasSentence,/*  Formula, */ isAtomicFormula, isVar, KnowledgeBase, WorldModel } from './types.ts'
+import { AtomicFormula, HasSentence,/*  Formula, */ isAtomicFormula, isHasSentence, isVar, KnowledgeBase, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 // import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
@@ -46,7 +46,7 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
             const eventConsequences = results.map(r => substAll(x, r))
                 .flatMap(x => dumpWorldModel(x, kb))
 
-            const old = eventConsequences /* is old */.filter(s1 => kb.wm.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
+            // const old = eventConsequences /* is old */.filter(s1 => kb.wm.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
             const additions = eventConsequences  /* is new */.filter(s1 => !kb.wm.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
 
             return additions
@@ -73,7 +73,7 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 
 export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
     const concepts = getConceptsOf(h[0], kb.wm)
-    console.log(concepts)
+    // console.log(concepts)
 
     const qs =
         concepts.map(c => $({ ann: 'x:mutex-annotation', property: h[1] as string, excludes: 'y:thing', onPart: h[2] as string, onConcept: c as string }))
@@ -82,8 +82,25 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
         qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value))
 
     // console.log(r)
-    const results = r.map(x => [h[0], x, h[2]])
-
-    console.log(results)
+    const results = r.map(x => [h[0], x, h[2]] as HasSentence)
+    return results
+    // console.log(results)
 
 }
+
+export function recomputeKb(event: string, kb: KnowledgeBase) {
+
+    const additions = happen(event, kb)
+    const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
+    const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
+    const final = filtered.concat(additions)
+
+    const result: KnowledgeBase = {
+        derivClauses: kb.derivClauses,
+        wm: final
+    }
+
+    // console.log(result)
+    return result
+}
+

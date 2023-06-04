@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { getExcludedBy, happen } from "./happen.ts";
+import { getExcludedBy, happen, recomputeKb } from "./happen.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { KnowledgeBase } from "./types.ts";
@@ -280,8 +280,8 @@ Deno.test({
 
         // console.log(happenSeq(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1'], kb))
 
-        getExcludedBy(['door#1', 'open', 'state'], kb)
-
+        // getExcludedBy(['door#1', 'open', 'state'], kb)
+        recomputeKb('door-opening-event#1', kb)
 
     }
 })
