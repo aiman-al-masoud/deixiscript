@@ -88,7 +88,7 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
 
 }
 
-export function recomputeKb(event: string, kb: KnowledgeBase) {
+function recomputeKbAfterSingleEvent(event: string, kb: KnowledgeBase) {
 
     const additions = happen(event, kb)
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
@@ -104,3 +104,6 @@ export function recomputeKb(event: string, kb: KnowledgeBase) {
     return result
 }
 
+export function recomputeKb(event: string[], kb: KnowledgeBase) {
+    return event.reduce((currKb, e) => recomputeKbAfterSingleEvent(e, currKb), kb)
+}
