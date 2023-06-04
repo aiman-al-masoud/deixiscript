@@ -6,6 +6,7 @@ import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
+import { getParts } from "./wm-funcs.ts";
 
 export const model: WorldModel = [
 
@@ -53,13 +54,19 @@ export const model: WorldModel = [
         .dump(derivationClauses),
 
     // ...$({ nr: 'nr#3', part: 'state', ofConcept: 'door', amountsTo: 1 }).dump(derivationClauses)
+    ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses),
+
 
 ]
+
+
 
 export const kb: KnowledgeBase = {
     wm: model,
     derivClauses: derivationClauses
 }
+
+console.log(kb.wm)
 
 Deno.test({
     name: 'test1',
@@ -233,6 +240,19 @@ Deno.test({
 
 Deno.test({
     name: 'test11',
+    fn: () => {
+
+        const x = test($('x:thing').exists.where(
+            $({ ann: 'x:thing', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' })
+        ).$, kb)
+
+        assert(x)
+
+    }
+})
+
+Deno.test({
+    name: 'test12',
     fn: () => {
 
         // // getting the side effects of an event.

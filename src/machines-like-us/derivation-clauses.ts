@@ -41,6 +41,14 @@ export const derivationClauses: DerivationClause[] = [
             .and($('ann:thing').has('default:thing').as('object'))
     ).$,
 
+    $({ ann: 'ann:thing', property: 'p1:thing', excludes: 'p2:thing', onPart: 'prop:thing', onConcept: 'c:thing' }).when(
+        $('c:thing').has('ann:thing').as('part')
+            .and($('ann:thing').isa('mutex-annotation'))
+            .and($('ann:thing').has('p1:thing').as('p'))
+            .and($('ann:thing').has('p2:thing').as('p'))
+            .and($('ann:thing').has('prop:thing').as('prop'))
+            .and($('ann:thing').has('c:thing').as('concept'))
+    ).$,
 
     /* others */
 
@@ -48,10 +56,17 @@ export const derivationClauses: DerivationClause[] = [
         $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
             .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object')))
                 .else($('d:door').has('z:state').as('state').after('s:seq')))
-    ).$
+    ).$,
+
+
+    // $({ subject: 'x:thing', excludes: 'y:thing', onPart:'p:thing' onConcept: 'c:thing' }).when(
+
+    // )
 
 
 ]
+
+console.log($({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses))
 
 // const kb: KnowledgeBase = {
 //     wm: [],
