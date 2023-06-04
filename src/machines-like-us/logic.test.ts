@@ -1,6 +1,7 @@
-import { assert, assertEquals, assertObjectMatch } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
+import { happen } from "./happen.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./testing-ground.ts";
 import { KnowledgeBase } from "./types.ts";
@@ -10,46 +11,46 @@ export const model: WorldModel = [
 
     /* World Model */
     ...$('event#1').isa('birth-event').dump(),
-    ['event#1', 'person#1', 'baby'], // event#1 has person#1 as baby
-    ['event#1', 'person#2', 'mother'],
-    ['event#1', 'time-point#1', 'time'],
-    ['event#1', 'space-point#1', 'location'],
-    ['space-point#1', 'boston', 'enclosing-city'],
-    ['person#1', 'event#1', 'birth'],
-    ['person#2', 'woman'],
-    ['person#1', 'person'],
-    ['boston', 'city'],
-    ['space-point#1', 'space-point'],
-    ['door#1', 'door'],
-    ['door-opening-event#1', 'door-opening-event'],
-    ['door-opening-event#1', 'door#1', 'object'],
-    ['door-closing-event#1', 'door-closing-event'],
-    ['door-closing-event#1', 'door#1', 'object'],
+    ...$('event#1').has('person#1').as('baby').dump(),
+    ...$('event#1').has('person#2').as('mother').dump(),
+    ...$('event#1').has('time-point#1').as('time').dump(),
+    ...$('event#1').has('space-point#1').as('location').dump(),
+    ...$('space-point#1').has('boston').as('enclosing-city').dump(),
+    ...$('person#1').has('event#1').as('birth').dump(),
+    ...$('person#2').isa('woman').dump(),
+    ...$('person#1').isa('person').dump(),
+    ...$('boston').isa('city').dump(),
+    ...$('space-point#1').isa('space-point').dump(),
+    ...$('door#1').isa('door').dump(),
+    ...$('door-opening-event#1').isa('door-opening-event').dump(),
+    ...$('door-opening-event#1').has('door#1').as('object').dump(),
+    ...$('door-closing-event#1').isa('door-closing-event').dump(),
+    ...$('door-closing-event#1').has('door#1').as('object').dump(),
 
     /* Conceptual Model */
-    ['person', 'thing'], // is-a
-    ['woman', 'person'],
-    ['event', 'thing'],
-    ['door-opening-event', 'event'],
-    ['birth-event', 'event'],
-    ['time-instant', 'thing'],
-    ['point-in-space', 'thing'],
-    ['city', 'thing'],
-    ['multiple-birth-event', 'birth-event'],
+    ...$({ subject: 'person', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses),
+    ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'door-opening-event', isAKindOf: 'event' }).dump(derivationClauses),
+    ...$({ subject: 'birth-event', isAKindOf: 'event' }).dump(derivationClauses),
+    ...$({ subject: 'time-instant', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'point-in-space', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'city', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses),
 
     ...$({ subject: 'birth-event', canHaveA: 'mother' })
-    .and($({ subject: 'birth-event', canHaveA: 'baby' }))
-    .and($({ subject: 'birth-event', canHaveA: 'time' }))
-    .and($({ subject: 'birth-event', canHaveA: 'location' }))
-    .and($({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }))
-    .and($({ nr: 'nr#1', part: 'mother', ofConcept: 'birth-event', amountsTo: 1 }))
-    .and($({ nr: 'nr#2', part: 'baby', ofConcept: 'birth-event', amountsTo: 1 }))
-    .and($({ subject: 'person', canHaveA: 'birth' }))
-    .and($({ vr: 'vr#2', part: 'birth', ofConcept: 'person', isA: 'birth-event' }))
-    .and($({ subject: 'open', isAKindOf: 'state' }))
-    .and($({ subject: 'closed', isAKindOf: 'state' }))
-    .and($({ subject: 'state', isAKindOf: 'thing' }))
-    .dump(derivationClauses)
+        .and($({ subject: 'birth-event', canHaveA: 'baby' }))
+        .and($({ subject: 'birth-event', canHaveA: 'time' }))
+        .and($({ subject: 'birth-event', canHaveA: 'location' }))
+        .and($({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }))
+        .and($({ nr: 'nr#1', part: 'mother', ofConcept: 'birth-event', amountsTo: 1 }))
+        .and($({ nr: 'nr#2', part: 'baby', ofConcept: 'birth-event', amountsTo: 1 }))
+        .and($({ subject: 'person', canHaveA: 'birth' }))
+        .and($({ vr: 'vr#2', part: 'birth', ofConcept: 'person', isA: 'birth-event' }))
+        .and($({ subject: 'open', isAKindOf: 'state' }))
+        .and($({ subject: 'closed', isAKindOf: 'state' }))
+        .and($({ subject: 'state', isAKindOf: 'thing' }))
+        .dump(derivationClauses)
 
 ]
 
@@ -87,7 +88,7 @@ Deno.test({
     fn: () => {
         const f = $('x:person').isa('person').$
         const v = $('x:person').$
-        const results = findAll(f, [v], { wm: model, derivClauses: [] })
+        const results = findAll(f, [v], kb)
         assertEquals(results.length, 3)
     }
 })
@@ -217,21 +218,26 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'testN',
+    name: 'test10',
     fn: () => {
 
-        // getting the side effects of an event.
-        // very slow because findAll() is very expensive, especially with 3 variables.
-        const x = $('x:thing').$
-        const y = $('y:thing').$
-        const z = $('z:thing').$
-        const f1 = $('x:thing').has('y:thing').as('z:thing')
-        const q = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
-        const m = findAll(q.$, [x, y, z], kb)[0]
-        assertObjectMatch(m.get(x) as object, $('door#1').$)
-        assertObjectMatch(m.get(y) as object, $('open').$)
-        assertObjectMatch(m.get(z) as object, $('state').$)
-        // console.log([m.get(x)?.value, m.get(y)?.value, m.get(z)?.value])
+        // // getting the side effects of an event.
+        // // very slow because findAll() is very expensive, especially with 3 variables.
+        // const x = $('x:thing').$
+        // const y = $('y:thing').$
+        // const z = $('z:thing').$
+        // const f1 = $('x:thing').has('y:thing').as('z:thing')
+        // const q = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
+        // const m = findAll(q.$, [x, y, z], kb)[0]
+        // assertObjectMatch(m.get(x) as object, $('door#1').$)
+        // assertObjectMatch(m.get(y) as object, $('open').$)
+        // assertObjectMatch(m.get(z) as object, $('state').$)
+        // // console.log([m.get(x)?.value, m.get(y)?.value, m.get(z)?.value])
+
+        const result = happen('door-opening-event#1', kb)
+        assertEquals(result[0][0], 'door#1')
+        assertEquals(result[0][1], 'open')
+        assertEquals(result[0][2], 'state')
 
     }
 })

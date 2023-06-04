@@ -29,5 +29,5 @@ export function getAtoms(ast: LLangAst): Atom[] {
             return [ast]
     }
 
-    throw new Error('not implemented!')
+    throw new Error('not implemented: '+ast.type)
 }

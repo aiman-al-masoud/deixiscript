@@ -1,6 +1,6 @@
-import { dumpWorldModel } from "./dumpWorldModel.ts";
+// import { dumpWorldModel } from "./dumpWorldModel.ts";
 import { $ } from "./exp-builder.ts";
-import { DerivationClause, KnowledgeBase } from "./types.ts";
+import { DerivationClause, /* KnowledgeBase */ } from "./types.ts";
 
 export const derivationClauses: DerivationClause[] = [
 
@@ -53,10 +53,10 @@ export const derivationClauses: DerivationClause[] = [
 
 ]
 
-const kb: KnowledgeBase = {
-    wm: [],
-    derivClauses: derivationClauses,
-}
+// const kb: KnowledgeBase = {
+//     wm: [],
+//     derivClauses: derivationClauses,
+// }
 
 // // 1 inheritance
 // console.log(dumpWorldModel($({ subject: 'capra', isAKindOf: 'mammal' }).$, kb))

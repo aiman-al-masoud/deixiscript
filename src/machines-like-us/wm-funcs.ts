@@ -1,4 +1,4 @@
-import { WorldModel, WmAtom } from "./types.ts";
+import { WorldModel, WmAtom, isIsASentence } from "./types.ts";
 
 
 export function getParts(concept: string, cm: WorldModel): WmAtom[] {
@@ -34,10 +34,18 @@ function getAllParts(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
 }
 
+
+function subjectOf(concept: WmAtom, cm: WorldModel): WmAtom | undefined {
+    return cm.filter(x =>
+        x.length === 3
+        && x[2] === 'subject'
+        && x[0] === concept).map(x => x[1]).at(0)
+}
+
 export function getSupers(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
     const supers = cm
-        .filter(x => x[0] === concept && x.length === 2)
+        .filter(x => x[0] === concept && x[2] === 'superconcept')
         .map(x => x[1])
 
     if (!supers.length) {
@@ -48,11 +56,10 @@ export function getSupers(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
 }
 
-function subjectOf(concept: WmAtom, cm: WorldModel): WmAtom | undefined {
-    return cm.filter(x =>
-        x.length === 3
-        && x[2] === 'subject'
-        && x[0] === concept).map(x => x[1]).at(0)
+export function getConceptsOf(x: WmAtom, cm: WorldModel) {
+    return cm.filter(s => s[0] === x && isIsASentence(s))
+        .map(s => s[1])
+        .flatMap(c => [c, ...getSupers(c, cm)])
 }
 
 // const x = getSupers('multiple-birth-event', model)
@@ -62,3 +69,5 @@ function subjectOf(concept: WmAtom, cm: WorldModel): WmAtom | undefined {
 // console.log(y)
 // console.log(z)
 // console.log(findInstances('person', model))
+
+

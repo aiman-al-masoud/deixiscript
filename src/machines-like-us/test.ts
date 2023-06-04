@@ -1,8 +1,9 @@
 import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
-import { getSupers } from "./wm-funcs.ts";
+import { getConceptsOf, getSupers } from "./wm-funcs.ts";
 import { match } from "./match.ts";
+// import { $ } from "./exp-builder.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
@@ -16,10 +17,15 @@ export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
             if (isConst(formula.t2) && formula.t2.value === 'thing') return true
             if (isConst(formula.t2) && formula.t1.type === formula.t2.value) return true
 
+            // const x = (formula.t1 as any).value
+            // const t2 = (formula.t2 as any).value
+            // console.log('t1=', x, 't2=', t2,  getSupers(x, kb.wm))
+
             if (
                 isConst(formula.t1)
                 && isConst(formula.t2)
-                && getSupers(formula.t1.value, kb.wm).includes(formula.t2.value)
+                // && getSupers(formula.t1.value, kb.wm).includes(formula.t2.value)
+                && (getConceptsOf(formula.t1.value, kb.wm).includes(formula.t2.value) || getSupers(formula.t1.value, kb.wm).includes(formula.t2.value))
             ) return true
             break
         case 'has-formula':

@@ -1,6 +1,6 @@
-import { Formula, isVar, KnowledgeBase, WorldModel } from './types.ts'
+import { AtomicFormula,/*  Formula, */ isAtomicFormula, isVar, KnowledgeBase, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
-import { kb } from './logic.test.ts'
+// import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
 import { dumpWorldModel } from './dumpWorldModel.ts'
@@ -30,29 +30,34 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
-        const x = {
-            ...dc.conseq,
-            after: { type: 'list-literal', list: [$(event).$] }
-        } as Formula
+        if (isAtomicFormula(dc.conseq)) {
 
-        const variables = getAtoms(x).filter(isVar)
-        const results = findAll(x, variables, kb)
+            const x: AtomicFormula = {
+                ...dc.conseq,
+                after: { type: 'list-literal', list: [$(event).$] }
+            }
 
-        return results.map(r => substAll(x, r))
-            .flatMap(x => dumpWorldModel(x, kb))
+            const variables = getAtoms(x).filter(isVar)
+            const results = findAll(x, variables, kb)
+
+            return results.map(r => substAll(x, r))
+                .flatMap(x => dumpWorldModel(x, kb))
+        }
+
+        return []
     })
 
     return changes
 
 }
 
-const wm1 = happen('door-opening-event#1', kb)
-console.log(wm1)
-// TODO need a way of dealing with mutually exclusive properties
-// mabe use number-restriction.
-// $({nr:'nr#1', part:'state', ofConcept:'door', amountsTo:1})
-// $({ nr: 'nr:number-restriction', part: 'state', ofConcept: 'door', amountsTo: 1 })
-// also query for possible cancellations
-// getParts() and check if there is a cancel-annotation with subject = 'state'
-const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
-console.log(wm2)
+// const wm1 = happen('door-opening-event#1', kb)
+// console.log(wm1)
+// // TODO need a way of dealing with mutually exclusive properties
+// // mabe use number-restriction.
+// // $({nr:'nr#1', part:'state', ofConcept:'door', amountsTo:1})
+// // $({ nr: 'nr:number-restriction', part: 'state', ofConcept: 'door', amountsTo: 1 })
+// // also query for possible cancellations
+// // getParts() and check if there is a cancel-annotation with subject = 'state'
+// const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
+// console.log(wm2)
