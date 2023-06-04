@@ -75,9 +75,11 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
     const concepts = getConceptsOf(h[0], kb.wm)
     console.log(concepts)
 
-    const q = $({ ann: 'x:mutex-annotation', property: h[1] as string, excludes: 'y:thing', onPart: h[2] as string, onConcept: concepts[0] as string })
+    const qs =
+        concepts.map(c => $({ ann: 'x:mutex-annotation', property: h[1] as string, excludes: 'y:thing', onPart: h[2] as string, onConcept: c as string }))
 
-    const r = findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value)
+    const r =
+        qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value))
 
     // console.log(r)
     const results = r.map(x => [h[0], x, h[2]])
