@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { happen } from "./happen.ts";
+import { getExcludedBy, happen } from "./happen.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { KnowledgeBase } from "./types.ts";
@@ -273,12 +273,15 @@ Deno.test({
         // assertEquals(result[0][1], 'open')
         // assertEquals(result[0][2], 'state')
 
-        const wm1 = happen('door-opening-event#1', kb)
-        console.log(wm1)
-        const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
-        console.log(wm2)
+        // const wm1 = happen('door-opening-event#1', kb)
+        // console.log(wm1)
+        // const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
+        // console.log(wm2)
 
         // console.log(happenSeq(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1'], kb))
+
+        getExcludedBy(['door#1', 'open', 'state'], kb)
+
 
     }
 })

@@ -1,10 +1,11 @@
-import { AtomicFormula,/*  Formula, */ isAtomicFormula, isVar, KnowledgeBase, WorldModel } from './types.ts'
+import { AtomicFormula, HasSentence,/*  Formula, */ isAtomicFormula, isVar, KnowledgeBase, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 // import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
 import { dumpWorldModel } from './dumpWorldModel.ts'
 import { getAtoms } from './getAtoms.ts'
+import { getConceptsOf } from './wm-funcs.ts'
 
 /**
  * Computes the changes immediately caused by an event.
@@ -68,3 +69,19 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 // // getParts() and check if there is a cancel-annotation with subject = 'state'
 // const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
 // console.log(wm2)
+
+
+export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
+    const concepts = getConceptsOf(h[0], kb.wm)
+    console.log(concepts)
+
+    const q = $({ ann: 'x:mutex-annotation', property: h[1] as string, excludes: 'y:thing', onPart: h[2] as string, onConcept: concepts[0] as string })
+
+    const r = findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value)
+
+    // console.log(r)
+    const results = r.map(x => [h[0], x, h[2]])
+
+    console.log(results)
+
+}
