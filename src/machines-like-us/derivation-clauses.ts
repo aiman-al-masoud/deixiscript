@@ -66,7 +66,7 @@ export const derivationClauses: DerivationClause[] = [
 
 ]
 
-console.log($({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses))
+// console.log($({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses))
 
 // const kb: KnowledgeBase = {
 //     wm: [],
