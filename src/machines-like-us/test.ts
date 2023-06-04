@@ -7,6 +7,10 @@ import { match } from "./match.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
 
+    // recompute kb in case formula has an "after" clause.
+    // remove after clause from formula and go on...
+    // how about match() returning undefined if formula doesn't have after after and template does?
+
     switch (formula.type) {
         case 'boolean':
             return formula.value
