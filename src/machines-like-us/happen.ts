@@ -1,10 +1,12 @@
-import { AtomicFormula,/*  Formula, */ isAtomicFormula, isVar, KnowledgeBase, WorldModel } from './types.ts'
+import { AtomicFormula,/*  Formula, */ isAtomicFormula, isConst, isVar, KnowledgeBase, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 // import { kb } from './logic.test.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
 import { dumpWorldModel } from './dumpWorldModel.ts'
 import { getAtoms } from './getAtoms.ts'
+import { getParts } from './wm-funcs.ts'
+import { test } from './test.ts'
 
 /**
  * Recomputes a world model with the changes brought forward by an event.
@@ -39,6 +41,17 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
 
             const variables = getAtoms(x).filter(isVar)
             const results = findAll(x, variables, kb)
+
+            // how about modelling the "state" of a door as a fluent at a more abstract level?
+            // $({ nr: 'nr#3', part: 'state', ofConcept: 'door', amountsTo: 1 })    
+            // if (isVar(dc.conseq.t1) && isVar(dc.conseq.t2)) {
+            // const numberRestrictions = getParts(dc.conseq.t1.varType, kb.wm)
+            // .filter(x => test($(x).isa('number-restriction').$, kb))
+            // console.log(numberRestrictions)
+            // console.log(findAll($({ nr: 'nr:number-restriction', part: dc.conseq.t2.varType, ofConcept: dc.conseq.t1.varType, amountsTo: 1 }).$, [$('nr:number-restriction').$], kb))
+            // const y = kb.wm.filter(x=>parts.includes(x[0]))
+            // console.log(y)
+            // }
 
             return results.map(r => substAll(x, r))
                 .flatMap(x => dumpWorldModel(x, kb))

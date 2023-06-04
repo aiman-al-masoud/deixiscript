@@ -50,7 +50,9 @@ export const model: WorldModel = [
         .and($({ subject: 'open', isAKindOf: 'state' }))
         .and($({ subject: 'closed', isAKindOf: 'state' }))
         .and($({ subject: 'state', isAKindOf: 'thing' }))
-        .dump(derivationClauses)
+        .dump(derivationClauses),
+
+    // ...$({ nr: 'nr#3', part: 'state', ofConcept: 'door', amountsTo: 1 }).dump(derivationClauses)
 
 ]
 
