@@ -3,7 +3,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { happen } from "./happen.ts";
 import { test } from "./test.ts";
-import { derivationClauses } from "./testing-ground.ts";
+import { derivationClauses } from "./derivation-clauses.ts";
 import { KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 
