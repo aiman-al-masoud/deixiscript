@@ -4,7 +4,7 @@ import { $ } from './exp-builder.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
 import { dumpWorldModel } from './dumpWorldModel.ts'
-import { getAtoms } from './getTerms.ts'
+import { getAtoms } from './getAtoms.ts'
 
 /**
  * Recomputes a world model with the changes brought forward by an event.
