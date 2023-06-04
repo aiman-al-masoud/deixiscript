@@ -9,7 +9,7 @@ import { getParts } from './wm-funcs.ts'
 import { test } from './test.ts'
 
 /**
- * Recomputes a world model with the changes brought forward by an event.
+ * Computes the changes immediately caused by an event.
  * 
  * Better performance than the naive query:
  * 
@@ -53,8 +53,15 @@ export function happen(event: string, kb: KnowledgeBase): WorldModel {
             // console.log(y)
             // }
 
-            return results.map(r => substAll(x, r))
+            const eventConsequences = results.map(r => substAll(x, r))
                 .flatMap(x => dumpWorldModel(x, kb))
+
+            const old = eventConsequences /* is old */.filter(s1 => kb.wm.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
+            const additions = eventConsequences  /* is new */.filter(s1 => !kb.wm.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
+
+            // console.log('old=', old)
+
+            return additions
         }
 
         return []

@@ -219,8 +219,20 @@ Deno.test({
     }
 })
 
+
 Deno.test({
     name: 'test10',
+    fn: () => {
+        const result = happen('door-opening-event#1', kb)
+        console.log(result)
+        assertEquals(result[0][0], 'door#1')
+        assertEquals(result[0][1], 'open')
+        assertEquals(result[0][2], 'state')
+    }
+})
+
+Deno.test({
+    name: 'test11',
     fn: () => {
 
         // // getting the side effects of an event.
@@ -236,10 +248,16 @@ Deno.test({
         // assertObjectMatch(m.get(z) as object, $('state').$)
         // // console.log([m.get(x)?.value, m.get(y)?.value, m.get(z)?.value])
 
-        const result = happen('door-opening-event#1', kb)
-        assertEquals(result[0][0], 'door#1')
-        assertEquals(result[0][1], 'open')
-        assertEquals(result[0][2], 'state')
+        // const result = happen('door-opening-event#1', kb)
+        // console.log(result)
+        // assertEquals(result[0][0], 'door#1')
+        // assertEquals(result[0][1], 'open')
+        // assertEquals(result[0][2], 'state')
+
+        const wm1 = happen('door-opening-event#1', kb)
+        console.log(wm1)
+        const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
+        console.log(wm2)
 
     }
 })
