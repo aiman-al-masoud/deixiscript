@@ -259,6 +259,8 @@ Deno.test({
         const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
         console.log(wm2)
 
+        // console.log(happenSeq(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1'], kb))
+
     }
 })
 
