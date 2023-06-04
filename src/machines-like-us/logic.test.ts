@@ -63,7 +63,7 @@ Deno.test({
     name: 'test1',
     fn: () => {
         const f = $('person#2').isa('person').$
-        assert(test(f, { wm: model, derivClauses: [] }))
+        assert(test(f, kb))
     }
 })
 
