@@ -1,7 +1,7 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
 import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom } from "./types.ts"
 
-type GeneralizedInput = { [key: string]: string | number }
+type GeneralizedInput = { [key: string]: Atom | WmAtom }
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -19,7 +19,9 @@ export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
         return new ExpBuilder(makeAtom(x))
     }
 
-    const keys = Object.fromEntries(Object.entries(x).map(e => [e[0], makeAtom(e[1])]))
+    const keys = Object.fromEntries(
+        Object.entries(x).map(e => [e[0], isAtom(e[1]) ? e[1] : makeAtom(e[1])])
+    )
     return new ExpBuilder({ type: 'generalized', keys: keys })
 }
 

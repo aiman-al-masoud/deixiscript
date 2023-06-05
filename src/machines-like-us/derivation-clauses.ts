@@ -68,7 +68,7 @@ export const derivationClauses: DerivationClause[] = [
     $({ subject: 'x:thing', isNear: 'y:thing' }).when(
         $('x:thing').has('y:thing').as('near')
             // .or($('y:thing').has('x:thing').as('near'))
-    ).$
+    ).$,
 
     // $({ subject: 's:seq', isPossibleFor: 'a:agent' }).when(
     //     $('s:seq').is($([]))
