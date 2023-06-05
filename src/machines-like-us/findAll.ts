@@ -26,7 +26,7 @@ export function findAll(
     const results = allCombos.filter(c => {
         const sub = substAll(formula, c)
         // console.log('sub=', sub)
-        return test(sub, kb)
+        return test(sub, kb, true)
     })
 
     return results

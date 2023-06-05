@@ -1,14 +1,22 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isAtomicFormula } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getConceptsOf, getSupers } from "./wm-funcs.ts";
 import { match } from "./match.ts";
+import { recomputeKb } from "./happen.ts";
 
-export function test(formula: LLangAst, kb: KnowledgeBase): boolean {
+export function test(formula: LLangAst, kb: KnowledgeBase, calledFromFindAll = false): boolean {
 
     // recompute kb in case formula has an "after" clause.
     // remove after clause from formula and go on...
     // how about match() returning undefined if formula doesn't have after after and template does?
+    // well, if the conseq part is present in the WM, then it won't even check the derivation clauses
+    // in general, separate between derivation clauses that describe change vs those that describe states
+
+    if (!calledFromFindAll && isAtomicFormula(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
+        kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
+        formula.after = {} as any
+    }
 
     switch (formula.type) {
         case 'boolean':

@@ -27,9 +27,14 @@ export const model: WorldModel = [
     ...$('door-opening-event#1').has('door#1').as('object').dump(),
     ...$('door-closing-event#1').isa('door-closing-event').dump(),
     ...$('door-closing-event#1').has('door#1').as('object').dump(),
+    ...$('person#3').isa('person').dump(),
+    ...$({ subject: 'person#3', isNear: 'door#1' }).dump(derivationClauses),
+
+
 
     /* Conceptual Model */
-    ...$({ subject: 'person', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'person', isAKindOf: 'agent' }).dump(derivationClauses),
     ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses),
     ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'door-opening-event', isAKindOf: 'event' }).dump(derivationClauses),
@@ -97,7 +102,8 @@ Deno.test({
         const f = $('x:person').isa('person').$
         const v = $('x:person').$
         const results = findAll(f, [v], kb)
-        assertEquals(results.length, 3)
+        // assertEquals(results.length, 3)
+        assertEquals(results.length, 4)
     }
 })
 
@@ -287,6 +293,20 @@ Deno.test({
         assert(test($('door#1').has('open').as('state').isNotTheCase.$, res))
         // console.log(res)
 
+    }
+})
+
+Deno.test({
+    name: 'test12',
+    fn: () => {
+        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        assert(test($('door#1').has('closed').as('state').$, kb2))
+        const f1 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#3' })
+        const f2 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#2' }).isNotTheCase
+        assert(test(f1.$, kb2))
+        assert(test(f2.$, kb2))
+        const f3 = $('door#1').has('open').as('state').after(['door-opening-event#1'])
+        assert(test(f3.$, kb2))
     }
 })
 

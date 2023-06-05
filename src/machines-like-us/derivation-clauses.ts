@@ -57,6 +57,28 @@ export const derivationClauses: DerivationClause[] = [
                 .else($('d:door').has('z:state').as('state').after('s:seq')))
     ).$,
 
+    $({ subject: 'e:door-opening-event', isPossibleFor: 'a:agent' }).when(
+        $('d:door').exists.where(
+            $('e:door-opening-event').has('d:door').as('object')
+                .and($({ subject: 'a:agent', isNear: 'd:door' }))
+                .and($('d:door').has('closed').as('state'))
+        )
+    ).$,
+
+    $({ subject: 'x:thing', isNear: 'y:thing' }).when(
+        $('x:thing').has('y:thing').as('near')
+            // .or($('y:thing').has('x:thing').as('near'))
+    ).$
+
+    // $({ subject: 's:seq', isPossibleFor: 'a:agent' }).when(
+    //     $('s:seq').is($([]))
+    // ).$
+
+    // $({ subject: 's:seq|e:event', isPossibleFor: 'a:agent' }).when(
+    //     $({ subject: 's:seq', isPossibleFor: 'a:agent' })
+    //         .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
+    // ).$
+
 ]
 
 
