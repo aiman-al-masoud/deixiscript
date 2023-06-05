@@ -3,7 +3,7 @@ import { DerivationClause } from "./types.ts";
 
 export const derivationClauses: DerivationClause[] = [
 
-    /* conceptual mode shorthands */
+    /* conceptual model shorthands */
 
     $({ subject: 'c:thing', isAKindOf: 'sc:thing' }).when(
         $('c:thing').has('sc:thing').as('superconcept')
