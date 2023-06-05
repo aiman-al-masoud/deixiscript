@@ -314,7 +314,7 @@ Note that FIND-ALL can be used to compute PLAN, provided that:
 
 A plan is organized as a procedural list of goals. Each goal may have a nested list of subgoals.
 
-Consider the most specific subgoal that failed, try finding **an alternative way of achieving this subgoal with an acceptable cost** (use TEST and FIND-ALL).
+Consider the most specific subgoal that failed, try finding **an alternative way of achieving this subgoal with an acceptable cost** (use TEST and FIND-ALL or maybe PLAN?).
 
 If you don't find any **appropriate** alternative subplan, then go up a level in the goal hierarchy and repeat the the search.
 
