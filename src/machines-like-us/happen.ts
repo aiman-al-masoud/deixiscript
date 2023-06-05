@@ -40,13 +40,11 @@ function getAdditions(event: string, kb: KnowledgeBase): WorldModel {
             const variables = getAtoms(x).filter(isVar)
             const results = findAll(x, variables, kb)
 
-            // some states are mutually exclusive, assume the newer dislodges the older
-
             const eventConsequences = results.map(r => substAll(x, r))
                 .flatMap(x => dumpWorldModel(x, kb))
 
-            // const old = eventConsequences /* is old */.filter(s1 => kb.wm.some(s2 => s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]))
-            const additions = eventConsequences  /* is new */.filter(s1 => !kb.wm.some(s2 => wmSentencesEqual(s1, s2)))
+            const additions =
+                eventConsequences.filter(s1 => !kb.wm.some(s2 => wmSentencesEqual(s1, s2)))
 
             return additions
         }
