@@ -13,6 +13,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, calledFromFindAll = f
     // well, if the conseq part is present in the WM, then it won't even check the derivation clauses
     // in general, separate between derivation clauses that describe change vs those that describe states
 
+    // TODO: find better solution than calledFromFindAll
     if (!calledFromFindAll && isAtomicFormula(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
         formula.after = {} as any
