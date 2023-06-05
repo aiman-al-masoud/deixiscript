@@ -312,7 +312,13 @@ Note that FIND-ALL can be used to compute PLAN, provided that:
 
 ## MODIFY-PLAN
 
-...
+A plan is organized as a procedural list of goals. Each goal may have a nested list of subgoals.
+
+Consider the most specific subgoal that failed, try finding **an alternative way of achieving this subgoal with an acceptable cost** (use TEST and FIND-ALL).
+
+If you don't find any **appropriate** alternative subplan, then go up a level in the goal hierarchy and repeat the the search.
+
+Until you either find a replacement plan for a subgoal, or you wind up reconsidering the topmost goal itself.
 
 # My Notes
 
