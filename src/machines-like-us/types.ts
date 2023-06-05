@@ -159,6 +159,10 @@ export function atomsEqual(a1: Atom, a2: Atom): boolean {
         return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.tail, a2.tail)
     }
 
+    if (a1.type === 'list-literal' && a2.type === 'list-literal') {
+        if (!a1.list.length && !a2.list.length) return true
+    }
+
     if (isVar(a1) && isVar(a2)) {
         return a1.name === a2.name && a1.varType === a2.varType
     }

@@ -310,6 +310,19 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test13',
+    fn: () => {
+        // the empty sequence of actions (events) is always possible for any agent
+
+        const f1 = $({ subject: [], isPossibleFor: 'person#1' })
+        const f2 = $({ subject: ['door-opening-event#1'], isPossibleFor: 'person#1' }).isNotTheCase
+
+        assert(test(f1.$, kb))
+        assert(test(f2.$, kb))
+    }
+})
+
 // Deno.test({
 //     name: 'test6',
 //     fn: () => {

@@ -1,7 +1,7 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
 import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom } from "./types.ts"
 
-type GeneralizedInput = { [key: string]: Atom | WmAtom }
+type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -31,7 +31,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    is(term: WmAtom): ExpBuilder<Equality> {
+    is(term: WmAtom | WmAtom[]): ExpBuilder<Equality> {
 
         if (!isAtom(this.exp)) {
             throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of equality`)
