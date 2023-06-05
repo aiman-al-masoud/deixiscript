@@ -1,6 +1,5 @@
-// import { dumpWorldModel } from "./dumpWorldModel.ts";
 import { $ } from "./exp-builder.ts";
-import { DerivationClause, /* KnowledgeBase */ } from "./types.ts";
+import { DerivationClause } from "./types.ts";
 
 export const derivationClauses: DerivationClause[] = [
 
@@ -58,15 +57,8 @@ export const derivationClauses: DerivationClause[] = [
                 .else($('d:door').has('z:state').as('state').after('s:seq')))
     ).$,
 
-
-    // $({ subject: 'x:thing', excludes: 'y:thing', onPart:'p:thing' onConcept: 'c:thing' }).when(
-
-    // )
-
-
 ]
 
-// console.log($({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses))
 
 // const kb: KnowledgeBase = {
 //     wm: [],

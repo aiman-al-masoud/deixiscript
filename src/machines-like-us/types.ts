@@ -211,3 +211,7 @@ export function isSimple(ast: LLangAst): ast is SimpleFormula {
 export function isWmAtom(x: unknown): x is WmAtom {
     return typeof x === 'string' || typeof x === 'boolean' || typeof x === 'number'
 }
+
+export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence | HasSentence) {
+    return s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]
+}

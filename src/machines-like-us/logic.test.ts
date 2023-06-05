@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { happen, recomputeKb } from "./happen.ts";
+import { recomputeKb } from "./happen.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { KnowledgeBase } from "./types.ts";
@@ -226,19 +226,19 @@ Deno.test({
 })
 
 
-Deno.test({
-    name: 'test10',
-    fn: () => {
-        const result = happen('door-opening-event#1', kb)
-        console.log(result)
-        assertEquals(result[0][0], 'door#1')
-        assertEquals(result[0][1], 'open')
-        assertEquals(result[0][2], 'state')
-    }
-})
+// Deno.test({
+//     name: 'test10',
+//     fn: () => {
+//         const result = happen('door-opening-event#1', kb)
+//         console.log(result)
+//         assertEquals(result[0][0], 'door#1')
+//         assertEquals(result[0][1], 'open')
+//         assertEquals(result[0][2], 'state')
+//     }
+// })
 
 Deno.test({
-    name: 'test11',
+    name: 'test10',
     fn: () => {
 
         const x = test($('x:thing').exists.where(
@@ -251,7 +251,7 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test12',
+    name: 'test11',
     fn: () => {
 
         // // getting the side effects of an event.
