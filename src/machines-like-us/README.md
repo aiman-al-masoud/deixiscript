@@ -32,7 +32,7 @@ others (eg: identity) ...
 
 a cancellation of a restriction or a default filler for a role.
 
-> NB: restrictions are also objects, so that annotations can refer to them
+> NB: restrictions also have IDs, so that annotations can refer to them
 > later.
 
 > NB: number of roles associated with a concept != number of fillers. For eg 2
