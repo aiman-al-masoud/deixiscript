@@ -284,6 +284,7 @@ Deno.test({
         const res = recomputeKb(['door-opening-event#1', 'door-closing-event#1'], kb)
         // const res = recomputeKbMany(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1'], kb)
         assert(test($('door#1').has('closed').as('state').$, res))
+        assert(test($('door#1').has('open').as('state').isNotTheCase.$, res))
         // console.log(res)
 
     }
