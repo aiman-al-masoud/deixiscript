@@ -297,7 +297,7 @@ argument must have a truth value!
 ## FIND-ALL
 
 Accepts formulas with free variables as arguments, interprets them as Wh-
-questions. Basically my stupid "solveMaps()".
+questions.
 
 ## PLAN
 
