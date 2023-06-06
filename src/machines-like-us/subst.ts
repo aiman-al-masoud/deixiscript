@@ -103,7 +103,7 @@ export function subst(
         case 'derived-prop':
             throw new Error('not implemented!')
         case 'generalized':
-            const newEntries = Object.entries(ast.keys).map(e => [e[0], subst(e[1], variable, replacement) /* atomsEqual(e[1], variable) ? replacement : e[1] */] as const)
+            const newEntries = Object.entries(ast.keys).map(e => [e[0], subst(e[1], variable, replacement)] as const)
             const newKeys = Object.fromEntries(newEntries)
             return {
                 type: 'generalized',
