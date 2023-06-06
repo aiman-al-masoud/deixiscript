@@ -277,10 +277,11 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test14',
-//     fn: () => {
-//         const f1 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
-//         assert(test(f1.$, kb))
-//     }
-// })
+Deno.test({
+    name: 'test14',
+    fn: () => {
+        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        const f1 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
+        assert(test(f1.$, kb2))
+    }
+})
