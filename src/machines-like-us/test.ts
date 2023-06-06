@@ -5,7 +5,7 @@ import { getConceptsOf, getSupers } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { recomputeKb } from "./happen.ts";
 
-export function test(formula: LLangAst, kb: KnowledgeBase, calledFromFindAll = false): boolean {
+export function test(formula: LLangAst, kb: KnowledgeBase, doRecomputeKb = true): boolean {
 
     // recompute kb in case formula has an "after" clause.
     // remove after clause from formula and go on...
@@ -14,7 +14,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, calledFromFindAll = f
     // in general, separate between derivation clauses that describe change vs those that describe states
 
     // TODO: find better solution than calledFromFindAll
-    if (!calledFromFindAll && isAtomicFormula(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
+    if (doRecomputeKb && isAtomicFormula(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
         formula.after = {} as any
     }
