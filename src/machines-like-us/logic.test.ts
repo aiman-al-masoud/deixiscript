@@ -285,3 +285,24 @@ Deno.test({
         assert(test(f1.$, kb2))
     }
 })
+
+Deno.test({
+    name: 'test15',
+    fn: () => {
+
+        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+
+        const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
+        assert(test(f2.$, kb2))
+
+        const f1 = $({ subject: 'e:event', isPossibleFor: 'person#3' })
+        const result = findAll(f1.$, [$('e:event').$], kb2)
+        assert(result[0].get($('e:event').$)?.value === 'door-opening-event#1')
+
+        // why not finding sequence?
+        const f3 = $({ subject: ['e:event'], isPossibleSeqFor: 'person#3' })
+        const result2 = findAll(f3.$, [$('e:event').$], kb2)
+        console.log(result2)
+
+    }
+})
