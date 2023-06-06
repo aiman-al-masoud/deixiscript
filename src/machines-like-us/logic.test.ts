@@ -6,7 +6,6 @@ import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
-import { getParts } from "./wm-funcs.ts";
 
 export const model: WorldModel = [
 
@@ -29,7 +28,6 @@ export const model: WorldModel = [
     ...$('door-closing-event#1').has('door#1').as('object').dump(),
     ...$('person#3').isa('person').dump(),
     ...$({ subject: 'person#3', isNear: 'door#1' }).dump(derivationClauses),
-
 
 
     /* Conceptual Model */
@@ -62,7 +60,6 @@ export const model: WorldModel = [
 
 
 ]
-
 
 
 export const kb: KnowledgeBase = {
@@ -231,18 +228,6 @@ Deno.test({
     }
 })
 
-
-// Deno.test({
-//     name: 'test10',
-//     fn: () => {
-//         const result = happen('door-opening-event#1', kb)
-//         console.log(result)
-//         assertEquals(result[0][0], 'door#1')
-//         assertEquals(result[0][1], 'open')
-//         assertEquals(result[0][2], 'state')
-//     }
-// })
-
 Deno.test({
     name: 'test10',
     fn: () => {
@@ -259,40 +244,9 @@ Deno.test({
 Deno.test({
     name: 'test11',
     fn: () => {
-
-        // // getting the side effects of an event.
-        // // very slow because findAll() is very expensive, especially with 3 variables.
-        // const x = $('x:thing').$
-        // const y = $('y:thing').$
-        // const z = $('z:thing').$
-        // const f1 = $('x:thing').has('y:thing').as('z:thing')
-        // const q = f1.isNotTheCase.and(f1.after(['door-opening-event#1']))
-        // const m = findAll(q.$, [x, y, z], kb)[0]
-        // assertObjectMatch(m.get(x) as object, $('door#1').$)
-        // assertObjectMatch(m.get(y) as object, $('open').$)
-        // assertObjectMatch(m.get(z) as object, $('state').$)
-        // // console.log([m.get(x)?.value, m.get(y)?.value, m.get(z)?.value])
-
-        // const result = happen('door-opening-event#1', kb)
-        // console.log(result)
-        // assertEquals(result[0][0], 'door#1')
-        // assertEquals(result[0][1], 'open')
-        // assertEquals(result[0][2], 'state')
-
-        // const wm1 = happen('door-opening-event#1', kb)
-        // console.log(wm1)
-        // const wm2 = happen('door-closing-event#1', { ...kb, wm: [...kb.wm, ...wm1] })
-        // console.log(wm2)
-        // console.log(happenSeq(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1'], kb))
-        // getExcludedBy(['door#1', 'open', 'state'], kb)
-        // recomputeKb('door-opening-event#1', kb)
-
         const res = recomputeKb(['door-opening-event#1', 'door-closing-event#1'], kb)
-        // const res = recomputeKbMany(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1'], kb)
         assert(test($('door#1').has('closed').as('state').$, res))
         assert(test($('door#1').has('open').as('state').isNotTheCase.$, res))
-        // console.log(res)
-
     }
 })
 
@@ -316,9 +270,9 @@ Deno.test({
         // the empty sequence of actions (events) is always possible for any agent
 
         const f1 = $({ subject: [], isPossibleSeqFor: 'person#1' })
-        // const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#1' }).isNotTheCase
-
         assert(test(f1.$, kb))
+
+        // const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#1' }).isNotTheCase
         // assert(test(f2.$, kb))
     }
 })
@@ -330,53 +284,3 @@ Deno.test({
 //         assert(test(f1.$, kb))
 //     }
 // })
-
-// Deno.test({
-//     name: 'test6',
-//     fn: () => {
-
-//         // this fails because the logic that checks inheritance of properties
-//         // is missing.
-
-//         const wm: WorldModel = [
-//             ['speed', 'thing'],
-//             ['fast', 'speed'],
-//             ['slow', 'speed'],
-//             ['animal', 'speed'],
-//             ['cat', 'animal'],
-//             ['animal', 'speed', 'speed'],
-//             ['speed', 'thing'],
-//         ]
-
-//         const query = $('fast').isa('s:thing')
-//             .and($('cat').has('s:thing').as('r:thing'))
-
-//         const r = findAll(query.$, [$('s:thing').$, $('r:thing').$], { wm, derivClauses: [] })
-//         assert(r[0]?.get($('s:thing').$)?.value === 'speed')
-
-//     }
-// })
-
-
-// Deno.test({
-//     name: 'test7',
-//     fn: () => {
-
-//         const wm: WorldModel = [
-//             ['speed', 'thing'],
-//             ['fast', 'speed'],
-//             ['slow', 'speed'],
-//             ['animal', 'speed'],
-//             ['cat', 'animal'],
-//             ['animal', 'speed', 'part'],
-//             ['animal', 'vr#1', 'part'],
-//             ['vr#1', 'value-restriction'],
-//             ['vr#1', 'speed', 'subject'],
-//             ['vr#1', 'speed', 'object'],
-//             ['speed', 'thing'],
-//         ]
-
-//         console.log(getParts('cat', wm))
-//     }
-// })
-
