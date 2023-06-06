@@ -299,10 +299,9 @@ Deno.test({
         const result = findAll(f1.$, [$('e:event').$], kb2)
         assert(result[0].get($('e:event').$)?.value === 'door-opening-event#1')
 
-        // why not finding sequence?
         const f3 = $({ subject: ['e:event'], isPossibleSeqFor: 'person#3' })
         const result2 = findAll(f3.$, [$('e:event').$], kb2)
-        console.log(result2)
+        assert(result2[0].get($('e:event').$)?.value === 'door-opening-event#1')
 
     }
 })

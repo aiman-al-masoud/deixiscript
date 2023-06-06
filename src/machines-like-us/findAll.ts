@@ -24,8 +24,11 @@ export function findAll(
 
 
     const results = allCombos.filter(c => {
+
+        
         const sub = substAll(formula, c)
         // console.log('sub=', sub)
+        // if (c.get($('e:event').$)?.value==='door-opening-event#1') console.log((sub as any).keys)
         return test(sub, kb, false)
     })
 
