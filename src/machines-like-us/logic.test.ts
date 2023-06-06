@@ -1,10 +1,10 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
-import { $ } from "./exp-builder.ts";
+import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { recomputeKb } from "./happen.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
-import { KnowledgeBase } from "./types.ts";
+import { Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 
 export const model: WorldModel = [
@@ -305,3 +305,27 @@ Deno.test({
 
     }
 })
+
+Deno.test({
+    name: 'test16',
+    fn: () => {
+
+        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        const goal = $('door#1').has('open').as('state')
+        const result = plan(goal, 'person#3', kb2)
+
+        assert(result[0].get($('e:event').$)?.value === 'door-opening-event#1')
+    }
+})
+
+
+function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
+
+    const q = $({ subject: ['e:event'], isPossibleSeqFor: agent })
+        .and(goal.after(['e:event']))
+
+    const result = findAll(q.$, [$('e:event').$], kb)
+
+    return result
+
+}
