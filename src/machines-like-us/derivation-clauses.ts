@@ -74,10 +74,10 @@ export const derivationClauses: DerivationClause[] = [
         $('s:seq').is([])
     ).$,
 
-    // $({ subject: 's:seq|e:event', isPossibleSeqFor: 'a:agent' }).when(
-    //     $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' })
-    //         .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
-    // ).$
+    $({ subject: 's:seq|e:event', isPossibleSeqFor: 'a:agent' }).when(
+        $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' })
+            .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
+    ).$
 
 ]
 
