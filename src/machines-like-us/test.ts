@@ -16,7 +16,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase, doRecomputeKb = true)
     // TODO: find better solution than calledFromFindAll
     if (doRecomputeKb && isAtomicFormula(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
-        formula.after = {} as any
+        // TODO ? 
+        // formula.after = {} as any 
     }
 
     switch (formula.type) {
@@ -69,6 +70,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase, doRecomputeKb = true)
 
     return kb.derivClauses.some(dc => {
         const map = match(dc.conseq, formula)
+
+        // console.log('map=', map, dc.conseq, formula)
 
         if (!map) {
             return false

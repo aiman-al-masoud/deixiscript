@@ -67,7 +67,7 @@ export const kb: KnowledgeBase = {
     derivClauses: derivationClauses
 }
 
-console.log(kb.wm)
+// console.log(kb.wm)
 
 Deno.test({
     name: 'test1',
