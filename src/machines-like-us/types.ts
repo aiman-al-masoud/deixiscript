@@ -67,7 +67,8 @@ export type GeneralizedSimpleFormula = {
     type: 'generalized',
     keys: {
         [key: string]: Atom
-    }
+    },
+    after: Atom,
 }
 
 export type GreaterThanFormula = {
@@ -194,6 +195,10 @@ export function isAtom(ast: LLangAst): ast is Atom {
 
 export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
+}
+
+export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedSimpleFormula {
+    return isAtomicFormula(ast) || ast.type === 'generalized'
 }
 
 export function isTruthy(atom: Atom) {

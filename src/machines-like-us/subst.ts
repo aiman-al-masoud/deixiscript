@@ -107,7 +107,8 @@ export function subst(
             const newKeys = Object.fromEntries(newEntries)
             return {
                 type: 'generalized',
-                keys: newKeys
+                keys: newKeys,
+                after: subst(ast.after, variable, replacement),
             }
         case 'greater-than':
             return {

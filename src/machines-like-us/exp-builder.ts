@@ -22,7 +22,7 @@ export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
     const keys = Object.fromEntries(
         Object.entries(x).map(e => [e[0], isAtom(e[1]) ? e[1] : makeAtom(e[1])])
     )
-    return new ExpBuilder({ type: 'generalized', keys: keys })
+    return new ExpBuilder({ type: 'generalized', keys: keys, after: { list: [], type: 'list-literal' } })
 }
 
 export class ExpBuilder<T extends LLangAst> {
@@ -97,14 +97,14 @@ export class ExpBuilder<T extends LLangAst> {
 
     after(atom: string | string[]): ExpBuilder<AtomicFormula> {
 
-        if (!isAtomicFormula(this.exp)) {
-            throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
-        }
+        // if (!isAtomicFormula(this.exp)) {
+        //     throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
+        // }
 
         return new ExpBuilder({
             ...this.exp,
             after: makeAtom(atom),
-        })
+        } as any)
     }
 
     when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
