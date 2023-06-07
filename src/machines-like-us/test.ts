@@ -5,7 +5,7 @@ import { getConceptsOf, getSupers } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { recomputeKb } from "./happen.ts";
 
-export function test(formula: LLangAst, kb: KnowledgeBase, doRecomputeKb = true): boolean {
+export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): boolean {
 
     // recompute kb in case formula has an "after" clause.
     // remove after clause from formula and go on...
@@ -13,8 +13,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, doRecomputeKb = true)
     // well, if the conseq part is present in the WM, then it won't even check the derivation clauses
     // in general, separate between derivation clauses that describe change vs those that describe states
 
-    // TODO: find better solution than calledFromFindAll
-    if (doRecomputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
+    if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
         // TODO ? 
         // formula.after = {} as any 
