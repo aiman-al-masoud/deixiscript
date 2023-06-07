@@ -150,10 +150,6 @@ export function isTerm(a: Atom): a is Term {
     return isVar(a) || isConst(a)
 }
 
-export function isListLiteral(a: Atom): a is ListLiteral {
-    return a.type === 'list-literal'
-}
-
 export function atomsEqual(a1: Atom, a2: Atom): boolean {
 
     if (a1.type === 'list-pattern' && a2.type === 'list-pattern') {
@@ -201,18 +197,6 @@ export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | Genera
     return isAtomicFormula(ast) || ast.type === 'generalized'
 }
 
-export function isTruthy(atom: Atom) {
-    if (atom.type === 'boolean') {
-        return atom.value === true
-    } else if (isTerm(atom)) {
-        return !!atom
-    } else if (atom.type === 'list-literal') {
-        return !!atom.list.length
-    } else {
-        return !!atom
-    }
-}
-
 export function isSimple(ast: LLangAst): ast is SimpleFormula {
     return isAtomicFormula(ast) || ast.type === 'equality' || ast.type === 'generalized'
 }
@@ -224,3 +208,19 @@ export function isWmAtom(x: unknown): x is WmAtom {
 export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence | HasSentence) {
     return s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]
 }
+
+// export function isTruthy(atom: Atom) {
+//     if (atom.type === 'boolean') {
+//         return atom.value === true
+//     } else if (isTerm(atom)) {
+//         return !!atom
+//     } else if (atom.type === 'list-literal') {
+//         return !!atom.list.length
+//     } else {
+//         return !!atom
+//     }
+// }
+
+// export function isListLiteral(a: Atom): a is ListLiteral {
+//     return a.type === 'list-literal'
+// }

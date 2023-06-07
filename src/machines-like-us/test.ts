@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isAtomicFormula } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isAtomicFormula, isFormulaWithAfter } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getConceptsOf, getSupers } from "./wm-funcs.ts";
@@ -14,7 +14,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, doRecomputeKb = true)
     // in general, separate between derivation clauses that describe change vs those that describe states
 
     // TODO: find better solution than calledFromFindAll
-    if (doRecomputeKb && isAtomicFormula(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
+    if (doRecomputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
         // TODO ? 
         // formula.after = {} as any 
