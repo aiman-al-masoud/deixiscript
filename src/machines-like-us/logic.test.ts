@@ -6,6 +6,7 @@ import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
+import { dumpWorldModel } from "./dumpWorldModel.ts";
 
 export const model: WorldModel = [
 
@@ -28,6 +29,10 @@ export const model: WorldModel = [
     ...$('door-closing-event#1').has('door#1').as('object').dump(),
     ...$('person#3').isa('person').dump(),
     ...$({ subject: 'person#3', isNear: 'door#1' }).dump(derivationClauses),
+    ...$('move-event#1').isa('move-event').dump(),
+    ...$('move-event#1').has('person#1').as('subject').dump(),
+    ...$('move-event#1').has('door#1').as('destination').dump(),
+    ...$('door#1').has('closed').as('state').dump(),
 
 
     /* Conceptual Model */
@@ -41,6 +46,8 @@ export const model: WorldModel = [
     ...$({ subject: 'point-in-space', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'city', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses),
+    ...$({ subject: 'move-event', isAKindOf: 'event' }).dump(derivationClauses),
+
 
     ...$({ subject: 'birth-event', canHaveA: 'mother' })
         .and($({ subject: 'birth-event', canHaveA: 'baby' }))
@@ -54,6 +61,7 @@ export const model: WorldModel = [
         .and($({ subject: 'open', isAKindOf: 'state' }))
         .and($({ subject: 'closed', isAKindOf: 'state' }))
         .and($({ subject: 'state', isAKindOf: 'thing' }))
+        .and($({ subject: 'near', isAKindOf: 'thing' }))
         .dump(derivationClauses),
 
     ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses),
@@ -253,14 +261,14 @@ Deno.test({
 Deno.test({
     name: 'test12',
     fn: () => {
-        const kb2 = recomputeKb(['door-closing-event#1'], kb)
-        assert(test($('door#1').has('closed').as('state').$, kb2))
+        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        assert(test($('door#1').has('closed').as('state').$, kb))
         const f1 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#3' })
         const f2 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#2' }).isNotTheCase
-        assert(test(f1.$, kb2))
-        assert(test(f2.$, kb2))
+        assert(test(f1.$, kb))
+        assert(test(f2.$, kb))
         const f3 = $('door#1').has('open').as('state').after(['door-opening-event#1'])
-        assert(test(f3.$, kb2))
+        assert(test(f3.$, kb))
     }
 })
 
@@ -280,9 +288,9 @@ Deno.test({
 Deno.test({
     name: 'test14',
     fn: () => {
-        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
         const f1 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
-        assert(test(f1.$, kb2))
+        assert(test(f1.$, kb))
     }
 })
 
@@ -290,17 +298,17 @@ Deno.test({
     name: 'test15',
     fn: () => {
 
-        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
 
         const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
-        assert(test(f2.$, kb2))
+        assert(test(f2.$, kb))
 
         const f1 = $({ subject: 'e:event', isPossibleFor: 'person#3' })
-        const result = findAll(f1.$, [$('e:event').$], kb2)
+        const result = findAll(f1.$, [$('e:event').$], kb)
         assert(result[0].get($('e:event').$)?.value === 'door-opening-event#1')
 
         const f3 = $({ subject: ['e:event'], isPossibleSeqFor: 'person#3' })
-        const result2 = findAll(f3.$, [$('e:event').$], kb2)
+        const result2 = findAll(f3.$, [$('e:event').$], kb)
         assert(result2[0].get($('e:event').$)?.value === 'door-opening-event#1')
 
     }
@@ -310,9 +318,9 @@ Deno.test({
     name: 'test16',
     fn: () => {
 
-        const kb2 = recomputeKb(['door-closing-event#1'], kb)
+        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
         const goal = $('door#1').has('open').as('state')
-        const result = plan(goal, 'person#3', kb2)
+        const result = plan(goal, 'person#3', kb)
 
         assert(result[0].get($('e:event').$)?.value === 'door-opening-event#1')
     }
@@ -329,3 +337,24 @@ function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
     return result
 
 }
+
+Deno.test({
+    name: 'test17',
+    fn: () => {
+
+        assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
+        assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
+
+        const kb2 = recomputeKb(['move-event#1'], kb)
+        assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
+        assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
+
+        // const seq = ['e1:event', 'e2:event']
+        // const goal = $('door#1').has('open').as('state').after(seq)
+        // const agent = 'person#1'
+        // const q = $({ subject: seq, isPossibleSeqFor: agent }).and(goal.after(seq))
+        // const result = findAll(q.$, [$('e1:event').$, $('e2:event').$], kb)
+        // console.log(result)
+        // console.log($(true).$)
+    }
+})

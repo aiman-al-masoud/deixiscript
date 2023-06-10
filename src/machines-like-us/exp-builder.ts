@@ -1,5 +1,5 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, isAtomicFormula } from "./types.ts"
 
 type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
 
@@ -13,16 +13,17 @@ export function $(x: GeneralizedInput): ExpBuilder<GeneralizedSimpleFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
 export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
 
-export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst> {
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
-    if (typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
+    if ( typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number'  || x instanceof Array) {
+        // console.log(x)
         return new ExpBuilder(makeAtom(x))
     }
 
     const keys = Object.fromEntries(
-        Object.entries(x).map(e => [e[0], isAtom(e[1]) ? e[1] : makeAtom(e[1])])
+        Object.entries(x).map(e => [e[0], isAtom(e[1] as any) ? e[1] : makeAtom(e[1] as any)])
     )
-    return new ExpBuilder({ type: 'generalized', keys: keys, after: { list: [], type: 'list-literal' } })
+    return new ExpBuilder({ type: 'generalized', keys: keys as any, after: { list: [], type: 'list-literal' } })
 }
 
 export class ExpBuilder<T extends LLangAst> {
@@ -109,7 +110,8 @@ export class ExpBuilder<T extends LLangAst> {
 
     when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
 
-        if (!isSimple(this.exp)) {
+        if (!isFormulaWithAfter(this.exp)) {
+        // if (!isAtomicFormula(this.exp)) {
             throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
         }
 
@@ -159,9 +161,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     if(formula: ExpBuilder<Formula>): ExpBuilder<IfElse> {
 
-        if (isAtom(this.exp)) {
-            throw new Error(``)
-        }
+        // if (isAtom(this.exp)) {
+        //     throw new Error(``)
+        // }
 
         if (isAtom(formula.$)) {
             throw new Error(``)

@@ -1,4 +1,4 @@
-import { AtomicFormula, HasSentence, isAtomicFormula, isHasSentence, isVar, KnowledgeBase, wmSentencesEqual, WorldModel } from './types.ts'
+import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, isAtom, isAtomicFormula, isFormulaWithAfter, isFormulaWithNonNullAfter, isHasSentence, isVar, KnowledgeBase, wmSentencesEqual, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
@@ -30,16 +30,21 @@ function getAdditions(event: string, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
-        if (isAtomicFormula(dc.conseq)) {
+        if (isFormulaWithNonNullAfter(dc.conseq)) {
 
-            const x: AtomicFormula = {
+            const x: AtomicFormula|GeneralizedSimpleFormula = {
                 ...dc.conseq,
                 after: { type: 'list-literal', list: [$(event).$] }
             }
-
+            
             const variables = getAtoms(x).filter(isVar)
             const results = findAll(x, variables, kb)
-
+            
+            // console.log(dc)
+            // console.log(variables)
+            // console.log(x)
+            // console.log(results)
+            
             const eventConsequences = results.map(r => substAll(x, r))
                 .flatMap(x => dumpWorldModel(x, kb))
 
@@ -76,6 +81,7 @@ function recomputeKbAfterSingleEvent(event: string, kb: KnowledgeBase) {
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
     const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
     const final = filtered.concat(additions)
+    // console.log(additions)
 
     const result: KnowledgeBase = {
         derivClauses: kb.derivClauses,

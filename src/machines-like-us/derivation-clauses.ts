@@ -65,6 +65,13 @@ export const derivationClauses: DerivationClause[] = [
         )
     ).$,
 
+    $('x:agent').has('y:thing').as('near').after('s:seq|e:event').when(
+        $(true).if($('e:event').isa('move-event')
+            .and($('e:event').has('x:agent').as('subject'))
+            .and($('e:event').has('y:thing').as('destination')))
+            .else($('x:agent').has('y:thing').as('near').after('s:seq'))
+    ).$,
+
     $({ subject: 'x:thing', isNear: 'y:thing' }).when(
         $('x:thing').has('y:thing').as('near')
         // .or($('y:thing').has('x:thing').as('near'))
@@ -77,7 +84,17 @@ export const derivationClauses: DerivationClause[] = [
     $({ subject: 's:seq|e:event', isPossibleSeqFor: 'a:agent' }).when(
         $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' })
             .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
-    ).$
+    ).$,
+
+    // $({ subject: 'x:agent', getsNear: 'y:door' }).after('s:seq|e:event').when(
+    //     $({ subject: 'x:agent', isNear: 'y:door' })
+    //         .if($('e:event').isa('move-event')
+    //             .and($('e:event').has('x:agent').as('subject'))
+    //             .and($('e:event').has('y:door').as('destination')))
+    //         .else($({ subject: 'x:agent', getsNear: 'y:door' }).after('s:seq'))
+    // ).$,
+
+ 
 
 ]
 
