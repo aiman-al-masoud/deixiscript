@@ -1,4 +1,4 @@
-import { LLangAst, Atom, atomsEqual, Variable, VarMap, isVar } from "./types.ts";
+import { LLangAst, Atom, atomsEqual, Variable, VarMap } from "./types.ts";
 
 
 export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
@@ -16,9 +16,9 @@ export function subst(
     replacement: Atom,
 ): LLangAst {
 
-    if (!isVar(variable)) {//TODO: remove
-        throw new Error('subst() got a non-var and non-list-pattern as a varish!')
-    }
+    // if (!isVar(variable)) {//TODO: remove
+    //     throw new Error('subst() got a non-var and non-list-pattern as a varish!')
+    // }
 
     switch (ast.type) {
         case 'equality':
@@ -120,12 +120,4 @@ export function subst(
     }
 
 }
-
-
-// import { $ } from "./exp-builder.ts";
-// import { deepMapOf } from "../utils/DeepMap.ts";
-// const x = $('s:sequence|y:event').$
-// const f = $('x:capra').isa('y').after('s:sequence|y:event').$
-// const m: VarMap = deepMapOf([[x, $(['e1', 'e2']).$]])
-// console.log(substAll(f, m))
 

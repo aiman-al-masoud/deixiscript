@@ -208,19 +208,3 @@ export function isWmAtom(x: unknown): x is WmAtom {
 export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence | HasSentence) {
     return s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]
 }
-
-// export function isTruthy(atom: Atom) {
-//     if (atom.type === 'boolean') {
-//         return atom.value === true
-//     } else if (isTerm(atom)) {
-//         return !!atom
-//     } else if (atom.type === 'list-literal') {
-//         return !!atom.list.length
-//     } else {
-//         return !!atom
-//     }
-// }
-
-// export function isListLiteral(a: Atom): a is ListLiteral {
-//     return a.type === 'list-literal'
-// }

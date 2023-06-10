@@ -1,5 +1,5 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, isAtomicFormula, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, isSimple, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter } from "./types.ts"
 
 type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
 
@@ -97,9 +97,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     after(atom: string | string[]): ExpBuilder<AtomicFormula> {
 
-        // if (!isAtomicFormula(this.exp)) {
-        //     throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
-        // }
+        if (!isFormulaWithAfter(this.exp)) {
+            throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
+        }
 
         return new ExpBuilder({
             ...this.exp,
@@ -289,7 +289,3 @@ function makeAtom(x: WmAtom | WmAtom[]): Atom {
     }
 
 }
-
-
-// console.log($({ first: 'x:thing', greaterThan: 'y:thing' }).$)
-// console.log($(1).isGreaterThan(2).$)

@@ -61,13 +61,3 @@ export function getConceptsOf(x: WmAtom, cm: WorldModel) {
         .map(s => s[1])
         .flatMap(c => [c, ...getSupers(c, cm)])
 }
-
-// const x = getSupers('multiple-birth-event', model)
-// const y = getAllParts('multiple-birth-event', model)
-// const z = getParts('multiple-birth-event', model)
-// console.log(x)
-// console.log(y)
-// console.log(z)
-// console.log(findInstances('person', model))
-
-
