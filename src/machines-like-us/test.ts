@@ -71,23 +71,11 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
     return kb.derivClauses.some(dc => {
         const map = match(dc.conseq, formula)
 
-        
         if (!map) {
             return false
         }
         
-        // console.log(dc)
-        
         const whenn = substAll(dc.when, map)
-
-        // console.log(map)
-        // console.log(whenn)
-        
-        // if ((whenn as any)?.t1?.value === 'person#1'){
-        //     console.log(dc)
-        //     console.log(map)
-        //     console.log(whenn)
-        // }
 
         const r = test(whenn, kb)
 
