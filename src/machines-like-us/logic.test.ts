@@ -4,7 +4,7 @@ import { findAll } from "./findAll.ts";
 import { recomputeKb } from "./happen.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
-import { Formula, KnowledgeBase } from "./types.ts";
+import { Formula, KnowledgeBase, Variable } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { dumpWorldModel } from "./dumpWorldModel.ts";
 
@@ -358,3 +358,17 @@ Deno.test({
         // console.log($(true).$)
     }
 })
+
+
+// Deno.test({
+//     name: 'test18',
+//     fn: () => {
+//         const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
+//         const seqVars = seq.map(x => $(x).$)
+//         const goal = $('door#1').has('open').as('state').after(seq)
+//         const agent = 'person#1'
+//         const q = $({ subject: seq, isPossibleSeqFor: agent }).and(goal.after(seq))
+//         const result = findAll(q.$, seqVars, kb)
+//         console.log(result)
+//     }
+// })
