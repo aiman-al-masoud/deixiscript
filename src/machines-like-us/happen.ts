@@ -82,6 +82,8 @@ function recomputeKbAfterSingleEvent(event: string, kb: KnowledgeBase) {
     const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
     const final = filtered.concat(additions)
 
+    // console.log(additions)
+
     const result: KnowledgeBase = {
         derivClauses: kb.derivClauses,
         wm: final

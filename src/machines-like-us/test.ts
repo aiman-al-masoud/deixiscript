@@ -13,11 +13,14 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
     // well, if the conseq part is present in the WM, then it won't even check the derivation clauses
     // in general, separate between derivation clauses that describe change vs those that describe states
 
+    // let flag = false
     if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
         // TODO ? 
         // formula.after = {} as any 
-        // console.log('test precomputed kb!')
+        formula.after = { type : 'list-literal', list:[] }
+        // console.log('test precomputed kb!', formula, kb.wm.at(-1))
+        // flag = true
     }
 
     switch (formula.type) {
@@ -70,10 +73,20 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
 
     return kb.derivClauses.some(dc => {
         const map = match(dc.conseq, formula)
+        
+        // if (flag) {
+            // console.log('got here!')
+            // console.log('----')
+            // console.log(dc.conseq)
+            // console.log(formula)
+            // console.log(map)
+        // }
 
         if (!map) {
             return false
         }
+
+
 
         // console.log(formula)
         // console.log(map)

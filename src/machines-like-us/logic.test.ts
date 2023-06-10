@@ -381,5 +381,11 @@ Deno.test({
         const q = $({ subject: seq, isPossibleSeqFor: agent })//.and(goal.after(seq))
         const result = findAll(q.$, seqVars, kb)
         // console.log(result)
+
+        assertEquals(result[0].get($('e1:event').$)?.value, 'move-event#1')
+        assertEquals(result[0].get($('e2:event').$)?.value, 'door-opening-event#1')
+
+        assertEquals(result[1].get($('e1:event').$)?.value, 'move-event#1')
+        assertEquals(result[1].get($('e2:event').$)?.value, 'move-event#1')
     }
 })
