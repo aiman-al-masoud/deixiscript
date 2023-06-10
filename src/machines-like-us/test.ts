@@ -74,6 +74,11 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         if (!map) {
             return false
         }
+
+        // console.log(formula)
+        // console.log(map)
+        // console.log(dc.conseq)
+        // console.log('-------')
         
         const whenn = substAll(dc.when, map)
 

@@ -366,20 +366,20 @@ Deno.test({
         const agent = 'person#1'
         const q = $({ subject: 'e:event', isPossibleFor: agent })
         const result = findAll(q.$, [$('e:event').$], kb)
-        assert(result.length===1)
+        assert(result.length === 1)
         assertEquals(result[0].get($('e:event').$)?.value, 'move-event#1')
     }
 })
 
-// Deno.test({
-//     name: 'test19',
-//     fn: () => {
-//         const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
-//         const seqVars = seq.map(x => $(x).$)
-//         // const goal = $('door#1').has('open').as('state').after(seq)
-//         const agent = 'person#1'
-//         const q = $({ subject: seq, isPossibleSeqFor: agent })//.and(goal.after(seq))
-//         const result = findAll(q.$, seqVars, kb)
-//         console.log(result)
-//     }
-// })
+Deno.test({
+    name: 'test19',
+    fn: () => {
+        const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
+        const seqVars = seq.map(x => $(x).$)
+        // const goal = $('door#1').has('open').as('state').after(seq)
+        const agent = 'person#1'
+        const q = $({ subject: seq, isPossibleSeqFor: agent })//.and(goal.after(seq))
+        const result = findAll(q.$, seqVars, kb)
+        // console.log(result)
+    }
+})

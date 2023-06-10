@@ -51,7 +51,7 @@ export function match(template: SimpleFormula | Atom, f: LLangAst): VarMap | und
 
     } else if (template.type === 'list-pattern' && f.type === 'list-literal') {
 
-        const seq = f.list.splice(0, -1)
+        const seq = f.list.slice(0, -1)
         const tail = f.list.at(-1)
 
         if (!tail) return undefined
