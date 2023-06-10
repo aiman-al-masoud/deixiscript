@@ -95,7 +95,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    after(atom: string | string[]): ExpBuilder<AtomicFormula> {
+    after(atom: string | string[]): ExpBuilder<AtomicFormula | GeneralizedSimpleFormula> {
 
         if (!isFormulaWithAfter(this.exp)) {
             throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
@@ -104,7 +104,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             ...this.exp,
             after: makeAtom(atom),
-        } as any)
+        })
     }
 
     when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
