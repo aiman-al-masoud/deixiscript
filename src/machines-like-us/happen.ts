@@ -38,7 +38,7 @@ function getAdditions(event: string, kb: KnowledgeBase): WorldModel {
             }
             
             const variables = getAtoms(x).filter(isVar)
-            const results = findAll(x, variables, kb)
+            const results = findAll(x, variables, kb, false)
             
             // console.log(dc)
             // console.log(variables)
@@ -68,7 +68,7 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
         concepts.map(c => $({ ann: 'x:mutex-annotation', property: h[1], excludes: 'y:thing', onPart: h[2], onConcept: c }))
 
     const r =
-        qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value))
+        qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
 
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results

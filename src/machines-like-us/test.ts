@@ -17,6 +17,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
         // TODO ? 
         // formula.after = {} as any 
+        // console.log('test precomputed kb!')
     }
 
     switch (formula.type) {

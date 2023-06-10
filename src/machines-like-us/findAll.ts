@@ -10,6 +10,7 @@ export function findAll(
     formula: LLangAst,
     variables: Variable[],
     kb: KnowledgeBase,
+    preComputeKb = true,
 ): DeepMap<Variable, Constant>[] {
 
     const constants = uniq(kb.wm.flatMap(x => x)).map(c => $(c).$)
@@ -25,7 +26,7 @@ export function findAll(
     const results = allCombos.filter(c => {
         const sub = substAll(formula, c)
         // console.log(sub)
-        return test(sub, kb, false)
+        return test(sub, kb, preComputeKb)
     })
 
     return results
