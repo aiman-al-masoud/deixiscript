@@ -1,4 +1,7 @@
-# Parts
+Machines like Us
+Toward AI with Common Sense
+
+by Ronald J. Brachman and Hector J. Levesque
 
 ## World Model
 
@@ -17,20 +20,20 @@ A framework of generalizations to classify the items in the world model.
 
 ### 1 Concept
 
-a category linked to a more general one.
+A category linked to a more general one.
 
 ### 2 Role
 
-a basic property associated with a concept.
+A basic property associated with a concept.
 
 ### 3 Restriction
 
-a limit on the number or category of a role filler. Can be on type or number or
+A limit on the number or category of a role filler. Can be on type or number or
 others (eg: identity) ...
 
 ### 4 Annotation
 
-a cancellation of a restriction or a default filler for a role.
+A cancellation of a restriction or a default filler for a role.
 
 > NB: restrictions also have IDs, so that annotations can refer to them
 > later.
@@ -49,6 +52,8 @@ concepts of the world model (person, mother, birthEvent) are the individuals of
 the conceptual model and the concepts of the concept model are:
 numberRestriction, role...
 
+The sentences of a world model are a subset of the sentences in the [L Language](#language-l), undestood with an implicit closed world assumption.
+
 # Reasoning
 
 - Is P true now?
@@ -56,6 +61,7 @@ numberRestriction, role...
 - What actions could I take to make P true?
 
 ## Language L
+
 
 > Term = Constant | Variable
 
@@ -86,9 +92,10 @@ numberRestriction, role...
 
 > DerivedPropertyDefinition = AtomicFormula `"when"` ExistentialQuantification
 
+----------
 > NB: a formula such as "Person:x has “Harry” as a firstName" has NO TRUTH
 > VALUE.
->
+> NB:
 > To get a truth value, it must appear in the scope of an existential
 > quantifier:
 >
@@ -104,8 +111,9 @@ argument into atomic formulas and looking for those in the world model.
 
 ## Deriving New Properties
 
-An expression using when, and a formula from L-lang used to represent a derived
-property.
+An expression using when, and a formula from the L Language used to represent a derived property.
+
+### Examples:
 
 ```
 person x has person y as mother 
@@ -143,19 +151,15 @@ ancestor.
 
 ## Simulating Change
 
-There are events in the world model, just **don't** assume that they've actually
-happened.
+There are events in the world model, they **aren't** necessarily assumed to have happened at some point. Any change is assumed to be the result of an event.
 
-Use `after` clause in AtomicSentence, described above.
+A derivation clause can be used to define how a kind of event (or sequence thereof) will change some kind of thing(s).
 
-A derivation clause (when) can be used to define how a kind of event (or
-sequence thereof) will change some kind of thing.
+TEST can be used to determine if an event will cause a change, and FIND-ALL can
+be used to find the relevant event(s), BUT ONLY IF the relevant event(s) are already
+present in the world model (memory-based planning).
 
-TEST can be used to determine if an event will cause another, and FIND-ALL can
-be used to find the relevant event, BUT ONLY IF the relevant events are already
-present in the world model.
-
-We can update the basic properties in the world model, and we could store the
+We can update the basic properties in the world model following some change, and we could store the
 old one if we needed to rembember the past.
 
 ### Example query
@@ -170,26 +174,13 @@ _pg: 178_
 
 ```
 Door:d has State:z as a doorState after Seq:s|Event:e
-	when
-	Event:e is a door-opening-event and Event:e has Door:d as an object and State:z is “open”
-	or Event:e is a doorClosingEvent and Event:e has Door:d as an object and State:z is “closed”
-	or Door:d has State:z as a doorState after Seq:s.
-```
-
-Problem: this is not equivalent to the derivation clause shown by the authors on
-page 178, what they really mean is this:
-
-```
-Door:d has State:z as a doorState after Seq:s|Event:e
 when
 if Event:e is a doorOpeningEvent and Event:e has Door:d as an object
-	return State:z is "open"
+	then State:z is "open"
 else if Event:e is a doorClosingEvent and Event:e has Door:d as an object
-	return State:z is "closed"
+	then State:z is "closed"
 else Door:d has State:z as a doorState after Seq:s.
 ```
-
-> return is equivalent to then
 
 You have to return, not fall through, in case you find the right event with
 right conditions, asserting the "correct" value of State:z in that case.
@@ -200,17 +191,9 @@ but it is older: it should've been overriden by a new one checked before!
 
 > NB: assuming higher operator precedece for AND, as is usually the case
 
-> after: Term[] | { seq: Variable, tail: Variable } | Variable
->
-> Because it can be:
->
-> - an explicit list of terms
-> - sequence variable and tail variable
-> - only a sequence variable
-
 ## Planning for Change
 
-An "action" is an event that is caused by an agent.
+An "action" is just an event that is caused by an agent.
 
 The possibility of a "primitive" event relative to an agent can be defined like
 so:
@@ -234,22 +217,18 @@ second, and so on...
 
 To determine if it is possible for an agent to perform action, you can test that
 the agent can perform the sequence of events AND that the sequence results in
-the action. Assuming you know the sequence (maybe derive starting from proximate
-cause of action?)
+the action. Assuming you know the sequence.
 
 ```
 Seq:s is a possibleSequence for Agent:x when Seq:s is [].
+```
 
-
+```
 Seq:s|Event:e is a possibleSequence for Agent:x
 when
 Seq:s is a possibleSequence for Agent:x and
 Event:e is possible for Agent:x after Seq:s.
 ```
-
-But what about the side effects on the world model that events could cause and
-rely on as preconditions? They are not taken into account by this derivation
-clause.
 
 ## Finding a sequence of actions of fixed length that achieves a goal
 
