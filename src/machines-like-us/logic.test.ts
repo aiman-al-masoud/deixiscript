@@ -375,7 +375,7 @@ Deno.test({
     name: 'test19',
     fn: () => {
         const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
-        const goal = $('door#1').has('open').as('state').after(seq)
+        const goal = $('door#1').has('open').as('state')
         const agent = 'person#1'
         const q = $({ subject: seq, isPossibleSeqFor: agent }).and(goal.after(seq))
         const seqVars = seq.map(x => $(x).$)
