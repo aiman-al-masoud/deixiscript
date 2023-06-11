@@ -1,10 +1,32 @@
-import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, isAtom, isAtomicFormula, isFormulaWithAfter, isFormulaWithNonNullAfter, isHasSentence, isVar, KnowledgeBase, wmSentencesEqual, WorldModel } from './types.ts'
+import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, isFormulaWithNonNullAfter, isHasSentence, isVar, KnowledgeBase, WmAtom, wmSentencesEqual, WorldModel } from './types.ts'
 import { $ } from './exp-builder.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
 import { dumpWorldModel } from './dumpWorldModel.ts'
 import { getAtoms } from './getAtoms.ts'
 import { getConceptsOf } from './wm-funcs.ts'
+
+/**
+ * Recompute the updated KB (situation) after a sequence of (existing) events takes place.
+ */
+export function recomputeKb(event: WmAtom[], kb: KnowledgeBase) {
+    return event.reduce((currKb, e) => recomputeKbAfterSingleEvent(e, currKb), kb)
+}
+
+function recomputeKbAfterSingleEvent(event: WmAtom, kb: KnowledgeBase) {
+
+    const additions = getAdditions(event, kb)
+    const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
+    const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
+    const final = filtered.concat(additions)
+
+    const result: KnowledgeBase = {
+        derivClauses: kb.derivClauses,
+        wm: final,
+    }
+
+    return result
+}
 
 /**
  * Computes the changes immediately caused by an event.
@@ -26,25 +48,20 @@ import { getConceptsOf } from './wm-funcs.ts'
  *
  *
  */
-function getAdditions(event: string, kb: KnowledgeBase): WorldModel {
+function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
         if (isFormulaWithNonNullAfter(dc.conseq)) {
 
-            const x: AtomicFormula|GeneralizedSimpleFormula = {
+            const x: AtomicFormula | GeneralizedSimpleFormula = {
                 ...dc.conseq,
                 after: { type: 'list-literal', list: [$(event).$] }
             }
-            
+
             const variables = getAtoms(x).filter(isVar)
             const results = findAll(x, variables, kb, false)
-            
-            // console.log(dc)
-            // console.log(variables)
-            // console.log(x)
-            // console.log(results)
-            
+
             const eventConsequences = results.map(r => substAll(x, r))
                 .flatMap(x => dumpWorldModel(x, kb))
 
@@ -73,25 +90,4 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
 
-}
-
-function recomputeKbAfterSingleEvent(event: string, kb: KnowledgeBase) {
-
-    const additions = getAdditions(event, kb)
-    const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
-    const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
-    const final = filtered.concat(additions)
-
-    // console.log(additions)
-
-    const result: KnowledgeBase = {
-        derivClauses: kb.derivClauses,
-        wm: final
-    }
-
-    return result
-}
-
-export function recomputeKb(event: string[], kb: KnowledgeBase) {
-    return event.reduce((currKb, e) => recomputeKbAfterSingleEvent(e, currKb), kb)
 }

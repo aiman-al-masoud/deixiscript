@@ -1,26 +1,17 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getConceptsOf, getSupers } from "./wm-funcs.ts";
 import { match } from "./match.ts";
-import { recomputeKb } from "./happen.ts";
+import { recomputeKb } from "./recomputeKb.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): boolean {
 
-    // recompute kb in case formula has an "after" clause.
-    // remove after clause from formula and go on...
-    // how about match() returning undefined if formula doesn't have after after and template does?
-    // well, if the conseq part is present in the WM, then it won't even check the derivation clauses
-    // in general, separate between derivation clauses that describe change vs those that describe states
-
-    // let flag = false
     if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
-        kb = recomputeKb(formula.after.list.map(x => x.value as string), kb)
-        // TODO ? 
-        // formula.after = {} as any 
-        formula.after = { type : 'list-literal', list:[] }
-        // console.log('test precomputed kb!', formula, kb.wm.at(-1))
-        // flag = true
+        const events = formula.after.list.map(x => x.value)
+        const kb2 = recomputeKb(events, kb)
+        const formula2: Formula = { ...formula, after: { type: 'list-literal', list: [] } }
+        return test(formula2, kb2, false)
     }
 
     switch (formula.type) {
@@ -73,31 +64,13 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
 
     return kb.derivClauses.some(dc => {
         const map = match(dc.conseq, formula)
-        
-        // if (flag) {
-            // console.log('got here!')
-            // console.log('----')
-            // console.log(dc.conseq)
-            // console.log(formula)
-            // console.log(map)
-        // }
 
         if (!map) {
             return false
         }
 
-
-
-        // console.log(formula)
-        // console.log(map)
-        // console.log(dc.conseq)
-        // console.log('-------')
-        
         const whenn = substAll(dc.when, map)
-
-        const r = test(whenn, kb)
-
-        return r
+        return test(whenn, kb)
     })
 
 }

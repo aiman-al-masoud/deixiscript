@@ -15,7 +15,7 @@ export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
 
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
-    if ( typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number'  || x instanceof Array) {
+    if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
         // console.log(x)
         return new ExpBuilder(makeAtom(x))
     }
@@ -111,7 +111,7 @@ export class ExpBuilder<T extends LLangAst> {
     when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
 
         if (!isFormulaWithAfter(this.exp)) {
-        // if (!isAtomicFormula(this.exp)) {
+            // if (!isAtomicFormula(this.exp)) {
             throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
         }
 

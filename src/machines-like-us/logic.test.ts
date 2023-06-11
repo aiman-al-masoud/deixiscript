@@ -1,12 +1,11 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { recomputeKb } from "./happen.ts";
+import { recomputeKb } from "./recomputeKb.ts";
 import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
-import { Formula, KnowledgeBase, Variable } from "./types.ts";
+import { Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
-import { dumpWorldModel } from "./dumpWorldModel.ts";
 
 export const model: WorldModel = [
 
@@ -107,7 +106,6 @@ Deno.test({
         const f = $('x:person').isa('person').$
         const v = $('x:person').$
         const results = findAll(f, [v], kb)
-        // assertEquals(results.length, 3)
         assertEquals(results.length, 4)
     }
 })
@@ -261,7 +259,6 @@ Deno.test({
 Deno.test({
     name: 'test12',
     fn: () => {
-        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
         assert(test($('door#1').has('closed').as('state').$, kb))
         const f1 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#3' })
         const f2 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#2' }).isNotTheCase
@@ -276,19 +273,14 @@ Deno.test({
     name: 'test13',
     fn: () => {
         // the empty sequence of actions (events) is always possible for any agent
-
         const f1 = $({ subject: [], isPossibleSeqFor: 'person#1' })
         assert(test(f1.$, kb))
-
-        // const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#1' }).isNotTheCase
-        // assert(test(f2.$, kb))
     }
 })
 
 Deno.test({
     name: 'test14',
     fn: () => {
-        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
         const f1 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
         assert(test(f1.$, kb))
     }
@@ -297,8 +289,6 @@ Deno.test({
 Deno.test({
     name: 'test15',
     fn: () => {
-
-        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
 
         const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
         assert(test(f2.$, kb))
@@ -318,7 +308,6 @@ Deno.test({
     name: 'test16',
     fn: () => {
 
-        // const kb2 = recomputeKb(['door-closing-event#1'], kb)
         const goal = $('door#1').has('open').as('state')
         const result = plan(goal, 'person#3', kb)
 
@@ -341,21 +330,12 @@ function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
 Deno.test({
     name: 'test17',
     fn: () => {
-
         assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
         assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
 
         const kb2 = recomputeKb(['move-event#1'], kb)
         assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
         assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
-
-        // const seq = ['e1:event', 'e2:event']
-        // const goal = $('door#1').has('open').as('state').after(seq)
-        // const agent = 'person#1'
-        // const q = $({ subject: seq, isPossibleSeqFor: agent }).and(goal.after(seq))
-        // const result = findAll(q.$, [$('e1:event').$, $('e2:event').$], kb)
-        // console.log(result)
-        // console.log($(true).$)
     }
 })
 
