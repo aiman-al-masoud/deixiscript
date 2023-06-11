@@ -67,7 +67,7 @@ export const derivationClauses: DerivationClause[] = [
 
     $({ subject: 'e:move-event', isPossibleFor: 'a:agent' }).when(
         $('e:move-event').isa('move-event')
-        .and($('e:move-event').has('a:agent').as('subject'))
+            .and($('e:move-event').has('a:agent').as('subject'))
     ).$,
 
     $('x:agent').has('y:thing').as('near').after('s:seq|e:event').when(
@@ -91,18 +91,7 @@ export const derivationClauses: DerivationClause[] = [
             .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
     ).$,
 
-    // $({ subject: 'x:agent', getsNear: 'y:door' }).after('s:seq|e:event').when(
-    //     $({ subject: 'x:agent', isNear: 'y:door' })
-    //         .if($('e:event').isa('move-event')
-    //             .and($('e:event').has('x:agent').as('subject'))
-    //             .and($('e:event').has('y:door').as('destination')))
-    //         .else($({ subject: 'x:agent', getsNear: 'y:door' }).after('s:seq'))
-    // ).$,
-
- 
-
 ]
-
 
 // const kb: KnowledgeBase = {
 //     wm: [],
