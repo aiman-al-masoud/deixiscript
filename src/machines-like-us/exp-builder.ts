@@ -16,7 +16,6 @@ export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
     if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
-        // console.log(x)
         return new ExpBuilder(makeAtom(x))
     }
 
