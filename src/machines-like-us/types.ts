@@ -125,7 +125,7 @@ export type ExistentialQuantification = {
 
 export type DerivationClause = {
     type: 'derived-prop',
-    conseq: AtomicFormula  | GeneralizedSimpleFormula,
+    conseq: AtomicFormula | GeneralizedSimpleFormula,
     when: LLangAst,
 }
 
@@ -180,7 +180,11 @@ export function isIsASentence(s: IsASentence | HasSentence): s is IsASentence {
     return s.length === 2
 }
 
-export function isAtom(ast: LLangAst): ast is Atom {
+export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
+
+    if (ast instanceof Array) return false
+    if (isWmAtom(ast)) return false
+
     return ast.type === 'variable'
         || ast.type === 'constant'
         || ast.type === 'list-literal'
@@ -198,8 +202,8 @@ export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | Genera
 }
 
 export function isFormulaWithNonNullAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedSimpleFormula {
-    return isFormulaWithAfter(ast) 
-    && (ast.after.type !== 'list-literal' ||  !!ast.after.list.length )
+    return isFormulaWithAfter(ast)
+        && (ast.after.type !== 'list-literal' || !!ast.after.list.length)
 }
 
 export function isSimple(ast: LLangAst): ast is SimpleFormula {

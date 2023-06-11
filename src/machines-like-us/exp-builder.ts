@@ -20,9 +20,10 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst>
     }
 
     const keys = Object.fromEntries(
-        Object.entries(x).map(e => [e[0], isAtom(e[1] as any) ? e[1] : makeAtom(e[1] as any)])
+        Object.entries(x).map(e => [e[0], isAtom(e[1]) ? e[1] : makeAtom(e[1])])
     )
-    return new ExpBuilder({ type: 'generalized', keys: keys as any, after: { list: [], type: 'list-literal' } })
+
+    return new ExpBuilder({ type: 'generalized', keys: keys, after: { list: [], type: 'list-literal' } })
 }
 
 export class ExpBuilder<T extends LLangAst> {
