@@ -6,6 +6,7 @@ import { test } from "./test.ts";
 import { derivationClauses } from "./derivation-clauses.ts";
 import { Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
+import { getParts } from "./wm-funcs.ts";
 
 export const model: WorldModel = [
 
@@ -61,6 +62,8 @@ export const model: WorldModel = [
         .and($({ subject: 'closed', isAKindOf: 'state' }))
         .and($({ subject: 'state', isAKindOf: 'thing' }))
         .and($({ subject: 'near', isAKindOf: 'thing' }))
+        .and($({ subject: 'event', canHaveA: 'duration' }))
+        .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
         .dump(derivationClauses),
 
     ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses),
@@ -367,5 +370,19 @@ Deno.test({
         // assertEquals(result[0].get($('e2:event').$)?.value, 'door-opening-event#1')
         // assertEquals(result[1].get($('e1:event').$)?.value, 'move-event#1')
         // assertEquals(result[1].get($('e2:event').$)?.value, 'move-event#1')
+    }
+})
+
+
+Deno.test({
+    name: 'test20',
+    fn: () => {
+        console.log(getParts('person', kb.wm))
+        console.log(getParts('birth-event', kb.wm))
+        console.log(getParts('multiple-birth-event', kb.wm))
+
+        const q = $({ vr: 'vr:value-restriction', part: 'mother', ofConcept: 'birth-event', isA: 'value:thing' })
+        const result = findAll(q.$, [$('vr:value-restriction').$, $('value:thing').$], kb)
+        console.log(result[0].get($('value:thing').$))
     }
 })

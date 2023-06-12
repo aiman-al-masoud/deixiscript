@@ -1,10 +1,11 @@
+import { uniq } from "../utils/uniq.ts";
 import { WorldModel, WmAtom, isIsASentence } from "./types.ts";
 
 
 export function getParts(concept: string, cm: WorldModel): WmAtom[] {
 
     const parts = getAllParts(concept, cm)
-    const cancelAnnotations = parts.filter(x => getSupers(x, cm).includes('cancel-annotation'))
+    const cancelAnnotations = parts.filter(x => getConceptsOf(x, cm).includes('cancel-annotation'))
 
     const allCancelled = cancelAnnotations
         .map(x => subjectOf(x, cm))
@@ -16,10 +17,12 @@ export function getParts(concept: string, cm: WorldModel): WmAtom[] {
         nonCancelledCancelAnnotations.map(x => subjectOf(x, cm))
             .filter(x => x)
 
-    return parts
+    const all = parts
         .filter(x => !allCancelledForReal.includes(x))
         .filter(x => !cancelAnnotations.includes(x))
 
+    const results = uniq(all)
+    return results
 }
 
 function getAllParts(concept: WmAtom, cm: WorldModel): WmAtom[] {
