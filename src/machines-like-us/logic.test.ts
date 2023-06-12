@@ -30,7 +30,6 @@ export const model: WorldModel = [
     ...$('person#3').isa('person').dump(),
     ...$('person#3').has('door#1').as('near').dump(),
     ...$('move-event#1').isa('move-event').dump(),
-    ...$('move-event#1').has('person#1').as('subject').dump(),
     ...$('move-event#1').has('door#1').as('destination').dump(),
     ...$('door#1').has('closed').as('state').dump(),
 

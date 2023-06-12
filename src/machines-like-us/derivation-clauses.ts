@@ -67,12 +67,10 @@ export const derivationClauses: DerivationClause[] = [
 
     $({ subject: 'e:move-event', isPossibleFor: 'a:agent' }).when(
         $('e:move-event').isa('move-event')
-            .and($('e:move-event').has('a:agent').as('subject'))
     ).$,
 
     $('x:agent').has('y:thing').as('near').after('s:seq|e:event').when(
         $(true).if($('e:event').isa('move-event')
-            .and($('e:event').has('x:agent').as('subject'))
             .and($('e:event').has('y:thing').as('destination')))
             .else($('x:agent').has('y:thing').as('near').after('s:seq'))
     ).$,
