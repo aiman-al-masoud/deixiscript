@@ -36,6 +36,8 @@ export const model: WorldModel = [
 
     /* Conceptual Model */
     ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'agent', canHaveA: 'movement' }).dump(derivationClauses),
+    ...$({ vr: 'vr#43', part: 'movement', ofConcept: 'agent', isA: 'move-event' }).dump(derivationClauses),
     ...$({ subject: 'person', isAKindOf: 'agent' }).dump(derivationClauses),
     ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses),
     ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses),
@@ -48,7 +50,9 @@ export const model: WorldModel = [
     ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses),
     ...$({ subject: 'move-event', isAKindOf: 'event' }).dump(derivationClauses),
     ...$({ subject: 'move-event', canHaveA: 'destination' }).dump(derivationClauses),
-
+    ...$({ subject: 'door', isAKindOf: 'thing' }).dump(derivationClauses),
+    ...$({ subject: 'door', canHaveA: 'opening' }).dump(derivationClauses),
+    ...$({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }).dump(derivationClauses),
 
     ...$({ subject: 'birth-event', canHaveA: 'mother' })
         .and($({ subject: 'birth-event', canHaveA: 'baby' }))
@@ -389,5 +393,8 @@ Deno.test({
         console.log(result[0].get($('value:thing').$))
 
         console.log(getParts('move-event', kb.wm))
+        console.log(getParts('agent', kb.wm))
+        console.log(getParts('door', kb.wm))
+
     }
 })
