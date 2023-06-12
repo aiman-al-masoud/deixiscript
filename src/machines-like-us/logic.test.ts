@@ -28,7 +28,7 @@ export const model: WorldModel = [
     ...$('door-closing-event#1').isa('door-closing-event').dump(),
     ...$('door-closing-event#1').has('door#1').as('object').dump(),
     ...$('person#3').isa('person').dump(),
-    ...$({ subject: 'person#3', isNear: 'door#1' }).dump(derivationClauses),
+    ...$('person#3').has('door#1').as('near').dump(),
     ...$('move-event#1').isa('move-event').dump(),
     ...$('move-event#1').has('person#1').as('subject').dump(),
     ...$('move-event#1').has('door#1').as('destination').dump(),
@@ -333,11 +333,13 @@ function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
 Deno.test({
     name: 'test17',
     fn: () => {
-        assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
+
+        assert(!test($('person#1').has('door#1').as('near').$, kb))
         assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
 
         const kb2 = recomputeKb(['move-event#1'], kb)
-        assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
+
+        assert(test($('person#1').has('door#1').as('near').$, kb2))
         assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
     }
 })
