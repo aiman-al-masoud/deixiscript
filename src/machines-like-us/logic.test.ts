@@ -7,6 +7,7 @@ import { derivationClauses } from "./derivation-clauses.ts";
 import { Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getParts } from "./wm-funcs.ts";
+import { getAtoms } from "./getAtoms.ts";
 
 export const model: WorldModel = [
 
@@ -395,6 +396,7 @@ Deno.test({
         console.log(getParts('move-event', kb.wm))
         console.log(getParts('agent', kb.wm))
         console.log(getParts('door', kb.wm))
+        // console.log(getAtoms($('door#1').has('open').as('state').$))
 
     }
 })
