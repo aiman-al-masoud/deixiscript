@@ -228,10 +228,10 @@ Deno.test({
             .dump()
 
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
-        const wrong1 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).$
+        const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
 
         assert(test(test1, { wm: wm, derivClauses: dc }))
-        assert(!test(wrong1, { wm: wm, derivClauses: dc }))
+        assert(test(test2, { wm: wm, derivClauses: dc }))
 
     }
 })
