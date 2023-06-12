@@ -40,12 +40,14 @@ export const model: WorldModel = [
     ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses),
     ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'door-opening-event', isAKindOf: 'event' }).dump(derivationClauses),
+    ...$({ subject: 'door-opening-event', canHaveA: 'object' }).dump(derivationClauses),
     ...$({ subject: 'birth-event', isAKindOf: 'event' }).dump(derivationClauses),
     ...$({ subject: 'time-instant', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'point-in-space', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'city', isAKindOf: 'thing' }).dump(derivationClauses),
     ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses),
     ...$({ subject: 'move-event', isAKindOf: 'event' }).dump(derivationClauses),
+    ...$({ subject: 'move-event', canHaveA: 'destination' }).dump(derivationClauses),
 
 
     ...$({ subject: 'birth-event', canHaveA: 'mother' })
@@ -385,5 +387,7 @@ Deno.test({
         const q = $({ vr: 'vr:value-restriction', part: 'mother', ofConcept: 'birth-event', isA: 'value:thing' })
         const result = findAll(q.$, [$('vr:value-restriction').$, $('value:thing').$], kb)
         console.log(result[0].get($('value:thing').$))
+
+        console.log(getParts('move-event', kb.wm))
     }
 })
