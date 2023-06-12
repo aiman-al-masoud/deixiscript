@@ -1,9 +1,11 @@
-Machines like Us
-Toward AI with Common Sense
+# Machines Like Us
 
+```
+Machines like Us Toward AI with Common Sense
 by Ronald J. Brachman and Hector J. Levesque
+```
 
-## World Model
+# World Model
 
 Represents the state of the world.
 
@@ -14,29 +16,28 @@ Represents the state of the world.
 >
 > TypeName#XX has Something as PropertyName.
 
-## Conceptual Model
+# Conceptual Model
 
 A framework of generalizations to classify the items in the world model.
 
-### 1 Concept
+## 1 Concept
 
 A category linked to a more general one.
 
-### 2 Role
+## 2 Role
 
 A basic property associated with a concept.
 
-### 3 Restriction
+## 3 Restriction
 
 A limit on the number or category of a role filler. Can be on type or number or
 others (eg: identity) ...
 
-### 4 Annotation
+## 4 Annotation
 
 A cancellation of a restriction or a default filler for a role.
 
-> NB: restrictions also have IDs, so that annotations can refer to them
-> later.
+> NB: restrictions also have IDs, so that annotations can refer to them later.
 
 > NB: number of roles associated with a concept != number of fillers. For eg 2
 > parents for role "parent", or same individual for multiple roles.
@@ -52,7 +53,8 @@ concepts of the world model (person, mother, birthEvent) are the individuals of
 the conceptual model and the concepts of the concept model are:
 numberRestriction, role...
 
-The sentences of a world model are a subset of the sentences in the [L Language](#language-l), undestood with an implicit closed world assumption.
+The sentences of a world model are a subset of the sentences in the
+[L Language](#language-l), undestood with an implicit closed world assumption.
 
 # Reasoning
 
@@ -61,7 +63,6 @@ The sentences of a world model are a subset of the sentences in the [L Language]
 - What actions could I take to make P true?
 
 ## Language L
-
 
 > Term = Constant | Variable
 
@@ -92,11 +93,10 @@ The sentences of a world model are a subset of the sentences in the [L Language]
 
 > DerivedPropertyDefinition = AtomicFormula `"when"` ExistentialQuantification
 
-----------
+---
+
 > NB: a formula such as "Person:x has “Harry” as a firstName" has NO TRUTH
-> VALUE.
-> NB:
-> To get a truth value, it must appear in the scope of an existential
+> VALUE. NB: To get a truth value, it must appear in the scope of an existential
 > quantifier:
 >
 > There is a Person:x where Person:x has “Harry” as a firstName.
@@ -111,7 +111,8 @@ argument into atomic formulas and looking for those in the world model.
 
 ## Deriving New Properties
 
-An expression using when, and a formula from the L Language used to represent a derived property.
+An expression using when, and a formula from the L Language used to represent a
+derived property.
 
 ### Examples:
 
@@ -151,16 +152,18 @@ ancestor.
 
 ## Simulating Change
 
-There are events in the world model, they **aren't** necessarily assumed to have happened at some point. Any change is assumed to be the result of an event.
+There are events in the world model, they **aren't** necessarily assumed to have
+happened at some point. Any change is assumed to be the result of an event.
 
-A derivation clause can be used to define how a kind of event (or sequence thereof) will change some kind of thing(s).
+A derivation clause can be used to define how a kind of event (or sequence
+thereof) will change some kind of thing(s).
 
 TEST can be used to determine if an event will cause a change, and FIND-ALL can
-be used to find the relevant event(s), BUT ONLY IF the relevant event(s) are already
-present in the world model (memory-based planning).
+be used to find the relevant event(s), BUT ONLY IF the relevant event(s) are
+already present in the world model (memory-based planning).
 
-We can update the basic properties in the world model following some change, and we could store the
-old one if we needed to rembember the past.
+We can update the basic properties in the world model following some change, and
+we could store the old one if we needed to rembember the past.
 
 ### Example query
 
@@ -168,7 +171,7 @@ old one if we needed to rembember the past.
 door#1 has open as state after [door-opening-event#1]
 ```
 
-### Recursive derivation clause expressed without syntactic sugar
+### Recursive Derivation Clause (with events)
 
 _pg: 178_
 
@@ -182,10 +185,10 @@ else if Event:e is a doorClosingEvent and Event:e has Door:d as an object
 else Door:d has State:z as a doorState after Seq:s.
 ```
 
-You have to return, not fall through, in case you find the right event with
+<!-- You have to return, not fall through, in case you find the right event with
 right conditions, asserting the "correct" value of State:z in that case.
 Otherwise you will end up finding an older event in the sequence that matches,
-but it is older: it should've been overriden by a new one checked before!
+but it is older: it should've been overriden by a new one checked before! -->
 
 > **NB: Event:e is the LAST EVENT IN THE CHAIN!!!**
 
@@ -208,16 +211,13 @@ Agent:x is near Door:d, and
 Door:d has “open” as a doorState.
 ```
 
-Simplifying assumption that non-primitive events are characterized as sequences
-of primitive events only.
+> Simplifying assumption: non-primitive events are characterized as sequences of
+> primitive events only.
 
-For a non-primitive event to be possible, it must be possible to perform the
-first action of the sequence, then, in the state that results from that, the
-second, and so on...
-
-To determine if it is possible for an agent to perform action, you can test that
-the agent can perform the sequence of events AND that the sequence results in
-the action. Assuming you know the sequence.
+For a non-primitive event to be possible for an agent, it must be possible for
+it to perform the first action of the sequence, then, in the state that results
+from that, the second action of the sequence, and so on... The empty sequence is
+always possible.
 
 ```
 Seq:s is a possibleSequence for Agent:x when Seq:s is [].
@@ -229,6 +229,10 @@ when
 Seq:s is a possibleSequence for Agent:x and
 Event:e is possible for Agent:x after Seq:s.
 ```
+
+To determine if it is possible for an agent to achieve a goal with a sequence of
+actions, you can test if the agent can perform the sequence of actions AND that
+the sequence results in the goal being achieved.
 
 ## Finding a sequence of actions of fixed length that achieves a goal
 
@@ -257,7 +261,7 @@ The first might be true and the second false, or viceversa.
 Idea for a solution: instantiate a new bird in the world model using the bird
 concept, check if that new (hypothetical) bird is a flying animal.
 
-# Operations
+# Operations Described in the Book
 
 ## FIND-PATH
 
@@ -284,21 +288,27 @@ Takes an agent and a goal formula as arguments. Returns sequence of actions that
 an agent can perform starting from the current state to make the goal formula
 true.
 
-Note that FIND-ALL can be used to compute PLAN, provided that:
+Note that FIND-ALL can be used to implement PLAN, provided that:
 
 - The events of the sequence are all present as constants in the world model
-- The length of the chain of events is know/reasonably short ??
+- The length of the sequence of events is known, or at least reasonably short
 
 ## MODIFY-PLAN
 
-A plan is organized as a procedural list of goals. Each goal may have a nested list of subgoals.
+A plan is organized as a procedural list of goals. Each goal may have a nested
+list of subgoals.
 
-Consider the most specific subgoal that failed, try finding **an alternative way of achieving this subgoal with an acceptable cost** (use TEST and FIND-ALL or maybe PLAN?).
+Consider the most specific subgoal that failed, try finding **an alternative way
+of achieving this subgoal with an acceptable cost** (use TEST and FIND-ALL or
+maybe PLAN?).
 
-If you don't find any **appropriate** alternative subplan, then go up a level in the goal hierarchy and repeat the the search.
+If you don't find any **appropriate** alternative subplan, then go up a level in
+the goal hierarchy and repeat the the search.
 
-Until you either find a replacement plan for a subgoal, or you wind up reconsidering the topmost goal itself.
+Until you either find a replacement plan for a subgoal, or you wind up
+reconsidering the topmost goal itself.
 
+<!--
 # My Notes
 
 - Is the default annotation filler an existing object or a brand new object, or
@@ -317,4 +327,4 @@ Until you either find a replacement plan for a subgoal, or you wind up reconside
   similar to writer monad
 
 - inheritance chains AND INHERITED PROPS, how does test() take them into
-  account?
+  account? -->
