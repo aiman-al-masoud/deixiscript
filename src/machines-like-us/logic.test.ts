@@ -7,7 +7,6 @@ import { derivationClauses } from "./derivation-clauses.ts";
 import { Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getParts } from "./wm-funcs.ts";
-import { getAtoms } from "./getAtoms.ts";
 
 export const model: WorldModel = [
 
@@ -365,22 +364,16 @@ Deno.test({
 Deno.test({
     name: 'test19',
     fn: () => {
-        const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
         const goal = $('door#1').has('open').as('state')
         const agent = 'person#1'
+        const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
         const q = $({ subject: seq, isPossibleSeqFor: agent }).and(goal.after(seq))
         const seqVars = seq.map(x => $(x).$)
         const result = findAll(q.$, seqVars, kb)
         assertEquals(result[0].get($('e1:event').$)?.value, 'move-event#1')
         assertEquals(result[0].get($('e2:event').$)?.value, 'door-opening-event#1')
-        // console.log(result)
-        // assertEquals(result[0].get($('e1:event').$)?.value, 'move-event#1')
-        // assertEquals(result[0].get($('e2:event').$)?.value, 'door-opening-event#1')
-        // assertEquals(result[1].get($('e1:event').$)?.value, 'move-event#1')
-        // assertEquals(result[1].get($('e2:event').$)?.value, 'move-event#1')
     }
 })
-
 
 Deno.test({
     name: 'test20',
