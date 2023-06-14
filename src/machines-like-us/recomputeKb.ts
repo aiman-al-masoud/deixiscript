@@ -87,7 +87,27 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
     const r =
         qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
 
+
+    //---------
+    const qs2 =
+        concepts.map(c => $({ ann: 'x:only-one-annotation', onlyHaveOneOf: h[2], onConcept: c }))
+    const r2 =
+        qs2.flatMap(q => findAll(q.$, [$('x:only-one-annotation').$], kb))//.map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
+
+    if (r2.length) {
+        const buf = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb)
+        r.push(...buf.map(x => x.get($('y:thing').$)?.value))
+    }
+
+    //---------
+
+
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
+
+
+
+    // const r2 =
+    //    qs.flatMap(q => findAll(q.$, [$('x:only-one-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
 
 }

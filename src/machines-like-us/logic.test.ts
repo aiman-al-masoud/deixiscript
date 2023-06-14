@@ -31,7 +31,18 @@ export const model: WorldModel = [
     ...$('person#3').has('door#1').as('near').dump(),
     ...$('move-event#1').isa('move-event').dump(),
     ...$('move-event#1').has('door#1').as('destination').dump(),
+    ...$('move-event#1').has('person#1').as('subject').dump(),
+
     ...$('door#1').has('closed').as('state').dump(),
+
+
+
+    ...$('agent#007').isa('agent').dump(),
+    ...$('agent#007').has(2).as('position').dump(),
+    ...$('door#44').has(1).as('position').dump(),
+    ...$('move-event#3').isa('move-event').dump(),
+    ...$('move-event#3').has('door#44').as('destination').dump(),
+    ...$('move-event#3').has('agent#007').as('subject').dump(),
 
 
     /* Conceptual Model */
@@ -72,6 +83,10 @@ export const model: WorldModel = [
         .dump(derivationClauses),
 
     ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses),
+
+
+    ...$({ann:'ann#4923', onlyHaveOneOf:'position', onConcept:'thing' }).dump(derivationClauses),
+    // ...$({ ann: 'ann#4923', property: '*', excludes: '*', onPart: 'position', onConcept: 'thing' }).dump(derivationClauses),
 
 
 ]
@@ -391,5 +406,15 @@ Deno.test({
         console.log(getParts('door', kb.wm))
         // console.log(getAtoms($('door#1').has('open').as('state').$))
 
+    }
+})
+
+Deno.test({
+    name: 'test21',
+    fn: () => {
+        const kb2 = recomputeKb(['move-event#3'], kb)
+        console.log(kb2.wm)
+        console.log(test($({subject:'agent#007', isNear:'door#44'}).$, kb2))
+        console.log(test($({subject:'agent#007', isNear:'door#44'}).$, kb))
     }
 })
