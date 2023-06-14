@@ -28,7 +28,10 @@ export const model: WorldModel = [
     ...$('door-closing-event#1').isa('door-closing-event').dump(),
     ...$('door-closing-event#1').has('door#1').as('object').dump(),
     ...$('person#3').isa('person').dump(),
-    ...$('person#3').has('door#1').as('near').dump(),
+
+    ...$('person#3').has(5).as('position').dump(),
+    ...$('door#1').has(5).as('position').dump(),
+
     ...$('move-event#1').isa('move-event').dump(),
     ...$('move-event#1').has('door#1').as('destination').dump(),
     ...$('move-event#1').has('person#1').as('subject').dump(),
@@ -77,17 +80,12 @@ export const model: WorldModel = [
         .and($({ subject: 'open', isAKindOf: 'state' }))
         .and($({ subject: 'closed', isAKindOf: 'state' }))
         .and($({ subject: 'state', isAKindOf: 'thing' }))
-        .and($({ subject: 'near', isAKindOf: 'thing' }))
         .and($({ subject: 'event', canHaveA: 'duration' }))
         .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
         .dump(derivationClauses),
 
     ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses),
-
-
-    ...$({ann:'ann#4923', onlyHaveOneOf:'position', onConcept:'thing' }).dump(derivationClauses),
-    // ...$({ ann: 'ann#4923', property: '*', excludes: '*', onPart: 'position', onConcept: 'thing' }).dump(derivationClauses),
-
+    ...$({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }).dump(derivationClauses),
 
 ]
 
@@ -354,12 +352,14 @@ Deno.test({
     name: 'test17',
     fn: () => {
 
-        assert(!test($('person#1').has('door#1').as('near').$, kb))
+        assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
+
         assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
 
         const kb2 = recomputeKb(['move-event#1'], kb)
 
-        assert(test($('person#1').has('door#1').as('near').$, kb2))
+        assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
+
         assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
     }
 })
@@ -412,9 +412,12 @@ Deno.test({
 Deno.test({
     name: 'test21',
     fn: () => {
+        assert(test($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb))
         const kb2 = recomputeKb(['move-event#3'], kb)
         console.log(kb2.wm)
-        console.log(test($({subject:'agent#007', isNear:'door#44'}).$, kb2))
-        console.log(test($({subject:'agent#007', isNear:'door#44'}).$, kb))
+        const results = findAll($('agent#007').has('x:thing').as('position').$, [$('x:thing').$], kb2)
+        assert(results.length === 1)
+        assertEquals(results[0].get($('x:thing').$)?.value, 1)
+        assert(test($({ subject: 'agent#007', isNear: 'door#44' }).$, kb2))
     }
 })

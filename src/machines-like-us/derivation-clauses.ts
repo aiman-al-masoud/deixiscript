@@ -49,46 +49,42 @@ export const derivationClauses: DerivationClause[] = [
             .and($('ann:thing').has('c:thing').as('concept'))
     ).$,
 
-    $({ann:'ann:thing', onlyHaveOneOf:'prop:thing', onConcept:'c:thing' }).when(
+    $({ ann: 'ann:thing', onlyHaveOneOf: 'prop:thing', onConcept: 'c:thing' }).when(
         $('c:thing').has('ann:thing').as('part')
-        .and($('ann:thing').isa('only-one-annotation'))
-        .and($('ann:thing').has('prop:thing').as('prop'))
-        .and($('ann:thing').has('c:thing').as('concept'))
+            .and($('ann:thing').isa('only-one-annotation'))
+            .and($('ann:thing').has('prop:thing').as('prop'))
+            .and($('ann:thing').has('c:thing').as('concept'))
     ).$,
 
     /* others */
 
-    $('d:door').has('z:state').as('state').after('s:seq|e:event').when(
+    $('d:door').has('z:state').as('state').after(['e:event']).when(
         $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
-            .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object')))
-                .else($('d:door').has('z:state').as('state').after('s:seq')))
+            .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object'))))
+    ).$,
+
+    $('x:agent').has('p:number').as('position').after(['e:event']).when(
+        $(true).if(
+            $('d:thing').exists.where(
+                $('e:event').has('d:thing').as('destination')
+                    .and($('d:thing').has('p:number').as('position'))
+            ).and($('e:event').isa('move-event'))
+                .and($('e:event').has('x:agent').as('subject'))
+        )
     ).$,
 
     $({ subject: 'e:move-event', isPossibleFor: 'a:agent' }).when(
         $('e:move-event').isa('move-event')
-        .and($('e:move-event').has('a:agent').as('subject'))
-
+            .and($('e:move-event').has('a:agent').as('subject'))
     ).$,
-    
-    
+
     $({ subject: 'e:door-opening-event', isPossibleFor: 'a:agent' }).when(
         $('d:door').exists.where(
             $('e:door-opening-event').has('d:door').as('object')
-                .and($('a:agent').has('d:door').as('near'))
-                // .and($({subject:'a:agent', isNear:'d:door'}))
+                .and($({ subject: 'a:agent', isNear: 'd:door' }))
                 .and($('d:door').has('closed').as('state'))
         )
     ).$,
-
-    $('x:agent').has('y:thing').as('near').after('s:seq|e:event').when(
-        $(true).if($('e:event').isa('move-event')
-            .and($('e:event').has('y:thing').as('destination'))
-            )
-            // .else($('x:agent').has('y:thing').as('near').after('s:seq'))
-    ).$,
-
-
-
 
     $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' }).when(
         $('s:seq').is([])
@@ -99,24 +95,13 @@ export const derivationClauses: DerivationClause[] = [
             .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
     ).$,
 
-
-    $('x:agent').has('p:number').as('position').after('s:seq|e:event').when(
-        $(true).if(
-            $('d:thing').exists.where(
-                $('e:event').has('d:thing').as('destination')
-                    .and($('d:thing').has('p:number').as('position'))
-            ).and($('e:event').isa('move-event'))
-            .and($('e:event').has('x:agent').as('subject'))
-        )
-    ).$,
-
-    $({subject:'x:thing', isNear:'y:thing'}).when(
+    $({ subject: 'x:thing', isNear: 'y:thing' }).when(
         $('p1:number').exists.where($('p2:number').exists.where(
             $('x:thing').has('p1:number').as('position')
                 .and($('y:thing').has('p2:number').as('position'))
                 .and($('p1:number').is('p2:number'))
         ))
-    ).$
+    ).$,
 
 ]
 
