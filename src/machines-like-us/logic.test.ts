@@ -32,21 +32,15 @@ export const model: WorldModel = [
     ...$('person#3').has(5).as('position').dump(),
     ...$('door#1').has(5).as('position').dump(),
 
-    ...$('move-event#1').isa('move-event').dump(),
-    ...$('move-event#1').has('door#1').as('destination').dump(),
-    ...$('move-event#1').has('person#1').as('subject').dump(),
+    ...$({ moveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }).dump(derivationClauses),
 
     ...$('door#1').has('closed').as('state').dump(),
-
-
 
     ...$('agent#007').isa('agent').dump(),
     ...$('agent#007').has(2).as('position').dump(),
     ...$('door#44').has(1).as('position').dump(),
-    ...$('move-event#3').isa('move-event').dump(),
-    ...$('move-event#3').has('door#44').as('destination').dump(),
-    ...$('move-event#3').has('agent#007').as('subject').dump(),
 
+    ...$({ moveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }).dump(derivationClauses),
 
     /* Conceptual Model */
     ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses),
@@ -419,5 +413,7 @@ Deno.test({
         assert(results.length === 1)
         assertEquals(results[0].get($('x:thing').$)?.value, 1)
         assert(test($({ subject: 'agent#007', isNear: 'door#44' }).$, kb2))
+
+        // console.log($({moveEvent:'move-event#42', subject:'agent#007', destination:'door#1'}).dump(kb.derivClauses))
     }
 })

@@ -103,6 +103,13 @@ export const derivationClauses: DerivationClause[] = [
         ))
     ).$,
 
+
+    $({ moveEvent: 'e:move-event', subject: 'x:agent', destination: 'y:thing', }).when(
+        $('e:move-event').isa('move-event')
+            .and($('e:move-event').has('y:thing').as('destination'))
+            .and($('e:move-event').has('x:agent').as('subject'))
+    ).$,
+
 ]
 
 // const kb: KnowledgeBase = {
