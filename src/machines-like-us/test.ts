@@ -38,9 +38,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
                     && formula.t1.value === hs[0]
                     && formula.t2.value === hs[1]
                     && formula.as.value === hs[2]
-                    // && (formula.t1.value === '*' || formula.t1.value === hs[0])
-                    // && (formula.t2.value === '*' || formula.t2.value === hs[1])
-                    // && (formula.as.value === '*' || formula.as.value === hs[2])
             })) return true
             break
         case 'negation':
