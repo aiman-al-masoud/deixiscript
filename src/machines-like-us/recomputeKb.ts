@@ -39,7 +39,7 @@ function recomputeKbAfterSingleEvent(event: WmAtom, kb: KnowledgeBase) {
  * Because it tends to reduce the number of free variables in the query,
  * therefore making findAll() less expensive. The cost of findAll() is 
  * proportional to the cost of a cartesian product between x sets, which 
- * is O(n^x), where 1<=x<=3 (world model formulas have 3 terms at most), 
+ * is O(n^x), where 1<=x<=3 (world model formulas have 3 terms at most, but this doesn't count custom formulas), 
  * bringing it down to even just x=2 is a significant improvement.
  * 
  * Also because it tends to specify the types of the variables involved,
