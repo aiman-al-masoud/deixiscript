@@ -104,7 +104,7 @@ export const derivationClauses: DerivationClause[] = [
     ).$,
 
 
-    $({ makeMoveEvent: 'e:move-event', subject: 'x:agent', destination: 'y:thing', }).when(
+    $({ isMoveEvent: 'e:move-event', subject: 'x:agent', destination: 'y:thing', }).when(
         $('e:move-event').isa('move-event')
             .and($('e:move-event').has('y:thing').as('destination'))
             .and($('e:move-event').has('x:agent').as('subject'))
