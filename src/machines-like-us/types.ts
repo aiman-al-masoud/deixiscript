@@ -15,16 +15,30 @@ export type KnowledgeBase = {
 /* LANGUAGE */
 
 export type LLangAst = Atom | Formula
-export type Atom = Term | ListPattern | ListLiteral
-export type Formula = SimpleFormula | CompositeFormula
-export type Term = Constant | Variable
-export type Constant = Entity | Boolean | Number
-export type SimpleFormula = AtomicFormula
+export type Atom =
+    | Term
+    | ListPattern
+    | ListLiteral
+export type Formula =
+    | SimpleFormula
+    | CompositeFormula
+export type Term =
+    | Constant
+    | Variable
+export type Constant =
+    | Entity
+    | Boolean
+    | Number
+export type SimpleFormula =
+    | AtomicFormula
     | Equality
     | GeneralizedSimpleFormula
     | GreaterThanFormula
-export type AtomicFormula = IsAFormula | HasFormula
-export type CompositeFormula = Conjunction
+export type AtomicFormula =
+    | IsAFormula
+    | HasFormula
+export type CompositeFormula =
+    | Conjunction
     | Disjunction
     | Negation
     | ExistentialQuantification
