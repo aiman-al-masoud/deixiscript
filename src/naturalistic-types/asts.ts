@@ -70,13 +70,6 @@ type DoSentence = {
     parameters: { [x in GrammaticalCase]?: Reference },
 }
 
-type CompareSentence = {
-    type: 'compare-sentence',
-    first: Reference,
-    second: Reference,
-    predicateName: string,
-}
-
 type ImplicitReference = {
     type: 'implicit-reference',
     ref: NaturalisticType,
@@ -190,5 +183,11 @@ type IfSentence = {
     type: 'if-sentence',
     first: Sentence,
     second: Sentence,
+}
+type CompareSentence = {
+    type: 'compare-sentence',
+    first: Reference,
+    second: Reference,
+    predicateName: string,
 }
 // ----------------------------------------------------------------------------------
