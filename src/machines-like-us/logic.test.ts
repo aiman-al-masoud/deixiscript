@@ -32,7 +32,7 @@ export const model: WorldModel = [
     ...$('person#3').has(5).as('position').dump(),
     ...$('door#1').has(5).as('position').dump(),
 
-    ...$({ moveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }).dump(derivationClauses),
+    ...$({ makeMoveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }).dump(derivationClauses),
 
     ...$('door#1').has('closed').as('state').dump(),
 
@@ -40,7 +40,7 @@ export const model: WorldModel = [
     ...$('agent#007').has(2).as('position').dump(),
     ...$('door#44').has(1).as('position').dump(),
 
-    ...$({ moveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }).dump(derivationClauses),
+    ...$({ makeMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }).dump(derivationClauses),
 
     /* Conceptual Model */
     ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses),
