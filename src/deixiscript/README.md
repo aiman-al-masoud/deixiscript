@@ -10,9 +10,8 @@ Pipeline:
 
 - source is parsed by grammatical framework
 - grammatical framework produces a semantic AST
-- AST is transformed into json form
-- the json AST can be interpreted as an AST of LLang (mostly
-  GeneralizedSimpleFormula)
+- GF AST is transformed into LLang json AST (mostly GeneralizedSimpleFormula)
+- the LLang AST is fed to eval() OR it is used by compiler
 
 Use generalized ASTs to implement sentences:
 
