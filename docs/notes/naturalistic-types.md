@@ -22,6 +22,8 @@ step will be to make a naturalistic front-end and a voice interface.
 - References:
   - Direct
   - Implicit (through Naturalistic Types)
+  - Multiple and/or
+  - Every
 
 - Decider-method Definition
 - Doer-method Definition

@@ -2,6 +2,9 @@
 * Long Term Memory
 * Short Term Memory
 
+http://www.pegasus-project.org/en/Welcome.html
+
+http://www.pegasus-project.org/en/Theory___Technique.html
 
 nouns (entities), verbs (actions) and adjectives and adverbs (properties).
 
