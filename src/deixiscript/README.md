@@ -3,6 +3,7 @@ What is LLang missing to become Deixiscript?
 - how to integrate anaphora?
 - how to integrate method calls?
 - how to integrate object attribute modifications?
+	- if an individual has an associated js object, then call updateJsObject() on it
 - a more palatable syntax
 - single eval() to access test/findAll/dump etc...
 - mathematical operations
