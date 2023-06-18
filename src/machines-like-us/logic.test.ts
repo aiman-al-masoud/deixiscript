@@ -3,12 +3,76 @@ import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { recomputeKb } from "./recomputeKb.ts";
 import { test } from "./test.ts";
-import { derivationClauses } from "./derivation-clauses.ts";
-import { Formula, KnowledgeBase } from "./types.ts";
+import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getParts } from "./wm-funcs.ts";
+import { getStandardKb } from "./prelude.ts";
 
-export const model: WorldModel = [
+const standardKb = getStandardKb()
+
+const derivationClauses: DerivationClause[] = [
+
+    ...standardKb.derivClauses,
+
+    $('x:dude').isa('dude').when($('x:dude').isa('person')).$,
+
+    $('x:person').has('c:city').as('birth-city').when(
+        $('e:event').exists.where($('y:space-point').exists.where(
+            $('y:space-point').has('c:city').as('enclosing-city')
+                .and($('e:event').has('y:space-point').as('location'))
+                .and($('x:person').has('e:event').as('birth'))
+        ))
+    ).$,
+
+    $('d:door').has('z:state').as('state').after(['e:event']).when(
+        $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
+            .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object'))))
+    ).$,
+
+    $({ subject: 'x:thing', isSmallerThan: 'y:thing' }).when(
+        $('y:thing').isGreaterThan('x:thing')
+    ).$,
+
+    $('x:agent').has('p:number').as('position').after(['e:event']).when(
+        $(true).if(
+            $('d:thing').exists.where(
+                $('e:event').has('d:thing').as('destination')
+                    .and($('d:thing').has('p:number').as('position'))
+            ).and($('e:event').isa('move-event'))
+                .and($('e:event').has('x:agent').as('subject'))
+        )
+    ).$,
+
+    $({ subject: 'e:move-event', isPossibleFor: 'a:agent' }).when(
+        $('e:move-event').isa('move-event')
+            .and($('e:move-event').has('a:agent').as('subject'))
+    ).$,
+
+    $({ subject: 'e:door-opening-event', isPossibleFor: 'a:agent' }).when(
+        $('d:door').exists.where(
+            $('e:door-opening-event').has('d:door').as('object')
+                .and($({ subject: 'a:agent', isNear: 'd:door' }))
+                .and($('d:door').has('closed').as('state'))
+        )
+    ).$,
+
+    $({ subject: 'x:thing', isNear: 'y:thing' }).when(
+        $('p1:number').exists.where($('p2:number').exists.where(
+            $('x:thing').has('p1:number').as('position')
+                .and($('y:thing').has('p2:number').as('position'))
+                .and($('p1:number').is('p2:number'))
+        ))
+    ).$,
+
+    $({ isMoveEvent: 'e:move-event', subject: 'x:agent', destination: 'y:thing', }).when(
+        $('e:move-event').isa('move-event')
+            .and($('e:move-event').has('y:thing').as('destination'))
+            .and($('e:move-event').has('x:agent').as('subject'))
+    ).$,
+
+]
+
+const model: WorldModel = [
 
     /* World Model */
     ...$('event#1').isa('birth-event').dump(),
@@ -83,10 +147,9 @@ export const model: WorldModel = [
 
 ]
 
-
-export const kb: KnowledgeBase = {
-    wm: model,
-    derivClauses: derivationClauses
+const kb: KnowledgeBase = {
+    wm: [...standardKb.wm, ...model],
+    derivClauses: derivationClauses,
 }
 
 // console.log(kb.wm)
@@ -103,15 +166,11 @@ Deno.test({
     name: 'test2',
     fn: () => {
 
-        const derivClauses = [
-            $('x:dude').isa('dude').when($('x:dude').isa('person')).$,
-        ]
-
         const yes = $('person#2').isa('dude').$
-        const no = $('person#2').isa('anythingelse').$
+        const no = $('person#2').isa('anythingelse').isNotTheCase.$
 
-        assert(test(yes, { wm: model, derivClauses }))
-        assert(!test(no, { wm: model, derivClauses }))
+        assert(test(yes, kb))
+        assert(test(no, kb))
     }
 })
 
@@ -129,18 +188,8 @@ Deno.test({
 Deno.test({
     name: 'test4',
     fn: () => {
-
-        const dc = $('x:person').has('c:city').as('birth-city').when(
-            $('e:event').exists.where($('y:space-point').exists.where(
-                $('y:space-point').has('c:city').as('enclosing-city')
-                    .and($('e:event').has('y:space-point').as('location'))
-                    .and($('x:person').has('e:event').as('birth'))
-            ))
-        ).$
-
         const query = $('person#1').has('boston').as('birth-city').$
-
-        assert(test(query, { wm: model, derivClauses: [dc] }))
+        assert(test(query, kb))
     }
 })
 
@@ -206,15 +255,6 @@ Deno.test({
 Deno.test({
     name: 'test8',
     fn: () => {
-        const dp = $({ subject: 'x:thing', isSmallerThan: 'y:thing' }).when(
-            $('y:thing').isGreaterThan('x:thing')
-        ).$
-
-        const kb: KnowledgeBase = {
-            wm: [],
-            derivClauses: [dp],
-        }
-
         assert(test($({ subject: 1, isSmallerThan: 2 }).$, kb))
     }
 })
@@ -345,15 +385,10 @@ function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
 Deno.test({
     name: 'test17',
     fn: () => {
-
         assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
-
         assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
-
         const kb2 = recomputeKb(['move-event#1'], kb)
-
         assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
-
         assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
     }
 })
