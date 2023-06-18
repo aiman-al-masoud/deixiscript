@@ -5,6 +5,7 @@ What is LLang missing to become Deixiscript?
 - how to integrate object attribute modifications?
 - a more palatable syntax
 - single eval() to access test/findAll/dump etc...
+- mathematical operations
 
 Pipeline:
 
