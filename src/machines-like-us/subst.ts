@@ -117,12 +117,12 @@ export function subst(
                 lesser: atomsEqual(variable, ast.lesser) ? replacement : ast.lesser,
             }
         case 'anaphor':
-            throw new Error('not implemented!')
-            // return {
-            //     type: 'anaphor',
-            //     head: subst(ast.head, variable, replacement),
-            //     description: subst(ast.description, variable, replacement),
-            // }
+            // throw new Error('not implemented!')
+            return {
+                type: 'anaphor',
+                head: subst(ast.head, variable, replacement),
+                description: subst(ast.description, variable, replacement),
+            }
     }
 
 }

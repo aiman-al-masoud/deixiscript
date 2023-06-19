@@ -460,3 +460,18 @@ Deno.test({
         assert(test(y, kb))
     }
 })
+
+
+Deno.test({
+    name: 'test23',
+    fn: () => {
+        const kb2 = $('cat#1').has(3).as('weight')
+            .and($('dog#1').has(4).as('weight'))
+            .and($('cat#1').isa('cat'))
+            .and($('dog#1').isa('dog'))
+            .dump()
+
+        const y = $('x:number').suchThat($('c:cat').suchThat($('c:cat').isa('cat')).has('x:number').as('weight')).is(3).$
+        assert(test(y, { wm: kb2, derivClauses: [] }))
+    }
+})
