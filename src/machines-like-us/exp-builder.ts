@@ -1,17 +1,14 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter } from "./types.ts"
-
-type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
-export function $(x: string[]): ExpBuilder<ListLiteral>
-export function $(x: string): ExpBuilder<Constant>
+export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
+export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedSimpleFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
-export function $(x: WmAtom | string[] | GeneralizedInput): ExpBuilder<LLangAst>
 
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
@@ -111,7 +108,6 @@ export class ExpBuilder<T extends LLangAst> {
     when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
 
         if (!isFormulaWithAfter(this.exp)) {
-            // if (!isAtomicFormula(this.exp)) {
             throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
         }
 
@@ -160,10 +156,6 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     if(formula: ExpBuilder<Formula>): ExpBuilder<IfElse> {
-
-        // if (isAtom(this.exp)) {
-        //     throw new Error(``)
-        // }
 
         if (isAtom(formula.$)) {
             throw new Error(``)
@@ -243,8 +235,23 @@ export class ExpBuilder<T extends LLangAst> {
         return dumpWorldModel(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
     }
 
+    suchThat(formula: ExpBuilder<Formula>) {
+
+        if (this.exp.type !== 'variable') {
+            throw new Error('head of anaphor must be variable!')
+        }
+
+        return new ExpBuilder({
+            type: 'anaphor',
+            head: this.exp,
+            description: formula.$,
+        })
+
+    }
+
 }
 
+type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
 type Var = `${string}:${string}`
 type ListPat = `${Var}|${Var}`
 

@@ -64,3 +64,7 @@ export function getConceptsOf(x: WmAtom, cm: WorldModel) {
         .map(s => s[1])
         .flatMap(c => [c, ...getSupers(c, cm)])
 }
+
+export function getSupersAndConceptsOf(x:WmAtom, cm:WorldModel){
+    return uniq(getSupers(x, cm).concat(getConceptsOf(x, cm)))
+}

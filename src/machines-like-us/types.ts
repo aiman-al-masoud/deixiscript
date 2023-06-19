@@ -19,6 +19,7 @@ export type Atom =
     | Term
     | ListPattern
     | ListLiteral
+    | Anaphor
 export type Formula =
     | SimpleFormula
     | CompositeFormula
@@ -75,6 +76,12 @@ export type ListPattern = {
     type: 'list-pattern',
     seq: Atom,
     tail: Atom,
+}
+
+export type Anaphor = {
+    type: 'anaphor',
+    head: Variable,
+    description: Formula,
 }
 
 export type GeneralizedSimpleFormula = {
@@ -171,7 +178,7 @@ export function atomsEqual(a1: Atom, a2: Atom): boolean {
     }
 
     if (a1.type === 'list-literal' && a2.type === 'list-literal') {
-        if (!a1.list.length && !a2.list.length) return true
+        if (a1.list.length === a2.list.length && a1.list.map((x, i) => a2.list[i] === x)) return true
     }
 
     if (isVar(a1) && isVar(a2)) {
@@ -205,6 +212,7 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
         || ast.type === 'list-pattern'
         || ast.type === 'boolean'
         || ast.type === 'number'
+        || ast.type === 'anaphor'
 }
 
 export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {

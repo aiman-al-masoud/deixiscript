@@ -452,3 +452,11 @@ Deno.test({
         // console.log($({moveEvent:'move-event#42', subject:'agent#007', destination:'door#1'}).dump(kb.derivClauses))
     }
 })
+
+Deno.test({
+    name: 'test22',
+    fn: () => {
+        const y = $('x:thing').suchThat($('x:thing').isa('person')).isa('agent').$
+        assert(test(y, kb))
+    }
+})

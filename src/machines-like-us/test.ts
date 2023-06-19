@@ -1,9 +1,10 @@
 import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
-import { getConceptsOf, getSupers } from "./wm-funcs.ts";
+import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { recomputeKb } from "./recomputeKb.ts";
+import { getAnaphor } from "./getAnaphor.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): boolean {
 
@@ -18,27 +19,49 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         case 'boolean':
             return formula.value
         case 'equality':
-            if (atomsEqual(formula.t1, formula.t2)) return true
+            const t10 = formula.t1.type === 'anaphor' ? getAnaphor(formula.t1, kb)! : formula.t1
+            const t20 = formula.t2.type === 'anaphor' ? getAnaphor(formula.t2, kb)! : formula.t2
+
+            if (atomsEqual(t10, t20)) return true
             break
         case 'is-a-formula':
-            if (isConst(formula.t2) && formula.t2.value === 'thing') return true
-            if (isConst(formula.t2) && formula.t1.type === formula.t2.value) return true
+
+            const t1 = formula.t1.type === 'anaphor' ? getAnaphor(formula.t1, kb)! : formula.t1
+            const t2 = formula.t2.type === 'anaphor' ? getAnaphor(formula.t2, kb)! : formula.t2
+
+            if (isConst(t2) && t2.value === 'thing') return true
+            if (isConst(t2) && t1.type === t2.value) return true
 
             if (
-                isConst(formula.t1)
-                && isConst(formula.t2)
-                && (getConceptsOf(formula.t1.value, kb.wm).includes(formula.t2.value) || getSupers(formula.t1.value, kb.wm).includes(formula.t2.value))
+                isConst(t1)
+                && isConst(t2)
+                && getSupersAndConceptsOf(t1.value, kb.wm).includes(t2.value)
             ) return true
             break
         case 'has-formula':
+
+            const t11 = formula.t1.type === 'anaphor' ? getAnaphor(formula.t1, kb)! : formula.t1
+            const t22 = formula.t2.type === 'anaphor' ? getAnaphor(formula.t2, kb)! : formula.t2
+            const as = formula.as.type === 'anaphor' ? getAnaphor(formula.as, kb)! : formula.as
+
             if (kb.wm.filter(isHasSentence).find(hs => {
-                return isConst(formula.t1)
-                    && isConst(formula.t2)
-                    && isConst(formula.as)
-                    && formula.t1.value === hs[0]
-                    && formula.t2.value === hs[1]
-                    && formula.as.value === hs[2]
+
+                return isConst(t11)
+                    && isConst(t22)
+                    && isConst(as)
+                    && t11.value === hs[0]
+                    && t22.value === hs[1]
+                    && as.value === hs[2]
             })) return true
+            break
+        case 'greater-than':
+            const greater = formula.greater.type === 'anaphor' ? getAnaphor(formula.greater, kb)! : formula.greater
+            const lesser = formula.lesser.type === 'anaphor' ? getAnaphor(formula.lesser, kb)! : formula.lesser
+
+            if (
+                greater.type === 'number'
+                && lesser.type === 'number'
+            ) return greater.value > lesser.value
             break
         case 'negation':
             if (!test(formula.f1, kb)) return true
@@ -54,11 +77,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             break
         case 'if-else':
             return test(formula.condition, kb) ? test(formula.then, kb) : test(formula.otherwise, kb)
-        case 'greater-than':
-            if (
-                formula.greater.type === 'number'
-                && formula.lesser.type === 'number'
-            ) return formula.greater.value > formula.lesser.value
 
     }
 
