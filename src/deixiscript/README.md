@@ -1,15 +1,23 @@
-What is LLang missing to become Deixiscript?
+# What is LLang missing to become Deixiscript?
+
+## Core Features
 
 - how to integrate anaphora?
-- how to integrate method calls?
-- how to integrate object attribute modifications?
-  - if an individual has an associated js object, then call updateJsObject() on it
-  - a concept has a default filler for js-object?
+  - new AST type in LLang (Atom)
+  - contains description (formula) and head (variable)
+  - error out if findAll() finds many?
 - a more palatable syntax
 - single eval() to access test/findAll/dump etc...
 - mathematical operations
 
-Pipeline:
+## Interop (for later)
+
+- how to integrate method calls?
+- how to integrate object attribute modifications?
+  - convertToJs(wm: WorldModel, id: string, obj:any)
+  - a concept has a default filler for js-object?
+
+# Pipeline:
 
 - source is parsed by grammatical framework
 - grammatical framework produces a semantic AST
