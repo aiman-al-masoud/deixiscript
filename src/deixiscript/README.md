@@ -9,6 +9,9 @@
 - mathematical operations
 - a more palatable syntax
 - single eval() to access test/findAll/dump etc...
+  - find all free vars to decide between findAll and test
+  - eval takes "side-effect" param, with inferred default
+  - question AST
 
 ## Interop (for later)
 
