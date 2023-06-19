@@ -3,12 +3,12 @@
 ## Core Features
 
 - how to integrate anaphora?
-  - new AST type in LLang (Atom)
-  - contains description (formula) and head (variable)
+  - done, but:
   - error out if findAll() finds many?
+  - refactor test()!!!
+- mathematical operations
 - a more palatable syntax
 - single eval() to access test/findAll/dump etc...
-- mathematical operations
 
 ## Interop (for later)
 
