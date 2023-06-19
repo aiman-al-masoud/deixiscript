@@ -210,17 +210,22 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isGreaterThan(atom: number | string): ExpBuilder<GreaterThanFormula> {
+    isGreaterThan(atom: WmAtom): ExpBuilder<GreaterThanFormula> {
+
+        if (!isAtom(this.exp)) {
+            throw new Error(``)
+        }
 
         return new ExpBuilder({
             type: 'greater-than',
-            greater: this.exp as Atom,
+            greater: this.exp,
             lesser: makeAtom(atom),
         })
 
     }
 
     get isNotTheCase() {
+
         return new ExpBuilder({
             type: 'negation',
             f1: this.exp as Formula
