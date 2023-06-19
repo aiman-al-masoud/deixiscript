@@ -472,7 +472,7 @@ Deno.test({
             .dump()
 
         // ((the number such that (the cat has the number as weight)) is (3))
-        const y = $('x:number').suchThat($('c:cat').suchThat($('c:cat').isa('cat')).has('x:number').as('weight')).is(3).$
+        const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
         assert(test(y, { wm: kb2, derivClauses: [] }))
     }
 })

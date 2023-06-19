@@ -81,7 +81,7 @@ export type ListPattern = {
 export type Anaphor = {
     type: 'anaphor',
     head: Variable,
-    description: Formula,
+    description: LLangAst,
 }
 
 export type GeneralizedSimpleFormula = {

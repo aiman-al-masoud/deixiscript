@@ -240,7 +240,7 @@ export class ExpBuilder<T extends LLangAst> {
         return dumpWorldModel(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
     }
 
-    suchThat(formula: ExpBuilder<Formula>) {
+    suchThat(formula?: ExpBuilder<Formula>) {
 
         if (this.exp.type !== 'variable') {
             throw new Error('head of anaphor must be variable!')
@@ -249,7 +249,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'anaphor',
             head: this.exp,
-            description: formula.$,
+            description: formula ? formula.$ : $(true).$,
         })
 
     }
