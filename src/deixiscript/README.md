@@ -4,7 +4,7 @@
 
 - how to integrate anaphora?
   - done, but:
-  - error out if findAll() finds many?
+  - what if findAll() finds many?
   - refactor test()!!!
 - mathematical operations
 - a more palatable syntax
