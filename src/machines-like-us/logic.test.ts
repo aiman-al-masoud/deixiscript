@@ -3,7 +3,7 @@ import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { recomputeKb } from "./recomputeKb.ts";
 import { test } from "./test.ts";
-import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
+import { DerivationClause, Formula, KnowledgeBase, LLangAst, MathExpression } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getParts } from "./wm-funcs.ts";
 import { getStandardKb } from "./prelude.ts";
@@ -474,5 +474,33 @@ Deno.test({
         // ((the number such that (the cat has the number as weight)) is (3))
         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
         assert(test(y, { wm: kb2, derivClauses: [] }))
+    }
+})
+
+
+Deno.test({
+    name: 'test24',
+    fn: () => {
+        const q = $(1).plus(2).$
+        assertEquals(test(q, kb), $(3).$)
+    }
+})
+
+
+Deno.test({
+    name: 'test25',
+    fn: () => {
+
+        const kb = $(1).isa('number')
+            .and($(2).isa('number'))
+            .dump()
+
+        const q = $('x:number').plus('y:number').is(3).$
+
+        const res = findAll(q, [$('x:number').$, $('y:number').$], { wm: kb, derivClauses: [] })
+        assertEquals(res[0].get($('x:number').$), $(1).$)
+        assertEquals(res[0].get($('y:number').$), $(2).$)
+
+        // console.log($(2).plus(1))
     }
 })

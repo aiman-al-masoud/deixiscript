@@ -20,6 +20,7 @@ export type Atom =
     | ListPattern
     | ListLiteral
     | Anaphor
+    | MathExpression
 export type Formula =
     | SimpleFormula
     | CompositeFormula
@@ -82,6 +83,13 @@ export type Anaphor = {
     type: 'anaphor',
     head: Variable,
     description: LLangAst,
+}
+
+export type MathExpression = {
+    type: 'math-expression',
+    operator: '+' | '-' | '*' | '/',
+    left: Atom | MathExpression,
+    right: Atom | MathExpression,
 }
 
 export type GeneralizedSimpleFormula = {
@@ -213,6 +221,7 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
         || ast.type === 'boolean'
         || ast.type === 'number'
         || ast.type === 'anaphor'
+        || ast.type === 'math-expression'
 }
 
 export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {

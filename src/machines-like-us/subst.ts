@@ -122,6 +122,13 @@ export function subst(
                 head: subst(ast.head, variable, replacement),
                 description: subst(ast.description, variable, replacement),
             }
+        case 'math-expression':
+            return {
+                type: 'math-expression',
+                left: subst(ast.left, variable, replacement),
+                right: subst(ast.right, variable, replacement),
+                operator: ast.operator,
+            }
     }
 
 }

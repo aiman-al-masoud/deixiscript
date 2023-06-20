@@ -1,12 +1,13 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula, WmAtom, Atom, Number } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { recomputeKb } from "./recomputeKb.ts";
 import { resolveAnaphor } from "./getAnaphor.ts";
+import { $ } from "./exp-builder.ts";
 
-export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): boolean {
+export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): Atom | WmAtom {
 
     if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         const events = formula.after.list.map(x => x.value)
@@ -16,19 +17,28 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
     }
 
     switch (formula.type) {
+
         case 'boolean':
             return formula.value
+        case 'number':
+        case 'constant':
+        case 'variable':
+        case 'list-literal':
+        case 'list-pattern':
+            return formula
+        case 'anaphor':
+            return resolveAnaphor(formula, kb)
         case 'equality':
 
-            const t10 = resolveAnaphor(formula.t1, kb)
-            const t20 = resolveAnaphor(formula.t2, kb)
-
+            const t10 = test(formula.t1, kb) as Atom
+            const t20 = test(formula.t2, kb) as Atom
             if (atomsEqual(t10, t20)) return true
+
             break
         case 'is-a-formula':
 
-            const t1 = resolveAnaphor(formula.t1, kb)
-            const t2 = resolveAnaphor(formula.t2, kb)
+            const t1 = test(formula.t1, kb) as Atom
+            const t2 = test(formula.t2, kb) as Atom
 
             if (isConst(t2) && t2.value === 'thing') return true
             if (isConst(t2) && t1.type === t2.value) return true
@@ -41,9 +51,9 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             break
         case 'has-formula':
 
-            const t11 = resolveAnaphor(formula.t1, kb)
-            const t22 = resolveAnaphor(formula.t2, kb)
-            const as = resolveAnaphor(formula.as, kb)
+            const t11 = test(formula.t1, kb) as Atom
+            const t22 = test(formula.t2, kb) as Atom
+            const as = test(formula.as, kb) as Atom
 
             if (kb.wm.filter(isHasSentence).find(hs => {
 
@@ -57,8 +67,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             break
         case 'greater-than':
 
-            const greater = resolveAnaphor(formula.greater, kb)
-            const lesser = resolveAnaphor(formula.lesser, kb)
+            const greater = test(formula.greater, kb) as Atom
+            const lesser = test(formula.lesser, kb) as Atom
 
             if (
                 greater.type === 'number'
@@ -79,6 +89,10 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             break
         case 'if-else':
             return test(formula.condition, kb) ? test(formula.then, kb) : test(formula.otherwise, kb)
+        case 'math-expression':
+            switch (formula.operator) {
+                case '+': return $((test(formula.left, kb) as Number).value + (test(formula.right, kb) as Number).value).$
+            }
 
     }
 

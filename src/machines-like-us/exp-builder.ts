@@ -1,5 +1,5 @@
 import { dumpWorldModel } from "./dumpWorldModel.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -252,6 +252,20 @@ export class ExpBuilder<T extends LLangAst> {
             description: formula ? formula.$ : $(true).$,
         })
 
+    }
+
+    plus(ast:MathExpression|Atom|WmAtom){
+
+        // if (!isAtom(this.exp) && this.exp.type !== ){
+
+        // }
+
+        return new ExpBuilder({
+            type : 'math-expression',
+            left : this.exp as MathExpression,
+            right : typeof ast !== 'object' ? makeAtom(ast) : ast,
+            operator : '+',
+        })
     }
 
 }
