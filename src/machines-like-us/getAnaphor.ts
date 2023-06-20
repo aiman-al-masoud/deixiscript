@@ -1,5 +1,9 @@
 import { findAll } from "./findAll.ts"
-import { Anaphor, KnowledgeBase } from "./types.ts"
+import { Anaphor, Atom, KnowledgeBase } from "./types.ts"
+
+export function resolveAnaphor<T extends Atom>(atom: T, kb: KnowledgeBase) {
+    return atom.type === 'anaphor' ? getAnaphor(atom, kb)! : atom
+}
 
 export function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
     const maps = findAll(anaphor.description, [anaphor.head], kb)
@@ -11,4 +15,3 @@ export function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
 
     return maps.at(-1)!.get(anaphor.head)
 }
-

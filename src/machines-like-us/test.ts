@@ -4,7 +4,7 @@ import { substAll } from "./subst.ts";
 import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { recomputeKb } from "./recomputeKb.ts";
-import { getAnaphor } from "./getAnaphor.ts";
+import { resolveAnaphor } from "./getAnaphor.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): boolean {
 
@@ -19,15 +19,16 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         case 'boolean':
             return formula.value
         case 'equality':
-            const t10 = formula.t1.type === 'anaphor' ? getAnaphor(formula.t1, kb)! : formula.t1
-            const t20 = formula.t2.type === 'anaphor' ? getAnaphor(formula.t2, kb)! : formula.t2
+
+            const t10 = resolveAnaphor(formula.t1, kb)
+            const t20 = resolveAnaphor(formula.t2, kb)
 
             if (atomsEqual(t10, t20)) return true
             break
         case 'is-a-formula':
 
-            const t1 = formula.t1.type === 'anaphor' ? getAnaphor(formula.t1, kb)! : formula.t1
-            const t2 = formula.t2.type === 'anaphor' ? getAnaphor(formula.t2, kb)! : formula.t2
+            const t1 = resolveAnaphor(formula.t1, kb)
+            const t2 = resolveAnaphor(formula.t2, kb)
 
             if (isConst(t2) && t2.value === 'thing') return true
             if (isConst(t2) && t1.type === t2.value) return true
@@ -40,9 +41,9 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             break
         case 'has-formula':
 
-            const t11 = formula.t1.type === 'anaphor' ? getAnaphor(formula.t1, kb)! : formula.t1
-            const t22 = formula.t2.type === 'anaphor' ? getAnaphor(formula.t2, kb)! : formula.t2
-            const as = formula.as.type === 'anaphor' ? getAnaphor(formula.as, kb)! : formula.as
+            const t11 = resolveAnaphor(formula.t1, kb)
+            const t22 = resolveAnaphor(formula.t2, kb)
+            const as = resolveAnaphor(formula.as, kb)
 
             if (kb.wm.filter(isHasSentence).find(hs => {
 
@@ -55,8 +56,9 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             })) return true
             break
         case 'greater-than':
-            const greater = formula.greater.type === 'anaphor' ? getAnaphor(formula.greater, kb)! : formula.greater
-            const lesser = formula.lesser.type === 'anaphor' ? getAnaphor(formula.lesser, kb)! : formula.lesser
+
+            const greater = resolveAnaphor(formula.greater, kb)
+            const lesser = resolveAnaphor(formula.lesser, kb)
 
             if (
                 greater.type === 'number'
@@ -92,3 +94,4 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
     })
 
 }
+
