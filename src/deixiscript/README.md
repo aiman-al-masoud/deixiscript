@@ -7,12 +7,15 @@
   - what if findAll() finds many?
   - refactor test()!!!
 - mathematical operations
-- a more palatable syntax
 - single eval() to access test/findAll/dump etc...
   - find all free vars to decide between findAll and test
   - eval takes "side-effect" param, with inferred default
   - question AST
   - dump full knowledge base (including derivation clauses)
+
+## Frontend
+
+- a more palatable syntax
 
 ## Interop (for later)
 
@@ -39,4 +42,6 @@ $({subject : 'x:element', verb: 'v:be', predicate:'c:color' }).when(
 )
 
 $({subject : 'button#1', verb: 'is', predicate:'red' })
+
+button#1 is red
 ```
