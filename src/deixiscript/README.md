@@ -12,6 +12,7 @@
   - eval takes "side-effect" param, with inferred default
   - question AST
   - dump full knowledge base (including derivation clauses)
+  - complete dump, also add if-else in there
 
 ## Frontend
 
