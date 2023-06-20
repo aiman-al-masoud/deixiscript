@@ -12,6 +12,7 @@
   - find all free vars to decide between findAll and test
   - eval takes "side-effect" param, with inferred default
   - question AST
+  - dump full knowledge base (including derivation clauses)
 
 ## Interop (for later)
 
