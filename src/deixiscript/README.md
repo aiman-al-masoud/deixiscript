@@ -7,6 +7,9 @@
   - what if findAll() finds many?
   - refactor test()!!!
 - mathematical operations
+  - introduced by letting test() return other than boolean
+  - must refactor... (good) repercussions on anaphora
+  - is MathExpression an Atom ??!
 - single eval() to access test/findAll/dump etc...
   - find all free vars to decide between findAll and test
   - eval takes "side-effect" param, with inferred default
