@@ -1,3 +1,5 @@
+> 21/06/2023: Mostly all of these "problems" can be solved by the code from Machines Like Us, or by Prolog (probably) with a little more experience.
+
 # Problem with Prolog Approach:
 
 * The attributes of an entity have to be treated as equal entities, like global variables, this is both ugly and probably not very scalable.
