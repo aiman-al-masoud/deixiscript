@@ -34,7 +34,7 @@
 ## Problems
 
 - can you entirely do away with variable assigments
-- anaphora within the same sentence: maybe act in test()?
+- anaphora within the same sentence: add timestamp in test() of "entity", add test() around getAnaphor()
 
 # Pipeline:
 
