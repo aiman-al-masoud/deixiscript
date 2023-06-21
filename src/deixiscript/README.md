@@ -35,7 +35,7 @@
 ## Problems
 
 - can you entirely do away with variable assigments
-- anaphora within the same sentence
+- anaphora within the same sentence: maybe act in test()?
 
 # Pipeline:
 
