@@ -29,7 +29,6 @@
 - how to integrate method calls?
 - how to integrate object attribute modifications?
   - convertToJs(wm: WorldModel, id: string, obj:any)
-  - a concept has a default filler for js-object?
 - how to integrate events?
 
 ## Problems
