@@ -3,7 +3,7 @@ import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { recomputeKb } from "./recomputeKb.ts";
 import { test } from "./test.ts";
-import { DerivationClause, Formula, KnowledgeBase, LLangAst, MathExpression } from "./types.ts";
+import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getParts } from "./wm-funcs.ts";
 import { getStandardKb } from "./prelude.ts";
