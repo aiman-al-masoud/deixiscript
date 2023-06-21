@@ -35,6 +35,7 @@
 ## Problems
 
 - can you entirely do away with variable assigments
+- anaphora within the same sentence
 
 # Pipeline:
 
