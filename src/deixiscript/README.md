@@ -40,10 +40,9 @@ Use generalized ASTs to implement sentences:
 
 ```
 $({subject : 'x:element', verb: 'v:be', predicate:'c:color' }).when(
-	there exist jo:jsobject, s:jsobject and bg:jsobject where
-	jo:jsobject has s:jsobject as style 
-	and s:jsobject has bg:jsobject as background
-	and bg:jsobject is c:color
+  there exists y:style where
+  x:element has y:style as style
+  and y:style has c:color as color
 )
 
 $({subject : 'button#1', verb: 'is', predicate:'red' })
