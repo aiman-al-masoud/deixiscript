@@ -2,20 +2,23 @@
 
 ## Core Features
 
-- how to integrate anaphora?
+- integrating anaphora
   - done, but:
   - what if findAll() finds many?
   - refactor test()!!!
+  - every/and/or
 - mathematical operations
   - introduced by letting test() return other than boolean
   - must refactor... (good) repercussions on anaphora
   - is MathExpression an Atom ??!
+- full dump()
+  - dump full knowledge base (including derivation clauses)
+  - if-else
+  - existential quantifier creates new entity in case it doesn't exist
 - single eval() to access test/findAll/dump etc...
   - find all free vars to decide between findAll and test
   - eval takes "side-effect" param, with inferred default
   - question AST
-  - dump full knowledge base (including derivation clauses)
-  - complete dump, also add if-else in there
 
 ## Frontend
 
@@ -28,6 +31,10 @@
   - convertToJs(wm: WorldModel, id: string, obj:any)
   - a concept has a default filler for js-object?
 - how to integrate events?
+
+## Problems
+
+- can you entirely do away with variable assigments
 
 # Pipeline:
 
