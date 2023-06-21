@@ -52,7 +52,7 @@ step will be to make a naturalistic front-end and a voice interface.
 
 - no need to explicitly declare concepts mostly
 - some sentences can have a dual meaning, side-effect and non-side-effect laden
-- verbs can be implemented through functions
+- verbs can be implemented through functions (detached from any class)
 
 # Advice Taker
 
