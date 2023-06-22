@@ -7,6 +7,7 @@
   - what if findAll() finds many?
   - refactor test()!!!
   - every/and/or
+  - anaphora within same sentence: add timestamp last-mentioned prop
 - mathematical operations
   - introduced by letting test() return other than boolean
   - must refactor... (good) repercussions on anaphora
@@ -32,9 +33,7 @@
 - how to integrate events?
 
 ## Problems
-
 - can you entirely do away with variable assigments
-- anaphora within the same sentence: add timestamp in test() of "entity", add test() around getAnaphor()
 
 # Pipeline:
 
