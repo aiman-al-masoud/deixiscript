@@ -55,7 +55,7 @@ export function getSupers(concept: WmAtom, cm: WorldModel): WmAtom[] {
         return []
     }
 
-    return [...supers, ...supers.flatMap(x => getSupers(x, cm))]
+    return [...supers, ...supers.flatMap(x => getSupers(x, cm)), 'thing']
 
 }
 
@@ -63,8 +63,9 @@ export function getConceptsOf(x: WmAtom, cm: WorldModel) {
     return cm.filter(s => s[0] === x && isIsASentence(s))
         .map(s => s[1])
         .flatMap(c => [c, ...getSupers(c, cm)])
+        .concat(['thing'])
 }
 
-export function getSupersAndConceptsOf(x:WmAtom, cm:WorldModel){
+export function getSupersAndConceptsOf(x: WmAtom, cm: WorldModel) {
     return uniq(getSupers(x, cm).concat(getConceptsOf(x, cm)))
 }

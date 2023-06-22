@@ -1,9 +1,9 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { recomputeKb } from "./recomputeKb.ts";
+import { getExcludedBy, recomputeKb, recomputeKbAfterAdditions } from "./recomputeKb.ts";
 import { test } from "./test.ts";
-import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
+import { DerivationClause, Formula, HasSentence, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getParts } from "./wm-funcs.ts";
 import { getStandardKb } from "./prelude.ts";
@@ -422,17 +422,17 @@ Deno.test({
 Deno.test({
     name: 'test20',
     fn: () => {
-        console.log(getParts('person', kb.wm))
-        console.log(getParts('birth-event', kb.wm))
-        console.log(getParts('multiple-birth-event', kb.wm))
+        // console.log(getParts('person', kb.wm))
+        // console.log(getParts('birth-event', kb.wm))
+        // console.log(getParts('multiple-birth-event', kb.wm))
 
         const q = $({ vr: 'vr:value-restriction', part: 'mother', ofConcept: 'birth-event', isA: 'value:thing' })
         const result = findAll(q.$, [$('vr:value-restriction').$, $('value:thing').$], kb)
-        console.log(result[0].get($('value:thing').$))
+        // console.log(result[0].get($('value:thing').$))
 
-        console.log(getParts('move-event', kb.wm))
-        console.log(getParts('agent', kb.wm))
-        console.log(getParts('door', kb.wm))
+        // console.log(getParts('move-event', kb.wm))
+        // console.log(getParts('agent', kb.wm))
+        // console.log(getParts('door', kb.wm))
         // console.log(getAtoms($('door#1').has('open').as('state').$))
 
     }
@@ -443,7 +443,7 @@ Deno.test({
     fn: () => {
         assert(test($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb))
         const kb2 = recomputeKb(['move-event#3'], kb)
-        console.log(kb2.wm)
+        // console.log(kb2.wm)
         const results = findAll($('agent#007').has('x:thing').as('position').$, [$('x:thing').$], kb2)
         assert(results.length === 1)
         assertEquals(results[0].get($('x:thing').$)?.value, 1)
@@ -512,5 +512,22 @@ Deno.test({
         assertEquals(test($(3).minus(3).$, kb), $(0).$)
         assertEquals(test($(3).times(3).$, kb), $(9).$)
         assertEquals(test($(3).over(3).$, kb), $(1).$)
+    }
+})
+
+
+Deno.test({
+    name: 'test27',
+    fn: () => {
+
+        const wm =
+            $({ ann: 'ann#429', onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
+                .and($('capra#1').has(1).as('last-thought-of'))
+                .dump(kb.derivClauses)
+
+        const kb2: KnowledgeBase = { wm: wm, derivClauses: kb.derivClauses }
+        const h = $('capra#1').has(2).as('last-thought-of').dump()
+        console.log(recomputeKbAfterAdditions(h, kb2).wm)
+
     }
 })

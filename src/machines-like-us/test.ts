@@ -22,6 +22,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             return formula.value
         case 'number':
         case 'constant':
+            // kb.wm.push(...$(formula.value).has(Date.now()).as('last-mentioned').dump())
+            return formula
         case 'variable':
         case 'list-literal':
         case 'list-pattern':
@@ -40,7 +42,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             const t1 = test(formula.t1, kb) as Atom
             const t2 = test(formula.t2, kb) as Atom
 
-            if (isConst(t2) && t2.value === 'thing') return true
+            // if (isConst(t2) && t2.value === 'thing') return true
             if (isConst(t2) && t1.type === t2.value) return true
 
             if (

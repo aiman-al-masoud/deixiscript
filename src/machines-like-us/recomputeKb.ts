@@ -14,8 +14,11 @@ export function recomputeKb(event: WmAtom[], kb: KnowledgeBase) {
 }
 
 function recomputeKbAfterSingleEvent(event: WmAtom, kb: KnowledgeBase) {
-
     const additions = getAdditions(event, kb)
+    return recomputeKbAfterAdditions(additions, kb)
+}
+
+export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
     const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
     const final = filtered.concat(additions)
