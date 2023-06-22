@@ -71,10 +71,10 @@ const derivationClauses: DerivationClause[] = [
 
 ]
 
-const model: WorldModel = [
+const model: WorldModel =
 
     /* World Model */
-    ...$('event#1').isa('birth-event')
+    $('event#1').isa('birth-event')
         .and($('event#1').has('person#1').as('baby'))
         .and($('event#1').has('person#2').as('mother'))
         .and($('event#1').has('time-point#1').as('time'))
@@ -101,29 +101,9 @@ const model: WorldModel = [
         .and($('agent#007').has(2).as('position'))
         .and($('door#44').has(1).as('position'))
         .and($({ isMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }))
-        .dump(derivationClauses).wm,
 
-    /* Conceptual Model */
-    ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses).wm,
-    ...$({ subject: 'agent', canHaveA: 'movement' }).dump(derivationClauses).wm,
-    ...$({ vr: 'vr#43', part: 'movement', ofConcept: 'agent', isA: 'move-event' }).dump(derivationClauses).wm,
-    ...$({ subject: 'person', isAKindOf: 'agent' }).dump(derivationClauses).wm,
-    ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses).wm,
-    ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses).wm,
-    ...$({ subject: 'door-opening-event', isAKindOf: 'event' }).dump(derivationClauses).wm,
-    ...$({ subject: 'door-opening-event', canHaveA: 'object' }).dump(derivationClauses).wm,
-    ...$({ subject: 'birth-event', isAKindOf: 'event' }).dump(derivationClauses).wm,
-    ...$({ subject: 'time-instant', isAKindOf: 'thing' }).dump(derivationClauses).wm,
-    ...$({ subject: 'point-in-space', isAKindOf: 'thing' }).dump(derivationClauses).wm,
-    ...$({ subject: 'city', isAKindOf: 'thing' }).dump(derivationClauses).wm,
-    ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses).wm,
-    ...$({ subject: 'move-event', isAKindOf: 'event' }).dump(derivationClauses).wm,
-    ...$({ subject: 'move-event', canHaveA: 'destination' }).dump(derivationClauses).wm,
-    ...$({ subject: 'door', isAKindOf: 'thing' }).dump(derivationClauses).wm,
-    ...$({ subject: 'door', canHaveA: 'opening' }).dump(derivationClauses).wm,
-    ...$({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }).dump(derivationClauses).wm,
-
-    ...$({ subject: 'birth-event', canHaveA: 'mother' })
+        /* Conceptual Model */
+        .and($({ subject: 'birth-event', canHaveA: 'mother' }))
         .and($({ subject: 'birth-event', canHaveA: 'baby' }))
         .and($({ subject: 'birth-event', canHaveA: 'time' }))
         .and($({ subject: 'birth-event', canHaveA: 'location' }))
@@ -137,12 +117,30 @@ const model: WorldModel = [
         .and($({ subject: 'state', isAKindOf: 'thing' }))
         .and($({ subject: 'event', canHaveA: 'duration' }))
         .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
-        .dump(derivationClauses).wm,
+        .and($({ subject: 'agent', isAKindOf: 'thing' }))
+        .and($({ subject: 'agent', canHaveA: 'movement' }))
+        .and($({ vr: 'vr#43', part: 'movement', ofConcept: 'agent', isA: 'move-event' }))
+        .and($({ subject: 'person', isAKindOf: 'agent' }))
+        .and($({ subject: 'woman', isAKindOf: 'person' }))
+        .and($({ subject: 'woman', isAKindOf: 'person' }))
+        .and($({ subject: 'event', isAKindOf: 'thing' }))
+        .and($({ subject: 'door-opening-event', isAKindOf: 'event' }))
+        .and($({ subject: 'door-opening-event', canHaveA: 'object' }))
+        .and($({ subject: 'birth-event', isAKindOf: 'event' }))
+        .and($({ subject: 'time-instant', isAKindOf: 'thing' }))
+        .and($({ subject: 'point-in-space', isAKindOf: 'thing' }))
+        .and($({ subject: 'city', isAKindOf: 'thing' }))
+        .and($({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }))
+        .and($({ subject: 'move-event', isAKindOf: 'event' }))
+        .and($({ subject: 'move-event', canHaveA: 'destination' }))
+        .and($({ subject: 'door', isAKindOf: 'thing' }))
+        .and($({ subject: 'door', isAKindOf: 'thing' }))
+        .and($({ subject: 'door', canHaveA: 'opening' }))
+        .and($({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }))
+        .and($({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }))
+        .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
+        .dump(derivationClauses).wm
 
-    ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses).wm,
-    ...$({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }).dump(derivationClauses).wm,
-
-]
 
 const kb: KnowledgeBase = {
     wm: [...standardKb.wm, ...model],
