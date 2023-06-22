@@ -504,3 +504,13 @@ Deno.test({
         // console.log($(2).plus(1))
     }
 })
+
+Deno.test({
+    name: 'test26',
+    fn: () => {
+        assertEquals(test($(3).plus(3).$, kb), $(6).$)
+        assertEquals(test($(3).minus(3).$, kb), $(0).$)
+        assertEquals(test($(3).times(3).$, kb), $(9).$)
+        assertEquals(test($(3).over(3).$, kb), $(1).$)
+    }
+})

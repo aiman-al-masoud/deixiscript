@@ -90,8 +90,14 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         case 'if-else':
             return test(formula.condition, kb) ? test(formula.then, kb) : test(formula.otherwise, kb)
         case 'math-expression':
+            const left = (test(formula.left, kb) as Number).value
+            const right = (test(formula.right, kb) as Number).value
+
             switch (formula.operator) {
-                case '+': return $((test(formula.left, kb) as Number).value + (test(formula.right, kb) as Number).value).$
+                case '+': return $(left + right).$
+                case '-': return $(left - right).$
+                case '*': return $(left * right).$
+                case '/': return $(left / right).$
             }
 
     }

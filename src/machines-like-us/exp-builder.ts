@@ -254,18 +254,29 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    plus(ast:MathExpression|Atom|WmAtom){
-
-        // if (!isAtom(this.exp) && this.exp.type !== ){
-
-        // }
-
+    protected mathOperation(ast: MathExpression | Atom | WmAtom, op: MathExpression['operator']) {
         return new ExpBuilder({
-            type : 'math-expression',
-            left : this.exp as MathExpression,
-            right : typeof ast !== 'object' ? makeAtom(ast) : ast,
-            operator : '+',
+            type: 'math-expression',
+            left: this.exp as MathExpression,
+            right: typeof ast !== 'object' ? makeAtom(ast) : ast,
+            operator: op,
         })
+    }
+
+    plus(ast: MathExpression | Atom | WmAtom) {
+        return this.mathOperation(ast, '+')
+    }
+
+    minus(ast: MathExpression | Atom | WmAtom) {
+        return this.mathOperation(ast, '-')
+    }
+
+    times(ast: MathExpression | Atom | WmAtom) {
+        return this.mathOperation(ast, '*')
+    }
+
+    over(ast: MathExpression | Atom | WmAtom) {
+        return this.mathOperation(ast, '/')
     }
 
 }
