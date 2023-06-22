@@ -83,4 +83,4 @@ const derivationClauses: DerivationClause[] = [
 ]
 
 const conceptualModel =
-    $({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses)
+    $({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses).wm

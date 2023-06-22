@@ -2,7 +2,7 @@ import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, isFormulaWithNonN
 import { $ } from './exp-builder.ts'
 import { findAll } from './findAll.ts'
 import { substAll } from './subst.ts'
-import { dumpWorldModel } from './dumpWorldModel.ts'
+import { dump } from './dump.ts'
 import { getAtoms } from './getAtoms.ts'
 import { getConceptsOf } from './wm-funcs.ts'
 
@@ -66,7 +66,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
             const results = findAll(x, variables, kb, false)
 
             const eventConsequences = results.map(r => substAll(x, r))
-                .flatMap(x => dumpWorldModel(x, kb))
+                .flatMap(x => dump(x, kb).wm)
 
             const additions =
                 eventConsequences.filter(s1 => !kb.wm.some(s2 => wmSentencesEqual(s1, s2)))

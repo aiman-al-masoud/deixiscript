@@ -1,11 +1,10 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { getExcludedBy, recomputeKb, recomputeKbAfterAdditions } from "./recomputeKb.ts";
+import { recomputeKb, recomputeKbAfterAdditions } from "./recomputeKb.ts";
 import { test } from "./test.ts";
-import { DerivationClause, Formula, HasSentence, KnowledgeBase } from "./types.ts";
+import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
-import { getParts } from "./wm-funcs.ts";
 import { getStandardKb } from "./prelude.ts";
 
 const standardKb = getStandardKb()
@@ -75,56 +74,51 @@ const derivationClauses: DerivationClause[] = [
 const model: WorldModel = [
 
     /* World Model */
-    ...$('event#1').isa('birth-event').dump(),
-    ...$('event#1').has('person#1').as('baby').dump(),
-    ...$('event#1').has('person#2').as('mother').dump(),
-    ...$('event#1').has('time-point#1').as('time').dump(),
-    ...$('event#1').has('space-point#1').as('location').dump(),
-    ...$('space-point#1').has('boston').as('enclosing-city').dump(),
-    ...$('person#1').has('event#1').as('birth').dump(),
-    ...$('person#2').isa('woman').dump(),
-    ...$('person#1').isa('person').dump(),
-    ...$('boston').isa('city').dump(),
-    ...$('space-point#1').isa('space-point').dump(),
-    ...$('door#1').isa('door').dump(),
-    ...$('door-opening-event#1').isa('door-opening-event').dump(),
-    ...$('door-opening-event#1').has('door#1').as('object').dump(),
-    ...$('door-closing-event#1').isa('door-closing-event').dump(),
-    ...$('door-closing-event#1').has('door#1').as('object').dump(),
-    ...$('person#3').isa('person').dump(),
-
-    ...$('person#3').has(5).as('position').dump(),
-    ...$('door#1').has(5).as('position').dump(),
-
-    ...$({ isMoveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }).dump(derivationClauses),
-
-    ...$('door#1').has('closed').as('state').dump(),
-
-    ...$('agent#007').isa('agent').dump(),
-    ...$('agent#007').has(2).as('position').dump(),
-    ...$('door#44').has(1).as('position').dump(),
-
-    ...$({ isMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }).dump(derivationClauses),
+    ...$('event#1').isa('birth-event').dump().wm,
+    ...$('event#1').has('person#1').as('baby').dump().wm,
+    ...$('event#1').has('person#2').as('mother').dump().wm,
+    ...$('event#1').has('time-point#1').as('time').dump().wm,
+    ...$('event#1').has('space-point#1').as('location').dump().wm,
+    ...$('space-point#1').has('boston').as('enclosing-city').dump().wm,
+    ...$('person#1').has('event#1').as('birth').dump().wm,
+    ...$('person#2').isa('woman').dump().wm,
+    ...$('person#1').isa('person').dump().wm,
+    ...$('boston').isa('city').dump().wm,
+    ...$('space-point#1').isa('space-point').dump().wm,
+    ...$('door#1').isa('door').dump().wm,
+    ...$('door-opening-event#1').isa('door-opening-event').dump().wm,
+    ...$('door-opening-event#1').has('door#1').as('object').dump().wm,
+    ...$('door-closing-event#1').isa('door-closing-event').dump().wm,
+    ...$('door-closing-event#1').has('door#1').as('object').dump().wm,
+    ...$('person#3').isa('person').dump().wm,
+    ...$('person#3').has(5).as('position').dump().wm,
+    ...$('door#1').has(5).as('position').dump().wm,
+    ...$({ isMoveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }).dump(derivationClauses).wm,
+    ...$('door#1').has('closed').as('state').dump().wm,
+    ...$('agent#007').isa('agent').dump().wm,
+    ...$('agent#007').has(2).as('position').dump().wm,
+    ...$('door#44').has(1).as('position').dump().wm,
+    ...$({ isMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }).dump(derivationClauses).wm,
 
     /* Conceptual Model */
-    ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses),
-    ...$({ subject: 'agent', canHaveA: 'movement' }).dump(derivationClauses),
-    ...$({ vr: 'vr#43', part: 'movement', ofConcept: 'agent', isA: 'move-event' }).dump(derivationClauses),
-    ...$({ subject: 'person', isAKindOf: 'agent' }).dump(derivationClauses),
-    ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses),
-    ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses),
-    ...$({ subject: 'door-opening-event', isAKindOf: 'event' }).dump(derivationClauses),
-    ...$({ subject: 'door-opening-event', canHaveA: 'object' }).dump(derivationClauses),
-    ...$({ subject: 'birth-event', isAKindOf: 'event' }).dump(derivationClauses),
-    ...$({ subject: 'time-instant', isAKindOf: 'thing' }).dump(derivationClauses),
-    ...$({ subject: 'point-in-space', isAKindOf: 'thing' }).dump(derivationClauses),
-    ...$({ subject: 'city', isAKindOf: 'thing' }).dump(derivationClauses),
-    ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses),
-    ...$({ subject: 'move-event', isAKindOf: 'event' }).dump(derivationClauses),
-    ...$({ subject: 'move-event', canHaveA: 'destination' }).dump(derivationClauses),
-    ...$({ subject: 'door', isAKindOf: 'thing' }).dump(derivationClauses),
-    ...$({ subject: 'door', canHaveA: 'opening' }).dump(derivationClauses),
-    ...$({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }).dump(derivationClauses),
+    ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses).wm,
+    ...$({ subject: 'agent', canHaveA: 'movement' }).dump(derivationClauses).wm,
+    ...$({ vr: 'vr#43', part: 'movement', ofConcept: 'agent', isA: 'move-event' }).dump(derivationClauses).wm,
+    ...$({ subject: 'person', isAKindOf: 'agent' }).dump(derivationClauses).wm,
+    ...$({ subject: 'woman', isAKindOf: 'person' }).dump(derivationClauses).wm,
+    ...$({ subject: 'event', isAKindOf: 'thing' }).dump(derivationClauses).wm,
+    ...$({ subject: 'door-opening-event', isAKindOf: 'event' }).dump(derivationClauses).wm,
+    ...$({ subject: 'door-opening-event', canHaveA: 'object' }).dump(derivationClauses).wm,
+    ...$({ subject: 'birth-event', isAKindOf: 'event' }).dump(derivationClauses).wm,
+    ...$({ subject: 'time-instant', isAKindOf: 'thing' }).dump(derivationClauses).wm,
+    ...$({ subject: 'point-in-space', isAKindOf: 'thing' }).dump(derivationClauses).wm,
+    ...$({ subject: 'city', isAKindOf: 'thing' }).dump(derivationClauses).wm,
+    ...$({ subject: 'multiple-birth-event', isAKindOf: 'birth-event' }).dump(derivationClauses).wm,
+    ...$({ subject: 'move-event', isAKindOf: 'event' }).dump(derivationClauses).wm,
+    ...$({ subject: 'move-event', canHaveA: 'destination' }).dump(derivationClauses).wm,
+    ...$({ subject: 'door', isAKindOf: 'thing' }).dump(derivationClauses).wm,
+    ...$({ subject: 'door', canHaveA: 'opening' }).dump(derivationClauses).wm,
+    ...$({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }).dump(derivationClauses).wm,
 
     ...$({ subject: 'birth-event', canHaveA: 'mother' })
         .and($({ subject: 'birth-event', canHaveA: 'baby' }))
@@ -140,10 +134,10 @@ const model: WorldModel = [
         .and($({ subject: 'state', isAKindOf: 'thing' }))
         .and($({ subject: 'event', canHaveA: 'duration' }))
         .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
-        .dump(derivationClauses),
+        .dump(derivationClauses).wm,
 
-    ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses),
-    ...$({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }).dump(derivationClauses),
+    ...$({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }).dump(derivationClauses).wm,
+    ...$({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }).dump(derivationClauses).wm,
 
 ]
 
@@ -278,7 +272,7 @@ Deno.test({
             .and($('apple#1').isa('apple'))
             .and($('bucket#1').has(2).as('volume'))
             .and($('apple#1').has(1).as('volume'))
-            .dump()
+            .dump().wm
 
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
         const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
@@ -426,8 +420,8 @@ Deno.test({
         // console.log(getParts('birth-event', kb.wm))
         // console.log(getParts('multiple-birth-event', kb.wm))
 
-        const q = $({ vr: 'vr:value-restriction', part: 'mother', ofConcept: 'birth-event', isA: 'value:thing' })
-        const result = findAll(q.$, [$('vr:value-restriction').$, $('value:thing').$], kb)
+        // const q = $({ vr: 'vr:value-restriction', part: 'mother', ofConcept: 'birth-event', isA: 'value:thing' })
+        // const result = findAll(q.$, [$('vr:value-restriction').$, $('value:thing').$], kb)
         // console.log(result[0].get($('value:thing').$))
 
         // console.log(getParts('move-event', kb.wm))
@@ -469,7 +463,7 @@ Deno.test({
             .and($('dog#1').has(4).as('weight'))
             .and($('cat#1').isa('cat'))
             .and($('dog#1').isa('dog'))
-            .dump()
+            .dump().wm
 
         // ((the number such that (the cat has the number as weight)) is (3))
         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
@@ -493,7 +487,7 @@ Deno.test({
 
         const kb = $(1).isa('number')
             .and($(2).isa('number'))
-            .dump()
+            .dump().wm
 
         const q = $('x:number').plus('y:number').is(3).$
 
@@ -523,11 +517,12 @@ Deno.test({
         const wm =
             $({ ann: 'ann#429', onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
                 .and($('capra#1').has(1).as('last-thought-of'))
-                .dump(kb.derivClauses)
+                .dump(kb.derivClauses).wm
 
         const kb2: KnowledgeBase = { wm: wm, derivClauses: kb.derivClauses }
-        const h = $('capra#1').has(2).as('last-thought-of').dump()
-        console.log(recomputeKbAfterAdditions(h, kb2).wm)
+        const h = $('capra#1').has(2).as('last-thought-of').dump().wm
+        const kb3 = recomputeKbAfterAdditions(h, kb2)
+        assert(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb3).length === 1)
 
     }
 })
