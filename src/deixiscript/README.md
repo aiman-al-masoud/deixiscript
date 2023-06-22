@@ -7,7 +7,7 @@
   - what if findAll() finds many?
   - refactor test()!!!
   - every/and/or
-  - anaphora within same sentence: add timestamp last-mentioned prop
+  - anaphora within same sentence: add timestamp last-mentioned prop, limit anaphoric stack cuz of comp complex
 - mathematical operations
   - introduced by letting test() return other than boolean
   - must refactor... (good) repercussions on anaphora
