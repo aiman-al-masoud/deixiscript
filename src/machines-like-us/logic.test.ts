@@ -74,31 +74,34 @@ const derivationClauses: DerivationClause[] = [
 const model: WorldModel = [
 
     /* World Model */
-    ...$('event#1').isa('birth-event').dump().wm,
-    ...$('event#1').has('person#1').as('baby').dump().wm,
-    ...$('event#1').has('person#2').as('mother').dump().wm,
-    ...$('event#1').has('time-point#1').as('time').dump().wm,
-    ...$('event#1').has('space-point#1').as('location').dump().wm,
-    ...$('space-point#1').has('boston').as('enclosing-city').dump().wm,
-    ...$('person#1').has('event#1').as('birth').dump().wm,
-    ...$('person#2').isa('woman').dump().wm,
-    ...$('person#1').isa('person').dump().wm,
-    ...$('boston').isa('city').dump().wm,
-    ...$('space-point#1').isa('space-point').dump().wm,
-    ...$('door#1').isa('door').dump().wm,
-    ...$('door-opening-event#1').isa('door-opening-event').dump().wm,
-    ...$('door-opening-event#1').has('door#1').as('object').dump().wm,
-    ...$('door-closing-event#1').isa('door-closing-event').dump().wm,
-    ...$('door-closing-event#1').has('door#1').as('object').dump().wm,
-    ...$('person#3').isa('person').dump().wm,
-    ...$('person#3').has(5).as('position').dump().wm,
-    ...$('door#1').has(5).as('position').dump().wm,
-    ...$({ isMoveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }).dump(derivationClauses).wm,
-    ...$('door#1').has('closed').as('state').dump().wm,
-    ...$('agent#007').isa('agent').dump().wm,
-    ...$('agent#007').has(2).as('position').dump().wm,
-    ...$('door#44').has(1).as('position').dump().wm,
-    ...$({ isMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }).dump(derivationClauses).wm,
+    ...$('event#1').isa('birth-event')
+        .and($('event#1').has('person#1').as('baby'))
+        .and($('event#1').has('person#2').as('mother'))
+        .and($('event#1').has('time-point#1').as('time'))
+        .and($('event#1').has('space-point#1').as('location'))
+        .and($('space-point#1').has('boston').as('enclosing-city'))
+        .and($('person#1').has('event#1').as('birth'))
+        .and($('person#1').has('event#1').as('birth'))
+        .and($('person#1').has('event#1').as('birth'))
+        .and($('person#2').isa('woman'))
+        .and($('person#1').isa('person'))
+        .and($('boston').isa('city'))
+        .and($('space-point#1').isa('space-point'))
+        .and($('door#1').isa('door'))
+        .and($('door-opening-event#1').isa('door-opening-event'))
+        .and($('door-opening-event#1').has('door#1').as('object'))
+        .and($('door-closing-event#1').isa('door-closing-event'))
+        .and($('door-closing-event#1').has('door#1').as('object'))
+        .and($('person#3').isa('person'))
+        .and($('person#3').has(5).as('position'))
+        .and($('door#1').has(5).as('position'))
+        .and($({ isMoveEvent: 'move-event#1', subject: 'person#1', destination: 'door#1' }))
+        .and($('door#1').has('closed').as('state'))
+        .and($('agent#007').isa('agent'))
+        .and($('agent#007').has(2).as('position'))
+        .and($('door#44').has(1).as('position'))
+        .and($({ isMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }))
+        .dump(derivationClauses).wm,
 
     /* Conceptual Model */
     ...$({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses).wm,
