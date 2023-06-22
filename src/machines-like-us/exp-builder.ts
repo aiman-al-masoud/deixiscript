@@ -155,11 +155,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    if(formula: ExpBuilder<Formula>): ExpBuilder<IfElse> {
-
-        if (isAtom(formula.$)) {
-            throw new Error(``)
-        }
+    if(formula: ExpBuilder<LLangAst>): ExpBuilder<IfElse> {
 
         return new ExpBuilder({
             type: 'if-else',

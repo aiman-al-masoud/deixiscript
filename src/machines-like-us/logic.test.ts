@@ -526,3 +526,11 @@ Deno.test({
 
     }
 })
+
+Deno.test({
+    name: 'test28',
+    fn: () => {
+        const x = $('cat#1').has(2).as('age').if($(false)).else($('cat#1').has(3).as('age')).dump()
+        console.log(x)
+    }
+})

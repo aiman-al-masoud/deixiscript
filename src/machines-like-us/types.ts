@@ -160,7 +160,7 @@ export type DerivationClause = {
 
 export type IfElse = {
     type: 'if-else',
-    condition: Formula,
+    condition: LLangAst,
     then: Formula,
     otherwise: LLangAst,
 }
