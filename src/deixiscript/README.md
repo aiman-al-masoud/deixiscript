@@ -32,6 +32,7 @@
 ## Problems
 
 - can you entirely do away with variable assigments?
+- should GeneralizedSimpleFormula become compound? (ie:accept other formulas as args?)
 
 # Pipeline:
 
