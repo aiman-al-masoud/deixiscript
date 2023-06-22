@@ -1,5 +1,6 @@
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
+import { test } from "./test.ts";
 import { isConst, KnowledgeBase, LLangAst } from "./types.ts";
 
 export function dump(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
@@ -34,7 +35,8 @@ export function dump(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
                 wm: kb.wm,
                 derivClauses: [...kb.derivClauses, ast]
             }
-
+        case 'if-else':
+            return test(ast.condition, kb) ? dump(ast.then, kb) : dump(ast.otherwise, kb)
 
     }
 
