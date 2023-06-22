@@ -22,7 +22,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             return formula.value
         case 'number':
         case 'constant':
-            // kb.wm.push(...$(formula.value).has(Date.now()).as('last-mentioned').dump())
             return formula
         case 'variable':
         case 'list-literal':
