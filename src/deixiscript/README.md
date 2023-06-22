@@ -12,14 +12,11 @@
   - introduced by letting test() return other than boolean
   - must refactor... (good) repercussions on anaphora
   - is MathExpression an Atom ??!
-- full dump()
-  - dump full knowledge base (including derivation clauses)
-  - if-else
+- finish up recomputeKb()
   - existential quantifier creates new entity in case it doesn't exist
-- single eval() to access test/findAll/dump etc...
+- single eval() to access test/findAll/recomputeKb etc...
+  - ask vs tell AST
   - find all free vars to decide between findAll and test
-  - eval takes "side-effect" param, with inferred default
-  - question AST
 
 ## Frontend
 
@@ -35,7 +32,6 @@
 ## Problems
 
 - can you entirely do away with variable assigments
-- dump() vs recomputeKb()?
 
 # Pipeline:
 
