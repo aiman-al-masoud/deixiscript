@@ -1,5 +1,5 @@
-import { dump } from "./dump.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression } from "./types.ts"
+import { recomputeKb } from "./recomputeKb.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -233,7 +233,8 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     dump(dcs?: DerivationClause[]) {
-        return dump(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
+        // return dump(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
+        return recomputeKb(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
     }
 
     suchThat(formula?: ExpBuilder<Formula>) {
@@ -273,6 +274,18 @@ export class ExpBuilder<T extends LLangAst> {
 
     over(ast: MathExpression | Atom | WmAtom) {
         return this.mathOperation(ast, '/')
+    }
+
+    get happens(): ExpBuilder<HappenSentence> {
+
+        // if (this.exp.type !== 'constant') {
+        //     throw new Error('only a constant can be an event, and therefore happen')
+        // }
+
+        return new ExpBuilder({
+            type: 'happen-sentence',
+            event: this.exp as Entity,
+        })
     }
 
 }

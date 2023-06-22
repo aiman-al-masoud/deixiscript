@@ -1,7 +1,7 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { recomputeKb, recomputeKbAfterAdditions } from "./recomputeKb.ts";
+import { recomputeKb } from "./recomputeKb.ts";
 import { test } from "./test.ts";
 import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
@@ -299,9 +299,12 @@ Deno.test({
 Deno.test({
     name: 'test11',
     fn: () => {
-        const res = recomputeKb(['door-opening-event#1', 'door-closing-event#1'], kb)
-        assert(test($('door#1').has('closed').as('state').$, res))
-        assert(test($('door#1').has('open').as('state').isNotTheCase.$, res))
+
+        const res1 = recomputeKb($('door-opening-event#1').happens.$, kb)
+        const res2 = recomputeKb($('door-closing-event#1').happens.$, res1)
+
+        assert(test($('door#1').has('closed').as('state').$, res2))
+        assert(test($('door#1').has('open').as('state').isNotTheCase.$, res2))
     }
 })
 
@@ -381,7 +384,9 @@ Deno.test({
     fn: () => {
         assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
         assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
-        const kb2 = recomputeKb(['move-event#1'], kb)
+
+        const kb2 = recomputeKb($('move-event#1').happens.$, kb)
+
         assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
         assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
     }
@@ -436,14 +441,11 @@ Deno.test({
     name: 'test21',
     fn: () => {
         assert(test($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb))
-        const kb2 = recomputeKb(['move-event#3'], kb)
-        // console.log(kb2.wm)
+        const kb2 = recomputeKb($('move-event#3').happens.$, kb)
         const results = findAll($('agent#007').has('x:thing').as('position').$, [$('x:thing').$], kb2)
         assert(results.length === 1)
         assertEquals(results[0].get($('x:thing').$)?.value, 1)
         assert(test($({ subject: 'agent#007', isNear: 'door#44' }).$, kb2))
-
-        // console.log($({moveEvent:'move-event#42', subject:'agent#007', destination:'door#1'}).dump(kb.derivClauses))
     }
 })
 
@@ -495,7 +497,6 @@ Deno.test({
         assertEquals(res[0].get($('x:number').$), $(1).$)
         assertEquals(res[0].get($('y:number').$), $(2).$)
 
-        // console.log($(2).plus(1))
     }
 })
 
@@ -520,8 +521,9 @@ Deno.test({
                 .dump(kb.derivClauses).wm
 
         const kb2: KnowledgeBase = { wm: wm, derivClauses: kb.derivClauses }
-        const h = $('capra#1').has(2).as('last-thought-of').dump().wm
-        const kb3 = recomputeKbAfterAdditions(h, kb2)
+
+        const kb3 = recomputeKb($('capra#1').has(2).as('last-thought-of').$, kb2)
+
         assert(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb3).length === 1)
 
     }

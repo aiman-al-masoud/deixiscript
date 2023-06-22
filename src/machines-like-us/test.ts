@@ -3,15 +3,16 @@ import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
-import { recomputeKb } from "./recomputeKb.ts";
 import { resolveAnaphor } from "./getAnaphor.ts";
 import { $ } from "./exp-builder.ts";
+import { recomputeKb } from "./recomputeKb.ts";
 
 export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): Atom | WmAtom {
 
     if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         const events = formula.after.list.map(x => x.value)
-        const kb2 = recomputeKb(events, kb)
+        const eventSentences = events.map(x => $(x).happens.$)
+        const kb2 = eventSentences.reduce((a, b) => recomputeKb(b, a), kb)
         const formula2: Formula = { ...formula, after: { type: 'list-literal', list: [] } }
         return test(formula2, kb2, false)
     }
@@ -41,7 +42,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             const t1 = test(formula.t1, kb) as Atom
             const t2 = test(formula.t2, kb) as Atom
 
-            // if (isConst(t2) && t2.value === 'thing') return true
             if (isConst(t2) && t1.type === t2.value) return true
 
             if (

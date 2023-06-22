@@ -129,6 +129,8 @@ export function subst(
                 right: subst(ast.right, variable, replacement),
                 operator: ast.operator,
             }
+        case 'happen-sentence':
+            throw new Error('not implemented!')
     }
 
 }

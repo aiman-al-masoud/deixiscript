@@ -36,6 +36,7 @@ export type SimpleFormula =
     | Equality
     | GeneralizedSimpleFormula
     | GreaterThanFormula
+    | HappenSentence
 export type AtomicFormula =
     | IsAFormula
     | HasFormula
@@ -104,6 +105,11 @@ export type GreaterThanFormula = {
     type: 'greater-than',
     greater: Atom,
     lesser: Atom,
+}
+
+export type HappenSentence = {
+    type: 'happen-sentence',
+    event: Constant,
 }
 
 export type VarMap = DeepMap<Variable, Atom>

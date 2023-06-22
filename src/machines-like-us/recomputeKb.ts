@@ -1,25 +1,75 @@
-import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, isFormulaWithNonNullAfter, isHasSentence, isVar, KnowledgeBase, WmAtom, wmSentencesEqual, WorldModel } from './types.ts'
-import { $ } from './exp-builder.ts'
-import { findAll } from './findAll.ts'
-import { substAll } from './subst.ts'
-import { dump } from './dump.ts'
-import { getAtoms } from './getAtoms.ts'
-import { getConceptsOf } from './wm-funcs.ts'
+import { $ } from "./exp-builder.ts";
+import { findAll } from "./findAll.ts";
+import { getAtoms } from "./getAtoms.ts";
+import { match } from "./match.ts";
+import { substAll } from "./subst.ts";
+import { test } from "./test.ts";
+import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
+import { getConceptsOf } from "./wm-funcs.ts";
 
 /**
- * Recompute the updated KB (situation) after a sequence of (existing) events takes place.
+ * Assume 'ast' is true, and recompute a knowledge base.
  */
-export function recomputeKb(event: WmAtom[], kb: KnowledgeBase) {
-    return event.reduce((currKb, e) => recomputeKbAfterSingleEvent(e, currKb), kb)
+export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
+
+    switch (ast.type) {//TODO: anaphora
+
+        case 'happen-sentence':
+            const additions = getAdditions(ast.event.value, kb)
+            return recomputeKbAfterAdditions(additions, kb)
+        case 'has-formula':
+            if (!(isConst(ast.t1) && isConst(ast.t2) && isConst(ast.as))) throw new Error('cannot serialize formula with variables!')
+            const h: HasSentence = [ast.t1.value, ast.t2.value, ast.as.value]
+            return recomputeKbAfterAdditions([h], kb)
+        // return {
+        //     wm : kb.wm.concat([h]),
+        //     derivClauses : kb.derivClauses,
+        // }
+        case 'is-a-formula':
+            if (!(isConst(ast.t1) && isConst(ast.t2))) throw new Error('cannot serialize formula with variables!')
+            const i: IsASentence = [ast.t1.value, ast.t2.value]
+            return {
+                wm: [...kb.wm, i],
+                derivClauses: kb.derivClauses
+            }
+        case 'conjunction':
+            const kb1 = recomputeKb(ast.f1, kb)
+            const kb2 = recomputeKb(ast.f2, kb)
+            return {
+                wm: kb1.wm.concat(kb2.wm),
+                derivClauses: kb1.derivClauses.concat(kb2.derivClauses),
+            }
+        case 'derived-prop':
+            return {
+                wm: kb.wm,
+                derivClauses: [...kb.derivClauses, ast],
+            }
+        case 'if-else':
+            return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
+
+    }
+
+    for (const dc of kb.derivClauses) {
+
+        const map = match(dc.conseq, ast)
+
+        if (map) {
+            const whenn = substAll(dc.when, map)
+            return recomputeKb(whenn, kb)
+        }
+    }
+
+    throw new Error('not implemented!')
+
 }
 
-function recomputeKbAfterSingleEvent(event: WmAtom, kb: KnowledgeBase) {
-    const additions = getAdditions(event, kb)
-    return recomputeKbAfterAdditions(additions, kb)
-}
+
 
 export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
+
+    // console.log(eliminations)
+
     const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
     const final = filtered.concat(additions)
 
@@ -51,7 +101,7 @@ export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBa
  *
  *
  */
-function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
+export function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
@@ -66,7 +116,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
             const results = findAll(x, variables, kb, false)
 
             const eventConsequences = results.map(r => substAll(x, r))
-                .flatMap(x => dump(x, kb).wm)
+                .flatMap(x => recomputeKb(x, kb).wm)
 
             const additions =
                 eventConsequences.filter(s1 => !kb.wm.some(s2 => wmSentencesEqual(s1, s2)))
