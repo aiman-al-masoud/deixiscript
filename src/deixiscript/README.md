@@ -27,7 +27,7 @@
 - how to integrate method calls?
 - how to integrate object attribute modifications?
   - convertToJs(wm: WorldModel, id: string, obj:any)
-- how to integrate events?
+- how to integrate events? there-is + happens
 
 ## Problems
 
