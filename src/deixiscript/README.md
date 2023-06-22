@@ -33,7 +33,9 @@
 - how to integrate events?
 
 ## Problems
+
 - can you entirely do away with variable assigments
+- dump() vs recomputeKb()?
 
 # Pipeline:
 
