@@ -5,7 +5,7 @@ export function resolveAnaphor<T extends Atom>(atom: T, kb: KnowledgeBase) {
     return atom.type === 'anaphor' ? getAnaphor(atom, kb)! : atom
 }
 
-export function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
+function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
     const maps = findAll(anaphor.description, [anaphor.head], kb)
     if (maps.length > 1) {
         console.warn('more than one anaphoric hit!')
