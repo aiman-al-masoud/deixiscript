@@ -31,7 +31,7 @@
 
 ## Problems
 
-- can you entirely do away with variable assigments
+- can you entirely do away with variable assigments?
 
 # Pipeline:
 
