@@ -7,7 +7,7 @@
   - what if findAll() finds many?
   - refactor test()!!!
   - every/and/or
-  - anaphora within same sentence and order: add timestamp last-mentioned prop, limit anaphoric stack cuz of comp complex
+  - anaphora within same sentence and order: add timestamp last-mentioned prop, limit anaphoric stack cuz of comp complex. maybe outside of WM, last-thought-of as a bounded dictionary id:timestamp, then sort when needed
 - mathematical operations
   - introduced by letting test() return other than boolean
   - must refactor... (good) repercussions on anaphora
@@ -31,7 +31,7 @@
 
 ## Problems
 
-- can you entirely do away with variable assigments?
+- can you entirely do away with variable assigments? replaced by anaphora, also theme-rheme style on separate sentences joined with pronouns
 - should GeneralizedSimpleFormula become compound? (ie:accept other formulas as args?)
 
 # Pipeline:
