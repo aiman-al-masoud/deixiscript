@@ -1,6 +1,5 @@
 abstract Deixi = {
     flags startcat =  DeixiAst;
-    -- flags startcat =  Variable;
 
     cat 
     DeixiAst;
@@ -34,7 +33,7 @@ abstract Deixi = {
     CompositeFormula;
     Term;
     Variable;
-    MyString;
+    Identifier;
 
     fun
     f1: Atom -> DeixiAst;
@@ -74,10 +73,11 @@ abstract Deixi = {
     f35: Atom -> Atom -> Equality;
     f36: Constant -> HappenSentence;
     f37: Atom -> Atom -> GreaterThanFormula;
-    f38: Atom -> Atom -> ListPattern;    
-    f39: MyString -> MyString -> Variable;
-    f40: Int -> Number;
-    f41: MyString -> Entity;
+    f38: Atom -> Atom -> ListPattern;
+    f39: Identifier -> Identifier -> Variable;
+    f41: Identifier -> Entity;
+    f42: Atom -> Atom -> Atom -> HasFormula;
+    X, Capra : Identifier;
 
 
 }
