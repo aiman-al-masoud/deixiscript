@@ -23,13 +23,15 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
             return formula.value
         case 'number':
         case 'constant':
+            kb.deicticDict[formula.value] ??= 0
+            kb.deicticDict[formula.value]++ //= kb.deicticDict[formula.value] ? kb.deicticDict[formula.value] + 1 : 1
             return formula
         case 'variable':
         case 'list-literal':
         case 'list-pattern':
             return formula
         case 'anaphor':
-            return resolveAnaphor(formula, kb)
+            return test(resolveAnaphor(formula, kb), kb)
         case 'equality':
 
             const t10 = test(formula.t1, kb) as Atom

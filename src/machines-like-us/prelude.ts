@@ -5,7 +5,8 @@ export function getStandardKb(): KnowledgeBase {
     return {
         wm: conceptualModel,
         derivClauses: derivationClauses,
-    }
+        deicticDict : {},
+    }    
 }
 
 const derivationClauses: DerivationClause[] = [

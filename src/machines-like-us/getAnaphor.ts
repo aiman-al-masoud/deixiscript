@@ -13,5 +13,11 @@ function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
         throw new Error('no anaphora!')
     }
 
-    return maps.at(-1)!.get(anaphor.head)
+    const candidates = maps.map(x => x.get(anaphor.head))
+    console.log(candidates)
+    candidates.sort((c1, c2) => kb.deicticDict[c2?.value as string] - kb.deicticDict[c1?.value as string])
+    console.log(candidates)
+    const result = candidates[0]
+
+    return result
 }

@@ -10,6 +10,7 @@ export type WorldModel = (IsASentence | HasSentence)[]
 export type KnowledgeBase = {
     wm: WorldModel,
     derivClauses: DerivationClause[],
+    deicticDict: { [id: string]: number },
 }
 
 /* LANGUAGE */

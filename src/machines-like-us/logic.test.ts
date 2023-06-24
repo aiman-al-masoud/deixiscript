@@ -145,6 +145,7 @@ const model: WorldModel =
 const kb: KnowledgeBase = {
     wm: [...standardKb.wm, ...model],
     derivClauses: derivationClauses,
+    deicticDict: standardKb.deicticDict,
 }
 
 // console.log(kb.wm)
@@ -231,7 +232,8 @@ Deno.test({
                 ['capra', 'stupid', 'intelligence'],
                 ['cat', 'smart', 'intelligence'],
             ],
-            derivClauses: [dp]
+            derivClauses: [dp],
+            deicticDict: {},
         }
 
         assert(test($({ isStupid: 'capra' }).$, kb))
@@ -243,7 +245,7 @@ Deno.test({
 Deno.test({
     name: 'test7',
     fn: () => {
-        assert(test($(2).isGreaterThan(1).$, { wm: [], derivClauses: [] }))
+        assert(test($(2).isGreaterThan(1).$, { wm: [], derivClauses: [], deicticDict: {}, }))
     }
 })
 
@@ -278,8 +280,8 @@ Deno.test({
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
         const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
 
-        assert(test(test1, { wm: wm, derivClauses: dc }))
-        assert(test(test2, { wm: wm, derivClauses: dc }))
+        assert(test(test1, { wm: wm, derivClauses: dc, deicticDict: {}, }))
+        assert(test(test2, { wm: wm, derivClauses: dc, deicticDict: {}, }))
 
     }
 })
@@ -470,7 +472,7 @@ Deno.test({
 
         // ((the number such that (the cat has the number as weight)) is (3))
         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
-        assert(test(y, { wm: kb2, derivClauses: [] }))
+        assert(test(y, { wm: kb2, derivClauses: [], deicticDict: {}, }))
     }
 })
 
@@ -494,7 +496,7 @@ Deno.test({
 
         const q = $('x:number').plus('y:number').is(3).$
 
-        const res = findAll(q, [$('x:number').$, $('y:number').$], { wm: kb, derivClauses: [] })
+        const res = findAll(q, [$('x:number').$, $('y:number').$], { wm: kb, derivClauses: [], deicticDict: {}, })
         assertEquals(res[0].get($('x:number').$), $(1).$)
         assertEquals(res[0].get($('y:number').$), $(2).$)
 
@@ -521,7 +523,7 @@ Deno.test({
                 .and($('capra#1').has(1).as('last-thought-of'))
                 .dump(kb.derivClauses).wm
 
-        const kb2: KnowledgeBase = { wm: wm, derivClauses: kb.derivClauses }
+        const kb2: KnowledgeBase = { wm: wm, derivClauses: kb.derivClauses, deicticDict: kb.deicticDict }
 
         const kb3 = recomputeKb($('capra#1').has(2).as('last-thought-of').$, kb2)
 
@@ -535,5 +537,24 @@ Deno.test({
     fn: () => {
         const x = $('cat#1').has(2).as('age').if($(false)).else($('cat#1').has(3).as('age')).dump()
         console.log(x)
+    }
+})
+
+Deno.test({
+    name: 'test29',
+    fn: () => {
+        const kb =
+            $('cat#2').isa('cat')
+                .and($('cat#3').isa('cat'))
+                .and($('cat#1').isa('cat'))
+                .and($('cat#1').has('big').as('size'))
+                .and($('cat#1').has('black').as('color'))
+                .and($('cat#4').isa('cat'))
+                .dump()
+
+        const q = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
+
+        assert(test(q.$, kb))
+
     }
 })

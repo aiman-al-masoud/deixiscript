@@ -30,7 +30,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             const i: IsASentence = [ast.t1.value, ast.t2.value]
             return {
                 wm: [...kb.wm, i],
-                derivClauses: kb.derivClauses
+                derivClauses: kb.derivClauses,
+                deicticDict: kb.deicticDict,
             }
         case 'conjunction':
             const kb1 = recomputeKb(ast.f1, kb)
@@ -38,11 +39,13 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             return {
                 wm: kb1.wm.concat(kb2.wm),
                 derivClauses: kb1.derivClauses.concat(kb2.derivClauses),
+                deicticDict: kb.deicticDict,
             }
         case 'derived-prop':
             return {
                 wm: kb.wm,
                 derivClauses: [...kb.derivClauses, ast],
+                deicticDict: kb.deicticDict,
             }
         case 'if-else':
             return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
@@ -76,6 +79,7 @@ export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBa
     const result: KnowledgeBase = {
         derivClauses: kb.derivClauses,
         wm: final,
+        deicticDict: kb.deicticDict,
     }
 
     return result

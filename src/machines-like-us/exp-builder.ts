@@ -234,7 +234,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     dump(dcs?: DerivationClause[]) {
         // return dump(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
-        return recomputeKb(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
+        return recomputeKb(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
     suchThat(formula?: ExpBuilder<Formula>) {
