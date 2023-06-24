@@ -61,7 +61,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
         case 'if-else':
             return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
         case 'existquant':
-            return instantiateConcept(ast, kb)
+            return instantiateConcept(ast, kb) // TODO: recompute after additions
 
     }
 
