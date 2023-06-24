@@ -41,6 +41,11 @@
 - GF AST is transformed into LLang json AST (mostly GeneralizedSimpleFormula)
 - the LLang AST is fed to eval() OR it is used by compiler
 
+# Notes
+
+- recomputeKb() and test() DO HAVE side effects; not for what concerns the world
+  model and derivation clauses, but on the deictic dictionary.
+
 Use generalized ASTs to implement sentences:
 
 ```
