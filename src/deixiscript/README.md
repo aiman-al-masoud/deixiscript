@@ -14,7 +14,7 @@
   - existquant defaults
 - single eval() to access test/findAll/recomputeKb etc...
   - ask vs tell AST
-  - find all free vars to decide between findAll and test
+  - find all free vars to decide between findAll and test?? maybe no need cuz anaphora
 
 ## Frontend
 
