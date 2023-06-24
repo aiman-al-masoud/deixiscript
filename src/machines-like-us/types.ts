@@ -1,6 +1,6 @@
-/* WORLD-CONCEPTUAL MODEL */
-
 import { DeepMap } from "../utils/DeepMap.ts"
+
+/* WORLD-CONCEPTUAL MODEL */
 
 export type WmAtom = string | number | boolean
 export type IsASentence = [WmAtom, WmAtom]
