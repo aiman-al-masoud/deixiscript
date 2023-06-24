@@ -54,9 +54,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             }
         case 'derived-prop':
             return {
-                wm: kb.wm,
+                ...kb,
                 derivClauses: [...kb.derivClauses, ast],
-                deicticDict: kb.deicticDict,
             }
         case 'if-else':
             return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
