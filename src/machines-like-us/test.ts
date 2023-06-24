@@ -24,7 +24,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         case 'number':
         case 'constant':
             kb.deicticDict[formula.value] ??= 0
-            kb.deicticDict[formula.value]++ //= kb.deicticDict[formula.value] ? kb.deicticDict[formula.value] + 1 : 1
+            kb.deicticDict[formula.value]++
             return formula
         case 'variable':
         case 'list-literal':
