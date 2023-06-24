@@ -5,14 +5,12 @@
 - integrating anaphora
   - anaphora within same sentence and with temporal order: deictic dict (DONE)
   - what if findAll() finds many?
-  - refactor test()!!!
   - every/and/or
 - mathematical operations
-  - introduced by letting test() return other than boolean
-  - must refactor... (good) repercussions on anaphora
+  - refactor test()
   - is MathExpression an Atom ??!
 - finish up recomputeKb()
-  - not
+  - implement not
   - existquant defaults
 - single eval() to access test/findAll/recomputeKb etc...
   - ask vs tell AST
