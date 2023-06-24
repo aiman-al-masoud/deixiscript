@@ -40,9 +40,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
             const i: IsASentence = [t11.value, t21.value]
             return {
+                ...kb,
                 wm: [...kb.wm, i],
-                derivClauses: kb.derivClauses,
-                deicticDict: kb.deicticDict,
             }
         case 'conjunction':
             const kb1 = recomputeKb(ast.f1, kb)
