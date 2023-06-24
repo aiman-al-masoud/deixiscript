@@ -1,6 +1,7 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { getAtoms } from "./getAtoms.ts";
+import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { test } from "./test.ts";
@@ -59,6 +60,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             }
         case 'if-else':
             return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
+        case 'existquant':
+            return instantiateConcept(ast, kb)
 
     }
 

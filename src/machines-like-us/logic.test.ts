@@ -559,3 +559,12 @@ Deno.test({
 
     }
 })
+
+Deno.test({
+    name: 'test30',
+    fn: () => {
+        const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
+        const kb2 = recomputeKb(q.$, { wm: [], derivClauses: [], deicticDict: {} })
+        assert(test(q.$, kb2))
+    }
+})
