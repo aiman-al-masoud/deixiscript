@@ -5,7 +5,7 @@
 - integrating anaphora
   - anaphora within same sentence and with temporal order: deictic dict (DONE)
   - what if findAll() finds many?
-  - every/and/or
+  - every/and/or, use list-literal?
 - mathematical operations
   - refactor test()
   - is MathExpression an Atom ??!
