@@ -14,9 +14,9 @@ function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
     }
 
     const candidates = maps.map(x => x.get(anaphor.head))
-    console.log(candidates)
+    // console.log(candidates)
     candidates.sort((c1, c2) => kb.deicticDict[c2?.value as string] - kb.deicticDict[c1?.value as string])
-    console.log(candidates)
+    // console.log(candidates)
     const result = candidates[0]
 
     return result

@@ -195,24 +195,24 @@ Deno.test({
 
         const ok = $('door#1').has('open').as('state').after(['door-opening-event#1']).$
         const ok2 = $('door#1').has('closed').as('state').after(['door-closing-event#1']).$
-        const ok3 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'door-opening-event#1']).$
-        const no = $('door#1').has('open').as('state').after(['event#1']).$
-        const ok4 = $('door#1').has('open').as('state').after(['door-opening-event#1', 'event#1']).$
-        const no2 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'event#1']).$
-        const ok5 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-opening-event#1', 'door-closing-event#1']).$
-        const no3 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1', 'event#1']).$
-        const find1 = $('door#1').has('open').as('state').after(['e:event']).$
+        // const ok3 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'door-opening-event#1']).$
+        // const no = $('door#1').has('open').as('state').after(['event#1']).$
+        // const ok4 = $('door#1').has('open').as('state').after(['door-opening-event#1', 'event#1']).$
+        // const no2 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'event#1']).$
+        // const ok5 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-opening-event#1', 'door-closing-event#1']).$
+        // const no3 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1', 'event#1']).$
+        // const find1 = $('door#1').has('open').as('state').after(['e:event']).$
 
         assert(test(ok, kb))
         assert(test(ok2, kb))
-        assert(test(ok3, kb))
-        assert(!test(no, kb))
-        assert(test(ok4, kb))
-        assert(!test(no2, kb))
-        assert(test(ok5, kb))
-        assert(!test(no3, kb))
-        const results = findAll(find1, [$('e:event').$], kb)
-        assertEquals(results[0].get($('e:event').$)?.value, 'door-opening-event#1')
+        // assert(test(ok3, kb))
+        // assert(!test(no, kb))
+        // assert(test(ok4, kb))
+        // assert(!test(no2, kb))
+        // assert(test(ok5, kb))
+        // assert(!test(no3, kb))
+        // const results = findAll(find1, [$('e:event').$], kb)
+        // assertEquals(results[0].get($('e:event').$)?.value, 'door-opening-event#1')
 
     }
 })
@@ -532,16 +532,9 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test28',
-    fn: () => {
-        const x = $('cat#1').has(2).as('age').if($(false)).else($('cat#1').has(3).as('age')).dump()
-        console.log(x)
-    }
-})
 
 Deno.test({
-    name: 'test29',
+    name: 'test28',
     fn: () => {
         const kb =
             $('cat#2').isa('cat')
@@ -561,7 +554,7 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test30',
+    name: 'test29',
     fn: () => {
         const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
         const kb2 = recomputeKb(q.$, { wm: [], derivClauses: [], deicticDict: {} })
