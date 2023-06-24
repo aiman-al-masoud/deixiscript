@@ -7,8 +7,7 @@ const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-litera
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative', 'in-locative', 'complement',)
 const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat', 'receiver', 'location',)
 
-type AstType = ElementType<typeof astTypes>
-type StType = AstType | ElementType<typeof cstTypes>
+type StType = ElementType<typeof astTypes> | ElementType<typeof cstTypes>
 type Role = ElementType<typeof roles>
 
 export const syntaxes: SyntaxMap<
