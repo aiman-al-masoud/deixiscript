@@ -548,13 +548,14 @@ Deno.test({
                 .and($('cat#3').isa('cat'))
                 .and($('cat#1').isa('cat'))
                 .and($('cat#1').has('big').as('size'))
-                .and($('cat#1').has('black').as('color'))
                 .and($('cat#4').isa('cat'))
                 .dump()
 
-        const q = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
+        const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
 
-        assert(test(q.$, kb))
+        const kb2 = recomputeKb(command.$, kb)
+
+        assert(test($('x:cat').suchThat().has('black').as('color').$, kb2))
 
     }
 })

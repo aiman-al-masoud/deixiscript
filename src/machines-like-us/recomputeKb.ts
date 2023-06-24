@@ -4,7 +4,7 @@ import { getAtoms } from "./getAtoms.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { test } from "./test.ts";
-import { AtomicFormula, GeneralizedSimpleFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
+import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
 import { getConceptsOf } from "./wm-funcs.ts";
 
 /**
@@ -12,22 +12,32 @@ import { getConceptsOf } from "./wm-funcs.ts";
  */
 export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
 
-    switch (ast.type) {//TODO: anaphora
+    switch (ast.type) {
 
         case 'happen-sentence':
             const additions = getAdditions(ast.event.value, kb)
             return recomputeKbAfterAdditions(additions, kb)
         case 'has-formula':
-            if (!(isConst(ast.t1) && isConst(ast.t2) && isConst(ast.as))) throw new Error('cannot serialize formula with variables!')
-            const h: HasSentence = [ast.t1.value, ast.t2.value, ast.as.value]
+
+            const t1 = test(ast.t1, kb) as Atom
+            const t2 = test(ast.t2, kb) as Atom
+            const as = test(ast.as, kb) as Atom
+
+            if (!(isConst(t1) && isConst(t2) && isConst(as))) throw new Error('cannot serialize formula with variables!')
+
+            const h: HasSentence = [t1.value, t2.value, as.value]
             return recomputeKbAfterAdditions([h], kb)
         // return {
         //     wm : kb.wm.concat([h]),
         //     derivClauses : kb.derivClauses,
         // }
         case 'is-a-formula':
-            if (!(isConst(ast.t1) && isConst(ast.t2))) throw new Error('cannot serialize formula with variables!')
-            const i: IsASentence = [ast.t1.value, ast.t2.value]
+
+            const t11 = test(ast.t1, kb) as Atom
+            const t21 = test(ast.t2, kb) as Atom
+
+            if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
+            const i: IsASentence = [t11.value, t21.value]
             return {
                 wm: [...kb.wm, i],
                 derivClauses: kb.derivClauses,
@@ -70,9 +80,6 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
 
 export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
-
-    // console.log(eliminations)
-
     const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
     const final = filtered.concat(additions)
 
