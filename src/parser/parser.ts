@@ -188,7 +188,7 @@ class KoolerParser {
         } else {
             const result = this.parseTry(member.types, top + 1)
 
-            if (this.keywords.includes(result as string) && result?.length! > 1) {
+            if (this.keywords.includes(result as string) && (result?.length as number)! > 1) {
                 console.log(top, 'returning undefined because a keyword is being trated as identifier! for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
                 return undefined
             }
