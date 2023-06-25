@@ -12,7 +12,7 @@ type BaseMember<R = string, T = string> = {
     readonly role?: R // no role = exclude from ast
     readonly sep?: T // separator
     readonly expand?: boolean | 'keep-specific-type' // expand child into parent
-    readonly reduce?: boolean // list of chars to string
+    readonly reduce?: boolean | 'to-number' // list of chars to string
     readonly notEndWith?: string
     readonly types?: T[]
 }
@@ -45,6 +45,7 @@ export const isRepeatable = (c?: Cardinality) =>
 
 export type AstNode =
     string
+    | number
     | string[]
     | AstNode[]
     | { [x: string]: AstNode } & { type?: string }

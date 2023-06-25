@@ -68,16 +68,6 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
                     && as.value === hs[2]
             })) return true
             break
-        case 'greater-than':
-
-            const greater = test(formula.greater, kb) as Atom
-            const lesser = test(formula.lesser, kb) as Atom
-
-            if (
-                greater.type === 'number'
-                && lesser.type === 'number'
-            ) return greater.value > lesser.value
-            break
         case 'negation':
             if (!test(formula.f1, kb)) return true
             break
@@ -101,6 +91,8 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
                 case '-': return $(left - right).$
                 case '*': return $(left * right).$
                 case '/': return $(left / right).$
+                case '>': return left > right
+                case '<': return left < right
             }
 
     }

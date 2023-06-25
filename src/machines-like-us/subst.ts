@@ -16,10 +16,6 @@ export function subst(
     replacement: Atom,
 ): LLangAst {
 
-    // if (!isVar(variable)) {//TODO: remove
-    //     throw new Error('subst() got a non-var and non-list-pattern as a varish!')
-    // }
-
     switch (ast.type) {
         case 'equality':
             return {
@@ -109,12 +105,6 @@ export function subst(
                 type: 'generalized',
                 keys: newKeys,
                 after: subst(ast.after, variable, replacement),
-            }
-        case 'greater-than':
-            return {
-                type: 'greater-than',
-                greater: atomsEqual(variable, ast.greater) ? replacement : ast.greater,
-                lesser: atomsEqual(variable, ast.lesser) ? replacement : ast.lesser,
             }
         case 'anaphor':
             return {

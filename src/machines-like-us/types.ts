@@ -36,7 +36,6 @@ export type SimpleFormula =
     | AtomicFormula
     | Equality
     | GeneralizedSimpleFormula
-    | GreaterThanFormula
     | HappenSentence
 export type AtomicFormula =
     | IsAFormula
@@ -89,7 +88,7 @@ export type Anaphor = {
 
 export type MathExpression = {
     type: 'math-expression',
-    operator: '+' | '-' | '*' | '/',
+    operator: '+' | '-' | '*' | '/' | '>' | '<',
     left: Atom | MathExpression,
     right: Atom | MathExpression,
 }
@@ -100,12 +99,6 @@ export type GeneralizedSimpleFormula = {
         [key: string]: Atom
     },
     after: Atom,
-}
-
-export type GreaterThanFormula = {
-    type: 'greater-than',
-    greater: Atom,
-    lesser: Atom,
 }
 
 export type HappenSentence = {
@@ -138,8 +131,8 @@ export type HasFormula = {
 
 export type Conjunction = {
     type: 'conjunction',
-    f1: Formula,
-    f2: Formula,
+    f1: LLangAst,
+    f2: LLangAst,
 }
 
 export type Disjunction = {

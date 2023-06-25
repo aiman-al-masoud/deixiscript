@@ -1,5 +1,5 @@
 import { recomputeKb } from "./recomputeKb.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, GreaterThanFormula, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -105,7 +105,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    when(formula: ExpBuilder<Formula>): ExpBuilder<DerivationClause> {
+    when(formula: ExpBuilder<LLangAst>): ExpBuilder<DerivationClause> {
 
         if (!isFormulaWithAfter(this.exp)) {
             throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
@@ -119,19 +119,11 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    and(formula: ExpBuilder<Formula>): ExpBuilder<Conjunction> {
-
-        if (isAtom(this.exp)) {
-            throw new Error(``)
-        }
-
-        if (isAtom(formula.$)) {
-            throw new Error(``)
-        }
+    and(formula: ExpBuilder<LLangAst>): ExpBuilder<Conjunction> {
 
         return new ExpBuilder({
             type: 'conjunction',
-            f1: this.exp as Formula,
+            f1: this.exp,
             f2: formula.$,
         })
 
@@ -206,19 +198,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isGreaterThan(atom: WmAtom): ExpBuilder<GreaterThanFormula> {
-
-        if (!isAtom(this.exp)) {
-            throw new Error(``)
-        }
-
-        return new ExpBuilder({
-            type: 'greater-than',
-            greater: this.exp,
-            lesser: makeAtom(atom),
-        })
-
-    }
 
     get isNotTheCase() {
 
@@ -233,7 +212,6 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     dump(dcs?: DerivationClause[]) {
-        // return dump(this.exp, { wm: [], derivClauses: dcs ? dcs : [] })
         return recomputeKb(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
@@ -276,11 +254,11 @@ export class ExpBuilder<T extends LLangAst> {
         return this.mathOperation(ast, '/')
     }
 
-    get happens(): ExpBuilder<HappenSentence> {
+    isGreaterThan(atom: WmAtom) {
+        return this.mathOperation(atom, '>')
+    }
 
-        // if (this.exp.type !== 'constant') {
-        //     throw new Error('only a constant can be an event, and therefore happen')
-        // }
+    get happens(): ExpBuilder<HappenSentence> {
 
         return new ExpBuilder({
             type: 'happen-sentence',

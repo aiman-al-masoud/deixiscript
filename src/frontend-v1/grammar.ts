@@ -79,7 +79,7 @@ export const syntaxes: SyntaxMap<
         { number: '+', role: 'id', reduce: true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',] }
     ],
     digits: [
-        { number: '+', role: 'id', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
+        { number: '+', role: 'id', reduce: 'to-number', literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
     ],
     space: [
         { number: '+', literals: [' ', '\n', '\t'] }
@@ -248,7 +248,7 @@ export const syntaxes: SyntaxMap<
     ]
 }
 
-const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color', syntaxes })
+const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color', syntaxes })
 
 console.log(parser.parse())
 console.log(parser.parse())

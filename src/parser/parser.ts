@@ -1,4 +1,5 @@
 import { first } from "../utils/first.ts";
+import { parseNumber } from "../utils/parseNumber.ts";
 import { uniq } from "../utils/uniq.ts";
 import { CharStream, getCharStream } from "./char-stream.ts";
 import { dependencies, maxPrecedence } from "./max-precedence.ts";
@@ -132,7 +133,7 @@ class KoolerParser {
         }
     }
 
-    parseMemberRepeated(member: Member, top = 0): AstNode[] | string | undefined {
+    parseMemberRepeated(member: Member, top = 0): AstNode[] | string | number | undefined {
 
         const list: AstNode[] = []
         let memento = this.cs.getPos()
@@ -174,7 +175,12 @@ class KoolerParser {
 
         if (member.reduce) {
             maybeLog(this.log, top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
-            return list.map(x => x.toString()).reduce((a, b) => a + b)
+            const string = list.map(x => x.toString()).reduce((a, b) => a + b)
+            switch (member.reduce){
+                case 'to-number':
+                    return parseNumber(string)
+            }
+            return string
         }
 
         return list
