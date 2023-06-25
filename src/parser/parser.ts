@@ -28,10 +28,8 @@ class KoolerParser {
         readonly log: boolean,
     ) {
         this.cs = getCharStream(this.sourceCode)
-        this.syntaxList = Object.keys(this.syntaxes)
-        this.syntaxList.sort((a, b) => maxPrecedence(a, b, syntaxes)) // WHAT ORDER??? ASCENDING OR DESCENDING??
-        this.syntaxList = this.syntaxList.reverse() // ..........?????//
-        this.keywords = uniq(Object.values(this.syntaxes).flatMap(x => x.flatMap(x => x.literals ?? []))) //.filter(x=>x.length > 1) //BAD
+        this.syntaxList = getSyntaxList(this.syntaxes)
+        this.keywords = getKeywords(this.syntaxes)
         maybeLog(this.log, 'syntaxList=', this.syntaxList)
         maybeLog(this.log, 'keywords=', this.keywords)
     }
@@ -239,3 +237,31 @@ function maybeLog(log: boolean, ...message: unknown[]) {
     if (log) console.log(...message)
 }
 
+function getSyntaxList(syntaxes: SyntaxMap) {
+    let syntaxList: string[]
+    syntaxList = [
+        "math-expression", "generalized",
+        "formula", "if-else",
+        "derived-prop", "disjunction",
+        "conjunction", "atom",
+        "anaphor", "existquant",
+        "negation", "simple-formula",
+        "has-formula", "is-a-formula",
+        "equality", "after-clause",
+        "list-literal", "list-pattern",
+        "constant", "happen-sentence",
+        "variable", "entity",
+        "boolean", "number",
+        "identifier", "space",
+        "digits", "word"
+    ]
+    // IMPORTANT
+    syntaxList = Object.keys(syntaxes)
+    syntaxList.sort((a, b) => maxPrecedence(a, b, syntaxes)) // WHAT ORDER??? ASCENDING OR DESCENDING??
+    syntaxList = syntaxList.reverse() // ..........?????//
+    return syntaxList
+}
+
+function getKeywords(syntaxes: SyntaxMap) {
+    return uniq(Object.values(syntaxes).flatMap(x => x.flatMap(x => x.literals ?? []))) //.filter(x=>x.length > 1) //BAD
+}

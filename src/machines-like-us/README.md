@@ -46,7 +46,7 @@
 - recomputeKb() and test() DO HAVE side effects; not for what concerns the world
   model and derivation clauses, but on the deictic dictionary.
 
-- at the basic level there is nothing but: entities, is-a and has relations.
+- at the basic level there is nothing but: entities, is-a-relations and has-relations. This is the "interface" through which Deixiscript communicates with the outside world, including JS.
 
 Use generalized ASTs to implement sentences:
 
