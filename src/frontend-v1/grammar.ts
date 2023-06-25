@@ -21,6 +21,9 @@ const astTypes = stringLiterals(
     'entity',
     'number',
     'boolean',
+    'conjunction',
+    'formula',
+    'disjunction',
 )
 
 const roles = stringLiterals(
@@ -37,6 +40,8 @@ const roles = stringLiterals(
     'after',
     'as',
     'value',
+    'f1',
+    'f2',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -129,11 +134,34 @@ export const syntaxes: SyntaxMap<
     ],
     'simple-formula': [
         { types: ['is-a-formula', 'equality', 'has-formula'], expand: 'keep-specific-type' } // order: "is a" before "is"
-    ]
+    ],
+    conjunction: [
+        { types: ['simple-formula'], role: 'f1' },
+        { types: ['space'], number: '*' },
+        { literals: ['and'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'f2' },
+    ],
+
+    formula: [
+        { types: ['conjunction', 'disjunction', 'simple-formula',], expand: 'keep-specific-type' } // order!
+    ],
+
+    disjunction: [
+        { types: ['simple-formula'], role: 'f1' },
+        { types: ['space'], number: '*' },
+        { literals: ['or'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'f2' },
+    ],
+
+
 }
 
-const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true', syntaxes })
+const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo', syntaxes })
 
+console.log(parser.parse())
+console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
