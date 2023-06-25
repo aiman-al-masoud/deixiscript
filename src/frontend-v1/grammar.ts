@@ -24,6 +24,8 @@ const astTypes = stringLiterals(
     'conjunction',
     'formula',
     'disjunction',
+    'negation',
+    'existquant',
 )
 
 const roles = stringLiterals(
@@ -42,6 +44,8 @@ const roles = stringLiterals(
     'value',
     'f1',
     'f2',
+    'variable',
+    'where',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -144,7 +148,7 @@ export const syntaxes: SyntaxMap<
     ],
 
     formula: [
-        { types: ['conjunction', 'disjunction', 'simple-formula',], expand: 'keep-specific-type' } // order!
+        { types: ['conjunction', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
     ],
 
     disjunction: [
@@ -155,10 +159,27 @@ export const syntaxes: SyntaxMap<
         { types: ['formula'], role: 'f2' },
     ],
 
+    negation: [
+        { literals: ['it is not the case that'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'f1' },
+    ],
+
+    existquant: [
+        { literals: ['there exists a'] },
+        { types: ['space'], number: '*' },
+        { types: ['variable'], role: 'variable' },
+        { types: ['space'], number: '*' },
+        { literals: ['where'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'where' },
+    ]
+
+
 
 }
 
-const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo', syntaxes })
+const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color', syntaxes })
 
 console.log(parser.parse())
 console.log(parser.parse())
@@ -176,4 +197,9 @@ console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
+console.log(parser.parse())
+console.log(parser.parse())
+console.log(parser.parse())
+console.log(parser.parse())
+
 
