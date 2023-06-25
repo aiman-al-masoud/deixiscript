@@ -31,6 +31,7 @@ const astTypes = stringLiterals(
     'math-expression',
     'happen-sentence',
     'generalized',
+    'anaphor',
 )
 
 const roles = stringLiterals(
@@ -62,6 +63,8 @@ const roles = stringLiterals(
     'event',
     'subject',
     'verb',
+    'head',
+    'description',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -109,7 +112,7 @@ export const syntaxes: SyntaxMap<
         { literals: [']'] },
     ],
     atom: [
-        { types: ['list-pattern', 'list-literal', 'variable', 'constant',], expand: 'keep-specific-type' }
+        { types: ['list-pattern', 'anaphor', 'list-literal', 'variable', 'constant',], expand: 'keep-specific-type' }
     ],
     'list-pattern': [
         { types: ['variable', 'constant'], role: 'seq' },
@@ -232,12 +235,23 @@ export const syntaxes: SyntaxMap<
         { types: ['atom'], role: 'verb' },
         // TODO complete with complements...
         // TODO: not in the form required by the interpreter yet
-    ]
+    ],
 
+    anaphor: [
+        { literals: ['the'] },
+        { types: ['space'], number: '*' },
+        { types: ['variable'], role: 'head' },
+        { types: ['space'], number: '*' },
+        { literals: ['such that'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'description' },
+    ]
 }
 
-const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb', syntaxes })
+const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color', syntaxes })
 
+console.log(parser.parse())
+console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
