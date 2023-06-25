@@ -17,6 +17,7 @@ const astTypes = stringLiterals(
     'has-formula',
     'after-clause',
     'simple-formula',
+    'word',
 )
 
 const roles = stringLiterals(
@@ -42,14 +43,18 @@ export const syntaxes: SyntaxMap<
     Role,
     StType
 > = {
-    space: [
-        { number: '+', literals: [' ', '\n', '\t'] }
-    ],
-    identifier: [
+
+    word: [
         { number: '+', role: 'id', reduce: true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',] }
     ],
     number: [
         { number: '+', role: 'id', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
+    ],
+    space: [
+        { number: '+', literals: [' ', '\n', '\t'] }
+    ],
+    identifier: [
+        { types: ['word'], expand: true, reduce: true }
     ],
     constant: [
         { types: ['identifier'], role: 'value' },
@@ -117,8 +122,6 @@ export const syntaxes: SyntaxMap<
 
 const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has stupid as intelligence after [eventxy] ', syntaxes })
 
-const result = parser.parse()
-console.log(result)
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
@@ -131,3 +134,5 @@ console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
+console.log(parser.parse())
+
