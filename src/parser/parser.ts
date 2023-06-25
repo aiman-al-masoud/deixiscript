@@ -176,10 +176,6 @@ class KoolerParser {
         if (member.reduce) {
             maybeLog(this.log, top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
             const string = list.map(x => x.toString()).reduce((a, b) => a + b)
-            switch (member.reduce){
-                case 'to-number':
-                    return parseNumber(string)
-            }
             return string
         }
 
