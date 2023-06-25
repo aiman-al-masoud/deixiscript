@@ -333,7 +333,7 @@ function makeAtom(x: WmAtom | WmAtom[]): Atom {
         const [name, varType] = x.split(':')
         return { type: 'variable', name, varType }
     } else {
-        return { type: 'constant', value: x }
+        return { type: 'entity', value: x }
     }
 
 }

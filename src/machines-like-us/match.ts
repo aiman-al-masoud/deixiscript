@@ -68,7 +68,7 @@ export function match(template: SimpleFormula | Atom, f: LLangAst): VarMap | und
 
         return reduceMatchList([m1, m2])
 
-    } else if (template.type === 'constant' && f.type === 'constant') {
+    } else if (template.type === 'entity' && f.type === 'entity') {
         return template.value === f.value ? deepMapOf() : undefined
     } else if (template.type === 'variable' && isAtom(f)) {
         return deepMapOf([[template, f]])

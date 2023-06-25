@@ -22,7 +22,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
         case 'boolean':
             return formula.value
         case 'number':
-        case 'constant':
+        case 'entity':
             kb.deicticDict[formula.value] ??= 0
             kb.deicticDict[formula.value]++
             return formula

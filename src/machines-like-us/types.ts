@@ -50,7 +50,7 @@ export type CompositeFormula =
     | IfElse
 
 export type Entity = {
-    type: 'constant',
+    type: 'entity',
     value: string
 }
 
@@ -177,7 +177,7 @@ export function isVar(t: Atom): t is Variable {
 }
 
 export function isConst(t: Atom): t is Constant {
-    return t.type === 'constant'
+    return t.type === 'entity'
         || t.type === 'number'
         || t.type === 'boolean'
 }
@@ -222,7 +222,7 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
     if (isWmAtom(ast)) return false
 
     return ast.type === 'variable'
-        || ast.type === 'constant'
+        || ast.type === 'entity'
         || ast.type === 'list-literal'
         || ast.type === 'list-pattern'
         || ast.type === 'boolean'

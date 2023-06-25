@@ -25,7 +25,7 @@ export function getAtoms(ast: LLangAst): Atom[] {
             return ast.list.flatMap(x => getAtoms(x))
         case 'list-pattern':
             return [ast.seq, ast.tail]
-        case 'constant':
+        case 'entity':
         case 'variable':
         case 'boolean':
             return [ast]

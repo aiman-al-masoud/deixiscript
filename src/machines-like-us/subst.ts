@@ -96,7 +96,7 @@ export function subst(
 
         case 'variable':
             return atomsEqual(ast, variable) ? replacement : ast
-        case 'constant':
+        case 'entity':
         case 'boolean':
         case 'number':
             return ast
