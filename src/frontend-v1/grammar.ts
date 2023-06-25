@@ -32,7 +32,6 @@ const astTypes = stringLiterals(
     'happen-sentence',
     'generalized',
     'anaphor',
-
     'command',
     'question',
 )
