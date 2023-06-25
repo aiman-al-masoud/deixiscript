@@ -32,6 +32,7 @@ const roles = stringLiterals(
     't2',
     'after',
     'as',
+    'value',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -51,9 +52,7 @@ export const syntaxes: SyntaxMap<
         { number: '+', role: 'id', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
     ],
     constant: [
-        { types: ['identifier'], role: 'name' },
-        { literals: ['#'] },
-        { types: ['number'], role: 'number' },
+        { types: ['identifier'], role: 'value' },
     ],
     variable: [
         { types: ['identifier'], role: 'name' },
@@ -85,7 +84,9 @@ export const syntaxes: SyntaxMap<
     "is-a-formula": [
         { types: ['atom'], role: 't1' },
         { types: ['space'], number: '*' },
-        { literals: ['is a'] },
+        { literals: ['is'] },
+        { types: ['space'], number: '+' },
+        { literals: ['a'] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 't2' },
         { types: ['space'], number: '*' },
@@ -110,11 +111,11 @@ export const syntaxes: SyntaxMap<
         { types: ['after-clause'], expand: true, number: '1|0' },
     ],
     'simple-formula': [
-        { types: ['equality', 'is-a-formula', 'has-formula'], expand: 'keep-specific-type' }
+        { types: ['is-a-formula', 'equality', 'has-formula'], expand: 'keep-specific-type' } // order: "is a" before "is"
     ]
 }
 
-const parser = getParser({ sourceCode: 'x:capra capra#1  [x:capra y:capra capra#1 ] x:seq|e:event  capra#1 is capra#1  x:scemo is a capra#0 after [event#1]   x:capra has stupidity#0 as intelligence#1', syntaxes })
+const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has stupid as intelligence after [eventxy] ', syntaxes })
 
 const result = parser.parse()
 console.log(result)
