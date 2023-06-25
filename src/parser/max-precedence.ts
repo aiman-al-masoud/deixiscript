@@ -1,22 +1,21 @@
 import { SyntaxMap } from "./types.ts";
 
+type t = { [x: string]: string[] }
 
-export const maxPrecedence = (a: string, b: string, syntaxes: SyntaxMap) => {
-
+export const maxPrecedence = (a: string, b: string, deps: t) => {
     return idCompare(a, b) ??
-        dependencyCompare(a, b, syntaxes) ??
-        lenCompare(a, b, syntaxes)
-
+        dependencyCompare(a, b, deps) ??
+        lenCompare(a, b, deps)
 }
 
 const idCompare = (a: string, b: string) => {
     return a == b ? 0 : undefined
 }
 
-const dependencyCompare = (a: string, b: string, syntaxes: SyntaxMap) => {
+const dependencyCompare = (a: string, b: string, deps: t) => {
 
-    const aDependsOnB = dependencies(a, syntaxes).includes(b) // could be memoized?
-    const bDependsOnA = dependencies(b, syntaxes).includes(a)
+    const aDependsOnB = deps[a].includes(b)
+    const bDependsOnA = deps[b].includes(a)
 
     if (aDependsOnB === bDependsOnA) {
         return undefined
@@ -35,14 +34,13 @@ export function dependencies(a: string, syntaxes: SyntaxMap, visited: string[] =
         if (visited.includes(t)) {
             return []
         } else {
-            return [...visited, ...dependencies(t as string, syntaxes, [...visited, t])]
+            return [...visited, ...dependencies(t, syntaxes, [...visited, t])]
         }
 
     })
 
 }
 
-const lenCompare = (a: string, b: string, syntaxes: SyntaxMap) => {
-    return dependencies(a, syntaxes).length - dependencies(b, syntaxes).length
+const lenCompare = (a: string, b: string, deps: t) => {
+    return deps[a].length - deps[b].length
 }
-

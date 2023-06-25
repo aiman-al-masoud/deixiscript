@@ -1,7 +1,7 @@
 import { first } from "../utils/first.ts";
 import { uniq } from "../utils/uniq.ts";
 import { CharStream, getCharStream } from "./char-stream.ts";
-import { maxPrecedence } from "./max-precedence.ts";
+import { dependencies, maxPrecedence } from "./max-precedence.ts";
 import { Syntax, isNecessary, Member, isRepeatable, LiteralMember, AstNode, SyntaxMap } from "./types.ts";
 
 export function getParser(args: {
@@ -238,27 +238,9 @@ function maybeLog(log: boolean, ...message: unknown[]) {
 }
 
 function getSyntaxList(syntaxes: SyntaxMap) {
-    let syntaxList: string[]
-    syntaxList = [
-        "math-expression", "generalized",
-        "formula", "if-else",
-        "derived-prop", "disjunction",
-        "conjunction", "atom",
-        "anaphor", "existquant",
-        "negation", "simple-formula",
-        "has-formula", "is-a-formula",
-        "equality", "after-clause",
-        "list-literal", "list-pattern",
-        "constant", "happen-sentence",
-        "variable", "entity",
-        "boolean", "number",
-        "identifier", "space",
-        "digits", "word"
-    ]
-    // IMPORTANT
-    syntaxList = Object.keys(syntaxes)
-    syntaxList.sort((a, b) => maxPrecedence(a, b, syntaxes)) // WHAT ORDER??? ASCENDING OR DESCENDING??
-    syntaxList = syntaxList.reverse() // ..........?????//
+    const syntaxList = Object.keys(syntaxes)
+    const deps = Object.fromEntries(syntaxList.map(x => [x, dependencies(x, syntaxes)]))
+    syntaxList.sort((a, b) => maxPrecedence(b, a, deps)) // descending, max precedence first
     return syntaxList
 }
 
