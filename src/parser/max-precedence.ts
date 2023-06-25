@@ -15,7 +15,7 @@ const idCompare = (a: string, b: string) => {
 
 const dependencyCompare = (a: string, b: string, syntaxes: { [x in string]: Syntax }) => {
 
-    const aDependsOnB = dependencies(a, syntaxes).includes(b)
+    const aDependsOnB = dependencies(a, syntaxes).includes(b) // could be memoized?
     const bDependsOnA = dependencies(b, syntaxes).includes(a)
 
     if (aDependsOnB === bDependsOnA) {
