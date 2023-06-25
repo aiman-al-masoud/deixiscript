@@ -231,6 +231,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'verb' },
         // TODO complete with complements...
+        // TODO: not in the form required by the interpreter yet
     ]
 
 }
