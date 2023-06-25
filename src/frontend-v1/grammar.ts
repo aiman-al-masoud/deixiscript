@@ -26,6 +26,7 @@ const astTypes = stringLiterals(
     'disjunction',
     'negation',
     'existquant',
+    'derived-prop',
 )
 
 const roles = stringLiterals(
@@ -46,6 +47,8 @@ const roles = stringLiterals(
     'f2',
     'variable',
     'where',
+    'conseq',
+    'when',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -148,7 +151,7 @@ export const syntaxes: SyntaxMap<
     ],
 
     formula: [
-        { types: ['conjunction', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
+        { types: ['conjunction', 'derived-prop', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
     ],
 
     disjunction: [
@@ -173,13 +176,19 @@ export const syntaxes: SyntaxMap<
         { literals: ['where'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'where' },
-    ]
-
-
+    ],
+    'derived-prop': [
+        { types: ['simple-formula'], role: 'conseq' },
+        { types: ['space'], number: '*' },
+        { literals: ['when'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'when' },
+    ],
+    
 
 }
 
-const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color', syntaxes })
+const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color', syntaxes })
 
 console.log(parser.parse())
 console.log(parser.parse())
@@ -201,5 +210,8 @@ console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
+console.log(parser.parse())
+console.log(parser.parse())
+
 
 
