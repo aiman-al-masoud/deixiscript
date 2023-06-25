@@ -1,31 +1,39 @@
 import { first } from "../utils/first.ts";
 import { uniq } from "../utils/uniq.ts";
-import { getCharStream } from "./char-stream.ts";
+import { CharStream, getCharStream } from "./char-stream.ts";
 import { maxPrecedence } from "./max-precedence.ts";
 import { Syntax, isNecessary, Member, isRepeatable, LiteralMember, AstNode, SyntaxMap } from "./types.ts";
 
-
-
-export function getParser(sourceCode: string, syntaxes: SyntaxMap) {
-    return new KoolerParser(sourceCode, syntaxes)
+export function getParser(args: {
+    sourceCode: string,
+    syntaxes: SyntaxMap,
+    log?: boolean,
+}) {
+    return new KoolerParser(
+        args.sourceCode,
+        args.syntaxes,
+        !!args.log
+    )
 }
 
 class KoolerParser {
 
     protected syntaxList: string[]
     readonly keywords: string[]
+    readonly cs: CharStream
 
     constructor(
         readonly sourceCode: string,
         readonly syntaxes: SyntaxMap,
-        readonly cs = getCharStream(sourceCode),
+        readonly log: boolean,
     ) {
+        this.cs = getCharStream(this.sourceCode)
         this.syntaxList = Object.keys(this.syntaxes)
         this.syntaxList.sort((a, b) => maxPrecedence(a, b, syntaxes)) // WHAT ORDER??? ASCENDING OR DESCENDING??
         this.syntaxList = this.syntaxList.reverse() // ..........?????//
         this.keywords = uniq(Object.values(this.syntaxes).flatMap(x => x.flatMap(x => x.literals ?? []))) //.filter(x=>x.length > 1) //BAD
-        console.log('syntaxList=', this.syntaxList)
-        console.log('keywords=', this.keywords)
+        maybeLog(this.log, 'syntaxList=', this.syntaxList)
+        maybeLog(this.log, 'keywords=', this.keywords)
     }
 
     parse(): AstNode | undefined {
@@ -36,15 +44,13 @@ class KoolerParser {
 
         for (const syntaxName of syntaxList) {
 
-            console.log(top, 'try parsing:', syntaxName)
+            maybeLog(this.log, top, 'try parsing:', syntaxName)
 
             const memento = this.cs.getPos()
             const syntax = this.syntaxes[syntaxName]
             const ast = this.parseSyntax(syntax, syntaxName, top)
 
-            // console.log('ast.type=', (ast as any)?.type)
-
-            if (ast && ast instanceof Object && !(ast as any).type) {
+            if (ast && typeof ast === 'object' && !('type' in ast)) {
                 return { ...ast, type: syntaxName }
             }
 
@@ -66,12 +72,12 @@ class KoolerParser {
             const node = this.parseMemberMaybeRepeated(member, top)
 
             if (!node && isNecessary(member.number)) {
-                console.log(top, syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
+                maybeLog(this.log, top, syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
                 return undefined
             }
 
             if (!node) { // and isNecessary=false
-                console.log(top, syntaxName, 'unrequired', member.role ?? member.literals ?? member.types, 'not found, ignored', 'pos=', this.cs.getPos())
+                maybeLog(this.log, top, syntaxName, 'unrequired', member.role ?? member.literals ?? member.types, 'not found, ignored', 'pos=', this.cs.getPos())
                 continue
             }
 
@@ -90,7 +96,6 @@ class KoolerParser {
             if (member.expand && !(node instanceof Array)) { // dictionary ast case
 
                 const entries = Object.entries(node)
-                // entries.forEach(e => roles.includes(e[0]) && (ast[e[0]] = e[1]))
 
                 entries.forEach(e => {
 
@@ -102,13 +107,11 @@ class KoolerParser {
 
                 if (member.expand === 'keep-specific-type') {
                     ast['type'] = (node as { [x: string]: string })['type']
-                    // console.log('keep type=', ast['type'])
                 }
 
             }
 
             if (member.expand && (node instanceof Array)) {
-                // console.log('EXPAND ARRAY!', node, 'on', ast)
                 node.forEach(n => {
                     const entries = Object.entries(n).filter(e => e[0] !== 'type')
                     entries.forEach(e => {
@@ -122,8 +125,7 @@ class KoolerParser {
         return ast
     }
 
-    parseMemberMaybeRepeated(member: Member, top = 0) {
-        // isNecessary has already been taken care of
+    parseMemberMaybeRepeated(member: Member, top = 0) {  // isNecessary has already been taken care of
 
         if (isRepeatable(member.number)) {
             return this.parseMemberRepeated(member, top)
@@ -153,35 +155,34 @@ class KoolerParser {
             list.push(node)
 
             if (member.sep) {
-                console.log(top, 'parseMemberRepeated before skipping a separator=', 'pos=', this.cs.getPos())
+                maybeLog(this.log, top, 'parseMemberRepeated before skipping a separator=', 'pos=', this.cs.getPos())
                 this.parseMemberSingle({ types: [member.sep] }, top)
-                console.log(top, 'parseMemberRepeated skipped a separator=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
+                maybeLog(this.log, top, 'parseMemberRepeated skipped a separator=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
             }
 
         }
 
         if (member.number === 'all-but-last') {
-            console.log(top, 'have to backtrack, old list len=', list.length, 'pos=', this.cs.getPos())
+            maybeLog(this.log, top, 'have to backtrack, old list len=', list.length, 'pos=', this.cs.getPos())
             list.pop()
             this.cs.backTo(memento)
-            console.log(top, 'backtrack, parseMemberRepeated pop from list of=', member.role ?? member.literals ?? member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
+            maybeLog(this.log, top, 'backtrack, parseMemberRepeated pop from list of=', member.role ?? member.literals ?? member.types, 'new list len=', list.length, 'pos=', this.cs.getPos())
         }
 
         if (!list.length) {
-            console.log(top, 'parseMemberRepeated empty list for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
+            maybeLog(this.log, top, 'parseMemberRepeated empty list for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
             return undefined
         }
 
         if (member.reduce) {
-            console.log(top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
+            maybeLog(this.log, top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
             return list.map(x => x.toString()).reduce((a, b) => a + b)
         }
 
         return list
     }
 
-    parseMemberSingle(member: Member, top = 0): AstNode | string | undefined {
-        // doesn't have to take care about number
+    parseMemberSingle(member: Member, top = 0): AstNode | string | undefined { // doesn't have to take care about number
 
         if (member.literals) {
             return this.parseLiteral(member)
@@ -189,7 +190,7 @@ class KoolerParser {
             const result = this.parseTry(member.types, top + 1)
 
             if (this.keywords.includes(result as string) && (result?.length as number)! > 1) {
-                console.log(top, 'returning undefined because a keyword is being trated as identifier! for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
+                maybeLog(this.log, top, 'returning undefined because a keyword is being trated as identifier! for=', member.role ?? member.literals ?? member.types, 'pos=', this.cs.getPos())
                 return undefined
             }
 
@@ -232,5 +233,9 @@ class KoolerParser {
         return literal
     }
 
+}
+
+function maybeLog(log: boolean, ...message: unknown[]) {
+    if (log) console.log(...message)
 }
 

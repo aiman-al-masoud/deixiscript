@@ -2,13 +2,13 @@ import { assertObjectMatch } from 'https://deno.land/std@0.186.0/testing/asserts
 import { getParser } from '../parser/parser.ts';
 import { syntaxes } from './grammar.ts';
 
-const $ = (sourceCode: string) => getParser(sourceCode, syntaxes)
+const $ = (sourceCode: string) => getParser({ sourceCode, syntaxes, log: false })
 
 Deno.test({
     name: 'test1',
     fn: () => {
         const r = $('the best buruf of calabria').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             head: 'buruf',
             modifiers: ['best'],
@@ -25,7 +25,7 @@ Deno.test({
     name: 'test2',
     fn: () => {
         const r = $('x of matrix is red').parse()
-        console.log(r)
+        // console.log(r)
 
         assertObjectMatch(r as object, {
             subject: {
@@ -47,7 +47,7 @@ Deno.test({
     name: 'test3',
     fn: () => {
         const r = $('if x is big then y is small').parse()
-        console.log(r)
+        // console.log(r)
 
         assertObjectMatch(r as object, {
             condition: {
@@ -70,7 +70,7 @@ Deno.test({
     name: 'test4',
     fn: () => {
         const r = $('x is not red').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             subject: { head: "x", type: "noun-phrase" },
             negation: "not",
@@ -84,7 +84,7 @@ Deno.test({
     name: 'test5',
     fn: () => {
         const r = $("the car's door").parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             owner: 'car',
             head: 'door',
@@ -96,7 +96,7 @@ Deno.test({
     name: 'test6',
     fn: () => {
         const r = $('the cat does eat the rat').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             subject: { head: "cat", type: "noun-phrase" },
             verb: "eat",
@@ -111,7 +111,7 @@ Deno.test({
     name: 'test7',
     fn: () => {
         const r = $('x is more stupid than y').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             subject: { head: "x", type: "noun-phrase" },
             comparison: "stupid",
@@ -126,7 +126,7 @@ Deno.test({
     name: 'test8',
     fn: () => {
         const r = $('a counter has a number as a value').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             subject: { head: "counter", type: "noun-phrase" },
             object: { head: "number", type: "noun-phrase" },
@@ -141,7 +141,7 @@ Deno.test({
     name: 'test9',
     fn: () => {
         const r = $('the cat does eat the mouse and the cat does enjoy it').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             first: {
                 subject: { head: "cat", type: "noun-phrase" },
@@ -164,7 +164,7 @@ Deno.test({
     name: 'test10',
     fn: () => {
         const r = $('a button where it is green').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             head: "button",
             suchThat: {
@@ -181,7 +181,7 @@ Deno.test({
     name: 'test11',
     fn: () => {
         const r = $('you do give a five to me in the car').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             subject: { head: "you", type: "noun-phrase" },
             verb: "give",
@@ -197,7 +197,7 @@ Deno.test({
     name: 'test12',
     fn: () => {
         const r = $('there is a red cat').parse()
-        console.log(r)
+        // console.log(r)
         assertObjectMatch(r as object, {
             subject: { modifiers: ["red"], head: "cat", type: "noun-phrase" },
             type: "there-is-sentence"
