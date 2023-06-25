@@ -28,6 +28,7 @@ const astTypes = stringLiterals(
     'existquant',
     'derived-prop',
     'if-else',
+    'math-expression',
 )
 
 const roles = stringLiterals(
@@ -53,6 +54,9 @@ const roles = stringLiterals(
     'condition',
     'then',
     'otherwise',
+    'left',
+    'right',
+    'operator',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -155,7 +159,7 @@ export const syntaxes: SyntaxMap<
     ],
 
     formula: [
-        { types: [ 'if-else', 'conjunction', 'derived-prop', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
+        { types: ['if-else', 'conjunction', 'derived-prop', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
     ],
 
     disjunction: [
@@ -200,12 +204,19 @@ export const syntaxes: SyntaxMap<
         { literals: ['else'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'otherwise' },
-    ]
+    ],
 
+    'math-expression': [
+        { types: ['atom'], role: 'left' },
+        { types: ['space'], number: '*' },
+        { literals: ['+', '-', '*', '/'], role: 'operator' },
+        { types: ['space'], number: '*' },
+        { types: ['atom', 'math-expression'], role: 'right' },
+    ]
 
 }
 
-const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart', syntaxes })
+const parser = getParser({ sourceCode: 'x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra', syntaxes })
 
 console.log(parser.parse())
 console.log(parser.parse())
@@ -229,6 +240,9 @@ console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
+console.log(parser.parse())
+console.log(parser.parse())
+
 
 
 
