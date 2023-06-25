@@ -1,5 +1,4 @@
 import { first } from "../utils/first.ts";
-import { parseNumber } from "../utils/parseNumber.ts";
 import { uniq } from "../utils/uniq.ts";
 import { CharStream, getCharStream } from "./char-stream.ts";
 import { dependencies, maxPrecedence } from "./max-precedence.ts";
