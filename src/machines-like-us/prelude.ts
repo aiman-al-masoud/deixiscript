@@ -37,15 +37,15 @@ const derivationClauses: DerivationClause[] = [
             .and($('nr:thing').has('value:thing').as('object'))
     ).$,
 
-    // cancel annotation // annot: subject copula-verb predicate("cancelled") ablative
-    $({ ann: 'ann:thing', cancels: 'old:thing', fromConcept: 'concept:thing' }).when(
+    // cancel annotation
+    $({ annotation: 'ann:thing', subject: 'old:thing', verb:'be', object:'cancelled', ablative: 'concept:thing' }).when(
         $('concept:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('cancel-annotation'))
             .and($('ann:thing').has('old:thing').as('subject'))
     ).$,
 
     // default annotation
-    $({ ann: 'ann:thing', property: 'prop:thing', ofConcept: 'concept:thing', defaultsTo: 'default:thing' }).when(
+    $({ annotation: 'ann:thing', subject: 'prop:thing', owner: 'concept:thing',  verb:'default', recipient: 'default:thing' }).when(
         $('concept:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('default-annotation'))
             .and($('ann:thing').has('prop:thing').as('subject'))

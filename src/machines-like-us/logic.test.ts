@@ -117,7 +117,7 @@ const model: WorldModel =
         .and($({ subject: 'closed',verb:'extend', object: 'state' }))
         .and($({ subject: 'state', verb:'extend', object: 'thing' }))
         .and($({ subject: 'event', modal: 'can', verb: 'have', object: 'duration' }))
-        .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
+        .and($({ annotation: 'ann#41', subject: 'nr#2', verb:'be', object:'cancelled', ablative: 'multiple-birth-event' }))
         .and($({ subject: 'agent', verb:'extend', object: 'thing' }))
         .and($({ subject: 'agent', modal: 'can', verb: 'have', object: 'movement' }))
         .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
