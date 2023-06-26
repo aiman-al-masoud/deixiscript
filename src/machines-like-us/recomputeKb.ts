@@ -5,7 +5,7 @@ import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { test } from "./test.ts";
-import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
+import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
 import { getConceptsOf } from "./wm-funcs.ts";
 
 /**
@@ -32,10 +32,10 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             const t21 = test(ast.t2, kb) as Atom
 
             if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
-            const i: IsASentence = [t11.value, t21.value]
+            const additions2: WorldModel = [[t11.value, t21.value]]
             return {
                 ...kb,
-                wm: [...kb.wm, i],
+                wm: addWorldModels(kb.wm, additions2),
             }
         case 'conjunction':
             const kb1 = recomputeKb(ast.f1, kb)
@@ -134,7 +134,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
 }
 
-function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
+function getExcludedBy(h: HasSentence, kb: KnowledgeBase) { //TODO: refactor & optmizie
     const concepts = getConceptsOf(h[0], kb.wm)
 
     const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
@@ -143,7 +143,7 @@ function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
         qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
 
 
-    //TODO: refactor-----
+    //--------
     const qs2 =
         concepts.map(c => $({ ann: 'x:only-one-annotation', onlyHaveOneOf: h[2], onConcept: c }))
 
