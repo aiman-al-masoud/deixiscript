@@ -213,3 +213,20 @@ Deno.test({
         assertEquals(r as object, undefined)
     }
 })
+
+Deno.test({
+    name: 'test14',
+    fn: () => {
+        const parser = getParser({ syntaxes })
+        const x = parser.parse('1 2 3')
+        const y = parser.parse()
+        const z = parser.parse()
+        const w = parser.parse()
+        const k = parser.parse()
+        assertEquals(x, '1')
+        assertEquals(y, { type: "space" })
+        assertEquals(z, '2')
+        assertEquals(w, { type: "space" })
+        assertEquals(k, '3')
+    }
+})

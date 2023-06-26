@@ -30,8 +30,12 @@ class KoolerParser {
         maybeLog(this.log, 'keywords=', this.keywords)
     }
 
-    parse(sourceCode: string): AstNode | undefined {
-        this.cs = getCharStream(sourceCode)
+    parse(sourceCode?: string): AstNode | undefined {
+
+        if (sourceCode) {
+            this.cs = getCharStream(sourceCode)
+        }
+
         return this.parseTry(this.syntaxList)
     }
 
