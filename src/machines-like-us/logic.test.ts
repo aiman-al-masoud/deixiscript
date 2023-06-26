@@ -108,19 +108,11 @@ const model: WorldModel =
         .and($({ subject: 'birth-event', canHaveA: 'baby' }))
         .and($({ subject: 'birth-event', canHaveA: 'time' }))
         .and($({ subject: 'birth-event', canHaveA: 'location' }))
-
-        // .and($({ vr: 'vr#1', part: 'mother', ofConcept: 'birth-event', isA: 'woman' }))
         .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', predicate: 'woman' }))
-
-
-        .and($({ nr: 'nr#1', part: 'mother', ofConcept: 'birth-event', amountsTo: 1 }))
-        .and($({ nr: 'nr#2', part: 'baby', ofConcept: 'birth-event', amountsTo: 1 }))
+        .and($({ annotation: 'nr#1', subject: 'mother', owner: 'birth-event', verb: 'amount', recipient: 1 }))
+        .and($({ annotation: 'nr#2', subject: 'baby', owner: 'birth-event', verb: 'amount', recipient: 1 }))
         .and($({ subject: 'person', canHaveA: 'birth' }))
-
-        // .and($({ vr: 'vr#2', part: 'birth', ofConcept: 'person', isA: 'birth-event' }))
         .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', predicate: 'birth-event' }))
-
-
         .and($({ subject: 'open', isAKindOf: 'state' }))
         .and($({ subject: 'closed', isAKindOf: 'state' }))
         .and($({ subject: 'state', isAKindOf: 'thing' }))
@@ -128,11 +120,7 @@ const model: WorldModel =
         .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
         .and($({ subject: 'agent', isAKindOf: 'thing' }))
         .and($({ subject: 'agent', canHaveA: 'movement' }))
-
-        // .and($({ vr: 'vr#43', part: 'movement', ofConcept: 'agent', isA: 'move-event' }))
         .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', predicate: 'move-event' }))
-
-
         .and($({ subject: 'person', isAKindOf: 'agent' }))
         .and($({ subject: 'woman', isAKindOf: 'person' }))
         .and($({ subject: 'woman', isAKindOf: 'person' }))
