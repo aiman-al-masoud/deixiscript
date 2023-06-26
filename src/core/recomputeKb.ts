@@ -4,7 +4,7 @@ import { getAtoms } from "./getAtoms.ts";
 import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
-import { test } from "./test.ts";
+import { ask } from "./ask.ts";
 import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
 import { getConceptsOf } from "./wm-funcs.ts";
 
@@ -38,9 +38,9 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
             }
         case 'has-formula':
             {
-                const t1 = test(ast.t1, kb) as Atom
-                const t2 = test(ast.t2, kb) as Atom
-                const as = test(ast.as, kb) as Atom
+                const t1 = ask(ast.t1, kb) as Atom
+                const t2 = ask(ast.t2, kb) as Atom
+                const as = ask(ast.as, kb) as Atom
                 if (!(isConst(t1) && isConst(t2) && isConst(as))) throw new Error('cannot serialize formula with variables!')
 
                 const additions: WorldModel = [[t1.value, t2.value, as.value]]
@@ -58,8 +58,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
             }
         case 'is-a-formula': //TODO: recompute after additions
             {
-                const t11 = test(ast.t1, kb) as Atom
-                const t21 = test(ast.t2, kb) as Atom
+                const t11 = ask(ast.t1, kb) as Atom
+                const t21 = ask(ast.t2, kb) as Atom
 
                 if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
                 const additions: WorldModel = [[t11.value, t21.value]]
@@ -98,7 +98,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
                 eliminations: [],
             }
         case 'if-else':
-            return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
+            return ask(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
         case 'existquant':
             {
                 const additions: WorldModel = instantiateConcept(ast, kb)

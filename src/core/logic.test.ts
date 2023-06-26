@@ -2,7 +2,7 @@ import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asse
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { recomputeKb } from "./recomputeKb.ts";
-import { test } from "./test.ts";
+import { ask } from "./ask.ts";
 import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
@@ -159,7 +159,7 @@ Deno.test({
     name: 'test1',
     fn: () => {
         const f = $('person#2').isa('person').$
-        assert(test(f, kb))
+        assert(ask(f, kb))
     }
 })
 
@@ -170,8 +170,8 @@ Deno.test({
         const yes = $('person#2').isa('dude').$
         const no = $('person#2').isa('anythingelse').isNotTheCase.$
 
-        assert(test(yes, kb))
-        assert(test(no, kb))
+        assert(ask(yes, kb))
+        assert(ask(no, kb))
     }
 })
 
@@ -190,7 +190,7 @@ Deno.test({
     name: 'test4',
     fn: () => {
         const query = $('person#1').has('boston').as('birth-city').$
-        assert(test(query, kb))
+        assert(ask(query, kb))
     }
 })
 
@@ -208,8 +208,8 @@ Deno.test({
         // const no3 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1', 'event#1']).$
         // const find1 = $('door#1').has('open').as('state').after(['e:event']).$
 
-        assert(test(ok, kb))
-        assert(test(ok2, kb))
+        assert(ask(ok, kb))
+        assert(ask(ok2, kb))
         // assert(test(ok3, kb))
         // assert(!test(no, kb))
         // assert(test(ok4, kb))
@@ -241,8 +241,8 @@ Deno.test({
             deicticDict: {},
         }
 
-        assert(test($({ isStupid: 'capra' }).$, kb))
-        assert(!test($({ isStupid: 'cat' }).$, kb))
+        assert(ask($({ isStupid: 'capra' }).$, kb))
+        assert(!ask($({ isStupid: 'cat' }).$, kb))
 
     }
 })
@@ -250,14 +250,14 @@ Deno.test({
 Deno.test({
     name: 'test7',
     fn: () => {
-        assert(test($(2).isGreaterThan(1).$, { wm: [], derivClauses: [], deicticDict: {}, }))
+        assert(ask($(2).isGreaterThan(1).$, { wm: [], derivClauses: [], deicticDict: {}, }))
     }
 })
 
 Deno.test({
     name: 'test8',
     fn: () => {
-        assert(test($({ subject: 1, isSmallerThan: 2 }).$, kb))
+        assert(ask($({ subject: 1, isSmallerThan: 2 }).$, kb))
     }
 })
 
@@ -285,8 +285,8 @@ Deno.test({
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
         const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
 
-        assert(test(test1, { wm: wm, derivClauses: dc, deicticDict: {}, }))
-        assert(test(test2, { wm: wm, derivClauses: dc, deicticDict: {}, }))
+        assert(ask(test1, { wm: wm, derivClauses: dc, deicticDict: {}, }))
+        assert(ask(test2, { wm: wm, derivClauses: dc, deicticDict: {}, }))
 
     }
 })
@@ -295,7 +295,7 @@ Deno.test({
     name: 'test10',
     fn: () => {
 
-        const x = test($('x:thing').exists.where(
+        const x = ask($('x:thing').exists.where(
             $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
         ).$, kb)
 
@@ -311,21 +311,21 @@ Deno.test({
         const res1 = recomputeKb($('door-opening-event#1').happens.$, kb).kb
         const res2 = recomputeKb($('door-closing-event#1').happens.$, res1).kb
 
-        assert(test($('door#1').has('closed').as('state').$, res2))
-        assert(test($('door#1').has('open').as('state').isNotTheCase.$, res2))
+        assert(ask($('door#1').has('closed').as('state').$, res2))
+        assert(ask($('door#1').has('open').as('state').isNotTheCase.$, res2))
     }
 })
 
 Deno.test({
     name: 'test12',
     fn: () => {
-        assert(test($('door#1').has('closed').as('state').$, kb))
+        assert(ask($('door#1').has('closed').as('state').$, kb))
         const f1 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#3' })
         const f2 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#2' }).isNotTheCase
-        assert(test(f1.$, kb))
-        assert(test(f2.$, kb))
+        assert(ask(f1.$, kb))
+        assert(ask(f2.$, kb))
         const f3 = $('door#1').has('open').as('state').after(['door-opening-event#1'])
-        assert(test(f3.$, kb))
+        assert(ask(f3.$, kb))
     }
 })
 
@@ -334,7 +334,7 @@ Deno.test({
     fn: () => {
         // the empty sequence of actions (events) is always possible for any agent
         const f1 = $({ subject: [], isPossibleSeqFor: 'person#1' })
-        assert(test(f1.$, kb))
+        assert(ask(f1.$, kb))
     }
 })
 
@@ -342,7 +342,7 @@ Deno.test({
     name: 'test14',
     fn: () => {
         const f1 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
-        assert(test(f1.$, kb))
+        assert(ask(f1.$, kb))
     }
 })
 
@@ -351,7 +351,7 @@ Deno.test({
     fn: () => {
 
         const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
-        assert(test(f2.$, kb))
+        assert(ask(f2.$, kb))
 
         const f1 = $({ subject: 'e:event', isPossibleFor: 'person#3' })
         const result = findAll(f1.$, [$('e:event').$], kb)
@@ -390,13 +390,13 @@ function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
 Deno.test({
     name: 'test17',
     fn: () => {
-        assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
-        assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
+        assert(!ask($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
+        assert(!ask($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
 
         const kb2 = recomputeKb($('move-event#1').happens.$, kb).kb
 
-        assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
-        assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
+        assert(ask($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
+        assert(ask($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
     }
 })
 
@@ -448,12 +448,12 @@ Deno.test({
 Deno.test({
     name: 'test21',
     fn: () => {
-        assert(test($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb))
+        assert(ask($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb))
         const kb2 = recomputeKb($('move-event#3').happens.$, kb).kb
         const results = findAll($('agent#007').has('x:thing').as('position').$, [$('x:thing').$], kb2)
         assert(results.length === 1)
         assertEquals(results[0].get($('x:thing').$)?.value, 1)
-        assert(test($({ subject: 'agent#007', isNear: 'door#44' }).$, kb2))
+        assert(ask($({ subject: 'agent#007', isNear: 'door#44' }).$, kb2))
     }
 })
 
@@ -461,7 +461,7 @@ Deno.test({
     name: 'test22',
     fn: () => {
         const y = $('x:thing').suchThat($('x:thing').isa('person')).isa('agent').$
-        assert(test(y, kb))
+        assert(ask(y, kb))
     }
 })
 
@@ -477,7 +477,7 @@ Deno.test({
 
         // ((the number such that (the cat has the number as weight)) is (3))
         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
-        assert(test(y, { wm: kb2, derivClauses: [], deicticDict: {}, }))
+        assert(ask(y, { wm: kb2, derivClauses: [], deicticDict: {}, }))
     }
 })
 
@@ -486,7 +486,7 @@ Deno.test({
     name: 'test24',
     fn: () => {
         const q = $(1).plus(2).$
-        assertEquals(test(q, kb), $(3).$)
+        assertEquals(ask(q, kb), $(3).$)
     }
 })
 
@@ -511,10 +511,10 @@ Deno.test({
 Deno.test({
     name: 'test26',
     fn: () => {
-        assertEquals(test($(3).plus(3).$, kb), $(6).$)
-        assertEquals(test($(3).minus(3).$, kb), $(0).$)
-        assertEquals(test($(3).times(3).$, kb), $(9).$)
-        assertEquals(test($(3).over(3).$, kb), $(1).$)
+        assertEquals(ask($(3).plus(3).$, kb), $(6).$)
+        assertEquals(ask($(3).minus(3).$, kb), $(0).$)
+        assertEquals(ask($(3).times(3).$, kb), $(9).$)
+        assertEquals(ask($(3).over(3).$, kb), $(1).$)
     }
 })
 
@@ -553,7 +553,7 @@ Deno.test({
 
         const kb2 = recomputeKb(command.$, kb).kb
 
-        assert(test($('x:cat').suchThat().has('black').as('color').$, kb2))
+        assert(ask($('x:cat').suchThat().has('black').as('color').$, kb2))
 
     }
 })
@@ -563,6 +563,6 @@ Deno.test({
     fn: () => {
         const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
         const kb2 = recomputeKb(q.$, { wm: [], derivClauses: [], deicticDict: {} }).kb
-        assert(test(q.$, kb2))
+        assert(ask(q.$, kb2))
     }
 })

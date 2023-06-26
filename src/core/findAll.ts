@@ -1,6 +1,6 @@
 import { LLangAst, Constant, KnowledgeBase, Variable } from "./types.ts";
 import { substAll } from "./subst.ts";
-import { test } from "./test.ts";
+import { ask } from "./ask.ts";
 import { uniq } from "../utils/uniq.ts";
 import { cartesian } from "../utils/cartesian.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
@@ -17,7 +17,7 @@ export function findAll(
 
     const varToCands = variables.map(v => {
         const candidates =
-            constants.filter(c => test($(c.value).isa(v.varType).$, kb))
+            constants.filter(c => ask($(c.value).isa(v.varType).$, kb))
         return candidates.map(c => [v, c] as const)
     })
 
@@ -25,7 +25,7 @@ export function findAll(
 
     const results = allCombos.filter(c => {
         const sub = substAll(formula, c)
-        return test(sub, kb, preComputeKb)
+        return ask(sub, kb, preComputeKb)
     })
 
     return results
