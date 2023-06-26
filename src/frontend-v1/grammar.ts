@@ -71,6 +71,7 @@ const roles = stringLiterals(
     'verb',
     'head',
     'description',
+    'annotation',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -248,7 +249,7 @@ export const syntaxes: SyntaxMap<
     ],
 
     annotation: [
-        { types: ['atom'], role: 'subject' },
+        { types: ['atom'], role: 'annotation' },
         { types: ['space'], number: '*' },
         { literals: [':'] },
         { types: ['space'], number: '*' },
