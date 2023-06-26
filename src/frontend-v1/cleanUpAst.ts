@@ -1,12 +1,16 @@
-import { $ } from "./exp-builder.ts";
-import { LLangAst } from "./types.ts";
+import { $ } from "../core/exp-builder.ts";
+import { LLangAst, Atom } from "../core/types.ts";
+import { parseNumber } from "../utils/parseNumber.ts";
 
 /**
  * Some ASTs have optional fields.
  * It's easier to insert the default (neutral) filler here than to make those
  * fields optionally undefined.
+ * 
+ * Also because some values out of the parser need to be converted to number/bool
  */
-export function completeAst(ast: Partial<LLangAst>): LLangAst {
+//TODO: complete!! fully recursive!
+export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
     switch (ast.type) {
         case 'is-a-formula':
         case 'has-formula':
@@ -38,6 +42,25 @@ export function completeAst(ast: Partial<LLangAst>): LLangAst {
                 } as LLangAst
             }
             break
+        case 'number':
+            return {
+                ...ast,
+                //@ts-ignore
+                value: parseNumber(ast.value)
+            } as LLangAst
+
+        case 'boolean':
+            return {
+                ...ast,
+                //@ts-ignore
+                value: ast.value === 'true'
+            }
+        case 'math-expression':
+            return {
+                ...ast,
+                left: cleanUpAst(ast.left!) as Atom,
+                right: cleanUpAst(ast.right!) as Atom,
+            } as LLangAst
     }
     return ast as LLangAst
 }
