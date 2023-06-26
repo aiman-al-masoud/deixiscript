@@ -21,8 +21,8 @@ const derivationClauses: DerivationClause[] = [
         $('c:thing').has('prop:thing').as('part')
     ).$,
 
-    // value restriction // annot: subject owner copula-verb predicate
-    $({ vr: 'vr:thing', part: 'part:thing', ofConcept: 'owner-concept:thing', isA: 'value:thing' }).when(
+    // ok restyled
+    $({ annotation: 'vr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', predicate: 'value:thing' }).when(
         $('owner-concept:thing').has('vr:thing').as('part')
             .and($('vr:thing').isa('value-restriction'))
             .and($('vr:thing').has('part:thing').as('subject'))
