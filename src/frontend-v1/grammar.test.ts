@@ -2,11 +2,12 @@ import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts"
 import { getParser } from "../parser/parser.ts"
 import { syntaxes } from "./grammar.ts"
 
+const parser = getParser({ syntaxes })
 
 Deno.test({
     name: 'test0',
     fn: () => {
-        const ast = getParser({ sourceCode: 'true', syntaxes }).parse()
+        const ast = parser.parse('true')
         assertEquals(ast, {
             value: 'true',
             type: 'boolean',
@@ -17,7 +18,7 @@ Deno.test({
 Deno.test({
     name: 'test1',
     fn: () => {
-        const ast = getParser({ sourceCode: '10', syntaxes }).parse()
+        const ast = parser.parse('10')
         assertEquals(ast, {
             value: '10',
             type: 'number',
@@ -28,7 +29,7 @@ Deno.test({
 Deno.test({
     name: 'test2',
     fn: () => {
-        const ast = getParser({ sourceCode: 'capra', syntaxes }).parse()
+        const ast = parser.parse('capra')
         assertEquals(ast, {
             value: 'capra',
             type: 'entity',
@@ -39,7 +40,7 @@ Deno.test({
 Deno.test({
     name: 'test3',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x:capra', syntaxes }).parse()
+        const ast = parser.parse('x:capra')
         assertEquals(ast, {
             name: 'x',
             type: 'variable',
@@ -51,7 +52,7 @@ Deno.test({
 Deno.test({
     name: 'test4',
     fn: () => {
-        const ast = getParser({ sourceCode: '[x:capra y:capra capra ] ', syntaxes }).parse()
+        const ast = parser.parse('[x:capra y:capra capra ] ')
         assertEquals(ast, {
             list: [
                 { name: "x", varType: "capra", type: "variable" },
@@ -66,7 +67,7 @@ Deno.test({
 Deno.test({
     name: 'test5',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x:seq|e:event', syntaxes }).parse()
+        const ast = parser.parse('x:seq|e:event')
         assertEquals(ast, {
             seq: { name: "x", varType: "seq", type: "variable" },
             tail: { name: "e", varType: "event", type: "variable" },
@@ -78,7 +79,7 @@ Deno.test({
 Deno.test({
     name: 'test6',
     fn: () => {
-        const ast = getParser({ sourceCode: 'capra is capra', syntaxes }).parse()
+        const ast = parser.parse('capra is capra')
         assertEquals(ast, {
             t1: { value: "capra", type: "entity" },
             t2: { value: "capra", type: "entity" },
@@ -90,7 +91,7 @@ Deno.test({
 Deno.test({
     name: 'test7',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x:capra is  a capra', syntaxes }).parse()
+        const ast = parser.parse('x:capra is  a capra')
         assertEquals(ast, {
             t1: { name: "x", varType: "capra", type: "variable" },
             t2: { value: "capra", type: "entity" },
@@ -103,7 +104,7 @@ Deno.test({
 Deno.test({
     name: 'test8',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x:capra has 0 as intelligence after [eventxy]', syntaxes }).parse()
+        const ast = parser.parse('x:capra has 0 as intelligence after [eventxy]')
         assertEquals(ast, {
             t1: { name: "x", varType: "capra", type: "variable" },
             t2: { value: "0", type: "number" },
@@ -120,7 +121,7 @@ Deno.test({
 Deno.test({
     name: 'test9',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x is capra and y is buruf and z is scemo', syntaxes }).parse()
+        const ast = parser.parse('x is capra and y is buruf and z is scemo')
         assertEquals(ast, {
             f1: {
                 t1: { value: "x", type: "entity" },
@@ -148,7 +149,7 @@ Deno.test({
 Deno.test({
     name: 'test10',
     fn: () => {
-        const ast = getParser({ sourceCode: 'it is not the case that x is y', syntaxes }).parse()
+        const ast = parser.parse('it is not the case that x is y')
         assertEquals(ast, {
             f1: {
                 t1: { value: "x", type: "entity" },
@@ -163,7 +164,7 @@ Deno.test({
 Deno.test({
     name: 'test11',
     fn: () => {
-        const ast = getParser({ sourceCode: 'there exists a x:cat where x:cat has red as color ', syntaxes }).parse()
+        const ast = parser.parse('there exists a x:cat where x:cat has red as color ')
         assertEquals(ast, {
             variable: { name: "x", varType: "cat", type: "variable" },
             where: {
@@ -181,7 +182,7 @@ Deno.test({
 Deno.test({
     name: 'test12',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x:cat is red when x:cat has red as color', syntaxes }).parse()
+        const ast = parser.parse('x:cat is red when x:cat has red as color')
         assertEquals(ast, {
             conseq: {
                 t1: { name: "x", varType: "cat", type: "variable" },
@@ -204,7 +205,7 @@ Deno.test({
 Deno.test({
     name: 'test13',
     fn: () => {
-        const ast = getParser({ sourceCode: 'if x is capra then x is stupid else x is smart', syntaxes }).parse()
+        const ast = parser.parse('if x is capra then x is stupid else x is smart')
         assertEquals(ast, {
             condition: {
                 t1: { value: "x", type: "entity" },
@@ -229,7 +230,7 @@ Deno.test({
 Deno.test({
     name: 'test14',
     fn: () => {
-        const ast = getParser({ sourceCode: '1 + x:capra', syntaxes }).parse()
+        const ast = parser.parse('1 + x:capra')
         assertEquals(ast, {
             left: { value: "1", type: "number" },
             operator: "+",
@@ -242,7 +243,7 @@ Deno.test({
 Deno.test({
     name: 'test15',
     fn: () => {
-        const ast = getParser({ sourceCode: 'eventxy happens', syntaxes }).parse()
+        const ast = parser.parse('eventxy happens')
         assertEquals(ast, {
             event: { value: "eventxy", type: "entity" },
             type: "happen-sentence"
@@ -254,7 +255,7 @@ Deno.test({
 Deno.test({
     name: 'test16',
     fn: () => {
-        const ast = getParser({ sourceCode: '2 > 1', syntaxes }).parse()
+        const ast = parser.parse('2 > 1')
         assertEquals(ast, {
             left: { value: "2", type: "number" },
             operator: ">",
@@ -268,7 +269,7 @@ Deno.test({
 Deno.test({
     name: 'test17',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x:capra does climb the x:mount such that x:mount has green as color ', syntaxes }).parse()
+        const ast = parser.parse('x:capra does climb the x:mount such that x:mount has green as color ')
         assertEquals(ast, {
             keys: {
                 subject: { name: "x", varType: "capra", type: "variable" },
@@ -293,7 +294,7 @@ Deno.test({
 Deno.test({
     name: 'test18',
     fn: () => {
-        const ast = getParser({ sourceCode: 'capra is scema!', syntaxes }).parse()
+        const ast = parser.parse('capra is scema!')
 
         assertEquals(ast, {
             f1: {
@@ -309,7 +310,7 @@ Deno.test({
 Deno.test({
     name: 'test19',
     fn: () => {
-        const ast = getParser({ sourceCode: 'capra is scema?', syntaxes }).parse()
+        const ast = parser.parse('capra is scema?')
 
         assertEquals(ast, {
             f1: {
@@ -327,7 +328,7 @@ Deno.test({
 Deno.test({
     name: 'test20',
     fn: () => {
-        const ast = getParser({ sourceCode: 'annotx: capra is stupid', syntaxes }).parse()
+        const ast = parser.parse('annotx: capra is stupid')
         assertEquals(ast, {
             keys: {
                 annotation: { value: "annotx", type: "entity" },
@@ -344,7 +345,7 @@ Deno.test({
 Deno.test({
     name: 'test21',
     fn: () => {
-        const ast = getParser({ sourceCode: 'x does eat capra in y to z!', syntaxes }).parse()
+        const ast = parser.parse('x does eat capra in y to z!')
 
         assertEquals(ast, {
             f1: {

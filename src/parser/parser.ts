@@ -5,12 +5,10 @@ import { dependencies, maxPrecedence } from "./max-precedence.ts";
 import { Syntax, isNecessary, Member, isRepeatable, LiteralMember, AstNode, SyntaxMap } from "./types.ts";
 
 export function getParser(args: {
-    sourceCode: string,
     syntaxes: SyntaxMap,
     log?: boolean,
 }) {
     return new KoolerParser(
-        args.sourceCode,
         args.syntaxes,
         !!args.log
     )
@@ -20,21 +18,20 @@ class KoolerParser {
 
     protected syntaxList: string[]
     readonly keywords: string[]
-    readonly cs: CharStream
+    protected cs: CharStream = getCharStream('')
 
     constructor(
-        readonly sourceCode: string,
         readonly syntaxes: SyntaxMap,
         readonly log: boolean,
     ) {
-        this.cs = getCharStream(this.sourceCode)
         this.syntaxList = getSyntaxList(this.syntaxes)
         this.keywords = getKeywords(this.syntaxes)
         maybeLog(this.log, 'syntaxList=', this.syntaxList)
         maybeLog(this.log, 'keywords=', this.keywords)
     }
 
-    parse(): AstNode | undefined {
+    parse(sourceCode: string): AstNode | undefined {
+        this.cs = getCharStream(sourceCode)
         return this.parseTry(this.syntaxList)
     }
 
