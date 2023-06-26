@@ -1,11 +1,8 @@
 import { assertEquals, assertObjectMatch } from 'https://deno.land/std@0.186.0/testing/asserts.ts';
 import { getParser } from '../parser/parser.ts';
-// import { syntaxes } from './grammar.ts';
-
 import { SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
-import { generateTypes } from '../parser/generate-types.ts'
 
 const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence', 'there-is-sentence')
 const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative', 'in-locative', 'complement',)
@@ -143,14 +140,6 @@ export const syntaxes: SyntaxMap<
 }
 
 
-/**
- * REMEMBER to re-run this file whenever you edit the syntaxes, so as 
- * to update the typescript AST types.
- */
-if (import.meta.main) {
-    console.log(generateTypes([...astTypes, 'sentence'], syntaxes))
-}
-
 const parse = (sourceCode: string) => getParser({ syntaxes, log: false }).parse(sourceCode)
 
 Deno.test({
@@ -158,7 +147,7 @@ Deno.test({
     fn: () => {
         const r = parse('the best buruf of calabria')
         // console.log(r)
-        assertObjectMatch(r as object, {
+        assertEquals(r, {
             head: 'buruf',
             modifiers: ['best'],
             owner: {
@@ -174,7 +163,6 @@ Deno.test({
     name: 'test2',
     fn: () => {
         const r = parse('x of matrix is red')
-        // console.log(r)
 
         assertObjectMatch(r as object, {
             subject: {
