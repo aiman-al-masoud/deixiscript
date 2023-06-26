@@ -7,14 +7,14 @@
   - what if findAll() finds many?
   - every/and/or, use list-literal?
 - mathematical operations
-  - refactor test()
+  - refactor ask()
   - is MathExpression an Atom ??!
 - finish up recomputeKb()
   - implement not
   - existquant defaults
-- single eval() to access test/findAll/recomputeKb etc...
-  - ask vs tell AST
-  - find all free vars to decide between findAll and test?? maybe no need cuz anaphora
+- single eval() to access ask/findAll/recomputeKb etc...
+  - command vs question
+  - find all free vars to decide between findAll and ask?? maybe no need cuz anaphora
 
 ## Frontend
 
@@ -26,6 +26,17 @@
 - how to integrate object attribute modifications?
   - convertToJs(wm: WorldModel, id: string, obj:any)
 - how to integrate events? there-is + happens
+- panel 
+    - xcoord (absolute)
+    - ycoord (absolute)
+    - width
+    - height
+    - color
+    - z-index
+    - visibility
+    - attached
+    - text
+    - image
 
 ## Problems
 
@@ -51,7 +62,7 @@
 
 # Notes
 
-- recomputeKb() and test() DO HAVE side effects; not for what concerns the world
+- recomputeKb() and ask() DO HAVE side effects; not for what concerns the world
   model and derivation clauses, but on the deictic dictionary.
 
 - at the basic level there is nothing but: entities, is-a-relations and has-relations. This is the "interface" through which Deixiscript communicates with the outside world, including JS.
