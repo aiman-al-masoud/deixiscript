@@ -256,7 +256,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'object', number: '1|0' },
         { types: ['space'], number: '*' },
-        { types: ['complement'], number: '*', expand: true, sep: 'space' },
+        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
 
     annotation: [
