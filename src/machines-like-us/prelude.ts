@@ -53,7 +53,7 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // excludes annotation
-    $({ ann: 'ann:thing', property: 'p1:thing', excludes: 'p2:thing', onPart: 'prop:thing', onConcept: 'c:thing' }).when(
+    $({ annotation: 'ann:thing', subject: 'p1:thing', verb:'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
         $('c:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('mutex-annotation'))
             .and($('ann:thing').has('p1:thing').as('p'))
