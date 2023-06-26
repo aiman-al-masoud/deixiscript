@@ -235,7 +235,6 @@ export const syntaxes: SyntaxMap<
 
     generalized: [
         { types: ['verb-sentence', 'annotation'], expand: true },
-        // TODO complete with complements...
         // TODO: not in the form required by the interpreter yet
     ],
 
@@ -245,6 +244,7 @@ export const syntaxes: SyntaxMap<
         { literals: ['does'] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'verb' },
+        // TODO complete with complements...
     ],
 
     annotation: [
