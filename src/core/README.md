@@ -34,6 +34,12 @@
 - should GeneralizedSimpleFormula become compound? (ie:accept other formulas as
   args?)
 
+## Limitations
+- no context sentitivity
+  - the cat eats the kibble piece
+  - it jumps
+  it resolves to "the kibble piece"
+
 # Pipeline:
 
 - source is parsed by grammatical framework
