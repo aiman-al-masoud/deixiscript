@@ -47,7 +47,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
             const kb1 = recomputeKb(ast.f1, kb)
             const kb2 = recomputeKb(ast.f2, kb)
             return {
-                wm: kb1.wm.concat(kb2.wm),
+                wm: addWorldModels(kb1.wm, kb2.wm),
                 derivClauses: kb1.derivClauses.concat(kb2.derivClauses),
                 deicticDict: kb.deicticDict,
             }
@@ -80,7 +80,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
 function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
     const filtered = subtractWorldModels(kb.wm, eliminations)
-    const final = filtered.concat(additions)
+    const final = addWorldModels(filtered, additions)
 
     const result: KnowledgeBase = {
         ...kb,
@@ -169,4 +169,8 @@ function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
 
 function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel {
     return wm1.filter(s1 => !wm2.some(s2 => wmSentencesEqual(s1, s2)))
+}
+
+function addWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel { //TODO: uniq
+    return wm1.concat(wm2)
 }
