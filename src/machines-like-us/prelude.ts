@@ -17,11 +17,11 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // role
-    $({ subject: 'c:thing', canHaveA: 'prop:thing' }).when(
+    $({ subject: 'c:thing', modal:'can', verb:'have', object: 'prop:thing' }).when(
         $('c:thing').has('prop:thing').as('part')
     ).$,
 
-    // ok restyled
+    // value restriction
     $({ annotation: 'vr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
         $('owner-concept:thing').has('vr:thing').as('part')
             .and($('vr:thing').isa('value-restriction'))
@@ -29,7 +29,7 @@ const derivationClauses: DerivationClause[] = [
             .and($('vr:thing').has('value:thing').as('object'))
     ).$,
 
-    // ok restyled
+    // number restriction
     $({ annotation: 'nr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb:'amount', recipient: 'value:thing' }).when(
         $('owner-concept:thing').has('nr:thing').as('part')
             .and($('nr:thing').isa('number-restriction'))
