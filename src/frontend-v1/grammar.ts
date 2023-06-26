@@ -72,6 +72,7 @@ const roles = stringLiterals(
     'head',
     'description',
     'annotation',
+    'keys',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -235,8 +236,8 @@ export const syntaxes: SyntaxMap<
     ],
 
     generalized: [
-        { types: ['verb-sentence', 'annotation'], expand: true },
-        // TODO: not in the form required by the interpreter yet
+        { types: ['verb-sentence', 'annotation'], role: 'keys' },
+        { types: ['after-clause'], expand: true, number: '1|0' },
     ],
 
     "verb-sentence": [
@@ -320,9 +321,6 @@ console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
-
-
-
 
 
 
