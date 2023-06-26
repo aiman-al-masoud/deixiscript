@@ -5,8 +5,8 @@ export function getStandardKb(): KnowledgeBase {
     return {
         wm: conceptualModel,
         derivClauses: derivationClauses,
-        deicticDict : {},
-    }    
+        deicticDict: {},
+    }
 }
 
 const derivationClauses: DerivationClause[] = [
@@ -21,7 +21,7 @@ const derivationClauses: DerivationClause[] = [
         $('c:thing').has('prop:thing').as('part')
     ).$,
 
-    // value restriction
+    // value restriction // annot: subject owner copula-verb predicate
     $({ vr: 'vr:thing', part: 'part:thing', ofConcept: 'owner-concept:thing', isA: 'value:thing' }).when(
         $('owner-concept:thing').has('vr:thing').as('part')
             .and($('vr:thing').isa('value-restriction'))
@@ -29,7 +29,7 @@ const derivationClauses: DerivationClause[] = [
             .and($('vr:thing').has('value:thing').as('object'))
     ).$,
 
-    // number restriction
+    // number restriction // annot: subject owner amount-verb recipient
     $({ nr: 'nr:thing', part: 'part:thing', ofConcept: 'owner-concept:thing', amountsTo: 'value:thing' }).when(
         $('owner-concept:thing').has('nr:thing').as('part')
             .and($('nr:thing').isa('number-restriction'))
@@ -37,7 +37,7 @@ const derivationClauses: DerivationClause[] = [
             .and($('nr:thing').has('value:thing').as('object'))
     ).$,
 
-    // cancel annotation
+    // cancel annotation // annot: subject copula-verb predicate("cancelled") ablative
     $({ ann: 'ann:thing', cancels: 'old:thing', fromConcept: 'concept:thing' }).when(
         $('concept:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('cancel-annotation'))

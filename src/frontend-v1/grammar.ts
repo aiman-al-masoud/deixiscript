@@ -34,6 +34,10 @@ const astTypes = stringLiterals(
     'anaphor',
     'command',
     'question',
+
+    'verb-sentence',
+
+    'annotation',
 )
 
 const roles = stringLiterals(
@@ -230,13 +234,25 @@ export const syntaxes: SyntaxMap<
     ],
 
     generalized: [
+        { types: ['verb-sentence', 'annotation'], expand: true },
+        // TODO complete with complements...
+        // TODO: not in the form required by the interpreter yet
+    ],
+
+    "verb-sentence": [
         { types: ['atom'], role: 'subject' },
         { types: ['space'], number: '*' },
         { literals: ['does'] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'verb' },
-        // TODO complete with complements...
-        // TODO: not in the form required by the interpreter yet
+    ],
+
+    annotation: [
+        { types: ['atom'], role: 'subject' },
+        { types: ['space'], number: '*' },
+        { literals: [':'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], expand: true },
     ],
 
     anaphor: [
@@ -262,8 +278,10 @@ export const syntaxes: SyntaxMap<
     ]
 }
 
-const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color   1>2   capraxyz is scema!  capraxyz is scema?', syntaxes })
+const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color   1>2   capraxyz is scema!  capraxyz is scema?   annotx: capra is stupid', syntaxes })
 
+console.log(parser.parse())
+console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
