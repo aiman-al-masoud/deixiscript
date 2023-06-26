@@ -6,6 +6,7 @@ import { ask } from "./ask.ts";
 import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
+import { evaluate } from "./evaluate.ts";
 
 const standardKb = getStandardKb()
 
@@ -564,5 +565,17 @@ Deno.test({
         const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
         const kb2 = recomputeKb(q.$, { wm: [], derivClauses: [], deicticDict: {} }).kb
         assert(ask(q.$, kb2))
+    }
+})
+
+Deno.test({
+    name: 'test30',
+    fn: () => {
+        const q = $('cat#1').isa('feline').$
+        const results0 = evaluate({ ast: q, isCommand: false, kb })
+        assert(!results0.result)
+        const results1 = evaluate({ ast: q, isCommand: true, kb })
+        const results2 = evaluate({ ast: q, isCommand: false, kb: results1.kb })
+        assert(results2.result)
     }
 })

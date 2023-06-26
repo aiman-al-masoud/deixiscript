@@ -1,12 +1,29 @@
-// import { $ } from "./exp-builder.ts";
-// import { recomputeKb } from "./recomputeKb.ts";
-// import { test } from "./test.ts";
-// import { Atom, KnowledgeBase, LLangAst } from "./types.ts";
+import { ask } from "./ask.ts";
+import { $ } from "./exp-builder.ts";
+import { recomputeKb } from "./recomputeKb.ts";
+import { Atom, KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
 
-// export function evaluate(ast: LLangAst, isCommand: boolean, kb: KnowledgeBase): [KnowledgeBase, Atom] {
-//     if (isCommand) {
-//         return [recomputeKb(ast, kb), $(true).$]
-//     } else {
-//         return [kb, test(ast, kb) as Atom]
-//     }
-// }
+export function evaluate(args: { ast: LLangAst, kb: KnowledgeBase, isCommand?: boolean, }): {
+    kb: KnowledgeBase,
+    result: Atom,
+    additions: WorldModel,
+    eliminations: WorldModel,
+} {
+    if (args.isCommand) {
+        const { kb, additions, eliminations } = recomputeKb(args.ast, args.kb)
+        return {
+            kb,
+            additions,
+            eliminations,
+            result: $(true).$
+        }
+    } else {
+        const result = ask(args.ast, args.kb)
+        return {
+            kb: args.kb,
+            additions: [],
+            eliminations: [],
+            result: result as Atom,
+        }
+    }
+}
