@@ -176,7 +176,7 @@ export const syntaxes: SyntaxMap<
         { literals: ['happens'] },
     ],
     'simple-formula': [
-        { types: ['is-a-formula', 'equality', 'has-formula', 'happen-sentence'], expand: 'keep-specific-type' } // order: "is a" before "is"
+        { types: ['generalized',  'is-a-formula', 'equality', 'has-formula', 'happen-sentence'], expand: 'keep-specific-type' } // order: "is a" before "is"
     ],
     conjunction: [
         { types: ['simple-formula'], role: 'f1' },
@@ -306,7 +306,7 @@ export const syntaxes: SyntaxMap<
     ]
 }
 
-const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color   1>2   capraxyz is scema!  capraxyz is scema?   annotx: capra is stupid    x does eat capra in y to z ', syntaxes })
+const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color   1>2   capraxyz is scema!  capraxyz is scema?   annotx: capra is stupid    x does eat capra in y to z! ', syntaxes })
 
 console.log(parser.parse())
 console.log(parser.parse())
