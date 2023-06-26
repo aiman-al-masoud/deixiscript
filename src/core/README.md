@@ -33,6 +33,7 @@
   theme-rheme style on separate sentences joined with pronouns
 - should GeneralizedSimpleFormula become compound? (ie:accept other formulas as
   args?)
+- limit deictic dict because a thing that was mentioned too much in the past may be mistakenly be thought of as the current referent
 
 ## Limitations
 - no context sentitivity
