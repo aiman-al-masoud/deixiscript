@@ -32,7 +32,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
         //     wm : kb.wm.concat([h]),
         //     derivClauses : kb.derivClauses,
         // }
-        case 'is-a-formula':
+        case 'is-a-formula': //TODO: recompute after additions
 
             const t11 = test(ast.t1, kb) as Atom
             const t21 = test(ast.t2, kb) as Atom
@@ -77,17 +77,14 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
 
 }
 
-
-
-export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
+function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
     const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
-    const filtered = kb.wm.filter(s1 => !eliminations.some(s2 => wmSentencesEqual(s1, s2)))
+    const filtered = subtractWorldModels(kb.wm, eliminations)
     const final = filtered.concat(additions)
 
     const result: KnowledgeBase = {
-        derivClauses: kb.derivClauses,
+        ...kb,
         wm: final,
-        deicticDict: kb.deicticDict,
     }
 
     return result
@@ -113,7 +110,7 @@ export function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBa
  *
  *
  */
-export function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
+function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
@@ -131,7 +128,7 @@ export function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
                 .flatMap(x => recomputeKb(x, kb).wm)
 
             const additions =
-                eventConsequences.filter(s1 => !kb.wm.some(s2 => wmSentencesEqual(s1, s2)))
+                subtractWorldModels(eventConsequences, kb.wm)
 
             return additions
         }
@@ -143,7 +140,7 @@ export function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
 }
 
-export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
+function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
     const concepts = getConceptsOf(h[0], kb.wm)
 
     const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
@@ -168,4 +165,8 @@ export function getExcludedBy(h: HasSentence, kb: KnowledgeBase) {
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
 
+}
+
+function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel {
+    return wm1.filter(s1 => !wm2.some(s2 => wmSentencesEqual(s1, s2)))
 }
