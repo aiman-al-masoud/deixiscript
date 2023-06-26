@@ -79,6 +79,7 @@ const roles = stringLiterals(
     'keys',
     'recipient',
     'location',
+    'object',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -253,9 +254,9 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'verb' },
         { types: ['space'], number: '*' },
-        { types: ['complement'], number: '*', expand: true },
-        // TODO complete with direct object...
-        // TODO: fix multiple complements!
+        { types: ['atom'], role: 'object', number: '1|0' },
+        { types: ['space'], number: '*' },
+        { types: ['complement'], number: '*', expand: true, sep: 'space' },
     ],
 
     annotation: [
@@ -301,11 +302,11 @@ export const syntaxes: SyntaxMap<
     ],
 
     complement: [
-        { types: ['locative-in', 'dative-to'], expand: 'keep-specific-type' }
+        { types: ['locative-in', 'dative-to'], expand: true, sep: 'space' }
     ]
 }
 
-const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color   1>2   capraxyz is scema!  capraxyz is scema?   annotx: capra is stupid    x does exist in y', syntaxes })
+const parser = getParser({ sourceCode: '1 x:capra capraxy  [x:capra y:capra capraxy ] x:seq|e:event  capraxy is capraxy  x:scemo is a capra x:capra has 0 as intelligence after [eventxy]  true   x is capra and y is buruf and z is scemo   it is not the case that x is y   there exists a x:cat where x:cat has red as color   x:cat is red when x:cat has red as color  if x is capra then x is stupid else x is smart  1 + x:capra  eventxy happens  x:capra does climb  the x:cat such that x:cat has red as color   1>2   capraxyz is scema!  capraxyz is scema?   annotx: capra is stupid    x does eat capra in y to z ', syntaxes })
 
 console.log(parser.parse())
 console.log(parser.parse())
@@ -348,5 +349,7 @@ console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
 console.log(parser.parse())
+console.log(parser.parse())
+
 
 
