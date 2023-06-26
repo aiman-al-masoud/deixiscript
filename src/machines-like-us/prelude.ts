@@ -38,14 +38,14 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // cancel annotation
-    $({ annotation: 'ann:thing', subject: 'old:thing', verb:'be', object:'cancelled', ablative: 'concept:thing' }).when(
+    $({ annotation: 'ann:thing', subject: 'old:thing', verb: 'be', object: 'cancelled', ablative: 'concept:thing' }).when(
         $('concept:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('cancel-annotation'))
             .and($('ann:thing').has('old:thing').as('subject'))
     ).$,
 
     // default annotation
-    $({ annotation: 'ann:thing', subject: 'prop:thing', owner: 'concept:thing',  verb:'default', recipient: 'default:thing' }).when(
+    $({ annotation: 'ann:thing', subject: 'prop:thing', owner: 'concept:thing', verb: 'default', recipient: 'default:thing' }).when(
         $('concept:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('default-annotation'))
             .and($('ann:thing').has('prop:thing').as('subject'))
@@ -53,7 +53,7 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // excludes annotation
-    $({ annotation: 'ann:thing', subject: 'p1:thing', verb:'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
+    $({ annotation: 'ann:thing', subject: 'p1:thing', verb: 'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
         $('c:thing').has('ann:thing').as('part')
             .and($('ann:thing').isa('mutex-annotation'))
             .and($('ann:thing').has('p1:thing').as('p'))
@@ -84,4 +84,4 @@ const derivationClauses: DerivationClause[] = [
 ]
 
 const conceptualModel =
-    $({ subject: 'agent', verb: 'extend', object: 'thing' }).dump(derivationClauses).wm
+    $({ subject: 'agent', verb: 'extend', object: 'thing' }).dump(derivationClauses).kb.wm

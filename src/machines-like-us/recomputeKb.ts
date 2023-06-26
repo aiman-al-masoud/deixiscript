@@ -10,50 +10,109 @@ import { getConceptsOf } from "./wm-funcs.ts";
 
 /**
  * Assume 'ast' is true, and recompute a knowledge base.
+ * Also provides WorldModel additions and elmininations to avoid having 
+ * to recompute them.
  */
-export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
+export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
+    kb: KnowledgeBase,
+    additions: WorldModel,
+    eliminations: WorldModel,
+} {
 
     switch (ast.type) {
 
         case 'happen-sentence':
-            const additions0 = getAdditions(ast.event.value, kb)
-            return recomputeKbAfterAdditions(additions0, kb)
+            {
+                const additions = getAdditions(ast.event.value, kb)
+                const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
+                const filtered = subtractWorldModels(kb.wm, eliminations)
+
+                return {
+                    kb: {
+                        ...kb,
+                        wm: addWorldModels(filtered, additions),
+                    },
+                    additions: additions,
+                    eliminations: eliminations
+                }
+            }
         case 'has-formula':
-            const t1 = test(ast.t1, kb) as Atom
-            const t2 = test(ast.t2, kb) as Atom
-            const as = test(ast.as, kb) as Atom
-            if (!(isConst(t1) && isConst(t2) && isConst(as))) throw new Error('cannot serialize formula with variables!')
+            {
+                const t1 = test(ast.t1, kb) as Atom
+                const t2 = test(ast.t2, kb) as Atom
+                const as = test(ast.as, kb) as Atom
+                if (!(isConst(t1) && isConst(t2) && isConst(as))) throw new Error('cannot serialize formula with variables!')
 
-            const additions1: WorldModel = [[t1.value, t2.value, as.value]]
-            return recomputeKbAfterAdditions(additions1, kb)
+                const additions: WorldModel = [[t1.value, t2.value, as.value]]
+                const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
+                const filtered = subtractWorldModels(kb.wm, eliminations)
+
+                return {
+                    kb: {
+                        ...kb,
+                        wm: addWorldModels(filtered, additions),
+                    },
+                    additions: additions,
+                    eliminations: eliminations,
+                }
+            }
         case 'is-a-formula': //TODO: recompute after additions
+            {
+                const t11 = test(ast.t1, kb) as Atom
+                const t21 = test(ast.t2, kb) as Atom
 
-            const t11 = test(ast.t1, kb) as Atom
-            const t21 = test(ast.t2, kb) as Atom
+                if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
+                const additions: WorldModel = [[t11.value, t21.value]]
+                const eliminations: WorldModel = []
 
-            if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
-            const additions2: WorldModel = [[t11.value, t21.value]]
-            return {
-                ...kb,
-                wm: addWorldModels(kb.wm, additions2),
+                return {
+                    kb: {
+                        ...kb,
+                        wm: addWorldModels(kb.wm, additions),
+                    },
+                    additions: additions,
+                    eliminations: eliminations,
+                }
             }
         case 'conjunction':
-            const kb1 = recomputeKb(ast.f1, kb)
-            const kb2 = recomputeKb(ast.f2, kb)
-            return {
-                wm: addWorldModels(kb1.wm, kb2.wm),
-                derivClauses: kb1.derivClauses.concat(kb2.derivClauses),
-                deicticDict: kb.deicticDict,
+            {
+                const result1 = recomputeKb(ast.f1, kb)
+                const result2 = recomputeKb(ast.f2, kb)
+                return {
+                    kb: {
+                        wm: addWorldModels(result1.kb.wm, result2.kb.wm),
+                        derivClauses: result1.kb.derivClauses.concat(result2.kb.derivClauses),
+                        deicticDict: kb.deicticDict,
+                    },
+                    additions: addWorldModels(result1.additions, result2.additions),
+                    eliminations: addWorldModels(result1.eliminations, result2.eliminations),
+                }
             }
         case 'derived-prop':
             return {
-                ...kb,
-                derivClauses: [...kb.derivClauses, ast],
+                kb: {
+                    ...kb,
+                    derivClauses: [...kb.derivClauses, ast],
+                },
+                additions: [],
+                eliminations: [],
             }
         case 'if-else':
             return test(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
         case 'existquant':
-            return instantiateConcept(ast, kb) // TODO: recompute after additions
+            {
+                const additions: WorldModel = instantiateConcept(ast, kb)
+                const eliminations: WorldModel = [] // TODO
+
+                return {
+                    kb: {
+                        ...kb,
+                        wm: addWorldModels(kb.wm, additions)
+                    },
+                    additions,
+                    eliminations,
+                }
+            }
 
     }
 
@@ -69,19 +128,6 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
 
     throw new Error('not implemented!')
 
-}
-
-function recomputeKbAfterAdditions(additions: WorldModel, kb: KnowledgeBase) {
-    const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
-    const filtered = subtractWorldModels(kb.wm, eliminations)
-    const final = addWorldModels(filtered, additions)
-
-    const result: KnowledgeBase = {
-        ...kb,
-        wm: final,
-    }
-
-    return result
 }
 
 /**
@@ -119,7 +165,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
             const results = findAll(x, variables, kb, false)
 
             const eventConsequences = results.map(r => substAll(x, r))
-                .flatMap(x => recomputeKb(x, kb).wm)
+                .flatMap(x => recomputeKb(x, kb).kb.wm)
 
             const additions =
                 subtractWorldModels(eventConsequences, kb.wm)

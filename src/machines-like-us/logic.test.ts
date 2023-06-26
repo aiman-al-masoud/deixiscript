@@ -6,7 +6,6 @@ import { test } from "./test.ts";
 import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
-import { getParts } from "./wm-funcs.ts";
 
 const standardKb = getStandardKb()
 
@@ -145,7 +144,7 @@ const model: WorldModel =
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
 
         .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
-        .dump(derivationClauses).wm
+        .dump(derivationClauses).kb.wm
 
 
 const kb: KnowledgeBase = {
@@ -281,7 +280,7 @@ Deno.test({
             .and($('apple#1').isa('apple'))
             .and($('bucket#1').has(2).as('volume'))
             .and($('apple#1').has(1).as('volume'))
-            .dump().wm
+            .dump().kb.wm
 
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
         const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
@@ -309,8 +308,8 @@ Deno.test({
     name: 'test11',
     fn: () => {
 
-        const res1 = recomputeKb($('door-opening-event#1').happens.$, kb)
-        const res2 = recomputeKb($('door-closing-event#1').happens.$, res1)
+        const res1 = recomputeKb($('door-opening-event#1').happens.$, kb).kb
+        const res2 = recomputeKb($('door-closing-event#1').happens.$, res1).kb
 
         assert(test($('door#1').has('closed').as('state').$, res2))
         assert(test($('door#1').has('open').as('state').isNotTheCase.$, res2))
@@ -394,7 +393,7 @@ Deno.test({
         assert(!test($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
         assert(!test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
 
-        const kb2 = recomputeKb($('move-event#1').happens.$, kb)
+        const kb2 = recomputeKb($('move-event#1').happens.$, kb).kb
 
         assert(test($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
         assert(test($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
@@ -450,7 +449,7 @@ Deno.test({
     name: 'test21',
     fn: () => {
         assert(test($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb))
-        const kb2 = recomputeKb($('move-event#3').happens.$, kb)
+        const kb2 = recomputeKb($('move-event#3').happens.$, kb).kb
         const results = findAll($('agent#007').has('x:thing').as('position').$, [$('x:thing').$], kb2)
         assert(results.length === 1)
         assertEquals(results[0].get($('x:thing').$)?.value, 1)
@@ -474,7 +473,7 @@ Deno.test({
             .and($('dog#1').has(4).as('weight'))
             .and($('cat#1').isa('cat'))
             .and($('dog#1').isa('dog'))
-            .dump().wm
+            .dump().kb.wm
 
         // ((the number such that (the cat has the number as weight)) is (3))
         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
@@ -498,7 +497,7 @@ Deno.test({
 
         const kb = $(1).isa('number')
             .and($(2).isa('number'))
-            .dump().wm
+            .dump().kb.wm
 
         const q = $('x:number').plus('y:number').is(3).$
 
@@ -527,11 +526,11 @@ Deno.test({
         const wm =
             $({ ann: 'ann#429', onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
                 .and($('capra#1').has(1).as('last-thought-of'))
-                .dump(kb.derivClauses).wm
+                .dump(kb.derivClauses).kb.wm
 
         const kb2: KnowledgeBase = { wm: wm, derivClauses: kb.derivClauses, deicticDict: kb.deicticDict }
 
-        const kb3 = recomputeKb($('capra#1').has(2).as('last-thought-of').$, kb2)
+        const kb3 = recomputeKb($('capra#1').has(2).as('last-thought-of').$, kb2).kb
 
         assert(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb3).length === 1)
 
@@ -548,11 +547,11 @@ Deno.test({
                 .and($('cat#1').isa('cat'))
                 .and($('cat#1').has('big').as('size'))
                 .and($('cat#4').isa('cat'))
-                .dump()
+                .dump().kb
 
         const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
 
-        const kb2 = recomputeKb(command.$, kb)
+        const kb2 = recomputeKb(command.$, kb).kb
 
         assert(test($('x:cat').suchThat().has('black').as('color').$, kb2))
 
@@ -563,7 +562,7 @@ Deno.test({
     name: 'test29',
     fn: () => {
         const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
-        const kb2 = recomputeKb(q.$, { wm: [], derivClauses: [], deicticDict: {} })
+        const kb2 = recomputeKb(q.$, { wm: [], derivClauses: [], deicticDict: {} }).kb
         assert(test(q.$, kb2))
     }
 })

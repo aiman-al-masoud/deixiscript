@@ -12,21 +12,16 @@ import { ExistentialQuantification, KnowledgeBase, WorldModel } from "./types.ts
 export function instantiateConcept(
     ast: ExistentialQuantification,
     kb: KnowledgeBase,
-): KnowledgeBase {
+): WorldModel {
 
     const id = ast.variable.varType + '#' + random()
     const where = substAll(ast.where, deepMapOf([[ast.variable, $(id).$]]))
 
     const additions: WorldModel = [
         [id, ast.variable.varType],
-        ...recomputeKb(where, kb).wm,
+        ...recomputeKb(where, kb).kb.wm,
     ]
 
-    return {
-        ...kb,
-        wm: [...kb.wm, ...additions]
-    }
-
-    // throw new Error('error!')
+    return additions
 }
 

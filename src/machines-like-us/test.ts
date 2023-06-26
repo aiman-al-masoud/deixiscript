@@ -12,7 +12,7 @@ export function test(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true):
     if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         const events = formula.after.list.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
-        const kb2 = eventSentences.reduce((a, b) => recomputeKb(b, a), kb)
+        const kb2 = eventSentences.reduce((a, b) => recomputeKb(b, a).kb, kb)
         const formula2: Formula = { ...formula, after: { type: 'list-literal', list: [] } }
         return test(formula2, kb2, false)
     }
