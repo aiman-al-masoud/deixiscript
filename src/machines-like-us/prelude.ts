@@ -29,8 +29,7 @@ const derivationClauses: DerivationClause[] = [
             .and($('vr:thing').has('value:thing').as('object'))
     ).$,
 
-    // number restriction // annot: subject owner amount-verb recipient
-    // $({ nr: 'nr:thing', part: 'part:thing', ofConcept: 'owner-concept:thing', amountsTo: 'value:thing' }).when(
+    // ok restyled
     $({ annotation: 'nr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb:'amount', recipient: 'value:thing' }).when(
         $('owner-concept:thing').has('nr:thing').as('part')
             .and($('nr:thing').isa('number-restriction'))
