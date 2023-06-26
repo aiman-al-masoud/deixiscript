@@ -16,22 +16,16 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): KnowledgeBase {
     switch (ast.type) {
 
         case 'happen-sentence':
-            const additions = getAdditions(ast.event.value, kb)
-            return recomputeKbAfterAdditions(additions, kb)
+            const additions0 = getAdditions(ast.event.value, kb)
+            return recomputeKbAfterAdditions(additions0, kb)
         case 'has-formula':
-
             const t1 = test(ast.t1, kb) as Atom
             const t2 = test(ast.t2, kb) as Atom
             const as = test(ast.as, kb) as Atom
-
             if (!(isConst(t1) && isConst(t2) && isConst(as))) throw new Error('cannot serialize formula with variables!')
 
-            const h: HasSentence = [t1.value, t2.value, as.value]
-            return recomputeKbAfterAdditions([h], kb)
-        // return {
-        //     wm : kb.wm.concat([h]),
-        //     derivClauses : kb.derivClauses,
-        // }
+            const additions1: WorldModel = [[t1.value, t2.value, as.value]]
+            return recomputeKbAfterAdditions(additions1, kb)
         case 'is-a-formula': //TODO: recompute after additions
 
             const t11 = test(ast.t1, kb) as Atom
