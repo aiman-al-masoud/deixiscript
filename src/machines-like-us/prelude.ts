@@ -12,12 +12,12 @@ export function getStandardKb(): KnowledgeBase {
 const derivationClauses: DerivationClause[] = [
 
     // inheritance
-    $({ subject: 'c:thing', isAKindOf: 'sc:thing' }).when(
+    $({ subject: 'c:thing', verb: 'extend', object: 'sc:thing' }).when(
         $('c:thing').has('sc:thing').as('superconcept')
     ).$,
 
     // role
-    $({ subject: 'c:thing', modal:'can', verb:'have', object: 'prop:thing' }).when(
+    $({ subject: 'c:thing', modal: 'can', verb: 'have', object: 'prop:thing' }).when(
         $('c:thing').has('prop:thing').as('part')
     ).$,
 
@@ -30,7 +30,7 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // number restriction
-    $({ annotation: 'nr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb:'amount', recipient: 'value:thing' }).when(
+    $({ annotation: 'nr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'amount', recipient: 'value:thing' }).when(
         $('owner-concept:thing').has('nr:thing').as('part')
             .and($('nr:thing').isa('number-restriction'))
             .and($('nr:thing').has('part:thing').as('subject'))
@@ -84,4 +84,4 @@ const derivationClauses: DerivationClause[] = [
 ]
 
 const conceptualModel =
-    $({ subject: 'agent', isAKindOf: 'thing' }).dump(derivationClauses).wm
+    $({ subject: 'agent', verb: 'extend', object: 'thing' }).dump(derivationClauses).wm
