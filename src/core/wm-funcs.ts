@@ -59,7 +59,7 @@ export function getSupers(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
 }
 
-export function getConceptsOf(x: WmAtom, cm: WorldModel) {
+export function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
     return cm.filter(s => s[0] === x && isIsASentence(s))
         .map(s => s[1])
         .flatMap(c => [c, ...getSupers(c, cm)])

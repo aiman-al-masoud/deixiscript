@@ -579,3 +579,16 @@ Deno.test({
         assert(results2.result)
     }
 })
+
+Deno.test({
+    name: 'test31',
+    fn: () => {
+        // transitivity of inheritance relationships
+
+        const kb = $({ subject: 'capra', verb: 'extend', object: 'mammal' })
+            .and($({ subject: 'mammal', verb: 'extend', object: 'animal' }))
+            .dump(derivationClauses).kb
+
+        assert(ask($({ subject: 'capra', verb: 'extend', object: 'animal' }).$, kb))
+    }
+})

@@ -14,6 +14,10 @@ const derivationClauses: DerivationClause[] = [
     // inheritance
     $({ subject: 'c:thing', verb: 'extend', object: 'sc:thing' }).when(
         $('c:thing').has('sc:thing').as('superconcept')
+            .or($('intermediate:thing').exists.where(
+                $('intermediate:thing').has('sc:thing').as('superconcept')
+                    .and($('c:thing').has('intermediate:thing').as('superconcept'))
+            ))
     ).$,
 
     // role

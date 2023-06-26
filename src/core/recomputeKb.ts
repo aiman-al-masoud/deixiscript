@@ -88,6 +88,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
                     eliminations: addWorldModels(result1.eliminations, result2.eliminations),
                 }
             }
+        case 'disjunction':
+            return recomputeKb(ast.f1, kb)
         case 'derived-prop':
             return {
                 kb: {

@@ -34,6 +34,7 @@
 - should GeneralizedSimpleFormula become compound? (ie:accept other formulas as
   args?)
 - limit deictic dict because a thing that was mentioned too much in the past may be mistakenly be thought of as the current referent
+- in match for loop there is no guarantee that the most specific rule will be found first
 
 ## Limitations
 - no context sentitivity
