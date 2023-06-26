@@ -364,4 +364,14 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test22',
+    fn: () => {
+        const ast = parser.parse('the x:cat')
+        assertEquals(ast, {
+            head: { name: "x", varType: "cat", type: "variable" },
+            type: "anaphor"
+        })
+    }
+})
 

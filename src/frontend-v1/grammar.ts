@@ -38,6 +38,7 @@ const astTypes = stringLiterals(
     'dative-to',
     'locative-in',
     'complement',
+    'anaphor-description',
 )
 
 const roles = stringLiterals(
@@ -268,6 +269,10 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['variable'], role: 'head' },
         { types: ['space'], number: '*' },
+        { types: ['anaphor-description'], number: '*', expand: true },
+    ],
+
+    'anaphor-description': [
         { literals: ['such that'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'description' },
