@@ -108,11 +108,11 @@ const model: WorldModel =
         .and($({ subject: 'birth-event', canHaveA: 'baby' }))
         .and($({ subject: 'birth-event', canHaveA: 'time' }))
         .and($({ subject: 'birth-event', canHaveA: 'location' }))
-        .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', predicate: 'woman' }))
+        .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', object: 'woman' }))
         .and($({ annotation: 'nr#1', subject: 'mother', owner: 'birth-event', verb: 'amount', recipient: 1 }))
         .and($({ annotation: 'nr#2', subject: 'baby', owner: 'birth-event', verb: 'amount', recipient: 1 }))
         .and($({ subject: 'person', canHaveA: 'birth' }))
-        .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', predicate: 'birth-event' }))
+        .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', object: 'birth-event' }))
         .and($({ subject: 'open', isAKindOf: 'state' }))
         .and($({ subject: 'closed', isAKindOf: 'state' }))
         .and($({ subject: 'state', isAKindOf: 'thing' }))
@@ -120,7 +120,7 @@ const model: WorldModel =
         .and($({ ann: 'ann#41', cancels: 'nr#2', fromConcept: 'multiple-birth-event' }))
         .and($({ subject: 'agent', isAKindOf: 'thing' }))
         .and($({ subject: 'agent', canHaveA: 'movement' }))
-        .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', predicate: 'move-event' }))
+        .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
         .and($({ subject: 'person', isAKindOf: 'agent' }))
         .and($({ subject: 'woman', isAKindOf: 'person' }))
         .and($({ subject: 'woman', isAKindOf: 'person' }))
@@ -139,7 +139,7 @@ const model: WorldModel =
         .and($({ subject: 'door', canHaveA: 'opening' }))
 
         // .and($({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }))
-        .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', predicate: 'door-opening-event' }))
+        .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
 
 
         .and($({ ann: 'ann#24', property: 'open', excludes: 'closed', onPart: 'state', onConcept: 'door' }))
