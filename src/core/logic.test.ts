@@ -592,3 +592,16 @@ Deno.test({
         assert(ask($({ subject: 'capra', verb: 'extend', object: 'animal' }).$, kb))
     }
 })
+
+Deno.test({
+    name: 'test32',
+    fn: () => {
+        // recomputeKb with negation
+        const q = $('cat#1').has('red').as('color')
+        const kb1 = q.dump().kb
+        assert(ask(q.$, kb1))
+        const result = recomputeKb(q.isNotTheCase.$, kb1)
+        const kb2 = result.kb
+        assert(ask(q.isNotTheCase.$, kb2))
+    }
+})

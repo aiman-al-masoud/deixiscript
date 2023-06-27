@@ -115,6 +115,19 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
                     eliminations,
                 }
             }
+        case 'negation':
+            {
+                const { additions, eliminations } = recomputeKb(ast.f1, kb)
+                const newWm = addWorldModels(subtractWorldModels(kb.wm, additions), eliminations)
+                return {
+                    kb: {
+                        ...kb,
+                        wm: newWm,
+                    },
+                    additions: eliminations,
+                    eliminations: additions,
+                }
+            }
 
     }
 
