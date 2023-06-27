@@ -23,6 +23,7 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
             return formula.value
         case 'number':
         case 'entity':
+        case 'string':
             kb.deicticDict[formula.value] ??= 0
             kb.deicticDict[formula.value]++
             return formula

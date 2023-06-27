@@ -1,8 +1,9 @@
 import { recomputeKb } from "./recomputeKb.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
+export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
 export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>
@@ -271,13 +272,19 @@ export class ExpBuilder<T extends LLangAst> {
 type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
 type Var = `${string}:${string}`
 type ListPat = `${Var}|${Var}`
+type StringLiteralPattern = `"${string}"`
 
 function isVar(x: string): x is Var {
     return x.includes(':')
 }
 
+function isStringLiteral(x: string): x is StringLiteralPattern {
+    return x.at(0) === '"' && x.at(-1) === '"'
+}
+
 function makeAtom(x: ListPat): ListPattern
 function makeAtom(x: Var): Variable
+function makeAtom(x: StringLiteralPattern): StringLiteral
 function makeAtom(x: WmAtom[]): ListLiteral
 function makeAtom(x: number): Number
 function makeAtom(x: boolean): Boolean
@@ -294,6 +301,11 @@ function makeAtom(x: WmAtom | WmAtom[]): Atom {
         return {
             type: 'list-literal',
             list: x.map(e => makeAtom(e))
+        }
+    } else if (isStringLiteral(x)) {
+        return {
+            type: 'string',
+            value: x.substring(1, x.length - 1),
         }
     } else if (x.includes('|')) {
         const [seq, tail] = x.split('|')

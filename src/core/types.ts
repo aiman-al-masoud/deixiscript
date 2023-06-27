@@ -32,6 +32,7 @@ export type Constant =
     | Entity
     | Boolean
     | Number
+    | StringLiteral
 export type SimpleFormula =
     | AtomicFormula
     | Equality
@@ -61,6 +62,11 @@ export type Boolean = {
 export type Number = {
     type: 'number',
     value: number,
+}
+
+export type StringLiteral = {
+    type: 'string',
+    value: string
 }
 
 export type Variable = {
@@ -165,17 +171,18 @@ export type IfElse = {
     otherwise: LLangAst,
 }
 
-export function isVar(t: Atom): t is Variable {
+export function isVar(t: LLangAst): t is Variable {
     return t.type === 'variable'
 }
 
-export function isConst(t: Atom): t is Constant {
+export function isConst(t: LLangAst): t is Constant {
     return t.type === 'entity'
         || t.type === 'number'
         || t.type === 'boolean'
+        || t.type === 'string'
 }
 
-export function isTerm(a: Atom): a is Term {
+export function isTerm(a: LLangAst): a is Term {
     return isVar(a) || isConst(a)
 }
 
@@ -214,14 +221,12 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
     if (ast instanceof Array) return false
     if (isWmAtom(ast)) return false
 
-    return ast.type === 'variable'
-        || ast.type === 'entity'
-        || ast.type === 'list-literal'
+    return isTerm(ast)
         || ast.type === 'list-pattern'
-        || ast.type === 'boolean'
-        || ast.type === 'number'
+        || ast.type === 'list-literal'
         || ast.type === 'anaphor'
         || ast.type === 'math-expression'
+
 }
 
 export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {

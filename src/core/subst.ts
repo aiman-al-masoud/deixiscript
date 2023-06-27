@@ -95,6 +95,7 @@ export function subst(
         case 'entity':
         case 'boolean':
         case 'number':
+        case 'string':
             return ast
         case 'derived-prop':
             throw new Error('not implemented!')

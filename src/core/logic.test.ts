@@ -605,3 +605,13 @@ Deno.test({
         assert(ask(q.isNotTheCase.$, kb2))
     }
 })
+
+Deno.test({
+    name: 'test33',
+    fn: () => {
+        const x = $('"ciao mondo"')
+        assertEquals(x.$.type, 'string')
+        assert(ask(x.is('"ciao mondo"').$, kb))
+        assert(ask(x.is('"ciaomondo"').isNotTheCase.$, kb))
+    }
+})
