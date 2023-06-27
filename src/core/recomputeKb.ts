@@ -62,7 +62,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
                 const t21 = ask(ast.t2, kb) as Atom
 
                 if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
-                const additions: WorldModel = [[t11.value, t21.value]]
+                const additions: WorldModel = [[t11.value, t21.value]] //TODO this serializes entities and string the same way
                 const eliminations: WorldModel = []
 
                 return {
@@ -141,7 +141,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
         }
     }
 
-    throw new Error('not implemented! '+ast.type)
+    throw new Error('not implemented! ' + ast.type)
 
 }
 
