@@ -34,7 +34,7 @@ export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
 
             return {
                 type: 'generalized',
-                after: $([]).$,
+                after: ast.after ? cleanUpAst(ast.after) as Atom : $([]).$,
                 keys,
             }
         case 'anaphor':
