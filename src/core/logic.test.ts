@@ -609,6 +609,7 @@ Deno.test({
 Deno.test({
     name: 'test33',
     fn: () => {
+        // string literals
         const x = $('"ciao mondo"')
         assertEquals(x.$.type, 'string')
         assert(ask(x.is('"ciao mondo"').$, kb))
