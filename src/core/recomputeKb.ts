@@ -141,7 +141,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
         }
     }
 
-    throw new Error('not implemented!')
+    throw new Error('not implemented! '+ast.type)
 
 }
 

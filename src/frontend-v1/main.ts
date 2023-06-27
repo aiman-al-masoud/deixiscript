@@ -17,6 +17,7 @@ while (true) {
     const ast1 = ast0.type === 'command' || ast0.type === 'question' ? ast0['f1'] : ast0
     const isCommand = ast0.type === 'command'
     const ast = cleanUpAst(ast1)
+    console.log(ast)
     const result = evaluate({ ast, isCommand, kb })
     console.log('===>', result.result)
     kb = result.kb
