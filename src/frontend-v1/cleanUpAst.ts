@@ -1,5 +1,5 @@
 import { $ } from "../core/exp-builder.ts";
-import { LLangAst, Atom } from "../core/types.ts";
+import { LLangAst, Atom, AtomicFormula } from "../core/types.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
 
 /**
@@ -11,6 +11,7 @@ import { parseNumber } from "../utils/parseNumber.ts";
  */
 //TODO: complete!! fully recursive!
 export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
+
     switch (ast.type) {
         case 'is-a-formula':
         case 'has-formula':
@@ -20,7 +21,7 @@ export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
                     after: $([]).$,
                 } as LLangAst
             }
-            break
+            return ast as LLangAst
         case 'generalized':
             const keyEntries = Object.entries(ast.keys!)
             const goodKeys = keyEntries.filter(e => e[0] !== 'type')
@@ -33,7 +34,7 @@ export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
                     keys,
                 } as LLangAst
             }
-            break
+            return ast as LLangAst
         case 'anaphor':
             if (!ast.description) {
                 return {
@@ -41,7 +42,7 @@ export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
                     description: $(true).$,
                 } as LLangAst
             }
-            break
+            return ast as LLangAst
         case 'number':
             return {
                 ...ast,
@@ -61,6 +62,50 @@ export function cleanUpAst(ast: Partial<LLangAst>): LLangAst {
                 left: cleanUpAst(ast.left!) as Atom,
                 right: cleanUpAst(ast.right!) as Atom,
             } as LLangAst
+        case 'conjunction':
+        case 'disjunction':
+            return {
+                ...ast,
+                f1: cleanUpAst(ast.f1!)!,
+                f2: cleanUpAst(ast.f2!)!,
+            } as LLangAst
+        case 'if-else':
+            return {
+                ...ast,
+                condition: cleanUpAst(ast.condition!)!,
+                otherwise: cleanUpAst(ast.otherwise!)!,
+                then: cleanUpAst(ast.then!)!,
+            } as LLangAst
+        case 'variable':
+        case 'entity':
+        case 'happen-sentence':
+        case 'list-pattern':
+            return ast as LLangAst
+        case 'existquant':
+            return {
+                ...ast,
+                where: cleanUpAst(ast.where!)!
+            } as LLangAst
+        case 'equality':
+            return {
+                ...ast,
+                t1: cleanUpAst(ast.t1!) as Atom,
+                t2: cleanUpAst(ast.t2!) as Atom,
+            } as LLangAst
+        case 'derived-prop':
+            return {
+                ...ast,
+                conseq: cleanUpAst(ast.conseq!) as AtomicFormula,
+                when: cleanUpAst(ast.when!),
+            } as LLangAst
+        case 'negation':
+            return {
+                ...ast,
+                f1: cleanUpAst(ast.f1!)!
+            } as LLangAst
+        case 'list-literal':
+            return ast as LLangAst
     }
+
     return ast as LLangAst
 }
