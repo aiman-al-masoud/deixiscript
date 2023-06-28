@@ -1,82 +1,68 @@
 # What is LLang missing to become Deixiscript?
 
-## Core Features
+# Core Features
 
 - integrating anaphora
-  - anaphora within same sentence and with temporal order: deictic dict (DONE)
+  - fix and test deictic dict (too many increments for some entities, no limit
+    on "stack")
   - what if findAll() finds many?
   - every/and/or, use list-literal?
-- mathematical operations
-  - refactor ask()
-  - is MathExpression an Atom ??!
-- finish up recomputeKb()
-  - implement not
+- recomputeKb()
   - existquant defaults
-- single eval() to access ask/findAll/recomputeKb etc...
-  - command vs question
-  - find all free vars to decide between findAll and ask?? maybe no need cuz anaphora
+  - mutually exclusive is-a superconcepts
+- parser
+  - string literals in parser
+- general
+  - equality not with "is" but with verb "equal" or equal-sign, "is" can then
+    default to equals
 
-## Frontend
+# JS INTEROP
 
-- a more palatable syntax
+- getThingById(id:string, things:ThingDict):Thing
+- createThingInCase(id:string, things:ThingDict)
+- updateThing(additions:WorldModel, eliminations:WorldModel, object:Thing)
 
-## Interop (for later)
+### objects
 
-- how to integrate method calls?
-- how to integrate object attribute modifications?
-  - convertToJs(wm: WorldModel, id: string, obj:any)
-- how to integrate events? there-is + happens
-- panel 
-    - xcoord (absolute)
-    - ycoord (absolute)
-    - width
-    - height
-    - color
-    - z-index
-    - visibility
-    - attached
-    - text
-    - image
+Thing set(key, value:ThingObject|WmAtom) remove(key)
 
-## Problems
+Panel xcoord (absolute) ycoord (absolute) width height color z-index
+visibility-cum-attachedness (favor WYSIWYG) text image
 
-- can you entirely do away with variable assigments? replaced by anaphora, also
-  theme-rheme style on separate sentences joined with pronouns
+when any of these basic properties is edited, the Panel automatically changes
+
+JS doesn't need to know about is-a relationships, just has relationships.
+Default fillers can be computed in recomputeKb() as a result of new is-a
+relationships. To Accomplish this everything must be the same. Only "Thing", no
+"Panel", and when visible-cum-attached is set to true a div is created
+
+### event handler
+
+evaluate(ExistentialQuantifier) // create the event evaluate(HappenSentence) //
+make it happen
+
+# Problems
+
 - should GeneralizedSimpleFormula become compound? (ie:accept other formulas as
   args?)
-- limit deictic dict because a thing that was mentioned too much in the past may be mistakenly be thought of as the current referent
-- in match for loop there is no guarantee that the most specific rule will be found first
+- in match() for loop there is no guarantee that the most specific rule will be
+  found first
 
 ## Limitations
+
 - no context sentitivity
   - the cat eats the kibble piece
-  - it jumps
-  it resolves to "the kibble piece"
-
-# Pipeline:
-
-- source is parsed by grammatical framework
-- grammatical framework produces a semantic AST
-- GF AST is transformed into LLang json AST (mostly GeneralizedSimpleFormula)
-- the LLang AST is fed to eval() OR it is used by compiler
+  - it jumps it resolves to "the kibble piece"
+- no cataphora
 
 # Notes
 
 - recomputeKb() and ask() DO HAVE side effects; not for what concerns the world
   model and derivation clauses, but on the deictic dictionary.
 
-- at the basic level there is nothing but: entities, is-a-relations and has-relations. This is the "interface" through which Deixiscript communicates with the outside world, including JS.
+- at the basic level there is nothing but: entities, is-a-relations and
+  has-relations. This is the "interface" through which Deixiscript communicates
+  with the outside world, including JS.
 
-Use generalized ASTs to implement sentences:
-
-```
-$({subject : 'x:element', verb: 'v:be', predicate:'c:color' }).when(
-  there exists y:style where
-  x:element has y:style as style
-  and y:style has c:color as color
-)
-
-$({subject : 'button#1', verb: 'is', predicate:'red' })
-
-button#1 is red
-```
+- assignments are completely replaced by anaphora, also theme-rheme phrase
+  style.
