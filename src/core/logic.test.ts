@@ -25,8 +25,8 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     $('d:door').has('z:state').as('state').after(['e:event']).when(
-        $('z:state').is('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
-            .else($('z:state').is('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object'))))
+        $('z:state').equals('open').if($('e:event').isa('door-opening-event').and($('e:event').has('d:door').as('object')))
+            .else($('z:state').equals('closed').if($('e:event').isa('door-closing-event').and($('e:event').has('d:door').as('object'))))
     ).$,
 
     $({ subject: 'x:thing', isSmallerThan: 'y:thing' }).when(
@@ -60,7 +60,7 @@ const derivationClauses: DerivationClause[] = [
         $('p1:number').exists.where($('p2:number').exists.where(
             $('x:thing').has('p1:number').as('position')
                 .and($('y:thing').has('p2:number').as('position'))
-                .and($('p1:number').is('p2:number'))
+                .and($('p1:number').equals('p2:number'))
         ))
     ).$,
 
@@ -477,7 +477,7 @@ Deno.test({
             .dump().kb.wm
 
         // ((the number such that (the cat has the number as weight)) is (3))
-        const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).is(3).$
+        const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
         assert(ask(y, { wm: kb2, derivClauses: [], deicticDict: {}, }))
     }
 })
@@ -500,7 +500,7 @@ Deno.test({
             .and($(2).isa('number'))
             .dump().kb.wm
 
-        const q = $('x:number').plus('y:number').is(3).$
+        const q = $('x:number').plus('y:number').equals(3).$
 
         const res = findAll(q, [$('x:number').$, $('y:number').$], { wm: kb, derivClauses: [], deicticDict: {}, })
         assertEquals(res[0].get($('x:number').$), $(1).$)
@@ -612,7 +612,7 @@ Deno.test({
         // string literals
         const x = $('"ciao mondo"')
         assertEquals(x.$.type, 'string')
-        assert(ask(x.is('"ciao mondo"').$, kb))
-        assert(ask(x.is('"ciaomondo"').isNotTheCase.$, kb))
+        assert(ask(x.equals('"ciao mondo"').$, kb))
+        assert(ask(x.equals('"ciaomondo"').isNotTheCase.$, kb))
     }
 })

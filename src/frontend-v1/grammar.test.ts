@@ -79,7 +79,7 @@ Deno.test({
 Deno.test({
     name: 'test6',
     fn: () => {
-        const ast = parser.parse('capra is capra')
+        const ast = parser.parse('capra equals capra')
         assertEquals(ast, {
             t1: { value: "capra", type: "entity" },
             t2: { value: "capra", type: "entity" },
@@ -91,7 +91,7 @@ Deno.test({
 Deno.test({
     name: 'test7',
     fn: () => {
-        const ast = parser.parse('x:capra is  a capra')
+        const ast = parser.parse('x:capra is a capra')
         assertEquals(ast, {
             t1: { name: "x", varType: "capra", type: "variable" },
             t2: { value: "capra", type: "entity" },
@@ -121,7 +121,7 @@ Deno.test({
 Deno.test({
     name: 'test9',
     fn: () => {
-        const ast = parser.parse('x is capra and y is buruf and z is scemo')
+        const ast = parser.parse('x equals capra and y equals buruf and z equals scemo')
         assertEquals(ast, {
             f1: {
                 t1: { value: "x", type: "entity" },
@@ -149,7 +149,7 @@ Deno.test({
 Deno.test({
     name: 'test10',
     fn: () => {
-        const ast = parser.parse('it is not the case that x is y')
+        const ast = parser.parse('it is not the case that x equals y')
         assertEquals(ast, {
             f1: {
                 t1: { value: "x", type: "entity" },
@@ -182,7 +182,7 @@ Deno.test({
 Deno.test({
     name: 'test12',
     fn: () => {
-        const ast = parser.parse('x:cat is red when x:cat has red as color')
+        const ast = parser.parse('x:cat equals red when x:cat has red as color')
         assertEquals(ast, {
             conseq: {
                 t1: { name: "x", varType: "cat", type: "variable" },
@@ -205,7 +205,7 @@ Deno.test({
 Deno.test({
     name: 'test13',
     fn: () => {
-        const ast = parser.parse('if x is capra then x is stupid else x is smart')
+        const ast = parser.parse('if x equals capra then x equals stupid else x equals smart')
         assertEquals(ast, {
             condition: {
                 t1: { value: "x", type: "entity" },
@@ -294,7 +294,7 @@ Deno.test({
 Deno.test({
     name: 'test18',
     fn: () => {
-        const ast = parser.parse('capra is scema!')
+        const ast = parser.parse('capra equals scema!')
 
         assertEquals(ast, {
             f1: {
@@ -310,7 +310,7 @@ Deno.test({
 Deno.test({
     name: 'test19',
     fn: () => {
-        const ast = parser.parse('capra is scema?')
+        const ast = parser.parse('capra equals scema?')
 
         assertEquals(ast, {
             f1: {
@@ -328,7 +328,7 @@ Deno.test({
 Deno.test({
     name: 'test20',
     fn: () => {
-        const ast = parser.parse('annotx: capra is stupid')
+        const ast = parser.parse('annotx: capra equals stupid')
         assertEquals(ast, {
             keys: {
                 annotation: { value: "annotx", type: "entity" },

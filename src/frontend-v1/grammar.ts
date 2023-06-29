@@ -140,7 +140,7 @@ export const syntaxes: SyntaxMap<
     equality: [
         { types: ['atom'], role: 't1' },
         { types: ['space'], number: '*' },
-        { literals: ['is'] },
+        { literals: ['equals', 'equal', '='] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 't2' },
     ],
@@ -188,11 +188,9 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'f2' },
     ],
-
     formula: [
         { types: ['if-else', 'conjunction', 'derived-prop', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
     ],
-
     disjunction: [
         { types: ['simple-formula'], role: 'f1' },
         { types: ['space'], number: '*' },
@@ -200,13 +198,11 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'f2' },
     ],
-
     negation: [
         { literals: ['it is not the case that'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'f1' },
     ],
-
     existquant: [
         { literals: ['there exists a'] },
         { types: ['space'], number: '*' },
@@ -236,7 +232,6 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'otherwise' },
     ],
-
     'math-expression': [
         { types: ['atom'], role: 'left' },
         { types: ['space'], number: '*' },
@@ -244,12 +239,10 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom', 'math-expression'], role: 'right' },
     ],
-
     generalized: [
         { types: ['verb-sentence', 'annotation'], role: 'keys' },
         { types: ['after-clause'], expand: true, number: '1|0' },
     ],
-
     "verb-sentence": [
         { types: ['atom'], role: 'subject' },
         { types: ['space'], number: '*' },
@@ -261,7 +254,6 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
-
     annotation: [
         { types: ['atom'], role: 'annotation' },
         { types: ['space'], number: '*' },
@@ -269,7 +261,6 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], expand: true },
     ],
-
     anaphor: [
         { literals: ['the'] },
         { types: ['space'], number: '*' },
@@ -277,37 +268,31 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['anaphor-description'], number: '*', expand: true },
     ],
-
     'anaphor-description': [
         { literals: ['such that'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'description' },
     ],
-
     command: [
         { types: ['formula'], role: 'f1' },
         { types: ['space'], number: '*' },
         { literals: ['!'] }
     ],
-
     question: [
         { types: ['formula', 'atom'], role: 'f1' },
         { types: ['space'], number: '*' },
         { literals: ['?'] }
     ],
-
     "locative-in": [
         { literals: ['in'] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'location' },
     ],
-
     'dative-to': [
         { literals: ['to'] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'recipient' },
     ],
-
     complement: [
         { types: ['locative-in', 'dative-to'], expand: true, sep: 'space' }
     ]

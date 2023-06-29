@@ -11,8 +11,7 @@
   - existquant defaults
   - mutually exclusive is-a superconcepts
 - general
-  - equality not with "is" but with verb "equal" or equal-sign, "is" can then
-    default to equals
+  - copula should default to equality
 
 # JS INTEROP
 
@@ -22,10 +21,18 @@
 
 ### objects
 
-Thing set(key, value:ThingObject|WmAtom) remove(key)
+- Thing 
+- set(key, value:ThingObject|WmAtom) 
+- remove(key)
 
-Panel xcoord (absolute) ycoord (absolute) width height color z-index
-visibility-cum-attachedness (favor WYSIWYG) text image
+Panel 
+- xcoord (absolute) 
+- ycoord (absolute) 
+- width 
+- height 
+- color 
+- z-index
+- visibility-cum-attachedness (favor WYSIWYG) text image
 
 when any of these basic properties is edited, the Panel automatically changes
 

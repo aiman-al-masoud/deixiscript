@@ -76,7 +76,7 @@ const derivationClauses: DerivationClause[] = [
 
     // empty event sequence always possible
     $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' }).when(
-        $('s:seq').is([])
+        $('s:seq').equals([])
     ).$,
 
     // possiblity of non empty event sequence

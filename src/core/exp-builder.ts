@@ -30,7 +30,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    is(term: WmAtom | WmAtom[]): ExpBuilder<Equality> {
+    equals(term: WmAtom | WmAtom[]): ExpBuilder<Equality> {
 
         if (!isAtom(this.exp)) {
             throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of equality`)
