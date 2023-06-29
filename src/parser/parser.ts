@@ -1,4 +1,5 @@
 import { first } from "../utils/first.ts";
+import { parseNumber } from "../utils/parseNumber.ts";
 import { uniq } from "../utils/uniq.ts";
 import { CharStream, getCharStream } from "./char-stream.ts";
 import { dependencies, maxPrecedence } from "./max-precedence.ts";
@@ -53,7 +54,7 @@ class KoolerParser {
                 return { ...ast, type: syntaxName }
             }
 
-            if (ast) {
+            if (ast!==undefined) {
                 return ast
             }
 
@@ -70,12 +71,12 @@ class KoolerParser {
 
             const node = this.parseMemberMaybeRepeated(member, top)
 
-            if (!node && isNecessary(member.number)) {
+            if (node===undefined && isNecessary(member.number)) {
                 maybeLog(this.log, top, syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
                 return undefined
             }
 
-            if (!node) { // and isNecessary=false
+            if (node===undefined) { // and isNecessary=false
                 maybeLog(this.log, top, syntaxName, 'unrequired', member.role ?? member.literals ?? member.types, 'not found, ignored', 'pos=', this.cs.getPos())
                 continue
             }
@@ -176,6 +177,7 @@ class KoolerParser {
         if (member.reduce) {
             maybeLog(this.log, top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
             const string = list.map(x => x.toString()).reduce((a, b) => a + b)
+            if(member.reduce==='to-number') return parseNumber(string)
             return string
         }
 

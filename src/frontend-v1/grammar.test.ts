@@ -1,6 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts"
 import { getParser } from "../parser/parser.ts"
 import { syntaxes } from "./grammar.ts"
+import { $ } from "../core/exp-builder.ts"
 
 const parser = getParser({ syntaxes })
 
@@ -19,10 +20,7 @@ Deno.test({
     name: 'test1',
     fn: () => {
         const ast = parser.parse('10')
-        assertEquals(ast, {
-            value: '10',
-            type: 'number',
-        })
+        assertEquals(ast, $(10).$)
     }
 })
 
@@ -30,10 +28,7 @@ Deno.test({
     name: 'test2',
     fn: () => {
         const ast = parser.parse('capra')
-        assertEquals(ast, {
-            value: 'capra',
-            type: 'entity',
-        })
+        assertEquals(ast, $('capra').$)
     }
 })
 
@@ -41,50 +36,31 @@ Deno.test({
     name: 'test3',
     fn: () => {
         const ast = parser.parse('x:capra')
-        assertEquals(ast, {
-            name: 'x',
-            type: 'variable',
-            varType: 'capra',
-        })
+        assertEquals(ast, $('x:capra').$)
     }
 })
 
 Deno.test({
     name: 'test4',
     fn: () => {
-        const ast = parser.parse('[x:capra y:capra capra ] ')
-        assertEquals(ast, {
-            list: [
-                { name: "x", varType: "capra", type: "variable" },
-                { name: "y", varType: "capra", type: "variable" },
-                { value: "capra", type: "entity" }
-            ],
-            type: "list-literal"
-        })
+        const ast = parser.parse('[x:capra y:capra capra ] ') as unknown
+        assertEquals(ast, $(['x:capra', 'y:capra', 'capra']).$);
     }
 })
 
 Deno.test({
     name: 'test5',
     fn: () => {
-        const ast = parser.parse('x:seq|e:event')
-        assertEquals(ast, {
-            seq: { name: "x", varType: "seq", type: "variable" },
-            tail: { name: "e", varType: "event", type: "variable" },
-            type: "list-pattern"
-        })
+        const ast = parser.parse('x:seq|e:event') as unknown
+        assertEquals(ast, $('x:seq|e:event').$)
     }
 })
 
 Deno.test({
     name: 'test6',
     fn: () => {
-        const ast = parser.parse('capra equals capra')
-        assertEquals(ast, {
-            t1: { value: "capra", type: "entity" },
-            t2: { value: "capra", type: "entity" },
-            type: "equality"
-        })
+        const ast = parser.parse('capra equals capra') as unknown
+        assertEquals(ast, $('capra').equals('capra').$)
     }
 })
 
@@ -104,17 +80,8 @@ Deno.test({
 Deno.test({
     name: 'test8',
     fn: () => {
-        const ast = parser.parse('x:capra has 0 as intelligence after [eventxy]')
-        assertEquals(ast, {
-            t1: { name: "x", varType: "capra", type: "variable" },
-            t2: { value: "0", type: "number" },
-            as: { value: "intelligence", type: "entity" },
-            after: {
-                list: [{ value: "eventxy", type: "entity" }],
-                type: "list-literal"
-            },
-            type: "has-formula"
-        })
+        const ast = parser.parse('x:capra has 0 as intelligence after [eventxy]') as unknown
+        assertEquals(ast, $('x:capra').has(0).as('intelligence').after(['eventxy']).$)
     }
 })
 
@@ -230,13 +197,8 @@ Deno.test({
 Deno.test({
     name: 'test14',
     fn: () => {
-        const ast = parser.parse('1 + x:capra')
-        assertEquals(ast, {
-            left: { value: "1", type: "number" },
-            operator: "+",
-            right: { name: "x", varType: "capra", type: "variable" },
-            type: "math-expression"
-        })
+        const ast = parser.parse('1 + x:capra') as unknown
+        assertEquals(ast, $(1).plus('x:capra').$)
     }
 })
 
@@ -257,9 +219,9 @@ Deno.test({
     fn: () => {
         const ast = parser.parse('2 > 1')
         assertEquals(ast, {
-            left: { value: "2", type: "number" },
+            left: { value: 2, type: "number" },
             operator: ">",
-            right: { value: "1", type: 'number' },
+            right: { value: 1, type: 'number' },
             type: "math-expression"
         })
     }
