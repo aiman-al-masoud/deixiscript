@@ -10,6 +10,7 @@
 - recomputeKb()
   - existquant defaults
   - mutually exclusive is-a superconcepts
+  - less than and greater than as commands
 - general
   - copula should default to equality
 - parser
