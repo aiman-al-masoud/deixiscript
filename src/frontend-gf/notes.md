@@ -1,1 +1,0 @@
-ps -lexcode "x:capra has x:capra as x:capra" | parse 
