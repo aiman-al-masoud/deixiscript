@@ -19,7 +19,8 @@
 
 - getThingById(id:string, things:ThingDict):Thing
 - createThingInCase(id:string, things:ThingDict)
-- updateThing(additions:WorldModel, eliminations:WorldModel, object:Thing)
+- update(additions:HasSentence[], eliminations:HasSentence[], things:ThingsDict)
+- updateThing(additions:HasSentence[], eliminations:HasSentence[], object:Thing)
 
 ### objects
 
