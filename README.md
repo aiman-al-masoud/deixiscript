@@ -43,7 +43,9 @@ when any of these basic properties is edited, the Panel automatically changes
 JS doesn't need to know about is-a relationships, just has relationships.
 Default fillers can be computed in recomputeKb() as a result of new is-a
 relationships. To Accomplish this everything must be the same. Only "Thing", no
-"Panel", and when visible-cum-attached is set to true a div is created
+"Panel", and when visible-cum-attached is set to true a div is created. 
+
+Only fixed positioning (absolute coordinates), on single root object.
 
 ### event handler
 
