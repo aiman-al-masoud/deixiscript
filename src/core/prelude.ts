@@ -75,14 +75,14 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // empty event sequence always possible
-    $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' }).when(
+    $({ subject: 's:seq', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' }).when(
         $('s:seq').equals([])
     ).$,
 
     // possiblity of non empty event sequence
-    $({ subject: 's:seq|e:event', isPossibleSeqFor: 'a:agent' }).when(
-        $({ subject: 's:seq', isPossibleSeqFor: 'a:agent' })
-            .and($({ subject: 'e:event', isPossibleFor: 'a:agent' }).after('s:seq'))
+    $({ subject: 's:seq|e:event', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' }).when(
+        $({ subject: 's:seq', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' })
+            .and($({ subject: 'e:event', verb: 'be', object: 'possible', beneficiary: 'a:agent' }).after('s:seq'))
     ).$,
 
 ]

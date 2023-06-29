@@ -43,18 +43,20 @@ const derivationClauses: DerivationClause[] = [
         )
     ).$,
 
-    $({ subject: 'e:move-event', isPossibleFor: 'a:agent' }).when(
-        $('e:move-event').isa('move-event')
-            .and($('e:move-event').has('a:agent').as('subject'))
-    ).$,
+    $({ subject: 'e:move-event', verb: 'be', object: 'possible', beneficiary: 'a:agent' })
+        .when(
+            $('e:move-event').isa('move-event')
+                .and($('e:move-event').has('a:agent').as('subject'))
+        ).$,
 
-    $({ subject: 'e:door-opening-event', isPossibleFor: 'a:agent' }).when(
-        $('d:door').exists.where(
-            $('e:door-opening-event').has('d:door').as('object')
-                .and($({ subject: 'a:agent', isNear: 'd:door' }))
-                .and($('d:door').has('closed').as('state'))
-        )
-    ).$,
+    $({ subject: 'e:door-opening-event', verb: 'be', object: 'possible', beneficiary: 'a:agent' })
+        .when(
+            $('d:door').exists.where(
+                $('e:door-opening-event').has('d:door').as('object')
+                    .and($({ subject: 'a:agent', isNear: 'd:door' }))
+                    .and($('d:door').has('closed').as('state'))
+            )
+        ).$,
 
     $({ subject: 'x:thing', isNear: 'y:thing' }).when(
         $('p1:number').exists.where($('p2:number').exists.where(
@@ -321,8 +323,9 @@ Deno.test({
     name: 'test12',
     fn: () => {
         assert(ask($('door#1').has('closed').as('state').$, kb))
-        const f1 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#3' })
-        const f2 = $({ subject: 'door-opening-event#1', isPossibleFor: 'person#2' }).isNotTheCase
+        const f1 = $({ subject: 'door-opening-event#1', verb: 'be', object: 'possible', beneficiary: 'person#3' })
+        const f2 = $({ subject: 'door-opening-event#1', verb: 'be', object: 'possible', beneficiary: 'person#2' }).isNotTheCase
+
         assert(ask(f1.$, kb))
         assert(ask(f2.$, kb))
         const f3 = $('door#1').has('open').as('state').after(['door-opening-event#1'])
@@ -334,7 +337,8 @@ Deno.test({
     name: 'test13',
     fn: () => {
         // the empty sequence of actions (events) is always possible for any agent
-        const f1 = $({ subject: [], isPossibleSeqFor: 'person#1' })
+        const f1 = $({ subject: [], verb: 'be', object: 'possible-sequence', beneficiary: 'person#1' })
+
         assert(ask(f1.$, kb))
     }
 })
@@ -342,7 +346,7 @@ Deno.test({
 Deno.test({
     name: 'test14',
     fn: () => {
-        const f1 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
+        const f1 = $({ subject: ['door-opening-event#1'], verb: 'be', object: 'possible-sequence', beneficiary: 'person#3' })
         assert(ask(f1.$, kb))
     }
 })
@@ -351,14 +355,17 @@ Deno.test({
     name: 'test15',
     fn: () => {
 
-        const f2 = $({ subject: ['door-opening-event#1'], isPossibleSeqFor: 'person#3' })
+        const f2 = $({ subject: ['door-opening-event#1'], verb: 'be', object: 'possible-sequence', beneficiary: 'person#3' })
+
         assert(ask(f2.$, kb))
 
-        const f1 = $({ subject: 'e:event', isPossibleFor: 'person#3' })
+        const f1 = $({ subject: 'e:event', verb: 'be', object: 'possible', beneficiary: 'person#3' })
+
         const result = findAll(f1.$, [$('e:event').$], kb)
         assert(result[0].get($('e:event').$)?.value === 'door-opening-event#1')
 
-        const f3 = $({ subject: ['e:event'], isPossibleSeqFor: 'person#3' })
+        const f3 = $({ subject: ['e:event'], verb: 'be', object: 'possible-sequence', beneficiary: 'person#3' })
+
         const result2 = findAll(f3.$, [$('e:event').$], kb)
         assert(result2[0].get($('e:event').$)?.value === 'door-opening-event#1')
 
@@ -379,7 +386,7 @@ Deno.test({
 
 function plan(goal: ExpBuilder<Formula>, agent: string, kb: KnowledgeBase) {
 
-    const q = $({ subject: ['e:event'], isPossibleSeqFor: agent })
+    const q = $({ subject: ['e:event'], verb: 'be', object: 'possible-sequence', beneficiary: agent })
         .and(goal.after(['e:event']))
 
     const result = findAll(q.$, [$('e:event').$], kb)
@@ -392,12 +399,17 @@ Deno.test({
     name: 'test17',
     fn: () => {
         assert(!ask($({ subject: 'person#1', isNear: 'door#1' }).$, kb))
-        assert(!ask($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb))
+        assert(!ask($({ subject: 'door-opening-event#1', verb: 'be', object: 'possible', beneficiary: 'person#1' }).$, kb))
+
+        assert(!ask($({ subject: 'door-opening-event#1', verb: 'be', object: 'possible', beneficiary: 'person#1' }).$, kb))
+
 
         const kb2 = recomputeKb($('move-event#1').happens.$, kb).kb
 
         assert(ask($({ subject: 'person#1', isNear: 'door#1' }).$, kb2))
-        assert(ask($({ subject: 'door-opening-event#1', isPossibleFor: 'person#1' }).$, kb2))
+        assert(ask($({ subject: 'door-opening-event#1', verb: 'be', object: 'possible', beneficiary: 'person#1' }).$, kb2))
+
+
     }
 })
 
@@ -406,7 +418,7 @@ Deno.test({
     name: 'test18',
     fn: () => {
         const agent = 'person#1'
-        const q = $({ subject: 'e:event', isPossibleFor: agent })
+        const q = $({ subject: 'e:event', verb: 'be', object: 'possible', beneficiary: agent })
         const result = findAll(q.$, [$('e:event').$], kb)
         assert(result.length === 1)
         assertEquals(result[0].get($('e:event').$)?.value, 'move-event#1')
@@ -419,7 +431,7 @@ Deno.test({
         const goal = $('door#1').has('open').as('state')
         const agent = 'person#1'
         const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
-        const q = $({ subject: seq, isPossibleSeqFor: agent }).and(goal.after(seq))
+        const q = $({ subject: seq, verb: 'be', object: 'possible-sequence', beneficiary: agent }).and(goal.after(seq))
         const seqVars = seq.map(x => $(x).$)
         const result = findAll(q.$, seqVars, kb)
         assertEquals(result[0].get($('e1:event').$)?.value, 'move-event#1')
