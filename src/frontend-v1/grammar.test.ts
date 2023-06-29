@@ -375,3 +375,11 @@ Deno.test({
     }
 })
 
+
+Deno.test({
+    name: 'test23',
+    fn: () => {
+        const ast = parser.parse('"ciao mondo!"')
+        assertEquals(ast, { value: "ciao mondo!", type: "string" })
+    }
+})

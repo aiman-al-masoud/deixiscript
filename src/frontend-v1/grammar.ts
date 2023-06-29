@@ -39,6 +39,7 @@ const astTypes = stringLiterals(
     'locative-in',
     'complement',
     'anaphor-description',
+    'string',
 )
 
 const roles = stringLiterals(
@@ -110,6 +111,11 @@ export const syntaxes: SyntaxMap<
     ],
     boolean: [
         { literals: ['true', 'false'], role: 'value' }
+    ],
+    string: [
+        { literals: ['"'] },
+        { literals: [], anyCharExceptFor: ['"'], number: '*', role: 'value', reduce: true },
+        { literals: ['"'] },
     ],
     variable: [
         { types: ['identifier'], role: 'name' },

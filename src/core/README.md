@@ -10,8 +10,6 @@
 - recomputeKb()
   - existquant defaults
   - mutually exclusive is-a superconcepts
-- parser
-  - string literals in parser
 - general
   - equality not with "is" but with verb "equal" or equal-sign, "is" can then
     default to equals

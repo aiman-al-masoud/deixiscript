@@ -84,7 +84,7 @@ class KoolerParser {
                 throw new Error('expanding member with role currently not supported!')
             }
 
-            if (member.reduce) {
+            if (member.reduce && syntax.length<=1) {
                 return node
             }
 
