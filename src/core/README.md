@@ -12,6 +12,8 @@
   - mutually exclusive is-a superconcepts
 - general
   - copula should default to equality
+- parser 
+  - special case for copula verb (not require "does")
 
 # JS INTEROP
 
