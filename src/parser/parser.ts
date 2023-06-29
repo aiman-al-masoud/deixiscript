@@ -69,7 +69,7 @@ class KoolerParser {
 
         for (const member of syntax) {
 
-            const node = this.parseMemberMaybeRepeated(member, top)
+            const node = this.parseMemberMaybeRepeated(member, top) ?? member.defaultsTo
 
             if (node === undefined && isNecessary(member.number)) {
                 maybeLog(this.log, top, syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
@@ -100,7 +100,7 @@ class KoolerParser {
                 entries.forEach(e => {
 
                     if (e[0] !== 'type') {
-                        ast[e[0]] = e[1]
+                        ast[e[0]] = e[1] as any
                     }
 
                 })
@@ -115,7 +115,7 @@ class KoolerParser {
                 node.forEach(n => {
                     const entries = Object.entries(n).filter(e => e[0] !== 'type')
                     entries.forEach(e => {
-                        ast[e[0]] = e[1]
+                        ast[e[0]] = e[1] as any
                     })
                 })
             }

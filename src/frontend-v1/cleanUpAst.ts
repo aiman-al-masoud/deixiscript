@@ -2,6 +2,9 @@ import { $ } from "../core/exp-builder.ts";
 import { LLangAst, Atom, AtomicFormula, Formula } from "../core/types.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
 
+// WILL (hopefully) be rendered USELESS by new additions 
+// to parser (numbers,bools and defaults)
+
 /**
  * Some ASTs have optional fields.
  * It's easier to insert the default (neutral) filler here than to make those

@@ -15,6 +15,7 @@ type BaseMember<R = string, T = string> = {
     readonly reduce?: boolean | 'to-number' // list of chars to string
     readonly notEndWith?: string
     readonly types?: T[]
+    readonly defaultsTo?: any
 }
 
 export type LiteralMember<R = string, T = string> = BaseMember<R, T> & {

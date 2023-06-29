@@ -1,6 +1,7 @@
 import { SyntaxMap } from '../parser/types.ts'
 import { stringLiterals } from '../utils/stringLiterals.ts'
 import { ElementType } from '../utils/ElementType.ts'
+import { $ } from '../core/exp-builder.ts'
 
 const astTypes = stringLiterals(
     'space',
@@ -125,7 +126,7 @@ export const syntaxes: SyntaxMap<
     "list-literal": [
         { literals: ['['] },
         { types: ['space'], number: '*' },
-        { types: ['atom'], role: 'list', number: '*', sep: 'space' },
+        { types: ['atom'], role: 'list', number: '*', sep: 'space', defaultsTo: [] },
         { types: ['space'], number: '*' },
         { literals: [']'] },
     ],
@@ -153,7 +154,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 't2' },
         { types: ['space'], number: '*' },
-        { types: ['after-clause'], expand: true, number: '1|0' },
+        { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     'after-clause': [
         { literals: ['after'] },
@@ -266,7 +267,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['variable'], role: 'head' },
         { types: ['space'], number: '*' },
-        { types: ['anaphor-description'], number: '*', expand: true },
+        { types: ['anaphor-description'], number: '*', expand: true, defaultsTo: { description: $(true).$ } },
     ],
     'anaphor-description': [
         { literals: ['such that'] },

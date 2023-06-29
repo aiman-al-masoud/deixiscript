@@ -7,6 +7,19 @@ const parser = getParser({ syntaxes })
 
 
 Deno.test({
+    name: 'test-2',
+    fn: () => {
+        const ast = parser.parse('[]') as unknown
+        const ast2 = parser.parse('x is a y') as unknown
+        const ast3 = parser.parse('the x:cat') as unknown
+        console.log(ast)
+        console.log(ast2)
+        console.log(ast3)
+    }
+})
+
+
+Deno.test({
     name: 'test-1',
     fn: () => {
         const ast = parser.parse('false') as unknown
@@ -74,11 +87,11 @@ Deno.test({
     name: 'test7',
     fn: () => {
         const ast = parser.parse('x:capra is a capra')
-        assertEquals(ast, {
+        assertEquals(ast, $('x:capra').isa('capra').$ /* {
             t1: { name: "x", varType: "capra", type: "variable" },
             t2: { value: "capra", type: "entity" },
             type: "is-a-formula"
-        })
+        } */)
     }
 })
 
@@ -336,10 +349,7 @@ Deno.test({
     name: 'test22',
     fn: () => {
         const ast = parser.parse('the x:cat')
-        assertEquals(ast, {
-            head: { name: "x", varType: "cat", type: "variable" },
-            type: "anaphor"
-        })
+        assertEquals(ast, $('x:cat').suchThat().$)
     }
 })
 
