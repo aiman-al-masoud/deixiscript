@@ -54,7 +54,7 @@ class KoolerParser {
                 return { ...ast, type: syntaxName }
             }
 
-            if (ast!==undefined) {
+            if (ast !== undefined) {
                 return ast
             }
 
@@ -71,12 +71,12 @@ class KoolerParser {
 
             const node = this.parseMemberMaybeRepeated(member, top)
 
-            if (node===undefined && isNecessary(member.number)) {
+            if (node === undefined && isNecessary(member.number)) {
                 maybeLog(this.log, top, syntaxName, 'failed because required', member.role ?? member.literals ?? member.types, 'is missing')
                 return undefined
             }
 
-            if (node===undefined) { // and isNecessary=false
+            if (node === undefined) { // and isNecessary=false
                 maybeLog(this.log, top, syntaxName, 'unrequired', member.role ?? member.literals ?? member.types, 'not found, ignored', 'pos=', this.cs.getPos())
                 continue
             }
@@ -85,7 +85,7 @@ class KoolerParser {
                 throw new Error('expanding member with role currently not supported!')
             }
 
-            if (member.reduce && syntax.length<=1) {
+            if (member.reduce && syntax.length <= 1) {
                 return node
             }
 
@@ -177,7 +177,7 @@ class KoolerParser {
         if (member.reduce) {
             maybeLog(this.log, top, 'parseMemberRepeated found ok list for=', member.role ?? member.literals ?? member.types, 'list=', list.toString(), 'pos=', this.cs.getPos())
             const string = list.map(x => x.toString()).reduce((a, b) => a + b)
-            if(member.reduce==='to-number') return parseNumber(string)
+            if (member.reduce === 'to-number') return parseNumber(string)
             return string
         }
 
@@ -187,7 +187,9 @@ class KoolerParser {
     parseMemberSingle(member: Member, top = 0): AstNode | string | undefined { // doesn't have to take care about number
 
         if (member.literals) {
-            return this.parseLiteral(member)
+            const result = this.parseLiteral(member)
+            if (member.isBool && result !== undefined) return member.isBool === result ? true : false as any
+            return result
         } else {
             const result = this.parseTry(member.types, top + 1)
 

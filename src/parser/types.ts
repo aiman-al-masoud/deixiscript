@@ -20,6 +20,7 @@ type BaseMember<R = string, T = string> = {
 export type LiteralMember<R = string, T = string> = BaseMember<R, T> & {
     readonly literals: string[]
     readonly anyCharExceptFor?: string[]
+    readonly isBool?: string /* takes string literal corresponding to true */
 }
 
 export type TypeMember<R = string, T = string> = BaseMember<R, T> & {

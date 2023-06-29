@@ -110,7 +110,7 @@ export const syntaxes: SyntaxMap<
         { types: ['identifier'], role: 'value' },
     ],
     boolean: [
-        { literals: ['true', 'false'], role: 'value' }
+        { literals: ['true', 'false'], role: 'value', isBool: 'true' }
     ],
     string: [
         { literals: ['"'] },

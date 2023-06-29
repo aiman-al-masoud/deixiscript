@@ -5,14 +5,20 @@ import { $ } from "../core/exp-builder.ts"
 
 const parser = getParser({ syntaxes })
 
+
+Deno.test({
+    name: 'test-1',
+    fn: () => {
+        const ast = parser.parse('false') as unknown
+        assertEquals(ast, $(false).$)
+    }
+})
+
 Deno.test({
     name: 'test0',
     fn: () => {
-        const ast = parser.parse('true')
-        assertEquals(ast, {
-            value: 'true',
-            type: 'boolean',
-        })
+        const ast = parser.parse('true') as unknown
+        assertEquals(ast, $(true).$)
     }
 })
 
@@ -342,6 +348,6 @@ Deno.test({
     name: 'test23',
     fn: () => {
         const ast = parser.parse('"ciao mondo!"')
-        assertEquals(ast, { value: "ciao mondo!", type: "string" })
+        assertEquals(ast, $('"ciao mondo!"').$)
     }
 })
