@@ -47,6 +47,7 @@ export const isRepeatable = (c?: Cardinality) =>
 export type AstNode =
     string
     | number
+    | boolean
     | string[]
     | AstNode[]
     | { [x: string]: AstNode } & { type?: string }

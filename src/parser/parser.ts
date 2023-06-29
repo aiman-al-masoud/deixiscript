@@ -188,7 +188,7 @@ class KoolerParser {
 
         if (member.literals) {
             const result = this.parseLiteral(member)
-            if (member.isBool && result !== undefined) return member.isBool === result ? true : false as any
+            if (member.isBool && result !== undefined) return member.isBool === result ? true : false
             return result
         } else {
             const result = this.parseTry(member.types, top + 1)
