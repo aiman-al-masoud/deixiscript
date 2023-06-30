@@ -122,6 +122,9 @@ export function subst(
             }
         case 'happen-sentence':
             throw new Error('not implemented!')
+        case 'command':
+        case 'question':
+            throw new Error('not implemented!')
     }
 
 }

@@ -3,24 +3,26 @@ import { $ } from "./exp-builder.ts";
 import { recomputeKb } from "./recomputeKb.ts";
 import { Atom, KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
 
-export function evaluate(args: { ast: LLangAst, kb: KnowledgeBase, isCommand?: boolean, }): {
+export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     kb: KnowledgeBase,
     result: Atom,
     additions: WorldModel,
     eliminations: WorldModel,
 } {
-    if (args.isCommand) {
-        const { kb, additions, eliminations } = recomputeKb(args.ast, args.kb)
+    if (ast.type === 'command') {
+        const { kb, additions, eliminations } = recomputeKb(ast.f1, knowledgeBase)
         return {
             kb,
             additions,
             eliminations,
             result: $(true).$
         }
+    } else if (ast.type === 'question') {
+        return evaluate(ast.f1, knowledgeBase)
     } else {
-        const result = ask(args.ast, args.kb)
+        const result = ask(ast, knowledgeBase)
         return {
-            kb: args.kb,
+            kb: knowledgeBase,
             additions: [],
             eliminations: [],
             result: result as Atom,

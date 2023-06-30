@@ -15,7 +15,7 @@ export type KnowledgeBase = {
 
 /* LANGUAGE */
 
-export type LLangAst = Atom | Formula
+export type LLangAst = Atom | Formula | Command | Question
 export type Atom =
     | Term
     | ListPattern
@@ -48,6 +48,16 @@ export type CompositeFormula =
     | ExistentialQuantification
     | DerivationClause
     | IfElse
+
+export type Command = {
+    type: 'command',
+    f1: LLangAst,
+}
+
+export type Question = {
+    type: 'question',
+    f1: LLangAst,
+}
 
 export type Entity = {
     type: 'entity',

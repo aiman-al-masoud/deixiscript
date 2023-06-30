@@ -8,7 +8,7 @@
   - what if findAll() finds many?
   - every/and/or, use list-literal?
 - recomputeKb()
-  - existquant defaults
+  - existquant defaults (triggered with is-a)
   - mutually exclusive is-a superconcepts
   - less than and greater than as commands
 - general

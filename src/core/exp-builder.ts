@@ -1,5 +1,5 @@
 import { recomputeKb } from "./recomputeKb.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -264,6 +264,20 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'happen-sentence',
             event: this.exp as Entity,
+        })
+    }
+
+    get ask(): ExpBuilder<Question> {
+        return new ExpBuilder({
+            type: 'question',
+            f1: this.exp,
+        })
+    }
+
+    get tell(): ExpBuilder<Command> {
+        return new ExpBuilder({
+            type: 'command',
+            f1: this.exp,
         })
     }
 

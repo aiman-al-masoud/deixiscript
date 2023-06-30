@@ -180,15 +180,7 @@ Deno.test({
     name: 'test18',
     fn: () => {
         const ast = parser.parse('capra equals scema!')
-
-        assertEquals(ast, {
-            f1: {
-                t1: { value: "capra", type: "entity" },
-                t2: { value: "scema", type: "entity" },
-                type: "equality"
-            },
-            type: "command"
-        })
+        assertEquals(ast, $('capra').equals('scema').tell.$)
     }
 })
 
@@ -196,15 +188,7 @@ Deno.test({
     name: 'test19',
     fn: () => {
         const ast = parser.parse('capra equals scema?')
-
-        assertEquals(ast, {
-            f1: {
-                t1: { value: "capra", type: "entity" },
-                t2: { value: "scema", type: "entity" },
-                type: "equality"
-            },
-            type: "question"
-        })
+        assertEquals(ast, $('capra').equals('scema').ask.$)
     }
 })
 
@@ -239,5 +223,13 @@ Deno.test({
     fn: () => {
         const ast = parser.parse('"ciao mondo!"')
         assertEquals(ast, $('"ciao mondo!"').$)
+    }
+})
+
+Deno.test({
+    name: 'test24',
+    fn: () => {
+        const ast = parser.parse('capra does extend mammal')
+        console.log(ast)// remove type:'verb-sentence'
     }
 })

@@ -583,11 +583,11 @@ Deno.test({
 Deno.test({
     name: 'test30',
     fn: () => {
-        const q = $('cat#1').isa('feline').$
-        const results0 = evaluate({ ast: q, isCommand: false, kb })
+        const q = $('cat#1').isa('feline')
+        const results0 = evaluate(q.ask.$, kb)
         assert(!results0.result)
-        const results1 = evaluate({ ast: q, isCommand: true, kb })
-        const results2 = evaluate({ ast: q, isCommand: false, kb: results1.kb })
+        const results1 = evaluate(q.tell.$, kb)
+        const results2 = evaluate(q.ask.$, results1.kb)
         assert(results2.result)
     }
 })
