@@ -100,7 +100,7 @@ class KoolerParser {
                 entries.forEach(e => {
 
                     if (e[0] !== 'type') {
-                        ast[e[0]] = e[1] as any
+                        ast[e[0]] = e[1]
                     }
 
                 })
@@ -115,7 +115,7 @@ class KoolerParser {
                 node.forEach(n => {
                     const entries = Object.entries(n).filter(e => e[0] !== 'type')
                     entries.forEach(e => {
-                        ast[e[0]] = e[1] as any
+                        ast[e[0]] = e[1]
                     })
                 })
             }
