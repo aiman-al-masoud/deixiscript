@@ -7,7 +7,7 @@
     on "stack")
   - what if findAll() finds many?
   - every/and/or, use list-literal?
-- recomputeKb()
+- tell()
   - existquant defaults (triggered with is-a)
   - mutually exclusive is-a superconcepts
   - less than and greater than as commands
@@ -42,7 +42,7 @@ Panel
 when any of these basic properties is edited, the Panel automatically changes
 
 JS doesn't need to know about is-a relationships, just has relationships.
-Default fillers can be computed in recomputeKb() as a result of new is-a
+Default fillers can be computed in tell() as a result of new is-a
 relationships. To Accomplish this everything must be the same. Only "Thing", no
 "Panel", and when visible-cum-attached is set to true a div is created. 
 
@@ -69,7 +69,7 @@ make it happen
 
 # Notes
 
-- recomputeKb() and ask() DO HAVE side effects; not for what concerns the world
+- tell() and ask() DO HAVE side effects; not for what concerns the world
   model and derivation clauses, but on the deictic dictionary.
 
 - at the basic level there is nothing but: entities, is-a-relations and

@@ -1,7 +1,7 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { random } from "../utils/random.ts";
 import { $ } from "./exp-builder.ts";
-import { recomputeKb } from "./recomputeKb.ts";
+import { tell } from "./tell.ts";
 import { substAll } from "./subst.ts";
 import { ExistentialQuantification, KnowledgeBase, WorldModel } from "./types.ts";
 
@@ -19,7 +19,7 @@ export function instantiateConcept(
 
     const additions: WorldModel = [
         [id, ast.variable.varType],
-        ...recomputeKb(where, kb).kb.wm,
+        ...tell(where, kb).kb.wm,
     ]
 
     return additions

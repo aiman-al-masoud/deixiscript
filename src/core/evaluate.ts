@@ -1,6 +1,6 @@
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
-import { recomputeKb } from "./recomputeKb.ts";
+import { tell } from "./tell.ts";
 import { Atom, KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
 
 export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
@@ -10,7 +10,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     eliminations: WorldModel,
 } {
     if (ast.type === 'command') {
-        const { kb, additions, eliminations } = recomputeKb(ast.f1, knowledgeBase)
+        const { kb, additions, eliminations } = tell(ast.f1, knowledgeBase)
         return {
             kb,
             additions,

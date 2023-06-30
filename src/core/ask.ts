@@ -5,14 +5,14 @@ import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { resolveAnaphor } from "./getAnaphor.ts";
 import { $ } from "./exp-builder.ts";
-import { recomputeKb } from "./recomputeKb.ts";
+import { tell } from "./tell.ts";
 
 export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): Atom | WmAtom {
 
     if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
         const events = formula.after.list.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
-        const kb2 = eventSentences.reduce((a, b) => recomputeKb(b, a).kb, kb)
+        const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
         const formula2: Formula = { ...formula, after: { type: 'list-literal', list: [] } }
         return ask(formula2, kb2, false)
     }

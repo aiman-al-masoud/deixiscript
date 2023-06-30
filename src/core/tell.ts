@@ -9,11 +9,11 @@ import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, KnowledgeBa
 import { getConceptsOf } from "./wm-funcs.ts";
 
 /**
- * Assume 'ast' is true, and recompute a knowledge base.
- * Also provides WorldModel additions and elmininations to avoid having 
- * to recompute them.
+ * Assume the AST is true, and compute resulting knowledge base.
+ * Also provides WorldModel additions and elmininations (the "diff") 
+ * to avoid having to recompute them.
  */
-export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
+export function tell(ast: LLangAst, kb: KnowledgeBase): {
     kb: KnowledgeBase,
     additions: WorldModel,
     eliminations: WorldModel,
@@ -76,8 +76,8 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
             }
         case 'conjunction':
             {
-                const result1 = recomputeKb(ast.f1, kb)
-                const result2 = recomputeKb(ast.f2, kb)
+                const result1 = tell(ast.f1, kb)
+                const result2 = tell(ast.f2, kb)
                 return {
                     kb: {
                         wm: addWorldModels(result1.kb.wm, result2.kb.wm),
@@ -89,7 +89,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
                 }
             }
         case 'disjunction':
-            return recomputeKb(ast.f1, kb)
+            return tell(ast.f1, kb)
         case 'derived-prop':
             return {
                 kb: {
@@ -100,7 +100,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
                 eliminations: [],
             }
         case 'if-else':
-            return ask(ast.condition, kb) ? recomputeKb(ast.then, kb) : recomputeKb(ast.otherwise, kb)
+            return ask(ast.condition, kb) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
             {
                 const additions: WorldModel = instantiateConcept(ast, kb)
@@ -117,7 +117,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
             }
         case 'negation':
             {
-                const { additions, eliminations } = recomputeKb(ast.f1, kb)
+                const { additions, eliminations } = tell(ast.f1, kb)
                 const newWm = addWorldModels(subtractWorldModels(kb.wm, additions), eliminations)
                 return {
                     kb: {
@@ -137,7 +137,7 @@ export function recomputeKb(ast: LLangAst, kb: KnowledgeBase): {
 
         if (map) {
             const whenn = substAll(dc.when, map)
-            return recomputeKb(whenn, kb)
+            return tell(whenn, kb)
         }
     }
 
@@ -180,7 +180,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
             const results = findAll(x, variables, kb, false)
 
             const eventConsequences = results.map(r => substAll(x, r))
-                .flatMap(x => recomputeKb(x, kb).kb.wm)
+                .flatMap(x => tell(x, kb).kb.wm)
 
             const additions =
                 subtractWorldModels(eventConsequences, kb.wm)

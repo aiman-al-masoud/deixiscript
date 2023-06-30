@@ -1,4 +1,4 @@
-import { recomputeKb } from "./recomputeKb.ts"
+import { tell } from "./tell.ts"
 import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
@@ -213,7 +213,7 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     dump(dcs?: DerivationClause[]) {
-        return recomputeKb(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
+        return tell(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
     suchThat(formula?: ExpBuilder<LLangAst>): ExpBuilder<Anaphor> {
