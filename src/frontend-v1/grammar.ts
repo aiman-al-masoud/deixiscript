@@ -172,7 +172,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'as' },
         { types: ['space'], number: '*' },
-        { types: ['after-clause'], expand: true, number: '1|0' },
+        { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     'happen-sentence': [
         { types: ['entity'], role: 'event' },
@@ -242,7 +242,7 @@ export const syntaxes: SyntaxMap<
     ],
     generalized: [
         { types: ['verb-sentence', 'annotation'], role: 'keys' },
-        { types: ['after-clause'], expand: true, number: '1|0' },
+        { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     "verb-sentence": [
         { types: ['atom'], role: 'subject' },

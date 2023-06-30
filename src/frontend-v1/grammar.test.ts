@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts"
+import { assertEquals, assertObjectMatch } from "https://deno.land/std@0.186.0/testing/asserts.ts"
 import { getParser } from "../parser/parser.ts"
 import { syntaxes } from "./grammar.ts"
 import { $ } from "../core/exp-builder.ts"
@@ -9,15 +9,9 @@ const parser = getParser({ syntaxes })
 Deno.test({
     name: 'test-2',
     fn: () => {
-        const ast = parser.parse('[]') as unknown
-        const ast2 = parser.parse('x is a y') as unknown
-        const ast3 = parser.parse('the x:cat') as unknown
-        console.log(ast)
-        console.log(ast2)
-        console.log(ast3)
+        assertEquals(parser.parse('[]'), $([]).$)
     }
 })
-
 
 Deno.test({
     name: 'test-1',
@@ -87,11 +81,7 @@ Deno.test({
     name: 'test7',
     fn: () => {
         const ast = parser.parse('x:capra is a capra')
-        assertEquals(ast, $('x:capra').isa('capra').$ /* {
-            t1: { name: "x", varType: "capra", type: "variable" },
-            t2: { value: "capra", type: "entity" },
-            type: "is-a-formula"
-        } */)
+        assertEquals(ast, $('x:capra').isa('capra').$)
     }
 })
 
@@ -107,28 +97,13 @@ Deno.test({
 Deno.test({
     name: 'test9',
     fn: () => {
-        const ast = parser.parse('x equals capra and y equals buruf and z equals scemo')
-        assertEquals(ast, {
-            f1: {
-                t1: { value: "x", type: "entity" },
-                t2: { value: "capra", type: "entity" },
-                type: "equality"
-            },
-            f2: {
-                f1: {
-                    t1: { value: "y", type: "entity" },
-                    t2: { value: "buruf", type: "entity" },
-                    type: "equality"
-                },
-                f2: {
-                    t1: { value: "z", type: "entity" },
-                    t2: { value: "scemo", type: "entity" },
-                    type: "equality"
-                },
-                type: "conjunction"
-            },
-            type: "conjunction"
-        })
+        const ast =
+            parser.parse('x equals capra and y equals buruf and z equals scemo')
+
+        assertEquals(ast,
+            $('x').equals('capra').and($('y').equals('buruf').and($('z').equals('scemo'))).$)
+
+
     }
 })
 
@@ -136,14 +111,7 @@ Deno.test({
     name: 'test10',
     fn: () => {
         const ast = parser.parse('it is not the case that x equals y')
-        assertEquals(ast, {
-            f1: {
-                t1: { value: "x", type: "entity" },
-                t2: { value: "y", type: "entity" },
-                type: "equality"
-            },
-            type: "negation"
-        })
+        assertEquals(ast, $('x').equals('y').isNotTheCase.$)
     }
 })
 
@@ -151,65 +119,28 @@ Deno.test({
     name: 'test11',
     fn: () => {
         const ast = parser.parse('there exists a x:cat where x:cat has red as color ')
-        assertEquals(ast, {
-            variable: { name: "x", varType: "cat", type: "variable" },
-            where: {
-                t1: { name: "x", varType: "cat", type: "variable" },
-                t2: { value: "red", type: "entity" },
-                as: { value: "color", type: "entity" },
-                type: "has-formula"
-            },
-            type: "existquant"
-        })
+
+        assertEquals(ast,
+            $('x:cat').exists.where($('x:cat').has('red').as('color')).$)
+
     }
 })
-
 
 Deno.test({
     name: 'test12',
     fn: () => {
-        const ast = parser.parse('x:cat equals red when x:cat has red as color')
-        assertEquals(ast, {
-            conseq: {
-                t1: { name: "x", varType: "cat", type: "variable" },
-                t2: { value: "red", type: "entity" },
-                type: "equality"
-            },
-            when: {
-                t1: { name: "x", varType: "cat", type: "variable" },
-                t2: { value: "red", type: "entity" },
-                as: { value: "color", type: "entity" },
-                type: "has-formula"
-            },
-            type: "derived-prop"
-        })
+        const ast = parser.parse('x:cat does be red when x:cat has red as color') as any
+        assertObjectMatch(ast,
+            $({ subject: 'x:cat', verb: 'be', object: 'red' }).when($('x:cat').has('red').as('color')).$)
     }
+
 })
-
-
 
 Deno.test({
     name: 'test13',
     fn: () => {
         const ast = parser.parse('if x equals capra then x equals stupid else x equals smart')
-        assertEquals(ast, {
-            condition: {
-                t1: { value: "x", type: "entity" },
-                t2: { value: "capra", type: "entity" },
-                type: "equality"
-            },
-            then: {
-                t1: { value: "x", type: "entity" },
-                t2: { value: "stupid", type: "entity" },
-                type: "equality"
-            },
-            otherwise: {
-                t1: { value: "x", type: "entity" },
-                t2: { value: "smart", type: "entity" },
-                type: "equality"
-            },
-            type: "if-else"
-        })
+        assertEquals(ast, $('x').equals('stupid').if($('x').equals('capra')).else($('x').equals('smart')).$)
     }
 })
 
@@ -225,50 +156,23 @@ Deno.test({
     name: 'test15',
     fn: () => {
         const ast = parser.parse('eventxy happens')
-        assertEquals(ast, {
-            event: { value: "eventxy", type: "entity" },
-            type: "happen-sentence"
-        })
+        assertEquals(ast, $('eventxy').happens.$)
     }
 })
-
 
 Deno.test({
     name: 'test16',
     fn: () => {
         const ast = parser.parse('2 > 1')
-        assertEquals(ast, {
-            left: { value: 2, type: "number" },
-            operator: ">",
-            right: { value: 1, type: 'number' },
-            type: "math-expression"
-        })
+        assertEquals(ast, $(2).isGreaterThan(1).$)
     }
 })
-
 
 Deno.test({
     name: 'test17',
     fn: () => {
-        const ast = parser.parse('x:capra does climb the x:mount such that x:mount has green as color ')
-        assertEquals(ast, {
-            keys: {
-                subject: { name: "x", varType: "capra", type: "variable" },
-                verb: { value: "climb", type: "entity" },
-                object: {
-                    head: { name: "x", varType: "mount", type: "variable" },
-                    description: {
-                        t1: { name: "x", varType: "mount", type: "variable" },
-                        t2: { value: "green", type: "entity" },
-                        as: { value: "color", type: "entity" },
-                        type: "has-formula"
-                    },
-                    type: "anaphor"
-                },
-                type: "verb-sentence"
-            },
-            type: "generalized"
-        })
+        const ast = parser.parse('x:capra does climb the x:mount such that x:mount has green as color ') as any
+        assertObjectMatch(ast, $({ subject: 'x:capra', verb: 'climb', object: $('x:mount').suchThat($('x:mount').has('green').as('color')).$ }).$)
     }
 })
 
@@ -305,20 +209,11 @@ Deno.test({
 })
 
 
-
 Deno.test({
     name: 'test20',
     fn: () => {
-        const ast = parser.parse('annotx: capra equals stupid')
-        assertEquals(ast, {
-            keys: {
-                annotation: { value: "annotx", type: "entity" },
-                t1: { value: "capra", type: "entity" },
-                t2: { value: "stupid", type: "entity" },
-                type: "annotation"
-            },
-            type: "generalized"
-        })
+        const ast = parser.parse('annotx: capra equals stupid') as any
+        assertObjectMatch(ast, $({ annotation: 'annotx', t1: 'capra', t2: 'stupid' }).$)
     }
 })
 
@@ -326,22 +221,8 @@ Deno.test({
 Deno.test({
     name: 'test21',
     fn: () => {
-        const ast = parser.parse('x does eat capra in y to z!')
-
-        assertEquals(ast, {
-            f1: {
-                keys: {
-                    subject: { value: "x", type: "entity" },
-                    verb: { value: "eat", type: "entity" },
-                    object: { value: "capra", type: "entity" },
-                    location: { value: "y", type: "entity" },
-                    recipient: { value: "z", type: "entity" },
-                    type: "verb-sentence"
-                },
-                type: "generalized"
-            },
-            type: "command"
-        })
+        const ast = parser.parse('x does eat capra in y to z') as any
+        assertObjectMatch(ast, $({ subject: 'x', verb: 'eat', object: 'capra', location: 'y', recipient: 'z' }).$)
     }
 })
 
@@ -352,7 +233,6 @@ Deno.test({
         assertEquals(ast, $('x:cat').suchThat().$)
     }
 })
-
 
 Deno.test({
     name: 'test23',

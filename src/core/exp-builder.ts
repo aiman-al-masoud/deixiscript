@@ -1,5 +1,5 @@
 import { recomputeKb } from "./recomputeKb.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedSimpleFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -216,13 +216,13 @@ export class ExpBuilder<T extends LLangAst> {
         return recomputeKb(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
-    suchThat(formula?: ExpBuilder<Formula>) {
+    suchThat(formula?: ExpBuilder<LLangAst>): ExpBuilder<Anaphor> {
 
         if (this.exp.type !== 'variable') {
             throw new Error('head of anaphor must be variable!')
         }
 
-        return new ExpBuilder({
+        return new ExpBuilder<Anaphor>({
             type: 'anaphor',
             head: this.exp,
             description: formula ? formula.$ : $(true).$,
