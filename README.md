@@ -8,7 +8,7 @@
   - what if findAll() finds many?
   - every/and/or, use list-literal?
 - tell()
-  - existquant defaults (triggered with is-a)
+  - existquant defaults (TRIGGERED WITH IS-A)
   - mutually exclusive is-a superconcepts
   - less than and greater than as commands
 - general
@@ -37,7 +37,9 @@ Panel
 - height
 - color
 - z-index
-- visibility-cum-attachedness (favor WYSIWYG) text image
+- visibility-cum-attachedness (favor WYSIWYG) 
+- text 
+- image
 
 when any of these basic properties is edited, the Panel automatically changes
 

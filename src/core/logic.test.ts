@@ -147,6 +147,18 @@ const model: WorldModel =
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
 
         .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
+
+
+
+        // -------------------------
+        .and($({ subject: 'thing', modal: 'can', verb: 'have', object: 'x-coordinate' }))
+        .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
+
+        // .and($({ subject: 'thing', modal: 'can', verb: 'have', object: 'door' }))
+        // .and($({ annotation: 'ann#522', subject: 'door', owner: 'thing', verb: 'default', recipient: 'door' }))
+
+        // -------------------------
+
         .dump(derivationClauses).kb.wm
 
 
@@ -626,5 +638,14 @@ Deno.test({
         assertEquals(x.$.type, 'string')
         assert(ask(x.equals('"ciao mondo"').$, kb))
         assert(ask(x.equals('"ciaomondo"').isNotTheCase.$, kb))
+    }
+})
+
+Deno.test({
+    name: 'test34',
+    fn: () => {
+        const result = evaluate($('x:thing').exists.tell.$, kb)
+        const check = evaluate($('x:thing').exists.where($('x:thing').has(100).as('x-coordinate')).ask.$, result.kb)
+        assert(check)
     }
 })

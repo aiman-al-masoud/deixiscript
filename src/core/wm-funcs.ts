@@ -1,5 +1,5 @@
 import { uniq } from "../utils/uniq.ts";
-import { WorldModel, WmAtom, isIsASentence } from "./types.ts";
+import { WorldModel, WmAtom, isIsASentence, wmSentencesEqual } from "./types.ts";
 
 
 export function getParts(concept: string, cm: WorldModel): WmAtom[] {
@@ -68,4 +68,12 @@ export function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
 
 export function getSupersAndConceptsOf(x: WmAtom, cm: WorldModel) {
     return uniq(getSupers(x, cm).concat(getConceptsOf(x, cm)))
+}
+
+export function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel {
+    return wm1.filter(s1 => !wm2.some(s2 => wmSentencesEqual(s1, s2)))
+}
+
+export function addWorldModels(...wms: WorldModel[]): WorldModel { //TODO: uniq
+    return wms.reduce((wm1, wm2) => wm1.concat(wm2), [])
 }

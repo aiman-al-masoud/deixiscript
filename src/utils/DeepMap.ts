@@ -1,3 +1,4 @@
+// TODO: {K:V} overload
 export function deepMapOf<K, V>(entries?: readonly (readonly [K, V])[] | null): DeepMap<K, V> {
     const map = new DeepMap<K, V>()
 

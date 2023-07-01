@@ -6,7 +6,7 @@ import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
-import { getConceptsOf } from "./wm-funcs.ts";
+import { addWorldModels, getConceptsOf, subtractWorldModels } from "./wm-funcs.ts";
 
 /**
  * Assume the AST is true, and compute resulting knowledge base.
@@ -128,6 +128,12 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                     eliminations: additions,
                 }
             }
+        case 'boolean':
+            return {
+                kb,
+                additions: [],
+                eliminations: [],
+            }
 
     }
 
@@ -203,7 +209,6 @@ function getExcludedBy(h: HasSentence, kb: KnowledgeBase) { //TODO: refactor & o
     const r =
         qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
 
-
     //--------
     const qs2 =
         concepts.map(c => $({ ann: 'x:only-one-annotation', onlyHaveOneOf: h[2], onConcept: c }))
@@ -222,10 +227,3 @@ function getExcludedBy(h: HasSentence, kb: KnowledgeBase) { //TODO: refactor & o
 
 }
 
-function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel {
-    return wm1.filter(s1 => !wm2.some(s2 => wmSentencesEqual(s1, s2)))
-}
-
-function addWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel { //TODO: uniq
-    return wm1.concat(wm2)
-}
