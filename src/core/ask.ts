@@ -39,37 +39,29 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
         case 'anaphor':
             return ask(getAnaphor(formula, kb)!, kb)
         case 'equality':
-
             const t10 = ask(formula.t1, kb)
             const t20 = ask(formula.t2, kb)
             if (atomsEqual(t10, t20)) return $(true).$
 
             break
         case 'is-a-formula':
-
             const t1 = ask(formula.t1, kb)
             const t2 = ask(formula.t2, kb)
 
-            if (isConst(t2) && t1.type === t2.value) return $(true).$
+            if (t1.type === t2.value) return $(true).$
 
             if (
-                isConst(t1)
-                && isConst(t2)
+                isConst(t1) && isConst(t2)
                 && getSupersAndConceptsOf(t1.value, kb.wm).includes(t2.value)
             ) return $(true).$
             break
         case 'has-formula':
-
             const t11 = ask(formula.t1, kb)
             const t22 = ask(formula.t2, kb)
             const as = ask(formula.as, kb)
 
             if (kb.wm.filter(isHasSentence).find(hs => {
-
-                return isConst(t11)
-                    && isConst(t22)
-                    && isConst(as)
-                    && t11.value === hs[0]
+                return t11.value === hs[0]
                     && t22.value === hs[1]
                     && as.value === hs[2]
             })) return $(true).$
