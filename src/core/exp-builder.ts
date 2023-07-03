@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -14,11 +14,11 @@ export function $(x: WmAtom): ExpBuilder<Constant>
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst> {
 
     if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
-        return new ExpBuilder(makeAtom(x))
+        return new ExpBuilder(makeAst(x))
     }
 
     const keys = Object.fromEntries(
-        Object.entries(x).map(e => [e[0], isAtom(e[1]) ? e[1] : makeAtom(e[1])])
+        Object.entries(x).map(e => [e[0], makeAst(e[1])])
     )
 
     return new ExpBuilder({ type: 'generalized', keys: keys, after: { value: [], type: 'list-literal' } })
@@ -35,7 +35,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'equality',
             t1: this.exp,
-            t2: makeAtom(term),
+            t2: makeAst(term),
         })
 
     }
@@ -45,7 +45,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'is-a-formula',
             t1: this.exp,
-            t2: makeAtom(term),
+            t2: makeAst(term),
             after: { type: 'list-literal', value: [] }
         })
 
@@ -53,7 +53,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     has(term: WmAtom | ExpBuilder<Atom>): ExpBuilder<HasFormula> {
 
-        const atom = isWmAtom(term) ? makeAtom(term) : term.$
+        const atom = isWmAtom(term) ? makeAst(term) : term.$
 
         return new ExpBuilder({
             type: 'has-formula',
@@ -76,7 +76,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'has-formula',
             t1: this.exp.t1,
             t2: this.exp.t2,
-            as: makeAtom(role),
+            as: makeAst(role),
             after: this.exp.after,
         })
 
@@ -90,7 +90,7 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder({
             ...this.exp,
-            after: makeAtom(atom),
+            after: makeAst(atom),
         })
     }
 
@@ -119,14 +119,6 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     or(formula: ExpBuilder<Formula>): ExpBuilder<Disjunction> {
-
-        if (isAtom(this.exp)) {
-            throw new Error(``)
-        }
-
-        if (isAtom(formula.$)) {
-            throw new Error(``)
-        }
 
         return new ExpBuilder({
             type: 'disjunction',
@@ -222,7 +214,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'math-expression',
             left: this.exp as MathExpression,
-            right: typeof ast !== 'object' ? makeAtom(ast) : ast,
+            right: typeof ast !== 'object' ? makeAst(ast) : ast,
             operator: op,
         })
     }
@@ -271,7 +263,7 @@ export class ExpBuilder<T extends LLangAst> {
 
 }
 
-type GeneralizedInput = { [key: string]: Atom | WmAtom | WmAtom[] }
+type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] }
 type Var = `${string}:${string}`
 type ListPat = `${Var}|${Var}`
 type StringLiteralPattern = `"${string}"`
@@ -284,25 +276,28 @@ function isStringLiteral(x: string): x is StringLiteralPattern {
     return x.at(0) === '"' && x.at(-1) === '"'
 }
 
-function makeAtom(x: ListPat): ListPattern
-function makeAtom(x: Var): Variable
-function makeAtom(x: StringLiteralPattern): StringLiteral
-function makeAtom(x: WmAtom[]): ListLiteral
-function makeAtom(x: number): Number
-function makeAtom(x: boolean): Boolean
-function makeAtom(x: string): Constant
-function makeAtom(x: WmAtom | WmAtom[]): Atom
+function makeAst(x: ListPat): ListPattern
+function makeAst(x: Var): Variable
+function makeAst(x: StringLiteralPattern): StringLiteral
+function makeAst(x: WmAtom[]): ListLiteral
+function makeAst(x: number): Number
+function makeAst(x: boolean): Boolean
+function makeAst(x: string): Constant
+function makeAst(x: WmAtom | WmAtom[]): Atom
+function makeAst(x: LLangAst): LLangAst
+function makeAst(x: WmAtom | WmAtom[] | LLangAst): LLangAst
+function makeAst(x: WmAtom | WmAtom[] | LLangAst): LLangAst {
 
-function makeAtom(x: WmAtom | WmAtom[]): Atom {
-
-    if (typeof x === 'number') {
+    if (isLLangAst(x)) {
+        return x
+    } else if (typeof x === 'number') {
         return { type: 'number', value: x }
     } else if (typeof x === 'boolean') {
         return { type: 'boolean', value: x }
     } else if (x instanceof Array) {
         return {
             type: 'list-literal',
-            value: x.map(e => makeAtom(e))
+            value: x.map(e => makeAst(e))
         }
     } else if (isStringLiteral(x)) {
         return {
@@ -318,8 +313,8 @@ function makeAtom(x: WmAtom | WmAtom[]): Atom {
 
         return {
             type: 'list-pattern',
-            seq: makeAtom(seq),
-            value: makeAtom(tail),
+            seq: makeAst(seq),
+            value: makeAst(tail),
         }
     } else if (isVar(x)) {
         const [value, varType] = x.split(':')

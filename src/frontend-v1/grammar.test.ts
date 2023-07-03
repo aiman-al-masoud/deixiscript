@@ -172,7 +172,7 @@ Deno.test({
     name: 'test17',
     fn: () => {
         const ast = parser.parse('x:capra does climb the x:mount such that x:mount has green as color ') as any
-        assertObjectMatch(ast, $({ subject: 'x:capra', verb: 'climb', object: $('x:mount').suchThat($('x:mount').has('green').as('color')).$ as any }).$)
+        assertObjectMatch(ast, $({ subject: 'x:capra', verb: 'climb', object: $('x:mount').suchThat($('x:mount').has('green').as('color')).$ }).$)
     }
 })
 

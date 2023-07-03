@@ -261,3 +261,8 @@ export function isWmAtom(x: unknown): x is WmAtom {
 export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence | HasSentence) {
     return s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]
 }
+
+
+export function isLLangAst(x: unknown): x is LLangAst {
+    return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
+}
