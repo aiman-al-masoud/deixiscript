@@ -77,4 +77,4 @@ make it happen
 - assignments are completely replaced by anaphora, also theme-rheme phrase
   style.
 
-- anaphors work as if each entity got a timestamp whenever it is mentioned. When function ask() is called from findAll() the deictic dict is NOT updated.
+- anaphora work "as if" each entity got the current timestamp whenever it is mentioned. When function ask() is called from findAll() the deictic dict is NOT updated.
