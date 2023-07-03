@@ -3,7 +3,7 @@ import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
-import { resolveAnaphor } from "./getAnaphor.ts";
+import { getAnaphor, /* resolveAnaphor */ } from "./getAnaphor.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 
@@ -37,7 +37,7 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
         case 'list-pattern':
             return formula
         case 'anaphor':
-            return ask(resolveAnaphor(formula, kb), kb)
+            return ask(getAnaphor(formula, kb)!, kb)
         case 'equality':
 
             const t10 = ask(formula.t1, kb) as Atom

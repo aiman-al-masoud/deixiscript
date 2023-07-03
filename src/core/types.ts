@@ -20,10 +20,10 @@ export type Atom =
     | Term
     | ListPattern
     | ListLiteral
-    | Anaphor
 export type Formula =
     | SimpleFormula
     | CompositeFormula
+    | Anaphor
 export type Term =
     | Constant
     | Variable
@@ -35,7 +35,7 @@ export type Constant =
 export type SimpleFormula =
     | AtomicFormula
     | Equality
-    | GeneralizedSimpleFormula
+    | GeneralizedFormula
     | HappenSentence
 export type AtomicFormula =
     | IsAFormula
@@ -109,10 +109,10 @@ export type MathExpression = {
     right: Atom | MathExpression,
 }
 
-export type GeneralizedSimpleFormula = {
+export type GeneralizedFormula = {
     type: 'generalized',
     keys: {
-        [key: string]: Atom
+        [key: string]: LLangAst
     },
     after: Atom,
 }
@@ -170,7 +170,7 @@ export type ExistentialQuantification = {
 
 export type DerivationClause = {
     type: 'derived-prop',
-    conseq: AtomicFormula | GeneralizedSimpleFormula,
+    conseq: AtomicFormula | GeneralizedFormula,
     when: LLangAst,
 }
 
@@ -243,11 +243,11 @@ export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
 }
 
-export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedSimpleFormula {
+export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedFormula {
     return isAtomicFormula(ast) || ast.type === 'generalized'
 }
 
-export function isFormulaWithNonNullAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedSimpleFormula {
+export function isFormulaWithNonNullAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedFormula {
     return isFormulaWithAfter(ast)
         && (ast.after.type !== 'list-literal' || !!ast.after.value.length)
 }

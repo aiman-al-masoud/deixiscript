@@ -5,7 +5,7 @@ import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { Atom, AtomicFormula, GeneralizedSimpleFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
+import { Atom, AtomicFormula, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
 import { addWorldModels, getConceptsOf, subtractWorldModels } from "./wm-funcs.ts";
 
 /**
@@ -177,7 +177,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
         if (isFormulaWithNonNullAfter(dc.conseq)) {
 
-            const x: AtomicFormula | GeneralizedSimpleFormula = {
+            const x: AtomicFormula | GeneralizedFormula = {
                 ...dc.conseq,
                 after: $([event]).$
             }
