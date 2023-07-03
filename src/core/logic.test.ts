@@ -649,3 +649,15 @@ Deno.test({
         assert(check)
     }
 })
+
+Deno.test({
+    name: 'test35',
+    fn: () => {
+        const kb2: KnowledgeBase = { ...kb, deicticDict: {} }
+        console.log(kb2.deicticDict)
+        console.log(ask($('x:agent').suchThat().$, kb2))
+        console.log(kb2.deicticDict)
+        console.log(ask($('x:agent').suchThat().$, kb2))
+        console.log(ask($('x:thing').suchThat().$, kb2))
+    }
+})

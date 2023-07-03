@@ -1,9 +1,5 @@
 import { findAll } from "./findAll.ts"
-import { Anaphor, Atom, KnowledgeBase } from "./types.ts"
-
-// export function resolveAnaphor<T extends Atom>(atom: T, kb: KnowledgeBase) {
-//     return atom.type === 'anaphor' ? getAnaphor(atom, kb)! : atom
-// }
+import { Anaphor, KnowledgeBase } from "./types.ts"
 
 export function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
     const maps = findAll(anaphor.description, [anaphor.head], kb)
@@ -14,9 +10,7 @@ export function getAnaphor(anaphor: Anaphor, kb: KnowledgeBase) {
     }
 
     const candidates = maps.map(x => x.get(anaphor.head))
-    // console.log(candidates)
     candidates.sort((c1, c2) => kb.deicticDict[c2?.value as string] - kb.deicticDict[c1?.value as string])
-    // console.log(candidates)
     const result = candidates[0]
 
     return result
