@@ -1,8 +1,8 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { Atom, LLangAst, VarMap, SimpleFormula, isAtom } from "./types.ts";
+import { LLangAst, VarMap, isAtom } from "./types.ts";
 
 
-export function match(template: /* SimpleFormula | Atom */ LLangAst, f: LLangAst): VarMap | undefined {
+export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
 
     if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
 
