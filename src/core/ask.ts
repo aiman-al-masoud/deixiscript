@@ -13,7 +13,7 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
         const events = formula.after.list.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
         const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
-        const formula2: Formula = { ...formula, after: { type: 'list-literal', list: [] } }
+        const formula2: Formula = { ...formula, after: $([]).$ }
         return ask(formula2, kb2, false)
     }
 
