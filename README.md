@@ -57,8 +57,6 @@ make it happen
 
 # Problems
 
-- should GeneralizedSimpleFormula become compound? (ie:accept other formulas as
-  args?)
 - in match() for loop there is no guarantee that the most specific rule will be
   found first
 
