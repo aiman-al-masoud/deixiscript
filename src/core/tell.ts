@@ -179,7 +179,7 @@ function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
             const x: AtomicFormula | GeneralizedSimpleFormula = {
                 ...dc.conseq,
-                after: { type: 'list-literal', list: [$(event).$] }
+                after: $([event]).$ //{ type: 'list-literal', list: [$(event).$] }
             }
 
             const variables = getAtoms(x).filter(isVar)
