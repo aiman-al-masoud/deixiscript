@@ -114,7 +114,7 @@ export type GeneralizedFormula = {
     keys: {
         [key: string]: LLangAst
     },
-    after: Atom,
+    after: LLangAst,
 }
 
 export type HappenSentence = {
@@ -126,23 +126,23 @@ export type VarMap = DeepMap<Variable, Atom>
 
 export type Equality = {
     type: 'equality',
-    t1: Atom,
-    t2: Atom,
+    t1: LLangAst,
+    t2: LLangAst,
 }
 
 export type IsAFormula = {
     type: 'is-a-formula',
-    t1: Atom,
-    t2: Atom,
-    after: Atom,
+    t1: LLangAst,
+    t2: LLangAst,
+    after: LLangAst,
 }
 
 export type HasFormula = {
     type: 'has-formula',
-    t1: Atom,
-    t2: Atom,
-    as: Atom,
-    after: Atom,
+    t1: LLangAst,
+    t2: LLangAst,
+    as: LLangAst,
+    after: LLangAst,
 }
 
 export type Conjunction = {
@@ -234,8 +234,6 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
     return isTerm(ast)
         || ast.type === 'list-pattern'
         || ast.type === 'list-literal'
-        || ast.type === 'anaphor'
-        || ast.type === 'math-expression'
 
 }
 

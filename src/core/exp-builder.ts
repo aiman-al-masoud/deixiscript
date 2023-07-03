@@ -32,10 +32,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     equals(term: WmAtom | WmAtom[]): ExpBuilder<Equality> {
 
-        if (!isAtom(this.exp)) {
-            throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of equality`)
-        }
-
         return new ExpBuilder({
             type: 'equality',
             t1: this.exp,
@@ -45,10 +41,6 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     isa(term: WmAtom): ExpBuilder<IsAFormula> {
-
-        if (!isAtom(this.exp)) {
-            throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of IsASentence`)
-        }
 
         return new ExpBuilder({
             type: 'is-a-formula',
@@ -60,10 +52,6 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     has(term: WmAtom | ExpBuilder<Atom>): ExpBuilder<HasFormula> {
-
-        if (!isAtom(this.exp)) {
-            throw new Error(`expecting an atom, not a ${this.exp.type}, as subject of HasSentence`)
-        }
 
         const atom = isWmAtom(term) ? makeAtom(term) : term.$
 
