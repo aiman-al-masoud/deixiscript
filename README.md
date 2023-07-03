@@ -3,8 +3,6 @@
 # Core Features
 
 - integrating anaphora
-  - fix and test deictic dict (too many increments for some entities, no limit
-    on "stack")
   - what if findAll() finds many?
   - every/and/or, use list-literal?
 - tell()
@@ -78,3 +76,5 @@ make it happen
 
 - assignments are completely replaced by anaphora, also theme-rheme phrase
   style.
+
+- anaphors work as if each entity got a timestamp whenever it is mentioned. When function ask() is called from findAll() the deictic dict is NOT updated.
