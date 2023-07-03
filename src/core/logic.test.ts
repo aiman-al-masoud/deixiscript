@@ -653,11 +653,18 @@ Deno.test({
 Deno.test({
     name: 'test35',
     fn: () => {
+        // better anaphora test
         const kb2: KnowledgeBase = { ...kb, deicticDict: {} }
-        console.log(kb2.deicticDict)
-        console.log(ask($('x:agent').suchThat().$, kb2))
-        console.log(kb2.deicticDict)
-        console.log(ask($('x:agent').suchThat().$, kb2))
-        console.log(ask($('x:thing').suchThat().$, kb2))
+        // console.log(kb2.deicticDict)
+        const first = ask($('x:agent').suchThat().$, kb2)
+        // console.log(kb2.deicticDict)
+        assertEquals(Object.values(kb2.deicticDict).length, 1)
+        assertEquals(ask($('x:agent').suchThat().$, kb2), first)
+        // console.log(kb2.deicticDict)
+        assertEquals(ask($('x:thing').suchThat().$, kb2), first)
+        // console.log(kb2.deicticDict)
+        const second = ask($('x:door').suchThat().$, kb2)
+        assertEquals(Object.values(kb2.deicticDict).length, 2)
+        assertEquals(ask($('x:thing').suchThat().$, kb2), second)
     }
 })
