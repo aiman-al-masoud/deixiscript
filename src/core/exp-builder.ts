@@ -21,7 +21,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst>
         Object.entries(x).map(e => [e[0], isAtom(e[1]) ? e[1] : makeAtom(e[1])])
     )
 
-    return new ExpBuilder({ type: 'generalized', keys: keys, after: { list: [], type: 'list-literal' } })
+    return new ExpBuilder({ type: 'generalized', keys: keys, after: { value: [], type: 'list-literal' } })
 }
 
 export class ExpBuilder<T extends LLangAst> {
@@ -54,7 +54,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'is-a-formula',
             t1: this.exp,
             t2: makeAtom(term),
-            after: { type: 'list-literal', list: [] }
+            after: { type: 'list-literal', value: [] }
         })
 
     }
@@ -72,7 +72,7 @@ export class ExpBuilder<T extends LLangAst> {
             t1: this.exp,
             t2: atom,
             as: atom,
-            after: { type: 'list-literal', list: [] },
+            after: { type: 'list-literal', value: [] },
         })
 
     }
@@ -314,7 +314,7 @@ function makeAtom(x: WmAtom | WmAtom[]): Atom {
     } else if (x instanceof Array) {
         return {
             type: 'list-literal',
-            list: x.map(e => makeAtom(e))
+            value: x.map(e => makeAtom(e))
         }
     } else if (isStringLiteral(x)) {
         return {

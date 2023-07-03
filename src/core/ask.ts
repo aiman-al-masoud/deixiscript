@@ -9,8 +9,8 @@ import { tell } from "./tell.ts";
 
 export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): Atom | WmAtom {
 
-    if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.list.length && formula.after.list.every(isConst)) {
-        const events = formula.after.list.map(x => x.value)
+    if (preComputeKb && isFormulaWithAfter(formula) && formula.after.type === 'list-literal' && formula.after.value.length && formula.after.value.every(isConst)) {
+        const events = formula.after.value.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
         const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
         const formula2: Formula = { ...formula, after: $([]).$ }

@@ -49,7 +49,6 @@ const roles = stringLiterals(
     'name',
     'number',
     'varType',
-    'list',
     'seq',
     'tail',
     't1',
@@ -126,7 +125,7 @@ export const syntaxes: SyntaxMap<
     "list-literal": [
         { literals: ['['] },
         { types: ['space'], number: '*' },
-        { types: ['atom'], role: 'list', number: '*', sep: 'space', defaultsTo: [] },
+        { types: ['atom'], role: 'value', number: '*', sep: 'space', defaultsTo: [] },
         { types: ['space'], number: '*' },
         { literals: [']'] },
     ],

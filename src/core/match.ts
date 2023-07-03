@@ -45,18 +45,18 @@ export function match(template: SimpleFormula | Atom, f: LLangAst): VarMap | und
 
     } else if (template.type === 'list-literal' && f.type === 'list-literal') {
 
-        if (template.list.length !== f.list.length) return undefined
-        const ms = template.list.map((x, i) => match(x, f.list[i]))
+        if (template.value.length !== f.value.length) return undefined
+        const ms = template.value.map((x, i) => match(x, f.value[i]))
         return reduceMatchList(ms)
 
     } else if (template.type === 'list-pattern' && f.type === 'list-literal') {
 
-        const seq = f.list.slice(0, -1)
-        const tail = f.list.at(-1)
+        const seq = f.value.slice(0, -1)
+        const tail = f.value.at(-1)
 
         if (!tail) return undefined
 
-        const m1 = match(template.seq, { list: seq, type: 'list-literal' })
+        const m1 = match(template.seq, { value: seq, type: 'list-literal' })
         const m2 = match(template.tail, tail)
 
         return reduceMatchList([m1, m2])

@@ -82,12 +82,12 @@ export type StringLiteral = {
 export type Variable = {
     type: 'variable',
     name: string,
-    varType: string
+    varType: string,
 }
 
 export type ListLiteral = {
     type: 'list-literal',
-    list: Atom[]
+    value: Atom[]
 }
 
 export type ListPattern = {
@@ -203,7 +203,7 @@ export function atomsEqual(a1: Atom, a2: Atom): boolean {
     }
 
     if (a1.type === 'list-literal' && a2.type === 'list-literal') {
-        if (a1.list.length === a2.list.length && a1.list.map((x, i) => atomsEqual(a2.list[i], x))) return true
+        if (a1.value.length === a2.value.length && a1.value.map((x, i) => atomsEqual(a2.value[i], x))) return true
     }
 
     if (isVar(a1) && isVar(a2)) {
@@ -249,7 +249,7 @@ export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | Genera
 
 export function isFormulaWithNonNullAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedSimpleFormula {
     return isFormulaWithAfter(ast)
-        && (ast.after.type !== 'list-literal' || !!ast.after.list.length)
+        && (ast.after.type !== 'list-literal' || !!ast.after.value.length)
 }
 
 export function isSimple(ast: LLangAst): ast is SimpleFormula {

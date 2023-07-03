@@ -22,7 +22,7 @@ export function getAtoms(ast: LLangAst): Atom[] {
         case 'existquant':
             return [ast.variable, ...getAtoms(ast.where)]
         case 'list-literal':
-            return ast.list.flatMap(x => getAtoms(x))
+            return ast.value.flatMap(x => getAtoms(x))
         case 'list-pattern':
             return [ast.seq, ast.tail]
         case 'entity':

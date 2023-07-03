@@ -75,15 +75,15 @@ export function subst(
         case 'list-literal':
             return {
                 type: 'list-literal',
-                list: ast.list.map(e => subst(e, variable, replacement)),
+                value: ast.value.map(e => subst(e, variable, replacement)),
             }
         case 'list-pattern':
             if (!atomsEqual(variable, ast)) return ast
 
             if (replacement.type === 'list-literal') return {
                 type: 'list-pattern',
-                seq: { list: replacement.list.slice(0, -1), type: 'list-literal' },
-                tail: replacement.list.at(-1)!
+                seq: { value: replacement.value.slice(0, -1), type: 'list-literal' },
+                tail: replacement.value.at(-1)!
             }
 
             if (replacement.type === 'list-pattern') return replacement
