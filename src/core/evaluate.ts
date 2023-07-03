@@ -15,7 +15,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
             kb,
             additions,
             eliminations,
-            result: $(true).$
+            result: $(true).$,
         }
     } else if (ast.type === 'question') {
         return evaluate(ast.f1, knowledgeBase)
@@ -25,7 +25,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
             kb: knowledgeBase,
             additions: [],
             eliminations: [],
-            result: result as Atom,
+            result: result,
         }
     }
 }

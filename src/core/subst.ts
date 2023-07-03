@@ -83,7 +83,7 @@ export function subst(
             if (replacement.type === 'list-literal') return {
                 type: 'list-pattern',
                 seq: { value: replacement.value.slice(0, -1), type: 'list-literal' },
-                tail: replacement.value.at(-1)!
+                value: replacement.value.at(-1)!
             }
 
             if (replacement.type === 'list-pattern') return replacement

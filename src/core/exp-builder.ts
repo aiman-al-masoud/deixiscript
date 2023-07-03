@@ -331,11 +331,11 @@ function makeAtom(x: WmAtom | WmAtom[]): Atom {
         return {
             type: 'list-pattern',
             seq: makeAtom(seq),
-            tail: makeAtom(tail),
+            value: makeAtom(tail),
         }
     } else if (isVar(x)) {
-        const [name, varType] = x.split(':')
-        return { type: 'variable', name, varType }
+        const [value, varType] = x.split(':')
+        return { type: 'variable', value, varType }
     } else {
         return { type: 'entity', value: x }
     }

@@ -57,7 +57,7 @@ export function match(template: /* SimpleFormula | Atom */ LLangAst, f: LLangAst
         if (!tail) return undefined
 
         const m1 = match(template.seq, { value: seq, type: 'list-literal' })
-        const m2 = match(template.tail, tail)
+        const m2 = match(template.value, tail)
 
         return reduceMatchList([m1, m2])
 

@@ -81,7 +81,7 @@ export type StringLiteral = {
 
 export type Variable = {
     type: 'variable',
-    name: string,
+    /** name */ value: string,
     varType: string,
 }
 
@@ -93,7 +93,7 @@ export type ListLiteral = {
 export type ListPattern = {
     type: 'list-pattern',
     seq: Atom,
-    tail: Atom,
+    /** tail */ value: Atom,
 }
 
 export type Anaphor = {
@@ -199,7 +199,7 @@ export function isTerm(a: LLangAst): a is Term {
 export function atomsEqual(a1: Atom, a2: Atom): boolean {
 
     if (a1.type === 'list-pattern' && a2.type === 'list-pattern') {
-        return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.tail, a2.tail)
+        return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.value, a2.value)
     }
 
     if (a1.type === 'list-literal' && a2.type === 'list-literal') {
@@ -207,7 +207,7 @@ export function atomsEqual(a1: Atom, a2: Atom): boolean {
     }
 
     if (isVar(a1) && isVar(a2)) {
-        return a1.name === a2.name && a1.varType === a2.varType
+        return a1.value === a2.value && a1.varType === a2.varType
     }
 
     if (isConst(a1) && isConst(a2)) {

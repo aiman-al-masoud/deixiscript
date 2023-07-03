@@ -46,11 +46,11 @@ const astTypes = stringLiterals(
 const roles = stringLiterals(
     'id',
     'digits',
-    'name',
+    // 'name',
     'number',
     'varType',
     'seq',
-    'tail',
+    // 'tail',
     't1',
     't2',
     'after',
@@ -118,7 +118,7 @@ export const syntaxes: SyntaxMap<
         { literals: ['"'] },
     ],
     variable: [
-        { types: ['identifier'], role: 'name' },
+        { types: ['identifier'], role: 'value' },
         { literals: [':'] },
         { types: ['identifier'], role: 'varType' },
     ],
@@ -135,7 +135,7 @@ export const syntaxes: SyntaxMap<
     'list-pattern': [
         { types: ['variable', 'constant'], role: 'seq' },
         { literals: ['|'] },
-        { types: ['variable', 'constant'], role: 'tail' },
+        { types: ['variable', 'constant'], role: 'value' },
     ],
     equality: [
         { types: ['atom'], role: 't1' },

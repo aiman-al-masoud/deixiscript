@@ -1,13 +1,13 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula, WmAtom, Atom, Number } from "./types.ts";
+import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula, Atom } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
-import { getAnaphor, /* resolveAnaphor */ } from "./getAnaphor.ts";
+import { getAnaphor, } from "./getAnaphor.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 
-export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): Atom | WmAtom {
+export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): Atom {
 
     if (preComputeKb
         && isFormulaWithAfter(formula)
@@ -25,7 +25,7 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
     switch (formula.type) {
 
         case 'boolean':
-            return formula.value
+            return formula
         case 'number':
         case 'entity':
         case 'string':
@@ -40,29 +40,29 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
             return ask(getAnaphor(formula, kb)!, kb)
         case 'equality':
 
-            const t10 = ask(formula.t1, kb) as Atom
-            const t20 = ask(formula.t2, kb) as Atom
-            if (atomsEqual(t10, t20)) return true
+            const t10 = ask(formula.t1, kb)
+            const t20 = ask(formula.t2, kb)
+            if (atomsEqual(t10, t20)) return $(true).$
 
             break
         case 'is-a-formula':
 
-            const t1 = ask(formula.t1, kb) as Atom
-            const t2 = ask(formula.t2, kb) as Atom
+            const t1 = ask(formula.t1, kb)
+            const t2 = ask(formula.t2, kb)
 
-            if (isConst(t2) && t1.type === t2.value) return true
+            if (isConst(t2) && t1.type === t2.value) return $(true).$
 
             if (
                 isConst(t1)
                 && isConst(t2)
                 && getSupersAndConceptsOf(t1.value, kb.wm).includes(t2.value)
-            ) return true
+            ) return $(true).$
             break
         case 'has-formula':
 
-            const t11 = ask(formula.t1, kb) as Atom
-            const t22 = ask(formula.t2, kb) as Atom
-            const as = ask(formula.as, kb) as Atom
+            const t11 = ask(formula.t1, kb)
+            const t22 = ask(formula.t2, kb)
+            const as = ask(formula.as, kb)
 
             if (kb.wm.filter(isHasSentence).find(hs => {
 
@@ -72,38 +72,38 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
                     && t11.value === hs[0]
                     && t22.value === hs[1]
                     && as.value === hs[2]
-            })) return true
+            })) return $(true).$
             break
         case 'negation':
-            if (!ask(formula.f1, kb)) return true
+            if (!ask(formula.f1, kb).value) return $(true).$
             break
         case 'conjunction':
-            if (ask(formula.f1, kb) && ask(formula.f2, kb)) return true
+            if (ask(formula.f1, kb).value && ask(formula.f2, kb).value) return $(true).$
             break
         case 'disjunction':
-            if (ask(formula.f1, kb) || ask(formula.f2, kb)) return true
+            if (ask(formula.f1, kb).value || ask(formula.f2, kb).value) return $(true).$
             break
         case 'existquant':
-            if (findAll(formula.where, [formula.variable], kb).length) return true
+            if (findAll(formula.where, [formula.variable], kb).length) return $(true).$
             break
         case 'if-else':
-            return ask(formula.condition, kb) ? ask(formula.then, kb) : ask(formula.otherwise, kb)
+            return ask(formula.condition, kb).value ? ask(formula.then, kb) : ask(formula.otherwise, kb)
         case 'math-expression':
-            const left = (ask(formula.left, kb) as Number).value
-            const right = (ask(formula.right, kb) as Number).value
+            const left = ask(formula.left, kb).value as number
+            const right = ask(formula.right, kb).value as number
 
             switch (formula.operator) {
                 case '+': return $(left + right).$
                 case '-': return $(left - right).$
                 case '*': return $(left * right).$
                 case '/': return $(left / right).$
-                case '>': return left > right
-                case '<': return left < right
+                case '>': return $(left > right).$
+                case '<': return $(left < right).$
             }
 
     }
 
-    return kb.derivClauses.some(dc => {
+    const result = kb.derivClauses.some(dc => {
         const map = match(dc.conseq, formula)
 
         if (!map) {
@@ -111,8 +111,10 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
         }
 
         const whenn = substAll(dc.when, map)
-        return ask(whenn, kb)
+        return ask(whenn, kb).value
     })
+
+    return $(result).$
 
 }
 
