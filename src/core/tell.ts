@@ -5,7 +5,7 @@ import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { Atom, AtomicFormula, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar, wmSentencesEqual } from "./types.ts";
+import { AtomicFormula, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar } from "./types.ts";
 import { addWorldModels, getConceptsOf, subtractWorldModels } from "./wm-funcs.ts";
 
 /**
