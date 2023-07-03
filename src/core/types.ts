@@ -21,7 +21,6 @@ export type Atom =
     | ListPattern
     | ListLiteral
     | Anaphor
-    | MathExpression
 export type Formula =
     | SimpleFormula
     | CompositeFormula
@@ -48,6 +47,7 @@ export type CompositeFormula =
     | ExistentialQuantification
     | DerivationClause
     | IfElse
+    | MathExpression
 
 export type Command = {
     type: 'command',
