@@ -92,14 +92,14 @@ export function ask(formula: LLangAst, kb: KnowledgeBase, preComputeKb = true): 
             const left = ask(formula.left, kb).value as number
             const right = ask(formula.right, kb).value as number
 
-            switch (formula.operator) {
-                case '+': return $(left + right).$
-                case '-': return $(left - right).$
-                case '*': return $(left * right).$
-                case '/': return $(left / right).$
-                case '>': return $(left > right).$
-                case '<': return $(left < right).$
-            }
+            return {
+                '+': $(left + right).$,
+                '-': $(left - right).$,
+                '*': $(left * right).$,
+                '/': $(left / right).$,
+                '>': $(left > right).$,
+                '<': $(left < right).$,
+            }[formula.operator]
 
     }
 
