@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, isAtom, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -21,7 +21,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst>
         Object.entries(x).map(e => [e[0], makeAst(e[1])])
     )
 
-    return new ExpBuilder({ type: 'generalized', keys: keys, after: { value: [], type: 'list-literal' } })
+    return new ExpBuilder({ type: 'generalized', keys: keys, after: $([]).$ })
 }
 
 export class ExpBuilder<T extends LLangAst> {
@@ -46,7 +46,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'is-a-formula',
             t1: this.exp,
             t2: makeAst(term),
-            after: { type: 'list-literal', value: [] }
+            after: $([]).$
         })
 
     }
@@ -60,7 +60,7 @@ export class ExpBuilder<T extends LLangAst> {
             t1: this.exp,
             t2: atom,
             as: atom,
-            after: { type: 'list-literal', value: [] },
+            after: $([]).$
         })
 
     }
@@ -134,7 +134,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'if-else',
             condition: formula.$,
             then: this.exp as Formula,
-            otherwise: { type: 'boolean', value: false },
+            otherwise: $(false).$,
         })
 
     }
@@ -161,7 +161,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'existquant',
             variable: this.exp as Variable,
-            where: { type: 'boolean', value: false },
+            where: $(false).$,
         })
 
     }
@@ -178,7 +178,6 @@ export class ExpBuilder<T extends LLangAst> {
         })
 
     }
-
 
     get isNotTheCase() {
 
