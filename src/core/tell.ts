@@ -23,7 +23,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
         case 'happen-sentence':
             {
-                const additions = getAdditions(ast.event.value, kb)
+                const additions = consequencesOf(ast.event.value, kb)
                 const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
                 const filtered = subtractWorldModels(kb.wm, eliminations)
 
@@ -172,7 +172,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
  *
  *
  */
-function getAdditions(event: WmAtom, kb: KnowledgeBase): WorldModel {
+function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 

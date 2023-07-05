@@ -30,10 +30,11 @@ export function instantiateConcept(
     })
 
     const additions = addWorldModels(
-        $(id).isa(ast.variable.varType).dump().additions,
+        tell($(id).isa(ast.variable.varType).$, kb).additions,
+        fillers,
         tell(where, kb).additions,
-        fillers, // TODO: possible conflict betwen where clause and default fillers
     )
+    // TODO: in case where-clause and default fillers produce conflicting info, favor where-clause
 
     return additions
 }
