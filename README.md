@@ -14,6 +14,8 @@
   - copula should default to equality
 - parser
   - special case for copula verb (not require "does")
+- findAll()
+  - find numbers that have never appeared in the WM (eg: what is half of 100?)
 
 # JS INTEROP
 
