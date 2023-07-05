@@ -5,6 +5,7 @@
 - integrating anaphora
   - what if findAll() finds many?
   - every/and/or, use list-literal?
+  - possible sol: getAnaphor() and ask() return Atom[], Anaphor.number
 - tell()
   - existquant defaults (TRIGGERED WITH IS-A)
   - mutually exclusive is-a superconcepts
