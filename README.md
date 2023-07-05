@@ -58,6 +58,8 @@ make it happen
 - in match() for loop there is no guarantee that the most specific rule will be
   found first
 
+- maybe need to pass down new kb not old one within body of ask() for correct anaphora
+
 ## Limitations
 
 - no context sentitivity
@@ -67,8 +69,7 @@ make it happen
 
 # Notes
 
-- tell() and ask() DO HAVE side effects; not for what concerns the world
-  model and derivation clauses, but on the deictic dictionary.
+- tell() and ask() do NOT have ANY side effects, but they both return a brand new knowledge base object, because also ask() can "modify" stuff like deixis and (maybe in the future) add number constants.
 
 - at the basic level there is nothing but: entities, is-a-relations and
   has-relations. This is the "interface" through which Deixiscript communicates
