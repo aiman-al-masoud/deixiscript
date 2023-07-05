@@ -89,6 +89,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                 }
             }
         case 'disjunction':
+            console.warn('serialized only first formula of disjunction')
             return tell(ast.f1, kb)
         case 'derived-prop':
             return {
