@@ -17,7 +17,7 @@ export function findAll(
 
     const varToCands = variables.map(v => {
         const candidates =
-            constants.filter(c => ask($(c.value).isa(v.varType).$, kb, preComputeKb, false).value)
+            constants.filter(c => ask($(c.value).isa(v.varType).$, kb, { preComputeKb, storeDeixis: false }).value)
         return candidates.map(c => [v, c] as const)
     })
 
@@ -25,7 +25,7 @@ export function findAll(
 
     const results = allCombos.filter(c => {
         const sub = substAll(formula, c)
-        return ask(sub, kb, preComputeKb, false).value
+        return ask(sub, kb, { preComputeKb, storeDeixis: false }).value
     })
 
     return results
