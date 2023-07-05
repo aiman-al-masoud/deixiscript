@@ -11,7 +11,10 @@ export function ask(
     formula: LLangAst,
     kb: KnowledgeBase,
     opts = { preComputeKb: true, storeDeixis: true },
-): Atom {
+): {
+    result: Atom,
+    kb: KnowledgeBase,
+} {
 
     if (opts.preComputeKb
         && isFormulaWithAfter(formula)
@@ -29,68 +32,66 @@ export function ask(
     switch (formula.type) {
 
         case 'boolean':
-            return formula
+            return { result: formula, kb }
         case 'number':
         case 'entity':
         case 'string':
-            if (opts.storeDeixis) {
-                const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
-                kb.deicticDict[formula.value] = lastTime + 1
-            }
-            return formula
+            const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
+            const deicticDict = opts.storeDeixis ? { ...kb.deicticDict, [formula.value]: lastTime + 1 } : kb.deicticDict
+            return { result: formula, kb: { ...kb, deicticDict } }
         case 'variable':
         case 'list-literal':
         case 'list-pattern':
-            return formula
+            return { result: formula, kb }
         case 'anaphor':
             return ask(getAnaphor(formula, kb)!, kb, opts)
         case 'equality':
-            const t10 = ask(formula.t1, kb, opts)
-            const t20 = ask(formula.t2, kb, opts)
-            if (atomsEqual(t10, t20)) return $(true).$
+            const t10 = ask(formula.t1, kb, opts).result
+            const t20 = ask(formula.t2, kb, opts).result
+            if (atomsEqual(t10, t20)) return { result: $(true).$, kb }
 
             break
         case 'is-a-formula':
-            const t1 = ask(formula.t1, kb, opts)
-            const t2 = ask(formula.t2, kb, opts)
+            const t1 = ask(formula.t1, kb, opts).result
+            const t2 = ask(formula.t2, kb, opts).result
 
-            if (t1.type === t2.value) return $(true).$
+            if (t1.type === t2.value) return { result: $(true).$, kb }
 
             if (
                 isConst(t1) && isConst(t2)
                 && getSupersAndConceptsOf(t1.value, kb.wm).includes(t2.value)
-            ) return $(true).$
+            ) return { result: $(true).$, kb }
             break
         case 'has-formula':
-            const t11 = ask(formula.t1, kb, opts)
-            const t22 = ask(formula.t2, kb, opts)
-            const as = ask(formula.as, kb, opts)
+            const t11 = ask(formula.t1, kb, opts).result
+            const t22 = ask(formula.t2, kb, opts).result
+            const as = ask(formula.as, kb, opts).result
 
             if (kb.wm.filter(isHasSentence).find(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
                     && as.value === hs[2]
-            })) return $(true).$
+            })) return { result: $(true).$, kb }
             break
         case 'negation':
-            if (!ask(formula.f1, kb, opts).value) return $(true).$
+            if (!ask(formula.f1, kb, opts).result.value) return { result: $(true).$, kb }
             break
         case 'conjunction':
-            if (ask(formula.f1, kb, opts).value && ask(formula.f2, kb, opts).value) return $(true).$
+            if (ask(formula.f1, kb, opts).result.value && ask(formula.f2, kb, opts).result.value) return { result: $(true).$, kb }
             break
         case 'disjunction':
-            if (ask(formula.f1, kb, opts).value || ask(formula.f2, kb, opts).value) return $(true).$
+            if (ask(formula.f1, kb, opts).result.value || ask(formula.f2, kb, opts).result.value) return { result: $(true).$, kb }
             break
         case 'existquant':
-            if (findAll(formula.where, [formula.variable], kb).length) return $(true).$
+            if (findAll(formula.where, [formula.variable], kb).length) return { result: $(true).$, kb }
             break
         case 'if-else':
-            return ask(formula.condition, kb, opts).value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
+            return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
         case 'math-expression':
-            const left = ask(formula.left, kb, opts).value as number
-            const right = ask(formula.right, kb, opts).value as number
+            const left = ask(formula.left, kb, opts).result.value as number
+            const right = ask(formula.right, kb, opts).result.value as number
 
-            return {
+            const result = {
                 '+': $(left + right).$,
                 '-': $(left - right).$,
                 '*': $(left * right).$,
@@ -98,6 +99,8 @@ export function ask(
                 '>': $(left > right).$,
                 '<': $(left < right).$,
             }[formula.operator]
+
+            return { result, kb }
 
     }
 
@@ -109,10 +112,10 @@ export function ask(
         }
 
         const whenn = substAll(dc.when, map)
-        return ask(whenn, kb, opts).value
+        return ask(whenn, kb, opts).result.value
     })
 
-    return $(result).$
+    return { result: $(result).$, kb }
 
 }
 

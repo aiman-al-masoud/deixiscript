@@ -8,9 +8,9 @@ export type HasSentence = [WmAtom, WmAtom, WmAtom]
 export type WorldModel = (IsASentence | HasSentence)[]
 
 export type KnowledgeBase = {
-    wm: WorldModel,
-    derivClauses: DerivationClause[],
-    deicticDict: { [id: string]: number },
+    readonly wm: WorldModel,
+    readonly derivClauses: DerivationClause[],
+    readonly deicticDict: { readonly [id: string]: number },
 }
 
 /* LANGUAGE */

@@ -20,7 +20,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     } else if (ast.type === 'question') {
         return evaluate(ast.f1, knowledgeBase)
     } else {
-        const result = ask(ast, knowledgeBase)
+        const result = ask(ast, knowledgeBase).result
         return {
             kb: knowledgeBase,
             additions: [],
