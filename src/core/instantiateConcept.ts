@@ -3,9 +3,9 @@ import { random } from "../utils/random.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { substAll } from "./subst.ts";
-import { ExistentialQuantification, KnowledgeBase, WmAtom, WorldModel } from "./types.ts";
+import { ExistentialQuantification, KnowledgeBase, WmAtom, WorldModel, isHasSentence } from "./types.ts";
 import { findAll } from "./findAll.ts";
-import { addWorldModels, getParts } from "./wm-funcs.ts";
+import { addWorldModels, getParts, subtractWorldModels } from "./wm-funcs.ts";
 
 
 /**
@@ -20,8 +20,31 @@ export function instantiateConcept(
     const id = ast.variable.varType + '#' + random()
     const where = substAll(ast.where, deepMapOf([[ast.variable, $(id).$]]))
 
-    const parts = getParts(ast.variable.varType, kb.wm)
-    const defaults = parts.map(p => findDefault(p, ast.variable.varType, kb))
+    const fillers =
+        getDefaultFillers(id, ast.variable.varType, kb)
+
+    const isAAdditions = tell($(id).isa(ast.variable.varType).$, kb).additions
+
+    const whereAdditions = tell(where, kb).additions
+
+    const conflicts = fillers
+        .filter(isHasSentence)
+        .filter(x => whereAdditions.some(y => y[0] === x[0] && y[2] === y[2]))
+
+    const fillersWithoutConflicts = subtractWorldModels(fillers, conflicts)
+
+    const additions = addWorldModels(
+        isAAdditions,
+        fillersWithoutConflicts,
+        whereAdditions,
+    )
+
+    return additions
+}
+
+function getDefaultFillers(id: string, concept: string, kb: KnowledgeBase) {
+    const parts = getParts(concept, kb.wm)
+    const defaults = parts.map(p => findDefault(p, concept, kb))
 
     const fillers = defaults.flatMap((d, i) => {
         if (d === undefined) return []
@@ -29,14 +52,7 @@ export function instantiateConcept(
         return instantiateConcept($(`x:${d}`).exists.where($(id).has(`x:${d}`).as(parts[i])).$, kb)
     })
 
-    const additions = addWorldModels(
-        tell($(id).isa(ast.variable.varType).$, kb).additions,
-        fillers,
-        tell(where, kb).additions,
-    )
-    // TODO: in case where-clause and default fillers produce conflicting info, favor where-clause
-
-    return additions
+    return fillers
 }
 
 function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined { //TODO: optimize

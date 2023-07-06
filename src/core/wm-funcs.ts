@@ -2,7 +2,7 @@ import { uniq } from "../utils/uniq.ts";
 import { WorldModel, WmAtom, isIsASentence, wmSentencesEqual } from "./types.ts";
 
 
-export function getParts(concept: string, cm: WorldModel): WmAtom[] {
+export function getParts(concept: WmAtom, cm: WorldModel): WmAtom[] {
 
     const parts = getAllParts(concept, cm)
     const cancelAnnotations = parts.filter(x => getConceptsOf(x, cm).includes('cancel-annotation'))

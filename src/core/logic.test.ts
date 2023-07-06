@@ -666,3 +666,18 @@ Deno.test({
         assertEquals(result3, result4)
     }
 })
+
+
+Deno.test({
+    name: 'test36',
+    fn: () => {
+        // where should override defaults
+        const result = evaluate($('x:thing').exists.where($('x:thing').has(200).as('x-coordinate')).tell.$, kb)
+        // console.log(result.additions)
+        // const result1 = evaluate($('n:number').suchThat($('x:thing').exists.where($('x:thing').has('n:number').as('x-coordinate'))).ask.$, result.kb)
+        // console.log(result1.result)
+        const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
+        assert(result1.length === 1)
+        assertEquals(result1[0].get($('n:number').$), $(200).$)
+    }
+})
