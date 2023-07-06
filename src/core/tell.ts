@@ -6,7 +6,7 @@ import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { AtomicFormula, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar } from "./types.ts";
-import { addWorldModels, getConceptsOf, subtractWorldModels } from "./wm-funcs.ts";
+import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 
 /**
  * Assume the AST is true, and compute resulting knowledge base.
@@ -56,14 +56,19 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                     eliminations: eliminations,
                 }
             }
-        case 'is-a-formula': //TODO: recompute after additions
+        case 'is-a-formula':
             {
                 const t11 = ask(ast.t1, kb).result
                 const t21 = ask(ast.t2, kb).result
 
                 if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
-                const additions: WorldModel = [[t11.value, t21.value]] //TODO this serializes entities and string the same way
-                const eliminations: WorldModel = []
+
+                const additions: WorldModel = addWorldModels(
+                    [[t11.value, t21.value]], //TODO this serializes entities and string the same way
+                    getDefaultFillers(t11.value, t21.value, kb)
+                )
+
+                const eliminations: WorldModel = [] //TODO
 
                 return {
                     kb: {
@@ -228,3 +233,25 @@ function getExcludedBy(h: HasSentence, kb: KnowledgeBase) { //TODO: refactor & o
 
 }
 
+
+function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
+    const parts = getParts(concept, kb.wm)
+    const defaults = parts.map(p => findDefault(p, concept, kb))
+
+    const fillers = defaults.flatMap((d, i) => {
+        if (d === undefined) return []
+        if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
+        return instantiateConcept($(`x:${d}`).exists.where($(id).has(`x:${d}`).as(parts[i])).$, kb)
+    })
+
+    return fillers
+}
+
+function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined { //TODO: optimize
+    const result = findAll(
+        $({ annotation: 'x:thing', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
+        [$('x:thing').$, $('z:thing').$],
+        kb,
+    )
+    return result[0]?.get($('z:thing').$)?.value
+}
