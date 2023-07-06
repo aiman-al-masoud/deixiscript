@@ -62,6 +62,8 @@ make it happen
 
 - maybe need to pass down new kb not old one within body of ask() for correct anaphora
 
+- if tell() gets a derived property that is also a has-formula, it will ignore the derived property and just serialize the formula as is.
+
 ## Limitations
 
 - no context sentitivity
