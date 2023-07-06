@@ -7,7 +7,6 @@
   - every/and/or, use list-literal?
   - possible sol: getAnaphor() and ask() return Atom[], Anaphor.number
 - tell()
-  - existquant defaults (TRIGGERED WITH IS-A)
   - mutually exclusive is-a superconcepts
   - less than and greater than as commands
 - general
@@ -72,7 +71,7 @@ make it happen
 
 # Notes
 
-- tell() and ask() do NOT have ANY side effects, but they both return a brand new knowledge base object, because also ask() can "modify" stuff like deixis and (maybe in the future) add number constants.
+- tell() and ask() do NOT have ANY side effects (like all other functions). tell() and ask() both return a brand new knowledge base object, because even ask() may produce updated versions of stuff like the deictic dictionary and (maybe in the future) add number constants (because: 1+1. it + 1. should be 3. ).
 
 - at the basic level there is nothing but: entities, is-a-relations and
   has-relations. This is the "interface" through which Deixiscript communicates
