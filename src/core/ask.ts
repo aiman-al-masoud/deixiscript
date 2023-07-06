@@ -1,7 +1,7 @@
 import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula, Atom } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
-import { getSupersAndConceptsOf } from "./wm-funcs.ts";
+import { addWorldModels, getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { getAnaphor, } from "./getAnaphor.ts";
 import { $ } from "./exp-builder.ts";
@@ -100,7 +100,13 @@ export function ask(
                 '<': $(left < right).$,
             }[formula.operator]
 
-            return { result, kb }
+            return ask(
+                result,
+                {
+                    ...kb,
+                    wm: addWorldModels(kb.wm, [[result.value, 'thing']]),
+                }
+            )
 
     }
 

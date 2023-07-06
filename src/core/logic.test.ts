@@ -681,3 +681,14 @@ Deno.test({
         assertEquals(result1[0].get($('n:number').$), $(200).$)
     }
 })
+
+Deno.test({
+    name: 'test37',
+    fn: () => {
+        // anaphora with freshly calculated numbers
+        const results = evaluate($(1).plus(1).$, kb)
+        // console.log(results.kb.wm.at(-1))
+        // console.log(results.kb.deicticDict)
+        assertEquals(evaluate($('x:number').suchThat().ask.$, results.kb).result, $(2).$)
+    }
+})

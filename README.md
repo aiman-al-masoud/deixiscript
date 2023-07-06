@@ -71,7 +71,7 @@ make it happen
 
 # Notes
 
-- tell() and ask() do NOT have ANY side effects (like all other functions). tell() and ask() both return a brand new knowledge base object, because even ask() may produce updated versions of stuff like the deictic dictionary and (maybe in the future) add number constants (because: 1+1. it + 1. should be 3. ).
+- tell() and ask() do NOT have ANY side effects (like all other functions). tell() and ask() both return a brand new knowledge base object, because even ask() may produce updated versions of the deictic dictionary and add computed numbers to the world model.
 
 - at the basic level there is nothing but: entities, is-a-relations and
   has-relations. This is the "interface" through which Deixiscript communicates

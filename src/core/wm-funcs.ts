@@ -75,5 +75,5 @@ export function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldMode
 }
 
 export function addWorldModels(...wms: WorldModel[]): WorldModel { //TODO: uniq
-    return wms.reduce((wm1, wm2) => wm1.concat(wm2), [])
+    return uniq(wms.reduce((wm1, wm2) => wm1.concat(wm2), []))
 }
