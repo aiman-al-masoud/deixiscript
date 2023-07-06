@@ -25,7 +25,7 @@ export function instantiateConcept(
 
     const fillers = defaults.flatMap((d, i) => {
         if (d === undefined) return []
-        if (typeof d === 'number' || typeof d === 'boolean') return $(id).has(d).as(parts[i]).dump().additions
+        if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
         return instantiateConcept($(`x:${d}`).exists.where($(id).has(`x:${d}`).as(parts[i])).$, kb)
     })
 
