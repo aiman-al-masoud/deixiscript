@@ -78,6 +78,6 @@ make it happen
   with the outside world, including JS.
 
 - assignments are completely replaced by anaphora, also theme-rheme phrase
-  style.
+  style, also intermediate numerical computations.
 
 - anaphora work "as if" each entity got the current timestamp whenever it is mentioned. When function ask() is called from findAll() the deictic dict is NOT updated.
