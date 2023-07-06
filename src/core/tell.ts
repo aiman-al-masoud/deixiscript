@@ -5,7 +5,7 @@ import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { AtomicFormula, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar } from "./types.ts";
+import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 
 /**
@@ -19,141 +19,89 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     eliminations: WorldModel,
 } {
 
+    let additions: WorldModel = []
+    let eliminations: WorldModel = []
+    let addedDerivationClauses: DerivationClause[] = []
+
     switch (ast.type) {
 
         case 'happen-sentence':
-            {
-                const additions = consequencesOf(ast.event.value, kb)
-                const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
-                const filtered = subtractWorldModels(kb.wm, eliminations)
-
-                return {
-                    kb: {
-                        ...kb,
-                        wm: addWorldModels(filtered, additions),
-                    },
-                    additions: additions,
-                    eliminations: eliminations
-                }
-            }
+            additions = consequencesOf(ast.event.value, kb)
+            break
         case 'has-formula':
-            {
-                const t1 = ask(ast.t1, kb).result
-                const t2 = ask(ast.t2, kb).result
-                const as = ask(ast.as, kb).result
-                if (!(isConst(t1) && isConst(t2) && isConst(as))) throw new Error('cannot serialize formula with variables!')
+            const t1 = ask(ast.t1, kb).result
+            const t2 = ask(ast.t2, kb).result
+            const as = ask(ast.as, kb).result
+            if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error('cannot serialize formula with variables!')
 
-                const additions: WorldModel = [[t1.value, t2.value, as.value]]
-                const eliminations = additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb))
-                const filtered = subtractWorldModels(kb.wm, eliminations)
-
-                return {
-                    kb: {
-                        ...kb,
-                        wm: addWorldModels(filtered, additions),
-                    },
-                    additions: additions,
-                    eliminations: eliminations,
-                }
-            }
+            additions = [[t1.value, t2.value, as.value]]
+            break
         case 'is-a-formula':
-            {
-                const t11 = ask(ast.t1, kb).result
-                const t21 = ask(ast.t2, kb).result
+            const t11 = ask(ast.t1, kb).result
+            const t21 = ask(ast.t2, kb).result
 
-                if (!(isConst(t11) && isConst(t21))) throw new Error('cannot serialize formula with variables!')
+            if (!isConst(t11) || !isConst(t21)) throw new Error('cannot serialize formula with variables!')
 
-                const additions: WorldModel = addWorldModels(
-                    [[t11.value, t21.value]], //TODO this serializes entities and string the same way
-                    getDefaultFillers(t11.value, t21.value, kb)
-                )
-
-                const eliminations: WorldModel = [] //TODO
-
-                return {
-                    kb: {
-                        ...kb,
-                        wm: addWorldModels(kb.wm, additions),
-                    },
-                    additions: additions,
-                    eliminations: eliminations,
-                }
-            }
+            additions = addWorldModels(
+                [[t11.value, t21.value]], //TODO this serializes entities and string the same way
+                getDefaultFillers(t11.value, t21.value, kb),
+            )
+            break
         case 'conjunction':
-            {
-                const result1 = tell(ast.f1, kb)
-                const result2 = tell(ast.f2, kb)
-                return {
-                    kb: {
-                        wm: addWorldModels(result1.kb.wm, result2.kb.wm),
-                        derivClauses: result1.kb.derivClauses.concat(result2.kb.derivClauses),
-                        deicticDict: kb.deicticDict,
-                    },
-                    additions: addWorldModels(result1.additions, result2.additions),
-                    eliminations: addWorldModels(result1.eliminations, result2.eliminations),
-                }
-            }
+            const result1 = tell(ast.f1, kb)
+            const result2 = tell(ast.f2, kb)
+            additions = addWorldModels(result1.additions, result2.additions)
+            addedDerivationClauses = result1.kb.derivClauses.concat(result2.kb.derivClauses)
+            break
         case 'disjunction':
             console.warn('serialized only first formula of disjunction')
             return tell(ast.f1, kb)
         case 'derived-prop':
-            return {
-                kb: {
-                    ...kb,
-                    derivClauses: [...kb.derivClauses, ast],
-                },
-                additions: [],
-                eliminations: [],
-            }
+            addedDerivationClauses = [ast]
+            break
         case 'if-else':
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
-            {
-                const additions: WorldModel = instantiateConcept(ast, kb)
-                const eliminations: WorldModel = [] // TODO
-
-                return {
-                    kb: {
-                        ...kb,
-                        wm: addWorldModels(kb.wm, additions)
-                    },
-                    additions,
-                    eliminations,
-                }
-            }
+            additions = instantiateConcept(ast, kb) //TODO: eliminations
+            break
         case 'negation':
-            {
-                const { additions, eliminations } = tell(ast.f1, kb)
-                const newWm = addWorldModels(subtractWorldModels(kb.wm, additions), eliminations)
-                return {
-                    kb: {
-                        ...kb,
-                        wm: newWm,
-                    },
-                    additions: eliminations,
-                    eliminations: additions,
+            const result = tell(ast.f1, kb)
+            additions = result.eliminations
+            eliminations = result.additions
+            break
+        case 'generalized':
+            for (const dc of kb.derivClauses) {
+
+                const map = match(dc.conseq, ast)
+
+                if (map) {
+                    const whenn = substAll(dc.when, map)
+                    return tell(whenn, kb)
                 }
             }
-        case 'boolean':
-            return {
-                kb,
-                additions: [],
-                eliminations: [],
-            }
-
+            break
+        default:
+            additions = []
+            addedDerivationClauses = []
+            break
     }
 
-    for (const dc of kb.derivClauses) {
+    eliminations = [
+        ...eliminations,
+        ...additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb)),
+    ]
 
-        const map = match(dc.conseq, ast)
+    const filtered = subtractWorldModels(kb.wm, eliminations)
 
-        if (map) {
-            const whenn = substAll(dc.when, map)
-            return tell(whenn, kb)
+    return {
+        additions,
+        eliminations,
+        kb: {
+            ...kb,
+            wm: addWorldModels(filtered, additions),
+            derivClauses: [...kb.derivClauses, ...addedDerivationClauses],
         }
     }
-
-    throw new Error('not implemented! ' + ast.type)
 
 }
 

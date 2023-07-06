@@ -64,6 +64,8 @@ make it happen
 
 - if tell() gets a derived property that is also a has-formula, it will ignore the derived property and just serialize the formula as is.
 
+- possible problem with where in instantiateConcept() and multiple legal values on same attribute.
+
 ## Limitations
 
 - no context sentitivity
