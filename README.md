@@ -7,7 +7,6 @@
   - every/and/or, use list-literal?
   - possible sol: getAnaphor() and ask() return Atom[], Anaphor.number
 - tell()
-  - mutually exclusive is-a superconcepts
   - less than and greater than as commands
 - general
   - copula should default to equality

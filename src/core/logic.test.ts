@@ -1,9 +1,9 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { tell } from "./tell.ts";
+import { getExcludedByMutexConcepts, tell } from "./tell.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
+import { DerivationClause, Formula, IsAFormula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
@@ -158,6 +158,8 @@ const model: WorldModel =
         // .and($({ annotation: 'ann#522', subject: 'door', owner: 'thing', verb: 'default', recipient: 'door' }))
 
         // -------------------------
+
+        .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
 
         .dump(derivationClauses).kb.wm
 
@@ -688,5 +690,22 @@ Deno.test({
         // anaphora with freshly calculated numbers
         const results = evaluate($(1).plus(1).$, kb)
         assertEquals(evaluate($('x:number').suchThat().ask.$, results.kb).result, $(2).$)
+    }
+})
+
+Deno.test({
+    name: 'test38',
+    fn: () => {
+
+        const kb0 = tell($('mammal#1').isa('cat').$, kb).kb
+        const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
+
+        assert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1))
+        assert(ask($('mammal#1').isa('dog').$, kb1))
+
+        const kb2 = tell($('mammal#1').isa('cat').$, kb0).kb
+        assert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2))
+        assert(ask($('mammal#1').isa('cat').$, kb2))
+
     }
 })

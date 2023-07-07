@@ -5,7 +5,7 @@ import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isVar } from "./types.ts";
+import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence, isVar } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 
 /**
@@ -88,8 +88,9 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
     eliminations = [
         ...eliminations,
-        ...additions.filter(isHasSentence).flatMap(s => getExcludedBy(s, kb)),
+        ...additions/* .filter(isHasSentence) */.flatMap(s => getExcludedBy(s, kb)),
     ]
+
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
 
@@ -155,7 +156,12 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
 }
 
-function getExcludedBy(h: HasSentence, kb: KnowledgeBase) { //TODO: refactor & optmizie
+function getExcludedBy(h: HasSentence | IsASentence, kb: KnowledgeBase) { //TODO: refactor & optmizie
+
+    if (isIsASentence(h)) {
+        return getExcludedByMutexConcepts(h, kb)
+    }
+
     const concepts = getConceptsOf(h[0], kb.wm)
 
     const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
@@ -179,6 +185,22 @@ function getExcludedBy(h: HasSentence, kb: KnowledgeBase) { //TODO: refactor & o
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
 
+}
+
+export function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldModel {
+
+    const concepts = getConceptsOf(i[0], kb.wm)
+    const qs = concepts.map(c => $({ ann: 'x:mutex-concepts-annotation', concept: c, excludes: 'c2:thing' }))
+
+    const r =
+        qs.flatMap(q => findAll(q.$, [$('x:mutex-concepts-annotation').$, $('c2:thing').$], kb))
+            .map(x => x.get($('c2:thing').$))
+            .map(x => x?.value)
+            .filter(x => x !== i[1])
+
+    const result = r.map(x => [i[0], x] as IsASentence)
+
+    return result
 }
 
 

@@ -74,6 +74,13 @@ const derivationClauses: DerivationClause[] = [
             .and($('ann:thing').has('c:thing').as('concept'))
     ).$,
 
+    // mutually exclusive concepts annotation
+    $({ ann: 'ann:thing', concept: 'c1:thing', excludes: 'c2:thing' }).when(
+        $('ann:thing').isa('mutex-concepts-annotation')
+            .and($('ann:thing').has('c1:thing').as('concept'))
+            .and($('ann:thing').has('c2:thing').as('concept'))
+    ).$,
+
     // empty event sequence always possible
     $({ subject: 's:seq', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' }).when(
         $('s:seq').equals([])
