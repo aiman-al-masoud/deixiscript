@@ -1,9 +1,9 @@
 import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { getExcludedByMutexConcepts, tell } from "./tell.ts";
+import { tell } from "./tell.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, Formula, IsAFormula, KnowledgeBase } from "./types.ts";
+import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
