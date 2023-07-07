@@ -105,7 +105,7 @@ export type Anaphor = {
 export type MathExpression = {
     type: 'math-expression',
     operator: '+' | '-' | '*' | '/' | '>' | '<',
-    left: Atom | MathExpression,
+    left: Atom /* | MathExpression */,
     right: Atom | MathExpression,
 }
 

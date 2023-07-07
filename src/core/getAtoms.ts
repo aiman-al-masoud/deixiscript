@@ -17,6 +17,8 @@ export function getAtoms(ast: LLangAst): Atom[] {
             return getAtoms(ast.t1).concat(getAtoms(ast.t2)).concat(getAtoms(ast.after))
         case 'equality':
             return getAtoms(ast.t1).concat(getAtoms(ast.t2))
+        case 'math-expression':
+            return [ast.left, ...getAtoms(ast.right)]
         // case 'generalized':
         // return Object.values(ast.keys).concat(getAtoms(ast.after))
         case 'existquant':
@@ -28,6 +30,7 @@ export function getAtoms(ast: LLangAst): Atom[] {
         case 'entity':
         case 'variable':
         case 'boolean':
+        case 'number':
             return [ast]
     }
 

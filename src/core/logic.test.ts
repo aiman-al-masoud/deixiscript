@@ -7,6 +7,7 @@ import { DerivationClause, Formula, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
+import { solve } from "./solve.ts";
 
 const standardKb = getStandardKb()
 
@@ -696,7 +697,7 @@ Deno.test({
 Deno.test({
     name: 'test38',
     fn: () => {
-
+        // mutex concepts test
         const kb0 = tell($('mammal#1').isa('cat').$, kb).kb
         const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
 
@@ -707,5 +708,16 @@ Deno.test({
         assert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2))
         assert(ask($('mammal#1').isa('cat').$, kb2))
 
+    }
+})
+
+Deno.test({
+    name: 'test39',
+    fn: () => {
+        // linear equations solver
+        assertEquals(solve($('x:number').times(2).plus(1).equals(2).$), $(1 / 2).$)
+        assertEquals(solve($('x:number').over(2).equals(100).$), $(200).$)
+        assertEquals(solve($('x:number').over(2).plus(1).equals(3).$), $(4).$)
+        assertEquals(solve($('x:number').minus(2).equals(3).$), $(5).$)
     }
 })

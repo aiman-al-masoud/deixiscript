@@ -10,10 +10,11 @@ export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
+export function $(x: LLangAst): ExpBuilder<Constant>
 
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput): ExpBuilder<LLangAst> {
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst> {
 
-    if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array) {
+    if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array || isLLangAst(x)) {
         return new ExpBuilder(makeAst(x))
     }
 
@@ -30,7 +31,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    equals(term: WmAtom | WmAtom[]): ExpBuilder<Equality> {
+    equals(term: WmAtom | WmAtom[] | LLangAst): ExpBuilder<Equality> {
 
         return new ExpBuilder({
             type: 'equality',
@@ -212,7 +213,7 @@ export class ExpBuilder<T extends LLangAst> {
     protected mathOperation(ast: MathExpression | Atom | WmAtom, op: MathExpression['operator']) {
         return new ExpBuilder({
             type: 'math-expression',
-            left: this.exp as MathExpression,
+            left: this.exp as Atom/*  as MathExpression */,
             right: typeof ast !== 'object' ? makeAst(ast) : ast,
             operator: op,
         })
