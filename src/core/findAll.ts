@@ -5,6 +5,8 @@ import { uniq } from "../utils/uniq.ts";
 import { cartesian } from "../utils/cartesian.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from './exp-builder.ts'
+import { findEquations } from "./applyRec.ts";
+import { solve } from "./solve.ts";
 
 export function findAll(
     formula: LLangAst,
@@ -13,7 +15,15 @@ export function findAll(
     preComputeKb = true,
 ): DeepMap<Variable, Constant>[] {
 
-    const constants = uniq(kb.wm.flatMap(x => x)).map(c => $(c).$)
+    const numberConstants = findEquations(formula).flatMap(x => {
+        try {
+            return solve(x)
+        } catch {
+            return []
+        }
+    })
+
+    const constants = uniq(kb.wm.flatMap(x => x)).map(c => $(c).$).concat(numberConstants)
 
     const varToCands = variables.map(v => {
         const candidates =

@@ -721,3 +721,14 @@ Deno.test({
         assertEquals(solve($('x:number').minus(2).equals(3).$), $(5).$)
     }
 })
+
+
+Deno.test({
+    name: 'test40',
+    fn: () => {
+        // linear equations solver
+        const result = ask($('x:number').suchThat($('x:number').over(2).equals(50)).$, kb).result
+        assertEquals(result, $(100).$)
+    }
+})
+
