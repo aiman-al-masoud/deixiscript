@@ -8,6 +8,8 @@ import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
+import { substAll } from "./subst.ts";
+import { deepMapOf } from "../utils/DeepMap.ts";
 
 const standardKb = getStandardKb()
 
@@ -732,3 +734,38 @@ Deno.test({
     }
 })
 
+
+Deno.test({
+    name: 'test41',
+    fn: () => {
+        const r1 = ask($('person#1').and('person#3').isa('person').$, kb)
+        // console.log(r1.result)
+        assert(r1.result.value)
+        const r2 = ask($('person#1').and('door#1').isa('person').$, kb)
+        // console.log(r2.result)
+        assert(!r2.result.value)
+        const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
+        console.log(r3)
+        const r4 = ask($('person#1').isa($('person').and('agent').$).$, kb).result
+        // console.log(r4)
+        assert(r4.value)
+        const r5 = ask($('door#1').isa($('thing').and('agent').$).$, kb).result
+        // console.log(r5)
+        assert(!r5.value)
+        const r6 = ask($('person#1').and('person#2').and('person#3').isa('agent').$, kb).result
+        // console.log(r6)
+        assert(r6.value)
+        const r7 = ask($('person#1').or('door#1').isa('agent').$, kb).result
+        assert(r7.value)
+        // console.log(r7)
+        const r8 = ask($('boston').or('door#1').isa('agent').$, kb).result
+        assert(!r8.value)
+        const r9 = ask($('door#1').isa($('door').or('agent')).$, kb).result
+        assert(r9.value)
+
+
+        const ast = $({ x: 'x:thing' }).$
+        console.log(substAll(ast, deepMapOf([[$('x:thing').$, $('capra#1').and('capra#2').$]])))
+
+    }
+})

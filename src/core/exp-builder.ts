@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isWmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -41,7 +41,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isa(term: WmAtom): ExpBuilder<IsAFormula> {
+    isa(term: WmAtom | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<IsAFormula> {
 
         return new ExpBuilder({
             type: 'is-a-formula',
@@ -52,9 +52,10 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    has(term: WmAtom | ExpBuilder<Atom>): ExpBuilder<HasFormula> {
+    has(term: WmAtom | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<HasFormula> {
 
-        const atom = isWmAtom(term) ? makeAst(term) : term.$
+        // const atom = isWmAtom(term) ? makeAst(term) : term.$
+        const atom = makeAst(term)
 
         return new ExpBuilder({
             type: 'has-formula',
@@ -66,7 +67,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    as(role: WmAtom): ExpBuilder<HasFormula> {
+    as(role: WmAtom | LLangAst): ExpBuilder<HasFormula> {
 
         if (this.exp.type !== 'has-formula') {
             throw new Error(`'as' does not apply to ${this.exp.type}, only to HasFormula`)
@@ -83,7 +84,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    after(atom: string | string[]): ExpBuilder<AtomicFormula | GeneralizedFormula> {
+    after(atom: string | string[] | LLangAst): ExpBuilder<AtomicFormula | GeneralizedFormula> {
 
         if (!isFormulaWithAfter(this.exp)) {
             throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
@@ -109,22 +110,22 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    and(formula: ExpBuilder<LLangAst>): ExpBuilder<Conjunction> {
+    and(formula: ExpBuilder<LLangAst> | WmAtom): ExpBuilder<Conjunction> {
 
         return new ExpBuilder({
             type: 'conjunction',
             f1: this.exp,
-            f2: formula.$,
+            f2: makeAst(formula),
         })
 
     }
 
-    or(formula: ExpBuilder<Formula>): ExpBuilder<Disjunction> {
+    or(formula: ExpBuilder<Formula> | WmAtom): ExpBuilder<Disjunction> {
 
         return new ExpBuilder({
             type: 'disjunction',
-            f1: this.exp as Formula,
-            f2: formula.$,
+            f1: this.exp,
+            f2: makeAst(formula),
         })
 
     }
@@ -214,7 +215,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder({
             type: 'math-expression',
             left: this.exp as Atom/*  as MathExpression */,
-            right: typeof ast !== 'object' ? makeAst(ast) : ast,
+            right: /* typeof ast !== 'object' ? */ makeAst(ast) as MathExpression /* : ast */,
             operator: op,
         })
     }
@@ -285,10 +286,13 @@ function makeAst(x: boolean): Boolean
 function makeAst(x: string): Constant
 function makeAst(x: WmAtom | WmAtom[]): Atom
 function makeAst(x: LLangAst): LLangAst
-function makeAst(x: WmAtom | WmAtom[] | LLangAst): LLangAst
-function makeAst(x: WmAtom | WmAtom[] | LLangAst): LLangAst {
+function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangAst
 
-    if (isLLangAst(x)) {
+function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangAst {
+
+    if (x instanceof ExpBuilder) {
+        return x.$
+    } else if (isLLangAst(x)) {
         return x
     } else if (typeof x === 'number') {
         return { type: 'number', value: x }

@@ -122,7 +122,7 @@ export type HappenSentence = {
     event: Constant,
 }
 
-export type VarMap = DeepMap<Variable, Atom>
+export type VarMap = DeepMap<Variable, LLangAst>
 
 export type Equality = {
     type: 'equality',
@@ -153,13 +153,13 @@ export type Conjunction = {
 
 export type Disjunction = {
     type: 'disjunction',
-    f1: Formula,
-    f2: Formula,
+    f1: LLangAst,
+    f2: LLangAst,
 }
 
 export type Negation = {
     type: 'negation',
-    f1: Formula,
+    f1: LLangAst,
 }
 
 export type ExistentialQuantification = {
@@ -177,7 +177,7 @@ export type DerivationClause = {
 export type IfElse = {
     type: 'if-else',
     condition: LLangAst,
-    then: Formula,
+    then: LLangAst,
     otherwise: LLangAst,
 }
 
@@ -261,7 +261,6 @@ export function isWmAtom(x: unknown): x is WmAtom {
 export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence | HasSentence) {
     return s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]
 }
-
 
 export function isLLangAst(x: unknown): x is LLangAst {
     return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type

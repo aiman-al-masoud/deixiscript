@@ -74,11 +74,11 @@ make it happen
 
 - tell() and ask() do NOT have ANY side effects (like all other functions). tell() and ask() both return a brand new knowledge base object, because even ask() may produce updated versions of the deictic dictionary and add computed numbers to the world model.
 
-- at the basic level there is nothing but: entities, is-a-relations and
-  has-relations. This is the "interface" through which Deixiscript communicates
-  with the outside world, including JS.
+- at the most basic level there is nothing but: entities, is-a-relations and
+  has-as-relations. This is the "interface" through which Deixiscript communicates
+  with the outer world, including JS, which only uderstands has-as properties (not is-a ones because JS doesn't have multiple inheritance).
 
 - assignments are completely replaced by anaphora, also theme-rheme phrase
   style, also intermediate numerical computations.
 
-- anaphora work "as if" each entity got the current timestamp whenever it is mentioned. When function ask() is called from findAll() the deictic dict is NOT updated.
+- anaphora work as if each entity got the current timestamp whenever it is mentioned. When function ask() is called from findAll() the deictic dict is NOT updated.

@@ -37,6 +37,11 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             additions = [[t1.value, t2.value, as.value]]
             break
         case 'is-a-formula':
+
+            if (ast.t1.type === 'conjunction') {
+                return tell($(ast.t1.f1).isa(ast.t2).and($(ast.t1.f2).isa(ast.t2)).$, kb)
+            }
+
             const t11 = ask(ast.t1, kb).result
             const t21 = ask(ast.t2, kb).result
 

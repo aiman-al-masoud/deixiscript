@@ -52,6 +52,23 @@ export function ask(
 
             break
         case 'is-a-formula':
+
+            if (formula.t1.type === 'conjunction') {
+                return ask($(formula.t1.f1).isa(formula.t2).and($(formula.t1.f2).isa(formula.t2)).$, kb)
+            }
+
+            if (formula.t2.type === 'conjunction') {
+                return ask($(formula.t1).isa(formula.t2.f1).and($(formula.t1).isa(formula.t2.f2)).$, kb)
+            }
+
+            if (formula.t1.type === 'disjunction') {
+                return ask($(formula.t1.f1).isa(formula.t2).or($(formula.t1.f2).isa(formula.t2)).$, kb)
+            }
+
+            if (formula.t2.type === 'disjunction') {
+                return ask($(formula.t1).isa(formula.t2.f1).or($(formula.t1).isa(formula.t2.f2)).$, kb)
+            }
+
             const t1 = ask(formula.t1, kb, opts).result
             const t2 = ask(formula.t2, kb, opts).result
 
@@ -63,6 +80,7 @@ export function ask(
             ) return { result: $(true).$, kb }
             break
         case 'has-formula':
+
             const t11 = ask(formula.t1, kb, opts).result
             const t22 = ask(formula.t2, kb, opts).result
             const as = ask(formula.as, kb, opts).result
