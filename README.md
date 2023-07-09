@@ -3,7 +3,7 @@
 # Core Features
 
 - integrating anaphora
-  - refactor decompress()
+  - refactor and complete decompress()
 - tell()
   - less than and greater than as commands
 - general
