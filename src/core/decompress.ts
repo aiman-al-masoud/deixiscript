@@ -1,6 +1,6 @@
-import { $, ExpBuilder } from "./exp-builder.ts";
+import { $ } from "./exp-builder.ts";
 import { getAnaphora } from "./getAnaphora.ts";
-import { Constant, Entity, KnowledgeBase, LLangAst } from "./types.ts";
+import { KnowledgeBase, LLangAst } from "./types.ts";
 
 export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
 
