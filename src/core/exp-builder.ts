@@ -8,9 +8,9 @@ export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
 export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
+export function $(x: LLangAst): ExpBuilder<LLangAst>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
-export function $(x: LLangAst): ExpBuilder<Constant>
 
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst> {
 
@@ -54,7 +54,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     has(term: WmAtom | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<HasFormula> {
 
-        // const atom = isWmAtom(term) ? makeAst(term) : term.$
         const atom = makeAst(term)
 
         return new ExpBuilder({
@@ -96,7 +95,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    when(formula: ExpBuilder<LLangAst>): ExpBuilder<DerivationClause> {
+    when(formula: ExpBuilder<LLangAst> | LLangAst): ExpBuilder<DerivationClause> {
 
         if (!isFormulaWithAfter(this.exp)) {
             throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
@@ -104,13 +103,13 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder({
             type: 'derived-prop',
-            when: formula.$,
+            when: makeAst(formula),
             conseq: this.exp,
         })
 
     }
 
-    and(formula: ExpBuilder<LLangAst> | WmAtom): ExpBuilder<Conjunction> {
+    and(formula: ExpBuilder<LLangAst> | WmAtom | LLangAst): ExpBuilder<Conjunction> {
 
         return new ExpBuilder({
             type: 'conjunction',
@@ -120,7 +119,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    or(formula: ExpBuilder<Formula> | WmAtom): ExpBuilder<Disjunction> {
+    or(formula: ExpBuilder<Formula> | WmAtom | LLangAst): ExpBuilder<Disjunction> {
 
         return new ExpBuilder({
             type: 'disjunction',
@@ -130,18 +129,18 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    if(formula: ExpBuilder<LLangAst>): ExpBuilder<IfElse> {
+    if(formula: ExpBuilder<LLangAst> | LLangAst): ExpBuilder<IfElse> {
 
         return new ExpBuilder({
             type: 'if-else',
-            condition: formula.$,
-            then: this.exp as Formula,
+            condition: makeAst(formula),
+            then: this.exp,
             otherwise: $(false).$,
         })
 
     }
 
-    else(formula: ExpBuilder<Formula>): ExpBuilder<IfElse> {
+    else(formula: ExpBuilder<Formula> | LLangAst): ExpBuilder<IfElse> {
 
         if (this.exp.type !== 'if-else') {
             throw new Error(`'else' does not apply to ${this.exp.type}`)
@@ -149,7 +148,7 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder({
             ...this.exp as IfElse,
-            otherwise: formula.$,
+            otherwise: makeAst(formula),
         })
 
     }
@@ -168,7 +167,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    where(formula: ExpBuilder<Formula>): ExpBuilder<ExistentialQuantification> {
+    where(formula: ExpBuilder<Formula> | LLangAst): ExpBuilder<ExistentialQuantification> {
 
         if (this.exp.type !== 'existquant') {
             throw new Error(``)
@@ -176,7 +175,7 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder({
             ...this.exp as ExistentialQuantification,
-            where: formula.$ as Formula
+            where: makeAst(formula),
         })
 
     }
@@ -185,7 +184,7 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder({
             type: 'negation',
-            f1: this.exp as Formula
+            f1: this.exp,
         })
     }
 
@@ -197,7 +196,7 @@ export class ExpBuilder<T extends LLangAst> {
         return tell(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
-    suchThat(formula?: ExpBuilder<LLangAst>): ExpBuilder<Anaphor> {
+    suchThat(formula?: ExpBuilder<LLangAst>, number: Anaphor['number'] = 1 as const): ExpBuilder<Anaphor> {
 
         if (this.exp.type !== 'variable') {
             throw new Error('head of anaphor must be variable!')
@@ -207,6 +206,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'anaphor',
             head: this.exp,
             description: formula ? formula.$ : $(true).$,
+            number: number,
         })
 
     }
@@ -214,8 +214,8 @@ export class ExpBuilder<T extends LLangAst> {
     protected mathOperation(ast: MathExpression | Atom | WmAtom, op: MathExpression['operator']) {
         return new ExpBuilder({
             type: 'math-expression',
-            left: this.exp as Atom/*  as MathExpression */,
-            right: /* typeof ast !== 'object' ? */ makeAst(ast) as MathExpression /* : ast */,
+            left: this.exp as Atom,
+            right: makeAst(ast) as MathExpression,
             operator: op,
         })
     }

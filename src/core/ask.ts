@@ -3,12 +3,12 @@ import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { addWorldModels, getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
-import { getAnaphor, } from "./getAnaphor.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
+import { decompress } from "./decompress.ts";
 
 export function ask(
-    formula: LLangAst,
+    ast: LLangAst,
     kb: KnowledgeBase,
     opts = { preComputeKb: true, storeDeixis: true },
 ): {
@@ -17,17 +17,19 @@ export function ask(
 } {
 
     if (opts.preComputeKb
-        && isFormulaWithAfter(formula)
-        && formula.after.type === 'list-literal'
-        && formula.after.value.length
-        && formula.after.value.every(isConst)) {
+        && isFormulaWithAfter(ast)
+        && ast.after.type === 'list-literal'
+        && ast.after.value.length
+        && ast.after.value.every(isConst)) {
 
-        const events = formula.after.value.map(x => x.value)
+        const events = ast.after.value.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
         const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
-        const formula2: Formula = { ...formula, after: $([]).$ }
+        const formula2: Formula = { ...ast, after: $([]).$ }
         return ask(formula2, kb2, { ...opts, preComputeKb: false })
     }
+
+    const formula = decompress(ast, kb)
 
     switch (formula.type) {
 
@@ -43,32 +45,14 @@ export function ask(
         case 'list-literal':
         case 'list-pattern':
             return { result: formula, kb }
-        case 'anaphor':
-            return ask(getAnaphor(formula, kb)!, kb, opts)
+        // case 'anaphor':
+        //     return ask(getAnaphor(formula, kb)!, kb, opts)
         case 'equality':
             const t10 = ask(formula.t1, kb, opts).result
             const t20 = ask(formula.t2, kb, opts).result
             if (atomsEqual(t10, t20)) return { result: $(true).$, kb }
-
             break
         case 'is-a-formula':
-
-            if (formula.t1.type === 'conjunction') {
-                return ask($(formula.t1.f1).isa(formula.t2).and($(formula.t1.f2).isa(formula.t2)).$, kb)
-            }
-
-            if (formula.t2.type === 'conjunction') {
-                return ask($(formula.t1).isa(formula.t2.f1).and($(formula.t1).isa(formula.t2.f2)).$, kb)
-            }
-
-            if (formula.t1.type === 'disjunction') {
-                return ask($(formula.t1.f1).isa(formula.t2).or($(formula.t1.f2).isa(formula.t2)).$, kb)
-            }
-
-            if (formula.t2.type === 'disjunction') {
-                return ask($(formula.t1).isa(formula.t2.f1).or($(formula.t1).isa(formula.t2.f2)).$, kb)
-            }
-
             const t1 = ask(formula.t1, kb, opts).result
             const t2 = ask(formula.t2, kb, opts).result
 
@@ -142,4 +126,3 @@ export function ask(
     return { result: $(result).$, kb }
 
 }
-

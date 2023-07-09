@@ -3,9 +3,7 @@
 # Core Features
 
 - integrating anaphora
-  - what if findAll() finds many?
-  - every/and/or, use list-literal?
-  - possible sol: getAnaphor() and ask() return Atom[], Anaphor.number
+  - refactor decompress()
 - tell()
   - less than and greater than as commands
 - general

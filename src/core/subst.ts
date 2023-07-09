@@ -1,4 +1,4 @@
-import { LLangAst, Atom, atomsEqual, Variable, VarMap } from "./types.ts";
+import { LLangAst, atomsEqual, Variable, VarMap } from "./types.ts";
 
 
 export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
@@ -112,6 +112,7 @@ export function subst(
                 type: 'anaphor',
                 head: subst(ast.head, variable, replacement),
                 description: subst(ast.description, variable, replacement),
+                number: ast.number,
             }
         case 'math-expression':
             return {

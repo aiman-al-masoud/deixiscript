@@ -10,6 +10,7 @@ import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { substAll } from "./subst.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { decompress } from "./decompress.ts";
 
 const standardKb = getStandardKb()
 
@@ -767,5 +768,19 @@ Deno.test({
         const ast = $({ x: 'x:thing' }).$
         console.log(substAll(ast, deepMapOf([[$('x:thing').$, $('capra#1').and('capra#2').$]])))
 
+    }
+})
+
+Deno.test({
+    name: 'test42',
+    fn: () => {
+        const x = $('x:person').suchThat($(true), '*').isa('agent').$
+        // const y = decompress(x, kb)
+        // console.log(y)
+        const z = ask(x, kb).result.value
+        assert(z)
+        const q2 = $('x:door').suchThat($(true), '*').isa('agent').$
+        const r2 = ask(q2, kb).result.value
+        assert(!r2)
     }
 })

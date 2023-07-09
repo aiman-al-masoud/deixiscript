@@ -96,10 +96,11 @@ export type ListPattern = {
     /** tail */ value: Atom,
 }
 
-export type Anaphor = {
+export type Anaphor = { // implicit reference
     type: 'anaphor',
     head: Variable,
     description: LLangAst,
+    number: 1 | '*',
 }
 
 export type MathExpression = {

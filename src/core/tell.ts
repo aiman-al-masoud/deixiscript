@@ -7,17 +7,20 @@ import { substAll } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence, isVar } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
+import { decompress } from "./decompress.ts";
 
 /**
  * Assume the AST is true, and compute resulting knowledge base.
  * Also provides WorldModel additions and elmininations (the "diff") 
  * to avoid having to recompute them.
  */
-export function tell(ast: LLangAst, kb: KnowledgeBase): {
+export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     kb: KnowledgeBase,
     additions: WorldModel,
     eliminations: WorldModel,
 } {
+
+    const ast = decompress(ast1, kb)
 
     let additions: WorldModel = []
     let eliminations: WorldModel = []
@@ -37,10 +40,6 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             additions = [[t1.value, t2.value, as.value]]
             break
         case 'is-a-formula':
-
-            if (ast.t1.type === 'conjunction') {
-                return tell($(ast.t1.f1).isa(ast.t2).and($(ast.t1.f2).isa(ast.t2)).$, kb)
-            }
 
             const t11 = ask(ast.t1, kb).result
             const t21 = ask(ast.t2, kb).result
@@ -93,9 +92,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
     eliminations = [
         ...eliminations,
-        ...additions/* .filter(isHasSentence) */.flatMap(s => getExcludedBy(s, kb)),
+        ...additions.flatMap(s => getExcludedBy(s, kb)),
     ]
-
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
 
