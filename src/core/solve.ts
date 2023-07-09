@@ -1,6 +1,6 @@
 import { $ } from "./exp-builder.ts";
 import { getAtoms } from "./getAtoms.ts";
-import { Equality, Number, isVar } from "./types.ts";
+import { Equality, LLangAst, Number, isVar } from "./types.ts";
 
 /**
  * Interprets an Equality as a linear equation and solves it.
@@ -58,3 +58,40 @@ export function solve(ast: Equality): Number {
 }
 
 
+export function findEquations(ast: LLangAst): Equality[] {
+    switch (ast.type) {
+        case "string":
+        case "number":
+        case "boolean":
+        case "entity":
+        case "variable":
+        case "list-pattern":
+        case "list-literal":
+        case "is-a-formula":
+        case "has-formula":
+        case "happen-sentence":
+            return []
+        case "equality":
+            if (ast.t1.type === 'math-expression' || ast.t2.type === 'math-expression') return [ast]
+            return []
+        case "conjunction":
+        case "disjunction":
+            return [...findEquations(ast.f1), ...findEquations(ast.f2)]
+        case "negation":
+            return findEquations(ast.f1)
+        case "existquant":
+            return findEquations(ast.where)
+        case "derived-prop":
+            return [...findEquations(ast.conseq), ...findEquations(ast.when)]
+        case "if-else":
+            return [...findEquations(ast.condition), ...findEquations(ast.otherwise), ...findEquations(ast.then)]
+        case "math-expression":
+            return []
+        case "anaphor":
+            return findEquations(ast.description)
+        case "generalized":
+    }
+
+    // throw new Error('not implemented!')
+    return []
+}

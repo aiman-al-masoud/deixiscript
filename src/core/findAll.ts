@@ -5,8 +5,7 @@ import { uniq } from "../utils/uniq.ts";
 import { cartesian } from "../utils/cartesian.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from './exp-builder.ts'
-import { findEquations } from "./findEquations.ts";
-import { solve } from "./solve.ts";
+import { findEquations, solve } from "./solve.ts";
 
 export function findAll(
     formula: LLangAst,
