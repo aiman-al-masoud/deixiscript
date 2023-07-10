@@ -784,3 +784,20 @@ Deno.test({
         assert(!r2)
     }
 })
+
+
+Deno.test({
+    name: 'test43',
+    fn: () => {
+        // has-formula query without specifying as-clause
+
+        const x = $('capra#1').has('fur#1').as('fur')
+            .and($('capra#1').has('hoof#1').as('hoof'))
+            .and($('capra#2').has('fur#2').as('fur'))
+            .dump().kb
+
+        assert(ask($('capra#1').has('fur#1').$, x).result.value)
+        assert(!ask($('capra#1').has('fur#2').$, x).result.value)
+        assert(ask($('capra#2').has('fur#2').$, x).result.value)
+    }
+})

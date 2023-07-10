@@ -14,6 +14,7 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         case "variable":
         case "list-pattern":
         case "list-literal":
+        case 'anything':
             return ast
         case 'is-a-formula':
 

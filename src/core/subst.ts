@@ -125,6 +125,7 @@ export function subst(
             throw new Error('not implemented!')
         case 'command':
         case 'question':
+        case 'anything':
             throw new Error('not implemented!')
     }
 

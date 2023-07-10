@@ -32,6 +32,7 @@ export type Constant =
     | Boolean
     | Number
     | StringLiteral
+    | Anything
 export type SimpleFormula =
     | AtomicFormula
     | Equality
@@ -62,6 +63,11 @@ export type Question = {
 export type Entity = {
     type: 'entity',
     value: string
+}
+
+export type Anything = {
+    type : 'anything',
+    value : '*',
 }
 
 export type Boolean = {

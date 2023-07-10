@@ -1,10 +1,11 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
 export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
+export function $(x: 'anything'): ExpBuilder<Anything>
 export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
@@ -54,13 +55,11 @@ export class ExpBuilder<T extends LLangAst> {
 
     has(term: WmAtom | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<HasFormula> {
 
-        const atom = makeAst(term)
-
         return new ExpBuilder({
             type: 'has-formula',
             t1: this.exp,
-            t2: atom,
-            as: atom,
+            t2: makeAst(term),
+            as: $('anything').$,
             after: $([]).$
         })
 
@@ -70,7 +69,6 @@ export class ExpBuilder<T extends LLangAst> {
 
         if (this.exp.type !== 'has-formula') {
             throw new Error(`'as' does not apply to ${this.exp.type}, only to HasFormula`)
-
         }
 
         return new ExpBuilder({
@@ -283,6 +281,7 @@ function makeAst(x: StringLiteralPattern): StringLiteral
 function makeAst(x: WmAtom[]): ListLiteral
 function makeAst(x: number): Number
 function makeAst(x: boolean): Boolean
+function makeAst(x: 'anything'): Anything
 function makeAst(x: string): Constant
 function makeAst(x: WmAtom | WmAtom[]): Atom
 function makeAst(x: LLangAst): LLangAst
@@ -323,6 +322,8 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
     } else if (isVar(x)) {
         const [value, varType] = x.split(':')
         return { type: 'variable', value, varType }
+    } else if (x === 'anything') {
+        return { type: 'anything', value: '*' }
     } else {
         return { type: 'entity', value: x }
     }

@@ -34,6 +34,7 @@ export function ask(
     switch (formula.type) {
 
         case 'boolean':
+        case 'anything':
             return { result: formula, kb }
         case 'number':
         case 'entity':
@@ -72,7 +73,7 @@ export function ask(
             if (kb.wm.filter(isHasSentence).find(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
-                    && as.value === hs[2]
+                    && (as.value === hs[2] || as.type === 'anything')
             })) return { result: $(true).$, kb }
             break
         case 'negation':
