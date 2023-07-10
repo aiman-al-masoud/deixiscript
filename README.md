@@ -6,6 +6,7 @@
   - refactor and complete decompress()
   - existquant with anaphor, make sure u don't need to expl use vars anywhere
   - nested anaphor clauses
+  - anaphors-or-variables problem in derived property definitions
 - tell()
   - less than and greater than as commands
 - general
