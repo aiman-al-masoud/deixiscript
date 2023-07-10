@@ -4,12 +4,14 @@
 
 - integrating anaphora
   - refactor and complete decompress()
+  - existquant with anaphor, make sure u don't need to expl use vars anywhere
 - tell()
   - less than and greater than as commands
 - general
   - copula should default to equality
 - parser
   - special case for copula verb (not require "does")
+  - "cat number 2" ---> explicit reference to constant "cat#2"
 
 # JS INTEROP
 
