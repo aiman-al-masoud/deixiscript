@@ -5,6 +5,7 @@
 - integrating anaphora
   - refactor and complete decompress()
   - existquant with anaphor, make sure u don't need to expl use vars anywhere
+  - nested anaphor clauses
 - tell()
   - less than and greater than as commands
 - general
