@@ -54,6 +54,11 @@ function expand(anaphor: Anaphor): {
         return { description, head }
     }
 
+    if (anaphor.which) {
+        const description = { ...anaphor.which, t1: head }
+        return { description, head }
+    }
+
     return { description: $(true).$, head }
 }
 
@@ -62,6 +67,10 @@ function expand(anaphor: Anaphor): {
 // console.log($.the('house').whose($('window').has($.a('handle').whose($('color').equals('red')))))
 // const x = $.the('house').whose($('window').has('open').as('state')).$
 // console.log(x)
+// const xex = expand(x)
+// console.log(xex)
+
+// const x = $.the('cat').which($._.has('red').as('color')).$
 // const xex = expand(x)
 // console.log(xex)
 

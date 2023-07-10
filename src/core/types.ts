@@ -66,8 +66,8 @@ export type Entity = {
 }
 
 export type Anything = {
-    type : 'anything',
-    value : '*',
+    type: 'anything',
+    value: '*',
 }
 
 export type Boolean = {
@@ -110,11 +110,11 @@ export type ListPattern = {
 // }
 
 export type Anaphor = {
-    type : 'anaphor',
-    headType : string,
-    which? : HasFormula | IsAFormula|Equality,
-    whose? : HasFormula | IsAFormula|Equality,
-    number : 1 | '*',
+    type: 'anaphor',
+    headType: string,
+    which?: HasFormula | IsAFormula | Equality,
+    whose?: HasFormula | IsAFormula | Equality,
+    number: 1 | '*',
 }
 
 export type MathExpression = {

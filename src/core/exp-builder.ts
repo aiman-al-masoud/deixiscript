@@ -26,15 +26,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
     return new ExpBuilder({ type: 'generalized', keys: keys, after: $([]).$ })
 }
 
-$.the = (x: string): ExpBuilder<Anaphor> => {
-    return new ExpBuilder({
-        type: 'anaphor',
-        headType: x,
-        number: 1,
-    })
-}
 
-$.a = $.the
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -233,6 +225,20 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
+    which(ast: ExpBuilder<HasFormula | IsAFormula>): ExpBuilder<Anaphor> {
+
+        if (this.exp.type !== 'anaphor') {
+            throw new Error('')
+        }
+
+        return new ExpBuilder<Anaphor>({
+            ...this.exp,
+            // which: $(true).$,
+            which: ast.$,
+        })
+
+    }
+
     protected mathOperation(ast: MathExpression | Atom | WmAtom, op: MathExpression['operator']) {
         return new ExpBuilder({
             type: 'math-expression',
@@ -353,3 +359,18 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
     }
 
 }
+
+
+
+$._ = $('') // don't-care subject
+// Object.defineProperty($, '$', { get: () => $('') })
+
+$.the = (x: string): ExpBuilder<Anaphor> => {
+    return new ExpBuilder({
+        type: 'anaphor',
+        headType: x,
+        number: 1,
+    })
+}
+
+$.a = $.the

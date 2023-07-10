@@ -862,3 +862,19 @@ Deno.test({
 
     }
 })
+
+Deno.test({
+    name: 'test45',
+    fn: () => {
+        const kb0 = $('cat#1').isa('cat')
+            .and($('cat#2').isa('cat'))
+            .and($('cat#1').has('red').as('color'))
+            .and($('cat#2').has('black').as('color'))
+            .dump().kb
+
+        const q = $.the('cat').which($._.has('red').as('color')).$
+        const result = ask(q, kb0).result
+        console.log(result)
+
+    }
+})
