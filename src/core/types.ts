@@ -102,11 +102,19 @@ export type ListPattern = {
     /** tail */ value: Atom,
 }
 
-export type Anaphor = { // implicit reference
-    type: 'anaphor',
-    head: Variable,
-    description: LLangAst,
-    number: 1 | '*',
+// export type Anaphor = { // implicit reference
+//     type: 'anaphor',
+//     head: Variable,
+//     description: LLangAst,
+//     number: 1 | '*',
+// }
+
+export type Anaphor = {
+    type : 'anaphor',
+    headType : string,
+    which? : HasFormula | IsAFormula|Equality,
+    whose? : HasFormula | IsAFormula|Equality,
+    number : 1 | '*',
 }
 
 export type MathExpression = {

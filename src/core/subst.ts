@@ -108,12 +108,13 @@ export function subst(
                 after: subst(ast.after, variable, replacement),
             }
         case 'anaphor':
-            return {
-                type: 'anaphor',
-                head: subst(ast.head, variable, replacement),
-                description: subst(ast.description, variable, replacement),
-                number: ast.number,
-            }
+            // return {
+            //     type: 'anaphor',
+            //     head: subst(ast.head, variable, replacement),
+            //     description: subst(ast.description, variable, replacement),
+            //     number: ast.number,
+            // }
+            throw new Error('anaphor subst not implemented!')
         case 'math-expression':
             return {
                 type: 'math-expression',
@@ -125,8 +126,10 @@ export function subst(
             throw new Error('not implemented!')
         case 'command':
         case 'question':
-        case 'anything':
             throw new Error('not implemented!')
+        case 'anything':
+            // throw new Error('not implemented!')
+            return ast
     }
 
 }

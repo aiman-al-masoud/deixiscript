@@ -88,7 +88,8 @@ export function findEquations(ast: LLangAst): Equality[] {
         case "math-expression":
             return []
         case "anaphor":
-            return findEquations(ast.description)
+            throw new Error('anaphor solve not implemented!')
+            // return findEquations(ast)
         case "generalized":
     }
 

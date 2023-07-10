@@ -487,29 +487,29 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test22',
-    fn: () => {
-        const y = $('x:thing').suchThat($('x:thing').isa('person')).isa('agent').$
-        assert(ask(y, kb).result.value)
-    }
-})
+// Deno.test({
+//     name: 'test22',
+//     fn: () => {
+//         const y = $('x:thing').suchThat($('x:thing').isa('person')).isa('agent').$
+//         assert(ask(y, kb).result.value)
+//     }
+// })
 
 
-Deno.test({
-    name: 'test23',
-    fn: () => {
-        const kb2 = $('cat#1').has(3).as('weight')
-            .and($('dog#1').has(4).as('weight'))
-            .and($('cat#1').isa('cat'))
-            .and($('dog#1').isa('dog'))
-            .dump().kb.wm
+// Deno.test({
+//     name: 'test23',
+//     fn: () => {
+//         const kb2 = $('cat#1').has(3).as('weight')
+//             .and($('dog#1').has(4).as('weight'))
+//             .and($('cat#1').isa('cat'))
+//             .and($('dog#1').isa('dog'))
+//             .dump().kb.wm
 
-        // ((the number such that (the cat has the number as weight)) is (3))
-        const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
-        assert(ask(y, { wm: kb2, derivClauses: [], deicticDict: {}, }).result.value)
-    }
-})
+//         // ((the number such that (the cat has the number as weight)) is (3))
+//         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
+//         assert(ask(y, { wm: kb2, derivClauses: [], deicticDict: {}, }).result.value)
+//     }
+// })
 
 
 Deno.test({
@@ -568,25 +568,25 @@ Deno.test({
 })
 
 
-Deno.test({
-    name: 'test28',
-    fn: () => {
-        const kb =
-            $('cat#2').isa('cat')
-                .and($('cat#3').isa('cat'))
-                .and($('cat#1').isa('cat'))
-                .and($('cat#1').has('big').as('size'))
-                .and($('cat#4').isa('cat'))
-                .dump().kb
+// Deno.test({
+//     name: 'test28',
+//     fn: () => {
+//         const kb =
+//             $('cat#2').isa('cat')
+//                 .and($('cat#3').isa('cat'))
+//                 .and($('cat#1').isa('cat'))
+//                 .and($('cat#1').has('big').as('size'))
+//                 .and($('cat#4').isa('cat'))
+//                 .dump().kb
 
-        const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
+//         const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
 
-        const kb2 = tell(command.$, kb).kb
+//         const kb2 = tell(command.$, kb).kb
 
-        assert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result.value)
+//         assert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result.value)
 
-    }
-})
+//     }
+// })
 
 Deno.test({
     name: 'test29',
@@ -655,20 +655,39 @@ Deno.test({
     }
 })
 
+// Deno.test({
+//     name: 'test35',
+//     fn: () => {
+//         // better anaphora test
+//         const kb0: KnowledgeBase = { ...kb, deicticDict: {} }
+//         const { result: result0, kb: kb1 } = ask($('x:agent').suchThat().$, kb0)
+//         assertEquals(Object.values(kb1.deicticDict).length, 1)
+//         const { result: result1, kb: kb2 } = ask($('x:agent').suchThat().$, kb1)
+//         assertEquals(result1, result0)
+//         const { result: result2, kb: kb3 } = ask($('x:thing').suchThat().$, kb2)
+//         assertEquals(result2, result1)
+//         const { result: result3, kb: kb4 } = ask($('x:door').suchThat().$, kb3)
+//         assertEquals(Object.values(kb4.deicticDict).length, 2)
+//         const { result: result4, kb: _ } = ask($('x:thing').suchThat().$, kb4)
+//         assertEquals(result3, result4)
+//     }
+// })
+
+
 Deno.test({
     name: 'test35',
     fn: () => {
         // better anaphora test
         const kb0: KnowledgeBase = { ...kb, deicticDict: {} }
-        const { result: result0, kb: kb1 } = ask($('x:agent').suchThat().$, kb0)
+        const { result: result0, kb: kb1 } = ask($.the('agent').$, kb0)
         assertEquals(Object.values(kb1.deicticDict).length, 1)
-        const { result: result1, kb: kb2 } = ask($('x:agent').suchThat().$, kb1)
+        const { result: result1, kb: kb2 } = ask($.the('agent').$, kb1)
         assertEquals(result1, result0)
-        const { result: result2, kb: kb3 } = ask($('x:thing').suchThat().$, kb2)
+        const { result: result2, kb: kb3 } = ask($.the('thing').$, kb2)
         assertEquals(result2, result1)
-        const { result: result3, kb: kb4 } = ask($('x:door').suchThat().$, kb3)
+        const { result: result3, kb: kb4 } = ask($.the('door').$, kb3)
         assertEquals(Object.values(kb4.deicticDict).length, 2)
-        const { result: result4, kb: _ } = ask($('x:thing').suchThat().$, kb4)
+        const { result: result4, kb: _ } = ask($.the('thing').$, kb4)
         assertEquals(result3, result4)
     }
 })
@@ -688,12 +707,22 @@ Deno.test({
     }
 })
 
+// Deno.test({
+//     name: 'test37',
+//     fn: () => {
+//         // anaphora with freshly calculated numbers
+//         const results = evaluate($(1).plus(1).$, kb)
+//         assertEquals(evaluate($('x:number').suchThat().ask.$, results.kb).result, $(2).$)
+//     }
+// })
+
+
 Deno.test({
     name: 'test37',
     fn: () => {
         // anaphora with freshly calculated numbers
         const results = evaluate($(1).plus(1).$, kb)
-        assertEquals(evaluate($('x:number').suchThat().ask.$, results.kb).result, $(2).$)
+        assertEquals(evaluate($.the('number').ask.$, results.kb).result, $(2).$)
     }
 })
 
@@ -726,14 +755,14 @@ Deno.test({
 })
 
 
-Deno.test({
-    name: 'test40',
-    fn: () => {
-        // linear equations solver
-        const result = ask($('x:number').suchThat($('x:number').over(2).equals(50)).$, kb).result
-        assertEquals(result, $(100).$)
-    }
-})
+// Deno.test({
+//     name: 'test40',
+//     fn: () => {
+//         // linear equations solver //WHICHHHH TODO anaphor
+//         const result = ask($('x:number').suchThat($('x:number').over(2).equals(50)).$, kb).result
+//         assertEquals(result, $(100).$)
+//     }
+// })
 
 
 Deno.test({
@@ -771,19 +800,19 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test42',
-    fn: () => {
-        const x = $('x:person').suchThat($(true), '*').isa('agent').$
-        // const y = decompress(x, kb)
-        // console.log(y)
-        const z = ask(x, kb).result.value
-        assert(z)
-        const q2 = $('x:door').suchThat($(true), '*').isa('agent').$
-        const r2 = ask(q2, kb).result.value
-        assert(!r2)
-    }
-})
+// Deno.test({
+//     name: 'test42',
+//     fn: () => {
+//         const x = $('x:person').suchThat($(true), '*').isa('agent').$
+//         // const y = decompress(x, kb)
+//         // console.log(y)
+//         const z = ask(x, kb).result.value
+//         assert(z)
+//         const q2 = $('x:door').suchThat($(true), '*').isa('agent').$
+//         const r2 = ask(q2, kb).result.value
+//         assert(!r2)
+//     }
+// })
 
 
 Deno.test({
@@ -799,5 +828,37 @@ Deno.test({
         assert(ask($('capra#1').has('fur#1').$, x).result.value)
         assert(!ask($('capra#1').has('fur#2').$, x).result.value)
         assert(ask($('capra#2').has('fur#2').$, x).result.value)
+    }
+})
+
+
+Deno.test({
+    name: 'test44',
+    fn: () => {
+        const kb0 = $('house#1').isa('house')
+            .and($('house#2').isa('house'))
+            .and($('house#1').has('window#1').as('window'))
+            .and($('window#1').isa('window'))
+            .and($('window#1').has('open').as('state'))
+            .and($('house#2').has('window#2').as('window'))
+            .and($('window#2').isa('window'))
+            .and($('window#2').has('closed').as('state'))
+            .dump().kb
+
+        // console.log(kb0)
+
+        const q = $.the('house').whose($('window').has('open').as('state')).$
+        // console.log(q)
+
+        const result = ask(q, kb0).result
+
+        // console.log(result)
+        assertEquals(result, $('house#1').$)
+
+        const q2 = $.the('house').whose($('window').has('closed').as('state')).$
+        const result2 = ask(q2, kb0).result
+        // console.log(result2)
+        assertEquals(result2, $('house#2').$)
+
     }
 })

@@ -26,6 +26,17 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
     return new ExpBuilder({ type: 'generalized', keys: keys, after: $([]).$ })
 }
 
+$.the = (x: string): ExpBuilder<Anaphor> => {
+    return new ExpBuilder({
+        type: 'anaphor',
+        headType: x,
+        number: 1,
+    })
+}
+
+$.a = $.the
+
+
 export class ExpBuilder<T extends LLangAst> {
 
     constructor(readonly exp: T) {
@@ -194,17 +205,30 @@ export class ExpBuilder<T extends LLangAst> {
         return tell(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
-    suchThat(formula?: ExpBuilder<LLangAst>, number: Anaphor['number'] = 1 as const): ExpBuilder<Anaphor> {
+    // suchThat(formula?: ExpBuilder<LLangAst>, number: Anaphor['number'] = 1 as const): ExpBuilder<Anaphor> {
 
-        if (this.exp.type !== 'variable') {
-            throw new Error('head of anaphor must be variable!')
+    //     if (this.exp.type !== 'variable') {
+    //         throw new Error('head of anaphor must be variable!')
+    //     }
+
+    //     return new ExpBuilder<Anaphor>({
+    //         type: 'anaphor',
+    //         head: this.exp,
+    //         description: formula ? formula.$ : $(true).$,
+    //         number: number,
+    //     })
+
+    // }
+
+    whose(ast: ExpBuilder<HasFormula | IsAFormula | Equality>): ExpBuilder<Anaphor> {
+
+        if (this.exp.type !== 'anaphor') {
+            throw new Error('')
         }
 
         return new ExpBuilder<Anaphor>({
-            type: 'anaphor',
-            head: this.exp,
-            description: formula ? formula.$ : $(true).$,
-            number: number,
+            ...this.exp,
+            whose: ast.$,
         })
 
     }
