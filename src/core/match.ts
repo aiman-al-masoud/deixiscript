@@ -1,8 +1,8 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { LLangAst, VarMap, isAtom } from "./types.ts";
+import { LLangAst, TermMap, isAtom } from "./types.ts";
 
 
-export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
+export function match(template: LLangAst, f: LLangAst): TermMap | undefined {
 
     if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
 
@@ -77,9 +77,9 @@ export function match(template: LLangAst, f: LLangAst): VarMap | undefined {
     // console.warn('error match: template=' + template.type + ' f=' + f.type)
 }
 
-function reduceMatchList(ms: (VarMap | undefined)[]): VarMap | undefined {
+function reduceMatchList(ms: (TermMap | undefined)[]): TermMap | undefined {
     if (ms.some(x => x === undefined)) return undefined
 
-    return ms.map(x => x as VarMap)
+    return ms.map(x => x as TermMap)
         .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }

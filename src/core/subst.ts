@@ -1,18 +1,18 @@
-import { LLangAst, atomsEqual, Variable, VarMap } from "./types.ts";
+import { LLangAst, atomsEqual, TermMap, Term } from "./types.ts";
 
 
-export function substAll<T extends LLangAst>(formula: T, map: VarMap): T
+export function substAll<T extends LLangAst>(formula: T, map: TermMap): T
 
-export function substAll(formula: LLangAst, map: VarMap): LLangAst {
+export function substAll(formula: LLangAst, map: TermMap): LLangAst {
     const subs = Array.from(map.entries())
     return subs.reduce((f, s) => subst(f, s[0], s[1]), formula)
 }
 
-export function subst<T extends LLangAst>(formula: T, variable: Variable, replacement: LLangAst): T
+function subst<T extends LLangAst>(formula: T, oldTerm: Term, replacement: LLangAst): T
 
-export function subst(
+function subst(
     ast: LLangAst,
-    variable: Variable,
+    oldTerm: Term,
     replacement: LLangAst,
 ): LLangAst {
 
@@ -20,65 +20,65 @@ export function subst(
         case 'equality':
             return {
                 type: 'equality',
-                t1: subst(ast.t1, variable, replacement),
-                t2: subst(ast.t2, variable, replacement),
+                t1: subst(ast.t1, oldTerm, replacement),
+                t2: subst(ast.t2, oldTerm, replacement),
             }
         case 'conjunction':
             return {
                 type: 'conjunction',
-                f1: subst(ast.f1, variable, replacement),
-                f2: subst(ast.f2, variable, replacement),
+                f1: subst(ast.f1, oldTerm, replacement),
+                f2: subst(ast.f2, oldTerm, replacement),
             }
         case 'disjunction':
             return {
                 type: 'disjunction',
-                f1: subst(ast.f1, variable, replacement),
-                f2: subst(ast.f2, variable, replacement),
+                f1: subst(ast.f1, oldTerm, replacement),
+                f2: subst(ast.f2, oldTerm, replacement),
             }
         case 'negation':
             return {
                 type: 'negation',
-                f1: subst(ast.f1, variable, replacement),
+                f1: subst(ast.f1, oldTerm, replacement),
             }
         case 'existquant':
-            if (atomsEqual(ast.variable, variable)) {
+            if (atomsEqual(ast.variable, oldTerm)) {
                 return ast
             } else {
                 return {
                     type: 'existquant',
                     variable: ast.variable,
-                    where: subst(ast.where, variable, replacement),
+                    where: subst(ast.where, oldTerm, replacement),
                 }
             }
         case 'is-a-formula':
             return {
                 type: 'is-a-formula',
-                t1: subst(ast.t1, variable, replacement),
-                t2: subst(ast.t2, variable, replacement),
-                after: subst(ast.after, variable, replacement),
+                t1: subst(ast.t1, oldTerm, replacement),
+                t2: subst(ast.t2, oldTerm, replacement),
+                after: subst(ast.after, oldTerm, replacement),
             }
         case 'has-formula':
             return {
                 type: 'has-formula',
-                t1: subst(ast.t1, variable, replacement),
-                t2: subst(ast.t2, variable, replacement),
-                as: subst(ast.as, variable, replacement),
-                after: subst(ast.after, variable, replacement),
+                t1: subst(ast.t1, oldTerm, replacement),
+                t2: subst(ast.t2, oldTerm, replacement),
+                as: subst(ast.as, oldTerm, replacement),
+                after: subst(ast.after, oldTerm, replacement),
             }
         case 'if-else':
             return {
                 type: 'if-else',
-                condition: subst(ast.condition, variable, replacement),
-                then: subst(ast.then, variable, replacement),
-                otherwise: subst(ast.otherwise, variable, replacement),
+                condition: subst(ast.condition, oldTerm, replacement),
+                then: subst(ast.then, oldTerm, replacement),
+                otherwise: subst(ast.otherwise, oldTerm, replacement),
             }
         case 'list-literal':
             return {
                 type: 'list-literal',
-                value: ast.value.map(e => subst(e, variable, replacement)),
+                value: ast.value.map(e => subst(e, oldTerm, replacement)),
             }
         case 'list-pattern':
-            if (!atomsEqual(variable, ast)) return ast
+            if (!atomsEqual(oldTerm, ast)) return ast
 
             if (replacement.type === 'list-literal') return {
                 type: 'list-pattern',
@@ -91,35 +91,28 @@ export function subst(
             throw new Error('error!')
 
         case 'variable':
-            return atomsEqual(ast, variable) ? replacement : ast
         case 'entity':
         case 'boolean':
         case 'number':
         case 'string':
-            return ast
+            return atomsEqual(ast, oldTerm) ? replacement : ast
         case 'derived-prop':
             throw new Error('not implemented!')
         case 'generalized':
-            const newEntries = Object.entries(ast.keys).map(e => [e[0], subst(e[1], variable, replacement)] as const)
+            const newEntries = Object.entries(ast.keys).map(e => [e[0], subst(e[1], oldTerm, replacement)] as const)
             const newKeys = Object.fromEntries(newEntries)
             return {
                 type: 'generalized',
                 keys: newKeys,
-                after: subst(ast.after, variable, replacement),
+                after: subst(ast.after, oldTerm, replacement),
             }
         case 'anaphor':
-            // return {
-            //     type: 'anaphor',
-            //     head: subst(ast.head, variable, replacement),
-            //     description: subst(ast.description, variable, replacement),
-            //     number: ast.number,
-            // }
             throw new Error('anaphor subst not implemented!')
         case 'math-expression':
             return {
                 type: 'math-expression',
-                left: subst(ast.left, variable, replacement),
-                right: subst(ast.right, variable, replacement),
+                left: subst(ast.left, oldTerm, replacement),
+                right: subst(ast.right, oldTerm, replacement),
                 operator: ast.operator,
             }
         case 'happen-sentence':

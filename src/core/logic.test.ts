@@ -10,7 +10,6 @@ import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { substAll } from "./subst.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { decompress } from "./decompress.ts";
 
 const standardKb = getStandardKb()
 
@@ -755,14 +754,14 @@ Deno.test({
 })
 
 
-// Deno.test({
-//     name: 'test40',
-//     fn: () => {
-//         // linear equations solver //WHICHHHH TODO anaphor
-//         const result = ask($('x:number').suchThat($('x:number').over(2).equals(50)).$, kb).result
-//         assertEquals(result, $(100).$)
-//     }
-// })
+Deno.test({
+    name: 'test40',
+    fn: () => {
+        // linear equations solver
+        const x = ask($.the('number').which($._.over(2).equals(100)).$, kb).result
+        assertEquals(x, $(200).$)
+    }
+})
 
 
 Deno.test({

@@ -3,7 +3,7 @@ import { isNotNullish } from "../utils/isNotNullish.ts"
 import { random } from "../utils/random.ts"
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
-import { subst, substAll } from "./subst.ts"
+import { substAll } from "./subst.ts"
 import { Anaphor, Constant, KnowledgeBase, LLangAst, Variable } from "./types.ts"
 
 export function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
@@ -50,12 +50,16 @@ function expand(anaphor: Anaphor): {
 
     if (anaphor.whose && anaphor.whose.t1.type === 'entity') {
         const owned = $(`y${random()}:${anaphor.whose.t1.value}`).$
-        const description = $(owned).exists.where($(head).has(owned).and({ ...anaphor.whose, t1: owned })).$
+
+        const description = $(owned).exists.where($(head).has(owned)
+            .and(substAll(anaphor.whose, deepMapOf([[anaphor.whose.t1, owned]]))))
+            .$
+
         return { description, head }
     }
 
     if (anaphor.which) {
-        const description = { ...anaphor.which, t1: head }
+        const description = substAll(anaphor.which, deepMapOf([[$._.$, head]]))
         return { description, head }
     }
 
@@ -74,4 +78,8 @@ function expand(anaphor: Anaphor): {
 // const xex = expand(x)
 // console.log(xex)
 
+
+// const x = $.the('number').which($._.over(2).equals(100)).$
+// const xex = expand(x)
+// console.log(xex)
 

@@ -197,21 +197,6 @@ export class ExpBuilder<T extends LLangAst> {
         return tell(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
-    // suchThat(formula?: ExpBuilder<LLangAst>, number: Anaphor['number'] = 1 as const): ExpBuilder<Anaphor> {
-
-    //     if (this.exp.type !== 'variable') {
-    //         throw new Error('head of anaphor must be variable!')
-    //     }
-
-    //     return new ExpBuilder<Anaphor>({
-    //         type: 'anaphor',
-    //         head: this.exp,
-    //         description: formula ? formula.$ : $(true).$,
-    //         number: number,
-    //     })
-
-    // }
-
     whose(ast: ExpBuilder<HasFormula | IsAFormula | Equality>): ExpBuilder<Anaphor> {
 
         if (this.exp.type !== 'anaphor') {
@@ -225,7 +210,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    which(ast: ExpBuilder<HasFormula | IsAFormula>): ExpBuilder<Anaphor> {
+    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality>): ExpBuilder<Anaphor> {
 
         if (this.exp.type !== 'anaphor') {
             throw new Error('')
@@ -233,7 +218,6 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder<Anaphor>({
             ...this.exp,
-            // which: $(true).$,
             which: ast.$,
         })
 
@@ -359,7 +343,6 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
     }
 
 }
-
 
 
 $._ = $('') // don't-care subject

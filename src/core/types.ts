@@ -137,7 +137,7 @@ export type HappenSentence = {
     event: Constant,
 }
 
-export type VarMap = DeepMap<Variable, LLangAst>
+export type TermMap = DeepMap<Term, LLangAst>
 
 export type Equality = {
     type: 'equality',
