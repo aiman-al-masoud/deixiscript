@@ -864,3 +864,15 @@ Deno.test({
         console.log(result)
     }
 })
+
+Deno.test({
+    name: 'test46',
+    fn: () => {
+        const x = $.the('cat').isa('feline').$
+        const y = substAll(x, deepMapOf([[$.the('cat').$, $('x:cat').$]]))
+
+        // console.log(x)
+        // console.log(y)
+        assertEquals(y, $('x:cat').isa('feline').$)
+    }
+})

@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, atomsEqual, isHasSentence, LLangAst, isFormulaWithAfter, Formula, Atom } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, isFormulaWithAfter, Formula, Atom, astsEqual } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { substAll } from "./subst.ts";
 import { addWorldModels, getSupersAndConceptsOf } from "./wm-funcs.ts";
@@ -53,7 +53,7 @@ export function ask(
         case 'equality':
             const t10 = ask(formula.t1, kb, opts).result
             const t20 = ask(formula.t2, kb, opts).result
-            if (atomsEqual(t10, t20)) return { result: $(true).$, kb }
+            if (astsEqual(t10, t20)) return { result: $(true).$, kb }
             break
         case 'is-a-formula':
             const t1 = ask(formula.t1, kb, opts).result

@@ -1,23 +1,30 @@
-import { LLangAst, atomsEqual, TermMap, Term, isLLangAst } from "./types.ts";
+import { reset } from "https://deno.land/std@0.186.0/fmt/colors.ts";
+import { deepEquals } from "../utils/deepEquals.ts";
+import { LLangAst, AstMap, Term, isLLangAst, astsEqual } from "./types.ts";
 
 
-export function substAll<T extends LLangAst>(formula: T, map: TermMap): T
 
-export function substAll(formula: LLangAst, map: TermMap): LLangAst {
+export function substAll<T extends LLangAst>(formula: T, map: AstMap): T
+
+export function substAll(formula: LLangAst, map: AstMap): LLangAst {
     const subs = Array.from(map.entries())
     return subs.reduce((f, s) => subst(f, s[0], s[1]), formula)
 }
 
-function subst<T extends LLangAst>(formula: T, oldTerm: Term, replacement: LLangAst): T
+function subst<T extends LLangAst>(formula: T, oldTerm: LLangAst, replacement: LLangAst): T
 
 function subst(
     ast: LLangAst,
-    oldTerm: Term,
+    oldTerm: LLangAst,
     replacement: LLangAst,
 ): LLangAst {
 
+    if (astsEqual(oldTerm, ast)) return replacement
+
     switch (ast.type) {
+
         case 'equality':
+
             return {
                 type: 'equality',
                 t1: subst(ast.t1, oldTerm, replacement),
@@ -41,7 +48,9 @@ function subst(
                 f1: subst(ast.f1, oldTerm, replacement),
             }
         case 'existquant':
-            if (atomsEqual(ast.variable, oldTerm)) {
+            // if (atomsEqual(ast.variable, oldTerm)) {
+            if (astsEqual(ast.variable, oldTerm)) {
+
                 return ast
             } else {
                 return {
@@ -78,7 +87,9 @@ function subst(
                 value: ast.value.map(e => subst(e, oldTerm, replacement)),
             }
         case 'list-pattern':
-            if (!atomsEqual(oldTerm, ast)) return ast
+            // if (!atomsEqual(oldTerm, ast)) return ast
+            if (!astsEqual(oldTerm, ast)) return ast
+
 
             if (replacement.type === 'list-literal') return {
                 type: 'list-pattern',
@@ -95,7 +106,9 @@ function subst(
         case 'boolean':
         case 'number':
         case 'string':
-            return atomsEqual(ast, oldTerm) ? replacement : ast
+            // return atomsEqual(ast, oldTerm) ? replacement : ast
+            return astsEqual(ast, oldTerm) ? replacement : ast
+
         case 'derived-prop':
             throw new Error('not implemented!')
         case 'generalized':

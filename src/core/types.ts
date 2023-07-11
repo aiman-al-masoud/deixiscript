@@ -1,4 +1,5 @@
 import { DeepMap } from "../utils/DeepMap.ts"
+import { deepEquals } from "../utils/deepEquals.ts"
 
 /* WORLD-CONCEPTUAL MODEL */
 
@@ -129,7 +130,7 @@ export type HappenSentence = {
     event: Constant,
 }
 
-export type TermMap = DeepMap<Term, LLangAst>
+export type AstMap = DeepMap<LLangAst, LLangAst>
 
 export type Equality = {
     type: 'equality',
@@ -203,27 +204,27 @@ export function isTerm(a: LLangAst): a is Term {
     return isVar(a) || isConst(a)
 }
 
-export function atomsEqual(a1: Atom, a2: Atom): boolean {
+// export function atomsEqual(a1: Atom, a2: Atom): boolean {
 
-    if (a1.type === 'list-pattern' && a2.type === 'list-pattern') {
-        return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.value, a2.value)
-    }
+//     if (a1.type === 'list-pattern' && a2.type === 'list-pattern') {
+//         return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.value, a2.value)
+//     }
 
-    if (a1.type === 'list-literal' && a2.type === 'list-literal') {
-        if (a1.value.length === a2.value.length && a1.value.map((x, i) => atomsEqual(a2.value[i], x))) return true
-    }
+//     if (a1.type === 'list-literal' && a2.type === 'list-literal') {
+//         if (a1.value.length === a2.value.length && a1.value.map((x, i) => atomsEqual(a2.value[i], x))) return true
+//     }
 
-    if (isVar(a1) && isVar(a2)) {
-        return a1.value === a2.value && a1.varType === a2.varType
-    }
+//     if (isVar(a1) && isVar(a2)) {
+//         return a1.value === a2.value && a1.varType === a2.varType
+//     }
 
-    if (isConst(a1) && isConst(a2)) {
-        return a1.value === a2.value
-    }
+//     if (isConst(a1) && isConst(a2)) {
+//         return a1.value === a2.value
+//     }
 
-    return false
+//     return false
 
-}
+// }
 
 export function isHasSentence(s: IsASentence | HasSentence): s is HasSentence {
     return s.length === 3
@@ -275,4 +276,8 @@ export function isLLangAst(x: unknown): x is LLangAst {
 
 export function isAnaphor(ast: unknown): ast is Anaphor {
     return typeof ast === 'object' && !!ast && 'type' in ast && ast.type === 'anaphor'
+}
+
+export function astsEqual(ast1: LLangAst, ast2: LLangAst) {
+    return ast1.type === ast2.type && deepEquals(ast1, ast2)
 }
