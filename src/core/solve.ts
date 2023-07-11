@@ -61,9 +61,6 @@ export function solve(ast: Equality): Number {
 
 export function findEquations(ast: LLangAst): Equality[] {
 
-    return findAst(ast,
-        x => x.type === 'equality'
-            && (x.t1.type === 'math-expression'
-                || x.t2.type === 'math-expression')) as Equality[]
-
+    return findAst(ast, 'equality')
+        .filter(x => x.t1.type === 'math-expression' || x.t2.type === 'math-expression')
 }
