@@ -3,7 +3,7 @@ import { findAll } from "./findAll.ts";
 import { getAtoms } from "./getAtoms.ts";
 import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
-import { substAll } from "./subst.ts";
+import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence, isVar } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
@@ -79,7 +79,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
                 const map = match(dc.conseq, ast)
 
                 if (map) {
-                    const whenn = substAll(dc.when, map)
+                    const whenn = subst(dc.when, map)
                     return tell(whenn, kb)
                 }
             }
@@ -143,7 +143,7 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
             const variables = getAtoms(x).filter(isVar)
             const results = findAll(x, variables, kb, false)
 
-            const eventConsequences = results.map(r => substAll(x, r))
+            const eventConsequences = results.map(r => subst(x, r))
                 .flatMap(x => tell(x, kb).kb.wm)
 
             const additions =

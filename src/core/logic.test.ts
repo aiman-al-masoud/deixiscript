@@ -8,8 +8,7 @@ import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
-import { substAll } from "./subst.ts";
-import { deepMapOf } from "../utils/DeepMap.ts";
+import { subst } from "./subst.ts";
 
 const standardKb = getStandardKb()
 
@@ -869,10 +868,8 @@ Deno.test({
     name: 'test46',
     fn: () => {
         const x = $.the('cat').isa('feline').$
-        const y = substAll(x, deepMapOf([[$.the('cat').$, $('x:cat').$]]))
+        const y = subst(x, [$.the('cat').$, $('x:cat').$])
 
-        // console.log(x)
-        // console.log(y)
         assertEquals(y, $('x:cat').isa('feline').$)
     }
 })

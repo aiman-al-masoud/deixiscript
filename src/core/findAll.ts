@@ -1,5 +1,5 @@
 import { LLangAst, Constant, KnowledgeBase, Variable } from "./types.ts";
-import { substAll } from "./subst.ts";
+import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { uniq } from "../utils/uniq.ts";
 import { cartesian } from "../utils/cartesian.ts";
@@ -33,7 +33,7 @@ export function findAll(
     const allCombos = cartesian(...varToCands).map(x => deepMapOf(x))
 
     const results = allCombos.filter(c => {
-        const sub = substAll(formula, c)
+        const sub = subst(formula, c)
         return ask(sub, kb, { preComputeKb, storeDeixis: false }).result.value
     })
 

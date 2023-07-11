@@ -1,6 +1,6 @@
 import { isConst, KnowledgeBase, isHasSentence, LLangAst, isFormulaWithAfter, Formula, Atom, astsEqual } from "./types.ts";
 import { findAll, } from "./findAll.ts";
-import { substAll } from "./subst.ts";
+import { subst } from "./subst.ts";
 import { addWorldModels, getSupersAndConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
@@ -122,7 +122,7 @@ export function ask(
             return false
         }
 
-        const whenn = substAll(dc.when, map)
+        const whenn = subst(dc.when, map)
         return ask(whenn, kb, opts).result.value
     })
 

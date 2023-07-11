@@ -2,7 +2,7 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { random } from "../utils/random.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
-import { substAll } from "./subst.ts";
+import { subst } from "./subst.ts";
 import { ExistentialQuantification, KnowledgeBase, WorldModel, isHasSentence } from "./types.ts";
 import { addWorldModels, subtractWorldModels } from "./wm-funcs.ts";
 
@@ -17,7 +17,7 @@ export function instantiateConcept(
 ): WorldModel {
 
     const id = ast.variable.varType + '#' + random()
-    const where = substAll(ast.where, deepMapOf([[ast.variable, $(id).$]]))
+    const where = subst(ast.where, deepMapOf([[ast.variable, $(id).$]]))
 
     const isAAdditions = tell($(id).isa(ast.variable.varType).$, kb).additions
     const whereAdditions = tell(where, kb).additions
