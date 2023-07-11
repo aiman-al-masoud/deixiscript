@@ -23,9 +23,6 @@ export function match(template: LLangAst, f: LLangAst): TermMap | undefined {
 
     } else if (template.type === 'generalized' && f.type === 'generalized') {
 
-        // const templateKeys = Object.keys(template.keys)
-        // const fKeys = Object.keys(f.keys)
-
         const templateKeys = Object.keys(template).filter(x => isLLangAst(template[x]))
         const fKeys = Object.keys(f).filter(x => isLLangAst(f[x]))
 
@@ -35,9 +32,6 @@ export function match(template: LLangAst, f: LLangAst): TermMap | undefined {
 
         const ms = templateKeys.map(k => {
 
-            // const v1 = template.keys[k]
-            // const v2 = f.keys[k]
-
             const v1 = template[k]
             const v2 = f[k]
 
@@ -45,11 +39,8 @@ export function match(template: LLangAst, f: LLangAst): TermMap | undefined {
 
             const result = match(v1, v2)
 
-            // if(typeof v1 === 'string')  console.log(v1, result)
-
             return result
         })
-        // .concat(match(template.after, f.after))
 
         return reduceMatchList(ms)
 
