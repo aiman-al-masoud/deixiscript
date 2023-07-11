@@ -1,5 +1,4 @@
 import { $ } from "./exp-builder.ts";
-import { getAnaphora } from "./getAnaphora.ts";
 import { KnowledgeBase, LLangAst } from "./types.ts";
 
 export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
@@ -106,13 +105,13 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         case "math-expression":
             return ast
         case "anaphor":
-            const referents = getAnaphora(ast, kb)
+            // const referents = getAnaphora(ast, kb)
+            // if (referents.length > 1) {
+            //     return referents.reduce((a, b) => a.and(b), $(referents[0])).$
+            // }
+            // return referents[0]
+            return ast
 
-            if (referents.length > 1) {
-                return referents.reduce((a, b) => a.and(b), $(referents[0])).$
-            }
-
-            return referents[0]
 
     }
 

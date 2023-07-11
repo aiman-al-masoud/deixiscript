@@ -6,6 +6,7 @@ import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
+import { getAnaphora } from "./getAnaphora.ts";
 
 export function ask(
     ast: LLangAst,
@@ -46,8 +47,9 @@ export function ask(
         case 'list-literal':
         case 'list-pattern':
             return { result: formula, kb }
-        // case 'anaphor':
-        //     return ask(getAnaphor(formula, kb)!, kb, opts)
+        case 'anaphor':
+            const referents = getAnaphora(formula, kb)
+            return ask(referents[0], kb, opts)
         case 'equality':
             const t10 = ask(formula.t1, kb, opts).result
             const t20 = ask(formula.t2, kb, opts).result
