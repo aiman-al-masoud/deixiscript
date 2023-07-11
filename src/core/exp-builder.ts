@@ -344,8 +344,10 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
 
 }
 
-
-$._ = $('') // don't-care subject
+/**
+ * Don't-care subject. 
+ */
+$._ = $('')
 // Object.defineProperty($, '$', { get: () => $('') })
 
 $.the = (x: string): ExpBuilder<Anaphor> => {
