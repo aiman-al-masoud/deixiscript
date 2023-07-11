@@ -23,7 +23,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
         Object.entries(x).map(e => [e[0], makeAst(e[1])])
     )
 
-    return new ExpBuilder({ type: 'generalized', keys: keys, after: $([]).$ })
+    return new ExpBuilder({ ...keys, type: 'generalized', after: $([]).$ } as GeneralizedFormula)
 }
 
 

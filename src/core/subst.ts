@@ -1,4 +1,4 @@
-import { LLangAst, atomsEqual, TermMap, Term } from "./types.ts";
+import { LLangAst, atomsEqual, TermMap, Term, isLLangAst } from "./types.ts";
 
 
 export function substAll<T extends LLangAst>(formula: T, map: TermMap): T
@@ -99,12 +99,11 @@ function subst(
         case 'derived-prop':
             throw new Error('not implemented!')
         case 'generalized':
-            const newEntries = Object.entries(ast.keys).map(e => [e[0], subst(e[1], oldTerm, replacement)] as const)
-            const newKeys = Object.fromEntries(newEntries)
+            const newEntries = Object.entries(ast).filter(e => isLLangAst(e[1])).map(e => [e[0], subst(e[1] as LLangAst, oldTerm, replacement)] as const)
+
             return {
-                type: 'generalized',
-                keys: newKeys,
-                after: subst(ast.after, oldTerm, replacement),
+                ...ast,
+                ...Object.fromEntries(newEntries),
             }
         case 'anaphor':
             throw new Error('anaphor subst not implemented!')

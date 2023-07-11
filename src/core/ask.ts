@@ -25,7 +25,7 @@ export function ask(
         const events = ast.after.value.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
         const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
-        const formula2: Formula = { ...ast, after: $([]).$ }
+        const formula2 = { ...ast, after: $([]).$ } as Formula
         return ask(formula2, kb2, { ...opts, preComputeKb: false })
     }
 

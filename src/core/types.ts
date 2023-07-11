@@ -102,14 +102,7 @@ export type ListPattern = {
     /** tail */ value: Atom,
 }
 
-// export type Anaphor = { // implicit reference
-//     type: 'anaphor',
-//     head: Variable,
-//     description: LLangAst,
-//     number: 1 | '*',
-// }
-
-export type Anaphor = {
+export type Anaphor = { // implicit reference
     type: 'anaphor',
     headType: string,
     which?: HasFormula | IsAFormula | Equality,
@@ -120,15 +113,14 @@ export type Anaphor = {
 export type MathExpression = {
     type: 'math-expression',
     operator: '+' | '-' | '*' | '/' | '>' | '<',
-    left: Atom /* | MathExpression */,
+    left: Atom,
     right: Atom | MathExpression,
 }
 
 export type GeneralizedFormula = {
+    [key: string]: LLangAst
+} & {
     type: 'generalized',
-    keys: {
-        [key: string]: LLangAst
-    },
     after: LLangAst,
 }
 
@@ -279,4 +271,8 @@ export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence 
 
 export function isLLangAst(x: unknown): x is LLangAst {
     return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
+}
+
+export function isAnaphor(ast: unknown): ast is Anaphor {
+    return typeof ast === 'object' && !!ast && 'type' in ast && ast.type === 'anaphor'
 }

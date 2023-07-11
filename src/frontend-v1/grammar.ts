@@ -46,11 +46,9 @@ const astTypes = stringLiterals(
 const roles = stringLiterals(
     'id',
     'digits',
-    // 'name',
     'number',
     'varType',
     'seq',
-    // 'tail',
     't1',
     't2',
     'after',
@@ -74,7 +72,6 @@ const roles = stringLiterals(
     'head',
     'description',
     'annotation',
-    'keys',
     'recipient',
     'location',
     'object',
@@ -240,7 +237,7 @@ export const syntaxes: SyntaxMap<
         { types: ['atom', 'math-expression'], role: 'right' },
     ],
     generalized: [
-        { types: ['verb-sentence', 'annotation'], role: 'keys' },
+        { types: ['verb-sentence', 'annotation'], expand: true },
         { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     "verb-sentence": [

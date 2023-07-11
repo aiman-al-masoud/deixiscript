@@ -1,4 +1,4 @@
-import { assertEquals, assertObjectMatch } from "https://deno.land/std@0.186.0/testing/asserts.ts"
+import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts"
 import { getParser } from "../parser/parser.ts"
 import { syntaxes } from "./grammar.ts"
 import { $ } from "../core/exp-builder.ts"
@@ -129,8 +129,8 @@ Deno.test({
 Deno.test({
     name: 'test12',
     fn: () => {
-        const ast = parser.parse('x:cat does be red when x:cat has red as color') as any
-        assertObjectMatch(ast,
+        const ast = parser.parse('x:cat does be red when x:cat has red as color')
+        assertEquals(ast,
             $({ subject: 'x:cat', verb: 'be', object: 'red' }).when($('x:cat').has('red').as('color')).$)
     }
 
@@ -171,7 +171,7 @@ Deno.test({
 Deno.test({
     name: 'test17',
     fn: () => {
-        // const ast = parser.parse('x:capra does climb the x:mount such that x:mount has green as color ') as any
+        // const ast = parser.parse('x:capra does climb the x:mount such that x:mount has green as color ') 
         // assertObjectMatch(ast, $({ subject: 'x:capra', verb: 'climb', object: $('x:mount').suchThat($('x:mount').has('green').as('color')).$ }).$)
     }
 })
@@ -196,8 +196,8 @@ Deno.test({
 Deno.test({
     name: 'test20',
     fn: () => {
-        const ast = parser.parse('annotx: capra equals stupid') as any
-        assertObjectMatch(ast, $({ annotation: 'annotx', t1: 'capra', t2: 'stupid' }).$)
+        const ast = parser.parse('annotx: capra equals stupid')
+        assertEquals(ast, $({ annotation: 'annotx', t1: 'capra', t2: 'stupid' }).$)
     }
 })
 
@@ -205,8 +205,8 @@ Deno.test({
 Deno.test({
     name: 'test21',
     fn: () => {
-        const ast = parser.parse('x does eat capra in y to z') as any
-        assertObjectMatch(ast, $({ subject: 'x', verb: 'eat', object: 'capra', location: 'y', recipient: 'z' }).$)
+        const ast = parser.parse('x does eat capra in y to z')
+        assertEquals(ast, $({ subject: 'x', verb: 'eat', object: 'capra', location: 'y', recipient: 'z' }).$)
     }
 })
 

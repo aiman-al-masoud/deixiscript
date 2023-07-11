@@ -138,7 +138,7 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
             const x: AtomicFormula | GeneralizedFormula = {
                 ...dc.conseq,
                 after: $([event]).$
-            }
+            } as GeneralizedFormula
 
             const variables = getAtoms(x).filter(isVar)
             const results = findAll(x, variables, kb, false)

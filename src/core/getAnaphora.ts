@@ -42,7 +42,7 @@ export function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
 }
 
 
-function expand(anaphor: Anaphor): {
+export function expand(anaphor: Anaphor): {
     description: LLangAst,
     head: Variable,
 } {
