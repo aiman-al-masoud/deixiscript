@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -286,6 +286,18 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'command',
             f1: this.exp,
         })
+    }
+
+    suchThat(description?: LLangAst | ExpBuilder<LLangAst>): ExpBuilder<ArbitraryType> {
+
+        if (this.exp.type !== 'variable') throw new Error(``)
+
+        return new ExpBuilder<ArbitraryType>({
+            type: 'arbitrary-type',
+            head: this.exp,
+            description: description ? makeAst(description) : $(true).$,
+        })
+
     }
 
 }

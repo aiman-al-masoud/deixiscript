@@ -58,14 +58,10 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
             if (ast.value.type === 'arbitrary-type') {
                 return {
                     type: 'existquant',
-                    value: {
-                        description: decompress(ast.value.description, kb),
-                        head: ast.value.head,
-                        type: 'arbitrary-type',
-                    }
+                    value: $(ast.value.head).suchThat(decompress(ast.value.description, kb)).$,
                 }
             }
-            return ast
+            return ast//TODO
         case "derived-prop":
             return $(ast.conseq).when(decompress(ast.when, kb)).$
         case "if-else":
