@@ -1,4 +1,6 @@
 import { $ } from "./exp-builder.ts";
+import { findAst } from "./findAst.ts";
+import { subst } from "./subst.ts";
 import { KnowledgeBase, LLangAst } from "./types.ts";
 
 export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
@@ -16,71 +18,29 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         case 'anything':
             return ast
         case 'is-a-formula':
-
-            if (ast.t1.type === 'conjunction') {
-                const t1f1 = decompress(ast.t1.f1, kb)
-                const t2 = decompress(ast.t2, kb)
-                const t1f2 = decompress(ast.t1.f2, kb)
-                return decompress($(t1f1).isa(t2).and($(t1f2).isa(t2)).$, kb)
-            }
-
-            if (ast.t2.type === 'conjunction') {
-                const t1 = decompress(ast.t1, kb)
-                const t2f1 = decompress(ast.t2.f1, kb)
-                const t2f2 = decompress(ast.t2.f2, kb)
-                return decompress($(t1).isa(t2f1).and($(t1).isa(t2f2)).$, kb)
-            }
-
-            if (ast.t1.type === 'disjunction') {
-                const t1f1 = decompress(ast.t1.f1, kb)
-                const t2 = decompress(ast.t2, kb)
-                const t1f2 = decompress(ast.t1.f2, kb)
-                return decompress($(t1f1).isa(t2).or($(t1f2).isa(t2)).$, kb)
-            }
-
-            if (ast.t2.type === 'disjunction') {
-                const t1 = decompress(ast.t1, kb)
-                const t2f1 = decompress(ast.t2.f1, kb)
-                const t2f2 = decompress(ast.t2.f2, kb)
-                return decompress($(t1).isa(t2f1).or($(t1).isa(t2f2)).$, kb)
-            }
-
-            if (ast.t1.type === 'anaphor') {
-                const t1 = decompress(ast.t1, kb)
-                const t2 = ast.t2
-                return decompress($(t1).isa(t2).$, kb)
-            }
-
-            if (ast.t2.type === 'anaphor') {
-                const t1 = ast.t1
-                const t2 = decompress(ast.t2, kb)
-                return decompress($(t1).isa(t2).$, kb)
-            }
-
-            return ast
-
         case 'has-formula':
 
-            if (ast.t1.type === 'conjunction') {
-                return decompress($(ast.t1.f1).has(ast.t2).as(ast.as).and($(ast.t1.f2).has(ast.t2).as(ast.as)).$, kb)
+            const conj = findAst(ast, 'conjunction').at(0)
+
+            if (conj) {
+                const withF1 = subst(ast, [conj, conj.f1])
+                const withF2 = subst(ast, [conj, conj.f2])
+                return decompress($(withF1).and(withF2).$, kb)
             }
 
+            const disj = findAst(ast, 'disjunction').at(0)
 
-            if (ast.t1.type === 'anaphor') {
-                const t1 = decompress(ast.t1, kb)
-                const t2 = ast.t2
-                const as = ast.as
-                const after = ast.after
-                return decompress($(t1).has(t2).as(as).after(after).$, kb)
+            if (disj) {
+                const withF1 = subst(ast, [disj, disj.f1])
+                const withF2 = subst(ast, [disj, disj.f2])
+                return decompress($(withF1).or(withF2).$, kb)
             }
 
-            if (ast.t2.type === 'anaphor') {
-                const t1 = ast.t1
-                const t2 = decompress(ast.t2, kb)
-                const as = ast.as
-                const after = ast.after
-                return decompress($(t1).has(t2).as(as).after(after).$, kb)
-            }
+            // const anaphor = findAst(ast, 'anaphor').at(0)
+
+            // if (anaphor) {
+            //     return decompress(subst(ast, [anaphor, decompress(anaphor, kb)]), kb)
+            // }
 
             return ast
 
@@ -111,7 +71,6 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
             // }
             // return referents[0]
             return ast
-
 
     }
 
