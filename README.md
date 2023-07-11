@@ -65,6 +65,8 @@ make it happen
 
 - possible problem with where in instantiateConcept() and multiple legal values on same attribute.
 
+- tell()/instantiateConcept()/expand()/isConst() are currently serializing '*', which is partial information, as a constant, that may be very dangerous!!
+
 ## Limitations
 
 - no context sentitivity

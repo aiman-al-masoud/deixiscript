@@ -25,6 +25,7 @@ export type Formula =
     | SimpleFormula
     | CompositeFormula
     | Anaphor
+    | ArbitraryType
 export type Term =
     | Constant
     | Variable
@@ -172,8 +173,13 @@ export type Negation = {
 
 export type ExistentialQuantification = {
     type: 'existquant',
-    variable: Variable,
-    where: LLangAst,
+    value: Anaphor | ArbitraryType,
+}
+
+export type ArbitraryType = {
+    type: 'arbitrary-type',
+    head: Variable,
+    description: LLangAst,
 }
 
 export type DerivationClause = {
@@ -198,6 +204,8 @@ export function isConst(t: LLangAst): t is Constant {
         || t.type === 'number'
         || t.type === 'boolean'
         || t.type === 'string'
+
+        || t.type === 'anything' //TODO!!!!!!! to serialize or not to serialize (tell())? You (at the very least) need to remove anything from WM when new info comes! 
 }
 
 export function isTerm(a: LLangAst): a is Term {

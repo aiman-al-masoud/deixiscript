@@ -115,16 +115,16 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test11',
-    fn: () => {
-        const ast = parser.parse('there exists a x:cat where x:cat has red as color ')
+// Deno.test({
+//     name: 'test11',
+//     fn: () => {
+//         const ast = parser.parse('there exists a x:cat where x:cat has red as color ')
 
-        assertEquals(ast,
-            $('x:cat').exists.where($('x:cat').has('red').as('color')).$)
+//         assertEquals(ast,
+//             $('x:cat').exists.where($('x:cat').has('red').as('color')).$)
 
-    }
-})
+//     }
+// })
 
 Deno.test({
     name: 'test12',

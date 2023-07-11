@@ -57,16 +57,24 @@ function substOnce(
                 f1: substOnce(ast.f1, oldTerm, replacement),
             }
         case 'existquant':
-            if (astsEqual(ast.variable, oldTerm)) {
 
+            if (ast.value.type === 'anaphor') {
+                return ast
+            }
+
+            if (astsEqual(ast.value.head, oldTerm)) {
                 return ast
             } else {
                 return {
                     type: 'existquant',
-                    variable: ast.variable,
-                    where: substOnce(ast.where, oldTerm, replacement),
+                    value: {
+                        type: 'arbitrary-type',
+                        head: ast.value.head,
+                        description: substOnce(ast.value.description, oldTerm, replacement),
+                    }
                 }
             }
+
         case 'is-a-formula':
             return {
                 type: 'is-a-formula',
@@ -141,6 +149,9 @@ function substOnce(
         case 'anything':
             // throw new Error('not implemented!')
             return ast
+        case 'arbitrary-type':
+            throw new Error('not implemented!')
+
     }
 
 }

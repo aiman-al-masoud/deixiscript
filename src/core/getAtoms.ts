@@ -19,14 +19,14 @@ export function getAtoms(ast: LLangAst): Atom[] {
             return getAtoms(ast.t1).concat(getAtoms(ast.t2))
         case 'math-expression':
             return [ast.left, ...getAtoms(ast.right)]
-        // case 'generalized':
-        // return Object.values(ast.keys).concat(getAtoms(ast.after))
         case 'existquant':
-            return [ast.variable, ...getAtoms(ast.where)]
+            return getAtoms(ast.value)
         case 'list-literal':
             return ast.value.flatMap(x => getAtoms(x))
         case 'list-pattern':
             return [ast.seq, ast.value]
+        case 'arbitrary-type':
+            return [ast.head, ...getAtoms(ast.description)]
         case 'entity':
         case 'variable':
         case 'boolean':

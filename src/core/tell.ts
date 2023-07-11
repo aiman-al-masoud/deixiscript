@@ -8,6 +8,7 @@ import { ask } from "./ask.ts";
 import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence, isVar } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
+import { expand } from "./getAnaphora.ts";
 
 /**
  * Assume the AST is true, and compute resulting knowledge base.
@@ -66,7 +67,9 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
         case 'if-else':
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
-            additions = instantiateConcept(ast, kb) //TODO: eliminations
+
+            const arbitraryType = ast.value.type === 'anaphor' ? expand(ast.value) : ast.value
+            additions = instantiateConcept(arbitraryType, kb) //TODO: eliminations
             break
         case 'negation':
             const result = tell(ast.f1, kb)
@@ -214,7 +217,12 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     const fillers = defaults.flatMap((d, i) => {
         if (d === undefined) return []
         if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
-        return instantiateConcept($(`x:${d}`).exists.where($(id).has(`x:${d}`).as(parts[i])).$, kb)
+
+        return instantiateConcept({
+            type: 'arbitrary-type',
+            head: $(`x:${d}`).$,
+            description: $(id).has(`x:${d}`).as(parts[i]).$
+        }, kb)
     })
 
     return fillers

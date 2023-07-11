@@ -6,7 +6,7 @@ import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
-import { getAnaphora } from "./getAnaphora.ts";
+import { expand, getAnaphora } from "./getAnaphora.ts";
 
 export function ask(
     ast: LLangAst,
@@ -88,7 +88,13 @@ export function ask(
             if (ask(formula.f1, kb, opts).result.value || ask(formula.f2, kb, opts).result.value) return { result: $(true).$, kb }
             break
         case 'existquant':
-            if (findAll(formula.where, [formula.variable], kb).length) return { result: $(true).$, kb }
+
+            if (formula.value.type === 'arbitrary-type') {
+                if (findAll(formula.value.description, [formula.value.head], kb).length) return { result: $(true).$, kb }
+            } else {
+                return ask({ type: 'existquant', value: expand(formula.value) }, kb)
+            }
+
             break
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)

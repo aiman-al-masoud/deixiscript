@@ -3,7 +3,7 @@ import { random } from "../utils/random.ts"
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
 import { subst } from "./subst.ts"
-import { Anaphor, Constant, KnowledgeBase, LLangAst, Variable } from "./types.ts"
+import { Anaphor, ArbitraryType, Constant, KnowledgeBase } from "./types.ts"
 
 export function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
 
@@ -41,10 +41,7 @@ export function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
 }
 
 
-export function expand(anaphor: Anaphor): {
-    description: LLangAst,
-    head: Variable,
-} {
+export function expand(anaphor: Anaphor): ArbitraryType {
     const head = $(`x${random()}:${anaphor.headType}`).$
 
     if (anaphor.whose && anaphor.whose.t1.type === 'entity') {
@@ -54,15 +51,15 @@ export function expand(anaphor: Anaphor): {
             .and(subst(anaphor.whose, [anaphor.whose.t1, owned])))
             .$
 
-        return { description, head }
+        return { description, head, type: 'arbitrary-type' }
     }
 
     if (anaphor.which) {
         const description = subst(anaphor.which, [$._.$, head])
-        return { description, head }
+        return { description, head, type: 'arbitrary-type' }
     }
 
-    return { description: $(true).$, head }
+    return { description: $(true).$, head, type: 'arbitrary-type' }
 }
 
 

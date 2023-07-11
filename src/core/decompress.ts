@@ -55,11 +55,17 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         case "negation":
             return $(decompress(ast.f1, kb)).isNotTheCase.$
         case "existquant":
-            return {
-                type: 'existquant',
-                variable: ast.variable,
-                where: decompress(ast.where, kb),
+            if (ast.value.type === 'arbitrary-type') {
+                return {
+                    type: 'existquant',
+                    value: {
+                        description: decompress(ast.value.description, kb),
+                        head: ast.value.head,
+                        type: 'arbitrary-type',
+                    }
+                }
             }
+            return ast
         case "derived-prop":
             return $(ast.conseq).when(decompress(ast.when, kb)).$
         case "if-else":

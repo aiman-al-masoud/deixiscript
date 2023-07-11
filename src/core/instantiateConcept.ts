@@ -2,7 +2,7 @@ import { random } from "../utils/random.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { subst } from "./subst.ts";
-import { ExistentialQuantification, KnowledgeBase, WorldModel, isHasSentence } from "./types.ts";
+import { ArbitraryType, KnowledgeBase, WorldModel, isHasSentence } from "./types.ts";
 import { addWorldModels, subtractWorldModels } from "./wm-funcs.ts";
 
 
@@ -11,14 +11,14 @@ import { addWorldModels, subtractWorldModels } from "./wm-funcs.ts";
  * Returns the additions to the World Model ONLY.
  */
 export function instantiateConcept(
-    ast: ExistentialQuantification,
+    ast: ArbitraryType,
     kb: KnowledgeBase,
 ): WorldModel {
 
-    const id = ast.variable.varType + '#' + random()
-    const where = subst(ast.where, [ast.variable, $(id).$])
+    const id = ast.head.varType + '#' + random()
+    const where = subst(ast.description, [ast.head, $(id).$])
 
-    const isAAdditions = tell($(id).isa(ast.variable.varType).$, kb).additions
+    const isAAdditions = tell($(id).isa(ast.head.varType).$, kb).additions
     const whereAdditions = tell(where, kb).additions
 
     const conflicts = isAAdditions

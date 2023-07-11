@@ -9,7 +9,6 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
-import { findAst } from "./findAst.ts";
 
 const standardKb = getStandardKb()
 
@@ -878,11 +877,10 @@ Deno.test({
 Deno.test({
     name: 'test47',
     fn: () => {
-        // const anaphors = findAst($.the('cat').and($.the('mouse')).$, 'anaphor')
-        // console.log(anaphors)
-
-        const x = $.the('number').which($._.over(2).equals(100)).$
-        // console.log(findAst(x, 'equality'))
-
+        // creation of new thing via existquant+ANAPHOR
+        const kb0: KnowledgeBase = { derivClauses: [], wm: [], deicticDict: {} }
+        const kb1 = tell($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb0).kb
+        const result = ask($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb1).result.value
+        assert(result)
     }
 })

@@ -156,27 +156,41 @@ export class ExpBuilder<T extends LLangAst> {
 
     get exists(): ExpBuilder<ExistentialQuantification> {
 
+        if (this.exp.type === 'anaphor') {
+            return new ExpBuilder<ExistentialQuantification>({
+                type: 'existquant',
+                value: this.exp,
+            })
+        }
+
         if (this.exp.type !== 'variable') {
             throw new Error(``)
         }
 
         return new ExpBuilder({
             type: 'existquant',
-            variable: this.exp as Variable,
-            where: $(false).$,
+            value: {
+                type: 'arbitrary-type',
+                head: this.exp as Variable,
+                description: $(false).$
+            }
         })
 
     }
 
     where(formula: ExpBuilder<Formula> | LLangAst): ExpBuilder<ExistentialQuantification> {
 
-        if (this.exp.type !== 'existquant') {
-            throw new Error(``)
-        }
+        if (this.exp.type !== 'existquant') throw new Error(``)
+
+        if (this.exp.value.type !== 'arbitrary-type') throw new Error(``)
 
         return new ExpBuilder({
-            ...this.exp as ExistentialQuantification,
-            where: makeAst(formula),
+            type: 'existquant',
+            value: {
+                head: this.exp.value.head,
+                description: makeAst(formula),
+                type: 'arbitrary-type',
+            }
         })
 
     }
