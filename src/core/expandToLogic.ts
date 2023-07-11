@@ -14,12 +14,19 @@
 //     // const x = Object.values(ast).filter(isAnaphor).map(x => expand(x))
 //     // console.log(x)
 
-//     // const x = Object.values(ast.conseq).filter(isAnaphor)
-//     // console.log(x)
+//     const x = Object.values(ast.conseq).filter(isAnaphor).map(expand)
+//     console.log(x)
+//     const y = Object.values(ast.when).filter(isAnaphor).map(expand)
+//     console.log(y)
+
 // }
 
+// // a cat does eat a mouse when the cat has the mouse as food.
 // // x:cat does eat y:mouse when x:cat has y:mouse as food.
-// const x = $({ subject: $.a('cat').$, verb: 'eat', object: $.a('mouse').$ })
+
+// // a cat whose fur has red as color does eat a mouse when the cat has the mouse as food.
+
+// const x = $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'eat', object: $.a('mouse').$ })
 //     .when($.the('cat').has($.the('mouse')).as('food')).$
 
 // // console.log(x)

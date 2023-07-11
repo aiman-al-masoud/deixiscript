@@ -767,35 +767,28 @@ Deno.test({
 Deno.test({
     name: 'test41',
     fn: () => {
+        // syntactic de/compression
         const r1 = ask($('person#1').and('person#3').isa('person').$, kb)
-        // console.log(r1.result)
         assert(r1.result.value)
         const r2 = ask($('person#1').and('door#1').isa('person').$, kb)
-        // console.log(r2.result)
         assert(!r2.result.value)
         const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
         console.log(r3)
         const r4 = ask($('person#1').isa($('person').and('agent').$).$, kb).result
-        // console.log(r4)
         assert(r4.value)
         const r5 = ask($('door#1').isa($('thing').and('agent').$).$, kb).result
-        // console.log(r5)
         assert(!r5.value)
         const r6 = ask($('person#1').and('person#2').and('person#3').isa('agent').$, kb).result
-        // console.log(r6)
         assert(r6.value)
         const r7 = ask($('person#1').or('door#1').isa('agent').$, kb).result
         assert(r7.value)
-        // console.log(r7)
         const r8 = ask($('boston').or('door#1').isa('agent').$, kb).result
         assert(!r8.value)
         const r9 = ask($('door#1').isa($('door').or('agent')).$, kb).result
         assert(r9.value)
 
-
-        const ast = $({ x: 'x:thing' }).$
-        console.log(substAll(ast, deepMapOf([[$('x:thing').$, $('capra#1').and('capra#2').$]])))
-
+        // const ast = $({ x: 'x:thing' }).$
+        // console.log(substAll(ast, deepMapOf([[$('x:thing').$, $('capra#1').and('capra#2').$]])))
     }
 })
 
@@ -834,6 +827,7 @@ Deno.test({
 Deno.test({
     name: 'test44',
     fn: () => {
+        // whose-clause in anaphor
         const kb0 = $('house#1').isa('house')
             .and($('house#2').isa('house'))
             .and($('house#1').has('window#1').as('window'))
@@ -844,19 +838,12 @@ Deno.test({
             .and($('window#2').has('closed').as('state'))
             .dump().kb
 
-        // console.log(kb0)
-
         const q = $.the('house').whose($('window').has('open').as('state')).$
-        // console.log(q)
-
         const result = ask(q, kb0).result
-
-        // console.log(result)
         assertEquals(result, $('house#1').$)
 
         const q2 = $.the('house').whose($('window').has('closed').as('state')).$
         const result2 = ask(q2, kb0).result
-        // console.log(result2)
         assertEquals(result2, $('house#2').$)
 
     }
@@ -865,6 +852,7 @@ Deno.test({
 Deno.test({
     name: 'test45',
     fn: () => {
+        // which-clause in anaphor
         const kb0 = $('cat#1').isa('cat')
             .and($('cat#2').isa('cat'))
             .and($('cat#1').has('red').as('color'))
@@ -874,6 +862,5 @@ Deno.test({
         const q = $.the('cat').which($._.has('red').as('color')).$
         const result = ask(q, kb0).result
         console.log(result)
-
     }
 })
