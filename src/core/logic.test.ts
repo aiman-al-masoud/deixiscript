@@ -773,7 +773,7 @@ Deno.test({
         const r2 = ask($('person#1').and('door#1').isa('person').$, kb)
         assert(!r2.result.value)
         const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
-        console.log(r3)
+        // console.log(r3)
         const r4 = ask($('person#1').isa($('person').and('agent').$).$, kb).result
         assert(r4.value)
         const r5 = ask($('door#1').isa($('thing').and('agent').$).$, kb).result
@@ -861,7 +861,7 @@ Deno.test({
 
         const q = $.the('cat').which($._.has('red').as('color')).$
         const result = ask(q, kb0).result
-        console.log(result)
+        // console.log(result)
     }
 })
 
@@ -882,7 +882,7 @@ Deno.test({
         // console.log(anaphors)
 
         const x = $.the('number').which($._.over(2).equals(100)).$
-        console.log(findAst(x, 'equality'))
+        // console.log(findAst(x, 'equality'))
 
     }
 })
