@@ -1,4 +1,3 @@
-import { deepMapOf } from "../utils/DeepMap.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { random } from "../utils/random.ts"
 import { $ } from "./exp-builder.ts"
@@ -52,14 +51,14 @@ export function expand(anaphor: Anaphor): {
         const owned = $(`y${random()}:${anaphor.whose.t1.value}`).$
 
         const description = $(owned).exists.where($(head).has(owned)
-            .and(subst(anaphor.whose, deepMapOf([[anaphor.whose.t1, owned]]))))
+            .and(subst(anaphor.whose, [anaphor.whose.t1, owned])))
             .$
 
         return { description, head }
     }
 
     if (anaphor.which) {
-        const description = subst(anaphor.which, deepMapOf([[$._.$, head]]))
+        const description = subst(anaphor.which, [$._.$, head])
         return { description, head }
     }
 
