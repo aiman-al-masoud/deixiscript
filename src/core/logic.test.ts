@@ -9,6 +9,7 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
+import { findAst } from "./findAst.ts";
 
 const standardKb = getStandardKb()
 
@@ -871,5 +872,17 @@ Deno.test({
         const y = subst(x, [$.the('cat').$, $('x:cat').$])
 
         assertEquals(y, $('x:cat').isa('feline').$)
+    }
+})
+
+Deno.test({
+    name: 'test47',
+    fn: () => {
+        // const anaphors = findAst($.the('cat').and($.the('mouse')).$, 'anaphor')
+        // console.log(anaphors)
+
+        const x = $.the('number').which($._.over(2).equals(100)).$
+        console.log(findAst(x, 'equality'))
+
     }
 })
