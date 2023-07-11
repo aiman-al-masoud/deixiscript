@@ -20,6 +20,8 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         case 'is-a-formula':
         case 'has-formula':
 
+            // maybe will produce bug if deeply nested and? keep nesting down?
+
             const conj = findAst(ast, 'conjunction').at(0)
 
             if (conj) {
