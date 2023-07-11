@@ -1,4 +1,3 @@
-import { deepMapOf } from "../utils/DeepMap.ts";
 import { random } from "../utils/random.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
@@ -17,7 +16,7 @@ export function instantiateConcept(
 ): WorldModel {
 
     const id = ast.variable.varType + '#' + random()
-    const where = subst(ast.where, deepMapOf([[ast.variable, $(id).$]]))
+    const where = subst(ast.where, [ast.variable, $(id).$])
 
     const isAAdditions = tell($(id).isa(ast.variable.varType).$, kb).additions
     const whereAdditions = tell(where, kb).additions
