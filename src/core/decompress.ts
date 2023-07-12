@@ -1,9 +1,9 @@
 import { $ } from "./exp-builder.ts";
 import { findAst } from "./findAst.ts";
 import { subst } from "./subst.ts";
-import { KnowledgeBase, LLangAst } from "./types.ts";
+import { LLangAst } from "./types.ts";
 
-export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
+export function decompress(ast: LLangAst): LLangAst {
 
     switch (ast.type) {
         case "generalized":
@@ -27,7 +27,7 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
             if (conj) {
                 const withF1 = subst(ast, [conj, conj.f1])
                 const withF2 = subst(ast, [conj, conj.f2])
-                return decompress($(withF1).and(withF2).$, kb)
+                return decompress($(withF1).and(withF2).$)
             }
 
             const disj = findAst(ast, 'disjunction').at(0)
@@ -35,13 +35,13 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
             if (disj) {
                 const withF1 = subst(ast, [disj, disj.f1])
                 const withF2 = subst(ast, [disj, disj.f2])
-                return decompress($(withF1).or(withF2).$, kb)
+                return decompress($(withF1).or(withF2).$)
             }
 
             // const anaphor = findAst(ast, 'anaphor').at(0)
 
             // if (anaphor) {
-            //     return decompress(subst(ast, [anaphor, decompress(anaphor, kb)]), kb)
+            //     return decompress(subst(ast, [anaphor, decompress(anaphor)]))
             // }
 
             return ast
@@ -49,24 +49,24 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         case "equality":
             return ast
         case "conjunction":
-            return $(decompress(ast.f1, kb)).and(decompress(ast.f2, kb)).$
+            return $(decompress(ast.f1)).and(decompress(ast.f2)).$
         case "disjunction":
-            return $(decompress(ast.f1, kb)).or(decompress(ast.f2, kb)).$
+            return $(decompress(ast.f1)).or(decompress(ast.f2)).$
         case "negation":
-            return $(decompress(ast.f1, kb)).isNotTheCase.$
+            return $(decompress(ast.f1)).isNotTheCase.$
         case "existquant":
             if (ast.value.type === 'arbitrary-type') {
                 return {
                     type: 'existquant',
-                    value: $(ast.value.head).suchThat(decompress(ast.value.description, kb)).$,
+                    value: $(ast.value.head).suchThat(decompress(ast.value.description)).$,
                 }
             }
             return ast//TODO
         case "derived-prop":
-            // return $(ast.conseq).when(decompress(ast.when, kb)).$
+            // return $(ast.conseq).when(decompress(ast.when)).$
             return ast //TODO
         case "if-else":
-            return $(decompress(ast.then, kb)).if(decompress(ast.condition, kb)).else(decompress(ast.otherwise, kb)).$
+            return $(decompress(ast.then)).if(decompress(ast.condition)).else(decompress(ast.otherwise)).$
         case "math-expression":
             return ast
         case "anaphor":

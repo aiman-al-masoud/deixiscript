@@ -30,7 +30,7 @@ export function ask(
         return ask(formula2, kb2, { ...opts, preComputeKb: false })
     }
 
-    const formula = decompress(ast, kb)
+    const formula = decompress(ast)
 
     switch (formula.type) {
 

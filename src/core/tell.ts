@@ -21,7 +21,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     eliminations: WorldModel,
 } {
 
-    const ast = decompress(ast1, kb)
+    const ast = decompress(ast1)
 
     let additions: WorldModel = []
     let eliminations: WorldModel = []
