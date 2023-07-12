@@ -1,7 +1,7 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { findAst } from "./findAst.ts";
-import { expand } from "./getAnaphora.ts";
+import { anaphorToArbitraryType } from "./getAnaphora.ts";
 import { subst } from "./subst.ts";
 import { tell } from "./tell.ts";
 import { DerivationClause, isAnaphor } from "./types.ts";
@@ -9,7 +9,7 @@ import { DerivationClause, isAnaphor } from "./types.ts";
 export function removeAnaphors(ast: DerivationClause) {
 
     const conseqAnaphors = Object.values(ast.conseq).filter(isAnaphor) // maybe use findAst()
-    const conseqArbiTypes = conseqAnaphors.map(expand)
+    const conseqArbiTypes = conseqAnaphors.map(anaphorToArbitraryType)
 
     const kb = conseqArbiTypes.reduce(
         (a, b) => tell($(b.head).suchThat($(b.description).and($(b.head).has(b.head.value).as('var-name')).$).exists.$, a).kb,
@@ -17,7 +17,7 @@ export function removeAnaphors(ast: DerivationClause) {
     )
 
     const whenAnaphors = findAst(ast.when, 'anaphor', 2)
-    const whenArbiTypes = whenAnaphors.map(expand)
+    const whenArbiTypes = whenAnaphors.map(anaphorToArbitraryType)
 
     const whenReplacements = whenArbiTypes.map((x, i) => {
         const v = $('varname:thing').$

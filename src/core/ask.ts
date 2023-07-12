@@ -6,7 +6,7 @@ import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
-import { expand, getAnaphora } from "./getAnaphora.ts";
+import { anaphorToArbitraryType, getAnaphora } from "./getAnaphora.ts";
 
 export function ask(
     ast: LLangAst,
@@ -92,7 +92,7 @@ export function ask(
             if (formula.value.type === 'arbitrary-type') {
                 if (findAll(formula.value.description, [formula.value.head], kb).length) return { result: $(true).$, kb }
             } else {
-                return ask({ type: 'existquant', value: expand(formula.value) }, kb)
+                return ask({ type: 'existquant', value: anaphorToArbitraryType(formula.value) }, kb)
             }
 
             break

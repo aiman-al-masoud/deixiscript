@@ -8,7 +8,7 @@ import { Anaphor, ArbitraryType, Constant, KnowledgeBase } from "./types.ts"
 export function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
 
 
-    const { description, head } = expand(anaphor)
+    const { description, head } = anaphorToArbitraryType(anaphor)
 
     const maps = findAll(description, [head], kb)
 
@@ -41,7 +41,7 @@ export function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
 }
 
 
-export function expand(anaphor: Anaphor): ArbitraryType {
+export function anaphorToArbitraryType(anaphor: Anaphor): ArbitraryType {
     const head = $(`x${random()}:${anaphor.headType}`).$
 
     if (anaphor.whose && anaphor.whose.t1.type === 'entity') {

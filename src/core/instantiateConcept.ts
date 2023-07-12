@@ -25,7 +25,7 @@ export function instantiateConcept(
         .filter(isHasSentence)
         .filter(x => whereAdditions.some(y => y[0] === x[0] && y[2] === y[2]))
 
-    const fillersWithoutConflicts = subtractWorldModels(
+    const fillersWithoutConflicts = subtractWorldModels( // where prevails over defaults
         isAAdditions,
         conflicts,
     )
