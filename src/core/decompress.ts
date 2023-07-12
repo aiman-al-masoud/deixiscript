@@ -63,7 +63,8 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
             }
             return ast//TODO
         case "derived-prop":
-            return $(ast.conseq).when(decompress(ast.when, kb)).$
+            // return $(ast.conseq).when(decompress(ast.when, kb)).$
+            return ast //TODO
         case "if-else":
             return $(decompress(ast.then, kb)).if(decompress(ast.condition, kb)).else(decompress(ast.otherwise, kb)).$
         case "math-expression":
@@ -75,6 +76,8 @@ export function decompress(ast: LLangAst, kb: KnowledgeBase): LLangAst {
             // }
             // return referents[0]
             return ast
+        case 'arbitrary-type':
+            return ast //TODO
 
     }
 

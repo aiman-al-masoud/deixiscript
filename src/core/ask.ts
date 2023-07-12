@@ -122,9 +122,16 @@ export function ask(
     }
 
     const result = kb.derivClauses.some(dc => {
-        const map = match(dc.conseq, formula)
+
+        const map = match(dc.conseq, formula) // need to resolve anaphors in formula
 
         if (!map) {
+            return false
+        }
+
+        const prec = subst(dc.preconditions, map)
+
+        if (!ask(prec, kb).result.value) {
             return false
         }
 

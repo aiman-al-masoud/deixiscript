@@ -80,11 +80,13 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             for (const dc of kb.derivClauses) {
 
                 const map = match(dc.conseq, ast)
+                if (!map) continue
 
-                if (map) {
-                    const whenn = subst(dc.when, map)
-                    return tell(whenn, kb)
-                }
+                const prec = subst(dc.preconditions, map)
+                if (!ask(prec, kb).result.value) continue
+
+                const whenn = subst(dc.when, map)
+                return tell(whenn, kb)
             }
             break
         default:

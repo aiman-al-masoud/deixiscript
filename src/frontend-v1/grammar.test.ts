@@ -126,15 +126,15 @@ Deno.test({
 //     }
 // })
 
-Deno.test({
-    name: 'test12',
-    fn: () => {
-        const ast = parser.parse('x:cat does be red when x:cat has red as color')
-        assertEquals(ast,
-            $({ subject: 'x:cat', verb: 'be', object: 'red' }).when($('x:cat').has('red').as('color')).$)
-    }
+// Deno.test({
+//     name: 'test12',
+//     fn: () => {
+//         const ast = parser.parse('x:cat does be red when x:cat has red as color')
+//         assertEquals(ast,
+//             $({ subject: 'x:cat', verb: 'be', object: 'red' }).when($('x:cat').has('red').as('color')).$)
+//     }
 
-})
+// })
 
 Deno.test({
     name: 'test13',

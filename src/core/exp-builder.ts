@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
@@ -106,6 +106,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'derived-prop',
             when: makeAst(formula),
             conseq: this.exp,
+            preconditions: $(true).$
         })
 
     }
@@ -157,6 +158,13 @@ export class ExpBuilder<T extends LLangAst> {
     get exists(): ExpBuilder<ExistentialQuantification> {
 
         if (this.exp.type === 'anaphor') {
+            return new ExpBuilder<ExistentialQuantification>({
+                type: 'existquant',
+                value: this.exp,
+            })
+        }
+
+        if (this.exp.type === 'arbitrary-type') {
             return new ExpBuilder<ExistentialQuantification>({
                 type: 'existquant',
                 value: this.exp,
@@ -385,3 +393,8 @@ $.the = (x: string): ExpBuilder<Anaphor> => {
 }
 
 $.a = $.the
+
+/**
+ * Empty knowledge base.
+ */
+$.emptyKb = { wm: [], derivClauses: [], deicticDict: {} } as KnowledgeBase

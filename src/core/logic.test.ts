@@ -9,6 +9,8 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
+import { removeAnaphors } from "./removeAnaphors.ts";
+import { match } from "./match.ts";
 
 const standardKb = getStandardKb()
 
@@ -860,7 +862,7 @@ Deno.test({
 
         const q = $.the('cat').which($._.has('red').as('color')).$
         const result = ask(q, kb0).result
-        // console.log(result)
+        assertEquals(result, $('cat#1').$)
     }
 })
 
@@ -878,9 +880,44 @@ Deno.test({
     name: 'test47',
     fn: () => {
         // creation of new thing via existquant+ANAPHOR
-        const kb0: KnowledgeBase = { derivClauses: [], wm: [], deicticDict: {} }
+        const kb0 = $.emptyKb
         const kb1 = tell($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb0).kb
         const result = ask($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb1).result.value
         assert(result)
+    }
+})
+
+Deno.test({
+    name: 'test48',
+    fn: () => {
+
+        const kb0 = $.a('cat').whose($('fur').has('red').as('color')).exists
+            .and($.a('cat').whose($('fur').has('black').as('color')).exists)
+            .dump().kb
+
+        const kb1 = tell($.the('cat').whose($('fur').has('red').as('color')).has(1).as('hunger')
+            .and($.the('cat').whose($('fur').has('black').as('color')).has(1).as('hunger')).$, kb0).kb
+
+        const dc =
+            $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' })
+                .when($.the('cat').has(1).as('hunger')).$
+
+        const dcPrime = removeAnaphors(dc)
+
+        const statement1 = $({ subject: ask($.a('cat').whose($('fur').has('red').as('color')).$, kb1).result, verb: 'be', object: 'hungry' }).$
+        const statement2 = $({ subject: ask($.a('cat').whose($('fur').has('black').as('color')).$, kb1).result, verb: 'be', object: 'hungry' }).$
+
+        const map1 = match(dcPrime.conseq, statement1)
+        const map2 = match(dcPrime.conseq, statement2)
+
+        const prec1 = subst(dcPrime.preconditions, map1!)
+        const prec2 = subst(dcPrime.preconditions, map2!)
+
+        const result1 = ask(prec1, kb1).result.value
+        assert(result1)
+
+        const result2 = ask(prec2, kb1).result.value
+        assert(!result2)
+
     }
 })

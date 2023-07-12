@@ -133,7 +133,9 @@ function substOnce(
                 ...Object.fromEntries(newEntries),
             }
         case 'anaphor':
-            throw new Error('anaphor subst not implemented!')
+            return ast
+            // TODO
+            // throw new Error('anaphor subst not implemented!') 
         case 'math-expression':
             return {
                 type: 'math-expression',
