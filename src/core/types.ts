@@ -35,6 +35,7 @@ export type Constant =
     | Number
     | StringLiteral
     | Anything
+    | Nothing
 export type SimpleFormula =
     | AtomicFormula
     | Equality
@@ -70,6 +71,11 @@ export type Entity = {
 export type Anything = {
     type: 'anything',
     value: '*',
+}
+
+export type Nothing = {
+    type: 'nothing',
+    value: '~',
 }
 
 export type Boolean = {
@@ -212,28 +218,6 @@ export function isConst(t: LLangAst): t is Constant {
 export function isTerm(a: LLangAst): a is Term {
     return isVar(a) || isConst(a)
 }
-
-// export function atomsEqual(a1: Atom, a2: Atom): boolean {
-
-//     if (a1.type === 'list-pattern' && a2.type === 'list-pattern') {
-//         return atomsEqual(a1.seq, a2.seq) && atomsEqual(a1.value, a2.value)
-//     }
-
-//     if (a1.type === 'list-literal' && a2.type === 'list-literal') {
-//         if (a1.value.length === a2.value.length && a1.value.map((x, i) => atomsEqual(a2.value[i], x))) return true
-//     }
-
-//     if (isVar(a1) && isVar(a2)) {
-//         return a1.value === a2.value && a1.varType === a2.varType
-//     }
-
-//     if (isConst(a1) && isConst(a2)) {
-//         return a1.value === a2.value
-//     }
-
-//     return false
-
-// }
 
 export function isHasSentence(s: IsASentence | HasSentence): s is HasSentence {
     return s.length === 3

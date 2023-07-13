@@ -1,14 +1,15 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { getAtoms } from "./getAtoms.ts";
 import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence, isVar } from "./types.ts";
+import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
-import { anaphorToArbitraryType } from "./getAnaphora.ts";
+import { anaphorToArbitraryType, removeAnaphors } from "./removeAnaphors.ts";
+import { findAst } from "./findAst.ts";
+
 
 /**
  * Assume the AST is true, and compute resulting knowledge base.
@@ -59,10 +60,10 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             addedDerivationClauses = result1.kb.derivClauses.concat(result2.kb.derivClauses)
             break
         case 'disjunction':
-            console.warn('serialized only first formula of disjunction')
+            // console.warn('serialized only first formula of disjunction')
             return tell(ast.f1, kb)
         case 'derived-prop':
-            addedDerivationClauses = [ast]
+            addedDerivationClauses = [removeAnaphors(ast, kb)]
             break
         case 'if-else':
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
@@ -97,7 +98,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
     eliminations = [
         ...eliminations,
-        ...additions.flatMap(s => getExcludedBy(s, kb)),
+        ...additions.flatMap(s => getExcludedBy(s, kb)), //slow
     ]
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
@@ -145,7 +146,7 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
                 after: $([event]).$
             } as GeneralizedFormula
 
-            const variables = getAtoms(x).filter(isVar)
+            const variables = findAst(x, 'variable')
             const results = findAll(x, variables, kb, false)
 
             const eventConsequences = results.map(r => subst(x, r))

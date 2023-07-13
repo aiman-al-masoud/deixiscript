@@ -9,8 +9,6 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
-import { removeAnaphors } from "./removeAnaphors.ts";
-import { match } from "./match.ts";
 
 const standardKb = getStandardKb()
 
@@ -902,22 +900,16 @@ Deno.test({
             $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' })
                 .when($.the('cat').has(1).as('hunger')).$
 
-        const dcPrime = removeAnaphors(dc)
+        const kb2 = tell(dc, kb1).kb
 
-        const statement1 = $({ subject: ask($.a('cat').whose($('fur').has('red').as('color')).$, kb1).result, verb: 'be', object: 'hungry' }).$
-        const statement2 = $({ subject: ask($.a('cat').whose($('fur').has('black').as('color')).$, kb1).result, verb: 'be', object: 'hungry' }).$
+        const statement1 = $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
+        const statement2 = $({ subject: $.a('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).$
 
-        const map1 = match(dcPrime.conseq, statement1)
-        const map2 = match(dcPrime.conseq, statement2)
-
-        const prec1 = subst(dcPrime.preconditions, map1!)
-        const prec2 = subst(dcPrime.preconditions, map2!)
-
-        const result1 = ask(prec1, kb1).result.value
+        const result1 = ask(statement1, kb2).result.value
+        const result2 = ask(statement2, kb2).result.value
         assert(result1)
-
-        const result2 = ask(prec2, kb1).result.value
         assert(!result2)
 
     }
 })
+

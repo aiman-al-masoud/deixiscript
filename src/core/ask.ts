@@ -6,7 +6,7 @@ import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
-import { anaphorToArbitraryType, getAnaphora } from "./getAnaphora.ts";
+import { removeAnaphors } from "./removeAnaphors.ts";
 
 export function ask(
     ast: LLangAst,
@@ -30,7 +30,7 @@ export function ask(
         return ask(formula2, kb2, { ...opts, preComputeKb: false })
     }
 
-    const formula = decompress(ast)
+    const formula = removeAnaphors(decompress(ast), kb)
 
     switch (formula.type) {
 
@@ -48,8 +48,10 @@ export function ask(
         case 'list-pattern':
             return { result: formula, kb }
         case 'anaphor':
-            const referents = getAnaphora(formula, kb)
-            return ask(referents[0], kb, opts)
+            // console.log('ANAPHOR WAS CALLED')
+            // const referents = getAnaphora(formula, kb)
+            // return ask(referents[0], kb, opts)
+            break
         case 'equality':
             const t10 = ask(formula.t1, kb, opts).result
             const t20 = ask(formula.t2, kb, opts).result
@@ -89,13 +91,15 @@ export function ask(
             break
         case 'existquant':
 
-            if (formula.value.type === 'arbitrary-type') {
-                if (findAll(formula.value.description, [formula.value.head], kb).length) return { result: $(true).$, kb }
-            } else {
-                return ask({ type: 'existquant', value: anaphorToArbitraryType(formula.value) }, kb)
-            }
+            const thing = ask(formula.value, kb).result
+            if (thing.type !== 'nothing') return { result: $(true).$, kb }
 
             break
+        case 'arbitrary-type':
+
+            const res = findAll(formula.description, [formula.head], kb).at(0)?.get(formula.head) ?? { type: 'nothing', value: '~' }
+            return { result: res, kb }
+
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
         case 'math-expression':
@@ -123,17 +127,11 @@ export function ask(
 
     const result = kb.derivClauses.some(dc => {
 
-        const map = match(dc.conseq, formula) // need to resolve anaphors in formula
-
-        if (!map) {
-            return false
-        }
+        const map = match(dc.conseq, formula)
+        if (!map) return false
 
         const prec = subst(dc.preconditions, map)
-
-        if (!ask(prec, kb).result.value) {
-            return false
-        }
+        if (!ask(prec, kb).result.value) return false
 
         const whenn = subst(dc.when, map)
         return ask(whenn, kb, opts).result.value

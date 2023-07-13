@@ -14,7 +14,7 @@ export function subst(formula: LLangAst, arg: unknown): LLangAst {
         return subst(formula, deepMapOf([arg] as [LLangAst, LLangAst][]))
     }
 
-    throw new Error('illegal argument!')
+    throw new Error('illegal argument! ' + arg)
 }
 
 function substOnce<T extends LLangAst>(
@@ -133,9 +133,7 @@ function substOnce(
                 ...Object.fromEntries(newEntries),
             }
         case 'anaphor':
-            return ast
-            // TODO
-            // throw new Error('anaphor subst not implemented!') 
+            return ast //TODO
         case 'math-expression':
             return {
                 type: 'math-expression',
@@ -149,10 +147,11 @@ function substOnce(
         case 'question':
             throw new Error('not implemented!')
         case 'anything':
-            // throw new Error('not implemented!')
             return ast
         case 'arbitrary-type':
             throw new Error('not implemented!')
+        case 'nothing':
+            return ast
 
     }
 

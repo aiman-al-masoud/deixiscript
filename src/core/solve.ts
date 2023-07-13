@@ -1,7 +1,6 @@
 import { $ } from "./exp-builder.ts";
 import { findAst } from "./findAst.ts";
-import { getAtoms } from "./getAtoms.ts";
-import { Equality, LLangAst, Number, isVar } from "./types.ts";
+import { Equality, LLangAst, Number } from "./types.ts";
 
 /**
  * Interprets an Equality as a linear equation and solves it.
@@ -9,7 +8,7 @@ import { Equality, LLangAst, Number, isVar } from "./types.ts";
  */
 export function solve(ast: Equality): Number {
 
-    if (getAtoms(ast).filter(isVar).length > 1) {
+    if (findAst(ast, 'variable').length > 1) {
         throw new Error('Cannot solve equation with more than one variable')
     }
 
