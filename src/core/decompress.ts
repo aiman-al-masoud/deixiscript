@@ -1,5 +1,5 @@
 import { $ } from "./exp-builder.ts";
-import { findAst } from "./findAst.ts";
+import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { LLangAst } from "./types.ts";
 
@@ -22,7 +22,7 @@ export function decompress(ast: LLangAst): LLangAst {
 
             // maybe will produce bug if deeply nested and? keep nesting down?
 
-            const conj = findAst(ast, 'conjunction').at(0)
+            const conj = findAsts(ast, 'conjunction').at(0)
 
             if (conj) {
                 const withF1 = subst(ast, [conj, conj.f1])
@@ -30,7 +30,7 @@ export function decompress(ast: LLangAst): LLangAst {
                 return decompress($(withF1).and(withF2).$)
             }
 
-            const disj = findAst(ast, 'disjunction').at(0)
+            const disj = findAsts(ast, 'disjunction').at(0)
 
             if (disj) {
                 const withF1 = subst(ast, [disj, disj.f1])

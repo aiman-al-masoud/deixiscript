@@ -8,7 +8,7 @@ import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASe
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
 import { anaphorToArbitraryType, removeAnaphors } from "./removeAnaphors.ts";
-import { findAst } from "./findAst.ts";
+import { findAsts } from "./findAsts.ts";
 
 
 /**
@@ -146,7 +146,7 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
                 after: $([event]).$
             } as GeneralizedFormula
 
-            const variables = findAst(x, 'variable')
+            const variables = findAsts(x, 'variable')
             const results = findAll(x, variables, kb, false)
 
             const eventConsequences = results.map(r => subst(x, r))

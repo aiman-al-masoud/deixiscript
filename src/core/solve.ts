@@ -1,5 +1,5 @@
 import { $ } from "./exp-builder.ts";
-import { findAst } from "./findAst.ts";
+import { findAsts } from "./findAsts.ts";
 import { Equality, LLangAst, Number } from "./types.ts";
 
 /**
@@ -8,7 +8,7 @@ import { Equality, LLangAst, Number } from "./types.ts";
  */
 export function solve(ast: Equality): Number {
 
-    if (findAst(ast, 'variable').length > 1) {
+    if (findAsts(ast, 'variable').length > 1) {
         throw new Error('Cannot solve equation with more than one variable')
     }
 
@@ -60,6 +60,6 @@ export function solve(ast: Equality): Number {
 
 export function findEquations(ast: LLangAst): Equality[] {
 
-    return findAst(ast, 'equality')
+    return findAsts(ast, 'equality')
         .filter(x => x.t1.type === 'math-expression' || x.t2.type === 'math-expression')
 }

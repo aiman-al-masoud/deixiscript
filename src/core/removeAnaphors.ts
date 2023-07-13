@@ -1,6 +1,6 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { findAst } from "./findAst.ts";
+import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { tell } from "./tell.ts";
 import { Anaphor, Constant, DerivationClause, KnowledgeBase, LLangAst, isAnaphor } from "./types.ts";
@@ -12,7 +12,7 @@ export function removeAnaphors<T extends LLangAst>(ast: T, kb0: KnowledgeBase): 
 export function removeAnaphors(ast: LLangAst, kb0: KnowledgeBase): LLangAst {
 
     if (ast.type !== 'derived-prop') {
-        const anaphors = findAst(ast, 'anaphor', 2)
+        const anaphors = findAsts(ast, 'anaphor', 2)
         const swaps = anaphors.map(x => [x, getAnaphora(x, kb0)[0]] as [Anaphor, Constant])
         if (swaps.length === 0) return ast
         const result = subst(ast, ...swaps)
@@ -27,7 +27,7 @@ export function removeAnaphors(ast: LLangAst, kb0: KnowledgeBase): LLangAst {
         kb0,
     )
 
-    const whenAnaphors = findAst(ast.when, 'anaphor', 2)
+    const whenAnaphors = findAsts(ast.when, 'anaphor', 2)
     const whenArbiTypes = whenAnaphors.map(anaphorToArbitraryType)
 
     const whenReplacements = whenArbiTypes.map((x, i) => {
