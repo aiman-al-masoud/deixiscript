@@ -251,10 +251,6 @@ export function isFormulaWithNonNullAfter(ast: LLangAst): ast is AtomicFormula |
         && (ast.after.type !== 'list-literal' || !!ast.after.value.length)
 }
 
-export function isSimple(ast: LLangAst): ast is SimpleFormula {
-    return isAtomicFormula(ast) || ast.type === 'equality' || ast.type === 'generalized'
-}
-
 export function isWmAtom(x: unknown): x is WmAtom {
     return typeof x === 'string' || typeof x === 'boolean' || typeof x === 'number'
 }
