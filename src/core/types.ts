@@ -192,7 +192,7 @@ export type DerivationClause = {
     type: 'derived-prop',
     conseq: AtomicFormula | GeneralizedFormula,
     when: LLangAst,
-    preconditions: LLangAst,
+    // preconditions: LLangAst,
 }
 
 export type IfElse = {

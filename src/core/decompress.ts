@@ -77,6 +77,7 @@ export function decompress(ast: LLangAst): LLangAst {
             // return referents[0]
             return ast
         case 'arbitrary-type':
+        case 'nothing':
             return ast //TODO
 
     }

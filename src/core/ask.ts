@@ -7,6 +7,7 @@ import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
 import { removeAnaphors } from "./removeAnaphors.ts";
+import { isNotNullish } from "../utils/isNotNullish.ts";
 
 export function ask(
     ast: LLangAst,
@@ -30,7 +31,7 @@ export function ask(
         return ask(formula2, kb2, { ...opts, preComputeKb: false })
     }
 
-    const formula = removeAnaphors(decompress(ast), kb)
+    const formula = removeAnaphors(decompress(ast))
 
     switch (formula.type) {
 
@@ -51,7 +52,7 @@ export function ask(
             // console.log('ANAPHOR WAS CALLED')
             // const referents = getAnaphora(formula, kb)
             // return ask(referents[0], kb, opts)
-            break
+            throw new Error('!!!!')
         case 'equality':
             const t10 = ask(formula.t1, kb, opts).result
             const t20 = ask(formula.t2, kb, opts).result
@@ -97,8 +98,27 @@ export function ask(
             break
         case 'arbitrary-type':
 
-            const res = findAll(formula.description, [formula.head], kb).at(0)?.get(formula.head) ?? { type: 'nothing', value: '~' }
-            return { result: res, kb }
+            // const res = findAll(formula.description, [formula.head], kb).at(0)?.get(formula.head) ?? { type: 'nothing', value: '~' }
+            // return { result: res, kb }
+
+            const maps = findAll(formula.description, [formula.head], kb)
+            const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
+            candidates.sort(
+                (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
+            )
+
+            const res = candidates.at(0) //?? { type: 'nothing', value: '~' }
+            // return { result: res, kb }
+
+            if (res) {
+                return ask(res, kb, opts)
+            } else {
+                return { result: { type: 'nothing', value: '~' }, kb }
+            }
+
+        // return ask(res, kb, opts)
+
+
 
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
@@ -127,11 +147,13 @@ export function ask(
 
     const result = kb.derivClauses.some(dc => {
 
+
         const map = match(dc.conseq, formula)
         if (!map) return false
+        // console.log(dc)
 
-        const prec = subst(dc.preconditions, map)
-        if (!ask(prec, kb).result.value) return false
+        // const prec = subst(dc.preconditions, map)
+        // if (!ask(prec, kb).result.value) return false
 
         const whenn = subst(dc.when, map)
         return ask(whenn, kb, opts).result.value

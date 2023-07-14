@@ -1,5 +1,5 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
@@ -71,6 +71,48 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
     } else if (template.type === 'entity' && f.type === 'entity') {
         return template.value === f.value ? deepMapOf() : undefined
+
+    } else if (template.type === 'anything' && isConst(f)) {
+        return deepMapOf()
+
+    } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
+
+
+        const m1 = match(template.head, f.head)
+        const m2 = match(template.description, f.description)
+
+        return reduceMatchList([m1, m2])
+
+    } else if (template.type === 'existquant' && f.type === 'existquant') {
+
+        const m1 = match(template.value, f.value)
+        return m1
+
+    } else if (template.type === 'arbitrary-type' && f.type === 'variable') { //??
+
+        const m1 = match(template.head, f)
+        return m1
+
+    } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
+
+        const m1 = match(template, f.head)
+        return m1
+
+    } else if (template.type === 'conjunction' && f.type === 'conjunction') {
+
+        const m1 = match(template.f1, f.f1)
+        const m2 = match(template.f2, f.f2)
+        const m11 = match(template.f1, f.f2)
+        const m22 = match(template.f2, f.f1)
+
+        return reduceMatchList([m1, m2]) ?? reduceMatchList([m11, m22])
+
+    } else if (template.type === 'variable' && f.type === 'variable') {
+
+        //TODO
+        // return template.varType === f.varType ? deepMapOf([[template, f]]) : undefined // may undermatch in case of subtype/supertype relationships
+        return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations????
+
     } else if (template.type === 'variable' && isAtom(f)) {
         return deepMapOf([[template, f]])
     }
@@ -84,3 +126,13 @@ function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
     return ms.map(x => x as AstMap)
         .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }
+
+
+
+// import { $ } from "./exp-builder.ts";
+// import { removeAnaphors } from "./removeAnaphors.ts";
+// const x = removeAnaphors($.the('cat').whose($('fur').has('black').as('color')).$)
+// const y = removeAnaphors($.the('cat').whose($('fur').has('black').as('color')).$)
+// const m = match(x, y)
+// console.log(m)
+
