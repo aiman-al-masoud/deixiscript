@@ -34,7 +34,6 @@ export function findAll(
 
     const results = allCombos.filter(c => {
         const sub = subst(formula, c)
-        // console.log('sub=', sub)
         return ask(sub, kb, { preComputeKb, storeDeixis: false }).result.value
     })
 
