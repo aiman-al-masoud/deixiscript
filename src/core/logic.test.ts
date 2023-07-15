@@ -141,28 +141,12 @@ const model: WorldModel =
         .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
         .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
         .and($({ subject: 'door', modal: 'can', verb: 'have', object: 'opening' }))
-
-        // .and($({ vr: 'vr#21', part: 'opening', ofConcept: 'door', isA: 'door-opening-event' }))
         .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
-
-
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
-
         .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
-
-
-
-        // -------------------------
         .and($({ subject: 'thing', modal: 'can', verb: 'have', object: 'x-coordinate' }))
         .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
-
-        // .and($({ subject: 'thing', modal: 'can', verb: 'have', object: 'door' }))
-        // .and($({ annotation: 'ann#522', subject: 'door', owner: 'thing', verb: 'default', recipient: 'door' }))
-
-        // -------------------------
-
         .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
-
         .dump(derivationClauses).kb.wm
 
 
@@ -171,8 +155,6 @@ const kb: KnowledgeBase = {
     derivClauses: derivationClauses,
     deicticDict: standardKb.deicticDict,
 }
-
-// console.log(kb.wm)
 
 Deno.test({
     name: 'test1',
@@ -219,49 +201,9 @@ Deno.test({
 
         const ok = $('door#1').has('open').as('state').after(['door-opening-event#1']).$
         const ok2 = $('door#1').has('closed').as('state').after(['door-closing-event#1']).$
-        // const ok3 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'door-opening-event#1']).$
-        // const no = $('door#1').has('open').as('state').after(['event#1']).$
-        // const ok4 = $('door#1').has('open').as('state').after(['door-opening-event#1', 'event#1']).$
-        // const no2 = $('door#1').has('open').as('state').after(['door-closing-event#1', 'event#1']).$
-        // const ok5 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-opening-event#1', 'door-closing-event#1']).$
-        // const no3 = $('door#1').has('closed').as('state').after(['door-opening-event#1', 'door-closing-event#1', 'door-opening-event#1', 'event#1']).$
-        // const find1 = $('door#1').has('open').as('state').after(['e:event']).$
 
         assert(ask(ok, kb).result.value)
         assert(ask(ok2, kb).result.value)
-        // assert(test(ok3, kb))
-        // assert(!test(no, kb))
-        // assert(test(ok4, kb))
-        // assert(!test(no2, kb))
-        // assert(test(ok5, kb))
-        // assert(!test(no3, kb))
-        // const results = findAll(find1, [$('e:event').$], kb)
-        // assertEquals(results[0].get($('e:event').$)?.value, 'door-opening-event#1')
-
-    }
-})
-
-Deno.test({
-    name: 'test6',
-    fn: () => {
-
-        const dp = $({ isStupid: 'x:thing' }).when(
-            $('x:thing').has('stupid').as('intelligence')
-        ).$
-
-        const kb: KnowledgeBase = {
-            wm: [
-                ['capra', 'animal'],
-                ['cat', 'animal'],
-                ['capra', 'stupid', 'intelligence'],
-                ['cat', 'smart', 'intelligence'],
-            ],
-            derivClauses: [dp],
-            deicticDict: {},
-        }
-
-        assert(ask($({ isStupid: 'capra' }).$, kb).result.value)
-        assert(!ask($({ isStupid: 'cat' }).$, kb).result.value)
 
     }
 })
@@ -269,7 +211,7 @@ Deno.test({
 Deno.test({
     name: 'test7',
     fn: () => {
-        assert(ask($(2).isGreaterThan(1).$, { wm: [], derivClauses: [], deicticDict: {}, }).result.value)
+        assert(ask($(2).isGreaterThan(1).$, $.emptyKb).result.value)
     }
 })
 
@@ -455,25 +397,6 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test20',
-    fn: () => {
-        // console.log(getParts('person', kb.wm))
-        // console.log(getParts('birth-event', kb.wm))
-        // console.log(getParts('multiple-birth-event', kb.wm))
-
-        // const q = $({ vr: 'vr:value-restriction', part: 'mother', ofConcept: 'birth-event', isA: 'value:thing' })
-        // const result = findAll(q.$, [$('vr:value-restriction').$, $('value:thing').$], kb)
-        // console.log(result[0].get($('value:thing').$))
-
-        // console.log(getParts('move-event', kb.wm))
-        // console.log(getParts('agent', kb.wm))
-        // console.log(getParts('door', kb.wm))
-        // console.log(getAtoms($('door#1').has('open').as('state').$))
-
-    }
-})
-
-Deno.test({
     name: 'test21',
     fn: () => {
         assert(ask($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb).result.value)
@@ -485,29 +408,21 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test22',
-//     fn: () => {
-//         const y = $('x:thing').suchThat($('x:thing').isa('person')).isa('agent').$
-//         assert(ask(y, kb).result.value)
-//     }
-// })
 
+Deno.test({
+    name: 'test23',
+    fn: () => {
+        const kb2 = $('cat#1').has(3).as('weight')
+            .and($('dog#1').has(4).as('weight'))
+            .and($('cat#1').isa('cat'))
+            .and($('dog#1').isa('dog'))
+            .dump().kb
 
-// Deno.test({
-//     name: 'test23',
-//     fn: () => {
-//         const kb2 = $('cat#1').has(3).as('weight')
-//             .and($('dog#1').has(4).as('weight'))
-//             .and($('cat#1').isa('cat'))
-//             .and($('dog#1').isa('dog'))
-//             .dump().kb.wm
-
-//         // ((the number such that (the cat has the number as weight)) is (3))
-//         const y = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
-//         assert(ask(y, { wm: kb2, derivClauses: [], deicticDict: {}, }).result.value)
-//     }
-// })
+        // ((the number such that (the cat has the number as weight)) is (3))
+        const x = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
+        assert(ask(x, kb2).result.value)
+    }
+})
 
 
 Deno.test({
@@ -517,7 +432,6 @@ Deno.test({
         assertEquals(ask(q, kb).result, $(3).$)
     }
 })
-
 
 Deno.test({
     name: 'test25',
@@ -546,7 +460,6 @@ Deno.test({
     }
 })
 
-
 Deno.test({
     name: 'test27',
     fn: () => {
@@ -566,31 +479,31 @@ Deno.test({
 })
 
 
-// Deno.test({
-//     name: 'test28',
-//     fn: () => {
-//         const kb =
-//             $('cat#2').isa('cat')
-//                 .and($('cat#3').isa('cat'))
-//                 .and($('cat#1').isa('cat'))
-//                 .and($('cat#1').has('big').as('size'))
-//                 .and($('cat#4').isa('cat'))
-//                 .dump().kb
+Deno.test({
+    name: 'test28',
+    fn: () => {
+        const kb =
+            $('cat#2').isa('cat')
+                .and($('cat#3').isa('cat'))
+                .and($('cat#1').isa('cat'))
+                .and($('cat#1').has('big').as('size'))
+                .and($('cat#4').isa('cat'))
+                .dump().kb
 
-//         const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
+        const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
 
-//         const kb2 = tell(command.$, kb).kb
+        const kb2 = tell(command.$, kb).kb
 
-//         assert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result.value)
+        assert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result.value)
 
-//     }
-// })
+    }
+})
 
 Deno.test({
     name: 'test29',
     fn: () => {
         const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
-        const kb2 = tell(q.$, { wm: [], derivClauses: [], deicticDict: {} }).kb
+        const kb2 = tell(q.$, $.emptyKb).kb
         assert(ask(q.$, kb2).result.value)
     }
 })
@@ -653,25 +566,6 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test35',
-//     fn: () => {
-//         // better anaphora test
-//         const kb0: KnowledgeBase = { ...kb, deicticDict: {} }
-//         const { result: result0, kb: kb1 } = ask($('x:agent').suchThat().$, kb0)
-//         assertEquals(Object.values(kb1.deicticDict).length, 1)
-//         const { result: result1, kb: kb2 } = ask($('x:agent').suchThat().$, kb1)
-//         assertEquals(result1, result0)
-//         const { result: result2, kb: kb3 } = ask($('x:thing').suchThat().$, kb2)
-//         assertEquals(result2, result1)
-//         const { result: result3, kb: kb4 } = ask($('x:door').suchThat().$, kb3)
-//         assertEquals(Object.values(kb4.deicticDict).length, 2)
-//         const { result: result4, kb: _ } = ask($('x:thing').suchThat().$, kb4)
-//         assertEquals(result3, result4)
-//     }
-// })
-
-
 Deno.test({
     name: 'test35',
     fn: () => {
@@ -696,24 +590,11 @@ Deno.test({
     fn: () => {
         // where should override defaults
         const result = evaluate($('x:thing').exists.where($('x:thing').has(200).as('x-coordinate')).tell.$, kb)
-        // console.log(result.additions)
-        // const result1 = evaluate($('n:number').suchThat($('x:thing').exists.where($('x:thing').has('n:number').as('x-coordinate'))).ask.$, result.kb)
-        // console.log(result1.result)
         const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
         assert(result1.length === 1)
         assertEquals(result1[0].get($('n:number').$), $(200).$)
     }
 })
-
-// Deno.test({
-//     name: 'test37',
-//     fn: () => {
-//         // anaphora with freshly calculated numbers
-//         const results = evaluate($(1).plus(1).$, kb)
-//         assertEquals(evaluate($('x:number').suchThat().ask.$, results.kb).result, $(2).$)
-//     }
-// })
-
 
 Deno.test({
     name: 'test37',
@@ -752,7 +633,6 @@ Deno.test({
     }
 })
 
-
 Deno.test({
     name: 'test40',
     fn: () => {
@@ -786,25 +666,8 @@ Deno.test({
         const r9 = ask($('door#1').isa($('door').or('agent')).$, kb).result
         assert(r9.value)
 
-        // const ast = $({ x: 'x:thing' }).$
-        // console.log(substAll(ast, deepMapOf([[$('x:thing').$, $('capra#1').and('capra#2').$]])))
     }
 })
-
-// Deno.test({
-//     name: 'test42',
-//     fn: () => {
-//         const x = $('x:person').suchThat($(true), '*').isa('agent').$
-//         // const y = decompress(x, kb)
-//         // console.log(y)
-//         const z = ask(x, kb).result.value
-//         assert(z)
-//         const q2 = $('x:door').suchThat($(true), '*').isa('agent').$
-//         const r2 = ask(q2, kb).result.value
-//         assert(!r2)
-//     }
-// })
-
 
 Deno.test({
     name: 'test43',

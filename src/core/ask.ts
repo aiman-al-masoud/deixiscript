@@ -75,6 +75,9 @@ export function ask(
             const t22 = ask(formula.t2, kb, opts).result
             const as = ask(formula.as, kb, opts).result
 
+            // console.log('has-formula=',formula)
+            // console.log('t11=', t11, 't22=', t22, 'as=', as)
+
             if (kb.wm.filter(isHasSentence).find(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
@@ -98,9 +101,12 @@ export function ask(
             break
         case 'arbitrary-type':
 
+        //    console.log('arbitrary-type=',formula)
+
             // const res = findAll(formula.description, [formula.head], kb).at(0)?.get(formula.head) ?? { type: 'nothing', value: '~' }
             // return { result: res, kb }
-
+            // console.log('description=', formula.description, 'head=', formula.head)
+            
             const maps = findAll(formula.description, [formula.head], kb)
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
             candidates.sort(
@@ -109,6 +115,10 @@ export function ask(
 
             const res = candidates.at(0) //?? { type: 'nothing', value: '~' }
             // return { result: res, kb }
+
+            // console.log('formula=', formula)
+            // console.log('res=', res)
+            // console.log('-------')
 
             if (res) {
                 return ask(res, kb, opts)
@@ -146,7 +156,6 @@ export function ask(
     }
 
     const result = kb.derivClauses.some(dc => {
-
 
         const map = match(dc.conseq, formula)
         if (!map) return false

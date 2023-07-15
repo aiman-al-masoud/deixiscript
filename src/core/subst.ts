@@ -28,12 +28,6 @@ function substOnce(
     replacement: LLangAst,
 ): LLangAst {
 
-    // if (oldTerm.type==='anaphor' && replacement.type==='arbitrary-type'){
-    //     console.log('ast=', ast)
-    //     console.log('oldTerm=', oldTerm)
-    //     console.log('replacement=', replacement)
-    // }
-
     if (astsEqual(oldTerm, ast)) return replacement
 
     switch (ast.type) {
@@ -63,46 +57,23 @@ function substOnce(
                 f1: substOnce(ast.f1, oldTerm, replacement),
             }
         case 'existquant':
-     
 
-            if (ast.value.type === 'anaphor') {
-                
-                // return ast
-                // substOnce(ast, oldTerm, replacement)
-                return {
-                    type : 'existquant',
-                    value : substOnce(ast.value, oldTerm, replacement),
-                }
-            }
-
-            if (astsEqual(ast.value.head, oldTerm)) {
-                return ast
-            } else {
-                return {
-                    type: 'existquant',
-                    value: {
-                        type: 'arbitrary-type',
-                        head: ast.value.head,
-                        description: substOnce(ast.value.description, oldTerm, replacement),
-                    }
-                }
+            return {
+                type: 'existquant',
+                value: substOnce(ast.value, oldTerm, replacement),
             }
 
         case 'arbitrary-type':
-            
+
             if (astsEqual(ast.head, oldTerm)) {
                 return ast
             } else {
                 return {
-                    type: 'existquant',
-                    value: {
-                        type: 'arbitrary-type',
-                        head: ast.head,
-                        description: substOnce(ast.description, oldTerm, replacement),
-                    }
+                    type: 'arbitrary-type',
+                    head: ast.head,
+                    description: substOnce(ast.description, oldTerm, replacement),
                 }
             }
-
 
         case 'is-a-formula':
             return {
@@ -177,8 +148,6 @@ function substOnce(
             throw new Error('not implemented!')
         case 'anything':
             return ast
-        case 'arbitrary-type':
-            throw new Error('not implemented!')
         case 'nothing':
             return ast
 
