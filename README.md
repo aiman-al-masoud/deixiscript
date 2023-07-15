@@ -74,7 +74,8 @@ make it happen
 - no context sentitivity
   - the cat eats the kibble piece
   - it jumps it resolves to "the kibble piece"
-- no cataphora
+- no cataphora.
+- no ambiguous sentence multi-tree parse.
 
 # Notes
 
