@@ -13,10 +13,10 @@ const derivationClauses: DerivationClause[] = [
 
     // inheritance
     $({ subject: 'c:thing', verb: 'extend', object: 'sc:thing' }).when(
-        $('c:thing').has('sc:thing').as('superconcept')
+        $('c:thing').isa('sc:thing')
             .or($('intermediate:thing').exists.where(
-                $('intermediate:thing').has('sc:thing').as('superconcept')
-                    .and($('c:thing').has('intermediate:thing').as('superconcept'))
+                $('intermediate:thing').isa('sc:thing')
+                    .and($('c:thing').isa('intermediate:thing'))
             ))
     ).$,
 
@@ -26,59 +26,59 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
     // value restriction
-    $({ annotation: 'vr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
-        $('owner-concept:thing').has('vr:thing').as('part')
-            .and($('vr:thing').isa('value-restriction'))
-            .and($('vr:thing').has('part:thing').as('subject'))
-            .and($('vr:thing').has('value:thing').as('object'))
+    $({ annotation: 'vr:value-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
+        $('owner-concept:thing').has('vr:value-restriction').as('part')
+            .and($('vr:value-restriction').isa('value-restriction'))
+            .and($('vr:value-restriction').has('part:thing').as('subject'))
+            .and($('vr:value-restriction').has('value:thing').as('object'))
     ).$,
 
     // number restriction
-    $({ annotation: 'nr:thing', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'amount', recipient: 'value:thing' }).when(
-        $('owner-concept:thing').has('nr:thing').as('part')
-            .and($('nr:thing').isa('number-restriction'))
-            .and($('nr:thing').has('part:thing').as('subject'))
-            .and($('nr:thing').has('value:thing').as('object'))
+    $({ annotation: 'nr:number-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'amount', recipient: 'value:thing' }).when(
+        $('owner-concept:thing').has('nr:number-restriction').as('part')
+            .and($('nr:number-restriction').isa('number-restriction'))
+            .and($('nr:number-restriction').has('part:thing').as('subject'))
+            .and($('nr:number-restriction').has('value:thing').as('object'))
     ).$,
 
     // cancel annotation
-    $({ annotation: 'ann:thing', subject: 'old:thing', verb: 'be', object: 'cancelled', ablative: 'concept:thing' }).when(
-        $('concept:thing').has('ann:thing').as('part')
-            .and($('ann:thing').isa('cancel-annotation'))
-            .and($('ann:thing').has('old:thing').as('subject'))
+    $({ annotation: 'ann:cancel-annotation', subject: 'old:thing', verb: 'be', object: 'cancelled', ablative: 'concept:thing' }).when(
+        $('concept:thing').has('ann:cancel-annotation').as('part')
+            .and($('ann:cancel-annotation').isa('cancel-annotation'))
+            .and($('ann:cancel-annotation').has('old:thing').as('subject'))
     ).$,
 
     // default annotation
-    $({ annotation: 'ann:thing', subject: 'prop:thing', owner: 'concept:thing', verb: 'default', recipient: 'default:thing' }).when(
-        $('concept:thing').has('ann:thing').as('part')
-            .and($('ann:thing').isa('default-annotation'))
-            .and($('ann:thing').has('prop:thing').as('subject'))
-            .and($('ann:thing').has('default:thing').as('object'))
+    $({ annotation: 'ann:default-annotation', subject: 'prop:thing', owner: 'concept:thing', verb: 'default', recipient: 'default:thing' }).when(
+        $('concept:thing').has('ann:default-annotation').as('part')
+            .and($('ann:default-annotation').isa('default-annotation'))
+            .and($('ann:default-annotation').has('prop:thing').as('subject'))
+            .and($('ann:default-annotation').has('default:thing').as('object'))
     ).$,
 
     // excludes annotation
-    $({ annotation: 'ann:thing', subject: 'p1:thing', verb: 'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
-        $('c:thing').has('ann:thing').as('part')
-            .and($('ann:thing').isa('mutex-annotation'))
-            .and($('ann:thing').has('p1:thing').as('p'))
-            .and($('ann:thing').has('p2:thing').as('p'))
-            .and($('ann:thing').has('prop:thing').as('prop'))
-            .and($('ann:thing').has('c:thing').as('concept'))
+    $({ annotation: 'ann:mutex-annotation', subject: 'p1:thing', verb: 'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
+        $('c:thing').has('ann:mutex-annotation').as('part')
+            .and($('ann:mutex-annotation').isa('mutex-annotation'))
+            .and($('ann:mutex-annotation').has('p1:thing').as('p'))
+            .and($('ann:mutex-annotation').has('p2:thing').as('p'))
+            .and($('ann:mutex-annotation').has('prop:thing').as('prop'))
+            .and($('ann:mutex-annotation').has('c:thing').as('concept'))
     ).$,
 
     // single-entry-for annotation
-    $({ ann: 'ann:thing', onlyHaveOneOf: 'prop:thing', onConcept: 'c:thing' }).when(
-        $('c:thing').has('ann:thing').as('part')
-            .and($('ann:thing').isa('only-one-annotation'))
-            .and($('ann:thing').has('prop:thing').as('prop'))
-            .and($('ann:thing').has('c:thing').as('concept'))
+    $({ ann: 'ann:only-one-annotation', onlyHaveOneOf: 'prop:thing', onConcept: 'c:thing' }).when(
+        $('c:thing').has('ann:only-one-annotation').as('part')
+            .and($('ann:only-one-annotation').isa('only-one-annotation'))
+            .and($('ann:only-one-annotation').has('prop:thing').as('prop'))
+            .and($('ann:only-one-annotation').has('c:thing').as('concept'))
     ).$,
 
     // mutually exclusive concepts annotation
-    $({ ann: 'ann:thing', concept: 'c1:thing', excludes: 'c2:thing' }).when(
-        $('ann:thing').isa('mutex-concepts-annotation')
-            .and($('ann:thing').has('c1:thing').as('concept'))
-            .and($('ann:thing').has('c2:thing').as('concept'))
+    $({ ann: 'ann:mutex-concepts-annotation', concept: 'c1:thing', excludes: 'c2:thing' }).when(
+        $('ann:mutex-concepts-annotation').isa('mutex-concepts-annotation')
+            .and($('ann:mutex-concepts-annotation').has('c1:thing').as('concept'))
+            .and($('ann:mutex-concepts-annotation').has('c2:thing').as('concept'))
     ).$,
 
     // empty event sequence always possible

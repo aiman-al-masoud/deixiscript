@@ -4,11 +4,12 @@ import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence } from "./types.ts";
-import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
+import { addWorldModels, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
 import { removeAnaphors } from "./removeAnaphors.ts";
 import { findAsts } from "./findAsts.ts";
 import { random } from "../utils/random.ts";
+import { isNotNullish } from "../utils/isNotNullish.ts";
 
 
 /**
@@ -96,7 +97,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
     eliminations = [
         ...eliminations,
-        ...additions.flatMap(s => getExcludedBy(s, kb)), //slow
+        ...additions.flatMap(s => getExcludedBy(s, kb)),
     ]
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
@@ -166,7 +167,7 @@ function getExcludedBy(h: HasSentence | IsASentence, kb: KnowledgeBase) { //TODO
         return getExcludedByMutexConcepts(h, kb)
     }
 
-    const concepts = getConceptsOf(h[0], kb.wm)
+    const concepts = findAll($(h[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
 
     const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
 
@@ -193,7 +194,8 @@ function getExcludedBy(h: HasSentence | IsASentence, kb: KnowledgeBase) { //TODO
 
 function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldModel {
 
-    const concepts = getConceptsOf(i[0], kb.wm)
+    const concepts = findAll($(i[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
+
     const qs = concepts.map(c => $({ ann: 'x:mutex-concepts-annotation', concept: c, excludes: 'c2:thing' }))
 
     const r =
@@ -228,8 +230,8 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
 
 function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined { //TODO: optimize
     const result = findAll(
-        $({ annotation: 'x:thing', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
-        [$('x:thing').$, $('z:thing').$],
+        $({ annotation: 'x:default-annotation', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
+        [$('x:default-annotation').$, $('z:thing').$],
         kb,
     )
     return result[0]?.get($('z:thing').$)?.value

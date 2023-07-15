@@ -1,7 +1,7 @@
 import { isConst, KnowledgeBase, isHasSentence, LLangAst, isFormulaWithAfter, Atom, astsEqual } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
-import { addWorldModels, getSupersAndConceptsOf } from "./wm-funcs.ts";
+import { addWorldModels, getConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
@@ -63,7 +63,7 @@ export function ask(
 
             if (
                 isConst(t1) && isConst(t2)
-                && getSupersAndConceptsOf(t1.value, kb.wm).includes(t2.value)
+                && getConceptsOf(t1.value, kb.wm).includes(t2.value)
             ) return { result: $(true).$, kb }
             break
         case 'has-formula':

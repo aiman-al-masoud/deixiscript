@@ -117,29 +117,12 @@ const model: WorldModel =
         .and($({ annotation: 'nr#2', subject: 'baby', owner: 'birth-event', verb: 'amount', recipient: 1 }))
         .and($({ subject: 'person', modal: 'can', verb: 'have', object: 'birth' }))
         .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', object: 'birth-event' }))
-        .and($({ subject: 'open', verb: 'extend', object: 'state' }))
-        .and($({ subject: 'closed', verb: 'extend', object: 'state' }))
-        .and($({ subject: 'state', verb: 'extend', object: 'thing' }))
         .and($({ subject: 'event', modal: 'can', verb: 'have', object: 'duration' }))
         .and($({ annotation: 'ann#41', subject: 'nr#2', verb: 'be', object: 'cancelled', ablative: 'multiple-birth-event' }))
-        .and($({ subject: 'agent', verb: 'extend', object: 'thing' }))
         .and($({ subject: 'agent', modal: 'can', verb: 'have', object: 'movement' }))
         .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
-        .and($({ subject: 'person', verb: 'extend', object: 'agent' }))
-        .and($({ subject: 'woman', verb: 'extend', object: 'person' }))
-        .and($({ subject: 'woman', verb: 'extend', object: 'person' }))
-        .and($({ subject: 'event', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'door-opening-event', verb: 'extend', object: 'event' }))
         .and($({ subject: 'door-opening-event', modal: 'can', verb: 'have', object: 'object' }))
-        .and($({ subject: 'birth-event', verb: 'extend', object: 'event' }))
-        .and($({ subject: 'time-instant', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'point-in-space', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'city', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'multiple-birth-event', verb: 'extend', object: 'birth-event' }))
-        .and($({ subject: 'move-event', verb: 'extend', object: 'event' }))
         .and($({ subject: 'move-event', modal: 'can', verb: 'have', object: 'destination' }))
-        .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
         .and($({ subject: 'door', modal: 'can', verb: 'have', object: 'opening' }))
         .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
@@ -147,6 +130,24 @@ const model: WorldModel =
         .and($({ subject: 'thing', modal: 'can', verb: 'have', object: 'x-coordinate' }))
         .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
         .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
+
+        .and($({ subject: 'agent', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'open', verb: 'extend', object: 'state' }))
+        .and($({ subject: 'closed', verb: 'extend', object: 'state' }))
+        .and($({ subject: 'state', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'person', verb: 'extend', object: 'agent' }))
+        .and($({ subject: 'woman', verb: 'extend', object: 'person' }))
+        .and($({ subject: 'woman', verb: 'extend', object: 'person' }))
+        .and($({ subject: 'event', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'door-opening-event', verb: 'extend', object: 'event' }))
+        .and($({ subject: 'birth-event', verb: 'extend', object: 'event' }))
+        .and($({ subject: 'time-instant', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'point-in-space', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'city', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'multiple-birth-event', verb: 'extend', object: 'birth-event' }))
+        .and($({ subject: 'move-event', verb: 'extend', object: 'event' }))
+        .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
+        .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
         .dump(derivationClauses).kb.wm
 
 
@@ -383,20 +384,6 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test19',
-    fn: () => {
-        const goal = $('door#1').has('open').as('state')
-        const agent = 'person#1'
-        const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
-        const q = $({ subject: seq, verb: 'be', object: 'possible-sequence', beneficiary: agent }).and(goal.after(seq))
-        const seqVars = seq.map(x => $(x).$)
-        const result = findAll(q.$, seqVars, kb)
-        assertEquals(result[0].get($('e1:event').$)?.value, 'move-event#1')
-        assertEquals(result[0].get($('e2:event').$)?.value, 'door-opening-event#1')
-    }
-})
-
-Deno.test({
     name: 'test21',
     fn: () => {
         assert(ask($({ subject: 'agent#007', isNear: 'door#44' }).isNotTheCase.$, kb).result.value)
@@ -611,14 +598,11 @@ Deno.test({
         // mutex concepts test
         const kb0 = tell($('mammal#1').isa('cat').$, kb).kb
         const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
-
         assert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1))
         assert(ask($('mammal#1').isa('dog').$, kb1))
-
         const kb2 = tell($('mammal#1').isa('cat').$, kb0).kb
         assert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2))
         assert(ask($('mammal#1').isa('cat').$, kb2))
-
     }
 })
 
@@ -651,7 +635,7 @@ Deno.test({
         assert(r1.result.value)
         const r2 = ask($('person#1').and('door#1').isa('person').$, kb)
         assert(!r2.result.value)
-        const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
+        // const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
         // console.log(r3)
         const r4 = ask($('person#1').isa($('person').and('agent').$).$, kb).result
         assert(r4.value)
@@ -776,3 +760,16 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test19',
+    fn: () => {
+        const goal = $('door#1').has('open').as('state')
+        const agent = 'person#1'
+        const seq: `${string}:${string}`[] = ['e1:event', 'e2:event']
+        const q = $({ subject: seq, verb: 'be', object: 'possible-sequence', beneficiary: agent }).and(goal.after(seq))
+        const seqVars = seq.map(x => $(x).$)
+        const result = findAll(q.$, seqVars, kb)
+        assertEquals(result[0].get($('e1:event').$)?.value, 'move-event#1')
+        assertEquals(result[0].get($('e2:event').$)?.value, 'door-opening-event#1')
+    }
+})
