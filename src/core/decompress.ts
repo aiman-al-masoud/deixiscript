@@ -56,7 +56,7 @@ export function decompress(ast: LLangAst): LLangAst {
                 }
             }
             return ast//TODO
-        case "derived-prop":
+        case "derivation-clause":
             // return $(ast.conseq).when(decompress(ast.when)).$
             return ast //TODO
         case "if-else":

@@ -104,7 +104,7 @@ export class ExpBuilder<T extends LLangAst> {
         }
 
         return new ExpBuilder({
-            type: 'derived-prop',
+            type: 'derivation-clause',
             when: makeAst(formula),
             conseq: this.exp,
             preconditions: $(true).$

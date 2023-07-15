@@ -123,7 +123,7 @@ function substOnce(
         case 'string':
             return astsEqual(ast, oldTerm) ? replacement : ast
 
-        case 'derived-prop':
+        case 'derivation-clause':
             throw new Error('not implemented!')
         case 'generalized':
             const newEntries = Object.entries(ast).filter(e => isLLangAst(e[1])).map(e => [e[0], substOnce(e[1] as LLangAst, oldTerm, replacement)] as const)

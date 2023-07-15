@@ -189,10 +189,9 @@ export type ArbitraryType = {
 }
 
 export type DerivationClause = {
-    type: 'derived-prop',
+    type: 'derivation-clause',
     conseq: AtomicFormula | GeneralizedFormula,
     when: LLangAst,
-    // preconditions: LLangAst,
 }
 
 export type IfElse = {

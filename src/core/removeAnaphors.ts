@@ -13,7 +13,7 @@ export function removeAnaphors<T extends LLangAst>(ast: T): T
 export function removeAnaphors<T extends LLangAst>(ast: T): T
 export function removeAnaphors(ast: LLangAst): LLangAst {
 
-    if (ast.type !== 'derived-prop') {
+    if (ast.type !== 'derivation-clause') {
         const anaphors = findAsts(ast, 'anaphor') as Anaphor[]
         const subs = anaphors.map(x => [x, anaphorToArbitraryType(x)] as [LLangAst, LLangAst])
         if (subs.length === 0) return ast
@@ -52,7 +52,7 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
     )
 
     const result: DerivationClause = {
-        type: 'derived-prop',
+        type: 'derivation-clause',
         conseq: newConseq,
         when: newWhen,
     }

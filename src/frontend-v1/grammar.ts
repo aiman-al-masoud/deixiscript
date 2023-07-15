@@ -26,7 +26,7 @@ const astTypes = stringLiterals(
     'disjunction',
     'negation',
     'existquant',
-    'derived-prop',
+    'derivation-clause',
     'if-else',
     'math-expression',
     'happen-sentence',
@@ -186,7 +186,7 @@ export const syntaxes: SyntaxMap<
         { types: ['formula'], role: 'f2' },
     ],
     formula: [
-        { types: ['if-else', 'conjunction', 'derived-prop', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
+        { types: ['if-else', 'conjunction', 'derivation-clause', 'disjunction', 'existquant', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
     ],
     disjunction: [
         { types: ['simple-formula'], role: 'f1' },
@@ -209,7 +209,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'where' },
     ],
-    'derived-prop': [
+    'derivation-clause': [
         { types: ['simple-formula'], role: 'conseq' },
         { types: ['space'], number: '*' },
         { literals: ['when'] },
