@@ -233,3 +233,23 @@ Deno.test({
         console.log(ast)// remove type:'verb-sentence'
     }
 })
+
+Deno.test({
+    name: 'test25',
+    fn: () => {
+        const ast = parser.parse('does jump in car')
+        console.log(ast)
+        const ast2 = parser.parse('has red as color')
+        console.log(ast2)
+        const ast3 = parser.parse('the cat')
+        console.log(ast3)
+        const ast4 = parser.parse('the cat whose fur has red as color')
+        console.log(ast4)
+        const ast5 = parser.parse('the cat which has red as color')
+        assertEquals(ast5, $.the('cat').which($._.has('red').as('color')).$)
+        console.log(ast5)
+        const ast6 = parser.parse('the cat which has red as color does eat the mouse')
+        console.log(ast6)
+
+    }
+})

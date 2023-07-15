@@ -41,6 +41,9 @@ const astTypes = stringLiterals(
     'complement',
     'anaphor-description',
     'string',
+
+    'whose-clause',
+    'which-clause',
 )
 
 const roles = stringLiterals(
@@ -75,6 +78,10 @@ const roles = stringLiterals(
     'recipient',
     'location',
     'object',
+
+    'headType',
+    'whose',
+    'which',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -135,14 +142,14 @@ export const syntaxes: SyntaxMap<
         { types: ['variable', 'constant'], role: 'value' },
     ],
     equality: [
-        { types: ['atom'], role: 't1' },
+        { types: ['atom'], role: 't1', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['equals', 'equal', '='] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 't2' },
     ],
     "is-a-formula": [
-        { types: ['atom'], role: 't1' },
+        { types: ['atom'], role: 't1', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['is'] },
         { types: ['space'], number: '+' },
@@ -158,7 +165,7 @@ export const syntaxes: SyntaxMap<
         { types: ['atom'], role: 'after' },
     ],
     'has-formula': [
-        { types: ['atom'], role: 't1' },
+        { types: ['atom'], role: 't1', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['has'] },
         { types: ['space'], number: '*' },
@@ -230,7 +237,7 @@ export const syntaxes: SyntaxMap<
         { types: ['formula'], role: 'otherwise' },
     ],
     'math-expression': [
-        { types: ['atom'], role: 'left' },
+        { types: ['atom'], role: 'left', number: '1|0' },
         { types: ['space'], number: '*' },
         { literals: ['+', '-', '*', '/', '>', '<'], role: 'operator' },
         { types: ['space'], number: '*' },
@@ -241,7 +248,7 @@ export const syntaxes: SyntaxMap<
         { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     "verb-sentence": [
-        { types: ['atom'], role: 'subject' },
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['does'] },
         { types: ['space'], number: '*' },
@@ -261,10 +268,23 @@ export const syntaxes: SyntaxMap<
     anaphor: [
         { literals: ['the'] },
         { types: ['space'], number: '*' },
-        { types: ['variable'], role: 'head' },
+        { types: ['digits'], role: 'number', number: '1|0', defaultsTo: 1 },
         { types: ['space'], number: '*' },
-        { types: ['anaphor-description'], number: '*', expand: true, defaultsTo: { description: $(true).$ } },
+        { types: ['identifier'], role: 'headType' },
+        { types: ['space'], number: '*' },
+        { types: ['which-clause', 'whose-clause'], number: '1|0', expand: true },
     ],
+    'which-clause': [
+        { literals: ['which'] },
+        { types: ['space'], number: '*' },
+        { types: ['simple-formula'], role: 'which' },
+    ],
+    'whose-clause': [
+        { literals: ['whose'] },
+        { types: ['space'], number: '*' },
+        { types: ['simple-formula'], role: 'whose' },
+    ],
+
     'anaphor-description': [
         { literals: ['such that'] },
         { types: ['space'], number: '*' },
@@ -292,5 +312,6 @@ export const syntaxes: SyntaxMap<
     ],
     complement: [
         { types: ['locative-in', 'dative-to'], expand: true, sep: 'space' }
-    ]
+    ],
+
 }
