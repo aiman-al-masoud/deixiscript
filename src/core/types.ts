@@ -24,8 +24,6 @@ export type Atom =
 export type Formula =
     | SimpleFormula
     | CompositeFormula
-    | Anaphor
-    | ArbitraryType
 export type Term =
     | Constant
     | Variable
@@ -52,6 +50,8 @@ export type CompositeFormula =
     | DerivationClause
     | IfElse
     | MathExpression
+    | Anaphor
+    | ArbitraryType
 
 export type Command = {
     type: 'command',
