@@ -1,14 +1,14 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { instantiateConcept } from "./instantiateConcept.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence } from "./types.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
 import { removeAnaphors } from "./removeAnaphors.ts";
 import { findAsts } from "./findAsts.ts";
+import { random } from "../utils/random.ts";
 
 
 /**
@@ -139,10 +139,7 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
         if (isFormulaWithNonNullAfter(dc.conseq)) {
 
-            const x: AtomicFormula | GeneralizedFormula = {
-                ...dc.conseq,
-                after: $([event]).$
-            } as GeneralizedFormula
+            const x = subst(dc.conseq, [dc.conseq.after, $([event]).$])
 
             const variables = findAsts(x, 'variable')
             const results = findAll(x, variables, kb, false)
@@ -194,7 +191,7 @@ function getExcludedBy(h: HasSentence | IsASentence, kb: KnowledgeBase) { //TODO
 
 }
 
-export function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldModel {
+function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldModel {
 
     const concepts = getConceptsOf(i[0], kb.wm)
     const qs = concepts.map(c => $({ ann: 'x:mutex-concepts-annotation', concept: c, excludes: 'c2:thing' }))
@@ -237,3 +234,36 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
     )
     return result[0]?.get($('z:thing').$)?.value
 }
+
+/**
+ * Creates a new instance of a concept (an individual).
+ * Returns the additions to the World Model ONLY.
+ */
+function instantiateConcept(
+    ast: ArbitraryType,
+    kb: KnowledgeBase,
+): WorldModel {
+
+    const id = ast.head.varType + '#' + random()
+    const where = subst(ast.description, [ast.head, $(id).$])
+
+    const isAAdditions = tell($(id).isa(ast.head.varType).$, kb).additions
+    const whereAdditions = tell(where, kb).additions
+
+    const conflicts = isAAdditions
+        .filter(isHasSentence)
+        .filter(x => whereAdditions.some(y => y[0] === x[0] && y[2] === y[2]))
+
+    const fillersWithoutConflicts = subtractWorldModels( // where prevails over defaults
+        isAAdditions,
+        conflicts,
+    )
+
+    const additions = addWorldModels(
+        fillersWithoutConflicts,
+        whereAdditions,
+    )
+
+    return additions
+}
+
