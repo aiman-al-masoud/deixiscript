@@ -113,8 +113,8 @@ export type ListPattern = {
 export type Anaphor = { // implicit reference
     type: 'anaphor',
     headType: string,
-    which?: HasFormula | IsAFormula | Equality,
-    whose?: HasFormula | IsAFormula | Equality,
+    which?: HasFormula | IsAFormula | Equality | GeneralizedFormula,
+    whose?: HasFormula | IsAFormula | Equality | GeneralizedFormula,
     number: 1 | '*',
 }
 

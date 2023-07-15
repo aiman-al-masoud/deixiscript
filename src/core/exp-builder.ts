@@ -233,7 +233,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality>): ExpBuilder<Anaphor> {
+    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality| GeneralizedFormula>): ExpBuilder<Anaphor> {
 
         if (this.exp.type !== 'anaphor') {
             throw new Error('')

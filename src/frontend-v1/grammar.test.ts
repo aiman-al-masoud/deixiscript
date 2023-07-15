@@ -250,6 +250,7 @@ Deno.test({
         console.log(ast5)
         const ast6 = parser.parse('the cat which has red as color does eat the mouse')
         console.log(ast6)
-
+        const ast7 = parser.parse('the mouse which the cat does eat')
+        assertEquals(ast7, $.the('mouse').which($({ subject: $.the('cat').$, verb: 'eat', object: $._.$ })).$)
     }
 })
