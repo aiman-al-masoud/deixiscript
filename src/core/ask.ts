@@ -93,7 +93,10 @@ export function ask(
             break
         case 'arbitrary-type':
 
+            
             const maps = findAll(formula.description, [formula.head], kb)
+            // console.log(formula, maps)
+
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
             candidates.sort(
                 (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)

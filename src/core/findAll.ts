@@ -20,6 +20,7 @@ export function findAll(
         const map = match(x.conseq, formula)
         if (!map) return []
         const when = subst(x.when, map)
+        // console.log('when=', when)
         const mathExps = findAsts(when, 'math-expression')
         const numbers = mathExps.map(x => ask(x, kb).result)
         return numbers as Constant[]

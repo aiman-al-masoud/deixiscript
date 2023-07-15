@@ -9,6 +9,7 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
+import { removeAnaphors } from "./removeAnaphors.ts";
 
 const standardKb = getStandardKb()
 
@@ -773,6 +774,7 @@ Deno.test({
         const kb = $.the('panel').which($._.has(30).as('x-coord')).exists.dump().kb
         const kb2 = tell($.the('panel').has(100).as('width').$, kb).kb
         const kb3 = tell(dc.$, kb2).kb
+        // kb3 = tell($(130).isa('number').$, kb3).kb
 
         const q = $('p:panel').suchThat().has(130).as('max-x').$
         const result = ask(q, kb3).result
@@ -781,6 +783,11 @@ Deno.test({
         const q2 = $('n:number').suchThat($('p:panel').suchThat().has('n:number').as('max-x')).$
         const result2 = ask(q2, kb3).result
         assertEquals(result2, $(130).$)
+
+        const q3 = $.the('number').which($('p:panel').suchThat().has($._.$).as('max-x')).$
+
+        const result3 = ask(q3, kb3).result
+        assertEquals(result3, $(130).$)
 
     }
 })

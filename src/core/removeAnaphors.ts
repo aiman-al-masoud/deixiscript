@@ -62,6 +62,9 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
 }
 
 function anaphorToArbitraryType(anaphor: Anaphor): ArbitraryType {
+
+    
+
     const head = $(`x${random()}:${anaphor.headType}`).$
 
     if (anaphor.whose && anaphor.whose.t1.type === 'entity') {
@@ -76,8 +79,11 @@ function anaphorToArbitraryType(anaphor: Anaphor): ArbitraryType {
 
     if (anaphor.which) {
         const description = subst(anaphor.which, [$._.$, head])
+        // if (description.t1.type === 'anaphor') description.t1 = $('x:panel').$
+        // console.log(description)
         return { description, head, type: 'arbitrary-type' }
     }
 
+    // console.log('head=', head)
     return { description: $(true).$, head, type: 'arbitrary-type' }
 }
