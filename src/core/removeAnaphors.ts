@@ -22,7 +22,7 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
     }
 
     const conseqAnaphors = Object.values(ast.conseq).filter(isAnaphor) // maybe use findAst()
-    const conseqArbiTypes = conseqAnaphors.map(anaphorToArbitraryType)
+    const conseqArbiTypes = conseqAnaphors.map(x => anaphorToArbitraryType(x))
 
     const kb = conseqArbiTypes.reduce(
         (a, b) => tell($(b.head).suchThat($(b.description).and($(b.head).has(b.head.value).as('var-name')).$).exists.$, a).kb,
@@ -30,7 +30,7 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
     )
 
     const whenAnaphors = findAsts(ast.when, 'anaphor', 2)
-    const whenArbiTypes = whenAnaphors.map(anaphorToArbitraryType)
+    const whenArbiTypes = whenAnaphors.map(x => anaphorToArbitraryType(x))
 
     const whenReplacements = whenArbiTypes.map((x, i) => {
         const v = $('varname:thing').$
@@ -61,27 +61,38 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
 
 }
 
-function anaphorToArbitraryType(anaphor: Anaphor): ArbitraryType {
 
-    
 
-    const head = $(`x${random()}:${anaphor.headType}`).$
+function anaphorToArbitraryType(ast: Anaphor): ArbitraryType
+function anaphorToArbitraryType<T extends LLangAst>(ast: T): T
+function anaphorToArbitraryType<T extends LLangAst>(ast: T): T
+function anaphorToArbitraryType(ast: LLangAst): LLangAst {
 
-    if (anaphor.whose && anaphor.whose.t1.type === 'entity') {
-        const owned = $(`y${random()}:${anaphor.whose.t1.value}`).$
+    if (ast.type !== 'anaphor') {
+        const anaphors = findAsts(ast, 'anaphor')
+        const anaphorsToArbi = anaphors.map(x => [x, anaphorToArbitraryType(x)] as [LLangAst, LLangAst])
+        if (anaphorsToArbi.length === 0) return ast
+        const result = subst(ast, ...anaphorsToArbi)
+        return result
+    }
+
+    const head = $(`x${random()}:${ast.headType}`).$
+
+    if (ast.whose && ast.whose.t1.type === 'entity') {
+        const owned = $(`y${random()}:${ast.whose.t1.value}`).$
 
         const description = $(owned).exists.where($(head).has(owned)
-            .and(subst(anaphor.whose, [anaphor.whose.t1, owned])))
+            .and(subst(ast.whose, [ast.whose.t1, owned])))
             .$
 
         return { description, head, type: 'arbitrary-type' }
     }
 
-    if (anaphor.which) {
-        const description = subst(anaphor.which, [$._.$, head])
+    if (ast.which) {
+        const description = subst(ast.which, [$._.$, head])
         // if (description.t1.type === 'anaphor') description.t1 = $('x:panel').$
         // console.log(description)
-        return { description, head, type: 'arbitrary-type' }
+        return { description: anaphorToArbitraryType(description), head, type: 'arbitrary-type' }
     }
 
     // console.log('head=', head)

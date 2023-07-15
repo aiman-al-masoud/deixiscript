@@ -789,6 +789,10 @@ Deno.test({
         const result3 = ask(q3, kb3).result
         assertEquals(result3, $(130).$)
 
+        const q4 = $.the('number').which($.the('panel').has($._.$).as('max-x')).$
+        const result4 = ask(q4, kb3).result
+        assertEquals(result4, $(130).$)
+
     }
 })
 
