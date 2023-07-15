@@ -126,13 +126,3 @@ function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
     return ms.map(x => x as AstMap)
         .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }
-
-
-
-// import { $ } from "./exp-builder.ts";
-// import { removeAnaphors } from "./removeAnaphors.ts";
-// const x = removeAnaphors($.the('cat').whose($('fur').has('black').as('color')).$)
-// const y = removeAnaphors($.the('cat').whose($('fur').has('black').as('color')).$)
-// const m = match(x, y)
-// console.log(m)
-

@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, isFormulaWithAfter, Formula, Atom, astsEqual } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, isFormulaWithAfter, Atom, astsEqual } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { addWorldModels, getSupersAndConceptsOf } from "./wm-funcs.ts";
@@ -27,8 +27,8 @@ export function ask(
         const events = ast.after.value.map(x => x.value)
         const eventSentences = events.map(x => $(x).happens.$)
         const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
-        const formula2 = { ...ast, after: $([]).$ } as Formula
-        return ask(formula2, kb2, { ...opts, preComputeKb: false })
+        const formula = subst(ast, [ast.after, $([]).$])
+        return ask(formula, kb2, { ...opts, preComputeKb: false })
     }
 
     const formula = removeAnaphors(decompress(ast))
@@ -49,9 +49,6 @@ export function ask(
         case 'list-pattern':
             return { result: formula, kb }
         case 'anaphor':
-            // console.log('ANAPHOR WAS CALLED')
-            // const referents = getAnaphora(formula, kb)
-            // return ask(referents[0], kb, opts)
             throw new Error('!!!!')
         case 'equality':
             const t10 = ask(formula.t1, kb, opts).result
@@ -75,9 +72,6 @@ export function ask(
             const t22 = ask(formula.t2, kb, opts).result
             const as = ask(formula.as, kb, opts).result
 
-            // console.log('has-formula=',formula)
-            // console.log('t11=', t11, 't22=', t22, 'as=', as)
-
             if (kb.wm.filter(isHasSentence).find(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
@@ -94,41 +88,24 @@ export function ask(
             if (ask(formula.f1, kb, opts).result.value || ask(formula.f2, kb, opts).result.value) return { result: $(true).$, kb }
             break
         case 'existquant':
-
             const thing = ask(formula.value, kb).result
             if (thing.type !== 'nothing') return { result: $(true).$, kb }
-
             break
         case 'arbitrary-type':
 
-        //    console.log('arbitrary-type=',formula)
-
-            // const res = findAll(formula.description, [formula.head], kb).at(0)?.get(formula.head) ?? { type: 'nothing', value: '~' }
-            // return { result: res, kb }
-            // console.log('description=', formula.description, 'head=', formula.head)
-            
             const maps = findAll(formula.description, [formula.head], kb)
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
             candidates.sort(
                 (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
             )
 
-            const res = candidates.at(0) //?? { type: 'nothing', value: '~' }
-            // return { result: res, kb }
-
-            // console.log('formula=', formula)
-            // console.log('res=', res)
-            // console.log('-------')
+            const res = candidates.at(0)
 
             if (res) {
                 return ask(res, kb, opts)
             } else {
-                return { result: { type: 'nothing', value: '~' }, kb }
+                return { result: $('nothing').$, kb }
             }
-
-        // return ask(res, kb, opts)
-
-
 
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
@@ -159,10 +136,6 @@ export function ask(
 
         const map = match(dc.conseq, formula)
         if (!map) return false
-        // console.log(dc)
-
-        // const prec = subst(dc.preconditions, map)
-        // if (!ask(prec, kb).result.value) return false
 
         const whenn = subst(dc.when, map)
         return ask(whenn, kb, opts).result.value

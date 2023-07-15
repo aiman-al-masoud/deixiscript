@@ -7,7 +7,7 @@ import { ask } from "./ask.ts";
 import { AtomicFormula, DerivationClause, GeneralizedFormula, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isIsASentence } from "./types.ts";
 import { addWorldModels, getConceptsOf, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
-import { /* anaphorToArbitraryType, */ removeAnaphors } from "./removeAnaphors.ts";
+import { removeAnaphors } from "./removeAnaphors.ts";
 import { findAsts } from "./findAsts.ts";
 
 
@@ -69,11 +69,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            // const arbitraryType = ast.value.type === 'anaphor' ? anaphorToArbitraryType(ast.value) : ast.value
-            // additions = instantiateConcept(arbitraryType, kb) //TODO: eliminations
-
             if (ast.value.type === 'anaphor') throw Error('!!!!')
-            additions = instantiateConcept(ast.value, kb) //TODO: eliminations
+            additions = instantiateConcept(ast.value, kb)
 
             break
         case 'negation':
@@ -86,9 +83,6 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
                 const map = match(dc.conseq, ast)
                 if (!map) continue
-
-                // const prec = subst(dc.preconditions, map)
-                // if (!ask(prec, kb).result.value) continue
 
                 const whenn = subst(dc.when, map)
                 return tell(whenn, kb)

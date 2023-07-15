@@ -1,11 +1,12 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase, Nothing } from "./types.ts"
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
 export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
 export function $(x: 'anything'): ExpBuilder<Anything>
+export function $(x: 'nothing'): ExpBuilder<Nothing>
 export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
@@ -372,6 +373,8 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
         return { type: 'variable', value, varType }
     } else if (x === 'anything') {
         return { type: 'anything', value: '*' }
+    } else if (x === 'nothing') {
+        return { type: 'nothing', value: '~' }
     } else {
         return { type: 'entity', value: x }
     }

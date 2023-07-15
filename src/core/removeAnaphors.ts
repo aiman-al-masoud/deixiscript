@@ -3,8 +3,7 @@ import { findAll } from "./findAll.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { tell } from "./tell.ts";
-import { Anaphor, Constant, DerivationClause, KnowledgeBase, LLangAst, isAnaphor } from "./types.ts";
-import { isNotNullish } from "../utils/isNotNullish.ts"
+import { Anaphor, DerivationClause, LLangAst, isAnaphor } from "./types.ts";
 import { random } from "../utils/random.ts"
 import { ArbitraryType } from "./types.ts"
 
@@ -15,29 +14,12 @@ export function removeAnaphors<T extends LLangAst>(ast: T): T
 export function removeAnaphors(ast: LLangAst): LLangAst {
 
     if (ast.type !== 'derived-prop') {
-        // const anaphors = findAsts(ast, 'anaphor', 2)
-        // const swaps = anaphors.map(x => [x, getAnaphora(x, kb0)[0]] as [Anaphor, Constant])
-        // if (swaps.length === 0) return ast
-        // const result = subst(ast, ...swaps)
-        // return result
-
-
         const anaphors = findAsts(ast, 'anaphor') as Anaphor[]
-
-
         const subs = anaphors.map(x => [x, anaphorToArbitraryType(x)] as [LLangAst, LLangAst])
         if (subs.length === 0) return ast
-
         const result = subst(ast, ...subs)
-
-        // if (ast.type==='existquant' && ast.value.type==='anaphor') {
-        //     console.log(subs)
-        //     console.log(result)
-        // }
-
         return result
     }
-
 
     const conseqAnaphors = Object.values(ast.conseq).filter(isAnaphor) // maybe use findAst()
     const conseqArbiTypes = conseqAnaphors.map(anaphorToArbitraryType)
@@ -55,17 +37,12 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
         const query = $(x.description).and($(x.head).has(v).as('var-name')).$ // use match and conseqArbiTypes instead?
         const results = findAll(query, [v, x.head], kb)
         const e = results.at(0)?.get(v)
-
         const e2 = conseqArbiTypes.filter(x => x.head.value === e?.value).at(0)
-        // console.log('oldvars=', oldvars)
-
         return e2 ?? whenArbiTypes[i]
-
-        // return e ? $(`${e?.value}:${x.head.varType}`).$ : whenArbiTypes[i] //whenAnaphors[i] // static scoping would be a better idea (at the moment of derivation clause definition)
     })
 
     const newConseq = conseqArbiTypes.reduce(
-        (f, ab, i) => subst(f, [conseqAnaphors[i], ab /* b.head */]),
+        (f, ab, i) => subst(f, [conseqAnaphors[i], ab]),
         ast.conseq,
     )
 
@@ -74,57 +51,15 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
         ast.when,
     )
 
-    // const conseqRestrictions = conseqArbiTypes.map(x => x.description)
-    // const whenRestrictions = whenArbiTypes.map(x => x.description)
-    // const restrictions = conseqRestrictions.concat(whenRestrictions)
-    // const preconditions = restrictions.length ?
-    //     restrictions.reduce((a, b) => $(a).and(b).$)
-    //     : $(true).$
-
     const result: DerivationClause = {
         type: 'derived-prop',
         conseq: newConseq,
         when: newWhen,
-        // preconditions, //remove!
     }
 
     return result
 
 }
-
-// function getAnaphora(anaphor: Anaphor, kb: KnowledgeBase): Constant[] {
-
-//     const { description, head } = anaphorToArbitraryType(anaphor)
-
-//     const maps = findAll(description, [head], kb)
-
-//     if (maps.length > 1 && anaphor.number === 1) {
-//         console.warn('more than one anaphoric hit!')
-//     } else if (maps.length <= 0) {
-//         // console.warn('no anaphora!')
-//         throw new Error('no anaphora!')
-//     }
-
-//     const candidates = maps.map(x => x.get(head)).filter(isNotNullish)
-
-//     candidates.sort(
-//         (c1, c2) => (kb.deicticDict[c2?.value as string] ?? 0) - (kb.deicticDict[c1?.value as string] ?? 0)
-//     )
-
-//     if (
-//         kb.deicticDict[candidates[0]?.value as number ?? 0]
-//         === kb.deicticDict[candidates[1]?.value as number ?? 0]
-//     ) {
-//         console.warn('no real deictic difference between first and second cadidate')
-//     }
-
-//     if (anaphor.number === 1) {
-//         return [candidates[0]]
-//     } else {
-//         return candidates
-//     }
-
-// }
 
 function anaphorToArbitraryType(anaphor: Anaphor): ArbitraryType {
     const head = $(`x${random()}:${anaphor.headType}`).$
@@ -146,19 +81,3 @@ function anaphorToArbitraryType(anaphor: Anaphor): ArbitraryType {
 
     return { description: $(true).$, head, type: 'arbitrary-type' }
 }
-
-
-
-
-// import { match } from "./match.ts";
-
-// const dc =
-//     $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' })
-//         .when($.the('cat').has(1).as('hunger')).$
-
-// const x = removeAnaphors(dc).conseq
-// const y = removeAnaphors($({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$)
-// const m = match(x, y)
-// console.log(m)
-
-

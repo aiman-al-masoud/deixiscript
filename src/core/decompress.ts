@@ -38,12 +38,6 @@ export function decompress(ast: LLangAst): LLangAst {
                 return decompress($(withF1).or(withF2).$)
             }
 
-            // const anaphor = findAst(ast, 'anaphor').at(0)
-
-            // if (anaphor) {
-            //     return decompress(subst(ast, [anaphor, decompress(anaphor)]))
-            // }
-
             return ast
 
         case "equality":
@@ -78,7 +72,7 @@ export function decompress(ast: LLangAst): LLangAst {
             return ast
         case 'arbitrary-type':
         case 'nothing':
-            return ast //TODO
+            return ast
 
     }
 
