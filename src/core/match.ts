@@ -88,15 +88,15 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         const m1 = match(template.value, f.value)
         return m1
 
-    } else if (template.type === 'arbitrary-type' && f.type === 'variable') { //??
+    } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
 
         const m1 = match(template.head, f)
-        return m1
+        if (m1 !== undefined) return deepMapOf([[f, template]]) // ***
 
     } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
 
         const m1 = match(template, f.head)
-        return m1
+        if (m1 !== undefined) return deepMapOf([[template, f]]) // *** when matching variable to arbitrary-type or vice-versa don't lose any info, go with arbitrary-type!
 
     } else if (template.type === 'conjunction' && f.type === 'conjunction') {
 

@@ -761,6 +761,31 @@ Deno.test({
 })
 
 Deno.test({
+    name: 'test49',
+    fn: () => {
+
+        const dc = $('p:panel').has('n:number').as('max-x').when(
+            $('n:number')
+                .equals($('y:number').suchThat($('p:panel').has('y:number').as('width'))
+                    .plus($('z:number').suchThat($('p:panel').has('z:number').as('x-coord'))))
+        )
+
+        const kb = $.the('panel').which($._.has(30).as('x-coord')).exists.dump().kb
+        const kb2 = tell($.the('panel').has(100).as('width').$, kb).kb
+        const kb3 = tell(dc.$, kb2).kb
+
+        const q = $('p:panel').suchThat().has(130).as('max-x').$
+        const result = ask(q, kb3).result
+        assert(result.value)
+
+        const q2 = $('n:number').suchThat($('p:panel').suchThat().has('n:number').as('max-x')).$
+        const result2 = ask(q2, kb3).result
+        assertEquals(result2, $(130).$)
+
+    }
+})
+
+Deno.test({
     name: 'test19',
     fn: () => {
         const goal = $('door#1').has('open').as('state')

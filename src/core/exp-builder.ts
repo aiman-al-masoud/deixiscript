@@ -36,7 +36,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    equals(term: WmAtom | WmAtom[] | LLangAst): ExpBuilder<Equality> {
+    equals(term: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<Equality> {
 
         return new ExpBuilder({
             type: 'equality',
@@ -246,7 +246,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    protected mathOperation(ast: MathExpression | Atom | WmAtom, op: MathExpression['operator']) {
+    protected mathOperation(ast: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>, op: MathExpression['operator']) {
         return new ExpBuilder({
             type: 'math-expression',
             left: this.exp as Atom,
@@ -255,7 +255,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    plus(ast: MathExpression | Atom | WmAtom) {
+    plus(ast: MathExpression | Atom | WmAtom | LLangAst| ExpBuilder<LLangAst>) {
         return this.mathOperation(ast, '+')
     }
 
