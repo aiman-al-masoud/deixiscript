@@ -131,7 +131,7 @@ export function ask(
                 result,
                 {
                     ...kb,
-                    wm: addWorldModels(kb.wm, [[result.value, 'thing']]),
+                    wm: addWorldModels(kb.wm, [[result.value, result.type]]),
                 }
             )
 
