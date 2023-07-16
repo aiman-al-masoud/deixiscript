@@ -124,7 +124,12 @@ function substOnce(
             return astsEqual(ast, oldTerm) ? replacement : ast
 
         case 'derivation-clause':
-            throw new Error('not implemented!')
+            // throw new Error('not implemented!')
+            return {
+                type : 'derivation-clause',
+                conseq : substOnce(ast.conseq, oldTerm, replacement),
+                when : substOnce(ast.when, oldTerm, replacement),
+            }
         case 'generalized':
             const newEntries = Object.entries(ast).filter(e => isLLangAst(e[1])).map(e => [e[0], substOnce(e[1] as LLangAst, oldTerm, replacement)] as const)
 
@@ -133,7 +138,14 @@ function substOnce(
                 ...Object.fromEntries(newEntries),
             }
         case 'anaphor':
-            return ast //TODO
+            // return ast //TODO
+            return {
+                type : 'anaphor',
+                headType :  ast.headType,
+                number : ast.number,
+                which : ast.which? substOnce(ast.which, oldTerm, replacement) : ast.which,
+                whose : ast.whose? substOnce(ast.whose, oldTerm, replacement) : ast.whose,
+            }
         case 'math-expression':
             return {
                 type: 'math-expression',

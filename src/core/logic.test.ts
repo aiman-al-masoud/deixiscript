@@ -806,6 +806,69 @@ Deno.test({
     }
 })
 
+
+Deno.test({
+    name: 'test51',
+    fn: () => {
+
+        const maxX = $('p:panel').has('n:number').as('max-x').when(
+            $('n:number')
+                .equals($('width').of('p:panel').plus($('x-coord').of('p:panel')))
+        ).$
+
+        const maxY = $('p:panel').has('n:number').as('max-y').when(
+            $('n:number')
+                .equals($('height').of('p:panel').plus($('y-coord').of('p:panel')))
+        ).$
+
+        const parent = $('p1:panel').has('p2:panel').as('parent').when(
+            $('x-coord').of('p1:panel').isLessThanOrEqual($('max-x').of('p2:panel').$)
+                .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel').$))
+                .and($('y-coord').of('p1:panel').isLessThanOrEqual($('max-y').of('p2:panel').$))
+                .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
+                .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
+        ).$
+
+        // const parent = $('p1:panel').has('p2:panel').as('parent').when(
+        //     $('x-coord').of('p1:panel').isLessThanOrEqual($('x-coord').of('p2:panel').plus($('width').of('p2:panel')))
+        //         .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel')))
+        //         .and($('y-coord').of('p1:panel').isLessThanOrEqual($('y-coord').of('p2:panel').plus($('height').of('p2:panel'))))
+        //         .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
+        //         .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
+        // ).$
+
+        const kb = $('panel#1').isa('panel')
+            .and($('panel#1').has(20).as('x-coord'))
+            .and($('panel#1').has(10).as('y-coord'))
+            .and($('panel#1').has(1).as('z-index'))
+            .and($('panel#1').has(5).as('width'))
+            .and($('panel#1').has(5).as('height'))
+            .and($('panel#2').isa('panel'))
+            .and($('panel#2').has(10).as('x-coord'))
+            .and($('panel#2').has(5).as('y-coord'))
+            .and($('panel#2').has(0).as('z-index'))
+            .and($('panel#2').has(10).as('width'))
+            .and($('panel#2').has(10).as('height'))
+            .and(maxX)
+            .and(maxY)
+            .and(parent)
+            .dump().kb
+
+        // console.log(kb)
+        const q = $('panel#1').has('panel#2').as('parent').$
+        const result = ask(q, kb).result.value
+        // console.log(result)
+        assert(result)
+
+        // console.log(JSON.stringify(removeAnaphors(parent)))
+
+        // console.log(JSON.stringify(subst(removeAnaphors(parent), [$('p2:panel').$, $('panel#2').$])))
+
+        // console.log(ask($('y-coord').of('panel#2').plus($('height').of('panel#2')).$, kb).result)
+
+    }
+})
+
 Deno.test({
     name: 'test19',
     fn: () => {

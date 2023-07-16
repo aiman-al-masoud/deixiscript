@@ -272,8 +272,20 @@ export class ExpBuilder<T extends LLangAst> {
         return this.mathOperation(ast, '/')
     }
 
-    isGreaterThan(atom: WmAtom) {
+    isGreaterThan(atom: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>) {
         return this.mathOperation(atom, '>')
+    }
+
+    isLesserThan(atom: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>) {
+        return this.mathOperation(atom, '<')
+    }
+
+    isGreaterThanOrEqual(atom: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>) {
+        return this.mathOperation(atom, '>=')
+    }
+
+    isLessThanOrEqual(atom: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>) {
+        return this.mathOperation(atom, '<=')
     }
 
     get happens(): ExpBuilder<HappenSentence> {

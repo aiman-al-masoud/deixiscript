@@ -93,9 +93,7 @@ export function ask(
             break
         case 'arbitrary-type':
 
-            
             const maps = findAll(formula.description, [formula.head], kb)
-            // console.log(formula, maps)
 
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
             candidates.sort(
@@ -123,6 +121,8 @@ export function ask(
                 '/': $(left / right).$,
                 '>': $(left > right).$,
                 '<': $(left < right).$,
+                '<=': $(left <= right).$,
+                '>=': $(left >= right).$,
             }[formula.operator]
 
             return ask(
@@ -141,6 +141,7 @@ export function ask(
         if (!map) return false
 
         const whenn = subst(dc.when, map)
+
         return ask(whenn, kb, opts).result.value
     })
 

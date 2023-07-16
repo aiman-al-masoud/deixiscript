@@ -120,7 +120,7 @@ export type Anaphor = { // implicit reference
 
 export type MathExpression = {
     type: 'math-expression',
-    operator: '+' | '-' | '*' | '/' | '>' | '<',
+    operator: '+' | '-' | '*' | '/' | '>' | '<' | '<=' | '>=',
     left: Atom,
     right: Atom | MathExpression,
 }

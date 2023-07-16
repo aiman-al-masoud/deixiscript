@@ -17,7 +17,11 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
         const anaphors = findAsts(ast, 'anaphor') as Anaphor[]
         const subs = anaphors.map(x => [x, anaphorToArbitraryType(x)] as [LLangAst, LLangAst])
         if (subs.length === 0) return ast
+
+        // console.log(findAsts(ast, 'anaphor').length)
         const result = subst(ast, ...subs)
+        // console.log(findAsts(result, 'anaphor').length)
+
         return result
     }
 
@@ -29,7 +33,7 @@ export function removeAnaphors(ast: LLangAst): LLangAst {
         $.emptyKb,
     )
 
-    const whenAnaphors = findAsts(ast.when, 'anaphor', 2)
+    const whenAnaphors = findAsts(ast.when, 'anaphor')
     const whenArbiTypes = whenAnaphors.map(x => anaphorToArbitraryType(x))
 
     const whenReplacements = whenArbiTypes.map((x, i) => {
