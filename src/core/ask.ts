@@ -111,8 +111,10 @@ export function ask(
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
         case 'math-expression':
-            const left = ask(formula.left, kb, opts).result.value as number
-            const right = ask(formula.right, kb, opts).result.value as number
+            const left = ask(formula.left, kb, opts).result.value
+            const right = ask(formula.right, kb, opts).result.value
+
+            if (typeof left !== 'number' || typeof right !== 'number') throw new Error('!')
 
             const result = {
                 '+': $(left + right).$,

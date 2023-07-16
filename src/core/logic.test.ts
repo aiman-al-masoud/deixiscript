@@ -802,7 +802,7 @@ Deno.test({
         const kb = $.a('cat').which($._.has(3).as('position')).exists.dump().kb
         const q = $('position').of($.the('cat').$).$
         const result = ask(q, kb).result
-        console.log(result)
+        assertEquals(result, $(3).$)
     }
 })
 
