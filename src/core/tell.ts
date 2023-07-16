@@ -218,11 +218,10 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
         if (d === undefined) return []
         if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
 
-        return instantiateConcept({
-            type: 'arbitrary-type',
-            head: $(`x:${d}`).$,
-            description: $(id).has(`x:${d}`).as(parts[i]).$
-        }, kb)
+        return instantiateConcept(
+            $(`x:${d}`).suchThat($(id).has(`x:${d}`).as(parts[i]).$).$,
+            kb,
+        )
     })
 
     return fillers
