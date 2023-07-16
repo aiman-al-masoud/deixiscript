@@ -1034,7 +1034,24 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test55',
+    fn: () => {
+        // very basic superlative
+        const kb = $(1).isa('number')
+            .and($(2).isa('number'))
+            .and($(5).isa('number'))
+            .and($(3).isa('number'))
+            .and($(4).isa('number'))
+            .dump().kb
 
+        const q = $('n:number')
+            .suchThat($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase).$
+
+        const result = ask(q, kb).result
+        assertEquals(result, $(5).$)
+    }
+})
 
 
 Deno.test({
