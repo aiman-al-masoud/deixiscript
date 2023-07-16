@@ -1,64 +1,39 @@
-import { sorted } from "./sorted.ts";
+import { sorted } from "./sorted.ts"
 
-// From: https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
-function sortObjectKeys(obj: any) {
 
-    if (obj == null || obj == undefined) {
-        return obj
-    }
+export function hash(obj: unknown) {
+    const sortedObject = sortObjectKeys(obj)
+    const s = JSON.stringify(sortedObject)
+    return s
+}
 
-    if (typeof obj !== 'object') { // it is a primitive: number/string (in an array)
-        return obj
-    }
+function sortObjectKeys<T>(obj: T): T
+function sortObjectKeys(obj: unknown): unknown {
 
-    if (obj instanceof Array) return obj
+    if (obj == null || obj == undefined) return obj
 
-    return sorted(Object.keys(obj)).reduce((acc: any, key) => {
-        if (Array.isArray(obj[key])) {
-            acc[key] = obj[key].map(sortObjectKeys);
+    if (typeof obj !== 'object') return obj
+
+    if (obj instanceof Array) return obj.map(sortObjectKeys)
+
+    type Indexable = { [s: string]: object }
+
+    const indexable = obj as Indexable
+
+    return sorted(Object.keys(indexable)).reduce((acc, key) => {
+
+        const e = indexable[key]
+
+        if (e instanceof Array) {
+            acc[key] = e.map(sortObjectKeys)
         }
-        else if (typeof obj[key] === 'object') {
-            acc[key] = sortObjectKeys(obj[key]);
+        else if (typeof e === 'object') {
+            acc[key] = sortObjectKeys(e)
         }
         else {
-            acc[key] = obj[key];
+            acc[key] = e
         }
-        return acc;
-    }, {});
+
+        return acc
+    }, {} as Indexable)
 }
-
-export function hash(obj: any) {
-    const sortedObject = sortObjectKeys(obj);
-    // const jsonstring = JSON.stringify(sortedObject, function (k, v) { return v === undefined ? "undef" : v; });
-
-    const jsonstring = JSON.stringify(sortedObject)
-
-    // Remove all whitespace
-    // let jsonstringNoWhitespace: string = jsonstring.replace(/\s+/g, '');
-
-    // return jsonstringNoWhitespace
-
-    return jsonstring
-
-    // let JSONBuffer: Buffer = Buffer.from(jsonstringNoWhitespace, 'binary');   // encoding: encoding to use, optional.  Default is 'utf8'
-    // return xxhash.hash64(JSONBuffer, 0xCAFEBABE, "hex");
-}
-
-
-// const x = {
-//     type: "arbitrary-type",
-//     head: { type: "variable", value: "x20", varType: "panel", x:[1,2] },
-//     description: { type: "boolean", value: true }
-// }
-
-// const y = {
-//     description: { type: "boolean", value: true },
-//     head: {x:[1,2], type: "variable", value: "x20", varType: "panel" },
-//     type: "arbitrary-type"
-// }
-
-// console.log(hash(x) === hash(y))
-// // console.log()
-
-// console.log(sortObjectKeys([3, 2, 1]))
-
