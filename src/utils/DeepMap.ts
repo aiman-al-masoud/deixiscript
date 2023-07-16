@@ -15,15 +15,12 @@ export class DeepMap<K, V> extends Map<K, V>{
     readonly helperMap: Map<string, V> = new Map()
 
     override get(key: K): V | undefined {
-        return this.helperMap.get(/* JSON.stringify */hash(key))
+        return this.helperMap.get(hash(key))
     }
 
     override set(key: K, value: V): this {
-        this.helperMap.set(/* JSON.stringify */hash(key), value)
+        this.helperMap.set(hash(key), value)
         return super.set(key, value)
     }
 
 }
-
-// const map = deepMapOf([[{ x: 1 }, 1], [{ y: 2 }, 2]])
-// console.log(map.get({ x: 1 }))
