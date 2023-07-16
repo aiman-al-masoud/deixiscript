@@ -65,7 +65,6 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return tell(ast.f1, kb)
         case 'derivation-clause':
             addedDerivationClauses = [ast]
-            // console.log(JSON.stringify(ast.when))
             break
         case 'if-else':
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)

@@ -28,29 +28,9 @@ function substOnce(
     replacement: LLangAst,
 ): LLangAst {
 
-    if (astsEqual(oldTerm, ast)) {
-
-        // if ( JSON.stringify(oldTerm) === JSON.stringify(ast)) {
-        //     console.log('SUBSTITUTED!')
-        //     console.log('ast=', ast)
-        //     console.log('oldTerm=', oldTerm)
-        //     console.log('---------------------------')
-        // }
-
-        // if (oldTerm.type==='arbitrary-type' && oldTerm.head.varType==='panel') console.log(oldTerm)
-
+    if (astsEqual(oldTerm, ast)) {   
         return replacement
     }
-    // else 
-    // {
-    //     if ( JSON.stringify(oldTerm) === JSON.stringify(ast)  /* oldTerm.type === 'anaphor' */ /* && oldTerm.head.varType === 'panel' */) {
-    //         console.log('NOT SUBSTITUTED!')
-    //         console.log('ast=', ast)
-    //         console.log('oldTerm=', oldTerm)
-    //         console.log('---------------------------')
-    //     }
-    // }
-
 
     switch (ast.type) {
 

@@ -1,34 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase, Nothing } from "./types.ts"
-
-export function $(x: ListPat): ExpBuilder<ListPattern>
-export function $(x: Var): ExpBuilder<Variable>
-export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
-export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
-export function $(x: 'anything'): ExpBuilder<Anything>
-export function $(x: 'nothing'): ExpBuilder<Nothing>
-export function $(x: string): ExpBuilder<Entity>
-export function $(x: number): ExpBuilder<Number>
-export function $(x: boolean): ExpBuilder<Boolean>
-export function $(x: LLangAst): ExpBuilder<LLangAst>
-export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
-export function $(x: WmAtom): ExpBuilder<Constant>
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst>
-
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst> {
-
-    if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array || isLLangAst(x)) {
-        return new ExpBuilder(makeAst(x))
-    }
-
-    const keys = Object.fromEntries(
-        Object.entries(x).map(e => [e[0], makeAst(e[1])])
-    )
-
-    return new ExpBuilder({ ...keys, type: 'generalized', after: $([]).$ } as GeneralizedFormula)
-}
-
-
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, Formula, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase, Nothing, Negation } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -37,9 +8,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    equals(term: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<Equality> {
+    equals(term: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<Equality>({
             type: 'equality',
             t1: this.exp,
             t2: makeAst(term),
@@ -47,20 +18,20 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    isa(term: WmAtom | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<IsAFormula> {
+    isa(term: WmAtom | LLangAst | ExpBuilder<LLangAst>) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<IsAFormula>({
             type: 'is-a-formula',
             t1: this.exp,
             t2: makeAst(term),
-            after: $([]).$
+            after: $([]).$,
         })
 
     }
 
-    has(term: WmAtom | LLangAst | ExpBuilder<LLangAst>): ExpBuilder<HasFormula> {
+    has(term: WmAtom | LLangAst | ExpBuilder<LLangAst>) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<HasFormula>({
             type: 'has-formula',
             t1: this.exp,
             t2: makeAst(term),
@@ -70,13 +41,13 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    as(role: WmAtom | LLangAst): ExpBuilder<HasFormula> {
+    as(role: WmAtom | LLangAst) {
 
         if (this.exp.type !== 'has-formula') {
             throw new Error(`'as' does not apply to ${this.exp.type}, only to HasFormula`)
         }
 
-        return new ExpBuilder({
+        return new ExpBuilder<HasFormula>({
             type: 'has-formula',
             t1: this.exp.t1,
             t2: this.exp.t2,
@@ -98,24 +69,23 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    when(formula: ExpBuilder<LLangAst> | LLangAst): ExpBuilder<DerivationClause> {
+    when(formula: ExpBuilder<LLangAst> | LLangAst) {
 
         if (!isFormulaWithAfter(this.exp)) {
             throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
         }
 
-        return new ExpBuilder({
+        return new ExpBuilder<DerivationClause>({
             type: 'derivation-clause',
-            when: makeAst(formula),
             conseq: this.exp,
-            preconditions: $(true).$
+            when: makeAst(formula),
         })
 
     }
 
-    and(formula: ExpBuilder<LLangAst> | WmAtom | LLangAst): ExpBuilder<Conjunction> {
+    and(formula: ExpBuilder<LLangAst> | WmAtom | LLangAst) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<Conjunction>({
             type: 'conjunction',
             f1: this.exp,
             f2: makeAst(formula),
@@ -123,9 +93,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    or(formula: ExpBuilder<Formula> | WmAtom | LLangAst): ExpBuilder<Disjunction> {
+    or(formula: ExpBuilder<Formula> | WmAtom | LLangAst) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<Disjunction>({
             type: 'disjunction',
             f1: this.exp,
             f2: makeAst(formula),
@@ -133,9 +103,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    if(formula: ExpBuilder<LLangAst> | LLangAst): ExpBuilder<IfElse> {
+    if(formula: ExpBuilder<LLangAst> | LLangAst) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<IfElse>({
             type: 'if-else',
             condition: makeAst(formula),
             then: this.exp,
@@ -144,29 +114,22 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    else(formula: ExpBuilder<Formula> | LLangAst): ExpBuilder<IfElse> {
+    else(formula: ExpBuilder<Formula> | LLangAst) {
 
         if (this.exp.type !== 'if-else') {
             throw new Error(`'else' does not apply to ${this.exp.type}`)
         }
 
-        return new ExpBuilder({
-            ...this.exp as IfElse,
+        return new ExpBuilder<IfElse>({
+            ...this.exp,
             otherwise: makeAst(formula),
         })
 
     }
 
-    get exists(): ExpBuilder<ExistentialQuantification> {
+    get exists() {
 
-        if (this.exp.type === 'anaphor') {
-            return new ExpBuilder<ExistentialQuantification>({
-                type: 'existquant',
-                value: this.exp,
-            })
-        }
-
-        if (this.exp.type === 'arbitrary-type') {
+        if (this.exp.type === 'anaphor' || this.exp.type === 'arbitrary-type') {
             return new ExpBuilder<ExistentialQuantification>({
                 type: 'existquant',
                 value: this.exp,
@@ -177,7 +140,7 @@ export class ExpBuilder<T extends LLangAst> {
             throw new Error(``)
         }
 
-        return new ExpBuilder({
+        return new ExpBuilder<ExistentialQuantification>({
             type: 'existquant',
             value: {
                 type: 'arbitrary-type',
@@ -188,13 +151,13 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    where(formula: ExpBuilder<Formula> | LLangAst): ExpBuilder<ExistentialQuantification> {
+    where(formula: ExpBuilder<Formula> | LLangAst) {
 
         if (this.exp.type !== 'existquant') throw new Error(``)
 
         if (this.exp.value.type !== 'arbitrary-type') throw new Error(``)
 
-        return new ExpBuilder({
+        return new ExpBuilder<ExistentialQuantification>({
             type: 'existquant',
             value: {
                 head: this.exp.value.head,
@@ -207,7 +170,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     get isNotTheCase() {
 
-        return new ExpBuilder({
+        return new ExpBuilder<Negation>({
             type: 'negation',
             f1: this.exp,
         })
@@ -221,7 +184,7 @@ export class ExpBuilder<T extends LLangAst> {
         return tell(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
     }
 
-    whose(ast: ExpBuilder<HasFormula | IsAFormula | Equality>): ExpBuilder<Anaphor> {
+    whose(ast: ExpBuilder<HasFormula | IsAFormula | Equality>) {
 
         if (this.exp.type !== 'anaphor') {
             throw new Error('')
@@ -234,7 +197,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality | GeneralizedFormula>): ExpBuilder<Anaphor> {
+    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality | GeneralizedFormula>) {
 
         if (this.exp.type !== 'anaphor') {
             throw new Error('')
@@ -247,8 +210,8 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    protected mathOperation(ast: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>, op: MathExpression['operator']) {
-        return new ExpBuilder({
+    protected mathOperation(ast: WmAtom | LLangAst | ExpBuilder<LLangAst>, op: MathExpression['operator']) {
+        return new ExpBuilder<MathExpression>({
             type: 'math-expression',
             left: this.exp as Atom,
             right: makeAst(ast) as MathExpression,
@@ -256,7 +219,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    plus(ast: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>) {
+    plus(ast: WmAtom | LLangAst | ExpBuilder<LLangAst>) {
         return this.mathOperation(ast, '+')
     }
 
@@ -290,27 +253,27 @@ export class ExpBuilder<T extends LLangAst> {
 
     get happens(): ExpBuilder<HappenSentence> {
 
-        return new ExpBuilder({
+        return new ExpBuilder<HappenSentence>({
             type: 'happen-sentence',
             event: this.exp as Entity,
         })
     }
 
     get ask(): ExpBuilder<Question> {
-        return new ExpBuilder({
+        return new ExpBuilder<Question>({
             type: 'question',
             f1: this.exp,
         })
     }
 
     get tell(): ExpBuilder<Command> {
-        return new ExpBuilder({
+        return new ExpBuilder<Command>({
             type: 'command',
             f1: this.exp,
         })
     }
 
-    suchThat(description?: LLangAst | ExpBuilder<LLangAst>): ExpBuilder<ArbitraryType> {
+    suchThat(description?: LLangAst | ExpBuilder<LLangAst>) {
 
         if (this.exp.type !== 'variable') throw new Error(``)
 
@@ -322,10 +285,8 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    of(owner: LLangAst | WmAtom): ExpBuilder<LLangAst> {
-        // return $.the('number').which($(owner).has($._.$).as(this.exp)) //TODO: number!!!
+    of(owner: LLangAst | WmAtom) {
         return $.the('thing').which($(owner).has($._.$).as(this.exp))
-
     }
 
 }
@@ -400,20 +361,51 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
 
 }
 
-/**
- * Don't-care subject. 
- */
-$._ = $('')
-// Object.defineProperty($, '$', { get: () => $('') })
 
-$.the = (x: string): ExpBuilder<Anaphor> => {
-    return new ExpBuilder({
-        type: 'anaphor',
-        headType: x,
-        number: 1,
-    })
+export function $(x: ListPat): ExpBuilder<ListPattern>
+export function $(x: Var): ExpBuilder<Variable>
+export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
+export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
+export function $(x: 'anything'): ExpBuilder<Anything>
+export function $(x: 'nothing'): ExpBuilder<Nothing>
+export function $(x: string): ExpBuilder<Entity>
+export function $(x: number): ExpBuilder<Number>
+export function $(x: boolean): ExpBuilder<Boolean>
+export function $(x: LLangAst): ExpBuilder<LLangAst>
+export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
+export function $(x: WmAtom): ExpBuilder<Constant>
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst>
+
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst> {
+
+    if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array || isLLangAst(x)) {
+        return new ExpBuilder(makeAst(x))
+    }
+
+    const keys = Object.fromEntries(
+        Object.entries(x).map(e => [e[0], makeAst(e[1])])
+    )
+
+    return new ExpBuilder({ ...keys, type: 'generalized', after: $([]).$ } as GeneralizedFormula)
 }
 
+/**
+ * Omitted subject for relative clauses. 
+ */
+$._ = $('')
+
+/**
+ * Creates an Anaphor.
+ */
+$.the = (x: string) => new ExpBuilder<Anaphor>({
+    type: 'anaphor',
+    headType: x,
+    number: 1,
+})
+
+/**
+ * See `$.the()`
+ */
 $.a = $.the
 
 /**

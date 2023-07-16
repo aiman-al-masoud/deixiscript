@@ -3,28 +3,17 @@ import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { LLangAst } from "./types.ts";
 
+export function decompress<T extends LLangAst>(ast: T): T
 export function decompress(ast: LLangAst): LLangAst {
 
     switch (ast.type) {
-        case "generalized":
-        case "happen-sentence":
-        case "string":
-        case "number":
-        case "boolean":
-        case "entity":
-        case "variable":
-        case "list-pattern":
-        case "list-literal":
-        case 'anything':
-            return ast
+
         case 'is-a-formula':
         case 'has-formula':
 
-            // maybe will produce bug if deeply nested and? keep nesting down?
-
             const conj = findAsts(ast, 'conjunction').at(0)
 
-            if (conj) {
+            if (conj) { // and conj.f1 and conj.f2 are not formulae! maybe bug
                 const withF1 = subst(ast, [conj, conj.f1])
                 const withF2 = subst(ast, [conj, conj.f2])
                 return decompress($(withF1).and(withF2).$)
@@ -49,33 +38,42 @@ export function decompress(ast: LLangAst): LLangAst {
         case "negation":
             return $(decompress(ast.f1)).isNotTheCase.$
         case "existquant":
-            if (ast.value.type === 'arbitrary-type') {
-                return {
-                    type: 'existquant',
-                    value: $(ast.value.head).suchThat(decompress(ast.value.description)).$,
-                }
-            }
-            return ast//TODO
+            return $(decompress(ast.value)).exists.$
+        case 'arbitrary-type':
+            return $(decompress(ast.head)).suchThat(decompress(ast.description)).$
         case "derivation-clause":
-            // return $(ast.conseq).when(decompress(ast.when)).$
-            return ast //TODO
+
+            // const x :DerivationClause= {
+            //     type : 'derivation-clause',
+            //     when : ast.when,
+            //     conseq : ast.conseq,
+            // }
+            // return x
+            // console.log(JSON.stringify(x) === JSON.stringify(y))
+
+            return $(decompress(ast.conseq)).when(decompress(ast.when)).$
+
         case "if-else":
             return $(decompress(ast.then)).if(decompress(ast.condition)).else(decompress(ast.otherwise)).$
         case "math-expression":
             return ast
         case "anaphor":
-            // const referents = getAnaphora(ast, kb)
-            // if (referents.length > 1) {
-            //     return referents.reduce((a, b) => a.and(b), $(referents[0])).$
-            // }
-            // return referents[0]
-            return ast
-        case 'arbitrary-type':
         case 'nothing':
+        case "command":
+        case "question":
+        case "generalized":
+        case "happen-sentence":
+        case "string":
+        case "number":
+        case "boolean":
+        case "entity":
+        case "variable":
+        case "list-pattern":
+        case "list-literal":
+        case 'anything':
             return ast
 
     }
 
-    throw new Error('not implemented: ' + ast.type)
 }
 
