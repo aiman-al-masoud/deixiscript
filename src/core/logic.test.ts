@@ -797,6 +797,16 @@ Deno.test({
 })
 
 Deno.test({
+    name: 'test50',
+    fn: () => {
+        const kb = $.a('cat').which($._.has(3).as('position')).exists.dump().kb
+        const q = $('position').of($.the('cat').$).$
+        const result = ask(q, kb).result
+        console.log(result)
+    }
+})
+
+Deno.test({
     name: 'test19',
     fn: () => {
         const goal = $('door#1').has('open').as('state')

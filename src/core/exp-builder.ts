@@ -13,6 +13,7 @@ export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: LLangAst): ExpBuilder<LLangAst>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst>
 
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst> {
 
@@ -233,7 +234,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality| GeneralizedFormula>): ExpBuilder<Anaphor> {
+    which(ast: ExpBuilder<HasFormula | IsAFormula | Equality | GeneralizedFormula>): ExpBuilder<Anaphor> {
 
         if (this.exp.type !== 'anaphor') {
             throw new Error('')
@@ -255,7 +256,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    plus(ast: MathExpression | Atom | WmAtom | LLangAst| ExpBuilder<LLangAst>) {
+    plus(ast: MathExpression | Atom | WmAtom | LLangAst | ExpBuilder<LLangAst>) {
         return this.mathOperation(ast, '+')
     }
 
@@ -307,6 +308,10 @@ export class ExpBuilder<T extends LLangAst> {
             description: description ? makeAst(description) : $(true).$,
         })
 
+    }
+
+    of(owner: LLangAst | WmAtom): ExpBuilder<LLangAst> {
+        return $.the('thing').which($(owner).has($._.$).as(this.exp))
     }
 
 }
