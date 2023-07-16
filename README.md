@@ -5,6 +5,7 @@
 - integrating anaphora
   - refactor and complete decompress()
   - nested anaphor clauses
+  - first/second...
 - tell()
   - less than and greater than as commands
 - general
@@ -55,7 +56,7 @@ make it happen
 # Problems
 
 - in match() for loop there is no guarantee that the most specific rule will be
-  found first
+  found first. Descending sort derivation clauses by "specificity".
 
 - maybe need to pass down new kb not old one within body of ask() for correct
   anaphora
