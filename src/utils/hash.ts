@@ -1,3 +1,5 @@
+import { sorted } from "./sorted.ts";
+
 // From: https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
 function sortObjectKeys(obj: any) {
 
@@ -11,7 +13,7 @@ function sortObjectKeys(obj: any) {
 
     if (obj instanceof Array) return obj
 
-    return Object.keys(obj).sort().reduce((acc: any, key) => {
+    return sorted(Object.keys(obj)).reduce((acc: any, key) => {
         if (Array.isArray(obj[key])) {
             acc[key] = obj[key].map(sortObjectKeys);
         }

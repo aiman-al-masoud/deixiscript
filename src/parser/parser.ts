@@ -1,5 +1,6 @@
 import { first } from "../utils/first.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
+import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { CharStream, getCharStream } from "./char-stream.ts";
 import { dependencies, maxPrecedence } from "./max-precedence.ts";
@@ -246,8 +247,8 @@ function maybeLog(log: boolean, ...message: unknown[]) {
 function getSyntaxList(syntaxes: SyntaxMap) {
     const syntaxList = Object.keys(syntaxes)
     const deps = Object.fromEntries(syntaxList.map(x => [x, dependencies(x, syntaxes)]))
-    syntaxList.sort((a, b) => maxPrecedence(b, a, deps)) // descending, max precedence first
-    return syntaxList
+    const sortedSyntaxList = sorted(syntaxList, (a, b) => maxPrecedence(b, a, deps)) // descending, max precedence first
+    return sortedSyntaxList
 }
 
 function getKeywords(syntaxes: SyntaxMap) {

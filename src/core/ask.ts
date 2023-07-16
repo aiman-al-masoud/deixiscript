@@ -8,7 +8,7 @@ import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
 import { removeAnaphors } from "./removeAnaphors.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
-import { findAsts } from "./findAsts.ts";
+import { sorted } from "../utils/sorted.ts";
 
 export function ask(
     ast: LLangAst,
@@ -94,16 +94,16 @@ export function ask(
             break
         case 'arbitrary-type':
 
-            // console.log(formula)
-
             const maps = findAll(formula.description, [formula.head], kb)
 
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
-            candidates.sort(
+
+            const sortedCandidates = sorted(
+                candidates,
                 (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
             )
 
-            const res = candidates.at(0)
+            const res = sortedCandidates.at(0)
 
             if (res) {
                 return ask(res, kb, opts)
@@ -117,9 +117,7 @@ export function ask(
             const left = ask(formula.left, kb, opts).result.value
             const right = ask(formula.right, kb, opts).result.value
 
-            // console.log(left, formula.operator ,right)
-
-            if (typeof left !== 'number' || typeof right !== 'number') return { result: $(false).$, kb } //throw new Error(`(left=${left}, right=${right})`)
+            if (typeof left !== 'number' || typeof right !== 'number') return { result: $(false).$, kb }
 
             const result = {
                 '+': $(left + right).$,
@@ -146,18 +144,9 @@ export function ask(
     const result = kb.derivClauses.some(dc => {
 
         const map = match(dc.conseq, formula)
-        // console.log(dc.conseq, formula)
-        // console.log('----------------')
         if (!map) return false
 
         const whenn = subst(dc.when, map)
-
-        // console.log(formula)
-        // console.log(map.helperMap)
-        // console.log(JSON.stringify(dc.when))
-        // console.log('---------------------')
-        // console.log(JSON.stringify(whenn))
-
         return ask(whenn, kb, opts).result.value
     })
 
