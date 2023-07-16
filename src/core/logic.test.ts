@@ -9,9 +9,6 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
-import { removeAnaphors } from "./removeAnaphors.ts";
-import { match } from "./match.ts";
-import { decompress } from "./decompress.ts";
 
 const standardKb = getStandardKb()
 

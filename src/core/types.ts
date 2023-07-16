@@ -262,10 +262,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
     return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
 }
 
-export function isAnaphor(ast: unknown): ast is Anaphor {
-    return typeof ast === 'object' && !!ast && 'type' in ast && ast.type === 'anaphor'
-}
-
 export function astsEqual(ast1: LLangAst, ast2: LLangAst) {
     return ast1.type === ast2.type && deepEquals(ast1, ast2)
 }
