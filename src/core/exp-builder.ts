@@ -390,7 +390,8 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
 }
 
 /**
- * Omitted subject for relative clauses. 
+ * Omitted subject for relative clauses, as in Linguistic Gapping. 
+ * https://en.wikipedia.org/wiki/Relative_clause#Formation_methods
  */
 $._ = $('')
 
