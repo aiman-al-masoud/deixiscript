@@ -14,11 +14,6 @@ export function findAsts(ast: LLangAst, type: LLangAst['type']): LLangAst[] {
 
     if (ast.type === type) return [ast]
 
-    // if (maxNesting <= 0){
-    //     console.log('YES!')
-    //     return []
-    // }
-
     return subs.flatMap(x => findAsts(x, type, /* maxNesting - 1 */))
 
 }

@@ -323,7 +323,9 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     of(owner: LLangAst | WmAtom): ExpBuilder<LLangAst> {
+        // return $.the('number').which($(owner).has($._.$).as(this.exp)) //TODO: number!!!
         return $.the('thing').which($(owner).has($._.$).as(this.exp))
+
     }
 
 }

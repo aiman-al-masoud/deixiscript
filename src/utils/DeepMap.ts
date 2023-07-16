@@ -1,3 +1,5 @@
+import { hash } from "./hash.ts"
+
 export function deepMapOf<K, V>(entries?: readonly (readonly [K, V])[] | null): DeepMap<K, V> {
     const map = new DeepMap<K, V>()
 
@@ -13,11 +15,11 @@ export class DeepMap<K, V> extends Map<K, V>{
     readonly helperMap: Map<string, V> = new Map()
 
     override get(key: K): V | undefined {
-        return this.helperMap.get(JSON.stringify(key))
+        return this.helperMap.get(/* JSON.stringify */hash(key))
     }
 
     override set(key: K, value: V): this {
-        this.helperMap.set(JSON.stringify(key), value)
+        this.helperMap.set(/* JSON.stringify */hash(key), value)
         return super.set(key, value)
     }
 

@@ -28,7 +28,29 @@ function substOnce(
     replacement: LLangAst,
 ): LLangAst {
 
-    if (astsEqual(oldTerm, ast)) return replacement
+    if (astsEqual(oldTerm, ast)) {
+
+        // if ( JSON.stringify(oldTerm) === JSON.stringify(ast)) {
+        //     console.log('SUBSTITUTED!')
+        //     console.log('ast=', ast)
+        //     console.log('oldTerm=', oldTerm)
+        //     console.log('---------------------------')
+        // }
+
+        // if (oldTerm.type==='arbitrary-type' && oldTerm.head.varType==='panel') console.log(oldTerm)
+
+        return replacement
+    }
+    // else 
+    // {
+    //     if ( JSON.stringify(oldTerm) === JSON.stringify(ast)  /* oldTerm.type === 'anaphor' */ /* && oldTerm.head.varType === 'panel' */) {
+    //         console.log('NOT SUBSTITUTED!')
+    //         console.log('ast=', ast)
+    //         console.log('oldTerm=', oldTerm)
+    //         console.log('---------------------------')
+    //     }
+    // }
+
 
     switch (ast.type) {
 
@@ -126,9 +148,9 @@ function substOnce(
         case 'derivation-clause':
             // throw new Error('not implemented!')
             return {
-                type : 'derivation-clause',
-                conseq : substOnce(ast.conseq, oldTerm, replacement),
-                when : substOnce(ast.when, oldTerm, replacement),
+                type: 'derivation-clause',
+                conseq: substOnce(ast.conseq, oldTerm, replacement),
+                when: substOnce(ast.when, oldTerm, replacement),
             }
         case 'generalized':
             const newEntries = Object.entries(ast).filter(e => isLLangAst(e[1])).map(e => [e[0], substOnce(e[1] as LLangAst, oldTerm, replacement)] as const)
@@ -140,11 +162,11 @@ function substOnce(
         case 'anaphor':
             // return ast //TODO
             return {
-                type : 'anaphor',
-                headType :  ast.headType,
-                number : ast.number,
-                which : ast.which? substOnce(ast.which, oldTerm, replacement) : ast.which,
-                whose : ast.whose? substOnce(ast.whose, oldTerm, replacement) : ast.whose,
+                type: 'anaphor',
+                headType: ast.headType,
+                number: ast.number,
+                which: ast.which ? substOnce(ast.which, oldTerm, replacement) : ast.which,
+                whose: ast.whose ? substOnce(ast.whose, oldTerm, replacement) : ast.whose,
             }
         case 'math-expression':
             return {

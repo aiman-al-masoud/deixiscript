@@ -18,7 +18,9 @@ export function findAll(
 
     const numberConstants0 = kb.derivClauses.flatMap(x => {
         const map = match(x.conseq, formula)
+        // console.log(formula)
         if (!map) return []
+        // console.log(formula, x.conseq)
         const when = subst(x.when, map)
         // console.log('when=', when)
         const mathExps = findAsts(when, 'math-expression')
