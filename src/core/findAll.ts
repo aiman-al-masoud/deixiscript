@@ -18,17 +18,14 @@ export function findAll(
 
     const numberConstants0 = kb.derivClauses.flatMap(x => {
         const map = match(x.conseq, formula)
-        // console.log(formula)
         if (!map) return []
-        // console.log(formula, x.conseq)
         const when = subst(x.when, map)
-        // console.log('when=', when)
         const mathExps = findAsts(when, 'math-expression')
         const numbers = mathExps.map(x => ask(x, kb).result)
         return numbers as Constant[]
     })
 
-    const numberConstants = findEquations(formula).flatMap(x => {
+    const numberConstants1 = findEquations(formula).flatMap(x => {
         try {
             return solve(x)
         } catch {
@@ -36,7 +33,9 @@ export function findAll(
         }
     })
 
-    const constants = uniq(kb.wm.flatMap(x => x)).map(c => $(c).$).concat(numberConstants).concat(numberConstants0)
+    const numberConstants = numberConstants0.concat(numberConstants1)
+
+    const constants = uniq(kb.wm.flatMap(x => x).map(c => $(c).$).concat(numberConstants))
 
     const varToCands = variables.map(v => {
         const candidates =
