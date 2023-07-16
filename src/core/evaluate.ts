@@ -10,22 +10,17 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     eliminations: WorldModel,
 } {
     if (ast.type === 'command') {
-        const { kb, additions, eliminations } = tell(ast.f1, knowledgeBase)
         return {
-            kb,
-            additions,
-            eliminations,
+            ...tell(ast.f1, knowledgeBase),
             result: $(true).$,
         }
     } else if (ast.type === 'question') {
         return evaluate(ast.f1, knowledgeBase)
     } else {
-        const result = ask(ast, knowledgeBase)
         return {
-            kb: result.kb,
+            ...ask(ast, knowledgeBase),
             additions: [],
             eliminations: [],
-            result: result.result,
         }
     }
 }
