@@ -114,7 +114,7 @@ export function ask(
             const left = ask(formula.left, kb, opts).result.value
             const right = ask(formula.right, kb, opts).result.value
 
-            if (typeof left !== 'number' || typeof right !== 'number') throw new Error('!')
+            if (typeof left !== 'number' || typeof right !== 'number') return { result: $('nothing').$, kb } //throw new Error(`(left=${left}, right=${right})`)
 
             const result = {
                 '+': $(left + right).$,

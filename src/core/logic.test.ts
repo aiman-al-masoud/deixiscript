@@ -821,6 +821,18 @@ Deno.test({
                 .equals($('height').of('p:panel').plus($('y-coord').of('p:panel')))
         ).$
 
+        // const maxX = $.a('panel').has('n:number').as('max-x').when(
+        //     $('n:number').equals($('width').of($.the('panel').$).plus($('x-coord').of($.the('panel').$))  )
+        // )
+
+        // const maxX = $.a('panel').has($.a('number')).as('max-x').when(
+        //     $.the('number').equals($('width').of($.the('panel').$).plus($('x-coord').of($.the('panel').$)))
+        // )
+
+        // const maxY = $.a('panel').has($.a('number')).as('max-y').when(
+        //     $.the('number').equals($('height').of($.the('panel').$).plus($('y-coord').of($.the('panel').$)))
+        // )
+
         const parent = $('p1:panel').has('p2:panel').as('parent').when(
             $('x-coord').of('p1:panel').isLessThanOrEqual($('max-x').of('p2:panel').$)
                 .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel').$))
@@ -854,16 +866,13 @@ Deno.test({
             .and(parent)
             .dump().kb
 
-        // console.log(kb)
         const q = $('panel#1').has('panel#2').as('parent').$
         const result = ask(q, kb).result.value
-        // console.log(result)
         assert(result)
 
         // console.log(JSON.stringify(removeAnaphors(parent)))
 
         // console.log(JSON.stringify(subst(removeAnaphors(parent), [$('p2:panel').$, $('panel#2').$])))
-
         // console.log(ask($('y-coord').of('panel#2').plus($('height').of('panel#2')).$, kb).result)
 
     }
