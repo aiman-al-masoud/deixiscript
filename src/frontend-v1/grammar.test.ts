@@ -227,29 +227,20 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test24',
-    fn: () => {
-        const ast = parser.parse('capra does extend mammal')
-        // console.log(ast)// remove type:'verb-sentence'
-    }
-})
-
-Deno.test({
     name: 'test25',
     fn: () => {
-        const ast = parser.parse('does jump in car')
-        // console.log(ast)
+        const ast = parser.parse('does jump in the car')
+        assertEquals(ast, $({ subject: $._.$, verb: 'jump', object: $._.$, location: $.the('car').$ }).$)
         const ast2 = parser.parse('has red as color')
-        // console.log(ast2)
+        assertEquals(ast2, $._.has('red').as('color').$)
         const ast3 = parser.parse('the cat')
-        // console.log(ast3)
+        assertEquals(ast3, $.the('cat').$)
         const ast4 = parser.parse('the cat whose fur has red as color')
-        // console.log(ast4)
+        assertEquals(ast4, $.the('cat').whose($('fur').has('red').as('color')).$)
         const ast5 = parser.parse('the cat which has red as color')
         assertEquals(ast5, $.the('cat').which($._.has('red').as('color')).$)
-        // console.log(ast5)
         const ast6 = parser.parse('the cat which has red as color does eat the mouse')
-        // console.log(ast6)
+        assertEquals(ast6, $({ subject: $.the('cat').which($._.has('red').as('color')).$, verb: 'eat', object: $.the('mouse').$ }).$)
         const ast7 = parser.parse('the mouse which the cat does eat')
         assertEquals(ast7, $.the('mouse').which($({ subject: $.the('cat').$, verb: 'eat', object: $._.$ })).$)
     }
@@ -260,9 +251,6 @@ Deno.test({
     fn: () => {
         const ast1 = parser.parse('the cat does eat (the mouse) in the house')
         const ast2 = parser.parse('the cat does eat (the mouse in the house)')
-
-        // console.log(ast1)
-        // console.log(ast2)
 
         const x = $({ subject: $.the('cat').$, verb: 'eat', object: $.the('mouse').$, location: $.the('house').$ }).$
         const y = $({ subject: $.the('cat').$, verb: 'eat', object: { type: 'anaphor', headType: 'mouse', number: 1, location: $.the('house').$ } as any }).$
