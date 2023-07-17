@@ -113,8 +113,8 @@ export type ListPattern = {
 export type Anaphor = { // implicit reference
     type: 'anaphor',
     headType: string,
-    which?: HasFormula | IsAFormula | Equality | GeneralizedFormula,
-    whose?: HasFormula | IsAFormula | Equality | GeneralizedFormula,
+    which?: SimpleFormula, // happen-sentence??
+    whose?: SimpleFormula, // happen-sentence??
     number: 1 | '*',
 }
 
@@ -134,7 +134,7 @@ export type GeneralizedFormula = {
 
 export type HappenSentence = {
     type: 'happen-sentence',
-    event: Constant,
+    subject: Constant,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>
@@ -260,6 +260,15 @@ export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence 
 
 export function isLLangAst(x: unknown): x is LLangAst {
     return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
+}
+
+export function isSimpleFormula(ast:LLangAst):ast is SimpleFormula{
+    return ast.type === 'equality'
+          || ast.type === 'is-a-formula'
+          || ast.type === 'has-formula'
+          || ast.type === 'generalized'
+          || ast.type === 'happen-sentence'
+
 }
 
 export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {

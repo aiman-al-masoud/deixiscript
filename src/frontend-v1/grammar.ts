@@ -71,7 +71,6 @@ const roles = stringLiterals(
     'left',
     'right',
     'operator',
-    'event',
     'verb',
     'head',
     'description',
@@ -187,7 +186,7 @@ export const syntaxes: SyntaxMap<
         { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     'happen-sentence': [
-        { types: ['entity'], role: 'event' },
+        { types: ['entity'], role: 'subject' },
         { types: ['space'], number: '*' },
         { literals: ['happens'] },
     ],

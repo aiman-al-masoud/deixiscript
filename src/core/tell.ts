@@ -32,7 +32,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     switch (ast.type) {
 
         case 'happen-sentence':
-            additions = consequencesOf(ast.event.value, kb)
+            additions = consequencesOf(ast.subject.value, kb)
             break
         case 'has-formula':
             const t1 = ask(ast.subject, kb).result
