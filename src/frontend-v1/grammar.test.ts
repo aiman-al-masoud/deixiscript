@@ -82,6 +82,8 @@ Deno.test({
     fn: () => {
         const ast = parser.parse('x:capra is a capra')
         assertEquals(ast, $('x:capra').isa('capra').$)
+        const ast2 = parser.parse('x:capra is an entity')
+        assertEquals(ast2, $('x:capra').isa('entity').$)
     }
 })
 
@@ -237,7 +239,7 @@ Deno.test({
         assertEquals(ast3, $.the('cat').$)
         const ast4 = parser.parse('the cat whose fur has red as color')
         assertEquals(ast4, $.the('cat').whose($('fur').has('red').as('color')).$)
-        const ast5 = parser.parse('the cat which has red as color')
+        const ast5 = parser.parse('a cat which has red as color')
         assertEquals(ast5, $.the('cat').which($._.has('red').as('color')).$)
         const ast6 = parser.parse('the cat which has red as color does eat the mouse')
         assertEquals(ast6, $({ subject: $.the('cat').which($._.has('red').as('color')).$, verb: 'eat', object: $.the('mouse').$ }).$)
@@ -287,10 +289,21 @@ Deno.test({
     name: 'test28',
     fn: () => {
         const ast1 = parser.parse('the button is red')
-        // console.log(ast1)
-        assertEquals(ast1, $({ subject: $.the('button').$, verb: 'be', object: 'red' }).$)
+        assertEquals(ast1, $.the('button').is('red').$)
+
         const ast2 = parser.parse('the button which is in the div is red')
-        // console.log(ast2)
         assertEquals(ast2, $({ subject: $.the('button').which($({ subject: $._.$, verb: 'be', object: $._.$, location: $.the('div').$ })).$, verb: 'be', object: 'red' }).$)
+    }
+})
+
+
+Deno.test({
+    name: 'test29',
+    fn: () => {
+        const ast1 = parser.parse('there exists a cat')
+        assertEquals(ast1, $.a('cat').exists.$)
+
+        const ast2 = parser.parse('there exists the goat which has white as color')
+        assertEquals(ast2, $.the('goat').which($._.has('white').as('color')).exists.$)
     }
 })
