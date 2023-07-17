@@ -39,11 +39,19 @@ const astTypes = stringLiterals(
     'dative-to',
     'locative-in',
     'complement',
-    'anaphor-description',
+    // 'anaphor-description',
     'string',
 
     'whose-clause',
     'which-clause',
+
+    'parenthesized-anaphor',
+    'normal-anaphor',
+
+
+    'parenthesized-math-expression',
+    'normal-math-expression',
+
 )
 
 const roles = stringLiterals(
@@ -237,11 +245,21 @@ export const syntaxes: SyntaxMap<
         { types: ['formula'], role: 'otherwise' },
     ],
     'math-expression': [
+        { types: ['parenthesized-math-expression', 'normal-math-expression'], expand: true },
+    ],
+    'normal-math-expression': [
         { types: ['atom'], role: 'left', number: '1|0' },
         { types: ['space'], number: '*' },
         { literals: ['+', '-', '*', '/', '>', '<'], role: 'operator' },
         { types: ['space'], number: '*' },
         { types: ['atom', 'math-expression'], role: 'right' },
+    ],
+    "parenthesized-math-expression": [
+        { literals: ['('] },
+        { types: ['space'], number: '*' },
+        { types: ['math-expression'], expand: true },
+        { types: ['space'], number: '*' },
+        { literals: [')'] },
     ],
     generalized: [
         { types: ['verb-sentence', 'annotation'], expand: true },
@@ -266,6 +284,9 @@ export const syntaxes: SyntaxMap<
         { types: ['formula'], expand: true },
     ],
     anaphor: [
+        { types: ['parenthesized-anaphor', 'normal-anaphor'], expand: true },
+    ],
+    'normal-anaphor': [
         { literals: ['the'] },
         { types: ['space'], number: '*' },
         { types: ['digits'], role: 'number', number: '1|0', defaultsTo: 1 },
@@ -273,6 +294,15 @@ export const syntaxes: SyntaxMap<
         { types: ['identifier'], role: 'headType' },
         { types: ['space'], number: '*' },
         { types: ['which-clause', 'whose-clause'], number: '1|0', expand: true },
+        { types: ['space'], number: '*' },
+        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
+    ],
+    "parenthesized-anaphor": [
+        { literals: ['('] },
+        { types: ['space'], number: '*' },
+        { types: ['normal-anaphor'], expand: true },
+        { types: ['space'], number: '*' },
+        { literals: [')'] },
     ],
     'which-clause': [
         { literals: ['which'] },
@@ -284,12 +314,11 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['simple-formula'], role: 'whose' },
     ],
-
-    'anaphor-description': [
-        { literals: ['such that'] },
-        { types: ['space'], number: '*' },
-        { types: ['formula'], role: 'description' },
-    ],
+    // 'anaphor-description': [
+    //     { literals: ['such that'] },
+    //     { types: ['space'], number: '*' },
+    //     { types: ['formula'], role: 'description' },
+    // ],
     command: [
         { types: ['formula'], role: 'f1' },
         { types: ['space'], number: '*' },

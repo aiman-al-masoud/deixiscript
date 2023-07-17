@@ -93,6 +93,8 @@ make it happen
 - assignments are completely replaced by anaphora, also theme-rheme phrase
   style, also intermediate numerical computations.
 
+- anaphora can also be used to replace if-statements, one big function with lots of ifs = lots of small "functions" with naturalistic type arguments.
+
 - anaphora work as if each entity got the current timestamp whenever it is
   mentioned. When function ask() is called from findAll() the deictic dict is
   NOT updated.

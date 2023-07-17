@@ -254,3 +254,40 @@ Deno.test({
         assertEquals(ast7, $.the('mouse').which($({ subject: $.the('cat').$, verb: 'eat', object: $._.$ })).$)
     }
 })
+
+Deno.test({
+    name: 'test26',
+    fn: () => {
+        const ast1 = parser.parse('the cat does eat (the mouse) in the house')
+        const ast2 = parser.parse('the cat does eat (the mouse in the house)')
+
+        console.log(ast1)
+        console.log(ast2)
+
+        const x = $({ subject: $.the('cat').$, verb: 'eat', object: $.the('mouse').$, location: $.the('house').$ }).$
+        const y = $({ subject: $.the('cat').$, verb: 'eat', object: { type: 'anaphor', headType: 'mouse', number: 1, location: $.the('house').$ } as any }).$
+
+        assertEquals(ast1, x)
+        assertEquals(ast2, y)
+    }
+})
+
+
+
+Deno.test({
+    name: 'test27',
+    fn: () => {
+        // const ast1 = parser.parse('1* 1 + 2')
+        // const ast1 = parser.parse('(2*3)+2')
+        const ast2 = parser.parse('2*(3+2)')
+        // const ast3 = parser.parse('1*(1+ (2/3))')
+        // const ast4 = parser.parse('1*( the number + (2/3))')
+
+        // console.log(ast1)
+        // console.log(ast2)
+        // console.log(ast3)
+        // console.log(ast4)
+
+        assertEquals(ast2, $(2).times($(3).plus(2).$).$)
+    }
+})
