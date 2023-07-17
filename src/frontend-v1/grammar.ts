@@ -248,7 +248,7 @@ export const syntaxes: SyntaxMap<
     'math-expression': [
         { types: ['atom'], role: 'left', number: '1|0' },
         { types: ['space'], number: '*' },
-        { literals: ['+', '-', '*', '/', '>', '<'], role: 'operator' },
+        { literals: ['+', '-', '*', '/', '>=', '<=', '>', '<'], role: 'operator' },
         { types: ['space'], number: '*' },
         { types: ['math-expression', 'atom'], role: 'right' },
     ],
