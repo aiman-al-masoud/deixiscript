@@ -281,3 +281,16 @@ Deno.test({
 
     }
 })
+
+
+Deno.test({
+    name: 'test28',
+    fn: () => {
+        const ast1 = parser.parse('the button is red')
+        // console.log(ast1)
+        assertEquals(ast1, $({ subject: $.the('button').$, verb: 'be', object: 'red' }).$)
+        const ast2 = parser.parse('the button which is in the div is red')
+        // console.log(ast2)
+        assertEquals(ast2, $({ subject: $.the('button').which($({ subject: $._.$, verb: 'be', object: $._.$, location: $.the('div').$ })).$, verb:'be', object: 'red' }).$)
+    }
+})

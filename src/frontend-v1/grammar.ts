@@ -44,6 +44,8 @@ const astTypes = stringLiterals(
     'atom',
     'normal-atom',
     'parenthesized-expression',
+
+    'copula-sentence',
 )
 
 const roles = stringLiterals(
@@ -190,7 +192,7 @@ export const syntaxes: SyntaxMap<
         { literals: ['happens'] },
     ],
     'simple-formula': [
-        { types: ['generalized', 'is-a-formula', 'equality', 'has-formula', 'happen-sentence'], expand: 'keep-specific-type' } // order: "is a" before "is"
+        { types: ['is-a-formula', 'generalized', 'equality', 'has-formula', 'happen-sentence'], expand: 'keep-specific-type' } // order: "is a" before "is"
     ],
     conjunction: [
         { types: ['simple-formula'], role: 'f1' },
@@ -251,7 +253,7 @@ export const syntaxes: SyntaxMap<
         { types: ['math-expression', 'atom'], role: 'right' },
     ],
     generalized: [
-        { types: ['verb-sentence', 'annotation'], expand: true },
+        { types: ['verb-sentence', 'annotation', 'copula-sentence'], expand: true },
         { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     "verb-sentence": [
@@ -271,6 +273,16 @@ export const syntaxes: SyntaxMap<
         { literals: [':'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], expand: true },
+    ],
+    'copula-sentence': [
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
+        { types: ['space'], number: '*' },
+        { literals: ['is', 'are', 'be'] },
+        { types: ['atom'], role: 'verb', number: '1|0', defaultsTo: $('be').$ },
+        { types: ['space'], number: '*' },
+        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
+        { types: ['space'], number: '*' },
+        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
     anaphor: [
         { literals: ['the'] },
