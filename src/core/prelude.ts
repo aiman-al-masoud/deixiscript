@@ -92,6 +92,11 @@ const derivationClauses: DerivationClause[] = [
             .and($({ subject: 'e:event', verb: 'be', object: 'possible', beneficiary: 'a:agent' }).after('s:seq'))
     ).$,
 
+
+    $({subject:'x:thing', verb:'be', object:'y:thing'}).when(
+        $('x:thing').equals('y:thing')
+    ).$,
+
 ]
 
 const conceptualModel =

@@ -4,14 +4,10 @@
 
 - integrating anaphora
   - refactor and complete decompress()
-  - nested anaphor clauses
   - first/second...
 - tell()
   - less than and greater than as commands
-- general
-  - copula should default to equality
 - parser
-  - special case for copula verb (not require "does")
   - "cat number 2" ---> explicit reference to constant "cat#2"
 
 # JS INTEROP
@@ -93,8 +89,14 @@ make it happen
 - assignments are completely replaced by anaphora, also theme-rheme phrase
   style, also intermediate numerical computations.
 
-- anaphora can also be used to replace if-statements, one big function with lots of ifs = lots of small "functions" with naturalistic type arguments.
+- anaphora can also be used to replace if-statements, one big function with lots
+  of ifs = lots of small "functions" with naturalistic type arguments.
 
 - anaphora work as if each entity got the current timestamp whenever it is
   mentioned. When function ask() is called from findAll() the deictic dict is
   NOT updated.
+
+- 3 basic and 1 semi-basic verbs (EQUALS,IS-A,HAS-AS,BE), EQUALS cannot be
+  overriden, all the others can, BE defaults to EQUALS in the most general case.
+  All other verbs need to be prefixed with a helper/auxiliary (do/does) to let
+  the parser know they're being used as verbs.

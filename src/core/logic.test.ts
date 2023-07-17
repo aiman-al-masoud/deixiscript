@@ -1050,6 +1050,16 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test56',
+    fn: () => {
+        const result1 = ask($({subject:1, verb:'be', object:1}).$, kb).result.value
+        assert(result1)
+        const result2 = ask($({subject:2, verb:'be', object:1}).$, kb).result.value
+        assert(!result2)
+    }
+})
+
 
 Deno.test({
     name: 'test19',
