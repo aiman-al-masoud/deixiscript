@@ -41,13 +41,7 @@ export function removeAnaphors(
         const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)
         return maybe ?? arbiType
 
-    } else if (ast.type !== 'derivation-clause') {
-        const anaphors = findAsts(ast, 'anaphor')
-        const subs = anaphors.map(x => [x, removeAnaphors(x, kb0, oldArbiTypes)] as [LLangAst, LLangAst])
-        if (subs.length === 0) return ast
-        const result = subst(ast, ...subs)
-        return result
-    } else {
+    } else if (ast.type === 'derivation-clause') {
 
         const conseqAnaphors = findAsts(ast.conseq, 'anaphor')
         const conseqArbiTypes = conseqAnaphors.map(x => removeAnaphors(x, kb0, oldArbiTypes))
@@ -80,6 +74,13 @@ export function removeAnaphors(
             when: newWhen,
         }
 
+        return result
+
+    } else {
+        const anaphors = findAsts(ast, 'anaphor')
+        const subs = anaphors.map(x => [x, removeAnaphors(x, kb0, oldArbiTypes)] as [LLangAst, LLangAst])
+        if (subs.length === 0) return ast
+        const result = subst(ast, ...subs)
         return result
     }
 
