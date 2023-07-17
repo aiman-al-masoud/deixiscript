@@ -12,11 +12,11 @@ export function solve(ast: Equality): Number {
         throw new Error('Cannot solve equation with more than one variable')
     }
 
-    if (ast.t1.type === 'variable' && ast.t2.type === 'number') {
-        return ast.t2
+    if (ast.subject.type === 'variable' && ast.object.type === 'number') {
+        return ast.object
     }
 
-    if (ast.t1.type === 'math-expression' && ast.t2.type === 'number') {
+    if (ast.subject.type === 'math-expression' && ast.object.type === 'number') {
         // k op X = c 
         // k + X = c  ---> X = c - k
         // k - X = c  ---> X = k - c
@@ -29,11 +29,11 @@ export function solve(ast: Equality): Number {
         // X * k = c  ---> X = c/k
         // X / k = c  ---> X = c * k
 
-        const c = ast.t2.value
-        const k = ast.t1.right.type === 'number' ? ast.t1.right.value : ast.t1.left.value as number
-        const X = ast.t1.right.type !== 'number' ? ast.t1.right : ast.t1.left
-        const op = ast.t1.operator as '+' | '-' | '*' | '/'
-        const kIsLeft = k === ast.t1.left.value
+        const c = ast.object.value
+        const k = ast.subject.right.type === 'number' ? ast.subject.right.value : ast.subject.left.value as number
+        const X = ast.subject.right.type !== 'number' ? ast.subject.right : ast.subject.left
+        const op = ast.subject.operator as '+' | '-' | '*' | '/'
+        const kIsLeft = k === ast.subject.left.value
 
         const newRhs = kIsLeft ? {
             '+': c - k,
@@ -50,8 +50,8 @@ export function solve(ast: Equality): Number {
         return solve($(X).equals(newRhs).$)
     }
 
-    if (ast.t1.type === 'math-expression' && ast.t2.type === 'number') {
-        return solve($(ast.t2).equals(ast.t1).$)
+    if (ast.subject.type === 'math-expression' && ast.object.type === 'number') {
+        return solve($(ast.object).equals(ast.subject).$)
     }
 
     throw new Error('Bad equation')
@@ -63,7 +63,7 @@ export function findEquations(ast: LLangAst): Equality[] {
     // console.log(findAsts(ast, 'equality'))
 
     const eqs = findAsts(ast, 'equality')
-        .filter(x => x.t1.type === 'math-expression' || x.t2.type === 'math-expression')
+        .filter(x => x.subject.type === 'math-expression' || x.object.type === 'math-expression')
 
     // console.log(eqs)
     return eqs

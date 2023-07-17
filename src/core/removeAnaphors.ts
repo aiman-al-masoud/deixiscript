@@ -21,11 +21,11 @@ export function removeAnaphors(
         const head = $(`x${random()}:${ast.headType}`).$
         let arbiType: ArbitraryType
 
-        if (ast.whose && ast.whose.t1.type === 'entity') {
-            const owned = $(`y${random()}:${ast.whose.t1.value}`).$
+        if (ast.whose && ast.whose.subject.type === 'entity') {
+            const owned = $(`y${random()}:${ast.whose.subject.value}`).$
 
             const description = $(owned).exists.where($(head).has(owned)
-                .and(subst(ast.whose, [ast.whose.t1, owned])))
+                .and(subst(ast.whose, [ast.whose.subject, owned])))
                 .$
 
             arbiType = { description: removeAnaphors(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }

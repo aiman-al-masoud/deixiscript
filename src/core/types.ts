@@ -126,7 +126,7 @@ export type MathExpression = {
 }
 
 export type GeneralizedFormula = {
-    [key: string]: LLangAst
+    [key: string]: LLangAst,
 } & {
     type: 'generalized',
     after: LLangAst,
@@ -141,21 +141,21 @@ export type AstMap = DeepMap<LLangAst, LLangAst>
 
 export type Equality = {
     type: 'equality',
-    t1: LLangAst,
-    t2: LLangAst,
+    subject: LLangAst,
+    object: LLangAst,
 }
 
 export type IsAFormula = {
     type: 'is-a-formula',
-    t1: LLangAst,
-    t2: LLangAst,
+    subject: LLangAst,
+    object: LLangAst,
     after: LLangAst,
 }
 
 export type HasFormula = {
     type: 'has-formula',
-    t1: LLangAst,
-    t2: LLangAst,
+    subject: LLangAst,
+    object: LLangAst,
     as: LLangAst,
     after: LLangAst,
 }
@@ -262,6 +262,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
     return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
 }
 
-export function astsEqual(ast1: LLangAst, ast2: LLangAst) {
-    return ast1.type === ast2.type && deepEquals(ast1, ast2)
+export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {
+    return astOne.type === astTwo.type && deepEquals(astOne, astTwo)
 }

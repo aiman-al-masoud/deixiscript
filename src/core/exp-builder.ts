@@ -12,8 +12,8 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder<Equality>({
             type: 'equality',
-            t1: this.exp,
-            t2: makeAst(term),
+            subject: this.exp,
+            object: makeAst(term),
         })
 
     }
@@ -22,8 +22,8 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder<IsAFormula>({
             type: 'is-a-formula',
-            t1: this.exp,
-            t2: makeAst(term),
+            subject: this.exp,
+            object: makeAst(term),
             after: $([]).$,
         })
 
@@ -33,8 +33,8 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder<HasFormula>({
             type: 'has-formula',
-            t1: this.exp,
-            t2: makeAst(term),
+            subject: this.exp,
+            object: makeAst(term),
             as: $('anything').$,
             after: $([]).$
         })
@@ -49,8 +49,8 @@ export class ExpBuilder<T extends LLangAst> {
 
         return new ExpBuilder<HasFormula>({
             type: 'has-formula',
-            t1: this.exp.t1,
-            t2: this.exp.t2,
+            subject: this.exp.subject,
+            object: this.exp.object,
             as: makeAst(role),
             after: this.exp.after,
         })

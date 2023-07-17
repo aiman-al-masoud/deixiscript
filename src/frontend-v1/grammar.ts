@@ -39,14 +39,11 @@ const astTypes = stringLiterals(
     'locative-in',
     'complement',
     'string',
-
     'whose-clause',
     'which-clause',
-
     'atom',
     'normal-atom',
     'parenthesized-expression',
-
 )
 
 const roles = stringLiterals(
@@ -55,8 +52,8 @@ const roles = stringLiterals(
     'number',
     'varType',
     'seq',
-    't1',
-    't2',
+    'subject',
+    'object',
     'after',
     'as',
     'value',
@@ -73,15 +70,12 @@ const roles = stringLiterals(
     'right',
     'operator',
     'event',
-    'subject',
     'verb',
     'head',
     'description',
     'annotation',
     'recipient',
     'location',
-    'object',
-
     'headType',
     'whose',
     'which',
@@ -155,20 +149,20 @@ export const syntaxes: SyntaxMap<
         { types: ['variable', 'constant'], role: 'value' },
     ],
     equality: [
-        { types: ['atom'], role: 't1', number: '1|0', defaultsTo: $._.$ },
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['equals', 'equal', '='] },
         { types: ['space'], number: '*' },
-        { types: ['atom'], role: 't2', number: '1|0', defaultsTo: $._.$ },
+        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
     ],
     "is-a-formula": [
-        { types: ['atom'], role: 't1', number: '1|0', defaultsTo: $._.$ },
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['is'] },
         { types: ['space'], number: '+' },
         { literals: ['a'] },
         { types: ['space'], number: '*' },
-        { types: ['atom'], role: 't2', number: '1|0', defaultsTo: $._.$ },
+        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
@@ -178,11 +172,11 @@ export const syntaxes: SyntaxMap<
         { types: ['atom'], role: 'after' },
     ],
     'has-formula': [
-        { types: ['atom'], role: 't1', number: '1|0', defaultsTo: $._.$ },
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['has'] },
         { types: ['space'], number: '*' },
-        { types: ['atom'], role: 't2', number: '1|0', defaultsTo: $._.$ },
+        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
         { literals: ['as'] },
         { types: ['space'], number: '*' },
@@ -256,7 +250,6 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['math-expression', 'atom'], role: 'right' },
     ],
-
     generalized: [
         { types: ['verb-sentence', 'annotation'], expand: true },
         { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },

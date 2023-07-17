@@ -197,7 +197,7 @@ Deno.test({
     name: 'test20',
     fn: () => {
         const ast = parser.parse('annotx: capra equals stupid')
-        assertEquals(ast, $({ annotation: 'annotx', t1: 'capra', t2: 'stupid' }).$)
+        assertEquals(ast, $({ annotation: 'annotx', subject: 'capra', object: 'stupid' }).$)
     }
 })
 

@@ -38,8 +38,8 @@ function substOnce(
 
             return {
                 type: 'equality',
-                t1: substOnce(ast.t1, oldTerm, replacement),
-                t2: substOnce(ast.t2, oldTerm, replacement),
+                subject: substOnce(ast.subject, oldTerm, replacement),
+                object: substOnce(ast.object, oldTerm, replacement),
             }
         case 'conjunction':
             return {
@@ -80,15 +80,15 @@ function substOnce(
         case 'is-a-formula':
             return {
                 type: 'is-a-formula',
-                t1: substOnce(ast.t1, oldTerm, replacement),
-                t2: substOnce(ast.t2, oldTerm, replacement),
+                subject: substOnce(ast.subject, oldTerm, replacement),
+                object: substOnce(ast.object, oldTerm, replacement),
                 after: substOnce(ast.after, oldTerm, replacement),
             }
         case 'has-formula':
             return {
                 type: 'has-formula',
-                t1: substOnce(ast.t1, oldTerm, replacement),
-                t2: substOnce(ast.t2, oldTerm, replacement),
+                subject: substOnce(ast.subject, oldTerm, replacement),
+                object: substOnce(ast.object, oldTerm, replacement),
                 as: substOnce(ast.as, oldTerm, replacement),
                 after: substOnce(ast.after, oldTerm, replacement),
             }

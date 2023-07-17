@@ -6,16 +6,16 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
     if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
 
-        const m1 = match(template.t1, f.t1)
-        const m2 = match(template.t2, f.t2)
+        const m1 = match(template.subject, f.subject)
+        const m2 = match(template.object, f.object)
         const m3 = match(template.after, f.after)
 
         return reduceMatchList([m1, m2, m3])
 
     } else if (template.type === 'has-formula' && f.type === 'has-formula') {
 
-        const m1 = match(template.t1, f.t1)
-        const m2 = match(template.t2, f.t2)
+        const m1 = match(template.subject, f.subject)
+        const m2 = match(template.object, f.object)
         const m3 = match(template.after, f.after)
         const m4 = match(template.as, f.as)
 
@@ -64,8 +64,8 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
     } else if (template.type === 'equality' && f.type === 'equality') {
 
-        const m1 = match(template.t1, f.t1)
-        const m2 = match(template.t2, f.t2)
+        const m1 = match(template.subject, f.subject)
+        const m2 = match(template.object, f.object)
 
         return reduceMatchList([m1, m2])
 

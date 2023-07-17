@@ -52,13 +52,13 @@ export function ask(
         case 'anaphor':
             throw new Error('!!!!')
         case 'equality':
-            const t10 = ask(formula.t1, kb, opts).result
-            const t20 = ask(formula.t2, kb, opts).result
+            const t10 = ask(formula.subject, kb, opts).result
+            const t20 = ask(formula.object, kb, opts).result
             if (astsEqual(t10, t20)) return { result: $(true).$, kb }
             break
         case 'is-a-formula':
-            const t1 = ask(formula.t1, kb, opts).result
-            const t2 = ask(formula.t2, kb, opts).result
+            const t1 = ask(formula.subject, kb, opts).result
+            const t2 = ask(formula.object, kb, opts).result
 
             if (t1.type === t2.value) return { result: $(true).$, kb }
 
@@ -69,8 +69,8 @@ export function ask(
             break
         case 'has-formula':
 
-            const t11 = ask(formula.t1, kb, opts).result
-            const t22 = ask(formula.t2, kb, opts).result
+            const t11 = ask(formula.subject, kb, opts).result
+            const t22 = ask(formula.object, kb, opts).result
             const as = ask(formula.as, kb, opts).result
 
             if (kb.wm.filter(isHasSentence).find(hs => {

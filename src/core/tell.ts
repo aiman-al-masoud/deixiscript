@@ -35,8 +35,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             additions = consequencesOf(ast.event.value, kb)
             break
         case 'has-formula':
-            const t1 = ask(ast.t1, kb).result
-            const t2 = ask(ast.t2, kb).result
+            const t1 = ask(ast.subject, kb).result
+            const t2 = ask(ast.object, kb).result
             const as = ask(ast.as, kb).result
             if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error('cannot serialize formula with variables!')
 
@@ -44,8 +44,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             break
         case 'is-a-formula':
 
-            const t11 = ask(ast.t1, kb).result
-            const t21 = ask(ast.t2, kb).result
+            const t11 = ask(ast.subject, kb).result
+            const t21 = ask(ast.object, kb).result
 
             if (!isConst(t11) || !isConst(t21)) throw new Error('cannot serialize formula with variables!')
 
