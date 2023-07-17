@@ -21,7 +21,9 @@ export function removeAnaphors(
         const head = $(`x${random()}:${ast.headType}`).$
         let arbiType: ArbitraryType
 
-        if (ast.whose && ast.whose.subject.type === 'entity') {
+        if (ast.whose) {
+            if (ast.whose.subject.type !== 'entity') throw new Error('')
+
             const owned = $(`y${random()}:${ast.whose.subject.value}`).$
 
             const description = $(owned).exists.where($(head).has(owned)
