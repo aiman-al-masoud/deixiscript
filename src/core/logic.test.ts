@@ -1053,13 +1053,55 @@ Deno.test({
 Deno.test({
     name: 'test56',
     fn: () => {
-        const result1 = ask($({subject:1, verb:'be', object:1}).$, kb).result.value
+        const result1 = ask($({ subject: 1, verb: 'be', object: 1 }).$, kb).result.value
         assert(result1)
-        const result2 = ask($({subject:2, verb:'be', object:1}).$, kb).result.value
+        const result2 = ask($({ subject: 2, verb: 'be', object: 1 }).$, kb).result.value
         assert(!result2)
     }
 })
 
+
+Deno.test({
+    name: 'test57',
+    fn: () => {
+        const dc = $('x:thing').is('c:color').when(
+            $('x:thing').has('c:color').as('color')
+        ).$
+
+        const kb0 = tell(dc, $.emptyKb).kb
+        const kb1 = tell($('red').and('green').isa('color').$, kb0).kb
+        const kb2 = tell($('thing#1').is('red').$, kb1).kb
+        const result0 = ask($('thing#1').has('red').as('color').$, kb2).result.value
+        const result1 = ask($('thing#1').is('red').$, kb2).result.value
+        const result2 = ask($('thing#1').has('black').as('color').isNotTheCase.$, kb2).result.value
+
+        assert(result0)
+        assert(result1)
+        assert(result2)
+    }
+})
+
+Deno.test({
+    name: 'test58',
+    fn: () => {
+
+        const dc = $('x:capra').does('like')._('f:food').when(
+            $('f:food').has('salt').as('condiment')
+        ).$
+
+        const kb =
+            $('food#1').isa('food')
+                .and($('food#2').isa('food'))
+                .and($('capra#1').isa('capra'))
+                .and($('food#1').has('salt').as('condiment'))
+                .and(dc)
+                .dump().kb
+
+        assert(ask($.the('capra').does('like')._('food#1').$, kb).result.value)
+        assert(!ask($.the('capra').does('like')._('food#2').$, kb).result.value)
+
+    }
+})
 
 Deno.test({
     name: 'test19',

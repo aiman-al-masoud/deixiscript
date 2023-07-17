@@ -289,7 +289,24 @@ export class ExpBuilder<T extends LLangAst> {
         return $.the('thing').which($(owner).has($._.$).as(this.exp))
     }
 
+
+    is(object: WmAtom | LLangAst | ExpBuilder<LLangAst>) {
+        return $({subject:this.exp, verb:'be', object:makeAst(object)})
+    }
+
+    does(verb: WmAtom | LLangAst | ExpBuilder<LLangAst>){
+        return $({subject:this.exp, verb:makeAst(verb)})
+    }
+
+    _(object: WmAtom | LLangAst | ExpBuilder<LLangAst>){
+        if (this.exp.type!=='generalized') throw new Error('')
+        return $({...this.exp, object:makeAst(object)})
+    }
+
+
 }
+
+
 
 type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] }
 type Var = `${string}:${string}`
