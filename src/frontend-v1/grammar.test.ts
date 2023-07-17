@@ -230,7 +230,7 @@ Deno.test({
     name: 'test24',
     fn: () => {
         const ast = parser.parse('capra does extend mammal')
-        console.log(ast)// remove type:'verb-sentence'
+        // console.log(ast)// remove type:'verb-sentence'
     }
 })
 
@@ -238,18 +238,18 @@ Deno.test({
     name: 'test25',
     fn: () => {
         const ast = parser.parse('does jump in car')
-        console.log(ast)
+        // console.log(ast)
         const ast2 = parser.parse('has red as color')
-        console.log(ast2)
+        // console.log(ast2)
         const ast3 = parser.parse('the cat')
-        console.log(ast3)
+        // console.log(ast3)
         const ast4 = parser.parse('the cat whose fur has red as color')
-        console.log(ast4)
+        // console.log(ast4)
         const ast5 = parser.parse('the cat which has red as color')
         assertEquals(ast5, $.the('cat').which($._.has('red').as('color')).$)
-        console.log(ast5)
+        // console.log(ast5)
         const ast6 = parser.parse('the cat which has red as color does eat the mouse')
-        console.log(ast6)
+        // console.log(ast6)
         const ast7 = parser.parse('the mouse which the cat does eat')
         assertEquals(ast7, $.the('mouse').which($({ subject: $.the('cat').$, verb: 'eat', object: $._.$ })).$)
     }
@@ -261,8 +261,8 @@ Deno.test({
         const ast1 = parser.parse('the cat does eat (the mouse) in the house')
         const ast2 = parser.parse('the cat does eat (the mouse in the house)')
 
-        console.log(ast1)
-        console.log(ast2)
+        // console.log(ast1)
+        // console.log(ast2)
 
         const x = $({ subject: $.the('cat').$, verb: 'eat', object: $.the('mouse').$, location: $.the('house').$ }).$
         const y = $({ subject: $.the('cat').$, verb: 'eat', object: { type: 'anaphor', headType: 'mouse', number: 1, location: $.the('house').$ } as any }).$
@@ -277,17 +277,19 @@ Deno.test({
 Deno.test({
     name: 'test27',
     fn: () => {
-        // const ast1 = parser.parse('1* 1 + 2')
-        // const ast1 = parser.parse('(2*3)+2')
-        const ast2 = parser.parse('2*(3+2)')
-        // const ast3 = parser.parse('1*(1+ (2/3))')
-        // const ast4 = parser.parse('1*( the number + (2/3))')
+        const ast1 = parser.parse('1* 1 + 2')
+        const ast2 = parser.parse('(2*3)+2')
+        const ast3 = parser.parse('2*(3+2)')
+        const ast4 = parser.parse('1*(1+ (2/3))')
+        const ast5 = parser.parse('1*( the number + (2/3))')
+        const ast6 = parser.parse('(1 * 1 + 2)')
 
-        // console.log(ast1)
-        // console.log(ast2)
-        // console.log(ast3)
-        // console.log(ast4)
+        assertEquals(ast1, $(1).times($(1).plus(2).$).$)
+        assertEquals(ast2, $(2).times(3).plus(2).$)
+        assertEquals(ast3, $(2).times($(3).plus(2).$).$)
+        assertEquals(ast4, $(1).times($(1).plus($(2).over(3).$).$).$)
+        assertEquals(ast5, $(1).times($.the('number').plus($(2).over(3).$).$).$)
+        assertEquals(ast6, $(1).times($(1).plus(2).$).$)
 
-        assertEquals(ast2, $(2).times($(3).plus(2).$).$)
     }
 })
