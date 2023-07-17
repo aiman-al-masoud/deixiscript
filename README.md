@@ -2,13 +2,13 @@
 
 # Core Features
 
-- integrating anaphora
+- anaphora
   - refactor and complete decompress()
-  - first/second...
+  - first/second/ ordinal vs cardinal...
 - tell()
   - less than and greater than as commands
 - parser
-  - "cat number 2" ---> explicit reference to constant "cat#2"
+  - "cat number 2" ---> explicit reference to constant "cat#2" ?
 
 # JS INTEROP
 
