@@ -4,7 +4,7 @@ import { ImplicitReference, Conjunction, Disjunction, Equality, LLangAst, Variab
 export function findAsts(ast: LLangAst, type: 'variable'): Variable[]
 export function findAsts(ast: LLangAst, type: 'conjunction'): Conjunction[]
 export function findAsts(ast: LLangAst, type: 'disjunction'): Disjunction[]
-export function findAsts(ast: LLangAst, type: 'anaphor'): ImplicitReference[]
+export function findAsts(ast: LLangAst, type: 'implicit-reference'): ImplicitReference[]
 export function findAsts(ast: LLangAst, type: 'equality'): Equality[]
 export function findAsts(ast: LLangAst, type: LLangAst['type']): LLangAst[]
 

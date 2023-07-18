@@ -111,10 +111,10 @@ export type ListPattern = {
 }
 
 export type ImplicitReference = {
-    type: 'anaphor',
+    type: 'implicit-reference',
     headType: string,
-    which?: SimpleFormula, // happen-sentence??
-    whose?: SimpleFormula, // happen-sentence??
+    which?: SimpleFormula,
+    whose?: SimpleFormula,
     location?: LLangAst,
     number: 1 | '*',
 }

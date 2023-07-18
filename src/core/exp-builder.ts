@@ -127,7 +127,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     get exists() {
 
-        if (this.exp.type === 'anaphor' || this.exp.type === 'arbitrary-type') {
+        if (this.exp.type === 'implicit-reference' || this.exp.type === 'arbitrary-type') {
             return new ExpBuilder<ExistentialQuantification>({
                 type: 'existquant',
                 value: this.exp,
@@ -184,7 +184,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     whose(ast: ExpBuilder<SimpleFormula>) {
 
-        if (this.exp.type !== 'anaphor') {
+        if (this.exp.type !== 'implicit-reference') {
             throw new Error('')
         }
 
@@ -197,7 +197,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     which(ast: ExpBuilder<SimpleFormula>) {
 
-        if (this.exp.type !== 'anaphor') {
+        if (this.exp.type !== 'implicit-reference') {
             throw new Error('')
         }
 
@@ -303,7 +303,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     in(location:ExpBuilderArg):ExpBuilder<LLangAst>{
         
-        if (this.exp.type==='anaphor'){
+        if (this.exp.type==='implicit-reference'){
             return new ExpBuilder<ImplicitReference>({
                 ...this.exp,
                 location : makeAst(location),
@@ -436,7 +436,7 @@ $._ = $('')
  * Creates an Anaphor.
  */
 $.the = (x: string) => new ExpBuilder<ImplicitReference>({
-    type: 'anaphor',
+    type: 'implicit-reference',
     headType: x,
     number: 1,
 })

@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $, ExpBuilder } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
@@ -9,7 +9,7 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
-import { removeAnaphors } from "./removeAnaphors.ts";
+import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 
 const standardKb = getStandardKb()
@@ -874,7 +874,7 @@ Deno.test({
         // assert(result)
 
         const result = ask($('max-x').of('panel#2').$, kb1).result
-        console.log(result)
+        // console.log(result)
 
         // const result = ask($('panel#2').has(20).as('max-x').$, kb1).result
         // console.log(result)
@@ -936,7 +936,7 @@ Deno.test({
         assertEquals(ask($('max-y').of('panel#2').$, kb).result, $(15).$)
         assertEquals(ask($('max-y').of('panel#1').$, kb).result, $(14).$)
 
-        console.log(ask($('panel#1').has('patatabrutta').as('parent').$, kb).result)
+        // console.log(ask($('panel#1').has('patatabrutta').as('parent').$, kb).result)
         // console.log(ask($('parent').of('panel#1').$, kb).result)
     }
 })
@@ -1109,15 +1109,14 @@ Deno.test({
     name: 'test59',
     fn: () => {
         const x = $.the('mouse').in('house#1').exists.$
-        const result = tell(x, $.emptyKb).kb
-        console.log(result)
+        /* const result =  */tell(x, $.emptyKb).kb
+        // console.log(result)
 
         const alt = $.the('mouse').which($._.has('house#1').as('location')).exists.$
-        console.log(match(removeAnaphors(x), removeAnaphors(alt)))
+        assertNotEquals(match(removeImplicit(x), removeImplicit(alt)),undefined)
 
         // // console.log(y)
         // console.log(result)
-
     }
 })
 

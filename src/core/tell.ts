@@ -6,7 +6,7 @@ import { ask } from "./ask.ts";
 import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence } from "./types.ts";
 import { addWorldModels, getParts, subtractWorldModels } from "./wm-funcs.ts";
 import { decompress } from "./decompress.ts";
-import { removeAnaphors } from "./removeAnaphors.ts";
+import { removeImplicit } from "./removeImplicit.ts";
 import { findAsts } from "./findAsts.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
@@ -23,7 +23,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     eliminations: WorldModel,
 } {
 
-    const ast = removeAnaphors(decompress(ast1))
+    const ast = removeImplicit(decompress(ast1))
 
     let additions: WorldModel = []
     let eliminations: WorldModel = []
@@ -87,7 +87,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            if (ast.value.type === 'anaphor') throw Error('!!!!')
+            if (ast.value.type === 'implicit-reference') throw Error('!!!!')
             additions = instantiateConcept(ast.value, kb)
 
             break

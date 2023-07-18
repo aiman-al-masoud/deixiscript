@@ -139,14 +139,14 @@ function substOnce(
                 ...ast,
                 ...Object.fromEntries(newEntries),
             }
-        case 'anaphor':
-            // return ast //TODO
+        case 'implicit-reference':
             return {
-                type: 'anaphor',
+                type: 'implicit-reference',
                 headType: ast.headType,
                 number: ast.number,
                 which: ast.which ? substOnce(ast.which, oldTerm, replacement) : ast.which,
                 whose: ast.whose ? substOnce(ast.whose, oldTerm, replacement) : ast.whose,
+                location: ast.location ? substOnce(ast.location, oldTerm, replacement) : ast.location,
             }
         case 'math-expression':
             return {

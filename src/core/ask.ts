@@ -6,7 +6,7 @@ import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
-import { removeAnaphors } from "./removeAnaphors.ts";
+import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 
@@ -29,7 +29,7 @@ export function ask(
 
     }
 
-    const formula = removeAnaphors(decompress(ast))
+    const formula = removeImplicit(decompress(ast))
 
     switch (formula.type) {
 
@@ -46,7 +46,7 @@ export function ask(
         case 'list-literal':
         case 'list-pattern':
             return { result: formula, kb }
-        case 'anaphor':
+        case 'implicit-reference':
             throw new Error('!!!!')
         case 'equality':
             const t10 = ask(formula.subject, kb, opts).result

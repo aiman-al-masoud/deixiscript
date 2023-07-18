@@ -57,7 +57,7 @@ export function decompress(ast: LLangAst): LLangAst {
             return $(decompress(ast.then)).if(decompress(ast.condition)).else(decompress(ast.otherwise)).$
         case "math-expression":
             return ast
-        case "anaphor":
+        case 'implicit-reference':
         case 'nothing':
         case "command":
         case "question":

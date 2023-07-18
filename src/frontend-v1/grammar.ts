@@ -30,7 +30,7 @@ const astTypes = stringLiterals(
     'math-expression',
     'happen-sentence',
     'generalized',
-    'anaphor',
+    'implicit-reference',
     'command',
     'question',
     'verb-sentence',
@@ -135,7 +135,7 @@ export const syntaxes: SyntaxMap<
         { types: ['parenthesized-expression', 'normal-atom'], expand: 'keep-specific-type' }
     ],
     "normal-atom": [
-        { types: ['list-pattern', 'anaphor', 'list-literal', 'variable', 'constant',], expand: 'keep-specific-type' }
+        { types: ['list-pattern', 'implicit-reference', 'list-literal', 'variable', 'constant',], expand: 'keep-specific-type' }
     ],
     'parenthesized-expression': [
         { literals: ['('] },
@@ -223,7 +223,7 @@ export const syntaxes: SyntaxMap<
         // { types: ['formula'], role: 'where' },
         { literals: ['there exists'] },
         { types: ['space'], number: '+' },
-        { types: ['anaphor'], role: 'value' },
+        { types: ['implicit-reference'], role: 'value' },
     ],
     'derivation-clause': [
         { types: ['simple-formula'], role: 'conseq' },
@@ -284,7 +284,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
-    anaphor: [
+    "implicit-reference": [
         { literals: ['the', 'an', 'a'] },
         { types: ['space'], number: '+' },
         { types: ['digits'], role: 'number', number: '1|0', defaultsTo: 1 },

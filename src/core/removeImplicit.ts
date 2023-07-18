@@ -8,15 +8,15 @@ import { ArbitraryType } from "./types.ts"
 import { ask } from "./ask.ts";
 
 
-export function removeAnaphors(ast: ImplicitReference, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): ArbitraryType
-export function removeAnaphors<T extends LLangAst>(ast: T, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): T
-export function removeAnaphors(
+export function removeImplicit(ast: ImplicitReference, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): ArbitraryType
+export function removeImplicit<T extends LLangAst>(ast: T, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): T
+export function removeImplicit(
     ast: LLangAst,
     kb0 = $.emptyKb,
     oldArbiTypes: ArbitraryType[] = [],
 ): LLangAst {
 
-    if (ast.type === 'anaphor') {
+    if (ast.type === 'implicit-reference') {
 
         const head = $(`x${random()}:${ast.headType}`).$
         let arbiType: ArbitraryType
@@ -30,14 +30,14 @@ export function removeAnaphors(
                 .and(subst(ast.whose, [ast.whose.subject, owned])))
                 .$
 
-            arbiType = { description: removeAnaphors(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
+            arbiType = { description: removeImplicit(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
         } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
-            arbiType = { description: removeAnaphors(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
+            arbiType = { description: removeImplicit(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
 
         } else if (ast.location) {
 
-            return removeAnaphors($.the(ast.headType).which($._.has(ast.location).as('location')).$, kb0, oldArbiTypes)
+            return removeImplicit($.the(ast.headType).which($._.has(ast.location).as('location')).$, kb0, oldArbiTypes)
 
         } else {
             arbiType = { description: $(true).$, head, type: 'arbitrary-type' }
@@ -48,16 +48,16 @@ export function removeAnaphors(
 
     } else if (ast.type === 'derivation-clause') {
 
-        const conseqAnaphors = findAsts(ast.conseq, 'anaphor')
-        const conseqArbiTypes = conseqAnaphors.map(x => removeAnaphors(x, kb0, oldArbiTypes))
+        const conseqAnaphors = findAsts(ast.conseq, 'implicit-reference')
+        const conseqArbiTypes = conseqAnaphors.map(x => removeImplicit(x, kb0, oldArbiTypes))
 
         const kb = conseqArbiTypes.reduce(
             (a, b) => tell($(b.head).suchThat($(b.description).and($(b.head).has(b.head.value).as('var-name')).$).exists.$, a).kb,
             kb0,
         )
 
-        const whenAnaphors = findAsts(ast.when, 'anaphor')
-        const whenArbiTypes = whenAnaphors.map(x => removeAnaphors(x, kb, [...oldArbiTypes, ...conseqArbiTypes]))
+        const whenAnaphors = findAsts(ast.when, 'implicit-reference')
+        const whenArbiTypes = whenAnaphors.map(x => removeImplicit(x, kb, [...oldArbiTypes, ...conseqArbiTypes]))
 
         const whenReplacements = whenArbiTypes.map(x => {
             return searchArbiType(x, kb, conseqArbiTypes) ?? x
@@ -82,8 +82,8 @@ export function removeAnaphors(
         return result
 
     } else {
-        const anaphors = findAsts(ast, 'anaphor')
-        const subs = anaphors.map(x => [x, removeAnaphors(x, kb0, oldArbiTypes)] as [LLangAst, LLangAst])
+        const anaphors = findAsts(ast, 'implicit-reference')
+        const subs = anaphors.map(x => [x, removeImplicit(x, kb0, oldArbiTypes)] as [LLangAst, LLangAst])
         if (subs.length === 0) return ast
         const result = subst(ast, ...subs)
         return result
