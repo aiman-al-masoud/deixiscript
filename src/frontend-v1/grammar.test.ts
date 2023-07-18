@@ -315,13 +315,16 @@ Deno.test({
     name: 'test30',
     fn: () => {
 
-        const ast = $.the('capra').which($._.has('black').as('color')).has('scemo').as('friend').$
-        const x = linearize(ast, syntaxes)
+        const ast1 = $.the('capra').which($._.has('black').as('color')).has('scemo').as('friend').$
+        const x = linearize(ast1, syntaxes)
         console.log(x)
 
-        // const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
-        // const y = linearize(ast2, syntaxes)
-        // console.log(y)
+        const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
+        const y = linearize(ast2, syntaxes)
+        console.log(y)
+
+        assertEquals(parser.parse(x), ast1)
+        assertEquals(parser.parse(y), ast2)
 
     }
 })
