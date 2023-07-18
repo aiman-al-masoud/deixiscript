@@ -18,7 +18,7 @@ Deno.test({
 Deno.test({
     name: 'test-1',
     fn: () => {
-        const ast = parser.parse('false') as unknown
+        const ast = parser.parse('false')
         assertEquals(ast, $(false).$)
     }
 })
@@ -26,7 +26,7 @@ Deno.test({
 Deno.test({
     name: 'test0',
     fn: () => {
-        const ast = parser.parse('true') as unknown
+        const ast = parser.parse('true')
         assertEquals(ast, $(true).$)
     }
 })
@@ -58,7 +58,7 @@ Deno.test({
 Deno.test({
     name: 'test4',
     fn: () => {
-        const ast = parser.parse('[x:capra y:capra capra ] ') as unknown
+        const ast = parser.parse('[x:capra y:capra capra ] ')
         assertEquals(ast, $(['x:capra', 'y:capra', 'capra']).$);
     }
 })
@@ -66,7 +66,7 @@ Deno.test({
 Deno.test({
     name: 'test5',
     fn: () => {
-        const ast = parser.parse('x:seq|e:event') as unknown
+        const ast = parser.parse('x:seq|e:event')
         assertEquals(ast, $('x:seq|e:event').$)
     }
 })
@@ -74,7 +74,7 @@ Deno.test({
 Deno.test({
     name: 'test6',
     fn: () => {
-        const ast = parser.parse('capra equals capra') as unknown
+        const ast = parser.parse('capra equals capra')
         assertEquals(ast, $('capra').equals('capra').$)
     }
 })
@@ -93,7 +93,7 @@ Deno.test({
 Deno.test({
     name: 'test8',
     fn: () => {
-        const ast = parser.parse('x:capra has 0 as intelligence after [eventxy]') as unknown
+        const ast = parser.parse('x:capra has 0 as intelligence after [eventxy]')
         assertEquals(ast, $('x:capra').has(0).as('intelligence').after(['eventxy']).$)
     }
 })
@@ -151,7 +151,7 @@ Deno.test({
 Deno.test({
     name: 'test14',
     fn: () => {
-        const ast = parser.parse('1 + x:capra') as unknown
+        const ast = parser.parse('1 + x:capra')
         assertEquals(ast, $(1).plus('x:capra').$)
     }
 })
