@@ -50,7 +50,7 @@ export type CompositeFormula =
     | DerivationClause
     | IfElse
     | MathExpression
-    | Anaphor
+    | ImplicitReference
     | ArbitraryType
 
 export type Command = {
@@ -110,11 +110,12 @@ export type ListPattern = {
     /** tail */ value: Atom,
 }
 
-export type Anaphor = { // implicit reference
+export type ImplicitReference = {
     type: 'anaphor',
     headType: string,
     which?: SimpleFormula, // happen-sentence??
     whose?: SimpleFormula, // happen-sentence??
+    location?: LLangAst,
     number: 1 | '*',
 }
 
@@ -179,7 +180,7 @@ export type Negation = {
 
 export type ExistentialQuantification = {
     type: 'existquant',
-    value: Anaphor | ArbitraryType,
+    value: ImplicitReference | ArbitraryType,
 }
 
 export type ArbitraryType = {

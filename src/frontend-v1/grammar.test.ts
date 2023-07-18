@@ -256,8 +256,8 @@ Deno.test({
         const ast1 = parser.parse('the cat does eat (the mouse) in the house')
         const ast2 = parser.parse('the cat does eat (the mouse in the house)')
 
-        const x = $({ subject: $.the('cat').$, verb: 'eat', object: $.the('mouse').$, location: $.the('house').$ }).$
-        const y = $({ subject: $.the('cat').$, verb: 'eat', object: { type: 'anaphor', headType: 'mouse', number: 1, location: $.the('house').$ } as any }).$
+        const x = $.the('cat').does('eat')._($.the('mouse')).in($.the('house')).$
+        const y = $.the('cat').does('eat')._($.the('mouse').in($.the('house').$)).$
 
         assertEquals(ast1, x)
         assertEquals(ast2, y)

@@ -55,7 +55,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             const t1 = ask(ast.subject, kb).result
             const t2 = ask(ast.object, kb).result
             const as = ask(ast.as, kb).result
-            if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error('cannot serialize formula with variables!')
+            if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error(`cannot serialize formula with non-constants! t1=${t1.value} t2=${t2.value} as=${as.value}`)
 
             additions = [[t1.value, t2.value, as.value]]
             break

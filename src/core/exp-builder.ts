@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, Anaphor, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, ImplicitReference, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -188,7 +188,7 @@ export class ExpBuilder<T extends LLangAst> {
             throw new Error('')
         }
 
-        return new ExpBuilder<Anaphor>({
+        return new ExpBuilder<ImplicitReference>({
             ...this.exp,
             whose: makeAst(ast),
         })
@@ -201,7 +201,7 @@ export class ExpBuilder<T extends LLangAst> {
             throw new Error('')
         }
 
-        return new ExpBuilder<Anaphor>({
+        return new ExpBuilder<ImplicitReference>({
             ...this.exp,
             which: ast.$,
         })
@@ -298,6 +298,28 @@ export class ExpBuilder<T extends LLangAst> {
     _(object: ExpBuilderArg) {
         if (this.exp.type !== 'generalized') throw new Error('')
         return $({ ...this.exp, object: makeAst(object) })
+    }
+
+
+    in(location:ExpBuilderArg):ExpBuilder<LLangAst>{
+        
+        if (this.exp.type==='anaphor'){
+            return new ExpBuilder<ImplicitReference>({
+                ...this.exp,
+                location : makeAst(location),
+            })
+        }
+
+        if (this.exp.type === 'generalized'){
+            
+            return new ExpBuilder({
+                ...this.exp,
+                location : makeAst(location),
+            })
+        }
+
+        throw new Error('')
+
     }
 
 }
@@ -413,7 +435,7 @@ $._ = $('')
 /**
  * Creates an Anaphor.
  */
-$.the = (x: string) => new ExpBuilder<Anaphor>({
+$.the = (x: string) => new ExpBuilder<ImplicitReference>({
     type: 'anaphor',
     headType: x,
     number: 1,

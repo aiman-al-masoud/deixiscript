@@ -9,6 +9,8 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
+import { removeAnaphors } from "./removeAnaphors.ts";
+import { match } from "./match.ts";
 
 const standardKb = getStandardKb()
 
@@ -1099,6 +1101,22 @@ Deno.test({
 
         assert(ask($.the('capra').does('like')._('food#1').$, kb).result.value)
         assert(!ask($.the('capra').does('like')._('food#2').$, kb).result.value)
+
+    }
+})
+
+Deno.test({
+    name: 'test59',
+    fn: () => {
+        const x = $.the('mouse').in('house#1').exists.$
+        const result = tell(x, $.emptyKb).kb
+        console.log(result)
+
+        const alt = $.the('mouse').which($._.has('house#1').as('location')).exists.$
+        console.log(match(removeAnaphors(x), removeAnaphors(alt)))
+
+        // // console.log(y)
+        // console.log(result)
 
     }
 })

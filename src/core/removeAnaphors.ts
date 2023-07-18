@@ -2,13 +2,13 @@ import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { tell } from "./tell.ts";
-import { Anaphor, DerivationClause, KnowledgeBase, LLangAst } from "./types.ts";
+import { ImplicitReference, DerivationClause, KnowledgeBase, LLangAst } from "./types.ts";
 import { random } from "../utils/random.ts"
 import { ArbitraryType } from "./types.ts"
 import { ask } from "./ask.ts";
 
 
-export function removeAnaphors(ast: Anaphor, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): ArbitraryType
+export function removeAnaphors(ast: ImplicitReference, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): ArbitraryType
 export function removeAnaphors<T extends LLangAst>(ast: T, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): T
 export function removeAnaphors(
     ast: LLangAst,
@@ -34,6 +34,11 @@ export function removeAnaphors(
         } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
             arbiType = { description: removeAnaphors(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
+
+        } else if (ast.location) {
+
+            return removeAnaphors($.the(ast.headType).which($._.has(ast.location).as('location')).$, kb0, oldArbiTypes)
+
         } else {
             arbiType = { description: $(true).$, head, type: 'arbitrary-type' }
         }
