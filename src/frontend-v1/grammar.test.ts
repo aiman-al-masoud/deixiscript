@@ -307,3 +307,21 @@ Deno.test({
         assertEquals(ast2, $.the('goat').which($._.has('white').as('color')).exists.$)
     }
 })
+
+
+import { linearize, } from "../parser/linearize.ts"
+
+Deno.test({
+    name: 'test30',
+    fn: () => {
+
+        const ast = $.the('capra').which($._.has('black').as('color')).has('scemo').as('friend').$
+        const x = linearize(ast, syntaxes)
+        console.log(x)
+
+        // const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
+        // const y = linearize(ast2, syntaxes)
+        // console.log(y)
+
+    }
+})
