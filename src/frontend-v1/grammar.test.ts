@@ -323,8 +323,13 @@ Deno.test({
         const y = linearize(ast2, syntaxes)
         console.log(y)
 
+        const ast3 = $.the('cat').does('eat')._($.a('mouse')).when($(true).equals(true)).$
+        const z = linearize(ast3, syntaxes)
+        console.log(z)
+
         assertEquals(parser.parse(x), ast1)
         assertEquals(parser.parse(y), ast2)
+        assertEquals(parser.parse(z), ast3)
 
     }
 })
