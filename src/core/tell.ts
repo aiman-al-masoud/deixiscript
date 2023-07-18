@@ -32,7 +32,24 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     switch (ast.type) {
 
         case 'happen-sentence':
-            additions = consequencesOf(ast.subject.value, kb)
+
+            if (isConst(ast.subject)) {
+                additions = consequencesOf(ast.subject.value, kb)
+            } else if (ast.subject.type === 'list-literal') {
+
+                const res = ast.subject.value.map(x => $(x).happens.$).reduce((a, b) => {
+
+                    const result = tell(b, a.kb)
+                    return {
+                        kb: result.kb,
+                        additions: addWorldModels(result.additions, a.additions),
+                    }
+
+                }, { kb, additions: [] as WorldModel })
+
+                additions = res.additions
+            }
+
             break
         case 'has-formula':
             const t1 = ask(ast.subject, kb).result

@@ -134,7 +134,7 @@ export type GeneralizedFormula = {
 
 export type HappenSentence = {
     type: 'happen-sentence',
-    subject: Constant,
+    subject: Atom,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>
@@ -262,12 +262,12 @@ export function isLLangAst(x: unknown): x is LLangAst {
     return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
 }
 
-export function isSimpleFormula(ast:LLangAst):ast is SimpleFormula{
+export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
     return ast.type === 'equality'
-          || ast.type === 'is-a-formula'
-          || ast.type === 'has-formula'
-          || ast.type === 'generalized'
-          || ast.type === 'happen-sentence'
+        || ast.type === 'is-a-formula'
+        || ast.type === 'has-formula'
+        || ast.type === 'generalized'
+        || ast.type === 'happen-sentence'
 
 }
 

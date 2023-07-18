@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, isFormulaWithAfter, Atom, astsEqual } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, isFormulaWithNonNullAfter } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { addWorldModels, getConceptsOf } from "./wm-funcs.ts";
@@ -19,17 +19,14 @@ export function ask(
     kb: KnowledgeBase,
 } {
 
-    if (opts.preComputeKb
-        && isFormulaWithAfter(ast)
-        && ast.after.type === 'list-literal'
-        && ast.after.value.length
-        && ast.after.value.every(isConst)) {
+    if (opts.preComputeKb && isFormulaWithNonNullAfter(ast)) {
 
-        const events = ast.after.value.map(x => x.value)
-        const eventSentences = events.map(x => $(x).happens.$)
-        const kb2 = eventSentences.reduce((a, b) => tell(b, a).kb, kb)
-        const formula = subst(ast, [ast.after, $([]).$])
-        return ask(formula, kb2, { ...opts, preComputeKb: false })
+        return ask(
+            subst(ast, [ast.after, $([]).$]),
+            tell($(ast.after).happens.$, kb).kb,
+            { ...opts, preComputeKb: false },
+        )
+
     }
 
     const formula = removeAnaphors(decompress(ast))
