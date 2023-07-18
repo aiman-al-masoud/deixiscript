@@ -180,7 +180,7 @@ export type Negation = {
 
 export type ExistentialQuantification = {
     type: 'existquant',
-    value: ImplicitReference | ArbitraryType,
+    value: LLangAst,
 }
 
 export type ArbitraryType = {

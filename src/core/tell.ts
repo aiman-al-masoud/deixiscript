@@ -87,7 +87,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            if (ast.value.type === 'implicit-reference') throw Error('!!!!')
+            if (ast.value.type !== 'arbitrary-type') throw Error('!!!!')
             additions = instantiateConcept(ast.value, kb)
 
             break
