@@ -99,9 +99,9 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         if (m1 !== undefined) return deepMapOf([[template, f]]) // *** when matching variable to arbitrary-type or vice-versa don't lose any info, go with arbitrary-type!
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
-        
+
         return deepMapOf([[template, f]])
-        
+
 
     } else if (template.type === 'conjunction' && f.type === 'conjunction') {
 
