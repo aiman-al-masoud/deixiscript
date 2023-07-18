@@ -12,7 +12,7 @@ export function linearize(ast: AstNode, syntaxMap: SyntaxMap): string {
     return result
 }
 
-export function linearizeSyntax(
+function linearizeSyntax(
     syntax: Syntax,
     syntaxMap: SyntaxMap,
     ast: AstNode,
@@ -22,7 +22,7 @@ export function linearizeSyntax(
     return pieces.reduce((a, b) => a + b, '')
 }
 
-export function linearizeMember(
+function linearizeMember(
     member: Member,
     syntaxMap: SyntaxMap,
     ast: AstNode,

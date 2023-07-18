@@ -2,6 +2,8 @@ import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts"
 import { getParser } from "../parser/parser.ts"
 import { syntaxes } from "./grammar.ts"
 import { $ } from "../core/exp-builder.ts"
+import { linearize } from "../parser/linearize.ts"
+
 
 const parser = getParser({ syntaxes })
 
@@ -309,7 +311,6 @@ Deno.test({
 })
 
 
-import { linearize, } from "../parser/linearize.ts"
 
 Deno.test({
     name: 'test30',
