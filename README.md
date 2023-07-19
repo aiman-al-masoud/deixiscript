@@ -68,6 +68,8 @@ make it happen
 
 - implicit references may be ambiguous from the point of view of creating a new thing, or erroring out if you don't find an old one. Maybe the/a distinction could help disambiguating. "A mouse which has the/a house as location".
 
+- entities and strings are sealized in the same way.
+
 ## Limitations
 
 - no context sentitivity
