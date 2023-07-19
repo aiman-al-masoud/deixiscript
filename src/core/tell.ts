@@ -9,6 +9,7 @@ import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { findAsts } from "./findAsts.ts";
 import { random } from "../utils/random.ts";
+import { isNotNullish } from "../utils/isNotNullish.ts";
 
 
 /**
@@ -196,12 +197,24 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
     const concepts = conceptsOf(h[0], kb)
 
+    const r = [...excludedByMutexAnnot(h, kb, concepts), ...excludedBySingleValueAnnot(h, kb, concepts)]
+
+    const results = r.map(x => [h[0], x, h[2]] as HasSentence)
+    return results
+}
+
+function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
+
     const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
 
     const r =
         qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
 
-    //--------
+    return r.filter(isNotNullish)
+
+}
+
+function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
     const qs2 =
         concepts.map(c => $({ ann: 'x:only-one-annotation', onlyHaveOneOf: h[2], onConcept: c }))
 
@@ -210,14 +223,11 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
     if (r2.length) {
         const buf = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb)
-        r.push(...buf.map(x => x.get($('y:thing').$)?.value))
+        return buf.map(x => x.get($('y:thing').$)?.value).filter(isNotNullish)
+    } else {
+        return []
     }
-    //---------
-
-    const results = r.map(x => [h[0], x, h[2]] as HasSentence)
-    return results
 }
-
 
 function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
@@ -235,7 +245,6 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
     return result
 }
-
 
 function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     const parts = getParts(concept, kb)
