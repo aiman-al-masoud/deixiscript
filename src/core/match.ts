@@ -6,6 +6,7 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
     if (template.type === 'entity' && f.type === 'entity') {
         return template.value === f.value ? deepMapOf() : undefined
+
     } else if (template.type === 'variable' && f.type === 'variable') {
         // return template.varType === f.varType ? deepMapOf([[template, f]]) : undefined // may undermatch in case of subtype/supertype relationships
         return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations????
@@ -49,9 +50,6 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         const m2 = match(template.value, tail)
 
         return reduceMatchList([m1, m2])
-
-    } else if (template.type === 'anything' && isConst(f)) {
-        return deepMapOf()
 
     } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
 

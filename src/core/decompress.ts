@@ -70,7 +70,6 @@ export function decompress(ast: LLangAst): LLangAst {
         case "variable":
         case "list-pattern":
         case "list-literal":
-        case 'anything':
             return ast
 
     }

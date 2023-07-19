@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, ImplicitReference, Question, Command, isLLangAst, Anything, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -33,7 +33,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'has-formula',
             subject: this.exp,
             object: makeAst(object),
-            as: $('anything').$,
+            as: $('thing').$,
             after: $([]).$
         })
 
@@ -301,20 +301,20 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
 
-    in(location:ExpBuilderArg):ExpBuilder<LLangAst>{
-        
-        if (this.exp.type==='implicit-reference'){
+    in(location: ExpBuilderArg): ExpBuilder<LLangAst> {
+
+        if (this.exp.type === 'implicit-reference') {
             return new ExpBuilder<ImplicitReference>({
                 ...this.exp,
-                location : makeAst(location),
+                location: makeAst(location),
             })
         }
 
-        if (this.exp.type === 'generalized'){
-            
+        if (this.exp.type === 'generalized') {
+
             return new ExpBuilder({
                 ...this.exp,
-                location : makeAst(location),
+                location: makeAst(location),
             })
         }
 
@@ -345,7 +345,6 @@ function makeAst(x: StringLiteralPattern): StringLiteral
 function makeAst(x: WmAtom[]): ListLiteral
 function makeAst(x: number): Number
 function makeAst(x: boolean): Boolean
-function makeAst(x: 'anything'): Anything
 function makeAst(x: 'nothing'): Nothing
 function makeAst(x: string): Constant
 function makeAst(x: WmAtom | WmAtom[]): Atom
@@ -388,8 +387,6 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
     } else if (isVar(x)) {
         const [value, varType] = x.split(':')
         return { type: 'variable', value, varType }
-    } else if (x === 'anything') {
-        return { type: 'anything', value: '*' }
     } else if (x === 'nothing') {
         return { type: 'nothing', value: '~' }
     } else {
@@ -403,7 +400,6 @@ export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
 export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
-export function $(x: 'anything'): ExpBuilder<Anything>
 export function $(x: 'nothing'): ExpBuilder<Nothing>
 export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>

@@ -172,7 +172,7 @@ Deno.test({
     fn: () => {
 
         const yes = $('person#2').isa('dude').$
-        const no = $('person#2').isa('anythingelse').isNotTheCase.$
+        const no = $('person#2').isa('somestuffidk').isNotTheCase.$
 
         assert(ask(yes, kb).result.value)
         assert(ask(no, kb).result.value)
@@ -1113,7 +1113,7 @@ Deno.test({
         // console.log(result)
 
         const alt = $.the('mouse').which($._.has('house#1').as('location')).exists.$
-        assertNotEquals(match(removeImplicit(x), removeImplicit(alt)),undefined)
+        assertNotEquals(match(removeImplicit(x), removeImplicit(alt)), undefined)
 
         // // console.log(y)
         // console.log(result)

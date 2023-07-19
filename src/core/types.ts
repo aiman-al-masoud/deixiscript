@@ -32,7 +32,6 @@ export type Constant =
     | Boolean
     | Number
     | StringLiteral
-    | Anything
     | Nothing
 export type SimpleFormula =
     | AtomicFormula
@@ -66,11 +65,6 @@ export type Question = {
 export type Entity = {
     type: 'entity',
     value: string
-}
-
-export type Anything = {
-    type: 'anything',
-    value: '*',
 }
 
 export type Nothing = {
@@ -211,8 +205,6 @@ export function isConst(t: LLangAst): t is Constant {
         || t.type === 'number'
         || t.type === 'boolean'
         || t.type === 'string'
-
-        || t.type === 'anything' //TODO!!!!!!! to serialize or not to serialize (tell())? You (at the very least) need to remove anything from WM when new info comes! 
 }
 
 export function isTerm(a: LLangAst): a is Term {
