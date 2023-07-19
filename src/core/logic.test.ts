@@ -545,9 +545,21 @@ Deno.test({
 Deno.test({
     name: 'test34',
     fn: () => {
+        // defaults
         const result = evaluate($('x:thing').exists.tell.$, kb)
         const check = evaluate($('x:thing').exists.where($('x:thing').has(100).as('x-coordinate')).ask.$, result.kb)
         assert(check)
+    }
+})
+
+Deno.test({
+    name: 'test36',
+    fn: () => {
+        // "where" should override defaults
+        const result = evaluate($('x:thing').exists.where($('x:thing').has(200).as('x-coordinate')).tell.$, kb)
+        const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
+        assert(result1.length === 1)
+        assertEquals(result1[0].get($('n:number').$), $(200).$)
     }
 })
 
@@ -566,18 +578,6 @@ Deno.test({
         assertEquals(Object.values(kb4.deicticDict).length, 2)
         const { result: result4, kb: _ } = ask($.the('thing').$, kb4)
         assertEquals(result3, result4)
-    }
-})
-
-
-Deno.test({
-    name: 'test36',
-    fn: () => {
-        // where should override defaults
-        const result = evaluate($('x:thing').exists.where($('x:thing').has(200).as('x-coordinate')).tell.$, kb)
-        const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
-        assert(result1.length === 1)
-        assertEquals(result1[0].get($('n:number').$), $(200).$)
     }
 })
 
