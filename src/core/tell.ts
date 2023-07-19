@@ -4,12 +4,11 @@ import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, subtractWorldModels } from "./types.ts";
-import {  getParts } from "./getParts.ts";
+import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { findAsts } from "./findAsts.ts";
 import { random } from "../utils/random.ts";
-import { isNotNullish } from "../utils/isNotNullish.ts";
 
 
 /**

@@ -1,7 +1,4 @@
-import { isNotNullish } from "../utils/isNotNullish.ts";
 import { uniq } from "../utils/uniq.ts";
-import { $ } from "./exp-builder.ts";
-import { findAll } from "./findAll.ts";
 import { WorldModel, WmAtom, KnowledgeBase, conceptsOf } from "./types.ts";
 
 
