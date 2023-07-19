@@ -87,8 +87,13 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            if (ast.value.type !== 'arbitrary-type') throw Error('!!!!')
-            additions = instantiateConcept(ast.value, kb)
+            if (ast.value.type === 'variable') {
+                additions = instantiateConcept($(ast.value).suchThat(true).$, kb)
+            } else if (ast.value.type === 'arbitrary-type') {
+                additions = instantiateConcept(ast.value, kb)
+            } else {
+                throw new Error('!!!!! ')
+            }
 
             break
         case 'negation':

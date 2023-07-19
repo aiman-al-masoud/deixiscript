@@ -41,7 +41,6 @@ export function ask(
             const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
             const deicticDict = opts.storeDeixis ? { ...kb.deicticDict, [formula.value]: lastTime + 1 } : kb.deicticDict
             return { result: formula, kb: { ...kb, deicticDict } }
-        case 'variable':
         case 'list-literal':
         case 'list-pattern':
             return { result: formula, kb }
@@ -88,10 +87,11 @@ export function ask(
             const thing = ask(formula.value, kb).result
             if (thing.type !== 'nothing') return { result: $(true).$, kb }
             break
+        case 'variable':
+            return ask($(ast).suchThat(true).$, kb)
         case 'arbitrary-type':
 
             const maps = findAll(formula.description, [formula.head], kb)
-
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
 
             const sortedCandidates = sorted(

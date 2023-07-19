@@ -1,4 +1,5 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { $ } from "./exp-builder.ts";
 import { LLangAst, AstMap, isAtom, isLLangAst, isConst } from "./types.ts";
 
 
@@ -10,6 +11,7 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
     } else if (template.type === 'variable' && f.type === 'variable') {
         // return template.varType === f.varType ? deepMapOf([[template, f]]) : undefined // may undermatch in case of subtype/supertype relationships
         return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations????
+
     } else if (
         template.type === f.type ||
         template instanceof Array && f instanceof Array
@@ -40,7 +42,6 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         return reduceMatchList(ms)
 
     } else if (template.type === 'list-pattern' && f.type === 'list-literal') {
-
         const seq = f.value.slice(0, -1)
         const tail = f.value.at(-1)
 
@@ -52,17 +53,15 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         return reduceMatchList([m1, m2])
 
     } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
-
         const m1 = match(template.head, f)
-        if (m1 !== undefined) return deepMapOf([[f, template]]) // ***
+        const m2 = match(template.description, $(true).$)
+        if (reduceMatchList([m1, m2])) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
-
         const m1 = match(template, f.head)
-        if (m1 !== undefined) return deepMapOf([[template, f]]) // *** when matching variable to arbitrary-type or vice-versa don't lose any info, go with arbitrary-type!
+        if (m1 !== undefined) return deepMapOf([[template, f]])
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
-
         return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && isAtom(f)) {

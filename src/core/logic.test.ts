@@ -1121,6 +1121,15 @@ Deno.test({
 })
 
 Deno.test({
+    name: 'test60',
+    fn: () => {
+        // a variable is just a "special case" of arbitrary type
+        const kb = $('cat#1').isa('cat').dump().kb
+        assertEquals(ask($('x:cat').$, kb).result, $('cat#1').$)
+    }
+})
+
+Deno.test({
     name: 'test19',
     fn: () => {
         const goal = $('door#1').has('open').as('state')
