@@ -3,22 +3,13 @@ import { DerivationClause, KnowledgeBase } from "./types.ts";
 
 export function getStandardKb(): KnowledgeBase {
     return {
-        wm: conceptualModel,
+        wm: [],
         derivClauses: derivationClauses,
         deicticDict: {},
     }
 }
 
 const derivationClauses: DerivationClause[] = [
-
-    // inheritance
-    $({ subject: 'c:thing', verb: 'extend', object: 'sc:thing' }).when(
-        $('c:thing').isa('sc:thing')
-            .or($('intermediate:thing').exists.where(
-                $('intermediate:thing').isa('sc:thing')
-                    .and($('c:thing').isa('intermediate:thing'))
-            ))
-    ).$,
 
     // role
     $({ subject: 'c:thing', modal: 'can', verb: 'have', object: 'prop:thing' }).when(
@@ -93,11 +84,11 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
 
-    $({subject:'x:thing', verb:'be', object:'y:thing'}).when(
+    $({ subject: 'x:thing', verb: 'be', object: 'y:thing' }).when(
         $('x:thing').equals('y:thing')
     ).$,
 
 ]
 
-const conceptualModel =
-    $({ subject: 'agent', verb: 'extend', object: 'thing' }).dump(derivationClauses).kb.wm
+// const conceptualModel = $.emptyKb.wm
+//     // $({ subject: 'agent', verb: 'extend', object: 'thing' }).dump(derivationClauses).kb.wm

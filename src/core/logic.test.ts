@@ -133,23 +133,23 @@ const model: WorldModel =
         .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
         .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
 
-        .and($({ subject: 'agent', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'open', verb: 'extend', object: 'state' }))
-        .and($({ subject: 'closed', verb: 'extend', object: 'state' }))
-        .and($({ subject: 'state', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'person', verb: 'extend', object: 'agent' }))
-        .and($({ subject: 'woman', verb: 'extend', object: 'person' }))
-        .and($({ subject: 'woman', verb: 'extend', object: 'person' }))
-        .and($({ subject: 'event', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'door-opening-event', verb: 'extend', object: 'event' }))
-        .and($({ subject: 'birth-event', verb: 'extend', object: 'event' }))
-        .and($({ subject: 'time-instant', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'point-in-space', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'city', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'multiple-birth-event', verb: 'extend', object: 'birth-event' }))
-        .and($({ subject: 'move-event', verb: 'extend', object: 'event' }))
-        .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
-        .and($({ subject: 'door', verb: 'extend', object: 'thing' }))
+
+        .and($('state').isa('thing'))
+        .and($('agent').isa('thing'))
+        .and($('event').isa('thing'))
+        .and($('time-instant').isa('thing'))
+        .and($('point-in-space').isa('thing'))
+        .and($('city').isa('thing'))
+        .and($('door').isa('thing'))
+        .and($('open').isa('state'))
+        .and($('closed').isa('state'))
+        .and($('person').isa('agent'))
+        .and($('woman').isa('person'))
+        .and($('door-opening-event').isa('event'))
+        .and($('door-closing-event').isa('event'))
+        .and($('birth-event').isa('event'))
+        .and($('multiple-birth-event').isa('birth-event'))
+        .and($('move-event').isa('event'))
         .dump(derivationClauses).kb.wm
 
 
@@ -513,12 +513,8 @@ Deno.test({
     name: 'test31',
     fn: () => {
         // transitivity of inheritance relationships
-
-        const kb = $({ subject: 'capra', verb: 'extend', object: 'mammal' })
-            .and($({ subject: 'mammal', verb: 'extend', object: 'animal' }))
-            .dump(derivationClauses).kb
-
-        assert(ask($({ subject: 'capra', verb: 'extend', object: 'animal' }).$, kb).result.value)
+        const kb = $('capra').isa('mammal').and($('mammal').isa('animal')).dump().kb
+        assert(ask($('capra').isa('animal').$, kb).result.value)
     }
 })
 
@@ -775,7 +771,6 @@ Deno.test({
         const kb = $.the('panel').which($._.has(30).as('x-coord')).exists.dump().kb
         const kb2 = tell($.the('panel').has(100).as('width').$, kb).kb
         const kb3 = tell(dc.$, kb2).kb
-        // kb3 = tell($(130).isa('number').$, kb3).kb
 
         const q = $('p:panel').suchThat().has(130).as('max-x').$
         const result = ask(q, kb3).result
@@ -807,86 +802,9 @@ Deno.test({
     }
 })
 
-
-Deno.test({
-    name: 'test51',
-    fn: () => {
-
-        // RIGHT
-        // const maxX = $('p:panel').has('n:number').as('max-x').when(
-        //     $('n:number')
-        //         .equals($('width').of('p:panel').plus($('x-coord').of('p:panel')))
-        // ).$
-
-        const maxX = $.a('panel').has($.a('number')).as('max-x').when(
-            $.the('number').equals($('width').of($.the('panel').$).plus($('x-coord').of($.the('panel').$)))
-        ).$
-
-        // console.log(JSON.stringify(removeAnaphors(decompress(maxX) as DerivationClause).when))
-        // console.log('-------------------')
-
-        // const t = removeAnaphors(maxX)
-        // const f = removeAnaphors($('panel#2').has(25).as('max-x').$ )
-        // // console.log(t.conseq, f)
-        // const m = match(t.conseq,  f)!
-        // // console.log(m)
-        // const whenn = subst(t.when, m)
-        // console.log(JSON.stringify(t.when ))
-        // console.log('-------------------')
-        // console.log(JSON.stringify(whenn ))
-        // console.log('-------------------')
-
-        // const parent = $('p1:panel').has('p2:panel').as('parent').when(
-        //     $('x-coord').of('p1:panel').isLessThanOrEqual($('max-x').of('p2:panel').$)
-        //         .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel').$))
-        //         .and($('y-coord').of('p1:panel').isLessThanOrEqual($('max-y').of('p2:panel').$))
-        //         .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
-        //         .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
-        // ).$
-
-        // // const parent = $('p1:panel').has('p2:panel').as('parent').when(
-        // //     $('x-coord').of('p1:panel').isLessThanOrEqual($('x-coord').of('p2:panel').plus($('width').of('p2:panel')))
-        // //         .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel')))
-        // //         .and($('y-coord').of('p1:panel').isLessThanOrEqual($('y-coord').of('p2:panel').plus($('height').of('p2:panel'))))
-        // //         .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
-        // //         .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
-        // // ).$
-
-        const kb = $('panel#1').isa('panel')
-            .and($('panel#1').has(20).as('x-coord'))
-            .and($('panel#1').has(10).as('y-coord'))
-            .and($('panel#1').has(1).as('z-index'))
-            .and($('panel#1').has(5).as('width'))
-            .and($('panel#1').has(5).as('height'))
-            .and($('panel#2').isa('panel'))
-            .and($('panel#2').has(10).as('x-coord'))
-            .and($('panel#2').has(5).as('y-coord'))
-            .and($('panel#2').has(0).as('z-index'))
-            .and($('panel#2').has(10).as('width'))
-            .and($('panel#2').has(10).as('height'))
-            // .and(maxY)
-            // .and(parent)
-            .dump().kb
-
-        const kb1 = tell(maxX, kb).kb
-
-        // const result = ask( $('panel#1').has('panel#2').as('parent').$, kb).result.value
-        // assert(result)
-
-        const result = ask($('max-x').of('panel#2').$, kb1).result
-        // console.log(result)
-
-        // const result = ask($('panel#2').has(20).as('max-x').$, kb1).result
-        // console.log(result)
-
-    }
-})
-
-
 Deno.test({
     name: 'test52',
     fn: () => {
-
 
         const maxX = $.a('panel').has($.a('number')).as('max-x').when(
             $.the('number').equals($('width').of($.the('panel').$).plus($('x-coord').of($.the('panel').$)))
@@ -895,15 +813,6 @@ Deno.test({
         const maxY = $.a('panel').has($.a('number')).as('max-y').when(
             $.the('number').equals($('height').of($.the('panel').$).plus($('y-coord').of($.the('panel').$)))
         ).$
-
-
-        // const parent = $('p1:panel').has('p2:panel').as('parent').when(
-        //     $('x-coord').of('p1:panel').isLessThanOrEqual($('max-x').of('p2:panel').$)
-        //         .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel').$))
-        //         .and($('y-coord').of('p1:panel').isLessThanOrEqual($('max-y').of('p2:panel').$))
-        //         .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
-        //         .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
-        // ).$
 
         const parent = $('p1:panel').has('p2:panel').as('parent').when(
             $('x-coord').of('p1:panel').isLessThanOrEqual($('x-coord').of('p2:panel').plus($('width').of('p2:panel')))
@@ -936,8 +845,6 @@ Deno.test({
         assertEquals(ask($('max-y').of('panel#2').$, kb).result, $(15).$)
         assertEquals(ask($('max-y').of('panel#1').$, kb).result, $(14).$)
 
-        // console.log(ask($('panel#1').has('patatabrutta').as('parent').$, kb).result)
-        // console.log(ask($('parent').of('panel#1').$, kb).result)
     }
 })
 
@@ -1109,14 +1016,11 @@ Deno.test({
     name: 'test59',
     fn: () => {
         const x = $.the('mouse').in('house#1').exists.$
-        /* const result =  */tell(x, $.emptyKb).kb
-        // console.log(result)
+        tell(x, $.emptyKb).kb
 
         const alt = $.the('mouse').which($._.has('house#1').as('location')).exists.$
         assertNotEquals(match(removeImplicit(x), removeImplicit(alt)), undefined)
 
-        // // console.log(y)
-        // console.log(result)
     }
 })
 
