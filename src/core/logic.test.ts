@@ -596,11 +596,11 @@ Deno.test({
         // mutex concepts test
         const kb0 = tell($('mammal#1').isa('cat').$, kb).kb
         const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
-        assert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1))
-        assert(ask($('mammal#1').isa('dog').$, kb1))
+        assert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1).result.value)
+        assert(ask($('mammal#1').isa('dog').$, kb1).result.value)
         const kb2 = tell($('mammal#1').isa('cat').$, kb0).kb
-        assert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2))
-        assert(ask($('mammal#1').isa('cat').$, kb2))
+        assert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2).result.value)
+        assert(ask($('mammal#1').isa('cat').$, kb2).result.value)
     }
 })
 
