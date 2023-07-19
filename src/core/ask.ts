@@ -1,7 +1,6 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, isFormulaWithNonNullAfter } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, isFormulaWithNonNullAfter, WmAtom, WorldModel, isIsASentence, addWorldModels } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
-import { addWorldModels, getConceptsOf } from "./wm-funcs.ts";
 import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
@@ -9,6 +8,7 @@ import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
+import { uniq } from "../utils/uniq.ts";
 
 export function ask(
     ast: LLangAst,
@@ -148,4 +148,14 @@ export function ask(
 
     return { result: $(result).$, kb }
 
+}
+
+function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
+
+    const r = cm.filter(s => s[0] === x && isIsASentence(s))
+        .map(s => s[1])
+        .flatMap(c => [c, ...getConceptsOf(c, cm)])
+        .concat(['thing'])
+
+    return uniq(r)
 }

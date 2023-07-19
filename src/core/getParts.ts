@@ -2,23 +2,26 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
 import { uniq } from "../utils/uniq.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { WorldModel, WmAtom, isIsASentence, wmSentencesEqual } from "./types.ts";
+import { WorldModel, WmAtom, KnowledgeBase } from "./types.ts";
 
 
-export function getParts(concept: WmAtom, cm: WorldModel): WmAtom[] {
+export function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
 
-    const parts = getAllParts(concept, cm)
+    const parts = getAllParts(concept, kb.wm)
 
-    const cancelAnnotations = parts.filter(x => getConceptsOf(x, cm).includes('cancel-annotation'))
+    const cancelAnnotations = parts.filter(x => {
+        const supers = findAll($(x).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
+        return supers.includes('cancel-annotation')
+    })
 
     const allCancelled = cancelAnnotations
-        .map(x => subjectOf(x, cm))
+        .map(x => subjectOf(x, kb.wm))
 
     const nonCancelledCancelAnnotations =
         cancelAnnotations.filter(x => !allCancelled.includes(x))
 
     const allCancelledForReal =
-        nonCancelledCancelAnnotations.map(x => subjectOf(x, cm))
+        nonCancelledCancelAnnotations.map(x => subjectOf(x, kb.wm))
             .filter(x => x)
 
     const all = parts
@@ -48,20 +51,3 @@ function subjectOf(concept: WmAtom, cm: WorldModel): WmAtom | undefined {
         && x[0] === concept).map(x => x[1]).at(0)
 }
 
-export function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
-
-    const r = cm.filter(s => s[0] === x && isIsASentence(s))
-        .map(s => s[1])
-        .flatMap(c => [c, ...getConceptsOf(c, cm)])
-        .concat(['thing'])
-
-    return uniq(r)
-}
-
-export function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel {
-    return wm1.filter(s1 => !wm2.some(s2 => wmSentencesEqual(s1, s2)))
-}
-
-export function addWorldModels(...wms: WorldModel[]): WorldModel {
-    return uniq(wms.reduce((wm1, wm2) => wm1.concat(wm2), []))
-}

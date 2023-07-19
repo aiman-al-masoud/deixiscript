@@ -3,8 +3,8 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence } from "./types.ts";
-import { addWorldModels, getParts, subtractWorldModels } from "./wm-funcs.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, subtractWorldModels } from "./types.ts";
+import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { findAsts } from "./findAsts.ts";
@@ -228,7 +228,7 @@ function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldMod
 
 
 function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
-    const parts = getParts(concept, kb.wm)
+    const parts = getParts(concept, kb)
     const defaults = parts.map(p => findDefault(p, concept, kb))
 
     const fillers = defaults.flatMap((d, i) => {

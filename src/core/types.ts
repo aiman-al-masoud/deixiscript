@@ -1,5 +1,6 @@
 import { DeepMap } from "../utils/DeepMap.ts"
 import { deepEquals } from "../utils/deepEquals.ts"
+import { uniq } from "../utils/uniq.ts"
 
 /* WORLD-CONCEPTUAL MODEL */
 
@@ -266,4 +267,12 @@ export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
 
 export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {
     return astOne.type === astTwo.type && deepEquals(astOne, astTwo)
+}
+
+export function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldModel {
+    return wm1.filter(s1 => !wm2.some(s2 => wmSentencesEqual(s1, s2)))
+}
+
+export function addWorldModels(...wms: WorldModel[]): WorldModel {
+    return uniq(wms.reduce((wm1, wm2) => wm1.concat(wm2), []))
 }
