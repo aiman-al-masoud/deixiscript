@@ -67,7 +67,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             if (!isConst(t11) || !isConst(t21)) throw new Error('cannot serialize formula with variables!')
 
             additions = addWorldModels(
-                [[t11.value, t21.value]], //TODO this serializes entities and string the same way
+                [[t11.value, t21.value]],
                 getDefaultFillers(t11.value, t21.value, kb),
             )
             break
@@ -205,13 +205,15 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
 function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
 
-    const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
-
-    const r =
-        qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false)
-
-    return r.filter(isNotNullish)
-
+    // const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
+    // const r  = qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false).filter(isNotNullish)
+    const hasSentences = kb.wm.filter(isHasSentence)
+    const isASentences = kb.wm.filter(isIsASentence)
+    const allMutex = isASentences.filter(x => x[1] === 'mutex-annotation').map(x => x[0])
+    const pertainingMutex = hasSentences.filter(x => allMutex.includes(x[0]) && concepts.includes(x[1]) && x[2] === 'concept').map(x => x[0])
+    const props = hasSentences.filter(x => pertainingMutex.includes(x[0]) && x[2] === 'p').map(x => x[1])
+    const result = props.filter(x => x !== h[1])
+    return result
 }
 
 function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
@@ -263,7 +265,7 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     return fillers
 }
 
-function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined { //TODO: optimize
+function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined {
     const result = findAll(
         $({ annotation: 'x:default-annotation', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
         [$('x:default-annotation').$, $('z:thing').$],
