@@ -89,6 +89,3 @@ const derivationClauses: DerivationClause[] = [
     ).$,
 
 ]
-
-// const conceptualModel = $.emptyKb.wm
-//     // $({ subject: 'agent', verb: 'extend', object: 'thing' }).dump(derivationClauses).kb.wm
