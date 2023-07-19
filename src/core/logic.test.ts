@@ -553,8 +553,13 @@ Deno.test({
                 .dump(derivationClauses)
                 .kb
 
-        const result = evaluate($('x:point').exists.tell.$, kb)
-        const check = evaluate($('x:point').exists.where($('x:point').has(100).as('x-coordinate')).ask.$, result.kb).result.value
+        const result = tell($.a('point').exists.$, kb)
+
+        const check = ask(
+            $.the('point').which($._.has(100).as('x-coordinate')).exists.$,
+            result.kb,
+        ).result.value
+
         assert(check)
     }
 })
