@@ -49,6 +49,8 @@ Only fixed positioning (absolute coordinates), on single root object.
 evaluate(ExistentialQuantifier) // create the event evaluate(HappenSentence) //
 make it happen
 
+You also need some basic properties for buttons (down/up,key...).
+
 # Problems
 
 - in match() for loop there is no guarantee that the most specific rule will be
