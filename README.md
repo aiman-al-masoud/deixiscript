@@ -66,9 +66,13 @@ make it happen
 - tell()/instantiateConcept()/expand()/isConst() are currently serializing '*',
   which is partial information, as a constant, that may be very dangerous!!
 
-- implicit references may be ambiguous from the point of view of creating a new thing, or erroring out if you don't find an old one. Maybe the/a distinction could help disambiguating. "A mouse which has the/a house as location".
+- implicit references may be ambiguous from the point of view of creating a new
+  thing, or erroring out if you don't find an old one. Maybe the/a distinction
+  could help disambiguating. "A mouse which has the/a house as location".
 
 - entities and strings are sealized in the same way.
+
+- newly created entities in tell() should be on top of deictic dict.
 
 ## Limitations
 

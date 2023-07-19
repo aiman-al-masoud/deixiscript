@@ -3,7 +3,7 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, subtractWorldModels } from "./types.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
@@ -266,12 +266,17 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
 }
 
 function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined {
-    const result = findAll(
-        $({ annotation: 'x:default-annotation', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
-        [$('x:default-annotation').$, $('z:thing').$],
-        kb,
-    )
-    return result[0]?.get($('z:thing').$)?.value
+    // const result = findAll(
+    //     $({ annotation: 'x:default-annotation', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
+    //     [$('x:default-annotation').$, $('z:thing').$],
+    //     kb,
+    // )
+    // return result[0]?.get($('z:thing').$)?.value
+
+    const result = ask($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
+    if (result.type === 'nothing') return undefined
+    if (!isWmAtom(result.value)) throw new Error('')
+    return result.value
 }
 
 /**
@@ -302,6 +307,10 @@ function instantiateConcept(
         fillersWithoutConflicts,
         whereAdditions,
     )
+
+    // console.log(conflicts)
+    // console.log(fillersWithoutConflicts)
+    // console.log(additions)
 
     return additions
 }

@@ -129,9 +129,12 @@ const model: WorldModel =
         .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
         .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
-        .and($({ subject: 'thing', modal: 'can', verb: 'have', object: 'x-coordinate' }))
-        .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
         .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
+
+
+        // .and($({ subject: 'point', modal: 'can', verb: 'have', object: 'x-coordinate' }))
+        // .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
+        // .and($('point').has(100).as('x-coordinate'))
 
 
         .and($('state').isa('thing'))
@@ -546,8 +549,14 @@ Deno.test({
     name: 'test34',
     fn: () => {
         // defaults
-        const result = evaluate($('x:thing').exists.tell.$, kb)
-        const check = evaluate($('x:thing').exists.where($('x:thing').has(100).as('x-coordinate')).ask.$, result.kb)
+        const kb =
+            $({ subject: 'point', modal: 'can', verb: 'have', object: 'x-coordinate' })
+                .and($('point').has(100).as('x-coordinate'))
+                .dump(derivationClauses)
+                .kb
+
+        const result = evaluate($('x:point').exists.tell.$, kb)
+        const check = evaluate($('x:point').exists.where($('x:point').has(100).as('x-coordinate')).ask.$, result.kb)
         assert(check)
     }
 })
@@ -556,10 +565,21 @@ Deno.test({
     name: 'test36',
     fn: () => {
         // "where" should override defaults
-        const result = evaluate($('x:thing').exists.where($('x:thing').has(200).as('x-coordinate')).tell.$, kb)
-        const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
-        assert(result1.length === 1)
-        assertEquals(result1[0].get($('n:number').$), $(200).$)
+        const kb =
+            $({ subject: 'point', modal: 'can', verb: 'have', object: 'x-coordinate' })
+                .and($('point').has(100).as('x-coordinate'))
+                .dump(derivationClauses)
+                .kb
+
+        const result = evaluate($('x:point').exists.where($('x:point').has(200).as('x-coordinate')).tell.$, kb)
+        // const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
+        // assertEquals(result1.length, 1)
+        // assertEquals(result1[0].get($('n:number').$), $(200).$)
+        // console.log(result.kb.wm)
+
+        assert(ask($.the('point').has(200).as('x-coordinate').$, result.kb).result.value)
+        assert(!ask($.the('point').has(100).as('x-coordinate').$, result.kb).result.value)
+
     }
 })
 
