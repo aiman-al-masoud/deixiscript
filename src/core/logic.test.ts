@@ -109,32 +109,31 @@ const model: WorldModel =
         .and($('door#44').has(1).as('position'))
         .and($({ isMoveEvent: 'move-event#3', subject: 'agent#007', destination: 'door#44' }))
 
+
+
+
         /* Conceptual Model */
-        .and($({ subject: 'birth-event', modal: 'can', verb: 'have', object: 'mother' }))
-        .and($({ subject: 'birth-event', modal: 'can', verb: 'have', object: 'baby' }))
-        .and($({ subject: 'birth-event', modal: 'can', verb: 'have', object: 'time' }))
-        .and($({ subject: 'birth-event', modal: 'can', verb: 'have', object: 'location' }))
         .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', object: 'woman' }))
         .and($({ annotation: 'nr#1', subject: 'mother', owner: 'birth-event', verb: 'amount', recipient: 1 }))
         .and($({ annotation: 'nr#2', subject: 'baby', owner: 'birth-event', verb: 'amount', recipient: 1 }))
-        .and($({ subject: 'person', modal: 'can', verb: 'have', object: 'birth' }))
         .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', object: 'birth-event' }))
-        .and($({ subject: 'event', modal: 'can', verb: 'have', object: 'duration' }))
         .and($({ annotation: 'ann#41', subject: 'nr#2', verb: 'be', object: 'cancelled', ablative: 'multiple-birth-event' }))
-        .and($({ subject: 'agent', modal: 'can', verb: 'have', object: 'movement' }))
         .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
-        .and($({ subject: 'door-opening-event', modal: 'can', verb: 'have', object: 'object' }))
-        .and($({ subject: 'move-event', modal: 'can', verb: 'have', object: 'destination' }))
-        .and($({ subject: 'door', modal: 'can', verb: 'have', object: 'opening' }))
         .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
         .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
         .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
 
-
-        // .and($({ subject: 'point', modal: 'can', verb: 'have', object: 'x-coordinate' }))
-        // .and($({ annotation: 'ann#521', subject: 'x-coordinate', owner: 'thing', verb: 'default', recipient: 100 }))
-        // .and($('point').has(100).as('x-coordinate'))
+        .and($('birth-event').has('thing').as('mother'))
+        .and($('birth-event').has('thing').as('baby'))
+        .and($('birth-event').has('thing').as('time'))
+        .and($('birth-event').has('thing').as('location'))
+        .and($('person').has('thing').as('birth'))
+        .and($('event').has('thing').as('duration'))
+        .and($('agent').has('thing').as('movement'))
+        .and($('door-opening-event').has('thing').as('object'))
+        .and($('move-event').has('thing').as('destination'))
+        .and($('door').has('thing').as('opening'))
 
 
         .and($('state').isa('thing'))
@@ -550,13 +549,12 @@ Deno.test({
     fn: () => {
         // defaults
         const kb =
-            $({ subject: 'point', modal: 'can', verb: 'have', object: 'x-coordinate' })
-                .and($('point').has(100).as('x-coordinate'))
+            $('point').has(100).as('x-coordinate')
                 .dump(derivationClauses)
                 .kb
 
         const result = evaluate($('x:point').exists.tell.$, kb)
-        const check = evaluate($('x:point').exists.where($('x:point').has(100).as('x-coordinate')).ask.$, result.kb)
+        const check = evaluate($('x:point').exists.where($('x:point').has(100).as('x-coordinate')).ask.$, result.kb).result.value
         assert(check)
     }
 })
@@ -566,16 +564,11 @@ Deno.test({
     fn: () => {
         // "where" should override defaults
         const kb =
-            $({ subject: 'point', modal: 'can', verb: 'have', object: 'x-coordinate' })
-                .and($('point').has(100).as('x-coordinate'))
+            $('point').has(100).as('x-coordinate')
                 .dump(derivationClauses)
                 .kb
 
         const result = evaluate($('x:point').exists.where($('x:point').has(200).as('x-coordinate')).tell.$, kb)
-        // const result1 = findAll($('x:thing').has('n:number').as('x-coordinate').$, [$('x:thing').$, $('n:number').$], result.kb)
-        // assertEquals(result1.length, 1)
-        // assertEquals(result1[0].get($('n:number').$), $(200).$)
-        // console.log(result.kb.wm)
 
         assert(ask($.the('point').has(200).as('x-coordinate').$, result.kb).result.value)
         assert(!ask($.the('point').has(100).as('x-coordinate').$, result.kb).result.value)

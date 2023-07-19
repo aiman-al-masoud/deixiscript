@@ -11,24 +11,6 @@ export function getStandardKb(): KnowledgeBase {
 
 const derivationClauses: DerivationClause[] = [
 
-
-    // // default annotation
-    // $({ annotation: 'ann:default-annotation', subject: 'prop:thing', owner: 'concept:thing', verb: 'default', recipient: 'default:thing' }).when(
-    //     $('concept:thing').has('ann:default-annotation').as('part')
-    //         .and($('ann:default-annotation').isa('default-annotation'))
-    //         .and($('ann:default-annotation').has('prop:thing').as('subject'))
-    //         .and($('ann:default-annotation').has('default:thing').as('object'))
-    // ).$,
-
-    // role
-    $({ subject: 'c:thing', modal: 'can', verb: 'have', object: 'prop:thing' }).when(
-        $('c:thing').has('prop:thing').as('part')
-    ).$,
-
-
-
-
-
     // value restriction
     $({ annotation: 'vr:value-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
         $('owner-concept:thing').has('vr:value-restriction').as('part')
@@ -51,7 +33,6 @@ const derivationClauses: DerivationClause[] = [
             .and($('ann:cancel-annotation').isa('cancel-annotation'))
             .and($('ann:cancel-annotation').has('old:thing').as('subject'))
     ).$,
-
 
     // excludes annotation
     $({ annotation: 'ann:mutex-annotation', subject: 'p1:thing', verb: 'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
@@ -89,7 +70,7 @@ const derivationClauses: DerivationClause[] = [
             .and($({ subject: 'e:event', verb: 'be', object: 'possible', beneficiary: 'a:agent' }).after('s:seq'))
     ).$,
 
-
+    // default copula behavior
     $({ subject: 'x:thing', verb: 'be', object: 'y:thing' }).when(
         $('x:thing').equals('y:thing')
     ).$,

@@ -1,5 +1,5 @@
 import { uniq } from "../utils/uniq.ts";
-import { WorldModel, WmAtom, KnowledgeBase, conceptsOf } from "./types.ts";
+import { WorldModel, WmAtom, KnowledgeBase, conceptsOf, isHasSentence } from "./types.ts";
 
 
 export function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
@@ -33,17 +33,18 @@ function getAllParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
     const supers = conceptsOf(concept, kb)
 
     const parts = kb.wm
-        .filter(x => x[0] === concept && x.length === 3 && x[2] === 'part')
-        .map(x => x[1])
+        .filter(isHasSentence)
+        .map(x => x[2])
 
     const all = supers.filter(x => x !== concept).flatMap(x => getAllParts(x, kb)).concat(parts)
     return uniq(all)
+
 }
 
 function subjectOf(concept: WmAtom, cm: WorldModel): WmAtom | undefined {
-    return cm.filter(x =>
-        x.length === 3
-        && x[2] === 'subject'
-        && x[0] === concept).map(x => x[1]).at(0)
+    return cm
+        .filter(isHasSentence)
+        .filter(x => x[2] === 'subject' && x[0] === concept)
+        .map(x => x[1]).at(0)
 }
 
