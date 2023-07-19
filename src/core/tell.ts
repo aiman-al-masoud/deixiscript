@@ -119,7 +119,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
     eliminations = [
         ...eliminations,
-        ...additions.flatMap(s => getExcludedBy(s, kb)),
+        ...additions.flatMap(s => excludedBy(s, kb)),
     ]
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
@@ -183,11 +183,17 @@ function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
 
 }
 
-function getExcludedBy(h: HasSentence | IsASentence, kb: KnowledgeBase) { //TODO: refactor & optmizie
+function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
 
-    if (isIsASentence(h)) {
-        return getExcludedByMutexConcepts(h, kb)
+    if (isIsASentence(s)) {
+        return excludedByIsA(s, kb)
+    } else {
+        return excludedByHas(s, kb)
     }
+
+}
+
+function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
     const concepts = findAll($(h[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
 
@@ -211,12 +217,12 @@ function getExcludedBy(h: HasSentence | IsASentence, kb: KnowledgeBase) { //TODO
 
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
-
 }
 
-function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldModel {
 
-    const concepts = findAll($(i[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
+function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
+
+    const concepts = findAll($(is[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
 
     const qs = concepts.map(c => $({ ann: 'x:mutex-concepts-annotation', concept: c, excludes: 'c2:thing' }))
 
@@ -224,9 +230,9 @@ function getExcludedByMutexConcepts(i: IsASentence, kb: KnowledgeBase): WorldMod
         qs.flatMap(q => findAll(q.$, [$('x:mutex-concepts-annotation').$, $('c2:thing').$], kb))
             .map(x => x.get($('c2:thing').$))
             .map(x => x?.value)
-            .filter(x => x !== i[1])
+            .filter(x => x !== is[1])
 
-    const result = r.map(x => [i[0], x] as IsASentence)
+    const result = r.map(x => [is[0], x] as IsASentence)
 
     return result
 }
