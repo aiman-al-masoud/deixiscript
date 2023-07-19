@@ -3,8 +3,8 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, subtractWorldModels } from "./types.ts";
-import { getParts } from "./getParts.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, subtractWorldModels } from "./types.ts";
+import {  getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { findAsts } from "./findAsts.ts";
@@ -195,7 +195,7 @@ function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
 
 function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
-    const concepts = findAll($(h[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
+    const concepts = conceptsOf(h[0], kb)
 
     const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
 
@@ -222,7 +222,7 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
 function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
-    const concepts = findAll($(is[0]).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish)
+    const concepts = conceptsOf(is[0], kb)
 
     const qs = concepts.map(c => $({ ann: 'x:mutex-concepts-annotation', concept: c, excludes: 'c2:thing' }))
 

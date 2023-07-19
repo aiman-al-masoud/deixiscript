@@ -1,6 +1,9 @@
 import { DeepMap } from "../utils/DeepMap.ts"
 import { deepEquals } from "../utils/deepEquals.ts"
+import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
+import { $ } from "./exp-builder.ts"
+import { findAll } from "./findAll.ts"
 
 /* WORLD-CONCEPTUAL MODEL */
 
@@ -275,4 +278,8 @@ export function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldMode
 
 export function addWorldModels(...wms: WorldModel[]): WorldModel {
     return uniq(wms.reduce((wm1, wm2) => wm1.concat(wm2), []))
+}
+
+export function conceptsOf(concept: WmAtom, kb: KnowledgeBase) {
+    return findAll($(concept).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
 }

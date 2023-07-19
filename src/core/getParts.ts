@@ -2,16 +2,15 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
 import { uniq } from "../utils/uniq.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { WorldModel, WmAtom, KnowledgeBase } from "./types.ts";
+import { WorldModel, WmAtom, KnowledgeBase, conceptsOf } from "./types.ts";
 
 
 export function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
 
-    const parts = getAllParts(concept, kb.wm)
+    const parts = getAllParts(concept, kb)
 
     const cancelAnnotations = parts.filter(x => {
-        const supers = findAll($(x).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
-        return supers.includes('cancel-annotation')
+        return conceptsOf(x, kb).includes('cancel-annotation')
     })
 
     const allCancelled = cancelAnnotations
@@ -32,15 +31,15 @@ export function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
     return results
 }
 
-function getAllParts(concept: WmAtom, cm: WorldModel): WmAtom[] {
+function getAllParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
 
-    const supers = findAll($(concept).isa('x:thing').$, [$('x:thing').$], { wm: cm, derivClauses: [], deicticDict: {} }).map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
+    const supers = conceptsOf(concept, kb)
 
-    const parts = cm
+    const parts = kb.wm
         .filter(x => x[0] === concept && x.length === 3 && x[2] === 'part')
         .map(x => x[1])
 
-    const all = supers.filter(x => x !== concept).flatMap(x => getAllParts(x, cm)).concat(parts)
+    const all = supers.filter(x => x !== concept).flatMap(x => getAllParts(x, kb)).concat(parts)
     return uniq(all)
 }
 
