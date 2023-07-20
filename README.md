@@ -34,8 +34,7 @@ Panel
 - visibility-cum-attachedness (favor WYSIWYG)
 - text
 - image
-- down
-- up
+- press-state (down/up)
 - key-code
 
 when any of these basic properties is edited, the Panel automatically changes
