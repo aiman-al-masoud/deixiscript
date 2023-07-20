@@ -2,7 +2,9 @@
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { AstNode, Member, Syntax, SyntaxMap } from "./types.ts";
 
-
+/**
+ * Convert an AST to its textual representation in a given grammar.
+ */
 export function linearize(ast: AstNode, syntaxMap: SyntaxMap): string {
     if (typeof ast !== 'object') return ast + ''
     if (ast instanceof Array) return ast + ''
