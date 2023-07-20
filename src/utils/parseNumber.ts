@@ -2,7 +2,7 @@
  * Checks if string has some non-digit char (except for ".") before
  * converting to number.
  * 
- * A NON-js-style-lobotomized version. WILL error out if string contains any letter.
+ * A NON-js-style-lobotomized version that WILL error out if string contains any letter.
  */
 export function parseNumber(string: string): number | undefined {
 
