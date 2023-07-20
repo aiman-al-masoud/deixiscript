@@ -59,17 +59,6 @@ const derivationClauses: DerivationClause[] = [
             .and($('ann:mutex-concepts-annotation').has('c2:thing').as('concept'))
     ).$,
 
-    // empty event sequence always possible
-    $({ subject: 's:seq', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' }).when(
-        $('s:seq').equals([])
-    ).$,
-
-    // possiblity of non empty event sequence
-    $({ subject: 's:seq|e:event', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' }).when(
-        $({ subject: 's:seq', verb: 'be', object: 'possible-sequence', beneficiary: 'a:agent' })
-            .and($({ subject: 'e:event', verb: 'be', object: 'possible', beneficiary: 'a:agent' }).after('s:seq'))
-    ).$,
-
     // default copula behavior
     $({ subject: 'x:thing', verb: 'be', object: 'y:thing' }).when(
         $('x:thing').equals('y:thing')

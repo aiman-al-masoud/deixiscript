@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, isFormulaWithAfter, Entity, MathExpression, HappenSentence, StringLiteral, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
+import { LLangAst, Atom, AtomicFormula, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, /* isFormulaWithAfter */ Entity, MathExpression, HappenSentence, StringLiteral, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula, isSimpleFormula, isAtomicFormula } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -22,7 +22,6 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'is-a-formula',
             subject: this.exp,
             object: makeAst(object),
-            after: $([]).$,
         })
 
     }
@@ -34,7 +33,6 @@ export class ExpBuilder<T extends LLangAst> {
             subject: this.exp,
             object: makeAst(object),
             as: $('thing').$,
-            after: $([]).$
         })
 
     }
@@ -50,32 +48,32 @@ export class ExpBuilder<T extends LLangAst> {
             subject: this.exp.subject,
             object: this.exp.object,
             as: makeAst(role),
-            after: this.exp.after,
         })
 
     }
 
-    after(atom: ExpBuilderArg): ExpBuilder<AtomicFormula | GeneralizedFormula> {
+    after(atom: ExpBuilderArg) {
 
-        if (!isFormulaWithAfter(this.exp)) {
-            throw new Error(`'after' does not apply to ${this.exp.type}, only to AtomicFormula`)
+        if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
+            throw new Error(``)
         }
 
-        return new ExpBuilder({
-            ...this.exp,
+        return new ExpBuilder<DerivationClause>({
+            type: 'derivation-clause',
+            conseq: this.exp as AtomicFormula | GeneralizedFormula,
             after: makeAst(atom),
         })
     }
 
     when(formula: ExpBuilderArg) {
 
-        if (!isFormulaWithAfter(this.exp)) {
-            throw new Error(`the 'conseq' of a DerivationClause must be an SimpleFormula not a ${this.exp.type}`)
+        if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
+            throw new Error(``)
         }
 
         return new ExpBuilder<DerivationClause>({
             type: 'derivation-clause',
-            conseq: this.exp,
+            conseq: this.exp as AtomicFormula | GeneralizedFormula,
             when: makeAst(formula),
         })
 
@@ -419,7 +417,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
         Object.entries(x).map(e => [e[0], makeAst(e[1])])
     )
 
-    return new ExpBuilder({ ...keys, type: 'generalized', after: $([]).$ } as GeneralizedFormula)
+    return new ExpBuilder({ ...keys, type: 'generalized', /* after: $([]).$ */ } as GeneralizedFormula)
 }
 
 /**

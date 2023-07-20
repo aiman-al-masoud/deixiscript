@@ -1,9 +1,8 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, isFormulaWithNonNullAfter, WmAtom, WorldModel, isIsASentence, addWorldModels } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
-import { tell } from "./tell.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
@@ -18,16 +17,6 @@ export function ask(
     result: Atom,
     kb: KnowledgeBase,
 } {
-
-    if (opts.preComputeKb && isFormulaWithNonNullAfter(ast)) {
-
-        return ask(
-            subst(ast, [ast.after, $([]).$]),
-            tell($(ast.after).happens.$, kb).kb,
-            { ...opts, preComputeKb: false },
-        )
-
-    }
 
     const formula = removeImplicit(decompress(ast))
 
@@ -109,6 +98,10 @@ export function ask(
 
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
+
+        case 'derivation-clause':
+            throw new Error(``)
+
         case 'math-expression':
             const left = ask(formula.left, kb, opts).result.value
             const right = ask(formula.right, kb, opts).result.value
@@ -141,6 +134,7 @@ export function ask(
 
         const map = match(dc.conseq, formula)
         if (!map) return false
+        if (!('when' in dc)) return false
 
         const whenn = subst(dc.when, map)
         return ask(whenn, kb, opts).result.value

@@ -46,7 +46,7 @@ export function removeImplicit(
         const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)
         return maybe ?? arbiType
 
-    } else if (ast.type === 'derivation-clause') {
+    } else if (ast.type === 'derivation-clause' && ('when' in ast)) {
 
         const conseqAnaphors = findAsts(ast.conseq, 'implicit-reference')
         const conseqArbiTypes = conseqAnaphors.map(x => removeImplicit(x, kb0, oldArbiTypes))

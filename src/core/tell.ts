@@ -3,11 +3,10 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isFormulaWithNonNullAfter, isHasSentence, isIsASentence, isWmAtom, subtractWorldModels } from "./types.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isHasSentence, isIsASentence, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
-import { findAsts } from "./findAsts.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 
@@ -32,24 +31,6 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     switch (ast.type) {
 
         case 'happen-sentence':
-
-            if (isConst(ast.subject)) {
-                additions = consequencesOf(ast.subject.value, kb)
-            } else if (ast.subject.type === 'list-literal') {
-
-                const res = ast.subject.value.map(x => $(x).happens.$).reduce((a, b) => {
-
-                    const result = tell(b, a.kb)
-                    return {
-                        kb: result.kb,
-                        additions: addWorldModels(result.additions, a.additions),
-                    }
-
-                }, { kb, additions: [] as WorldModel })
-
-                additions = res.additions
-            }
-
             break
         case 'has-formula':
             const t1 = ask(ast.subject, kb).result
@@ -106,6 +87,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
                 const map = match(dc.conseq, ast)
                 if (!map) continue
+                if (!('when' in dc)) return tell($(false).$, kb)
 
                 const whenn = subst(dc.when, map)
                 return tell(whenn, kb)
@@ -116,6 +98,10 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             addedDerivationClauses = []
             break
     }
+
+
+    const consequences = consequencesOf(ast, kb)
+    additions.push(...consequences)
 
     eliminations = [
         ...eliminations,
@@ -136,51 +122,23 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
 }
 
-/**
- * Computes the changes immediately caused by an event.
- * 
- * Better performance than the naive query:
- * 
- *  const f1 = $('x:thing').has('y:thing').as('z:thing')
- *  const query = f1.isNotTheCase.and(f1.after(['my-event#1']))
- * 
- * Because it tends to reduce the number of free variables in the query,
- * therefore making findAll() less expensive. The cost of findAll() is 
- * proportional to the cost of a cartesian product between x sets, which 
- * is O(n^x), where 1<=x<=3 (world model formulas have 3 terms at most, but this doesn't count custom formulas), 
- * bringing it down to even just x=2 is a significant improvement.
- * 
- * Also because it tends to specify the types of the variables involved,
- * therefore filtering out the irrelevant ones, reducing the size of the sets, 
- * and therefore reducing the constant factor.
- *
- *
- */
-function consequencesOf(event: WmAtom, kb: KnowledgeBase): WorldModel {
+export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
-        if (isFormulaWithNonNullAfter(dc.conseq)) {
+        if ('after' in dc) {
 
-            const x = subst(dc.conseq, [dc.conseq.after, $([event]).$])
+            const map = match(dc.after, ast)
+            if (!map) return []
 
-            const variables = findAsts(x, 'variable')
-            const results = findAll(x, variables, kb, false)
+            const conseq = subst(dc.conseq, map)
+            return tell(conseq, kb).additions
 
-            const eventConsequences = results.map(r => subst(x, r))
-                .flatMap(x => tell(x, kb).kb.wm)
-
-            const additions =
-                subtractWorldModels(eventConsequences, kb.wm)
-
-            return additions
         }
-
         return []
     })
 
     return changes
-
 }
 
 function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
@@ -266,12 +224,6 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
 }
 
 function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined {
-    // const result = findAll(
-    //     $({ annotation: 'x:default-annotation', subject: part, owner: concept, verb: 'default', recipient: 'z:thing' }).$,
-    //     [$('x:default-annotation').$, $('z:thing').$],
-    //     kb,
-    // )
-    // return result[0]?.get($('z:thing').$)?.value
 
     const result = ask($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
     if (result.type === 'nothing') return undefined

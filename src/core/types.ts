@@ -128,7 +128,6 @@ export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
     type: 'generalized',
-    after: LLangAst,
 }
 
 export type HappenSentence = {
@@ -148,7 +147,6 @@ export type IsAFormula = {
     type: 'is-a-formula',
     subject: LLangAst,
     object: LLangAst,
-    after: LLangAst,
 }
 
 export type HasFormula = {
@@ -156,7 +154,6 @@ export type HasFormula = {
     subject: LLangAst,
     object: LLangAst,
     as: LLangAst,
-    after: LLangAst,
 }
 
 export type Conjunction = {
@@ -191,6 +188,10 @@ export type DerivationClause = {
     type: 'derivation-clause',
     conseq: AtomicFormula | GeneralizedFormula,
     when: LLangAst,
+} | {
+    type: 'derivation-clause',
+    conseq: AtomicFormula | GeneralizedFormula,
+    after: LLangAst,
 }
 
 export type IfElse = {
@@ -236,15 +237,6 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
 
 export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
-}
-
-export function isFormulaWithAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedFormula {
-    return isAtomicFormula(ast) || ast.type === 'generalized'
-}
-
-export function isFormulaWithNonNullAfter(ast: LLangAst): ast is AtomicFormula | GeneralizedFormula {
-    return isFormulaWithAfter(ast)
-        && (ast.after.type !== 'list-literal' || !!ast.after.value.length)
 }
 
 export function isWmAtom(x: unknown): x is WmAtom {
