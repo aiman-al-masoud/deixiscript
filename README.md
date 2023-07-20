@@ -78,6 +78,8 @@ You also need some basic properties for buttons (down/up,key...).
 
 - newly created entities in tell() should be on top of deictic dict.
 
+- is a concept supposed to be (isa) itself?
+
 ## Limitations
 
 - no context sentitivity
@@ -106,6 +108,8 @@ You also need some basic properties for buttons (down/up,key...).
 - anaphora work as if each entity got the current timestamp whenever it is
   mentioned. When function ask() is called from findAll() the deictic dict is
   NOT updated.
+
+- pronouns are defined through derivation clauses that have an entity as "conseq" part.
 
 - 3 basic and 1 semi-basic verbs (EQUALS,IS-A,HAS-AS,BE), EQUALS cannot be
   overriden, all the others can, BE defaults to EQUALS in the most general case.
