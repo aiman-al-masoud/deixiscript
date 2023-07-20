@@ -11,6 +11,7 @@ import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
+import { deepMapOf } from "../utils/DeepMap.ts";
 
 const standardKb = getStandardKb()
 
@@ -1065,6 +1066,17 @@ Deno.test({
 
         const result = tell(a, kb)
         assert(ask($('screen#1').has('red').as('color').$, result.kb).result.value)
+    }
+})
+
+Deno.test({
+    name: 'test62',
+    fn: () => {
+
+        const template = $('x:cat').has('red').as('color').$
+        const f = $('y:dog').is('stupid').and($('cat#1').has('red').as('color')).$
+        const map = match(template, f)
+        assertEquals(map, deepMapOf([[$('x:cat').$, $('cat#1').$]]))
     }
 })
 

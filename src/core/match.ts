@@ -1,6 +1,6 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from "./exp-builder.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
@@ -66,6 +66,14 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
     } else if (template.type === 'variable' && isAtom(f)) {
         return deepMapOf([[template, f]])
+    } else if (
+        isSimpleFormula(template)
+        && (f.type === 'conjunction' || f.type === 'disjunction')
+    ) {
+        const m1 = match(template, f.f1)
+        const m2 = match(template, f.f2)
+        if (m1) return m1
+        if (m2) return m2
     }
 
     // console.warn('error match: template=' + template.type + ' f=' + f.type)
