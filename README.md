@@ -76,8 +76,6 @@ You also need some basic properties for buttons (down/up,key...).
 
 - newly created entities in tell() should be on top of deictic dict.
 
-- match() conjunction to simple sentence
-
 ## Limitations
 
 - no context sentitivity
