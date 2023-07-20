@@ -97,8 +97,8 @@ You also need some basic properties for buttons (down/up,key...).
   communicates with the outer world, including JS, which only uderstands has-as
   properties (not is-a ones because JS doesn't have multiple inheritance).
 
-- assignments are completely replaced by anaphora, also theme-rheme phrase
-  style, also intermediate numerical computations.
+- assignments are completely replaced by anaphora, also in theme-rheme phrase
+  style split in two sentences, also intermediate numerical computations.
 
 - anaphora can also be used to replace if-statements, one big function with lots
   of ifs = lots of small "functions" with naturalistic type arguments.
