@@ -89,12 +89,12 @@ Deno.test({
     }
 })
 
-
 Deno.test({
     name: 'test8',
     fn: () => {
-        const ast = parser.parse('x:capra has 0 as intelligence after [eventxy]')
-        assertEquals(ast, $('x:capra').has(0).as('intelligence').after(['eventxy']).$)
+        const dc = $.the('screen').has('red').as('color').after($('x:button').has('down').as('state')).$
+        const ast = parser.parse('the screen has red as color after x:button has down as state')
+        assertEquals(dc, ast)
     }
 })
 
@@ -318,15 +318,12 @@ Deno.test({
 
         const ast1 = $.the('capra').which($._.has('black').as('color')).has('scemo').as('friend').$
         const x = linearize(ast1, syntaxes)
-        console.log(x)
 
         const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
         const y = linearize(ast2, syntaxes)
-        console.log(y)
 
         const ast3 = $.the('cat').does('eat')._($.a('mouse')).when($(true).equals(true)).$
         const z = linearize(ast3, syntaxes)
-        console.log(z)
 
         assertEquals(parser.parse(x), ast1)
         assertEquals(parser.parse(y), ast2)

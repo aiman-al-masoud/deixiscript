@@ -14,7 +14,6 @@ const astTypes = stringLiterals(
     'equality',
     'is-a-formula',
     'has-formula',
-    'after-clause',
     'simple-formula',
     'word',
     'entity',
@@ -26,6 +25,8 @@ const astTypes = stringLiterals(
     'negation',
     'existquant',
     'derivation-clause',
+    'when-derivation-clause',
+    'after-derivation-clause',
     'if-else',
     'math-expression',
     'happen-sentence',
@@ -44,7 +45,6 @@ const astTypes = stringLiterals(
     'atom',
     'normal-atom',
     'parenthesized-expression',
-
     'copula-sentence',
 )
 
@@ -162,13 +162,6 @@ export const syntaxes: SyntaxMap<
         { literals: ['is an', 'is a'] },
         { types: ['space'], number: '+' },
         { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
-        { types: ['space'], number: '*' },
-        { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
-    ],
-    'after-clause': [
-        { literals: ['after'] },
-        { types: ['space'], number: '*' },
-        { types: ['atom'], role: 'after' },
     ],
     'has-formula': [
         { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
@@ -180,8 +173,6 @@ export const syntaxes: SyntaxMap<
         { literals: ['as'] },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'as' },
-        { types: ['space'], number: '*' },
-        { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     'happen-sentence': [
         { types: ['entity'], role: 'subject' },
@@ -226,12 +217,25 @@ export const syntaxes: SyntaxMap<
         { types: ['implicit-reference'], role: 'value' },
     ],
     'derivation-clause': [
+        { types: ['when-derivation-clause', 'after-derivation-clause'], expand: true },
+    ],
+
+    'when-derivation-clause': [
         { types: ['simple-formula'], role: 'conseq' },
         { types: ['space'], number: '*' },
         { literals: ['when'] },
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'when' },
     ],
+
+    'after-derivation-clause': [
+        { types: ['simple-formula'], role: 'conseq' },
+        { types: ['space'], number: '*' },
+        { literals: ['after'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], role: 'after' },
+    ],
+
     'if-else': [
         { literals: ['if'] },
         { types: ['space'], number: '*' },
@@ -254,7 +258,6 @@ export const syntaxes: SyntaxMap<
     ],
     generalized: [
         { types: ['verb-sentence', 'annotation', 'copula-sentence'], expand: true },
-        { types: ['after-clause'], expand: true, number: '1|0', defaultsTo: { after: $([]).$ } },
     ],
     "verb-sentence": [
         { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
