@@ -101,7 +101,7 @@ You also need some basic properties for buttons (down/up,key...).
   style split in two sentences, also intermediate numerical computations.
 
 - anaphora can also be used to replace if-statements, one big function with lots
-  of ifs = lots of small "functions" with naturalistic type arguments.
+  of ifs = lots of small "functions" with naturalistic type arguments created on the fly.
 
 - anaphora work as if each entity got the current timestamp whenever it is
   mentioned. When function ask() is called from findAll() the deictic dict is
