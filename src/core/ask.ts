@@ -8,6 +8,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
+import { first } from "../utils/first.ts";
 
 export function ask(
     ast: LLangAst,
@@ -27,6 +28,17 @@ export function ask(
         case 'number':
         case 'entity':
         case 'string':
+
+            const r1 = first(kb.derivClauses, dc => {
+
+                const map = match(dc.conseq, formula)
+                if (!map) return
+                if (!('when' in dc)) return
+                return subst(dc.when, map)
+            })
+
+            if (r1) return ask(r1, kb)
+
             const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
             const deicticDict = opts.storeDeixis ? { ...kb.deicticDict, [formula.value]: lastTime + 1 } : kb.deicticDict
             return { result: formula, kb: { ...kb, deicticDict } }

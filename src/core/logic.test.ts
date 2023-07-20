@@ -1080,6 +1080,27 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test63',
+    fn: () => {
+        // pronouns as derivation clauses
+        const kb =
+            $('alice#1').isa('female')
+                .and($('bob#1').isa('male'))
+                // .and($('apple#1').isa('fruit'))
+                // .and($('it').when('x:thing'))
+                // .and($('it').when($('x:thing').suchThat($('x:thing').isa('male').isNotTheCase.and($('x:thing').isa('female').isNotTheCase))))
+                .and($('he').when('x:male').$)
+                .and($('she').when('x:female').$)
+                .dump().kb
+
+        assertEquals(ask($('she').$, kb).result, $('alice#1').$)
+        assertEquals(ask($('he').$, kb).result, $('bob#1').$)
+        // assertEquals(ask($('it').$, kb).result, $('apple#1').$)
+    }
+})
+
+
 // Deno.test({
 //     name: 'test19',
 //     fn: () => {

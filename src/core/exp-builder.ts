@@ -54,9 +54,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     after(atom: ExpBuilderArg) {
 
-        if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
-            throw new Error(``)
-        }
+        // if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
+        //     throw new Error(``)
+        // }
 
         return new ExpBuilder<DerivationClause>({
             type: 'derivation-clause',
@@ -67,9 +67,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     when(formula: ExpBuilderArg) {
 
-        if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
-            throw new Error(``)
-        }
+        // if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
+        //     throw new Error(``)
+        // }
 
         return new ExpBuilder<DerivationClause>({
             type: 'derivation-clause',

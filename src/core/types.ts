@@ -186,11 +186,11 @@ export type ArbitraryType = {
 
 export type DerivationClause = {
     type: 'derivation-clause',
-    conseq: AtomicFormula | GeneralizedFormula,
+    conseq: /* AtomicFormula | GeneralizedFormula */ LLangAst,
     when: LLangAst,
 } | {
     type: 'derivation-clause',
-    conseq: AtomicFormula | GeneralizedFormula,
+    conseq: /* AtomicFormula | GeneralizedFormula */ LLangAst,
     after: LLangAst,
 }
 
