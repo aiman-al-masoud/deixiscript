@@ -84,7 +84,7 @@ You also need some basic properties for buttons (down/up,key...).
   - the cat eats the kibble piece
   - it jumps it resolves to "the kibble piece"
 - no cataphora.
-- no ambiguous sentence multi-tree parse.
+- no ambiguous sentence multi-tree parse, but possiblility to disambiguate using parentheses.
 
 # Notes
 
