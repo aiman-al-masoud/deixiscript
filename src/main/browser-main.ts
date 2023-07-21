@@ -2,7 +2,7 @@
 import { getStandardKb } from "../core/prelude.ts";
 import { LLangAst } from "../core/types.ts";
 import { syntaxes } from "../frontend-v1/grammar.ts";
-import { evaluate, init } from "../io/types.ts";
+import { evaluate, init, processEvents } from "../io/types.ts";
 import { getParser } from "../parser/parser.ts";
 
 const textArea = document.createElement('textarea')
@@ -19,14 +19,41 @@ let state = init(
     getStandardKb(),
     root,
     document,
-)
+);
+
+(window as unknown as { [x: string]: unknown }).state = state;
+
+let timeout = 0;
+
+(function job() {
+    state = processEvents(state)
+    clearTimeout(timeout)
+    timeout = setTimeout(job, 500)
+})()
 
 textArea.onkeydown = e => {
     if (e.key === 'Enter' && e.ctrlKey) {
-        const ast = parser.parse(textArea.value) as LLangAst
-        const r = evaluate(ast, state)
-        state = r.state
-        console.log(r.result)
+
+        let ast = parser.parse(textArea.value)
+        while (ast !== undefined) {
+
+            if ((ast as any).type === 'space') {
+                ast = parser.parse()
+                continue
+            }
+
+            try {
+                const r = evaluate(ast as LLangAst, state)
+                state = r.state
+                console.log(r.result)
+                ast = parser.parse()
+            } catch (e) {
+                console.log(e)
+                ast = parser.parse()
+            }
+
+        }
+
     }
 }
 

@@ -345,3 +345,14 @@ Deno.test({
 
     }
 })
+
+Deno.test({
+    name: 'test32',
+    fn: () => {
+        //kebab case
+        assertEquals(
+            parser.parse('press-state'),
+            $('press-state').$
+        )
+    }
+})

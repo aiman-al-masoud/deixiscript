@@ -13,7 +13,6 @@ export type State = KnowledgeBase & {
     readonly document: Document
     readonly root: HTMLElement
     eventQueue: DeixiEvent[]
-    interval: number
 }
 
 type DeixiEvent = {
@@ -28,11 +27,8 @@ export function init(kb: KnowledgeBase, root: HTMLElement, document: Document): 
         document,
         root,
         eventQueue: [],
-        interval: 0,
     }
     setupKeyListeners(state)
-    clearInterval(state.interval)
-    state.interval = setInterval(() => processEvents(state), 500)
     return state
 }
 
@@ -55,7 +51,10 @@ function applyOneAddition(state: State, hasSentence: HasSentence) {
     const value = hasSentence[1]
     const element = state.domDict[id]
 
-    if (element === undefined && property !== 'visibility') return
+    if (
+        (element === undefined && property !== 'visibility')
+        && id !== 'stdout'
+    ) return
 
     switch (property) {
 
@@ -118,25 +117,33 @@ function singleEventToSentence(e: DeixiEvent): LLangAst {
     return $(e.targetId).has(e.down).as('press-state').$
 }
 
-function eventsToSentence(events: DeixiEvent[]) {
+export function eventsToSentence(events: DeixiEvent[]) {
     if (events.length <= 0) return $('nothing').$
     if (events.length === 1) return singleEventToSentence(events[0])
-    return events.map(singleEventToSentence).reduce((a, b) => $(a).and($(b)).$)
+    const sentence = events.map(singleEventToSentence).reduce((a, b) => $(a).and($(b)).$)
+    return $(sentence).tell.$
 }
 
 function addListenersTo(element: HTMLElement, state: State) {
-    element.addEventListener('mousedown', () => state.eventQueue.push({ down: 'down', targetId: element.id }))
-    element.addEventListener('mouseup', () => state.eventQueue.push({ down: 'up', targetId: element.id }))
+    element.addEventListener('mousedown', () => pushEvent({ down: 'down', targetId: element.id }, state))
+    element.addEventListener('mouseup', () => pushEvent({ down: 'up', targetId: element.id }, state))
 }
 
 function setupKeyListeners(state: State) {
-    state.root.addEventListener('keydown', e => state.eventQueue.push({ down: 'down', targetId: e.key }))
-    state.root.addEventListener('keyup', e => state.eventQueue.push({ down: 'up', targetId: e.key }))
+    state.root.addEventListener('keydown', e => pushEvent({ down: 'down', targetId: e.key }, state))
+    state.root.addEventListener('keyup', e => pushEvent({ down: 'up', targetId: e.key }, state))
 }
 
-function processEvents(state: State) {
+function pushEvent(e: DeixiEvent, state: State) {
+    const maxEvents = 10
+    if (state.eventQueue.length >= maxEvents) return
+    state.eventQueue.push(e)
+}
+
+export function processEvents(state: State) {
     const sentence = eventsToSentence(state.eventQueue)
-    evaluate($(sentence).tell.$, state);
-    state.eventQueue = []
+    state = evaluate(sentence, state).state
+    state.eventQueue.length = 0
+    return state
 }
 
