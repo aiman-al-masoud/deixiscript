@@ -80,6 +80,8 @@ You also need some basic properties for buttons (down/up,key...).
 
 - is a concept supposed to be (isa) itself?
 
+- when adding new props (treated as defaults) to a concept you have to add them to all existing instances of the concept.
+
 ## Limitations
 
 - no context sentitivity
