@@ -273,7 +273,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-
     is(object: ExpBuilderArg) {
         return $({ subject: this.exp, verb: 'be', object: makeAst(object) })
     }
@@ -290,7 +289,7 @@ export class ExpBuilder<T extends LLangAst> {
     protected complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
 
         if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
-            throw new Error(``)
+            throw new Error(`bad exp.type=${this.exp.type}`)
         }
 
         return new ExpBuilder({
@@ -300,7 +299,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-
     in(location: ExpBuilderArg) {
         return this.complement(location, 'location')
     }
@@ -309,9 +307,8 @@ export class ExpBuilder<T extends LLangAst> {
         return this.complement(beneficiary, 'beneficiary')
     }
 
-
     of(owner: ExpBuilderArg) {
-        return $.the('thing').which($(makeAst(owner)).has($._.$).as(this.exp))
+        return this.complement(owner, 'owner')
     }
 
 }

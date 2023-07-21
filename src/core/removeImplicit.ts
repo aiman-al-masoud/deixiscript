@@ -34,6 +34,9 @@ export function removeImplicit(
         } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
             arbiType = { description: removeImplicit(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
+
+        } else if (ast.owner) {
+            return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$, kb0, oldArbiTypes)
         } else {
             const complement = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
 

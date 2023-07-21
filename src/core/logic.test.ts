@@ -815,7 +815,7 @@ Deno.test({
     name: 'test50',
     fn: () => {
         const kb = $.a('cat').which($._.has(3).as('position')).exists.dump().kb
-        const q = $('position').of($.the('cat').$).$
+        const q = $.the('position').of($.the('cat').$).$
         const result = ask(q, kb).result
         assertEquals(result, $(3).$)
     }
@@ -826,19 +826,19 @@ Deno.test({
     fn: () => {
 
         const maxX = $.a('panel').has($.a('number')).as('max-x').when(
-            $.the('number').equals($('width').of($.the('panel').$).plus($('x-coord').of($.the('panel').$)))
+            $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
         ).$
 
         const maxY = $.a('panel').has($.a('number')).as('max-y').when(
-            $.the('number').equals($('height').of($.the('panel').$).plus($('y-coord').of($.the('panel').$)))
+            $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
         ).$
 
         const parent = $('p1:panel').has('p2:panel').as('parent').when(
-            $('x-coord').of('p1:panel').isLessThanOrEqual($('x-coord').of('p2:panel').plus($('width').of('p2:panel')))
-                .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel')))
-                .and($('y-coord').of('p1:panel').isLessThanOrEqual($('y-coord').of('p2:panel').plus($('height').of('p2:panel'))))
-                .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
-                .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
+            $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('x-coord').of('p2:panel').plus($.the('width').of('p2:panel')))
+                .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel')))
+                .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('y-coord').of('p2:panel').plus($.the('height').of('p2:panel'))))
+                .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
+                .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
         ).$
 
         const kb = $('panel#1').isa('panel')
@@ -858,11 +858,11 @@ Deno.test({
             .and(parent)
             .dump().kb
 
-        assertEquals(ask($('max-x').of('panel#2').$, kb).result, $(20).$)
-        assertEquals(ask($('max-x').of('panel#1').$, kb).result, $(25).$)
+        assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
+        assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
 
-        assertEquals(ask($('max-y').of('panel#2').$, kb).result, $(15).$)
-        assertEquals(ask($('max-y').of('panel#1').$, kb).result, $(14).$)
+        assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
+        assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
 
     }
 })
@@ -873,11 +873,11 @@ Deno.test({
     fn: () => {
 
         const parent = $('p1:panel').has('p2:panel').as('parent').when(
-            $('x-coord').of('p1:panel').isLessThanOrEqual($('x-coord').of('p2:panel').plus($('width').of('p2:panel')))
-                .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel')))
-                .and($('y-coord').of('p1:panel').isLessThanOrEqual($('y-coord').of('p2:panel').plus($('height').of('p2:panel'))))
-                .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
-                .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
+            $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('x-coord').of('p2:panel').plus($.the('width').of('p2:panel')))
+                .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel')))
+                .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('y-coord').of('p2:panel').plus($.the('height').of('p2:panel'))))
+                .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
+                .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
         ).$
 
         const kb = $('panel#1').isa('panel')
@@ -915,19 +915,19 @@ Deno.test({
     fn: () => {
 
         const maxX = $.a('panel').has($.a('number')).as('max-x').when(
-            $.the('number').equals($('width').of($.the('panel').$).plus($('x-coord').of($.the('panel').$)))
+            $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
         ).$
 
         const maxY = $.a('panel').has($.a('number')).as('max-y').when(
-            $.the('number').equals($('height').of($.the('panel').$).plus($('y-coord').of($.the('panel').$)))
+            $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
         ).$
 
         const parent = $('p1:panel').has('p2:panel').as('parent').when(
-            $('x-coord').of('p1:panel').isLessThanOrEqual($('max-x').of('p2:panel').$)
-                .and($('x-coord').of('p1:panel').isGreaterThanOrEqual($('x-coord').of('p2:panel').$))
-                .and($('y-coord').of('p1:panel').isLessThanOrEqual($('max-y').of('p2:panel').$))
-                .and($('y-coord').of('p1:panel').isGreaterThanOrEqual($('y-coord').of('p2:panel').$))
-                .and($('z-index').of('p1:panel').isGreaterThan($('z-index').of('p2:panel')))
+            $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('max-x').of('p2:panel').$)
+                .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel').$))
+                .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('max-y').of('p2:panel').$))
+                .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
+                .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
         ).$
 
         const kb = $('panel#1').isa('panel')
@@ -947,11 +947,11 @@ Deno.test({
             .and(parent)
             .dump().kb
 
-        assertEquals(ask($('max-x').of('panel#2').$, kb).result, $(20).$)
-        assertEquals(ask($('max-x').of('panel#1').$, kb).result, $(25).$)
+        assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
+        assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
 
-        assertEquals(ask($('max-y').of('panel#2').$, kb).result, $(15).$)
-        assertEquals(ask($('max-y').of('panel#1').$, kb).result, $(14).$)
+        assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
+        assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
 
         assert(ask($('panel#1').has('panel#2').as('parent').$, kb).result.value)
         assert(!ask($('panel#2').has('panel#1').as('parent').$, kb).result.value)

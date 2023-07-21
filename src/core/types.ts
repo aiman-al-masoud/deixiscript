@@ -113,6 +113,7 @@ export type ImplicitReference = {
     headType: string,
     which?: SimpleFormula,
     whose?: SimpleFormula,
+    owner?: LLangAst,
     number: 1 | '*',
 } & {
     [complement: string]: LLangAst,
