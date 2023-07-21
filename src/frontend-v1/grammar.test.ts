@@ -302,10 +302,10 @@ Deno.test({
 Deno.test({
     name: 'test29',
     fn: () => {
-        const ast1 = parser.parse('there exists a cat')
+        const ast1 = parser.parse('there is a cat')
         assertEquals(ast1, $.a('cat').exists.$)
 
-        const ast2 = parser.parse('there exists the goat which has white as color')
+        const ast2 = parser.parse('there is the goat which has white as color')
         assertEquals(ast2, $.the('goat').which($._.has('white').as('color')).exists.$)
     }
 })

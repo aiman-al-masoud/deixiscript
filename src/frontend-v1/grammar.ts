@@ -214,7 +214,7 @@ export const syntaxes: SyntaxMap<
         // { literals: ['where'] },
         // { types: ['space'], number: '*' },
         // { types: ['formula'], role: 'where' },
-        { literals: ['there exists'] },
+        { literals: ['there is'] },
         { types: ['space'], number: '+' },
         { types: ['implicit-reference'], role: 'value' },
     ],
