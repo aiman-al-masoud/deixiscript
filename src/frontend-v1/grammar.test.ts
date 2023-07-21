@@ -331,3 +331,17 @@ Deno.test({
 
     }
 })
+
+Deno.test({
+    name: 'test31',
+    fn: () => {
+        const ast = parser.parse('the gift for you')
+        const check = $.the('gift').for('you').$
+        assertEquals(ast, check)
+
+        const ast2 = parser.parse('you do work for the cat')
+        const check2 = $('you').does('work').for($.the('cat')).$
+        assertEquals(ast2, check2)
+
+    }
+})

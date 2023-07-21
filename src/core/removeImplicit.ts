@@ -2,7 +2,7 @@ import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { tell } from "./tell.ts";
-import { ImplicitReference, DerivationClause, KnowledgeBase, LLangAst } from "./types.ts";
+import { ImplicitReference, DerivationClause, KnowledgeBase, LLangAst, isLLangAst } from "./types.ts";
 import { random } from "../utils/random.ts"
 import { ArbitraryType } from "./types.ts"
 import { ask } from "./ask.ts";
@@ -34,13 +34,14 @@ export function removeImplicit(
         } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
             arbiType = { description: removeImplicit(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
-
-        } else if (ast.location) {
-
-            return removeImplicit($.the(ast.headType).which($._.has(ast.location).as('location')).$, kb0, oldArbiTypes)
-
         } else {
-            arbiType = { description: $(true).$, head, type: 'arbitrary-type' }
+            const complement = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
+
+            if (complement) {
+                return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$, kb0, oldArbiTypes)
+            } else {
+                arbiType = { description: $(true).$, head, type: 'arbitrary-type' }
+            }
         }
 
         const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)

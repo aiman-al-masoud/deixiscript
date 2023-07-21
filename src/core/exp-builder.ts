@@ -54,26 +54,18 @@ export class ExpBuilder<T extends LLangAst> {
 
     after(atom: ExpBuilderArg) {
 
-        // if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
-        //     throw new Error(``)
-        // }
-
         return new ExpBuilder<DerivationClause>({
             type: 'derivation-clause',
-            conseq: this.exp as AtomicFormula | GeneralizedFormula,
+            conseq: this.exp,
             after: makeAst(atom),
         })
     }
 
     when(formula: ExpBuilderArg) {
 
-        // if (!isAtomicFormula(this.exp) && this.exp.type !== 'generalized') {
-        //     throw new Error(``)
-        // }
-
         return new ExpBuilder<DerivationClause>({
             type: 'derivation-clause',
-            conseq: this.exp as AtomicFormula | GeneralizedFormula,
+            conseq: this.exp,
             when: makeAst(formula),
         })
 
@@ -189,7 +181,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder<ImplicitReference>({
             ...this.exp,
             whose: makeAst(ast),
-        })
+        } as ImplicitReference)
 
     }
 
@@ -202,7 +194,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder<ImplicitReference>({
             ...this.exp,
             which: ast.$,
-        })
+        } as ImplicitReference)
 
     }
 
@@ -281,16 +273,13 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    of(owner: ExpBuilderArg) {
-        return $.the('thing').which($(makeAst(owner)).has($._.$).as(this.exp))
-    }
 
     is(object: ExpBuilderArg) {
         return $({ subject: this.exp, verb: 'be', object: makeAst(object) })
     }
 
     does(verb: ExpBuilderArg) {
-        return $({ subject: this.exp, verb: makeAst(verb) })
+        return $({ subject: this.exp, verb: makeAst(verb), object: $._.$ })
     }
 
     _(object: ExpBuilderArg) {
@@ -298,26 +287,31 @@ export class ExpBuilder<T extends LLangAst> {
         return $({ ...this.exp, object: makeAst(object) })
     }
 
+    protected complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
 
-    in(location: ExpBuilderArg): ExpBuilder<LLangAst> {
-
-        if (this.exp.type === 'implicit-reference') {
-            return new ExpBuilder<ImplicitReference>({
-                ...this.exp,
-                location: makeAst(location),
-            })
+        if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
+            throw new Error(``)
         }
 
-        if (this.exp.type === 'generalized') {
+        return new ExpBuilder({
+            ...this.exp,
+            [name]: makeAst(comp),
+        })
 
-            return new ExpBuilder({
-                ...this.exp,
-                location: makeAst(location),
-            })
-        }
+    }
 
-        throw new Error('')
 
+    in(location: ExpBuilderArg) {
+        return this.complement(location, 'location')
+    }
+
+    for(beneficiary: ExpBuilderArg) {
+        return this.complement(beneficiary, 'beneficiary')
+    }
+
+
+    of(owner: ExpBuilderArg) {
+        return $.the('thing').which($(makeAst(owner)).has($._.$).as(this.exp))
     }
 
 }
@@ -417,7 +411,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
         Object.entries(x).map(e => [e[0], makeAst(e[1])])
     )
 
-    return new ExpBuilder({ ...keys, type: 'generalized', /* after: $([]).$ */ } as GeneralizedFormula)
+    return new ExpBuilder({ ...keys, type: 'generalized' } as GeneralizedFormula)
 }
 
 /**
@@ -433,7 +427,8 @@ $.the = (x: string) => new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
     headType: x,
     number: 1,
-})
+} as ImplicitReference)
+
 
 /**
  * See `$.the()`

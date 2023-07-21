@@ -46,6 +46,7 @@ const astTypes = stringLiterals(
     'normal-atom',
     'parenthesized-expression',
     'copula-sentence',
+    'beneficiary-for',
 )
 
 const roles = stringLiterals(
@@ -80,6 +81,7 @@ const roles = stringLiterals(
     'headType',
     'whose',
     'which',
+    'beneficiary',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -262,7 +264,7 @@ export const syntaxes: SyntaxMap<
     "verb-sentence": [
         { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
-        { literals: ['does'] },
+        { literals: ['does', 'do'] }, // order
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'verb' },
         { types: ['space'], number: '*' },
@@ -280,7 +282,7 @@ export const syntaxes: SyntaxMap<
     'copula-sentence': [
         { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
-        { literals: ['is', 'are', 'be'] },
+        { literals: ['am', 'is', 'are', 'be'] },
         { types: ['atom'], role: 'verb', number: '1|0', defaultsTo: $('be').$ },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
@@ -328,8 +330,13 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'recipient' },
     ],
+    'beneficiary-for': [
+        { literals: ['for'] },
+        { types: ['space'], number: '*' },
+        { types: ['atom'], role: 'beneficiary' },
+    ],
     complement: [
-        { types: ['locative-in', 'dative-to'], expand: true, sep: 'space' }
+        { types: ['locative-in', 'dative-to', 'beneficiary-for'], expand: true, sep: 'space' }
     ],
 
 }

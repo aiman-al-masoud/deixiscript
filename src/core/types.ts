@@ -113,8 +113,9 @@ export type ImplicitReference = {
     headType: string,
     which?: SimpleFormula,
     whose?: SimpleFormula,
-    location?: LLangAst,
     number: 1 | '*',
+} & {
+    [complement: string]: LLangAst,
 }
 
 export type MathExpression = {
@@ -186,11 +187,11 @@ export type ArbitraryType = {
 
 export type DerivationClause = {
     type: 'derivation-clause',
-    conseq: /* AtomicFormula | GeneralizedFormula */ LLangAst,
+    conseq: LLangAst,
     when: LLangAst,
 } | {
     type: 'derivation-clause',
-    conseq: /* AtomicFormula | GeneralizedFormula */ LLangAst,
+    conseq: LLangAst,
     after: LLangAst,
 }
 
