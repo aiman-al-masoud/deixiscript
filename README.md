@@ -82,6 +82,8 @@ You also need some basic properties for buttons (down/up,key...).
 
 - when adding new props (treated as defaults) to a concept you have to add them to all existing instances of the concept.
 
+- match() may have to take care of derivation clauses.
+
 ## Limitations
 
 - no context sentitivity
