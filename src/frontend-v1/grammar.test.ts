@@ -183,16 +183,16 @@ Deno.test({
 Deno.test({
     name: 'test18',
     fn: () => {
-        const ast = parser.parse('capra equals scema!')
-        assertEquals(ast, $('capra').equals('scema').tell.$)
+        const ast = parser.parse('capra is scema!')
+        assertEquals(ast, $('capra').is('scema').tell.$)
     }
 })
 
 Deno.test({
     name: 'test19',
     fn: () => {
-        const ast = parser.parse('capra equals scema?')
-        assertEquals(ast, $('capra').equals('scema').ask.$)
+        const ast = parser.parse('capra is scema?')
+        assertEquals(ast, $('capra').is('scema').ask.$)
     }
 })
 
