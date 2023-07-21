@@ -16,56 +16,76 @@ export type State = KnowledgeBase & {
     interval: number
 }
 
-export type DeixiEvent = {
+type DeixiEvent = {
     down: 'down' | 'up'
     targetId: string
 }
 
-function init(state: State) {
+export function init(kb: KnowledgeBase, root: HTMLElement, document: Document): State {
+    const state = {
+        ...kb,
+        domDict: {},
+        document,
+        root,
+        eventQueue: [],
+        interval: 0,
+    }
     setupKeyListeners(state)
     clearInterval(state.interval)
     state.interval = setInterval(() => processEvents(state), 500)
+    return state
 }
 
-function evaluate(ast: LLangAst, state: State) {
-    const { additions, eliminations } = ev.evaluate(ast, state)
+export function evaluate(ast: LLangAst, state: State) {
+    const { additions, eliminations, kb, result } = ev.evaluate(ast, state)
     applyAdditions(state, additions.filter(isHasSentence))
+    return {
+        state: {
+            ...state,
+            ...kb,
+        },
+        result,
+    }
 }
 
 function applyOneAddition(state: State, hasSentence: HasSentence) {
 
+    const property = hasSentence[2]
     const id = hasSentence[0] as string
     const value = hasSentence[1]
+    const element = state.domDict[id]
 
-    switch (hasSentence[2]) {
+    if (element === undefined && property !== 'visibility') return
 
-        case 'xcoord':
-            state.domDict[id].style.left = `${value}px`
-            break
-        case 'ycoord':
-            state.domDict[id].style.top = `${value}px`
-            break
-        case 'width':
-            state.domDict[id].style.width = `${value}px`
-            break
-        case 'height':
-            state.domDict[id].style.height = `${value}px`
-            break
-        case 'color':
-            state.domDict[id].style.background = value as string
-            break
-        case 'z-index':
-            state.domDict[id].style.zIndex = value as string
-            break
+    switch (property) {
+
         case 'visibility':
-            if (value === true && state.domDict[id] === undefined) {
+            if (value !== 'hidden' && element === undefined) {
                 createDomObject(state, id)
             } else {
-                state.domDict[id].style.visibility = value as string
+                element.style.visibility = value as string
             }
             break
+        case 'xcoord':
+            element.style.left = `${value}px`
+            break
+        case 'ycoord':
+            element.style.top = `${value}px`
+            break
+        case 'width':
+            element.style.width = `${value}px`
+            break
+        case 'height':
+            element.style.height = `${value}px`
+            break
+        case 'color':
+            element.style.background = value as string
+            break
+        case 'z-index':
+            element.style.zIndex = value as string
+            break
         case 'text':
-            state.domDict[id].childNodes[0].textContent = value as string
+            element.childNodes[0].textContent = value as string
             break
         case 'image':
             break
@@ -91,7 +111,7 @@ function createDomObject(state: State, id: string) {
     state.root.appendChild(state.domDict[id])
     const hasSentences = state.wm.filter(isHasSentence).filter(x => x[0] === id)
     applyAdditions(state, hasSentences)
-    setupListenersOn(state.domDict[id], state)
+    addListenersTo(state.domDict[id], state)
 }
 
 function singleEventToSentence(e: DeixiEvent): LLangAst {
@@ -104,7 +124,7 @@ function eventsToSentence(events: DeixiEvent[]) {
     return events.map(singleEventToSentence).reduce((a, b) => $(a).and($(b)).$)
 }
 
-function setupListenersOn(element: HTMLElement, state: State) {
+function addListenersTo(element: HTMLElement, state: State) {
     element.addEventListener('mousedown', () => state.eventQueue.push({ down: 'down', targetId: element.id }))
     element.addEventListener('mouseup', () => state.eventQueue.push({ down: 'up', targetId: element.id }))
 }
