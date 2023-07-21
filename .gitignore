@@ -1,2 +1,3 @@
 docs/attachments/
 *.gfo
+/src/main/*.html
