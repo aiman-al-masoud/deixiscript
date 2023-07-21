@@ -8,20 +8,20 @@ export type Member<R = string, T = string>
     = LiteralMember<R, T> | TypeMember<R, T>
 
 type BaseMember<R = string, T = string> = {
-    readonly number?: Cardinality // no number = 1
-    readonly role?: R // no role = exclude from ast
-    readonly sep?: T // separator
-    readonly expand?: boolean | 'keep-specific-type' // expand child into parent
-    readonly reduce?: boolean | 'to-number' // list of chars to string
+    /** default is exactly once*/readonly number?: Cardinality
+    /** default means excluded from AST */readonly role?: R
+    /** separator */readonly sep?: T
+    /** expand child into parent, if 'keep-specific-type' then parent is replaced by child */readonly expand?: boolean | 'keep-specific-type'
+    /** reduce char list to string, or to number  */readonly reduce?: boolean | 'to-number'
+    /** default replacement for missing member AST */ readonly defaultsTo?: AstNode
     readonly notEndWith?: string
     readonly types?: T[]
-    readonly defaultsTo?: AstNode
 }
 
 export type LiteralMember<R = string, T = string> = BaseMember<R, T> & {
     readonly literals: string[]
     readonly anyCharExceptFor?: string[]
-    readonly isBool?: string /* takes string literal corresponding to true */
+    /** takes the string literal corresponding to bool true */ readonly isBool?: string
 }
 
 export type TypeMember<R = string, T = string> = BaseMember<R, T> & {
