@@ -67,7 +67,7 @@ You also need some basic properties for buttons (down/up,key...).
 - possible problem with where in instantiateConcept() and multiple legal values
   on same attribute.
 
-- tell()/instantiateConcept()/expand()/isConst() are currently serializing 'thing' as partial information.
+- tell()/instantiateConcept()/expand()/isConst() are currently serializing 'thing' as partial information in "has" without "as".
 
 - implicit references may be ambiguous from the point of view of creating a new
   thing, or erroring out if you don't find an old one. Maybe the/a distinction
