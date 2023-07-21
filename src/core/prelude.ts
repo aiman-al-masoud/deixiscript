@@ -58,7 +58,7 @@ export function getStandardKb(): KnowledgeBase {
                 $('x:thing').equals('y:thing')
             ).$,
 
-            $('it').when($('x:thing')).$
+            $('it').when('x:thing').$
 
         ],
         deicticDict: {},
