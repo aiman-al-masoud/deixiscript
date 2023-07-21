@@ -7,14 +7,10 @@ echo "
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeixiScript</title>
 </head>
-<body>
-<script>
-" > index.html
-
-deno bundle browser-main.ts >>  index.html
-
-echo "
-</script>
-</body>
+    <body>
+        <script>
+        $(deno bundle browser-main.ts)
+        </script>
+    </body>
 </html>
-" >> index.html
+"  > index.html
