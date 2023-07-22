@@ -71,7 +71,7 @@ export type Question = {
 
 export type Entity = {
     type: 'entity',
-    value: string
+    value: string,
 }
 
 export type Nothing = {
@@ -91,7 +91,7 @@ export type Number = {
 
 export type StringLiteral = {
     type: 'string',
-    value: string
+    value: string,
 }
 
 export type Variable = {
@@ -306,4 +306,16 @@ export function addWorldModels(...wms: WorldModel[]): WorldModel {
 
 export function conceptsOf(concept: WmAtom, kb: KnowledgeBase) {
     return findAll($(concept).isa('x:thing').$, [$('x:thing').$], kb).map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
+}
+
+export function pointsToThings(ast: LLangAst): boolean {
+
+    if (ast.type === 'conjunction' || ast.type === 'disjunction') {
+        return pointsToThings(ast.f1) && pointsToThings(ast.f2)
+    }
+
+    return isAtom(ast)
+        || ast.type === 'arbitrary-type'
+        || ast.type === 'implicit-reference'
+    // || ast.type === 'math-expression'
 }
