@@ -24,7 +24,6 @@ export function ask(
     switch (formula.type) {
 
         case 'boolean':
-            return { result: formula, kb }
         case 'number':
         case 'entity':
         case 'string':
@@ -40,7 +39,7 @@ export function ask(
             if (r1) return ask(r1, kb)
 
             const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
-            const deicticDict = opts.storeDeixis ? { ...kb.deicticDict, [formula.value]: lastTime + 1 } : kb.deicticDict
+            const deicticDict = opts.storeDeixis ? { ...kb.deicticDict, [formula.value as string]: lastTime + 1 } : kb.deicticDict
             return { result: formula, kb: { ...kb, deicticDict } }
         case 'list-literal':
         case 'list-pattern':
@@ -111,7 +110,8 @@ export function ask(
         case 'if-else':
             return ask(formula.condition, kb, opts).result.value ? ask(formula.then, kb, opts) : ask(formula.otherwise, kb, opts)
 
-        case 'derivation-clause':
+        case 'after-derivation-clause':
+        case 'when-derivation-clause':
             throw new Error(``)
 
         case 'math-expression':
@@ -165,3 +165,4 @@ function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
 
     return uniq(r)
 }
+

@@ -54,6 +54,10 @@ export type CompositeFormula =
     | MathExpression
     | ImplicitReference
     | ArbitraryType
+export type DerivationClause =
+    | WhenDerivationClause
+    | AfterDerivationClause
+
 
 export type Command = {
     type: 'command',
@@ -180,15 +184,18 @@ export type ArbitraryType = {
     description: LLangAst,
 }
 
-export type DerivationClause = {
-    type: 'derivation-clause',
+export type WhenDerivationClause = {
+    type: 'when-derivation-clause',
     conseq: LLangAst,
     when: LLangAst,
-} | {
-    type: 'derivation-clause',
+}
+
+export type AfterDerivationClause = {
+    type: 'after-derivation-clause',
     conseq: LLangAst,
     after: LLangAst,
 }
+
 
 export type IfElse = {
     type: 'if-else',
@@ -265,7 +272,8 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'disjunction': true,
         'if-else': true,
         'math-expression': true,
-        'derivation-clause': true,
+        'when-derivation-clause': true,
+        'after-derivation-clause': true,
         'equality': true,
         'generalized': true,
         'has-formula': true,

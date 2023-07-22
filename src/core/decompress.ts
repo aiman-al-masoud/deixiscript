@@ -41,7 +41,8 @@ export function decompress(ast: LLangAst): LLangAst {
             return $(decompress(ast.value)).exists.$
         case 'arbitrary-type':
             return $(decompress(ast.head)).suchThat(decompress(ast.description)).$
-        case "derivation-clause":
+        case 'after-derivation-clause':
+        case 'when-derivation-clause':
 
             // const x :DerivationClause= {
             //     type : 'derivation-clause',

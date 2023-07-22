@@ -59,7 +59,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
         case 'disjunction':
             // console.warn('serialized only first formula of disjunction')
             return tell(ast.f1, kb)
-        case 'derivation-clause':
+        case 'when-derivation-clause':
+        case 'after-derivation-clause':
             addedDerivationClauses = [ast]
             break
         case 'if-else':

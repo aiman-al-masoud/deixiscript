@@ -50,7 +50,7 @@ export function removeImplicit(
         const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)
         return maybe ?? arbiType
 
-    } else if (ast.type === 'derivation-clause' && ('when' in ast)) {
+    } else if (ast.type === 'when-derivation-clause') {
 
         const conseqAnaphors = findAsts(ast.conseq, 'implicit-reference')
         const conseqArbiTypes = conseqAnaphors.map(x => removeImplicit(x, kb0, oldArbiTypes))
@@ -78,7 +78,7 @@ export function removeImplicit(
         )
 
         const result: DerivationClause = {
-            type: 'derivation-clause',
+            type: 'when-derivation-clause',
             conseq: newConseq,
             when: newWhen,
         }

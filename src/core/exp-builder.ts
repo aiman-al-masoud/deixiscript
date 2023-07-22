@@ -55,7 +55,7 @@ export class ExpBuilder<T extends LLangAst> {
     after(atom: ExpBuilderArg) {
 
         return new ExpBuilder<DerivationClause>({
-            type: 'derivation-clause',
+            type : 'after-derivation-clause',
             conseq: this.exp,
             after: makeAst(atom),
         })
@@ -64,7 +64,7 @@ export class ExpBuilder<T extends LLangAst> {
     when(formula: ExpBuilderArg) {
 
         return new ExpBuilder<DerivationClause>({
-            type: 'derivation-clause',
+            type : 'when-derivation-clause',
             conseq: this.exp,
             when: makeAst(formula),
         })

@@ -213,7 +213,7 @@ export const syntaxes: SyntaxMap<
         { types: ['implicit-reference'], role: 'value' },
     ],
     'derivation-clause': [
-        { types: ['when-derivation-clause', 'after-derivation-clause'], expand: true },
+        { types: ['when-derivation-clause', 'after-derivation-clause'], expand: 'keep-specific-type' },
     ],
 
     'when-derivation-clause': [
