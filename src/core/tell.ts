@@ -30,8 +30,6 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
     switch (ast.type) {
 
-        case 'happen-sentence':
-            break
         case 'has-formula':
             const t1 = ask(ast.subject, kb).result
             const t2 = ask(ast.object, kb).result

@@ -29,7 +29,6 @@ const astTypes = stringLiterals(
     'after-derivation-clause',
     'if-else',
     'math-expression',
-    'happen-sentence',
     'generalized',
     'implicit-reference',
     'command',
@@ -176,13 +175,8 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'as' },
     ],
-    'happen-sentence': [
-        { types: ['entity'], role: 'subject' },
-        { types: ['space'], number: '*' },
-        { literals: ['happens'] },
-    ],
     'simple-formula': [
-        { types: ['is-a-formula', 'generalized', 'equality', 'has-formula', 'happen-sentence'], expand: 'keep-specific-type' } // order: "is a" before "is"
+        { types: ['is-a-formula', 'generalized', 'equality', 'has-formula',], expand: 'keep-specific-type' } // order: "is a" before "is"
     ],
     conjunction: [
         { types: ['simple-formula'], role: 'f1' },

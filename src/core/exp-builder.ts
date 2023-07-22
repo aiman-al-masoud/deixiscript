@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, HappenSentence, StringLiteral, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, StringLiteral, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -237,14 +237,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     isLessThanOrEqual(atom: ExpBuilderArg) {
         return this.mathOperation(atom, '<=')
-    }
-
-    get happens(): ExpBuilder<HappenSentence> {
-
-        return new ExpBuilder<HappenSentence>({
-            type: 'happen-sentence',
-            subject: this.exp as Entity,
-        })
     }
 
     get ask(): ExpBuilder<Question> {

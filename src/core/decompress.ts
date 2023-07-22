@@ -51,7 +51,7 @@ export function decompress(ast: LLangAst): LLangAst {
             // return x
             // console.log(JSON.stringify(x) === JSON.stringify(y))
 
-            if (!('when' in ast )) return ast
+            if (!('when' in ast)) return ast
 
             return $(decompress(ast.conseq)).when(decompress(ast.when)).$
 
@@ -64,7 +64,6 @@ export function decompress(ast: LLangAst): LLangAst {
         case "command":
         case "question":
         case "generalized":
-        case "happen-sentence":
         case "string":
         case "number":
         case "boolean":

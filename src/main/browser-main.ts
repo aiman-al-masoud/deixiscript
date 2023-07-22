@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 import { getStandardKb } from "../core/prelude.ts";
-import { LLangAst } from "../core/types.ts";
+import { isLLangAst } from "../core/types.ts";
 import { syntaxes } from "../frontend-v1/grammar.ts";
 import { evaluate, init, processEvents } from "../io/types.ts";
 import { getParser } from "../parser/parser.ts";
@@ -37,13 +37,13 @@ textArea.onkeydown = e => {
         let ast = parser.parse(textArea.value)
         while (ast !== undefined) {
 
-            if ((ast as any).type === 'space') {
+            if (!isLLangAst(ast)) {
                 ast = parser.parse()
                 continue
             }
 
             try {
-                const r = evaluate(ast as LLangAst, state)
+                const r = evaluate(ast, state)
                 state = r.state
                 console.log(r.result)
                 ast = parser.parse()

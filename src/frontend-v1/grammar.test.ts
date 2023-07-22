@@ -157,14 +157,6 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test15',
-    fn: () => {
-        const ast = parser.parse('eventxy happens')
-        assertEquals(ast, $('eventxy').happens.$)
-    }
-})
-
-Deno.test({
     name: 'test16',
     fn: () => {
         const ast = parser.parse('2 > 1')

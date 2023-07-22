@@ -41,7 +41,6 @@ export type SimpleFormula =
     | AtomicFormula
     | Equality
     | GeneralizedFormula
-    | HappenSentence
 export type AtomicFormula =
     | IsAFormula
     | HasFormula
@@ -130,11 +129,6 @@ export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
     type: 'generalized',
-}
-
-export type HappenSentence = {
-    type: 'happen-sentence',
-    subject: Atom,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>
@@ -250,7 +244,37 @@ export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence 
 }
 
 export function isLLangAst(x: unknown): x is LLangAst {
-    return x !== null && typeof x === 'object' && 'type' in x //TODO: also check type
+
+    if (x === null || typeof x !== 'object' || !('type' in x)) return false
+
+    const astTypes: { [i in LLangAst['type']]: true } = {
+        'boolean': true,
+        'number': true,
+        'entity': true,
+        'string': true,
+        'command': true,
+        'question': true,
+        'nothing': true,
+        'variable': true,
+        'list-literal': true,
+        'list-pattern': true,
+        'implicit-reference': true,
+        'negation': true,
+        'arbitrary-type': true,
+        'is-a-formula': true,
+        'disjunction': true,
+        'if-else': true,
+        'math-expression': true,
+        'derivation-clause': true,
+        'equality': true,
+        'generalized': true,
+        'has-formula': true,
+        'existquant': true,
+        'conjunction': true,
+    }
+
+    return astTypes[x.type as LLangAst['type']]
+
 }
 
 export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
@@ -258,8 +282,6 @@ export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
         || ast.type === 'is-a-formula'
         || ast.type === 'has-formula'
         || ast.type === 'generalized'
-        || ast.type === 'happen-sentence'
-
 }
 
 export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {
