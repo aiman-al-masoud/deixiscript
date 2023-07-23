@@ -1,6 +1,6 @@
 
 import { isNotNullish } from "../utils/isNotNullish.ts";
-import { AstNode, Member, Syntax, SyntaxMap } from "./types.ts";
+import { AstNode, Member, Syntax, SyntaxMap, isNecessary } from "./types.ts";
 
 /**
  * Convert an AST to its textual representation in a given grammar.
@@ -32,7 +32,7 @@ function linearizeMember(
 
     if (typeof ast !== 'object' || ast instanceof Array) return ast + ''
 
-    if (member.literals) {
+    if (member.literals && isNecessary(member.number)) {
         return member.literals[0]
     }
 

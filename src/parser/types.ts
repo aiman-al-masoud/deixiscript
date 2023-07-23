@@ -16,6 +16,10 @@ type BaseMember<R = string, T = string> = {
     /** default replacement for missing member AST */ readonly defaultsTo?: AstNode
     readonly notEndWith?: string
     readonly types?: T[]
+
+
+    readonly wrap?: { role: R, of: T }
+
 }
 
 export type LiteralMember<R = string, T = string> = BaseMember<R, T> & {
@@ -51,6 +55,6 @@ export type AstNode =
     | boolean
     | string[]
     | AstNode[]
-    | { [x: string]: AstNode } & { type?: string }
+    | { [x: string]: AstNode } & { type?: string, wrap?: BaseMember['wrap'] }
 
 

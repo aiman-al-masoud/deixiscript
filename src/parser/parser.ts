@@ -4,6 +4,7 @@ import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { CharStream, getCharStream } from "./char-stream.ts";
 import { dependencies, maxPrecedence } from "./max-precedence.ts";
+import { transform } from "./transform.ts";
 import { Syntax, isNecessary, Member, isRepeatable, LiteralMember, AstNode, SyntaxMap } from "./types.ts";
 
 export function getParser(args: {
@@ -38,7 +39,9 @@ class KoolerParser {
             this.cs = getCharStream(sourceCode)
         }
 
-        return this.parseTry(this.syntaxList)
+        const ast = this.parseTry(this.syntaxList)
+        const result = transform(ast)
+        return result
     }
 
     parseTry(syntaxList: string[], top = 0) {
@@ -80,6 +83,10 @@ class KoolerParser {
             if (node === undefined) { // and isNecessary=false
                 maybeLog(this.log, top, syntaxName, 'unrequired', member.role ?? member.literals ?? member.types, 'not found, ignored', 'pos=', this.cs.getPos())
                 continue
+            }
+
+            if (member.wrap) {
+                ast['wrap'] = member.wrap
             }
 
             if (member.role && member.expand) {
