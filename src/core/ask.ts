@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, DerivationClause, WhenDerivationClause } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { match } from "./match.ts";
@@ -142,17 +142,24 @@ export function ask(
 
     }
 
-    const result = kb.derivClauses.some(dc => {
+    const entries = Object.entries(formula).filter(e => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb, opts).result])
+    const newObj = Object.fromEntries(entries)
+    const formula2 = { ...formula, ...newObj }
+    // console.log('formula=', formula)
+    // console.log('formula2=', formula2)
 
-        const map = match(dc.conseq, formula)
-        if (!map) return false
-        if (!('when' in dc)) return false
-
+    for (const dc of kb.derivClauses) {
+        if (match(dc.conseq, formula) === undefined) continue
+        const map = match(dc.conseq, formula2)
+        if (!map) continue
+        if (!('when' in dc)) continue
         const whenn = subst(dc.when, map)
-        return ask(whenn, kb, opts).result.value
-    })
+        // console.log('formula2=', formula2)
+        // console.log('whenn=', whenn)
+        return ask(whenn, kb, opts)
+    }
 
-    return { result: $(result).$, kb }
+    return { result: $(false).$, kb }
 
 }
 
@@ -166,3 +173,19 @@ function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
     return uniq(r)
 }
 
+
+// function matchWhen(formula:LLangAst, derivClauses:WhenDerivationClause[]):LLangAst{
+
+//     for (const dc of derivClauses) {
+//         // const map = match(dc.conseq, formula)
+//         if (match(dc.conseq, formula)===undefined) continue
+//         const map = match(dc.conseq, formula)
+//         if (!map) continue
+//         if (!('when' in dc)) continue
+//         const whenn = subst(dc.when, map)
+//         // console.log('formula2=', formula2)
+//         // console.log('whenn=', whenn)
+//         return whenn
+//         // return ask(whenn, kb, opts)
+//     }
+// }

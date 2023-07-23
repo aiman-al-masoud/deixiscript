@@ -566,6 +566,10 @@ Deno.test({
 
         const kb2 = tell(dc, kb1).kb
 
+        // console.log('redcat=',ask($.a('cat').whose($('fur').has('red').as('color')).$, kb2).result)
+        // console.log('blackcat=',ask($.a('cat').whose($('fur').has('black').as('color')).$, kb2).result)
+
+
         const statement1 = $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
         const statement2 = $({ subject: $.a('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).$
 
@@ -900,8 +904,32 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test64',
+    fn: () => {
+
+        const kb1 = $({ fibOf: 1 }).when(1)
+            .and($({ fibOf: 2 }).when(1))
+
+            .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
+            .dump().kb
+
+        assertEquals(
+            ask($({ fibOf: 6 }).$, kb1).result,
+            $(8).$
+        )
+
+        assertEquals(
+            ask($({ fibOf: 7 }).$, kb1).result,
+            $(13).$
+        )
+
+    }
+})
+
+
 // Deno.test({
-//     name: 'test64',
+//     name: 'test65',
 //     fn: () => {
 
 //     }

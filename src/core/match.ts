@@ -5,7 +5,7 @@ import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula } from "
 
 export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
-    if (template.type === 'entity' && f.type === 'entity') {
+    if (isConst(template) && isConst(f)) {
         return template.value === f.value ? deepMapOf() : undefined
 
     } else if (template.type === 'variable' && f.type === 'variable') {
@@ -60,6 +60,16 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
     } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
         const m1 = match(template, f.head)
         if (m1 !== undefined) return deepMapOf([[template, f]])
+
+    } else if (template.type==='variable' && f.type==='math-expression'){
+        if (template.varType === 'number') return deepMapOf([[template, f]])
+
+    } else if (template.type==='number' && f.type==='math-expression'){
+        return deepMapOf([[template, f]])
+
+    // } else if (template.type==='arbitrary-type' && f.type==='math-expression'){
+    //     return deepMapOf([[template, f]])
+        
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
         return deepMapOf([[template, f]])
