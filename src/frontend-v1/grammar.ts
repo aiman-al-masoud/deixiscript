@@ -150,6 +150,9 @@ export const syntaxes: SyntaxMap<
         { literals: ['|'] },
         { types: ['variable', 'constant'], role: 'value' },
     ],
+    'simple-formula': [
+        { types: ['is-a-formula', 'generalized', 'equality', 'has-formula',], expand: 'keep-specific-type' } // order: "is a" before "is"
+    ],
     equality: [
         { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
@@ -175,8 +178,38 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'as' },
     ],
-    'simple-formula': [
-        { types: ['is-a-formula', 'generalized', 'equality', 'has-formula',], expand: 'keep-specific-type' } // order: "is a" before "is"
+    generalized: [
+        { types: ['verb-sentence', 'annotation', 'copula-sentence'], expand: true },
+    ],
+    "verb-sentence": [
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
+        { types: ['space'], number: '*' },
+        { literals: ['does', 'do'] }, // order
+        { types: ['space'], number: '*' },
+        { literals: ['not'], number: '1|0', wrap: { role: 'f1', of: 'negation' } },
+        { types: ['space'], number: '*' },
+        { types: ['atom'], role: 'verb' },
+        { types: ['space'], number: '*' },
+        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
+        { types: ['space'], number: '*' },
+        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
+    ],
+    annotation: [
+        { types: ['atom'], role: 'annotation' },
+        { types: ['space'], number: '*' },
+        { literals: [':'] },
+        { types: ['space'], number: '*' },
+        { types: ['formula'], expand: true },
+    ],
+    'copula-sentence': [
+        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
+        { types: ['space'], number: '*' },
+        { literals: ['am', 'is', 'are', 'be'] },
+        { types: ['atom'], role: 'verb', number: '1|0', defaultsTo: $('be').$ },
+        { types: ['space'], number: '*' },
+        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
+        { types: ['space'], number: '*' },
+        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
     conjunction: [
         { types: ['simple-formula'], role: 'f1' },
@@ -215,7 +248,6 @@ export const syntaxes: SyntaxMap<
     'derivation-clause': [
         { types: ['when-derivation-clause', 'after-derivation-clause'], expand: 'keep-specific-type' },
     ],
-
     'when-derivation-clause': [
         { types: ['simple-formula'], role: 'conseq' },
         { types: ['space'], number: '*' },
@@ -223,7 +255,6 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'when' },
     ],
-
     'after-derivation-clause': [
         { types: ['simple-formula'], role: 'conseq' },
         { types: ['space'], number: '*' },
@@ -231,7 +262,6 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['formula'], role: 'after' },
     ],
-
     'if-else': [
         { literals: ['if'] },
         { types: ['space'], number: '*' },
@@ -251,39 +281,6 @@ export const syntaxes: SyntaxMap<
         { literals: ['+', '-', '*', '/', '>=', '<=', '>', '<'], role: 'operator' },
         { types: ['space'], number: '*' },
         { types: ['math-expression', 'atom'], role: 'right' },
-    ],
-    generalized: [
-        { types: ['verb-sentence', 'annotation', 'copula-sentence'], expand: true },
-    ],
-    "verb-sentence": [
-        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
-        { types: ['space'], number: '*' },
-        { literals: ['does', 'do'] }, // order
-        { types: ['space'], number: '*' },
-        { literals: ['not'], number: '1|0', wrap: { role: 'f1', of: 'negation' } },
-        { types: ['space'], number: '*' },
-        { types: ['atom'], role: 'verb' },
-        { types: ['space'], number: '*' },
-        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
-        { types: ['space'], number: '*' },
-        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
-    ],
-    annotation: [
-        { types: ['atom'], role: 'annotation' },
-        { types: ['space'], number: '*' },
-        { literals: [':'] },
-        { types: ['space'], number: '*' },
-        { types: ['formula'], expand: true },
-    ],
-    'copula-sentence': [
-        { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
-        { types: ['space'], number: '*' },
-        { literals: ['am', 'is', 'are', 'be'] },
-        { types: ['atom'], role: 'verb', number: '1|0', defaultsTo: $('be').$ },
-        { types: ['space'], number: '*' },
-        { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
-        { types: ['space'], number: '*' },
-        { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
     "implicit-reference": [
         { literals: ['the', 'an', 'a'] },
