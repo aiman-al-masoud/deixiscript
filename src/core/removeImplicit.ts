@@ -47,43 +47,44 @@ export function removeImplicit(
             }
         }
 
-        const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)
-        return maybe ?? arbiType
+        // const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)
+        // return maybe ?? arbiType
+        return arbiType
 
-    } else if (ast.type === 'when-derivation-clause') {
+        // } else if (ast.type === 'when-derivation-clause') {
 
-        const conseqAnaphors = findAsts(ast.conseq, 'implicit-reference')
-        const conseqArbiTypes = conseqAnaphors.map(x => removeImplicit(x, kb0, oldArbiTypes))
+        //     const conseqAnaphors = findAsts(ast.conseq, 'implicit-reference')
+        //     const conseqArbiTypes = conseqAnaphors.map(x => removeImplicit(x, kb0, oldArbiTypes))
 
-        const kb = conseqArbiTypes.reduce(
-            (a, b) => tell($(b.head).suchThat($(b.description).and($(b.head).has(b.head.value).as('var-name')).$).exists.$, a).kb,
-            kb0,
-        )
+        //     const kb = conseqArbiTypes.reduce(
+        //         (a, b) => tell($(b.head).suchThat($(b.description).and($(b.head).has(b.head.value).as('var-name')).$).exists.$, a).kb,
+        //         kb0,
+        //     )
 
-        const whenAnaphors = findAsts(ast.when, 'implicit-reference')
-        const whenArbiTypes = whenAnaphors.map(x => removeImplicit(x, kb, [...oldArbiTypes, ...conseqArbiTypes]))
+        //     const whenAnaphors = findAsts(ast.when, 'implicit-reference')
+        //     const whenArbiTypes = whenAnaphors.map(x => removeImplicit(x, kb, [...oldArbiTypes, ...conseqArbiTypes]))
 
-        const whenReplacements = whenArbiTypes.map(x => {
-            return searchArbiType(x, kb, conseqArbiTypes) ?? x
-        })
+        //     const whenReplacements = whenArbiTypes.map(x => {
+        //         return searchArbiType(x, kb, conseqArbiTypes) ?? x
+        //     })
 
-        const newConseq = conseqArbiTypes.reduce(
-            (f, ab, i) => subst(f, [conseqAnaphors[i], ab]),
-            ast.conseq,
-        )
+        //     const newConseq = conseqArbiTypes.reduce(
+        //         (f, ab, i) => subst(f, [conseqAnaphors[i], ab]),
+        //         ast.conseq,
+        //     )
 
-        const newWhen = whenReplacements.reduce(
-            (f, v, i) => subst(f, [whenAnaphors[i], v]),
-            ast.when,
-        )
+        //     const newWhen = whenReplacements.reduce(
+        //         (f, v, i) => subst(f, [whenAnaphors[i], v]),
+        //         ast.when,
+        //     )
 
-        const result: DerivationClause = {
-            type: 'when-derivation-clause',
-            conseq: newConseq,
-            when: newWhen,
-        }
+        //     const result: DerivationClause = {
+        //         type: 'when-derivation-clause',
+        //         conseq: newConseq,
+        //         when: newWhen,
+        //     }
 
-        return result
+        //     return result
 
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')
@@ -95,10 +96,10 @@ export function removeImplicit(
 
 }
 
-function searchArbiType(x: ArbitraryType, kb: KnowledgeBase, conseqArbiTypes: ArbitraryType[]) {
-    const v = $('varname:thing').$
-    const query = $(v).suchThat($(x.head).exists.where($(x.description).and($(x.head).has(v).as('var-name')))).$
-    const result = ask(query, kb).result
-    const e2 = conseqArbiTypes.filter(x => x.head.value === result.value).at(0)
-    return e2
-}
+// function searchArbiType(x: ArbitraryType, kb: KnowledgeBase, conseqArbiTypes: ArbitraryType[]) {
+//     const v = $('varname:thing').$
+//     const query = $(v).suchThat($(x.head).exists.where($(x.description).and($(x.head).has(v).as('var-name')))).$
+//     const result = ask(query, kb).result
+//     const e2 = conseqArbiTypes.filter(x => x.head.value === result.value).at(0)
+//     return e2
+// }
