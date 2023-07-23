@@ -351,11 +351,15 @@ Deno.test({
 Deno.test({
     name: 'test33',
     fn: () => {
-        const ast = parser.parse('the cat does not eat the fish')!
+        const ast = parser.parse('the cat does not eat the fish')
+        assertEquals(ast, $.the('cat').does('eat')._($.the('fish')).isNotTheCase.$)
+
+        const ast2 = parser.parse('the cat is not red')
+        assertEquals(ast2, $.the('cat').is('red').isNotTheCase.$)
+
         // const astt = transform(ast)
         // console.log(astt)
-        console.log(ast)
-        assertEquals(ast, $.the('cat').does('eat')._($.the('fish')).isNotTheCase.$)
+        // console.log(ast)
 
     }
 })

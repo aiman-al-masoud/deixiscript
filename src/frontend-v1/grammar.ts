@@ -204,8 +204,10 @@ export const syntaxes: SyntaxMap<
     'copula-sentence': [
         { types: ['atom'], role: 'subject', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },
-        { literals: ['am', 'is', 'are', 'be'] },
-        { types: ['atom'], role: 'verb', number: '1|0', defaultsTo: $('be').$ },
+        { literals: ['am', 'is', 'are', 'be'], role: 'verb', replaceWith: $('be').$ },
+        { types: ['space'], number: '*' },
+        { literals: ['not'], number: '1|0', wrap: { role: 'f1', of: 'negation' } },
+        { types: ['space'], number: '*' },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
         { types: ['space'], number: '*' },

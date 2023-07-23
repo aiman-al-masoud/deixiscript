@@ -17,9 +17,8 @@ type BaseMember<R = string, T = string> = {
     readonly notEndWith?: string
     readonly types?: T[]
 
-
     readonly wrap?: { role: R, of: T }
-
+    readonly replaceWith?: AstNode
 }
 
 export type LiteralMember<R = string, T = string> = BaseMember<R, T> & {

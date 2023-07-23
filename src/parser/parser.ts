@@ -98,7 +98,7 @@ class KoolerParser {
             }
 
             if (member.role) {
-                ast[member.role] = node
+                ast[member.role] = member.replaceWith!==undefined? member.replaceWith : node
             }
 
             if (member.expand && !(node instanceof Array)) { // dictionary ast case
