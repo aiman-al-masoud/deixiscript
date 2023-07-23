@@ -4,7 +4,6 @@ import { syntaxes } from "./grammar.ts"
 import { $ } from "../core/exp-builder.ts"
 import { linearize } from "../parser/linearize.ts"
 
-
 const parser = getParser({ syntaxes })
 
 
@@ -94,7 +93,7 @@ Deno.test({
     fn: () => {
         const dc = $.the('screen').has('red').as('color').after($('x:button').has('down').as('state')).$
         const ast = parser.parse('the screen has red as color after x:button has down as state')
-        assertEquals(dc, ast)
+        assertEquals(dc, ast as unknown)
     }
 })
 
@@ -346,5 +345,17 @@ Deno.test({
             parser.parse('press-state'),
             $('press-state').$
         )
+    }
+})
+
+Deno.test({
+    name: 'test33',
+    fn: () => {
+        const ast = parser.parse('the cat does not eat the fish')!
+        // const astt = transform(ast)
+        // console.log(astt)
+        console.log(ast)
+        assertEquals(ast, $.the('cat').does('eat')._($.the('fish')).isNotTheCase.$)
+
     }
 })

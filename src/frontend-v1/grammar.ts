@@ -260,6 +260,8 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { literals: ['does', 'do'] }, // order
         { types: ['space'], number: '*' },
+        { literals: ['not'], number: '1|0', wrap: { role: 'f1', of: 'negation' } },
+        { types: ['space'], number: '*' },
         { types: ['atom'], role: 'verb' },
         { types: ['space'], number: '*' },
         { types: ['atom'], role: 'object', number: '1|0', defaultsTo: $._.$ },
