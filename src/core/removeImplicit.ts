@@ -1,25 +1,25 @@
 import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
-import { tell } from "./tell.ts";
-import { ImplicitReference, DerivationClause, KnowledgeBase, LLangAst, isLLangAst } from "./types.ts";
+// import { tell } from "./tell.ts";
+import { ImplicitReference,/*  DerivationClause, KnowledgeBase, */ LLangAst, isLLangAst } from "./types.ts";
 import { random } from "../utils/random.ts"
 import { ArbitraryType } from "./types.ts"
-import { ask } from "./ask.ts";
+// import { ask } from "./ask.ts";
 
 
-export function removeImplicit(ast: ImplicitReference, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): ArbitraryType
-export function removeImplicit<T extends LLangAst>(ast: T, kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[]): T
+export function removeImplicit(ast: ImplicitReference/* , kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[] */): ArbitraryType
+export function removeImplicit<T extends LLangAst>(ast: T/* , kb0?: KnowledgeBase, oldArbiTypes?: ArbitraryType[] */): T
 export function removeImplicit(
     ast: LLangAst,
-    kb0 = $.emptyKb,
-    oldArbiTypes: ArbitraryType[] = [],
+    // kb0 = $.emptyKb,
+    // oldArbiTypes: ArbitraryType[] = [],
 ): LLangAst {
 
     if (ast.type === 'implicit-reference') {
 
         const head = $(`x${random()}:${ast.headType}`).$
-        let arbiType: ArbitraryType
+        // let arbiType: ArbitraryType
 
         if (ast.whose) {
             if (ast.whose.subject.type !== 'entity') throw new Error('')
@@ -30,26 +30,26 @@ export function removeImplicit(
                 .and(subst(ast.whose, [ast.whose.subject, owned])))
                 .$
 
-            arbiType = { description: removeImplicit(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
+            return { description: removeImplicit(description/*, kb0, oldArbiTypes */), head, type: 'arbitrary-type' }
         } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
-            arbiType = { description: removeImplicit(description, kb0, oldArbiTypes), head, type: 'arbitrary-type' }
+            return { description: removeImplicit(description/* , kb0, oldArbiTypes */), head, type: 'arbitrary-type' }
 
         } else if (ast.owner) {
-            return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$, kb0, oldArbiTypes)
+            return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$/* , kb0, oldArbiTypes */)
         } else {
             const complement = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
 
             if (complement) {
-                return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$, kb0, oldArbiTypes)
+                return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$/* , kb0, oldArbiTypes */)
             } else {
-                arbiType = { description: $(true).$, head, type: 'arbitrary-type' }
+                return { description: $(true).$, head, type: 'arbitrary-type' }
             }
         }
 
         // const maybe = searchArbiType(arbiType, kb0, oldArbiTypes)
         // return maybe ?? arbiType
-        return arbiType
+        // return arbiType
 
         // } else if (ast.type === 'when-derivation-clause') {
 
@@ -88,7 +88,7 @@ export function removeImplicit(
 
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')
-        const subs = anaphors.map(x => [x, removeImplicit(x, kb0, oldArbiTypes)] as [LLangAst, LLangAst])
+        const subs = anaphors.map(x => [x, removeImplicit(x/* , kb0, oldArbiTypes */)] as [LLangAst, LLangAst])
         if (subs.length === 0) return ast
         const result = subst(ast, ...subs)
         return result
