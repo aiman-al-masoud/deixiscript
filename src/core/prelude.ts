@@ -4,14 +4,23 @@ import { KnowledgeBase } from "./types.ts";
 export function getStandardKb(): KnowledgeBase {
     return {
         wm: [],
+        deicticDict: {},
         derivClauses: [
-            // value restriction
-            $({ annotation: 'vr:value-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
-                $('owner-concept:thing').has('vr:value-restriction').as('part')
-                    .and($('vr:value-restriction').isa('value-restriction'))
-                    .and($('vr:value-restriction').has('part:thing').as('subject'))
-                    .and($('vr:value-restriction').has('value:thing').as('object'))
-            ).$,
+            // // value restriction
+            // $({ annotation: 'vr:value-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
+            //     $('owner-concept:thing').has('vr:value-restriction').as('part')
+            //         .and($('vr:value-restriction').isa('value-restriction'))
+            //         .and($('vr:value-restriction').has('part:thing').as('subject'))
+            //         .and($('vr:value-restriction').has('value:thing').as('object'))
+            // ).$,
+
+            // // cancel annotation
+            // $({ annotation: 'ann:cancel-annotation', subject: 'old:thing', verb: 'be', object: 'cancelled', ablative: 'concept:thing' }).when(
+            //     $('concept:thing').has('ann:cancel-annotation').as('part')
+            //         .and($('ann:cancel-annotation').isa('cancel-annotation'))
+            //         .and($('ann:cancel-annotation').has('old:thing').as('subject'))
+            // ).$,
+
 
             // number restriction
             $({ annotation: 'nr:number-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'amount', recipient: 'value:thing' }).when(
@@ -19,13 +28,6 @@ export function getStandardKb(): KnowledgeBase {
                     .and($('nr:number-restriction').isa('number-restriction'))
                     .and($('nr:number-restriction').has('part:thing').as('subject'))
                     .and($('nr:number-restriction').has('value:thing').as('object'))
-            ).$,
-
-            // cancel annotation
-            $({ annotation: 'ann:cancel-annotation', subject: 'old:thing', verb: 'be', object: 'cancelled', ablative: 'concept:thing' }).when(
-                $('concept:thing').has('ann:cancel-annotation').as('part')
-                    .and($('ann:cancel-annotation').isa('cancel-annotation'))
-                    .and($('ann:cancel-annotation').has('old:thing').as('subject'))
             ).$,
 
             // excludes annotation
@@ -58,10 +60,9 @@ export function getStandardKb(): KnowledgeBase {
                 $('x:thing').equals('y:thing')
             ).$,
 
+            // pronouns as derivation clauses
             $('it').when('x:thing').$
-
         ],
-        deicticDict: {},
     }
 }
 

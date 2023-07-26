@@ -50,7 +50,6 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
                 getDefaultFillers(t11.value, t21.value, kb),
             )
 
-
             break
         case 'conjunction':
             const result1 = tell(ast.f1, kb)
@@ -100,16 +99,13 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             break
     }
 
-
     const consequences = consequencesOf(ast, kb)
-
     additions.push(...consequences)
 
     eliminations = [
         ...eliminations,
         ...additions.flatMap(s => excludedBy(s, kb)),
     ]
-
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
 
@@ -168,6 +164,8 @@ function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAto
 
     // const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
     // const r  = qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false).filter(isNotNullish)
+    // return r
+
     const hasSentences = kb.wm.filter(isHasSentence)
     const isASentences = kb.wm.filter(isIsASentence)
     const allMutex = isASentences.filter(x => x[1] === 'mutex-annotation').map(x => x[0])
@@ -211,6 +209,9 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
 function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     const parts = getParts(concept, kb)
+
+    // console.log(id, parts)
+
     const defaults = parts.map(p => findDefault(p, concept, kb))
 
     const fillers = defaults.flatMap((d, i) => {

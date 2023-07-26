@@ -57,13 +57,13 @@ const model: WorldModel =
         .and($('door#1').has(5).as('position'))
 
         /* Conceptual Model */
-        .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', object: 'woman' }))
+        // .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', object: 'woman' }))
         .and($({ annotation: 'nr#1', subject: 'mother', owner: 'birth-event', verb: 'amount', recipient: 1 }))
         .and($({ annotation: 'nr#2', subject: 'baby', owner: 'birth-event', verb: 'amount', recipient: 1 }))
-        .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', object: 'birth-event' }))
-        .and($({ annotation: 'ann#41', subject: 'nr#2', verb: 'be', object: 'cancelled', ablative: 'multiple-birth-event' }))
-        .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
-        .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
+        // .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', object: 'birth-event' }))
+        // .and($({ annotation: 'ann#41', subject: 'nr#2', verb: 'be', object: 'cancelled', ablative: 'multiple-birth-event' }))
+        // .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
+        // .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
         .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
         .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
         .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
@@ -1017,7 +1017,36 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test68',
+    fn: () => {
+        const kb = $({ ann: 'ann#1928', onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(derivationClauses).kb
+        const kb1 = tell($('pt#1').isa('point').$, kb).kb
+        const kb2 = tell($('pt#1').has(1).as('x-coord').$, kb1).kb
+        const kb3 = tell($('pt#1').has(2).as('x-coord').$, kb2).kb
+        const kb4 = tell($('pt#1').has(3).as('x-coord').$, kb3).kb
+        const x = findAll($('pt#1').has('x:thing').as('x-coord').$, [$('x:thing').$], kb4)
+        assertEquals(x.length, 1)
+        assertEquals(ask($.the('number').which($('pt#1').has($._).as('x-coord')).$, kb4).result, $(3).$)
+    }
+})
 
+Deno.test({
+    name: 'test69',
+    fn: () => {
+        const kb = $({ annotation: 'ann#3000', subject: 'closed', verb: 'exclude', object: 'open', location: 'state', owner: 'door' }).dump(derivationClauses).kb
+        // console.log(kb.wm)
+        const kb1 = tell($('door#1').isa('door').$, kb).kb
+        const kb2 = tell($('door#1').has('open').as('state').$, kb1).kb
+        const kb3 = tell($('door#1').has('closed').as('state').$, kb2).kb
+        const kb4 = tell($('door#1').has('open').as('state').$, kb3).kb
+
+        assert(ask($('door#1').has('closed').as('state').$, kb3).result.value)
+        assert(!ask($('door#1').has('open').as('state').$, kb3).result.value)
+        assert(ask($('door#1').has('open').as('state').$, kb4).result.value)
+
+    }
+})
 
 
 
