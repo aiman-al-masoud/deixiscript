@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts"
 import { getParser } from "../parser/parser.ts"
-import { syntaxes } from "./grammar.ts"
+import { syntaxes } from "./english.ts"
 import { $ } from "../core/exp-builder.ts"
 import { linearize } from "../parser/linearize.ts"
 
