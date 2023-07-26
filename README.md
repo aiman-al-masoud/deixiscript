@@ -9,6 +9,8 @@
   - less than and greater than as commands
 - parser
   - "cat number 2" ---> explicit reference to constant "cat#2" ?
+- refactoring
+  - most used derivation clauses/annotations get their own LLangAst
 
 # JS INTEROP
 
@@ -82,6 +84,8 @@ You also need some basic properties for buttons (down/up,key...).
 - when adding new props (treated as defaults) to a concept you have to add them to all existing instances of the concept.
 
 - match() may have to take care of derivation clauses, semantic match rather than purely syntactic match. Imagine an event expressed in terms of basic has-sentences, but event handler expressed in higher level way.
+
+- avoid default-creation-loops (an entity is created as a default for another, a third entity is created as a default for the default etc...)
 
 ## Limitations
 
