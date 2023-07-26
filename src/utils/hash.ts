@@ -16,6 +16,11 @@ function sortObjectKeys(obj: unknown): unknown {
 
     if (obj instanceof Array) return obj.map(sortObjectKeys)
 
+    if (obj instanceof Map) {
+        const x = Object.fromEntries(Array.from(obj.entries()))
+        return sortObjectKeys(x)
+    }
+
     type Indexable = { [s: string]: object }
 
     const indexable = obj as Indexable

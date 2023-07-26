@@ -137,7 +137,7 @@ Deno.test({
 
 
 Deno.test({
-    name: 'test4',
+    name: 'test04',
     fn: () => {
         const query = $('person#1').has('boston').as('birth-city').$
         assert(ask(query, kb).result.value)
@@ -192,6 +192,8 @@ Deno.test({
     name: 'test10',
     fn: () => {
 
+        // console.log(kb.wm.filter(isIsASentence).filter(x=>x[1]==='mutex-annotation'))
+
         const x = ask($('x:thing').exists.where(
             $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
         ).$, kb)
@@ -231,11 +233,11 @@ Deno.test({
 
         const kb = $(1).isa('number')
             .and($(2).isa('number'))
-            .dump().kb.wm
+            .dump().kb
 
         const q = $('x:number').plus('y:number').equals(3).$
 
-        const res = findAll(q, [$('x:number').$, $('y:number').$], { wm: kb, derivClauses: [], deicticDict: {}, })
+        const res = findAll(q, [$('x:number').$, $('y:number').$], kb)
         assertEquals(res[0].get($('x:number').$), $(1).$)
         assertEquals(res[0].get($('y:number').$), $(2).$)
 
@@ -426,11 +428,11 @@ Deno.test({
 Deno.test({
     name: 'test39',
     fn: () => {
-        // linear equations solver
-        assertEquals(solve($('x:number').times(2).plus(1).equals(2).$), $(1 / 2).$)
-        assertEquals(solve($('x:number').over(2).equals(100).$), $(200).$)
-        assertEquals(solve($('x:number').over(2).plus(1).equals(3).$), $(4).$)
-        assertEquals(solve($('x:number').minus(2).equals(3).$), $(5).$)
+        // linear equation solver
+        assertEquals(solve($('x:number').times(2).plus(1).equals(2).$, $.emptyKb), $(1 / 2).$)
+        assertEquals(solve($('x:number').over(2).equals(100).$, $.emptyKb), $(200).$)
+        assertEquals(solve($('x:number').over(2).plus(1).equals(3).$, $.emptyKb), $(4).$)
+        assertEquals(solve($('x:number').minus(2).equals(3).$, $.emptyKb), $(5).$)
     }
 })
 
@@ -928,8 +930,99 @@ Deno.test({
 })
 
 
+Deno.test({
+    name: 'test65',
+    fn: () => {
+
+        const kb = $('capra').has('stupid').as('friend')
+            .and($('capra').has('stupid').as('brother'))
+            .and($('capra').has('scemo').as('brother'))
+            .and($('capra').has('cretino').as('friend'))
+            .dump().kb
+
+        const result = findAll(
+            $('capra').has('x:thing').as('brother').and($('capra').has('x:thing').as('friend')).$,
+            [$('x:thing').$],
+            kb,
+        )
+
+        assertEquals(result.length, 1)
+        assertEquals(result[0].get($('x:thing').$), $('stupid').$)
+    }
+})
+
+
+
+
+Deno.test({
+    name: 'test66',
+    fn: () => {
+
+        const kb = $('capra').has('stupid').as('friend')
+
+            // .and($('capra').has('f#1').as('friend'))
+            // .and($('capra').has('f#2').as('friend'))
+            // .and($('capra').has('f#3').as('friend'))
+            // .and($('capra').has('f#4').as('friend'))
+            // .and($('capra').has('f#5').as('friend'))
+            // .and($('capra').has('f#6').as('friend'))
+            // .and($('capra').has('f#7').as('friend'))
+            // .and($('capra').has('f#8').as('friend'))
+            // .and($('capra').has('f#9').as('friend'))
+
+            .and($('capra').has('stupid').as('brother'))
+            .and($('capra').has('stupid').as('sidekick'))
+            .and($('capra').has('scemo').as('brother'))
+            .and($('capra').has('cretino').as('friend'))
+
+            .dump().kb
+
+        const result = findAll(
+            $('capra').has('x:thing').as('brother').and($('capra').has('x:thing').as('friend')).and($('capra').has('x:thing').as('sidekick')).$,
+            [$('x:thing').$],
+            kb,
+        )
+
+        assertEquals(result.length, 1)
+        assertEquals(result[0].get($('x:thing').$), $('stupid').$)
+    }
+})
+
+
+
+Deno.test({
+    name: 'test67',
+    fn: () => {
+
+        const kb = $('capra').has('stupid').as('friend')
+            .and($('capra').has('stupid').as('brother'))
+            .and($('capra').has('scemo').as('brother'))
+            .and($('capra').has('cretino').as('friend'))
+            .dump().kb
+
+        const result = findAll(
+            $('capra').has('x:thing').as('brother').or($('capra').has('x:thing').as('friend')).$,
+            [$('x:thing').$],
+            kb,
+        )
+
+        assertEquals(result.length, 3)
+        assertNotEquals(result[0].get($('x:thing').$), result[1].get($('x:thing').$))
+        assertNotEquals(result[1].get($('x:thing').$), result[2].get($('x:thing').$))
+
+        // console.log(result.length)
+        // console.log(result.map(x=>x.helperMap))
+        // assertEquals(result.length, 1)
+        // assertEquals(result[0].get($('x:thing').$), $('stupid').$)
+    }
+})
+
+
+
+
+
 // Deno.test({
-//     name: 'test65',
+//     name: 'test67',
 //     fn: () => {
 
 //     }

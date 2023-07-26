@@ -49,6 +49,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
                 [[t11.value, t21.value]],
                 getDefaultFillers(t11.value, t21.value, kb),
             )
+
+
             break
         case 'conjunction':
             const result1 = tell(ast.f1, kb)
@@ -100,12 +102,14 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
 
     const consequences = consequencesOf(ast, kb)
+
     additions.push(...consequences)
 
     eliminations = [
         ...eliminations,
         ...additions.flatMap(s => excludedBy(s, kb)),
     ]
+
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
 

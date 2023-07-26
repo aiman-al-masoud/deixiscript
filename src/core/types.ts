@@ -125,8 +125,10 @@ export type ImplicitReference = {
 export type MathExpression = {
     type: 'math-expression',
     operator: '+' | '-' | '*' | '/' | '>' | '<' | '<=' | '>=',
-    left: Atom,
-    right: Atom | MathExpression,
+    // left: Atom,
+    // right: Atom | MathExpression,
+    left: LLangAst,
+    right: LLangAst,
 }
 
 export type GeneralizedFormula = {

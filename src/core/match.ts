@@ -10,7 +10,7 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
     } else if (template.type === 'variable' && f.type === 'variable') {
         // return template.varType === f.varType ? deepMapOf([[template, f]]) : undefined // may undermatch in case of subtype/supertype relationships
-        return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations????
+        return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations (hyperonymy)????
 
     } else if (
         template.type === f.type ||
@@ -61,15 +61,11 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         const m1 = match(template, f.head)
         if (m1 !== undefined) return deepMapOf([[template, f]])
 
-    } else if (template.type==='variable' && f.type==='math-expression'){
+    } else if (template.type === 'variable' && f.type === 'math-expression') {
         if (template.varType === 'number') return deepMapOf([[template, f]])
 
-    } else if (template.type==='number' && f.type==='math-expression'){
+    } else if (template.type === 'number' && f.type === 'math-expression') {
         return deepMapOf([[template, f]])
-
-    // } else if (template.type==='arbitrary-type' && f.type==='math-expression'){
-    //     return deepMapOf([[template, f]])
-        
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
         return deepMapOf([[template, f]])
