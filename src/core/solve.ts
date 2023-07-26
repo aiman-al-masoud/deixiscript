@@ -9,19 +9,8 @@ import { Atom, Equality, KnowledgeBase, Number } from "./types.ts";
  */
 export function solve(ast: Equality, kb: KnowledgeBase): Number | undefined {
 
-    // if () {
-    //     // throw new Error('Provided Equality is not an equation')
-    //     return undefined
-    // }
-
-    // console.log(ast)
-
-    // if (Object.values(ast).filter(isLLangAst).filter(x => x.type === 'variable').length > 1  /* findAsts(ast, 'variable').length > 1 */) {
-    //     // throw new Error('Cannot solve equation with more than one variable')
-    //     return undefined
-    // }
-
-    // console.log('ciao!')
+    // check if is equation
+    // check number of vars
 
     if (ast.subject.type === 'variable') {
         const result = ask(ast.object, kb).result
