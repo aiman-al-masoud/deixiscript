@@ -1,4 +1,5 @@
 
+import { deepEquals } from "../utils/deepEquals.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { AstNode, Member, Syntax, SyntaxMap, isNecessary } from "./types.ts";
 
@@ -37,6 +38,7 @@ function linearizeMember(
     }
 
     if (member.role && ast[member.role] !== undefined) {
+        if (deepEquals(ast[member.role], member.defaultsTo)) return ''
         return linearize(ast[member.role], syntaxMap)
     }
 
