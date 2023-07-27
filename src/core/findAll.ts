@@ -19,7 +19,7 @@ export function findAll(
 ): DeepMap<Variable, Constant>[] {
 
     const realAst = first(kb.derivClauses, dc => {
-        const map = match(dc.conseq, ast)
+        const map = match(dc.conseq, ast, kb)
         if (!map) return undefined
         if (!('when' in dc)) return undefined
         const when = subst(dc.when, map)

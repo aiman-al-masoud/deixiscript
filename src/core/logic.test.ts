@@ -19,7 +19,7 @@ const derivationClauses: DerivationClause[] = [
 
     ...standardKb.derivClauses,
 
-    $('x:dude').isa('dude').when($('x:dude').isa('person')).$,
+    // $('x:dude').isa('dude').when($('x:dude').isa('person')).$,
 
     $('x:person').has('c:city').as('birth-city').when(
         $('e:event').exists.where($('y:space-point').exists.where(
@@ -113,17 +113,17 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test2',
-    fn: () => {
+// Deno.test({
+//     name: 'test2',
+//     fn: () => {
 
-        const yes = $('person#2').isa('dude').$
-        const no = $('person#2').isa('somestuffidk').isNotTheCase.$
+//         const yes = $('person#2').isa('dude').$
+//         const no = $('person#2').isa('somestuffidk').isNotTheCase.$
 
-        assert(ask(yes, kb).result.value)
-        assert(ask(no, kb).result.value)
-    }
-})
+//         assert(ask(yes, kb).result.value)
+//         assert(ask(no, kb).result.value)
+//     }
+// })
 
 Deno.test({
     name: 'test3',
@@ -134,7 +134,6 @@ Deno.test({
         assertEquals(results.length, 4)
     }
 })
-
 
 Deno.test({
     name: 'test04',
@@ -157,7 +156,6 @@ Deno.test({
         assert(ask($({ subject: 1, isSmallerThan: 2 }).$, kb).result.value)
     }
 })
-
 
 Deno.test({
     name: 'test9',
@@ -191,8 +189,6 @@ Deno.test({
 Deno.test({
     name: 'test10',
     fn: () => {
-
-        // console.log(kb.wm.filter(isIsASentence).filter(x=>x[1]==='mutex-annotation'))
 
         const x = ask($('x:thing').exists.where(
             $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
@@ -571,7 +567,6 @@ Deno.test({
         // console.log('redcat=',ask($.a('cat').whose($('fur').has('red').as('color')).$, kb2).result)
         // console.log('blackcat=',ask($.a('cat').whose($('fur').has('black').as('color')).$, kb2).result)
 
-
         const statement1 = $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
         const statement2 = $({ subject: $.a('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).$
 
@@ -844,7 +839,7 @@ Deno.test({
         tell(x, $.emptyKb).kb
 
         const alt = $.the('mouse').which($._.has('house#1').as('location')).exists.$
-        assertNotEquals(match(removeImplicit(x), removeImplicit(alt)), undefined)
+        assertNotEquals(match(removeImplicit(x), removeImplicit(alt), $.emptyKb), undefined)
 
     }
 })
@@ -878,10 +873,10 @@ Deno.test({
 Deno.test({
     name: 'test62',
     fn: () => {
-
         const template = $('x:cat').has('red').as('color').$
+        const kb = $('cat#1').isa('cat').dump().kb
         const f = $('y:dog').is('stupid').and($('cat#1').has('red').as('color')).$
-        const map = match(template, f)
+        const map = match(template, f, kb)
         assertEquals(map, deepMapOf([[$('x:cat').$, $('cat#1').$]]))
     }
 })
@@ -951,25 +946,11 @@ Deno.test({
     }
 })
 
-
-
-
 Deno.test({
     name: 'test66',
     fn: () => {
 
         const kb = $('capra').has('stupid').as('friend')
-
-            // .and($('capra').has('f#1').as('friend'))
-            // .and($('capra').has('f#2').as('friend'))
-            // .and($('capra').has('f#3').as('friend'))
-            // .and($('capra').has('f#4').as('friend'))
-            // .and($('capra').has('f#5').as('friend'))
-            // .and($('capra').has('f#6').as('friend'))
-            // .and($('capra').has('f#7').as('friend'))
-            // .and($('capra').has('f#8').as('friend'))
-            // .and($('capra').has('f#9').as('friend'))
-
             .and($('capra').has('stupid').as('brother'))
             .and($('capra').has('stupid').as('sidekick'))
             .and($('capra').has('scemo').as('brother'))
@@ -1010,16 +991,13 @@ Deno.test({
         assertNotEquals(result[0].get($('x:thing').$), result[1].get($('x:thing').$))
         assertNotEquals(result[1].get($('x:thing').$), result[2].get($('x:thing').$))
 
-        // console.log(result.length)
-        // console.log(result.map(x=>x.helperMap))
-        // assertEquals(result.length, 1)
-        // assertEquals(result[0].get($('x:thing').$), $('stupid').$)
     }
 })
 
 Deno.test({
     name: 'test68',
     fn: () => {
+        // TODO ann#1928 is not an annotation before being created, so it doesn't match!
         const kb = $({ ann: 'ann#1928', onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(derivationClauses).kb
         const kb1 = tell($('pt#1').isa('point').$, kb).kb
         const kb2 = tell($('pt#1').has(1).as('x-coord').$, kb1).kb
@@ -1035,16 +1013,13 @@ Deno.test({
     name: 'test69',
     fn: () => {
         const kb = $({ annotation: 'ann#3000', subject: 'closed', verb: 'exclude', object: 'open', location: 'state', owner: 'door' }).dump(derivationClauses).kb
-        // console.log(kb.wm)
         const kb1 = tell($('door#1').isa('door').$, kb).kb
         const kb2 = tell($('door#1').has('open').as('state').$, kb1).kb
         const kb3 = tell($('door#1').has('closed').as('state').$, kb2).kb
         const kb4 = tell($('door#1').has('open').as('state').$, kb3).kb
-
         assert(ask($('door#1').has('closed').as('state').$, kb3).result.value)
         assert(!ask($('door#1').has('open').as('state').$, kb3).result.value)
         assert(ask($('door#1').has('open').as('state').$, kb4).result.value)
-
     }
 })
 

@@ -1,14 +1,22 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula } from "./types.ts";
+import { subst } from "./subst.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase } from "./types.ts";
 
 
-export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
+export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
     if (isConst(template) && isConst(f)) {
+
         return template.value === f.value ? deepMapOf() : undefined
 
     } else if (template.type === 'variable' && f.type === 'variable') {
+
+        // if (template.varType === f.varType || ask($(f.varType).isa(template.varType).$, kb).result.value){
+        //     return deepMapOf([[template, f]])
+        // }
+
         // return template.varType === f.varType ? deepMapOf([[template, f]]) : undefined // may undermatch in case of subtype/supertype relationships
         return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations (hyperonymy)????
 
@@ -34,7 +42,7 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
             if (!v1 || !v2) return undefined
 
-            const result = match(v1, v2)
+            const result = match(v1, v2, kb)
 
             return result
         })
@@ -47,18 +55,18 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
 
         if (!tail) return undefined
 
-        const m1 = match(template.seq, { value: seq, type: 'list-literal' })
-        const m2 = match(template.value, tail)
+        const m1 = match(template.seq, { value: seq, type: 'list-literal' }, kb)
+        const m2 = match(template.value, tail, kb)
 
         return reduceMatchList([m1, m2])
 
     } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
-        const m1 = match(template.head, f)
-        const m2 = match(template.description, $(true).$)
+        const m1 = match(template.head, f, kb)
+        const m2 = match(template.description, $(true).$, kb)
         if (reduceMatchList([m1, m2])) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
-        const m1 = match(template, f.head)
+        const m1 = match(template, f.head, kb)
         if (m1 !== undefined) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'math-expression') {
@@ -68,7 +76,19 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         return deepMapOf([[template, f]])
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
-        return deepMapOf([[template, f]])
+
+        const m = match(template.head, f, kb)
+        if (!m) return undefined
+
+        const desc = subst(template.description, [template.head, f])
+        const ok = ask(desc, kb).result.value
+        if (ok) return deepMapOf([[template, f]])
+
+    } else if (template.type === 'variable' && isConst(f)) {
+
+        if (ask($(f).isa(template.varType).$, kb).result.value) {
+            return deepMapOf([[template, f]])
+        }
 
     } else if (template.type === 'variable' && isAtom(f)) {
         return deepMapOf([[template, f]])
@@ -76,8 +96,8 @@ export function match(template: LLangAst, f: LLangAst): AstMap | undefined {
         isSimpleFormula(template)
         && (f.type === 'conjunction' || f.type === 'disjunction')
     ) {
-        const m1 = match(template, f.f1)
-        const m2 = match(template, f.f2)
+        const m1 = match(template, f.f1, kb)
+        const m2 = match(template, f.f2, kb)
         if (m1) return m1
         if (m2) return m2
     }

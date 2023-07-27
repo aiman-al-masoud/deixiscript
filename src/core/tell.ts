@@ -85,7 +85,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
         case 'generalized':
             for (const dc of kb.derivClauses) {
 
-                const map = match(dc.conseq, ast)
+                const map = match(dc.conseq, ast, kb)
                 if (!map) continue
                 if (!('when' in dc)) return tell($(false).$, kb)
 
@@ -127,7 +127,7 @@ export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): WorldModel {
 
         if ('after' in dc) {
 
-            const map = match(dc.after, ast)
+            const map = match(dc.after, ast, kb)
             if (!map) return []
 
             const conseq = subst(dc.conseq, map)
@@ -209,9 +209,6 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
 function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     const parts = getParts(concept, kb)
-
-    // console.log(id, parts)
-
     const defaults = parts.map(p => findDefault(p, concept, kb))
 
     const fillers = defaults.flatMap((d, i) => {

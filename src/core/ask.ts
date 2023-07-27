@@ -26,15 +26,7 @@ export function ask(
         case 'number':
         case 'entity':
         case 'string':
-
-            const r1 = first(kb.derivClauses, dc => {
-
-                const map = match(dc.conseq, formula)
-                if (!map) return
-                if (!('when' in dc)) return
-                return subst(dc.when, map)
-            })
-
+            const r1 = findMatch(formula, kb)
             if (r1) return ask(r1, kb)
 
             const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
@@ -56,11 +48,12 @@ export function ask(
 
             if (t1.type === t2.value) return { result: $(true).$, kb }
 
-            if (
-                isConst(t1) && isConst(t2)
-                && getConceptsOf(t1.value, kb.wm).includes(t2.value)
-            ) return { result: $(true).$, kb }
-            break
+            if (isConst(t1) && isConst(t2)) {
+                const concepts = getConceptsOf(t1.value, kb.wm)
+                if (concepts.includes(t2.value)) return { result: $(true).$, kb }
+            }
+
+            return { result: $(false).$, kb }
         case 'has-formula':
 
             const t11 = ask(formula.subject, kb).result
@@ -130,7 +123,6 @@ export function ask(
                 '>=': $(left >= right).$,
             }[formula.operator]
 
-
             return ask(
                 result,
                 {
@@ -144,18 +136,20 @@ export function ask(
     const entries = Object.entries(formula).filter(e => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb).result])
     const newObj = Object.fromEntries(entries)
     const formula2 = { ...formula, ...newObj }
-
-    for (const dc of kb.derivClauses) {
-        if (match(dc.conseq, formula) === undefined) continue
-        const map = match(dc.conseq, formula2)
-        if (!map) continue
-        if (!('when' in dc)) continue
-        const whenn = subst(dc.when, map)
-        return ask(whenn, kb)
-    }
+    const whenn = findMatch(formula2, kb)
+    if (whenn) return ask(whenn, kb)
 
     return { result: $(false).$, kb }
 
+}
+
+function findMatch(ast: LLangAst, kb: KnowledgeBase) {
+    return first(kb.derivClauses, dc => {
+        const map = match(dc.conseq, ast, kb)
+        if (!map) return
+        if (!('when' in dc)) return
+        return subst(dc.when, map)
+    })
 }
 
 function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
