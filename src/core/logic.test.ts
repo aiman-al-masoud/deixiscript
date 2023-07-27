@@ -907,7 +907,6 @@ Deno.test({
 
         const kb1 = $({ fibOf: 1 }).when(1)
             .and($({ fibOf: 2 }).when(1))
-
             .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
             .dump().kb
 
@@ -1023,6 +1022,23 @@ Deno.test({
     }
 })
 
+
+
+Deno.test({
+    name: 'test70',
+    fn: () => {
+        // plural implicit references
+
+        const kb = $('capra#1').isa('capra')
+            .and($('capra#2').isa('capra'))
+            .and($('capra').isa('mammal'))
+            .dump().kb
+
+        assertEquals(ask($.every('capra').$, kb).result, $('capra#1').and('capra#2').$ as unknown)
+        assert(ask($.every('capra').isa('mammal').$, kb).result.value)
+
+    }
+})
 
 
 // Deno.test({

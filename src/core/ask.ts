@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { match } from "./match.ts";
@@ -14,7 +14,7 @@ export function ask(
     ast: LLangAst,
     kb: KnowledgeBase,
 ): {
-    result: Atom,
+    result: Atom, // needs to be any LLangAst
     kb: KnowledgeBase,
 } {
 
@@ -45,6 +45,8 @@ export function ask(
         case 'is-a-formula':
             const t1 = ask(formula.subject, kb).result
             const t2 = ask(formula.object, kb).result
+
+            if (!isAtom(t1) || !isAtom(t2)) return ask($(t1).isa(t2).$, kb)
 
             if (t1.type === t2.value) return { result: $(true).$, kb }
 
@@ -91,10 +93,20 @@ export function ask(
                 (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
             )
 
-            const res = sortedCandidates.at(0)
+            // const res = sortedCandidates.at(0)
+            // if (res) {
+            //     return ask(res, kb)
+            // } else {
+            //     return { result: $('nothing').$, kb }
+            // }
 
-            if (res) {
-                return ask(res, kb)
+            if (candidates.length === 1) {
+                return ask(sortedCandidates[0], kb)
+            } else if (formula.number === 1 && candidates.length > 1) {
+                return ask(sortedCandidates[0], kb)
+            } else if (formula.number === '*' && candidates.length > 1) {
+                const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
+                return { result: andPhrase as Atom /* bad */, kb }
             } else {
                 return { result: $('nothing').$, kb }
             }

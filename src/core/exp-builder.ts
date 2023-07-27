@@ -55,7 +55,7 @@ export class ExpBuilder<T extends LLangAst> {
     after(atom: ExpBuilderArg) {
 
         return new ExpBuilder<DerivationClause>({
-            type : 'after-derivation-clause',
+            type: 'after-derivation-clause',
             conseq: this.exp,
             after: makeAst(atom),
         })
@@ -64,7 +64,7 @@ export class ExpBuilder<T extends LLangAst> {
     when(formula: ExpBuilderArg) {
 
         return new ExpBuilder<DerivationClause>({
-            type : 'when-derivation-clause',
+            type: 'when-derivation-clause',
             conseq: this.exp,
             when: makeAst(formula),
         })
@@ -133,7 +133,8 @@ export class ExpBuilder<T extends LLangAst> {
             value: {
                 type: 'arbitrary-type',
                 head: this.exp as Variable,
-                description: $(false).$
+                description: $(false).$,
+                number: 1,
             }
         })
 
@@ -151,6 +152,7 @@ export class ExpBuilder<T extends LLangAst> {
                 head: this.exp.value.head,
                 description: makeAst(formula),
                 type: 'arbitrary-type',
+                number: 1,
             }
         })
 
@@ -261,6 +263,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'arbitrary-type',
             head: this.exp,
             description: description ? makeAst(description) : $(true).$,
+            number: 1,
         })
 
     }
@@ -301,6 +304,19 @@ export class ExpBuilder<T extends LLangAst> {
 
     of(owner: ExpBuilderArg) {
         return this.complement(owner, 'owner')
+    }
+
+    get s(): ExpBuilder<LLangAst> {
+
+        if (this.exp.type !== 'implicit-reference') {
+            throw new Error(``)
+        }
+
+        return new ExpBuilder({
+            ...this.exp,
+            number: '*',
+        })
+
     }
 
 }
@@ -424,7 +440,14 @@ $.the = (x: string) => new ExpBuilder<ImplicitReference>({
  */
 $.a = $.the
 
+$.every = (x:string) => new ExpBuilder<ImplicitReference>({
+    type : 'implicit-reference',
+    headType :x,
+    number:'*',
+} as ImplicitReference)
+
 /**
  * Empty knowledge base.
  */
 $.emptyKb = { wm: [], derivClauses: [], deicticDict: {} } as KnowledgeBase
+

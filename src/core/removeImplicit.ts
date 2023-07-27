@@ -25,10 +25,10 @@ export function removeImplicit(
                 .and(subst(ast.whose, [ast.whose.subject, owned])))
                 .$
 
-            return { description: removeImplicit(description), head, type: 'arbitrary-type' }
+            return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number }
         } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
-            return { description: removeImplicit(description), head, type: 'arbitrary-type' }
+            return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number }
 
         } else if (ast.owner) {
             return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$)
@@ -38,7 +38,7 @@ export function removeImplicit(
             if (complement) {
                 return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$)
             } else {
-                return { description: $(true).$, head, type: 'arbitrary-type' }
+                return { description: $(true).$, head, type: 'arbitrary-type', number: ast.number }
             }
         }
 

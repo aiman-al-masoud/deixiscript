@@ -122,11 +122,16 @@ export type ImplicitReference = {
     [complement: string]: LLangAst,
 }
 
+export type ArbitraryType = {
+    type: 'arbitrary-type',
+    head: Variable,
+    description: LLangAst,
+    number: 1 | '*',
+}
+
 export type MathExpression = {
     type: 'math-expression',
     operator: '+' | '-' | '*' | '/' | '>' | '<' | '<=' | '>=',
-    // left: Atom,
-    // right: Atom | MathExpression,
     left: LLangAst,
     right: LLangAst,
 }
@@ -178,12 +183,6 @@ export type Negation = {
 export type ExistentialQuantification = {
     type: 'existquant',
     value: LLangAst,
-}
-
-export type ArbitraryType = {
-    type: 'arbitrary-type',
-    head: Variable,
-    description: LLangAst,
 }
 
 export type WhenDerivationClause = {
@@ -319,5 +318,4 @@ export function pointsToThings(ast: LLangAst): boolean {
     return isAtom(ast)
         || ast.type === 'arbitrary-type'
         || ast.type === 'implicit-reference'
-    // || ast.type === 'math-expression'
 }
