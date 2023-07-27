@@ -40,6 +40,7 @@ class KoolerParser {
         }
 
         const ast = this.parseTry(this.syntaxList)
+        if (ast===undefined) return ast
         const result = transform(ast)
         return result
     }
