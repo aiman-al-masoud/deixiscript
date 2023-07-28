@@ -58,8 +58,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             addedDerivationClauses = result1.kb.derivClauses.concat(result2.kb.derivClauses)
             break
         case 'disjunction':
-            // console.warn('serialized only first formula of disjunction')
-            return tell(ast.f1, kb)
+            throw new Error(`ambiguous disjunction`)
         case 'when-derivation-clause':
         case 'after-derivation-clause':
             addedDerivationClauses = [ast]

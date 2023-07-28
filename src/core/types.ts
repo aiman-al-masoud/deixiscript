@@ -102,19 +102,19 @@ export type Variable = {
 
 export type ListLiteral = {
     type: 'list-literal',
-    value: Atom[]
+    value: LLangAst[]
 }
 
 export type ListPattern = {
     type: 'list-pattern',
-    seq: Atom,
-    /** tail */ value: Atom,
+    seq: LLangAst,
+    /** tail */ value: LLangAst,
 }
 
 export type ImplicitReference = {
     type: 'implicit-reference',
     headType: string,
-    which?: SimpleFormula,
+    which?: LLangAst,
     whose?: SimpleFormula,
     owner?: LLangAst,
     number: 1 | '*',

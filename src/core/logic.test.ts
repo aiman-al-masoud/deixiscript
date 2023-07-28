@@ -114,13 +114,19 @@ Deno.test({
 })
 
 // Deno.test({
-//     name: 'test2',
+//     name: 'test02',
 //     fn: () => {
 
-//         const yes = $('person#2').isa('dude').$
+//         // const kb = $('x:dude').isa('dude').when($('x:dude').isa('person'))
+//         //         .dump().kb
+
+//         const kb = $('x:thing').isa('dude').when($('x:thing').has(1).as('tjing') )
+//         .dump().kb
+
+//         // const yes = $('person#2').isa('dude').$
 //         const no = $('person#2').isa('somestuffidk').isNotTheCase.$
 
-//         assert(ask(yes, kb).result.value)
+//         // assert(ask(yes, kb).result.value)
 //         assert(ask(no, kb).result.value)
 //     }
 // })

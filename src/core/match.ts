@@ -7,19 +7,13 @@ import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, Knowled
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
+
     if (isConst(template) && isConst(f)) {
 
         return template.value === f.value ? deepMapOf() : undefined
 
     } else if (template.type === 'variable' && f.type === 'variable') {
-
-        // if (template.varType === f.varType || ask($(f.varType).isa(template.varType).$, kb).result.value){
-        //     return deepMapOf([[template, f]])
-        // }
-
-        // return template.varType === f.varType ? deepMapOf([[template, f]]) : undefined // may undermatch in case of subtype/supertype relationships
-        return deepMapOf([[template, f]]) // overmatch to avoid having to check subtype/supertype relations (hyperonymy)????
-
+        return deepMapOf([[template, f]])
     } else if (
         template.type === f.type ||
         template instanceof Array && f instanceof Array
@@ -102,7 +96,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m2) return m2
     }
 
-    // console.warn('error match: template=' + template.type + ' f=' + f.type)
 }
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {

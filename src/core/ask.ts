@@ -34,8 +34,11 @@ export function ask(
             return { result: formula, kb: { ...kb, deicticDict } }
         case 'list-literal':
         case 'list-pattern':
+        case 'nothing':
             return { result: formula, kb }
         case 'implicit-reference':
+        case "command":
+        case "question":
             throw new Error('!!!!')
         case 'equality':
             const t10 = ask(formula.subject, kb).result
@@ -43,6 +46,7 @@ export function ask(
             if (astsEqual(t10, t20)) return { result: $(true).$, kb }
             break
         case 'is-a-formula':
+
             const t1 = ask(formula.subject, kb).result
             const t2 = ask(formula.object, kb).result
 
@@ -54,9 +58,11 @@ export function ask(
                 const concepts = getConceptsOf(t1.value, kb.wm)
                 if (concepts.includes(t2.value)) return { result: $(true).$, kb }
             }
-
-            return { result: $(false).$, kb }
+            break
         case 'has-formula':
+
+            const whennnnn = findMatch(formula, kb)
+            if (whennnnn) return ask(whennnnn, kb)
 
             const t11 = ask(formula.subject, kb).result
             const t22 = ask(formula.object, kb).result
@@ -92,13 +98,6 @@ export function ask(
                 candidates,
                 (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
             )
-
-            // const res = sortedCandidates.at(0)
-            // if (res) {
-            //     return ask(res, kb)
-            // } else {
-            //     return { result: $('nothing').$, kb }
-            // }
 
             if (candidates.length === 1) {
                 return ask(sortedCandidates[0], kb)
@@ -142,14 +141,14 @@ export function ask(
                     wm: addWorldModels(kb.wm, [[result.value, result.type]]),
                 }
             )
+        case 'generalized':
+            const entries = Object.entries(formula).filter(e => isLLangAst(e[1])).map(e => [e[0], ask(e[1] as LLangAst, kb).result])
+            const newObj = Object.fromEntries(entries)
+            const formula2 = { ...formula, ...newObj }
+            const whenn = findMatch(formula2, kb)
+            if (whenn) return ask(whenn, kb)
 
     }
-
-    const entries = Object.entries(formula).filter(e => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb).result])
-    const newObj = Object.fromEntries(entries)
-    const formula2 = { ...formula, ...newObj }
-    const whenn = findMatch(formula2, kb)
-    if (whenn) return ask(whenn, kb)
 
     return { result: $(false).$, kb }
 
