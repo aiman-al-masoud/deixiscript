@@ -2,7 +2,7 @@ import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.1
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
-import { ask } from "./ask.ts";
+import { ask, findMatch } from "./ask.ts";
 import { DerivationClause, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
@@ -1045,6 +1045,20 @@ Deno.test({
 
     }
 })
+
+
+// Deno.test({
+//     name: 'test71',
+//     fn: () => {
+//         const kb = $.the('double').of($('x:thing')).when($('x:thing').times(2)).dump().kb
+//         // const m = findMatch(removeImplicit($.the('sum').of($(1).and(2)).$), kb)
+//         // console.log(m)
+//         // console.log(removeImplicit(ast))
+//         const r = ask($.the('double').of(22).$, kb).result
+//         console.log(r)
+        
+//     }
+// })
 
 
 // Deno.test({

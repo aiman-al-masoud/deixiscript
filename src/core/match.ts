@@ -7,7 +7,6 @@ import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, Knowled
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
-
     if (isConst(template) && isConst(f)) {
 
         return template.value === f.value ? deepMapOf() : undefined

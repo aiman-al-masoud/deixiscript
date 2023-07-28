@@ -26,6 +26,7 @@ export function ask(
         case 'number':
         case 'entity':
         case 'string':
+
             const r1 = findMatch(formula, kb)
             if (r1) return ask(r1, kb)
 
@@ -36,10 +37,6 @@ export function ask(
         case 'list-pattern':
         case 'nothing':
             return { result: formula, kb }
-        case 'implicit-reference':
-        case "command":
-        case "question":
-            throw new Error('!!!!')
         case 'equality':
             const t10 = ask(formula.subject, kb).result
             const t20 = ask(formula.object, kb).result
@@ -68,6 +65,8 @@ export function ask(
             const t22 = ask(formula.object, kb).result
             const as = ask(formula.as, kb).result
 
+            if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask($(t11).has(t22).as(as).$, kb)
+
             if (kb.wm.filter(isHasSentence).find(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
@@ -75,18 +74,27 @@ export function ask(
             })) return { result: $(true).$, kb }
             break
         case 'negation':
-            if (!ask(formula.f1, kb).result.value) return { result: $(true).$, kb }
-            break
+            {
+                const f1 = ask(formula.f1, kb).result.value
+                return { result: $(!f1).$, kb }
+            }
         case 'conjunction':
-            if (ask(formula.f1, kb).result.value && ask(formula.f2, kb).result.value) return { result: $(true).$, kb }
-            break
+            {
+                const f1 = ask(formula.f1, kb).result.value
+                if (!f1) return { result: $(false).$, kb }
+                const f2 = ask(formula.f2, kb).result.value
+                return { result: $(!!f2).$, kb }
+            }
         case 'disjunction':
-            if (ask(formula.f1, kb).result.value || ask(formula.f2, kb).result.value) return { result: $(true).$, kb }
-            break
+            {
+                const f1 = ask(formula.f1, kb).result.value
+                if (f1) return { result: $(true).$, kb }
+                const f2 = ask(formula.f2, kb).result.value
+                return { result: $(!!f2).$, kb }
+            }
         case 'existquant':
             const thing = ask(formula.value, kb).result
-            if (thing.type !== 'nothing') return { result: $(true).$, kb }
-            break
+            return { result: $(thing.type !== 'nothing').$, kb }
         case 'variable':
             return ask($(ast).suchThat(true).$, kb)
         case 'arbitrary-type':
@@ -111,8 +119,14 @@ export function ask(
             }
 
         case 'if-else':
-            return ask(formula.condition, kb).result.value ? ask(formula.then, kb) : ask(formula.otherwise, kb)
+            const condition = ask(formula.condition, kb).result.value
+            if (condition) return ask(formula.then, kb)
+            return ask(formula.otherwise, kb)
 
+        case 'implicit-reference':
+        case "command":
+        case "question":
+            throw new Error('!!!!')
         case 'after-derivation-clause':
         case 'when-derivation-clause':
             throw new Error(``)
@@ -142,7 +156,7 @@ export function ask(
                 }
             )
         case 'generalized':
-            const entries = Object.entries(formula).filter(e => isLLangAst(e[1])).map(e => [e[0], ask(e[1] as LLangAst, kb).result])
+            const entries = Object.entries(formula).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb).result])
             const newObj = Object.fromEntries(entries)
             const formula2 = { ...formula, ...newObj }
             const whenn = findMatch(formula2, kb)
@@ -154,7 +168,8 @@ export function ask(
 
 }
 
-function findMatch(ast: LLangAst, kb: KnowledgeBase) {
+export function findMatch(ast: LLangAst, kb: KnowledgeBase) {
+
     return first(kb.derivClauses, dc => {
         const map = match(dc.conseq, ast, kb)
         if (!map) return
