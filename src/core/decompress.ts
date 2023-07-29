@@ -11,7 +11,7 @@ export function decompress(ast: LLangAst): LLangAst {
         const withF1 = subst(ast, [conj, conj.f1])
         const withF2 = subst(ast, [conj, conj.f2])
         return {
-            type: conj.type,
+            type: ast.type === 'negation' ? opposite(conj.type) : conj.type, // de morgan
             f1: decompress(withF1),
             f2: decompress(withF2),
         }
@@ -19,4 +19,8 @@ export function decompress(ast: LLangAst): LLangAst {
 
     return ast
 
+}
+
+function opposite(type: 'conjunction' | 'disjunction'): 'conjunction' | 'disjunction' {
+    return type === 'conjunction' ? 'disjunction' : 'conjunction'
 }

@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, Atom, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { match } from "./match.ts";
@@ -15,7 +15,7 @@ export function ask(
     ast: LLangAst,
     kb0: KnowledgeBase,
 ): {
-    result: Atom, // needs to be any LLangAst
+    result: LLangAst,
     kb: KnowledgeBase,
 } {
 
@@ -75,18 +75,18 @@ export function ask(
         case 'negation':
             {
                 const { kb, result } = ask(formula.f1, kb0)
-                return { result: $(!result.value).$, kb }
+                return { result: $(!isTruthy(result)).$, kb }
             }
         case 'conjunction':
             {
                 const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
-                if (!f1.value) return { result: $(false).$, kb: kb1 }
+                if (!isTruthy(f1)) return { result: $(false).$, kb: kb1 }
                 return ask(formula.f2, kb1)
             }
         case 'disjunction':
             {
                 const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
-                if (f1.value) return { result: $(true).$, kb: kb1 }
+                if (isTruthy(f1)) return { result: $(true).$, kb: kb1 }
                 return ask(formula.f2, kb1)
             }
         case 'existquant':
@@ -110,7 +110,7 @@ export function ask(
                 return ask(sortedCandidates[0], kb0)
             } else if (formula.number === '*' && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
-                return { result: andPhrase as Atom /* bad */, kb: kb0 }
+                return { result: andPhrase, kb: kb0 }
             } else {
                 return { result: $('nothing').$, kb: kb0 }
             }
@@ -118,7 +118,7 @@ export function ask(
         case 'if-else':
             {
                 const { kb, result } = ask(formula.condition, kb0)
-                if (result.value) return ask(formula.then, kb)
+                if (isTruthy(result)) return ask(formula.then, kb)
                 return ask(formula.otherwise, kb)
             }
         case 'implicit-reference':
@@ -130,10 +130,14 @@ export function ask(
             throw new Error(``)
 
         case 'math-expression':
-            const left = ask(formula.left, kb0).result.value
-            const right = ask(formula.right, kb0).result.value
 
-            if (typeof left !== 'number' || typeof right !== 'number') return { result: $(false).$, kb: kb0 }
+            const leftSide = ask(formula.left, kb0).result
+            const rightSide = ask(formula.right, kb0).result
+
+            if (leftSide.type !== 'number' || rightSide.type !== 'number') return { result: $(false).$, kb: kb0 }
+
+            const left = leftSide.value
+            const right = rightSide.value
 
             const result = {
                 '+': $(left + right).$,
@@ -192,3 +196,4 @@ function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
 
     return uniq(r)
 }
+

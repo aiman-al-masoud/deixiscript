@@ -319,3 +319,7 @@ export function pointsToThings(ast: LLangAst): boolean {
         || ast.type === 'arbitrary-type'
         || ast.type === 'implicit-reference'
 }
+
+export function isTruthy(ast: LLangAst) {
+    return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
+}

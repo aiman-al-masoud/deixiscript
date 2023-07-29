@@ -3,7 +3,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, KnowledgeBase } from "./types.ts";
+import { DerivationClause, KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
@@ -12,6 +12,12 @@ import { subst } from "./subst.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
+
+
+function dassert(x:LLangAst){
+    return assert(isTruthy(x))
+}
+
 
 const standardKb = getStandardKb()
 
@@ -109,7 +115,7 @@ Deno.test({
     name: 'test1',
     fn: () => {
         const f = $('person#2').isa('person').$
-        assert(ask(f, kb).result.value)
+        dassert(ask(f, kb).result)
     }
 })
 
@@ -126,8 +132,8 @@ Deno.test({
 //         // const yes = $('person#2').isa('dude').$
 //         const no = $('person#2').isa('somestuffidk').isNotTheCase.$
 
-//         // assert(ask(yes, kb).result.value)
-//         assert(ask(no, kb).result.value)
+//         // dassert(ask(yes, kb).result)
+//         dassert(ask(no, kb).result)
 //     }
 // })
 
@@ -145,21 +151,21 @@ Deno.test({
     name: 'test04',
     fn: () => {
         const query = $('person#1').has('boston').as('birth-city').$
-        assert(ask(query, kb).result.value)
+        dassert(ask(query, kb).result)
     }
 })
 
 Deno.test({
     name: 'test7',
     fn: () => {
-        assert(ask($(2).isGreaterThan(1).$, $.emptyKb).result.value)
+        dassert(ask($(2).isGreaterThan(1).$, $.emptyKb).result)
     }
 })
 
 Deno.test({
     name: 'test8',
     fn: () => {
-        assert(ask($({ subject: 1, isSmallerThan: 2 }).$, kb).result.value)
+        dassert(ask($({ subject: 1, isSmallerThan: 2 }).$, kb).result)
     }
 })
 
@@ -186,8 +192,8 @@ Deno.test({
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
         const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
 
-        assert(ask(test1, { wm: wm, derivClauses: dc, deicticDict: {}, }).result.value)
-        assert(ask(test2, { wm: wm, derivClauses: dc, deicticDict: {}, }).result.value)
+        dassert(ask(test1, { wm: wm, derivClauses: dc, deicticDict: {}, }).result)
+        dassert(ask(test2, { wm: wm, derivClauses: dc, deicticDict: {}, }).result)
 
     }
 })
@@ -200,7 +206,7 @@ Deno.test({
             $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
         ).$, kb)
 
-        assert(x.result.value)
+        dassert(x.result)
 
     }
 })
@@ -216,7 +222,7 @@ Deno.test({
 
         // ((the number such that (the cat has the number as weight)) is (3))
         const x = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
-        assert(ask(x, kb2).result.value)
+        dassert(ask(x, kb2).result)
     }
 })
 
@@ -269,7 +275,7 @@ Deno.test({
 
         const kb3 = tell($('capra#1').has(2).as('last-thought-of').$, kb2).kb
 
-        assert(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb3).length === 1)
+        assertEquals(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb3).length, 1)
 
     }
 })
@@ -290,7 +296,7 @@ Deno.test({
 
         const kb2 = tell(command.$, kb).kb
 
-        assert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result.value)
+        dassert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result)
 
     }
 })
@@ -300,7 +306,7 @@ Deno.test({
     fn: () => {
         const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
         const kb2 = tell(q.$, $.emptyKb).kb
-        assert(ask(q.$, kb2).result.value)
+        dassert(ask(q.$, kb2).result)
     }
 })
 
@@ -308,11 +314,11 @@ Deno.test({
     name: 'test30',
     fn: () => {
         const q = $('cat#1').isa('feline')
-        const results0 = evaluate(q.ask.$, kb)
-        assert(!results0.result.value)
+        const results0 = evaluate(q.isNotTheCase.ask.$, kb)
+        dassert(results0.result)
         const results1 = evaluate(q.tell.$, kb)
         const results2 = evaluate(q.ask.$, results1.kb)
-        assert(results2.result.value)
+        dassert(results2.result)
     }
 })
 
@@ -321,7 +327,7 @@ Deno.test({
     fn: () => {
         // transitivity of inheritance relationships
         const kb = $('capra').isa('mammal').and($('mammal').isa('animal')).dump().kb
-        assert(ask($('capra').isa('animal').$, kb).result.value)
+        dassert(ask($('capra').isa('animal').$, kb).result)
     }
 })
 
@@ -331,10 +337,10 @@ Deno.test({
         // recomputeKb with negation
         const q = $('cat#1').has('red').as('color')
         const kb1 = q.dump().kb
-        assert(ask(q.$, kb1))
+        dassert(ask(q.$, kb1).result)
         const result = tell(q.isNotTheCase.$, kb1)
         const kb2 = result.kb
-        assert(ask(q.isNotTheCase.$, kb2).result.value)
+        dassert(ask(q.isNotTheCase.$, kb2).result)
     }
 })
 
@@ -344,8 +350,8 @@ Deno.test({
         // string literals
         const x = $('"ciao mondo"')
         assertEquals(x.$.type, 'string')
-        assert(ask(x.equals('"ciao mondo"').$, kb).result.value)
-        assert(ask(x.equals('"ciaomondo"').isNotTheCase.$, kb).result.value)
+        dassert(ask(x.equals('"ciao mondo"').$, kb).result)
+        dassert(ask(x.equals('"ciaomondo"').isNotTheCase.$, kb).result)
     }
 })
 
@@ -363,9 +369,9 @@ Deno.test({
         const check = ask(
             $.the('point').which($._.has(100).as('x-coordinate')).exists.$,
             result.kb,
-        ).result.value
+        ).result
 
-        assert(check)
+        dassert(check)
     }
 })
 
@@ -380,8 +386,8 @@ Deno.test({
 
         const result = evaluate($('x:point').exists.where($('x:point').has(200).as('x-coordinate')).tell.$, kb)
 
-        assert(ask($.the('point').has(200).as('x-coordinate').$, result.kb).result.value)
-        assert(!ask($.the('point').has(100).as('x-coordinate').$, result.kb).result.value)
+        dassert(ask($.the('point').has(200).as('x-coordinate').$, result.kb).result)
+        dassert(ask($.the('point').has(100).as('x-coordinate').isNotTheCase.$, result.kb).result)
 
     }
 })
@@ -419,11 +425,11 @@ Deno.test({
         // mutex concepts test
         const kb0 = tell($('mammal#1').isa('cat').$, kb).kb
         const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
-        assert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1).result.value)
-        assert(ask($('mammal#1').isa('dog').$, kb1).result.value)
+        dassert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1).result)
+        dassert(ask($('mammal#1').isa('dog').$, kb1).result)
         const kb2 = tell($('mammal#1').isa('cat').$, kb0).kb
-        assert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2).result.value)
-        assert(ask($('mammal#1').isa('cat').$, kb2).result.value)
+        dassert(ask($('mammal#1').isa('dog').isNotTheCase.$, kb2).result)
+        dassert(ask($('mammal#1').isa('cat').$, kb2).result)
     }
 })
 
@@ -453,24 +459,23 @@ Deno.test({
     fn: () => {
         // syntactic de/compression
         const r1 = ask($('person#1').and('person#3').isa('person').$, kb)
-        assert(r1.result.value)
-        const r2 = ask($('person#1').and('door#1').isa('person').$, kb)
-        assert(!r2.result.value)
+        dassert(r1.result)
+        const r2 = ask($('person#1').and('door#1').isa('person').isNotTheCase.$, kb)
+        dassert(r2.result)
+        const r4 = ask($('person#1').isa($('person').and('agent').$).$, kb).result
+        dassert(r4)
+        const r5 = ask($('door#1').isa($('thing').and('agent').$).isNotTheCase.$, kb).result
+        dassert(r5)
+        const r6 = ask($('person#1').and('person#2').and('person#3').isa('agent').$, kb).result
+        dassert(r6)
+        const r7 = ask($('person#1').or('door#1').isa('agent').$, kb).result
+        dassert(r7)
+        const r8 = ask($('boston').or('door#1').isa('agent').isNotTheCase.$, kb).result
+        dassert(r8)
+        const r9 = ask($('door#1').isa($('door').or('agent')).$, kb).result
+        dassert(r9)
         // const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
         // console.log(r3)
-        const r4 = ask($('person#1').isa($('person').and('agent').$).$, kb).result
-        assert(r4.value)
-        const r5 = ask($('door#1').isa($('thing').and('agent').$).$, kb).result
-        assert(!r5.value)
-        const r6 = ask($('person#1').and('person#2').and('person#3').isa('agent').$, kb).result
-        assert(r6.value)
-        const r7 = ask($('person#1').or('door#1').isa('agent').$, kb).result
-        assert(r7.value)
-        const r8 = ask($('boston').or('door#1').isa('agent').$, kb).result
-        assert(!r8.value)
-        const r9 = ask($('door#1').isa($('door').or('agent')).$, kb).result
-        assert(r9.value)
-
     }
 })
 
@@ -484,9 +489,9 @@ Deno.test({
             .and($('capra#2').has('fur#2').as('fur'))
             .dump().kb
 
-        assert(ask($('capra#1').has('fur#1').$, x).result.value)
-        assert(!ask($('capra#1').has('fur#2').$, x).result.value)
-        assert(ask($('capra#2').has('fur#2').$, x).result.value)
+        dassert(ask($('capra#1').has('fur#1').$, x).result)
+        dassert(ask($('capra#1').has('fur#2').isNotTheCase.$, x).result)
+        dassert(ask($('capra#2').has('fur#2').$, x).result)
     }
 })
 
@@ -548,8 +553,8 @@ Deno.test({
         // creation of new thing via existquant+ANAPHOR
         const kb0 = $.emptyKb
         const kb1 = tell($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb0).kb
-        const result = ask($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb1).result.value
-        assert(result)
+        const result = ask($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb1).result
+        dassert(result)
     }
 })
 
@@ -574,12 +579,12 @@ Deno.test({
         // console.log('blackcat=',ask($.a('cat').whose($('fur').has('black').as('color')).$, kb2).result)
 
         const statement1 = $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
-        const statement2 = $({ subject: $.a('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).$
+        const statement2 = $({ subject: $.a('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
 
-        const result1 = ask(statement1, kb2).result.value
-        const result2 = ask(statement2, kb2).result.value
-        assert(result1)
-        assert(!result2)
+        const result1 = ask(statement1, kb2).result
+        const result2 = ask(statement2, kb2).result
+        dassert(result1)
+        dassert(result2)
 
     }
 })
@@ -600,7 +605,7 @@ Deno.test({
 
         const q = $('p:panel').suchThat().has(130).as('max-x').$
         const result = ask(q, kb3).result
-        assert(result.value)
+        dassert(result)
 
         const q2 = $('n:number').suchThat($('p:panel').suchThat().has('n:number').as('max-x')).$
         const result2 = ask(q2, kb3).result
@@ -702,8 +707,8 @@ Deno.test({
             .and(parent)
             .dump().kb
 
-        assert(ask($('panel#1').has('panel#2').as('parent').$, kb).result.value)
-        assert(!ask($('panel#2').has('panel#1').as('parent').$, kb).result.value)
+        dassert(ask($('panel#1').has('panel#2').as('parent').$, kb).result)
+        dassert(ask($('panel#2').has('panel#1').as('parent').isNotTheCase.$, kb).result)
 
     }
 })
@@ -760,8 +765,8 @@ Deno.test({
         assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
         assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
 
-        assert(ask($('panel#1').has('panel#2').as('parent').$, kb).result.value)
-        assert(!ask($('panel#2').has('panel#1').as('parent').$, kb).result.value)
+        dassert(ask($('panel#1').has('panel#2').as('parent').$, kb).result)
+        dassert(ask($('panel#2').has('panel#1').as('parent').isNotTheCase.$, kb).result)
 
     }
 })
@@ -788,10 +793,10 @@ Deno.test({
 Deno.test({
     name: 'test56',
     fn: () => {
-        const result1 = ask($({ subject: 1, verb: 'be', object: 1 }).$, kb).result.value
-        assert(result1)
-        const result2 = ask($({ subject: 2, verb: 'be', object: 1 }).$, kb).result.value
-        assert(!result2)
+        const result1 = ask($({ subject: 1, verb: 'be', object: 1 }).$, kb).result
+        dassert(result1)
+        const result2 = ask($({ subject: 2, verb: 'be', object: 1 }).isNotTheCase.$, kb).result
+        dassert(result2)
     }
 })
 
@@ -806,13 +811,13 @@ Deno.test({
         const kb0 = tell(dc, $.emptyKb).kb
         const kb1 = tell($('red').and('green').isa('color').$, kb0).kb
         const kb2 = tell($('thing#1').is('red').$, kb1).kb
-        const result0 = ask($('thing#1').has('red').as('color').$, kb2).result.value
-        const result1 = ask($('thing#1').is('red').$, kb2).result.value
-        const result2 = ask($('thing#1').has('black').as('color').isNotTheCase.$, kb2).result.value
+        const result0 = ask($('thing#1').has('red').as('color').$, kb2).result
+        const result1 = ask($('thing#1').is('red').$, kb2).result
+        const result2 = ask($('thing#1').has('black').as('color').isNotTheCase.$, kb2).result
 
-        assert(result0)
-        assert(result1)
-        assert(result2)
+        dassert(result0)
+        dassert(result1)
+        dassert(result2)
     }
 })
 
@@ -832,8 +837,8 @@ Deno.test({
                 .and(dc)
                 .dump().kb
 
-        assert(ask($.the('capra').does('like')._('food#1').$, kb).result.value)
-        assert(!ask($.the('capra').does('like')._('food#2').$, kb).result.value)
+        dassert(ask($.the('capra').does('like')._('food#1').$, kb).result)
+        dassert(ask($.the('capra').does('like')._('food#2').isNotTheCase.$, kb).result)
 
     }
 })
@@ -872,7 +877,7 @@ Deno.test({
         const a = $('button#1').has('down').as('state').$
 
         const result = tell(a, kb)
-        assert(ask($('screen#1').has('red').as('color').$, result.kb).result.value)
+        dassert(ask($('screen#1').has('red').as('color').$, result.kb).result)
     }
 })
 
@@ -1022,9 +1027,9 @@ Deno.test({
         const kb2 = tell($('door#1').has('open').as('state').$, kb1).kb
         const kb3 = tell($('door#1').has('closed').as('state').$, kb2).kb
         const kb4 = tell($('door#1').has('open').as('state').$, kb3).kb
-        assert(ask($('door#1').has('closed').as('state').$, kb3).result.value)
-        assert(!ask($('door#1').has('open').as('state').$, kb3).result.value)
-        assert(ask($('door#1').has('open').as('state').$, kb4).result.value)
+        dassert(ask($('door#1').has('closed').as('state').$, kb3).result)
+        dassert(ask($('door#1').has('open').as('state').isNotTheCase.$, kb3).result)
+        dassert(ask($('door#1').has('open').as('state').$, kb4).result)
     }
 })
 
@@ -1041,7 +1046,7 @@ Deno.test({
             .dump().kb
 
         assertEquals(ask($.every('capra').$, kb).result, $('capra#1').and('capra#2').$ as unknown)
-        assert(ask($.every('capra').isa('mammal').$, kb).result.value)
+        dassert(ask($.every('capra').isa('mammal').$, kb).result)
 
     }
 })

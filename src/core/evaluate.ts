@@ -5,7 +5,7 @@ import { Atom, KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
 
 export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     kb: KnowledgeBase,
-    result: Atom,
+    result: LLangAst,
     additions: WorldModel,
     eliminations: WorldModel,
 } {

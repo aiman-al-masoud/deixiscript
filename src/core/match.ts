@@ -2,7 +2,7 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -74,12 +74,12 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (!m) return undefined
 
         const desc = subst(template.description, [template.head, f])
-        const ok = ask(desc, kb).result.value
+        const ok = isTruthy(ask(desc, kb).result)
         if (ok) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && isConst(f)) {
 
-        if (ask($(f).isa(template.varType).$, kb).result.value) {
+        if (isTruthy(ask($(f).isa(template.varType).$, kb).result)) {
             return deepMapOf([[template, f]])
         }
 

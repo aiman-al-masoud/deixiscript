@@ -32,8 +32,9 @@ export function solve(ast: Equality, kb: KnowledgeBase): Number | undefined {
         // X * k = c  ---> X = c/k
         // X / k = c  ---> X = c * k
 
-        const c = ask(ast.object, kb).result.value
-        if (typeof c !== 'number') throw new Error(``)
+        const res = ask(ast.object, kb).result
+        if (res.type !== 'number') throw new Error(``)
+        const c = res.value
 
         // const left = ast.subject.left.type!=='variable' ?  ask(ast.subject.left, kb).result :ast.subject.left
         // const right = ast.subject.right.type!=='variable'?  ask(ast.subject.right, kb).result : ast.subject.right

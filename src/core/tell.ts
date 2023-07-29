@@ -3,7 +3,7 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isHasSentence, isIsASentence, isWmAtom, subtractWorldModels } from "./types.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
@@ -34,7 +34,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             const t1 = ask(ast.subject, kb).result
             const t2 = ask(ast.object, kb).result
             const as = ask(ast.as, kb).result
-            if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error(`cannot serialize formula with non-constants! t1=${t1.value} t2=${t2.value} as=${as.value}`)
+            if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error(`cannot serialize formula with non-constants!`)
 
             additions = [[t1.value, t2.value, as.value]]
             break
@@ -64,7 +64,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             addedDerivationClauses = [ast]
             break
         case 'if-else':
-            return ask(ast.condition, kb).result.value ? tell(ast.then, kb) : tell(ast.otherwise, kb)
+            return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
             if (ast.value.type === 'variable') {
@@ -227,6 +227,7 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
 
     const result = ask($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
     if (result.type === 'nothing') return undefined
+    if (!isAtom(result)) throw new Error(``)
     if (!isWmAtom(result.value)) throw new Error('')
     return result.value
 }

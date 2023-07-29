@@ -1,4 +1,4 @@
-import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual } from "./types.ts";
+import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual, isTruthy } from "./types.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { uniq } from "../utils/uniq.ts";
@@ -103,12 +103,12 @@ function getCombos(
 ): DeepMap<Variable, Constant>[] {
 
     if (vars.length === 0) {
-        const isTrue = ask(ast, kb).result.value
+        const isTrue = isTruthy(ask(ast, kb).result)
         return isTrue ? [deepMapOf()] : []
     }
 
     const varToCands = vars.map(v => {
-        const candidates = consts.filter(c => ask($(c.value).isa(v.varType).$, kb).result.value)
+        const candidates = consts.filter(c => isTruthy(ask($(c.value).isa(v.varType).$, kb).result))
         return candidates.map(c => [v, c] as const)
     })
 
@@ -116,7 +116,7 @@ function getCombos(
 
     const results = allCombos.filter(c => {
         const sub = subst(ast, c)
-        const isTrue = ask(sub, kb).result.value
+        const isTrue = isTruthy(ask(sub, kb).result)
         return isTrue
     })
 
