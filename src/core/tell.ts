@@ -22,7 +22,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     eliminations: WorldModel,
 } {
 
-    const ast = removeImplicit(decompress(ast1))
+    const ast = removeImplicit(/* decompress(ast1) */ast1)
 
     let additions: WorldModel = []
     let eliminations: WorldModel = []
@@ -42,6 +42,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
 
             const t11 = ask(ast.subject, kb).result
             const t21 = ask(ast.object, kb).result
+
+            if (!isAtom(t11) || !isAtom(t21)) return tell(decompress($(t11).isa(t21).$), kb)
 
             if (!isConst(t11) || !isConst(t21)) throw new Error('cannot serialize formula with variables!')
 

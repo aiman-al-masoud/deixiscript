@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { match } from "./match.ts";
@@ -19,7 +19,7 @@ export function ask(
     kb: KnowledgeBase,
 } {
 
-    const formula = removeImplicit(decompress(ast))
+    const formula = removeImplicit(/* decompress(ast) */ ast)
 
     switch (formula.type) {
 
@@ -46,7 +46,7 @@ export function ask(
             const t1 = ask(formula.subject, kb0).result
             const t2 = ask(formula.object, kb0).result
 
-            if (!isAtom(t1) || !isAtom(t2)) return ask($(t1).isa(t2).$, kb0)
+            if (!isAtom(t1) || !isAtom(t2)) return ask(decompress($(t1).isa(t2).$), kb0)
 
             if (t1.type === t2.value) return { result: $(true).$, kb: kb0 }
 
@@ -63,7 +63,7 @@ export function ask(
             const t22 = ask(formula.object, kb0).result
             const as = ask(formula.as, kb0).result
 
-            if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask($(t11).has(t22).as(as).$, kb0)
+            if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask(decompress($(t11).has(t22).as(as).$), kb0)
 
             const ok = kb0.wm.filter(isHasSentence).some(hs => {
                 return t11.value === hs[0]
@@ -79,12 +79,14 @@ export function ask(
             }
         case 'conjunction':
             {
+                if (pointsToThings(formula.f1) || pointsToThings(formula.f2)) return {result:formula, kb:kb0}
                 const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
                 if (!isTruthy(f1)) return { result: $(false).$, kb: kb1 }
                 return ask(formula.f2, kb1)
             }
         case 'disjunction':
             {
+                if (pointsToThings(formula.f1) || pointsToThings(formula.f2)) return {result:formula, kb:kb0}
                 const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
                 if (isTruthy(f1)) return { result: $(true).$, kb: kb1 }
                 return ask(formula.f2, kb1)
@@ -185,7 +187,13 @@ function findMatch(ast: LLangAst, kb: KnowledgeBase) {
         }
 
         const map = match(dc.conseq, ast, kb)
+        // console.log(ast)
+        // console.log(dc.conseq)
+        // console.log('-------------------')
+
         if (!map) return
+        // console.log(map)
+
         return subst(dc.when, map)
     })
 }

@@ -1061,12 +1061,50 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test72',
+    fn: () => {
+        const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
+        const r = ask($.the('sum').of($(1).and(5)).$, kb).result
+        assertEquals(r, $(6).$)
+        // console.log(r)
+        // console.log(ask($.the('sum').of($(30).minus(2).and(1)).$, kb).result)
+    }
+})
+
+
+Deno.test({
+    name: 'test73',
+    fn: () => {
+        const code = 'the cat is red'.split(' ')
+        // console.log(code)
+        const kb = $({ parse: ['the', 'x:thing', 'is', 'y:thing'] }).when( $('x:thing').is('y:thing') ).dump().kb
+        const r = ask($({ parse: code }).$, kb).result
+        console.log(r)
+
+        // match()
+        // console.log($('x:thing|if').$)
+
+        // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
+        // const r = ask($.the('sum').of($(1).and(5)).$, kb).result
+        // console.log(r)
+        // console.log(ask($.the('sum').of($(30).minus(2).and(1)).$, kb).result)
+    }
+})
+
+
+
+
 // Deno.test({
-//     name: 'test72',
+//     name: 'test73',
 //     fn: () => {
-//         // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
-//         // const r = ask($.the('sum').of($('x:number').and('y:number')).$, kb).result
-//         // console.log(r)
+//         const kb =
+//             $.the('fib').of(1).when(1)
+//                 .and($.the('fib').of(2).when(1))
+//                 .and($.the('fib').of('n:number').when(    $.the('fib').of($('n:number').minus(2)).plus($.the('fib').of($('n:number').minus(1)))    ))
+//                 .dump().kb
+//         const r = ask($.the('fib').of(3).$, kb).result
+//         console.log(r)
 //     }
 // })
 
