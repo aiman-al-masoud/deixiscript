@@ -169,9 +169,18 @@ export function ask(
 function findMatch(ast: LLangAst, kb: KnowledgeBase) {
 
     return first(kb.derivClauses, dc => {
+        if (!('when' in dc)) return
+
+        if (isConst(ast)) {
+            if (astsEqual(dc.conseq, ast)) {
+                return dc.when
+            } else {
+                return undefined
+            }
+        }
+
         const map = match(dc.conseq, ast, kb)
         if (!map) return
-        if (!('when' in dc)) return
         return subst(dc.when, map)
     })
 }
