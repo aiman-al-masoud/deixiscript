@@ -1058,11 +1058,17 @@ Deno.test({
         const kb = $.the('double').of('n:number').when($('n:number').times(2)).dump().kb
         const r = ask($.the('double').of(22).plus(1).$, kb).result
         assertEquals(r, $(45).$)
-        // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
-        // const r = ask($.the('sum').of($('x:number').and('y:number')).$, kb).result
-        // console.log(r)
     }
 })
+
+// Deno.test({
+//     name: 'test72',
+//     fn: () => {
+//         // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
+//         // const r = ask($.the('sum').of($('x:number').and('y:number')).$, kb).result
+//         // console.log(r)
+//     }
+// })
 
 
 // Deno.test({
