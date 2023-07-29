@@ -10,9 +10,10 @@ import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { first } from "../utils/first.ts";
 
+
 export function ask(
     ast: LLangAst,
-    kb: KnowledgeBase,
+    kb0: KnowledgeBase,
 ): {
     result: Atom, // needs to be any LLangAst
     kb: KnowledgeBase,
@@ -27,102 +28,99 @@ export function ask(
         case 'entity':
         case 'string':
 
-            const r1 = findMatch(formula, kb)
-            if (r1) return ask(r1, kb)
+            const r1 = findMatch(formula, kb0)
+            if (r1) return ask(r1, kb0)
 
-            const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
-            const deicticDict = { ...kb.deicticDict, [formula.value as string]: lastTime + 1 }
-            return { result: formula, kb: { ...kb, deicticDict } }
+            const lastTime = Math.max(...Object.values(kb0.deicticDict).concat(0))
+            const deicticDict = { ...kb0.deicticDict, [formula.value as string]: lastTime + 1 }
+            return { result: formula, kb: { ...kb0, deicticDict } }
         case 'list-literal':
         case 'list-pattern':
         case 'nothing':
-            return { result: formula, kb }
+            return { result: formula, kb: kb0 }
         case 'equality':
-            const t10 = ask(formula.subject, kb).result
-            const t20 = ask(formula.object, kb).result
-            if (astsEqual(t10, t20)) return { result: $(true).$, kb }
-            break
+            const t10 = ask(formula.subject, kb0).result
+            const t20 = ask(formula.object, kb0).result
+            return { result: $(astsEqual(t10, t20)).$, kb: kb0 }
         case 'is-a-formula':
+            const t1 = ask(formula.subject, kb0).result
+            const t2 = ask(formula.object, kb0).result
 
-            const t1 = ask(formula.subject, kb).result
-            const t2 = ask(formula.object, kb).result
+            if (!isAtom(t1) || !isAtom(t2)) return ask($(t1).isa(t2).$, kb0)
 
-            if (!isAtom(t1) || !isAtom(t2)) return ask($(t1).isa(t2).$, kb)
+            if (t1.type === t2.value) return { result: $(true).$, kb: kb0 }
 
-            if (t1.type === t2.value) return { result: $(true).$, kb }
+            if (!isConst(t1) || !isConst(t2)) throw new Error(``)
 
-            if (isConst(t1) && isConst(t2)) {
-                const concepts = getConceptsOf(t1.value, kb.wm)
-                if (concepts.includes(t2.value)) return { result: $(true).$, kb }
-            }
-            break
+            const concepts = getConceptsOf(t1.value, kb0.wm)
+            return { result: $(concepts.includes(t2.value)).$, kb: kb0 }
         case 'has-formula':
 
-            const whennnnn = findMatch(formula, kb)
-            if (whennnnn) return ask(whennnnn, kb)
+            const whennnnn = findMatch(formula, kb0)
+            if (whennnnn) return ask(whennnnn, kb0)
 
-            const t11 = ask(formula.subject, kb).result
-            const t22 = ask(formula.object, kb).result
-            const as = ask(formula.as, kb).result
+            const t11 = ask(formula.subject, kb0).result
+            const t22 = ask(formula.object, kb0).result
+            const as = ask(formula.as, kb0).result
 
-            if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask($(t11).has(t22).as(as).$, kb)
+            if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask($(t11).has(t22).as(as).$, kb0)
 
-            if (kb.wm.filter(isHasSentence).find(hs => {
+            const ok = kb0.wm.filter(isHasSentence).some(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
                     && (as.value === hs[2] || as.value === 'thing')
-            })) return { result: $(true).$, kb }
-            break
+            })
+
+            return { result: $(ok).$, kb: kb0 }
         case 'negation':
             {
-                const f1 = ask(formula.f1, kb).result.value
-                return { result: $(!f1).$, kb }
+                const { kb, result } = ask(formula.f1, kb0)
+                return { result: $(!result.value).$, kb }
             }
         case 'conjunction':
             {
-                const f1 = ask(formula.f1, kb).result.value
-                if (!f1) return { result: $(false).$, kb }
-                const f2 = ask(formula.f2, kb).result.value
-                return { result: $(!!f2).$, kb }
+                const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
+                if (!f1.value) return { result: $(false).$, kb: kb1 }
+                return ask(formula.f2, kb1)
             }
         case 'disjunction':
             {
-                const f1 = ask(formula.f1, kb).result.value
-                if (f1) return { result: $(true).$, kb }
-                const f2 = ask(formula.f2, kb).result.value
-                return { result: $(!!f2).$, kb }
+                const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
+                if (f1.value) return { result: $(true).$, kb: kb1 }
+                return ask(formula.f2, kb1)
             }
         case 'existquant':
-            const thing = ask(formula.value, kb).result
-            return { result: $(thing.type !== 'nothing').$, kb }
+            const thing = ask(formula.value, kb0).result
+            return { result: $(thing.type !== 'nothing').$, kb: kb0 }
         case 'variable':
-            return ask($(ast).suchThat(true).$, kb)
+            return ask($(ast).suchThat(true).$, kb0)
         case 'arbitrary-type':
 
-            const maps = findAll(formula.description, [formula.head], kb)
+            const maps = findAll(formula.description, [formula.head], kb0)
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
 
             const sortedCandidates = sorted(
                 candidates,
-                (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
+                (c1, c2) => (kb0.deicticDict[c2.value as string] ?? 0) - (kb0.deicticDict[c1.value as string] ?? 0)
             )
 
             if (candidates.length === 1) {
-                return ask(sortedCandidates[0], kb)
+                return ask(sortedCandidates[0], kb0)
             } else if (formula.number === 1 && candidates.length > 1) {
-                return ask(sortedCandidates[0], kb)
+                return ask(sortedCandidates[0], kb0)
             } else if (formula.number === '*' && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
-                return { result: andPhrase as Atom /* bad */, kb }
+                return { result: andPhrase as Atom /* bad */, kb: kb0 }
             } else {
-                return { result: $('nothing').$, kb }
+                return { result: $('nothing').$, kb: kb0 }
             }
 
         case 'if-else':
-            const condition = ask(formula.condition, kb).result.value
-            if (condition) return ask(formula.then, kb)
-            return ask(formula.otherwise, kb)
-
+            {
+                const { kb, result } = ask(formula.condition, kb0)
+                if (result.value) return ask(formula.then, kb)
+                return ask(formula.otherwise, kb)
+            }
         case 'implicit-reference':
         case "command":
         case "question":
@@ -132,10 +130,10 @@ export function ask(
             throw new Error(``)
 
         case 'math-expression':
-            const left = ask(formula.left, kb).result.value
-            const right = ask(formula.right, kb).result.value
+            const left = ask(formula.left, kb0).result.value
+            const right = ask(formula.right, kb0).result.value
 
-            if (typeof left !== 'number' || typeof right !== 'number') return { result: $(false).$, kb }
+            if (typeof left !== 'number' || typeof right !== 'number') return { result: $(false).$, kb: kb0 }
 
             const result = {
                 '+': $(left + right).$,
@@ -151,24 +149,24 @@ export function ask(
             return ask(
                 result,
                 {
-                    ...kb,
-                    wm: addWorldModels(kb.wm, [[result.value, result.type]]),
+                    ...kb0,
+                    wm: addWorldModels(kb0.wm, [[result.value, result.type]]),
                 }
             )
         case 'generalized':
-            const entries = Object.entries(formula).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb).result])
+            const entries = Object.entries(formula).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
             const newObj = Object.fromEntries(entries)
             const formula2 = { ...formula, ...newObj }
-            const whenn = findMatch(formula2, kb)
-            if (whenn) return ask(whenn, kb)
+            const whenn = findMatch(formula2, kb0)
+            if (whenn) return ask(whenn, kb0)
 
     }
 
-    return { result: $(false).$, kb }
+    return { result: $(false).$, kb: kb0 }
 
 }
 
-export function findMatch(ast: LLangAst, kb: KnowledgeBase) {
+function findMatch(ast: LLangAst, kb: KnowledgeBase) {
 
     return first(kb.derivClauses, dc => {
         const map = match(dc.conseq, ast, kb)

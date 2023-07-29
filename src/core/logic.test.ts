@@ -2,7 +2,7 @@ import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.1
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
-import { ask, findMatch } from "./ask.ts";
+import { ask } from "./ask.ts";
 import { DerivationClause, KnowledgeBase } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
@@ -912,8 +912,8 @@ Deno.test({
     fn: () => {
 
         const kb1 = $({ fibOf: 1 }).when(1)
-            .and($({ fibOf: 2 }).when(1))
-            .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
+        .and($({ fibOf: 2 }).when(1))
+        .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
             .dump().kb
 
         assertEquals(
