@@ -14,7 +14,7 @@ import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 
 
-function dassert(x:LLangAst){
+function dassert(x: LLangAst) {
     return assert(isTruthy(x))
 }
 
@@ -917,8 +917,8 @@ Deno.test({
     fn: () => {
 
         const kb1 = $({ fibOf: 1 }).when(1)
-        .and($({ fibOf: 2 }).when(1))
-        .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
+            .and($({ fibOf: 2 }).when(1))
+            .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
             .dump().kb
 
         assertEquals(
@@ -1052,18 +1052,17 @@ Deno.test({
 })
 
 
-// Deno.test({
-//     name: 'test71',
-//     fn: () => {
-//         const kb = $.the('double').of($('x:thing')).when($('x:thing').times(2)).dump().kb
-//         // const m = findMatch(removeImplicit($.the('sum').of($(1).and(2)).$), kb)
-//         // console.log(m)
-//         // console.log(removeImplicit(ast))
-//         const r = ask($.the('double').of(22).$, kb).result
-//         console.log(r)
-        
-//     }
-// })
+Deno.test({
+    name: 'test71',
+    fn: () => {
+        const kb = $.the('double').of('n:number').when($('n:number').times(2)).dump().kb
+        const r = ask($.the('double').of(22).plus(1).$, kb).result
+        assertEquals(r, $(45).$)
+        // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
+        // const r = ask($.the('sum').of($('x:number').and('y:number')).$, kb).result
+        // console.log(r)
+    }
+})
 
 
 // Deno.test({

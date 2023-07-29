@@ -96,6 +96,9 @@ export function ask(
             return ask($(ast).suchThat(true).$, kb0)
         case 'arbitrary-type':
 
+            const wen = findMatch(formula, kb0)
+            if (wen) return ask(wen, kb0)
+
             const maps = findAll(formula.description, [formula.head], kb0)
             const candidates = maps.map(x => x.get(formula.head)).filter(isNotNullish)
 
