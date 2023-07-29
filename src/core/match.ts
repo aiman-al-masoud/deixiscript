@@ -13,10 +13,15 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
     } else if (template.type === 'variable' && f.type === 'variable') {
         return deepMapOf([[template, f]])
-    } else if (
-        template.type === f.type ||
-        template instanceof Array && f instanceof Array
-    ) {
+    } else if (template instanceof Array && f instanceof Array) {
+
+        if (template.length !== f.length) return undefined
+        // if (template.length > f.length) return undefined
+
+        const ms = template.map((t, i) => match(t, f[i], kb))
+        return reduceMatchList(ms)
+
+    } else if (template.type === f.type) {
 
         const templateT = template as { [x: string]: LLangAst }
         const fT = f as { [x: string]: LLangAst }
