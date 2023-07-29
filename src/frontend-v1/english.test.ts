@@ -3,6 +3,7 @@ import { getParser } from "../parser/parser.ts"
 import { syntaxes } from "./english.ts"
 import { $ } from "../core/exp-builder.ts"
 import { linearize } from "../parser/linearize.ts"
+import { LLangAst } from "../core/types.ts"
 
 const parser = getParser({ syntaxes })
 
@@ -93,7 +94,7 @@ Deno.test({
     fn: () => {
         const dc = $.the('screen').has('red').as('color').after($('x:button').has('down').as('state')).$
         const ast = parser.parse('the screen has red as color after x:button has down as state')
-        assertEquals(dc, ast as unknown)
+        assertEquals(dc, ast as LLangAst)
     }
 })
 

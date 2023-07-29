@@ -5,7 +5,7 @@
 import { evaluate } from "../core/evaluate.ts";
 import { getStandardKb } from "../core/prelude.ts";
 import { isLLangAst } from "../core/types.ts";
-import { syntaxes } from "../frontend-v1/grammar.ts";
+import { syntaxes } from "../frontend-v1/english.ts";
 import { getParser } from "../parser/parser.ts";
 
 const parser = getParser({ syntaxes: syntaxes })

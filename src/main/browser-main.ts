@@ -1,7 +1,7 @@
 /// <reference lib="dom" />
 import { getStandardKb } from "../core/prelude.ts";
 import { isLLangAst } from "../core/types.ts";
-import { syntaxes } from "../frontend-v1/grammar.ts";
+import { syntaxes } from "../frontend-v1/english.ts";
 import { evaluate, init, processEvents } from "../io/types.ts";
 import { getParser } from "../parser/parser.ts";
 

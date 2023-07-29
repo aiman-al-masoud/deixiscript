@@ -1045,7 +1045,7 @@ Deno.test({
             .and($('capra').isa('mammal'))
             .dump().kb
 
-        assertEquals(ask($.every('capra').$, kb).result, $('capra#1').and('capra#2').$ as unknown)
+        assertEquals(ask($.every('capra').$, kb).result, $('capra#1').and('capra#2').$)
         dassert(ask($.every('capra').isa('mammal').$, kb).result)
 
     }
