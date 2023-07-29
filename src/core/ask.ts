@@ -159,10 +159,8 @@ export function ask(
             const formula2 = { ...formula, ...newObj }
             const whenn = findMatch(formula2, kb0)
             if (whenn) return ask(whenn, kb0)
-
+            return { result: $(false).$, kb: kb0 }
     }
-
-    return { result: $(false).$, kb: kb0 }
 
 }
 
