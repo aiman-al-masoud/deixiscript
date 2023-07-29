@@ -1076,14 +1076,21 @@ Deno.test({
 Deno.test({
     name: 'test73',
     fn: () => {
-        const code = 'the cat is red'.split(' ')
+        // experiments w/ alterantive parsing strategy (similar to DCGs)
+        const code = 'cat is red'.split(' ')
         // console.log(code)
-        const kb = $({ parse: ['the', 'x:thing', 'is', 'y:thing'] }).when( $('x:thing').is('y:thing') ).dump().kb
-        const r = ask($({ parse: code }).$, kb).result
-        console.log(r)
+        const kb = $({ parse: ['x:thing', 'is', 'y:thing'], returnMe:true }).when($('x:thing').is('y:thing')).dump().kb
+        const r = ask($({ parse: code, returnMe:true }).$, kb).result
+        // console.log(r)
+        assertEquals(r, $('cat').is('red').$)
 
-        // match()
-        // console.log($('x:thing|if').$)
+        // const t = $('x:thing|if').$
+        // console.log(t)
+        // const m = match(t, $(['capra', 'scema', 'if']).$, $.emptyKb)
+        // console.log(m)
+
+        // const m2 = match($(['capra', t as any]).$, $(['capra', 'scema', 'if']).$, $.emptyKb)
+        // console.log(m2)
 
         // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
         // const r = ask($.the('sum').of($(1).and(5)).$, kb).result

@@ -140,6 +140,7 @@ export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
     type: 'generalized',
+    returnMe?:boolean,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>

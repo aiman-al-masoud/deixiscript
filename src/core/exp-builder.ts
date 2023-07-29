@@ -325,11 +325,17 @@ export class ExpBuilder<T extends LLangAst> {
 type ExpBuilderArg = WmAtom | LLangAst | ExpBuilder<LLangAst> | WmAtom[]
 type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] }
 type Var = `${string}:${string}`
-type ListPat = `${Var}|${Var}`
+type ListPat = `${Var}|${string}`
 type StringLiteralPattern = `"${string}"`
 
 function isVar(x: string): x is Var {
     return x.includes(':')
+}
+
+function isPat(x: string): x is ListPat {
+    const parts = x.split('|')
+    if (parts.length !== 2) return false
+    return isVar(parts[0])
 }
 
 function isStringLiteral(x: string): x is StringLiteralPattern {
@@ -369,12 +375,8 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangA
             type: 'string',
             value: x.substring(1, x.length - 1),
         }
-    } else if (x.includes('|')) {
+    } else if (isPat(x)) {
         const [seq, tail] = x.split('|')
-
-        if (!isVar(seq) || !isVar(tail)) {
-            throw new Error(``)
-        }
 
         return {
             type: 'list-pattern',
@@ -440,10 +442,10 @@ $.the = (x: string) => new ExpBuilder<ImplicitReference>({
  */
 $.a = $.the
 
-$.every = (x:string) => new ExpBuilder<ImplicitReference>({
-    type : 'implicit-reference',
-    headType :x,
-    number:'*',
+$.every = (x: string) => new ExpBuilder<ImplicitReference>({
+    type: 'implicit-reference',
+    headType: x,
+    number: '*',
 } as ImplicitReference)
 
 /**

@@ -167,8 +167,13 @@ export function ask(
             const newObj = Object.fromEntries(entries)
             const formula2 = { ...formula, ...newObj }
             const whenn = findMatch(formula2, kb0)
-            if (whenn) return ask(whenn, kb0)
+            if (whenn) {
+                // console.log(whenn)
+                if (formula2.returnMe) return {result:whenn, kb: kb0}
+                return ask(whenn, kb0)
+            }
             return { result: $(false).$, kb: kb0 }
+            // return {result: formula, kb:kb0}
     }
 
 }
