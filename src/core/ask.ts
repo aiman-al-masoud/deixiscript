@@ -167,7 +167,9 @@ export function ask(
             const newObj = Object.fromEntries(entries)
             const formula2 = { ...formula, ...newObj }
             const whenn = findMatch(formula2, kb0)
+            
             if (whenn) {
+                // console.log(whenn)
                 // console.log(whenn)
                 if (formula2.returnMe) return { result: whenn, kb: kb0 }
                 return ask(whenn, kb0)
@@ -196,9 +198,11 @@ function findMatch(ast: LLangAst, kb: KnowledgeBase) {
         // console.log('-------------------')
 
         if (!map) return
-        // console.log(map)
 
-        return subst(dc.when, map)
+        const res =  subst(dc.when, map)
+        // console.log(res)
+
+        return res
     })
 }
 

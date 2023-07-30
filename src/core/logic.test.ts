@@ -1110,6 +1110,24 @@ Deno.test({
 })
 
 
+Deno.test({
+    name: 'test75',
+    fn: () => {
+        // alt parser...
+        const kb =
+            $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', returnMe: true }))
+                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], returnMe: true }).when($('x:thing').isa('y:thing')))
+                .dump().kb
+
+        const code = '( cat is a mammal )'.split(' ')
+        const r = ask($({ parse: code }).$, kb).result
+        // console.log(r)
+        assertEquals(r, $('cat').isa('mammal').$)
+    }
+})
+
+
+
 // Deno.test({
 //     name: 'test73',
 //     fn: () => {
