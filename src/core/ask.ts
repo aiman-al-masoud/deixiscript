@@ -1,14 +1,11 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, findMatch } from "./types.ts";
 import { findAll, } from "./findAll.ts";
-import { subst } from "./subst.ts";
-import { match } from "./match.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
-import { first } from "../utils/first.ts";
 
 
 export function ask(
@@ -167,43 +164,10 @@ export function ask(
             const newObj = Object.fromEntries(entries)
             const formula2 = { ...formula, ...newObj }
             const whenn = findMatch(formula2, kb0)
-            
-            if (whenn) {
-                // console.log(whenn)
-                // console.log(whenn)
-                if (formula2.returnMe) return { result: whenn, kb: kb0 }
-                return ask(whenn, kb0)
-            }
+            if (whenn) return ask(whenn, kb0)
             return { result: $(false).$, kb: kb0 }
     }
 
-}
-
-function findMatch(ast: LLangAst, kb: KnowledgeBase) {
-
-    return first(kb.derivClauses, dc => {
-        if (!('when' in dc)) return
-
-        if (isConst(ast)) {
-            if (astsEqual(dc.conseq, ast)) {
-                return dc.when
-            } else {
-                return undefined
-            }
-        }
-
-        const map = match(dc.conseq, ast, kb)
-        // console.log(ast)
-        // console.log(dc.conseq)
-        // console.log('-------------------')
-
-        if (!map) return
-
-        const res =  subst(dc.when, map)
-        // console.log(res)
-
-        return res
-    })
 }
 
 function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {

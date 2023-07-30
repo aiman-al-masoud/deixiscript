@@ -12,6 +12,7 @@ import { subst } from "./subst.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { parse } from "./parse.ts";
 
 
 function dassert(x: LLangAst) {
@@ -1077,24 +1078,10 @@ Deno.test({
     name: 'test73',
     fn: () => {
         // experiments w/ alternative parsing strategy (similar to DCGs)
-        const kb = $({ parse: ['x:thing', 'is', 'y:thing'], returnMe: true }).when($('x:thing').is('y:thing')).dump().kb
+        const kb = $({ parse: ['x:thing', 'is', 'y:thing'] }).when($('x:thing').is('y:thing')).dump().kb
         const code = 'cat is red'.split(' ')
-        const r = ask($({ parse: code, returnMe: true }).$, kb).result
+        const r = parse($({ parse: code }).$, kb).result
         assertEquals(r, $('cat').is('red').$)
-        // console.log(r)
-
-        // const t = $('x:thing|if').$
-        // console.log(t)
-        // const m = match(t, $(['capra', 'scema', 'if']).$, $.emptyKb)
-        // console.log(m)
-
-        // const m2 = match($(['capra', t as any]).$, $(['capra', 'scema', 'if']).$, $.emptyKb)
-        // console.log(m2)
-
-        // const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump().kb
-        // const r = ask($.the('sum').of($(1).and(5)).$, kb).result
-        // console.log(r)
-        // console.log(ask($.the('sum').of($(30).minus(2).and(1)).$, kb).result)
     }
 })
 
@@ -1104,7 +1091,7 @@ Deno.test({
         // alt parser...
         const kb = $({ parse: ['(', 'x:thing|)'], returnMe: true }).when('x:thing').dump().kb
         const code = '( cat is a mammal )'.split(' ')
-        const r = ask($({ parse: code, returnMe: true }).$, kb).result
+        const r = parse($({ parse: code, returnMe: true }).$, kb).result
         assertEquals(r, $(['cat', 'is', 'a', 'mammal']).$)
     }
 })
@@ -1115,18 +1102,32 @@ Deno.test({
     fn: () => {
         // alt parser...
         const kb =
-            $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', returnMe: true }))
-                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], returnMe: true }).when($('x:thing').isa('y:thing')))
+            $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing' }))
+                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'] }).when($('x:thing').isa('y:thing')))
                 .dump().kb
 
         const code = '( cat is a mammal )'.split(' ')
-        const r = ask($({ parse: code }).$, kb).result
-        // console.log(r)
+        const r = parse($({ parse: code }).$, kb).result
         assertEquals(r, $('cat').isa('mammal').$)
     }
 })
 
 
+Deno.test({
+    name: 'test76',
+    fn: () => {
+        // alt parser...
+        const kb =
+            $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
+                .and($({ parse: ['if', 'x:thing|then', 'y:thing|.'], }).when($($({ parse: 'y:thing', }).$).if($({ parse: 'x:thing', }).$)))
+                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], }).when($('x:thing').isa('y:thing')))
+                .dump().kb
+
+        const code = '( if x is a cat then y is a dog . )'.split(' ')
+        const r = parse($({ parse: code, }).$, kb).result
+        assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
+    }
+})
 
 // Deno.test({
 //     name: 'test73',

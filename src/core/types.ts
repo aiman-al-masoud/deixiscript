@@ -1,9 +1,12 @@
 import { DeepMap } from "../utils/DeepMap.ts"
 import { deepEquals } from "../utils/deepEquals.ts"
+import { first } from "../utils/first.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
+import { match } from "./match.ts"
+import { subst } from "./subst.ts"
 
 /* WORLD-CONCEPTUAL MODEL */
 
@@ -140,7 +143,6 @@ export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
     type: 'generalized',
-    returnMe?: boolean,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>
@@ -323,4 +325,26 @@ export function pointsToThings(ast: LLangAst): boolean {
 
 export function isTruthy(ast: LLangAst) {
     return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
+}
+
+
+export function findMatch(ast: LLangAst, kb: KnowledgeBase) {
+
+    return first(kb.derivClauses, dc => {
+        if (!('when' in dc)) return
+
+        if (isConst(ast)) {
+            if (astsEqual(dc.conseq, ast)) {
+                return dc.when
+            } else {
+                return undefined
+            }
+        }
+
+        const map = match(dc.conseq, ast, kb)
+        if (!map) return
+
+        const res = subst(dc.when, map)
+        return res
+    })
 }
