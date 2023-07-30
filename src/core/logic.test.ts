@@ -1120,11 +1120,13 @@ Deno.test({
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
-                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], }).when($('x:thing').isa('y:thing')))
+                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
+                .and($({ parse: 'x:thing', }).when($('x:thing')))
                 .dump().kb
 
         const code = '( if x is a cat then y is a dog )'.split(' ')
         const r = parse($({ parse: code, }).$, kb)
+        // console.log(r)
         assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
     }
 })
