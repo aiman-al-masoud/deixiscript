@@ -2,7 +2,7 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -15,11 +15,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return deepMapOf([[template, f]])
     } else if (template instanceof Array && f instanceof Array) {
 
-        if (template.length !== f.length) return undefined
-        // if (template.length > f.length) return undefined
-
-        const ms = template.map((t, i) => match(t, f[i], kb))
-        return reduceMatchList(ms)
+        return matchLists(template, f, kb)
 
     } else if (template.type === f.type) {
 
@@ -48,15 +44,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return reduceMatchList(ms)
 
     } else if (template.type === 'list-pattern' && f.type === 'list-literal') {
-        const seq = f.value.slice(0, -1)
-        const tail = f.value.at(-1)
 
-        if (!tail) return undefined
-
-        const m1 = match(template.seq, { value: seq, type: 'list-literal' }, kb)
-        const m2 = match(template.value, tail, kb)
-
-        return reduceMatchList([m1, m2])
+        const { m } = matchListPToList(template, f, kb)
+        return m
 
     } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
         const m1 = match(template.head, f, kb)
@@ -107,4 +97,48 @@ function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
 
     return ms.map(x => x as AstMap)
         .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
+}
+
+function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
+
+    if (template.length > f.length) return undefined
+
+    let ff = [...f]
+    const ms: (AstMap | undefined)[] = []
+
+    template.forEach(t => {
+
+        if (t.type === 'list-pattern') {
+            const { m, tailIndex } = matchListPToList(t, { type: 'list-literal', value: ff }, kb)
+            ms.push(m)
+            ff = ff.slice(tailIndex + 1)
+        } else {
+            ms.push(match(t, ff[0], kb))
+            ff = ff.slice(1)
+        }
+    })
+
+    return reduceMatchList(ms)
+
+}
+
+function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBase) {
+
+    const tailIndex = f.value.findIndex(x => match(template.value, x, kb))
+
+    if (tailIndex < 0) {
+        return {
+            m: undefined,
+            tailIndex,
+        }
+    }
+
+    const seq = f.value.slice(0, tailIndex)
+    const tail = f.value[tailIndex]
+
+    return {
+        m: deepMapOf([[template.value, tail], [template.seq, { type: 'list-literal', value: seq }]]),
+        tailIndex,
+    }
+
 }
