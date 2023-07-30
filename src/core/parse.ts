@@ -3,17 +3,16 @@ import { LLangAst, KnowledgeBase, isLLangAst, findMatch } from "./types.ts";
 
 export function parse(
     ast: LLangAst,
-    kb0: KnowledgeBase,
-): {
-    result: LLangAst,
     kb: KnowledgeBase,
-} {
+): LLangAst {
 
-    const when = findMatch(ast, kb0)
-    if (!when) return { result: ast, kb: kb0 }
-    const when2 = findMatch(when, kb0) ?? when
+    const when = findMatch(ast, kb)
+    if (!when) return ast
 
-    const entries = Object.entries(when2).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], parse(e[1], kb0).result])
-    const ast2 = { ...when2, ...Object.fromEntries(entries) }
-    return { result: ast2, kb: kb0 }
+    const entries = Object.entries(when)
+        .filter((e): e is [string, LLangAst] => isLLangAst(e[1]))
+        .map(e => [e[0], parse(e[1], kb)])
+
+    const ast2 = { ...when, ...Object.fromEntries(entries) }
+    return parse(ast2, kb)
 }

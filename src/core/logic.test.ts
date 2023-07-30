@@ -1080,7 +1080,7 @@ Deno.test({
         // experiments w/ alternative parsing strategy (similar to DCGs)
         const kb = $({ parse: ['x:thing', 'is', 'y:thing'] }).when($('x:thing').is('y:thing')).dump().kb
         const code = 'cat is red'.split(' ')
-        const r = parse($({ parse: code }).$, kb).result
+        const r = parse($({ parse: code }).$, kb)
         assertEquals(r, $('cat').is('red').$)
     }
 })
@@ -1091,7 +1091,7 @@ Deno.test({
         // alt parser...
         const kb = $({ parse: ['(', 'x:thing|)'], returnMe: true }).when('x:thing').dump().kb
         const code = '( cat is a mammal )'.split(' ')
-        const r = parse($({ parse: code, returnMe: true }).$, kb).result
+        const r = parse($({ parse: code, returnMe: true }).$, kb)
         assertEquals(r, $(['cat', 'is', 'a', 'mammal']).$)
     }
 })
@@ -1107,7 +1107,7 @@ Deno.test({
                 .dump().kb
 
         const code = '( cat is a mammal )'.split(' ')
-        const r = parse($({ parse: code }).$, kb).result
+        const r = parse($({ parse: code }).$, kb)
         assertEquals(r, $('cat').isa('mammal').$)
     }
 })
@@ -1124,7 +1124,7 @@ Deno.test({
                 .dump().kb
 
         const code = '( if x is a cat then y is a dog )'.split(' ')
-        const r = parse($({ parse: code, }).$, kb).result
+        const r = parse($({ parse: code, }).$, kb)
         assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
     }
 })
