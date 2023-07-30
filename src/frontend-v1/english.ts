@@ -289,7 +289,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '+' },
         { types: ['digits'], role: 'number', number: '1|0', defaultsTo: 1 },
         { types: ['space'], number: '*' },
-        { types: ['identifier'], role: 'headType' },
+        { types: ['entity'], role: 'headType' },
         { types: ['space'], number: '*' },
         { types: ['which-clause', 'whose-clause'], number: '1|0', expand: true },
         { types: ['space'], number: '*' },
