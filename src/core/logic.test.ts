@@ -3,7 +3,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
+import { DerivationClause, Entity, KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
@@ -1120,14 +1120,18 @@ Deno.test({
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
-                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
-                .and($({ parse: 'x:thing', }).when($('x:thing')))
+                .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
+                .and($({ parse: ['the', 'noun:thing'] }).when( $.the($({ parse: 'noun:thing' })) /* $({ parse: 'noun:thing' }) */  ))
+                .and($({ parse: ['x:thing'] }).when('x:thing'))
+                .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump().kb
 
         const code = '( if x is a cat then y is a dog )'.split(' ')
         const r = parse($({ parse: code, }).$, kb)
         // console.log(r)
         assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
+
+        // console.log(parse($({ parse: '( if the cat is a feline then y is a dog )'.split(' ') }).$, kb))
     }
 })
 

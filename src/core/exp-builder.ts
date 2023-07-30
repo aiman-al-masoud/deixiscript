@@ -428,14 +428,24 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
  */
 $._ = $('')
 
+function createImplicit(x: ExpBuilderArg, number: ImplicitReference['number']) {
+    return new ExpBuilder<ImplicitReference>({
+        type: 'implicit-reference',
+        // headType: { type: 'entity', value: x },
+        headType: makeAst(x),
+        number,
+    } as ImplicitReference)
+}
+
 /**
- * Creates an Anaphor.
+ * Creates an ImplicitReference.
  */
-$.the = (x: string) => new ExpBuilder<ImplicitReference>({
+$.the = (x: ExpBuilderArg) => createImplicit(x, 1) /* new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
-    headType: { type: 'entity', value: x },
+    // headType: { type: 'entity', value: x },
+    headType : makeAst(x),
     number: 1,
-} as ImplicitReference)
+} as ImplicitReference) */
 
 
 /**
@@ -443,12 +453,12 @@ $.the = (x: string) => new ExpBuilder<ImplicitReference>({
  */
 $.a = $.the
 
-$.every = (x: string) => new ExpBuilder<ImplicitReference>({
+$.every = (x: ExpBuilderArg) => createImplicit(x, '*') /* new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
     headType: { type: 'entity', value: x },
     number: '*',
 } as ImplicitReference)
-
+ */
 /**
  * Empty knowledge base.
  */
