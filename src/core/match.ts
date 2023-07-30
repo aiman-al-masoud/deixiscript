@@ -2,7 +2,7 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -124,7 +124,10 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
 
 function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBase) {
 
-    const tailIndex = f.value.findIndex(x => match(template.value, x, kb))
+    const tailIndex =
+        astsEqual(template.value, $._.$) ? // no tail case
+            f.value.length
+            : f.value.findIndex(x => match(template.value, x, kb))
 
     if (tailIndex < 0) {
         return {

@@ -1119,11 +1119,11 @@ Deno.test({
         // alt parser...
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
-                .and($({ parse: ['if', 'x:thing|then', 'y:thing|.'], }).when($($({ parse: 'y:thing', }).$).if($({ parse: 'x:thing', }).$)))
+                .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($($({ parse: 'y:thing', }).$).if($({ parse: 'x:thing', }).$)))
                 .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], }).when($('x:thing').isa('y:thing')))
                 .dump().kb
 
-        const code = '( if x is a cat then y is a dog . )'.split(' ')
+        const code = '( if x is a cat then y is a dog )'.split(' ')
         const r = parse($({ parse: code, }).$, kb).result
         assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
     }
@@ -1144,8 +1144,8 @@ Deno.test({
 
 
 // Deno.test({
-//     name: 'test67',
+//     name: 'test77',
 //     fn: () => {
-
+//         console.log($('x:thing|').$)
 //     }
 // })

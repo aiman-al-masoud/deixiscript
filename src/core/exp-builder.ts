@@ -422,7 +422,8 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
 }
 
 /**
- * Omitted subject for relative clauses, as in Linguistic Gapping. 
+ * Conventional empty subject, for (among other things) relative clauses, 
+ * as in Linguistic Gapping. 
  * https://en.wikipedia.org/wiki/Relative_clause#Formation_methods
  */
 $._ = $('')
@@ -432,7 +433,7 @@ $._ = $('')
  */
 $.the = (x: string) => new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
-    headType: {type:'entity', value:x},
+    headType: { type: 'entity', value: x },
     number: 1,
 } as ImplicitReference)
 
@@ -444,7 +445,7 @@ $.a = $.the
 
 $.every = (x: string) => new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
-    headType: {type:'entity', value:x},
+    headType: { type: 'entity', value: x },
     number: '*',
 } as ImplicitReference)
 
