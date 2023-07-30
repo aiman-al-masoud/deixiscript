@@ -113,7 +113,7 @@ export type ListPattern = {
 
 export type ImplicitReference = {
     type: 'implicit-reference',
-    headType: string,
+    headType: Entity,
     which?: LLangAst,
     whose?: SimpleFormula,
     owner?: LLangAst,
@@ -140,7 +140,7 @@ export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
     type: 'generalized',
-    returnMe?:boolean,
+    returnMe?: boolean,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>

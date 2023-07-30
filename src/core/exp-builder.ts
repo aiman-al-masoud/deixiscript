@@ -432,7 +432,7 @@ $._ = $('')
  */
 $.the = (x: string) => new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
-    headType: x,
+    headType: {type:'entity', value:x},
     number: 1,
 } as ImplicitReference)
 
@@ -444,7 +444,7 @@ $.a = $.the
 
 $.every = (x: string) => new ExpBuilder<ImplicitReference>({
     type: 'implicit-reference',
-    headType: x,
+    headType: {type:'entity', value:x},
     number: '*',
 } as ImplicitReference)
 

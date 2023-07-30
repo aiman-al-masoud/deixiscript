@@ -14,7 +14,7 @@ export function removeImplicit(
 
     if (ast.type === 'implicit-reference') {
 
-        const head = $(`x${random()}:${ast.headType}`).$
+        const head = $(`x${random()}:${ast.headType.value}`).$
 
         if (ast.whose) {
             if (ast.whose.subject.type !== 'entity') throw new Error('')
@@ -31,12 +31,13 @@ export function removeImplicit(
             return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number }
 
         } else if (ast.owner) {
-            return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$)
+            return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType.value)).$)
         } else {
-            const complement = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
+
+            const complement = Object.entries({ ...ast, headType: undefined }).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
 
             if (complement) {
-                return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$)
+                return removeImplicit($.the(ast.headType.value).which($._.has(complement[1]).as(complement[0])).$)
             } else {
                 return { description: $(true).$, head, type: 'arbitrary-type', number: ast.number }
             }

@@ -1076,7 +1076,7 @@ Deno.test({
 Deno.test({
     name: 'test73',
     fn: () => {
-        // experiments w/ alterantive parsing strategy (similar to DCGs)
+        // experiments w/ alternative parsing strategy (similar to DCGs)
         // console.log(code)
         const kb = $({ parse: ['x:thing', 'is', 'y:thing'], returnMe:true }).when($('x:thing').is('y:thing')).dump().kb
         const code = 'cat is red'.split(' ')

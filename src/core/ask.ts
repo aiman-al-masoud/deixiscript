@@ -79,14 +79,14 @@ export function ask(
             }
         case 'conjunction':
             {
-                if (pointsToThings(formula.f1) || pointsToThings(formula.f2)) return {result:formula, kb:kb0}
+                if (pointsToThings(formula.f1) || pointsToThings(formula.f2)) return { result: formula, kb: kb0 }
                 const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
                 if (!isTruthy(f1)) return { result: $(false).$, kb: kb1 }
                 return ask(formula.f2, kb1)
             }
         case 'disjunction':
             {
-                if (pointsToThings(formula.f1) || pointsToThings(formula.f2)) return {result:formula, kb:kb0}
+                if (pointsToThings(formula.f1) || pointsToThings(formula.f2)) return { result: formula, kb: kb0 }
                 const { kb: kb1, result: f1 } = ask(formula.f1, kb0)
                 if (isTruthy(f1)) return { result: $(true).$, kb: kb1 }
                 return ask(formula.f2, kb1)
@@ -169,11 +169,10 @@ export function ask(
             const whenn = findMatch(formula2, kb0)
             if (whenn) {
                 // console.log(whenn)
-                if (formula2.returnMe) return {result:whenn, kb: kb0}
+                if (formula2.returnMe) return { result: whenn, kb: kb0 }
                 return ask(whenn, kb0)
             }
             return { result: $(false).$, kb: kb0 }
-            // return {result: formula, kb:kb0}
     }
 
 }
