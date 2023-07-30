@@ -1119,7 +1119,7 @@ Deno.test({
         // alt parser...
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
-                .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($($({ parse: 'y:thing', }).$).if($({ parse: 'x:thing', }).$)))
+                .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'], }).when($('x:thing').isa('y:thing')))
                 .dump().kb
 
