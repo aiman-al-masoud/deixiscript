@@ -135,6 +135,7 @@ export class ExpBuilder<T extends LLangAst> {
                 head: this.exp as Variable,
                 description: $(false).$,
                 number: 1,
+                isNew: false,
             }
         })
 
@@ -153,6 +154,7 @@ export class ExpBuilder<T extends LLangAst> {
                 description: makeAst(formula),
                 type: 'arbitrary-type',
                 number: 1,
+                isNew: false,
             }
         })
 
@@ -264,6 +266,7 @@ export class ExpBuilder<T extends LLangAst> {
             head: this.exp,
             description: description ? makeAst(description) : $(true).$,
             number: 1,
+            isNew: false,
         })
 
     }
@@ -428,37 +431,22 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilde
  */
 $._ = $('')
 
-function createImplicit(x: ExpBuilderArg, number: ImplicitReference['number']) {
+function createImplicit(x: ExpBuilderArg, number: ImplicitReference['number'], isNew: boolean) {
     return new ExpBuilder<ImplicitReference>({
         type: 'implicit-reference',
-        // headType: { type: 'entity', value: x },
         headType: makeAst(x),
         number,
+        isNew,
     } as ImplicitReference)
 }
 
 /**
  * Creates an ImplicitReference.
  */
-$.the = (x: ExpBuilderArg) => createImplicit(x, 1) /* new ExpBuilder<ImplicitReference>({
-    type: 'implicit-reference',
-    // headType: { type: 'entity', value: x },
-    headType : makeAst(x),
-    number: 1,
-} as ImplicitReference) */
+$.the = (x: ExpBuilderArg) => createImplicit(x, 1, false)
+$.a = (x: ExpBuilderArg) => createImplicit(x, 1, true)
+$.every = (x: ExpBuilderArg) => createImplicit(x, '*', false)
 
-
-/**
- * See `$.the()`
- */
-$.a = $.the
-
-$.every = (x: ExpBuilderArg) => createImplicit(x, '*') /* new ExpBuilder<ImplicitReference>({
-    type: 'implicit-reference',
-    headType: { type: 'entity', value: x },
-    number: '*',
-} as ImplicitReference)
- */
 /**
  * Empty knowledge base.
  */

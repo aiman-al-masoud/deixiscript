@@ -16,7 +16,7 @@ export function ask(
     kb: KnowledgeBase,
 } {
 
-    const formula = removeImplicit(/* decompress(ast) */ ast)
+    const formula = ast
 
     switch (formula.type) {
 
@@ -95,6 +95,8 @@ export function ask(
             return ask($(ast).suchThat(true).$, kb0)
         case 'arbitrary-type':
 
+            if (formula.isNew) return { result: formula, kb: kb0 }
+
             const wen = findMatch(formula, kb0)
             if (wen) return ask(wen, kb0)
 
@@ -124,6 +126,8 @@ export function ask(
                 return ask(formula.otherwise, kb)
             }
         case 'implicit-reference':
+            return ask(removeImplicit(formula), kb0)
+
         case "command":
         case "question":
             throw new Error('!!!!')

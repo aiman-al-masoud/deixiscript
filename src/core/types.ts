@@ -121,6 +121,7 @@ export type ImplicitReference = {
     whose?: SimpleFormula,
     owner?: LLangAst,
     number: 1 | '*',
+    isNew: boolean,
 } & {
     [complement: string]: LLangAst,
 }
@@ -130,6 +131,7 @@ export type ArbitraryType = {
     head: Variable,
     description: LLangAst,
     number: 1 | '*',
+    isNew: boolean,
 }
 
 export type MathExpression = {

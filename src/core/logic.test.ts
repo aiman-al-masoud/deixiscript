@@ -3,7 +3,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, Entity, KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
+import { DerivationClause, Entity, KnowledgeBase, LLangAst, WhenDerivationClause, isTruthy } from "./types.ts";
 import { WorldModel } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
@@ -13,6 +13,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { parse } from "./parse.ts";
+import { findAsts } from "./findAsts.ts";
 
 
 function dassert(x: LLangAst) {
@@ -567,8 +568,11 @@ Deno.test({
             .and($.a('cat').whose($('fur').has('black').as('color')).exists)
             .dump().kb
 
+
         const kb1 = tell($.the('cat').whose($('fur').has('red').as('color')).has(1).as('hunger')
             .and($.the('cat').whose($('fur').has('black').as('color')).has(1).as('hunger')).$, kb0).kb
+
+        // console.log(kb1.wm)
 
         const dc =
             $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' })
@@ -576,11 +580,14 @@ Deno.test({
 
         const kb2 = tell(dc, kb1).kb
 
+
         // console.log('redcat=',ask($.a('cat').whose($('fur').has('red').as('color')).$, kb2).result)
         // console.log('blackcat=',ask($.a('cat').whose($('fur').has('black').as('color')).$, kb2).result)
 
-        const statement1 = $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
-        const statement2 = $({ subject: $.a('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
+        const statement1 = $({ subject: $.the('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
+        const statement2 = $({ subject: $.the('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
+
+        // console.log(kb2.derivClauses[0])
 
         const result1 = ask(statement1, kb2).result
         const result2 = ask(statement2, kb2).result
@@ -638,11 +645,19 @@ Deno.test({
     name: 'test52',
     fn: () => {
 
-        const maxX = $.a('panel').has($.a('number')).as('max-x').when(
+        const maxX = $.the('panel').has($.the('number')).as('max-x').when(
             $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
         ).$
 
-        const maxY = $.a('panel').has($.a('number')).as('max-y').when(
+        // console.log(removeImplicit(maxX))
+        // console.log(findAsts(maxX, 'implicit-reference'))
+        // console.log('------------------------')
+        // const rim = removeImplicit(maxX)
+        // console.log(rim)
+        // assertEquals(findAsts(rim, 'implicit-reference').length, 0)
+
+
+        const maxY = $.the('panel').has($.the('number')).as('max-y').when(
             $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
         ).$
 
@@ -671,11 +686,24 @@ Deno.test({
             .and(parent)
             .dump().kb
 
-        assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
-        assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
+        assertEquals(kb.derivClauses.some(x => findAsts(x, 'implicit-reference').length), false)
 
-        assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
-        assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
+        // console.log(kb.wm)
+        // console.log( ((kb.derivClauses[0] as any).when as any).object)
+        // console.log(kb.derivClauses[1])
+        // console.log(kb.derivClauses[2])
+
+        // console.log(kb.derivClauses[0].conseq)
+        // console.log( removeImplicit($.the('max-x').of('panel#2').$))
+
+        // const m = match(kb.derivClauses[0].conseq, $('panel#2').has('n:number').as('max-x').$ , kb)
+        // console.log(m)
+
+        assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
+        // assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
+
+        // assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
+        // assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
 
     }
 })
@@ -727,11 +755,11 @@ Deno.test({
     name: 'test54',
     fn: () => {
 
-        const maxX = $.a('panel').has($.a('number')).as('max-x').when(
+        const maxX = $.the('panel').has($.the('number')).as('max-x').when(
             $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
         ).$
 
-        const maxY = $.a('panel').has($.a('number')).as('max-y').when(
+        const maxY = $.the('panel').has($.the('number')).as('max-y').when(
             $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
         ).$
 
@@ -1121,7 +1149,7 @@ Deno.test({
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
-                .and($({ parse: ['the', 'noun:thing'] }).when( $.the($({ parse: 'noun:thing' })) /* $({ parse: 'noun:thing' }) */  ))
+                .and($({ parse: ['the', 'noun:thing'] }).when($.the($({ parse: 'noun:thing' })) /* $({ parse: 'noun:thing' }) */))
                 .and($({ parse: ['x:thing'] }).when('x:thing'))
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump().kb
@@ -1152,6 +1180,8 @@ Deno.test({
 // Deno.test({
 //     name: 'test77',
 //     fn: () => {
-//         console.log($('x:thing|').$)
+//         // const x = ask($.a('cat').$, $.emptyKb).result
+//         // console.log(x)
+//         // console.log($('x:thing|').$)
 //     }
 // })

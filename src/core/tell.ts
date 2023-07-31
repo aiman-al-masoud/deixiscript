@@ -22,7 +22,7 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
     eliminations: WorldModel,
 } {
 
-    const ast = removeImplicit(/* decompress(ast1) */ast1)
+    const ast = ast1
 
     let additions: WorldModel = []
     let eliminations: WorldModel = []
@@ -63,7 +63,9 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             throw new Error(`ambiguous disjunction`)
         case 'when-derivation-clause':
         case 'after-derivation-clause':
-            addedDerivationClauses = [ast]
+            // console.log(ast)
+            addedDerivationClauses = [removeImplicit(ast)]
+            // addedDerivationClauses = [ast]
             break
         case 'if-else':
             return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
@@ -73,6 +75,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
                 additions = instantiateConcept($(ast.value).suchThat(true).$, kb)
             } else if (ast.value.type === 'arbitrary-type') {
                 additions = instantiateConcept(ast.value, kb)
+            } else if (ast.value.type === 'implicit-reference') {
+                additions = instantiateConcept(removeImplicit(ast.value), kb)
             } else {
                 throw new Error('!!!!! ')
             }
