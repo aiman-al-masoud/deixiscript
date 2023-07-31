@@ -1,36 +1,27 @@
-// import { ask } from "./ask.ts";
+import { match } from "./match.ts";
+import { KnowledgeBase, LLangAst } from "./types.ts";
+
+/**
+ * Returns +ve if astOne is more specific than astTwo, -ve if the 
+ * opposite is true, 0 if astOne and astTwo are equivalent or unrelated.
+ */
+function compareSpecificities(astOne: LLangAst, astTwo: LLangAst, kb: KnowledgeBase) {
+    const twoMoreSpec = match(astOne, astTwo, kb)
+    const oneMoreSpec = match(astTwo, astOne, kb)
+
+    if (oneMoreSpec && !twoMoreSpec) return 1
+    if (twoMoreSpec && !oneMoreSpec) return -1
+
+    return 0 // unrelated or equivalent, no difference
+}
+
 // import { $ } from "./exp-builder.ts";
-// import { removeImplicit } from "./removeImplicit.ts";
-// import { tell } from "./tell.ts";
-// import { ArbitraryType } from "./types.ts";
-
-// //this has the potential to be used in removeImplicit() (as well as maxSpecificity sort of derivation clauses)
-
-// // get all anaphors in AST, start with first, convert to ArbitraryType,
-// // go to second, check if it matches, etc...
-
-// // what about match()
-
-// export function isADerivableFromB(a: ArbitraryType, b: ArbitraryType) {
-//     const kb = tell($(b).exists.$, $.emptyKb).kb
-//     return !!ask($(a).exists.$, kb).result.value
-// }
-
-// const x = isADerivableFromB(
-//     removeImplicit($.the('cat').whose($('fur').has('red').as('color')).$),
-//     removeImplicit($.the('cat').$),
+// const x = compareSpecificities(
+//     $.the('cat').is('hungry').$,
+//     $.the('cat').which($._.is('white')).is('hungry').$,
+//     $.emptyKb,
 // )
-
-// const y = isADerivableFromB(
-//     removeImplicit($.the('cat').$),
-//     removeImplicit($.the('cat').whose($('fur').has('red').as('color')).$),
-// )
-
-
 // console.log(x)
-// console.log(y)
-
-
 
 
 
