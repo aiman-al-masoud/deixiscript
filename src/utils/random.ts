@@ -1,3 +1,3 @@
 export function random() {
-    return parseInt(1000 * Math.random() + '')
+    return parseInt(9999 * Math.random() + '')
 }
