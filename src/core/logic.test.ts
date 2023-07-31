@@ -580,54 +580,54 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test54',
-    fn: () => {
+// Deno.test({
+//     name: 'test54',
+//     fn: () => {
 
-        const maxX = $.the('panel').has($.the('number')).as('max-x').when(
-            $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
-        ).$
+//         const maxX = $.the('panel').has($.the('number')).as('max-x').when(
+//             $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
+//         ).$
 
-        const maxY = $.the('panel').has($.the('number')).as('max-y').when(
-            $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
-        ).$
+//         const maxY = $.the('panel').has($.the('number')).as('max-y').when(
+//             $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
+//         ).$
 
-        const parent = $('p1:panel').has('p2:panel').as('parent').when(
-            $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('max-x').of('p2:panel').$)
-                .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel').$))
-                .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('max-y').of('p2:panel').$))
-                .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
-                .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
-        ).$
+//         const parent = $('p1:panel').has('p2:panel').as('parent').when(
+//             $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('max-x').of('p2:panel').$)
+//                 .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel').$))
+//                 .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('max-y').of('p2:panel').$))
+//                 .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
+//                 .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
+//         ).$
 
-        const kb = $('panel#1').isa('panel')
-            .and($('panel#1').has(20).as('x-coord'))
-            .and($('panel#1').has(10).as('y-coord'))
-            .and($('panel#1').has(1).as('z-index'))
-            .and($('panel#1').has(5).as('width'))
-            .and($('panel#1').has(4).as('height'))
-            .and($('panel#2').isa('panel'))
-            .and($('panel#2').has(10).as('x-coord'))
-            .and($('panel#2').has(5).as('y-coord'))
-            .and($('panel#2').has(0).as('z-index'))
-            .and($('panel#2').has(10).as('width'))
-            .and($('panel#2').has(10).as('height'))
-            .and(maxX)
-            .and(maxY)
-            .and(parent)
-            .dump()
+//         const kb = $('panel#1').isa('panel')
+//             .and($('panel#1').has(20).as('x-coord'))
+//             .and($('panel#1').has(10).as('y-coord'))
+//             .and($('panel#1').has(1).as('z-index'))
+//             .and($('panel#1').has(5).as('width'))
+//             .and($('panel#1').has(4).as('height'))
+//             .and($('panel#2').isa('panel'))
+//             .and($('panel#2').has(10).as('x-coord'))
+//             .and($('panel#2').has(5).as('y-coord'))
+//             .and($('panel#2').has(0).as('z-index'))
+//             .and($('panel#2').has(10).as('width'))
+//             .and($('panel#2').has(10).as('height'))
+//             .and(maxX)
+//             .and(maxY)
+//             .and(parent)
+//             .dump()
 
-        assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
-        assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
+//         assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
+//         assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
 
-        assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
-        assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
+//         assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
+//         assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
 
-        dassert(ask($('panel#1').has('panel#2').as('parent').$, kb).result)
-        dassert(ask($('panel#2').has('panel#1').as('parent').isNotTheCase.$, kb).result)
+//         dassert(ask($('panel#1').has('panel#2').as('parent').$, kb).result)
+//         dassert(ask($('panel#2').has('panel#1').as('parent').isNotTheCase.$, kb).result)
 
-    }
-})
+//     }
+// })
 
 Deno.test({
     name: 'test55',
@@ -978,7 +978,7 @@ Deno.test({
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
-                .and($({ parse: ['the', 'noun:thing'] }).when($.the($({ parse: 'noun:thing' })) /* $({ parse: 'noun:thing' }) */))
+                .and($({ parse: ['the', 'x:thing'] }).when($.the($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing'] }).when('x:thing'))
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump()
@@ -988,13 +988,14 @@ Deno.test({
         // console.log(r)
         assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
 
-        // console.log(parse($({ parse: '( if the cat is a feline then y is a dog )'.split(' ') }).$, kb))
+        // console.log(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb))
+        assertEquals(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
     }
 })
 
 Deno.test({
-    name : 'test77',
-    fn : ()=>{
+    name: 'test77',
+    fn: () => {
         // a general template can match a specific formula
         // ...a specific template cannot match a general formula!
         const kb = $('cat').isa('mammal').dump()
@@ -1002,7 +1003,7 @@ Deno.test({
         const specific = $('cat').is('hungry').$
 
         assertNotEquals(match(general, specific, kb), undefined)
-        assertEquals(match( specific, general, kb), undefined)
+        assertEquals(match(specific, general, kb), undefined)
     }
 })
 

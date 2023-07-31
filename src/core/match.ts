@@ -21,7 +21,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
-        // return matchImplicit(template, f, kb)
+        return matchImplicit(template, f, kb)
 
     } else if (template.type === f.type) {
 
@@ -54,6 +54,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const { m } = matchListPToList(template, f, kb)
         return m
 
+    } else if (template.type === 'implicit-reference' && f.type === 'variable') {
+
+        return match(removeImplicit(template), f, kb)
+
     } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
         const m1 = match(template.head, f, kb)
         const m2 = match(template.description, $(true).$, kb)
@@ -69,6 +73,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'number' && f.type === 'math-expression') {
         return deepMapOf([[template, f]])
 
+    } else if (template.type === 'implicit-reference' && isConst(f)) {
+
+        return match(removeImplicit(template), f, kb)
+
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
 
         const m = match(template.head, f, kb)
@@ -77,6 +85,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const desc = subst(template.description, [template.head, f])
         const ok = isTruthy(ask(desc, kb).result)
         if (ok) return deepMapOf([[template, f]])
+
+    } else if (template.type === 'implicit-reference' && f.type === 'arbitrary-type') {
+
+        return match(removeImplicit(template), f, kb)
 
     } else if (template.type === 'variable' && isConst(f)) {
 
@@ -95,6 +107,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m1) return m1
         if (m2) return m2
     }
+
 
 }
 
@@ -152,6 +165,6 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
 
 }
 
-// function matchImplicit(template: ImplicitReference, f: ImplicitReference, kb: KnowledgeBase) {
-//     return undefined
-// }
+function matchImplicit(template: ImplicitReference, f: ImplicitReference, kb: KnowledgeBase) {
+    return match(removeImplicit(template), removeImplicit(f), kb)
+}

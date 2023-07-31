@@ -62,8 +62,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         case 'when-derivation-clause':
         case 'after-derivation-clause':
             // console.log(ast)
-            addedDerivationClauses = [removeImplicit(ast)]
-            // addedDerivationClauses = [ast]
+            // addedDerivationClauses = [removeImplicit(ast)]
+            addedDerivationClauses = [ast]
             break
         case 'if-else':
             return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)

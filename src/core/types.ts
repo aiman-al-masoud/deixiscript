@@ -345,7 +345,7 @@ export function findWhenMatch(ast: LLangAst, kb: KnowledgeBase) {
 
         const map = match(dc.conseq, ast, kb)
         if (!map) return
-
+        
         const res = subst(dc.when, map)
         return res
     })
