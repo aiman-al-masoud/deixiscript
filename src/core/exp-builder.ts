@@ -173,7 +173,7 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     dump(dcs?: DerivationClause[]) {
-        return tell(this.exp, { wm: [], derivClauses: dcs ? dcs : [], deicticDict: {}, })
+        return tell(this.exp, { ...$.emptyKb, derivClauses: dcs ?? [] }).kb
     }
 
     whose(ast: ExpBuilder<SimpleFormula>) {
