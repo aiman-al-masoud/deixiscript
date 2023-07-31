@@ -105,7 +105,7 @@ export type Variable = {
 
 export type ListLiteral = {
     type: 'list-literal',
-    value: LLangAst[]
+    value: LLangAst[],
 }
 
 export type ListPattern = {

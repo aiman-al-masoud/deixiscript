@@ -61,7 +61,7 @@ export function getStandardKb(): KnowledgeBase {
             ).$,
 
             // pronouns as derivation clauses
-            $('it').when('x:thing').$
+            $('it').when('x:thing').$,
         ],
     }
 }
