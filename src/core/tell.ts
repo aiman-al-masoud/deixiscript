@@ -3,7 +3,7 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, findWhenMatch, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, findWhenMatch, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
@@ -71,12 +71,11 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            // if (ast.value.type === 'variable') {
-                // additions = instantiateConcept($(ast.value).suchThat(true).$, kb)
-            /* } else  */if (ast.value.type === 'arbitrary-type') {
-                additions = instantiateConcept(ast.value, kb)
+            if (ast.value.type === 'arbitrary-type') {
+                additions = instantiateConcept(ast.value.head, ast.value.description, kb)
             } else if (ast.value.type === 'implicit-reference') {
-                additions = instantiateConcept(removeImplicit(ast.value), kb)
+                const at = removeImplicit(ast.value)
+                additions = instantiateConcept(at.head, at.description, kb)
             } else {
                 throw new Error('!!!!! ')
             }
@@ -214,7 +213,8 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
         if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
 
         return instantiateConcept(
-            $(`x:${d}`).suchThat($(id).has(`x:${d}`).as(parts[i]).$).$,
+            $(`x:${d}`).$,
+            $(id).has(`x:${d}`).as(parts[i]).$,
             kb,
         )
     })
@@ -236,14 +236,15 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
  * Returns the additions to the World Model ONLY.
  */
 function instantiateConcept(
-    ast: ArbitraryType,
+    head: Variable,
+    description: LLangAst,
     kb: KnowledgeBase,
 ): WorldModel {
 
-    const id = ast.head.varType + '#' + random()
-    const where = subst(ast.description, [ast.head, $(id).$])
+    const id = head.varType + '#' + random()
+    const where = subst(description, [head, $(id).$])
 
-    const isAAdditions = tell($(id).isa(ast.head.varType).$, kb).additions
+    const isAAdditions = tell($(id).isa(head.varType).$, kb).additions
     const whereAdditions = tell(where, kb).additions
 
     const conflicts = isAAdditions
