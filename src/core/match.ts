@@ -166,7 +166,7 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
             f.value.length
             : f.value.findIndex((x, i) => {
                 const m1 = match(template.value, x, kb)
-                const m2 = match(template.seq, { type: 'list-literal', value: f.value.slice(0, i) }, kb)
+                const m2 = match(template.seq, $(f.value.slice(0, i)).$, kb)
                 return reduceMatchList([m1, m2])
             })
 
@@ -181,7 +181,7 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
     const tail = f.value[tailIndex]
 
     return {
-        m: deepMapOf([[template.value, tail], [template.seq, { type: 'list-literal', value: seq }]]),
+        m: deepMapOf([[template.value, tail], [template.seq, $(seq).$]]),
         tailIndex,
     }
 
