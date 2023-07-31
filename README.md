@@ -1,60 +1,42 @@
 # Deixiscript
 
-# Core Features
+## Notes on Philosophy
 
-- anaphora
-  - first/second/ ordinal vs cardinal...
-- tell()
-  - less than and greater than as commands
-- parser
-  - "cat number 2" ---> explicit reference to constant "cat#2" ?
-- refactoring
-  - most used derivation clauses/annotations get their own LLangAst
+- tell() and ask() do NOT have ANY side effects (like all other functions).
+  tell() and ask() both return a brand new knowledge base object, because even
+  ask() may produce updated versions of the deictic dictionary and add newly
+  computed numbers to the world model.
 
-# JS INTEROP
+- at the most basic level there is nothing but: entities, is-a-relations and
+  has-as-relations. This is the "interface" through which Deixiscript
+  communicates with the outer world, including JS, which only uderstands has-as
+  properties (not is-a ones because JS doesn't have multiple inheritance).
 
-- getThingById(id:string, things:ThingDict):Thing
-- createThingInCase(id:string, things:ThingDict)
-- update(additions:HasSentence[], eliminations:HasSentence[], things:ThingsDict)
-- updateThing(additions:HasSentence[], eliminations:HasSentence[], object:Thing)
+- assignments are completely replaced by anaphora, also in theme-rheme phrase
+  style split in two sentences, also intermediate numerical computations.
 
-### objects
+- anaphora can also be used to replace if-statements, one big function with lots
+  of ifs = lots of small "functions" with naturalistic type arguments created on
+  the fly.
 
-- Thing
-- set(key, value:ThingObject|WmAtom)
-- remove(key)
+- anaphora work as if each entity got the current timestamp whenever it is
+  mentioned. When function ask() is called from findAll() the deictic dict is
+  NOT updated.
 
-Panel
+- pronouns are defined through derivation clauses that have an entity as
+  "conseq" part.
 
-- xcoord (absolute)
-- ycoord (absolute)
-- width
-- height
-- color
-- z-index
-- visibility-cum-attachedness (favor WYSIWYG)
-- text
-- image
-- press-state (down/up)
-- key-code
+- 3 basic and 1 semi-basic verbs (EQUALS,IS-A,HAS-AS,BE), EQUALS cannot be
+  overriden, all the others can, BE defaults to EQUALS in the most general case.
+  All other verbs need to be prefixed with a helper/auxiliary (do/does) to let
+  the parser know they're being used as verbs.
 
-when any of these basic properties is edited, the Panel automatically changes
+- verbs aren't functions, verbs are procedures. noun-phrases are expressions,
+  and thus are more akin to functions.
 
-JS doesn't need to know about is-a relationships, just has relationships.
-Default fillers can be computed in tell() as a result of new is-a relationships.
-To Accomplish this everything must be the same. Only "Thing", no "Panel", and
-when visible-cum-attached is set to true a div is created.
+- [communication with the outer world](./src/io/README.md)
 
-Only fixed positioning (absolute coordinates), on single root object.
-
-### event handler
-
-evaluate(ExistentialQuantifier) // create the event evaluate(HappenSentence) //
-make it happen
-
-You also need some basic properties for buttons (down/up,key...).
-
-# Problems
+## Problems
 
 - in match() for loop there is no guarantee that the most specific rule will be
   found first. Descending sort derivation clauses by "specificity".
@@ -68,7 +50,8 @@ You also need some basic properties for buttons (down/up,key...).
 - possible problem with where in instantiateConcept() and multiple legal values
   on same attribute.
 
-- tell()/instantiateConcept()/expand()/isConst() are currently serializing 'thing' as partial information in "has" without "as".
+- tell()/instantiateConcept()/expand()/isConst() are currently serializing
+  'thing' as partial information in "has" without "as".
 
 - implicit references may be ambiguous from the point of view of creating a new
   thing, or erroring out if you don't find an old one. Maybe the/a distinction
@@ -80,11 +63,23 @@ You also need some basic properties for buttons (down/up,key...).
 
 - is a concept supposed to be (isa) itself? NO!
 
-- when adding new props (treated as defaults) to a concept you have to add them to all existing instances of the concept.
+- when adding new props (treated as defaults) to a concept you have to add them
+  to all existing instances of the concept.
 
-- match() may have to take care of derivation clauses, semantic match rather than purely syntactic match. Imagine an event expressed in terms of basic has-sentences, but event handler expressed in higher level way.
+- match() may have to take care of derivation clauses, semantic match rather
+  than purely syntactic match. Imagine an event expressed in terms of basic
+  has-sentences, but event handler expressed in higher level way.
 
-- avoid default-creation-loops (an entity is created as a default for another, a third entity is created as a default for the default etc...)
+- avoid default-creation-loops (an entity is created as a default for another, a
+  third entity is created as a default for the default etc...)
+
+- ordinal anaphora, first/second (or "the other...")
+
+- cat number 2 ---> explicit reference to constant "cat#2"?
+
+- less than greater than as vague commands (tell)
+
+- most used derivation clauses (annotations) get their own LLangAst
 
 ## Limitations
 
@@ -92,35 +87,5 @@ You also need some basic properties for buttons (down/up,key...).
   - the cat eats the kibble piece
   - it jumps it resolves to "the kibble piece"
 - no cataphora.
-- no ambiguous sentence recognition and multi-tree parse, but possiblility to "disambiguate" (really: change default parse order) using parentheses.
-
-# Notes
-
-- tell() and ask() do NOT have ANY side effects (like all other functions).
-  tell() and ask() both return a brand new knowledge base object, because even
-  ask() may produce updated versions of the deictic dictionary and add newly computed numbers to the world model.
-
-- at the most basic level there is nothing but: entities, is-a-relations and
-  has-as-relations. This is the "interface" through which Deixiscript
-  communicates with the outer world, including JS, which only uderstands has-as
-  properties (not is-a ones because JS doesn't have multiple inheritance).
-
-- assignments are completely replaced by anaphora, also in theme-rheme phrase
-  style split in two sentences, also intermediate numerical computations.
-
-- anaphora can also be used to replace if-statements, one big function with lots
-  of ifs = lots of small "functions" with naturalistic type arguments created on the fly.
-
-- anaphora work as if each entity got the current timestamp whenever it is
-  mentioned. When function ask() is called from findAll() the deictic dict is
-  NOT updated.
-
-- pronouns are defined through derivation clauses that have an entity as "conseq" part.
-
-- 3 basic and 1 semi-basic verbs (EQUALS,IS-A,HAS-AS,BE), EQUALS cannot be
-  overriden, all the others can, BE defaults to EQUALS in the most general case.
-  All other verbs need to be prefixed with a helper/auxiliary (do/does) to let
-  the parser know they're being used as verbs.
-
-- verbs aren't functions, verbs are procedures. noun-phrases are expressions, and thus are more akin to functions.
-
+- no ambiguous sentence recognition and multi-tree parse, but possiblility to
+  "disambiguate" (really: change default parse order) using parentheses.
