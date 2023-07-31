@@ -326,7 +326,7 @@ export class ExpBuilder<T extends LLangAst> {
 
 
 type ExpBuilderArg = WmAtom | LLangAst | ExpBuilder<LLangAst> | WmAtom[]
-type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] | LLangAst[] }
+type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] | LLangAst[] | (LLangAst | WmAtom)[] }
 type Var = `${string}:${string}`
 type ListPat = `${Var}|${string}`
 type StringLiteralPattern = `"${string}"`
@@ -354,12 +354,13 @@ function makeAst(x: boolean): Boolean
 function makeAst(x: 'nothing'): Nothing
 function makeAst(x: string): Constant
 function makeAst(x: WmAtom | WmAtom[]): Atom
+function makeAst(x: (LLangAst | WmAtom)[]): LLangAst
 function makeAst(x: LLangAst[]): LLangAst
 function makeAst<T extends LLangAst>(x: T): T
 function makeAst<T extends LLangAst>(x: ExpBuilder<T>): T
 function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangAst
-function makeAst(x: LLangAst[] | WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangAst
-function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangAst[]): LLangAst {
+function makeAst(x: LLangAst[] | WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>| (LLangAst | WmAtom)[]): LLangAst
+function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangAst[] | (LLangAst | WmAtom)[]): LLangAst {
 
     if (x instanceof ExpBuilder) {
         return x.$
@@ -409,10 +410,11 @@ export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: LLangAst): ExpBuilder<LLangAst>
 export function $(x: LLangAst[]): ExpBuilder<ListLiteral>
+export function $(x: (LLangAst|WmAtom)[]): ExpBuilder<ListLiteral>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst): ExpBuilder<LLangAst>
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[]): ExpBuilder<LLangAst> {
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | (LLangAst|WmAtom)[]): ExpBuilder<LLangAst>
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[] | (LLangAst|WmAtom)[]): ExpBuilder<LLangAst> {
 
     if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array || isLLangAst(x)) {
         return new ExpBuilder(makeAst(x))
