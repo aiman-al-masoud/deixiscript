@@ -992,6 +992,20 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name : 'test77',
+    fn : ()=>{
+        // a general template can match a specific formula
+        // ...a specific template cannot match a general formula!
+        const kb = $('cat').isa('mammal').dump()
+        const general = $('mammal').is('hungry').$
+        const specific = $('cat').is('hungry').$
+
+        assertNotEquals(match(general, specific, kb), undefined)
+        assertEquals(match( specific, general, kb), undefined)
+    }
+})
+
 // Deno.test({
 //     name: 'test73',
 //     fn: () => {

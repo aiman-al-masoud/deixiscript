@@ -10,7 +10,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
     if (isConst(template) && isConst(f)) {
 
-        return template.value === f.value ? deepMapOf() : undefined
+        if (template.value === f.value) return deepMapOf()
+
+        if (isTruthy(ask($(f).isa(template).$, kb).result)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'variable') {
         return deepMapOf([[template, f]])

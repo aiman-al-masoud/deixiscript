@@ -24,4 +24,13 @@ function compareSpecificities(astOne: LLangAst, astTwo: LLangAst, kb: KnowledgeB
 // console.log(x)
 
 
+// import { $ } from "./exp-builder.ts";
+// const x = compareSpecificities(
+//     $('cat').is('hungry').$,
+//     $('mammal').is('hungry').$,
+//     $('cat').isa('mammal').dump(),
+// )
+// console.log(x)
+
+
 
