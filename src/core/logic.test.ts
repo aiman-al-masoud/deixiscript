@@ -975,6 +975,8 @@ Deno.test({
 Deno.test({
     name: 'test76',
     fn: () => {
+
+
         // alt parser...
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing' }))
@@ -988,7 +990,7 @@ Deno.test({
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump()
 
-        // $({ parse: [$('x:thing|and').suchThat($({parse:'x:thing'})).isa('thing') as any, 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' })))
+        // const xThingAnd = $('x:thing|and').suchThat($({parse:'x:thing'}).isa('thing')).$
 
         const code = '( if x is a cat then y is a dog )'.split(' ')
         const r = parse($({ parse: code, }).$, kb)

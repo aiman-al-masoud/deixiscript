@@ -15,7 +15,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (isTruthy(ask($(f).isa(template).$, kb).result)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'variable') {
-        
+
         if (template.value === f.value) return deepMapOf([[template, f]])
 
         if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
@@ -27,15 +27,15 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
-        
+
         return matchImplicit(template, f, kb)
-        
+
     } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
-        
+
         // console.log(template, f)
         const m1 = match(template.head, f.head, kb)
         if (!m1) return undefined
-        if (template.description.type==='boolean' && template.description.value) return reduceMatchList([m1])
+        if (template.description.type === 'boolean' && template.description.value) return reduceMatchList([m1])
 
         const m2 = match(template.description, f.description, kb)
 
@@ -164,7 +164,11 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
     const tailIndex =
         astsEqual(template.value, $._.$) ? // no tail case
             f.value.length
-            : f.value.findIndex(x => match(template.value, x, kb))
+            : f.value.findIndex((x, i) => {
+                const m1 = match(template.value, x, kb)
+                const m2 = match(template.seq, { type: 'list-literal', value: f.value.slice(0, i) }, kb)
+                return reduceMatchList([m1, m2])
+            })
 
     if (tailIndex < 0) {
         return {
