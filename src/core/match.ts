@@ -1,8 +1,9 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
+import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, ImplicitReference } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -16,6 +17,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template instanceof Array && f instanceof Array) {
 
         return matchLists(template, f, kb)
+    } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
+
+        // return matchImplicit(template, f, kb)
 
     } else if (template.type === f.type) {
 
@@ -145,3 +149,7 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
     }
 
 }
+
+// function matchImplicit(template: ImplicitReference, f: ImplicitReference, kb: KnowledgeBase) {
+//     return undefined
+// }

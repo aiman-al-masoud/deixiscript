@@ -1164,5 +1164,9 @@ Deno.test({
 //         // const x = ask($.a('cat').$, $.emptyKb).result
 //         // console.log(x)
 //         // console.log($('x:thing|').$)
+//         const t = $.the('capra').$//.whose($('fur').is('yellow')).$
+//         // const f = $.the('capra').whose($('fur').is('yellow')).$
+//         const f = $.the('capra').whose($('fur').is('yellow')).$
+//         console.log(match(t, f, $.emptyKb))
 //     }
 // })
