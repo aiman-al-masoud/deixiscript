@@ -81,6 +81,7 @@ const roles = stringLiterals(
     'whose',
     'which',
     'beneficiary',
+    'isNew',
 )
 
 type StType = ElementType<typeof astTypes>
@@ -285,7 +286,7 @@ export const syntaxes: SyntaxMap<
         { types: ['math-expression', 'atom'], role: 'right' },
     ],
     "implicit-reference": [
-        { literals: ['the', 'an', 'a'] },
+        { literals: ['the', 'an', 'a'], role:'isNew', replaceWith:false },
         { types: ['space'], number: '+' },
         { types: ['digits'], role: 'number', number: '1|0', defaultsTo: 1 },
         { types: ['space'], number: '*' },

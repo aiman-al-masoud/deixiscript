@@ -295,7 +295,7 @@ Deno.test({
     name: 'test29',
     fn: () => {
         const ast1 = parser.parse('there is a cat')
-        assertEquals(ast1, $.a('cat').exists.$)
+        assertEquals(ast1, $.the('cat').exists.$)
 
         const ast2 = parser.parse('there is the goat which has white as color')
         assertEquals(ast2, $.the('goat').which($._.has('white').as('color')).exists.$)
@@ -314,7 +314,7 @@ Deno.test({
         const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
         const y = linearize(ast2, syntaxes)
 
-        const ast3 = $.the('cat').does('eat')._($.a('mouse')).when($(true).equals(true)).$
+        const ast3 = $.the('cat').does('eat')._($.the('mouse')).when($(true).equals(true)).$
         const z = linearize(ast3, syntaxes)
 
         assertEquals(parser.parse(x), ast1)
