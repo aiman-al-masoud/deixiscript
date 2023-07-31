@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, findMatch } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, findWhenMatch } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -25,7 +25,7 @@ export function ask(
         case 'entity':
         case 'string':
 
-            const r1 = findMatch(formula, kb0)
+            const r1 = findWhenMatch(formula, kb0)
             if (r1) return ask(r1, kb0)
 
             const lastTime = Math.max(...Object.values(kb0.deicticDict).concat(0))
@@ -53,7 +53,7 @@ export function ask(
             return { result: $(concepts.includes(t2.value)).$, kb: kb0 }
         case 'has-formula':
 
-            const whennnnn = findMatch(formula, kb0)
+            const whennnnn = findWhenMatch(formula, kb0)
             if (whennnnn) return ask(whennnnn, kb0)
 
             const t11 = ask(formula.subject, kb0).result
@@ -97,7 +97,7 @@ export function ask(
 
             if (formula.isNew) return { result: formula, kb: kb0 }
 
-            const wen = findMatch(formula, kb0)
+            const wen = findWhenMatch(formula, kb0)
             if (wen) return ask(wen, kb0)
 
             const maps = findAll(formula.description, [formula.head], kb0)
@@ -167,7 +167,7 @@ export function ask(
             const entries = Object.entries(formula).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
             const newObj = Object.fromEntries(entries)
             const formula2 = { ...formula, ...newObj }
-            const whenn = findMatch(formula2, kb0)
+            const whenn = findWhenMatch(formula2, kb0)
             if (whenn) return ask(whenn, kb0)
             return { result: $(false).$, kb: kb0 }
     }

@@ -1,4 +1,4 @@
-import { LLangAst, KnowledgeBase, isLLangAst, findMatch } from "./types.ts";
+import { LLangAst, KnowledgeBase, isLLangAst, findWhenMatch } from "./types.ts";
 
 
 export function parse(
@@ -6,7 +6,7 @@ export function parse(
     kb: KnowledgeBase,
 ): LLangAst {
 
-    const when = findMatch(ast, kb)
+    const when = findWhenMatch(ast, kb)
     if (!when) return ast
 
     const entries = Object.entries(when)

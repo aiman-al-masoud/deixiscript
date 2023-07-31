@@ -330,7 +330,7 @@ export function isTruthy(ast: LLangAst) {
 }
 
 
-export function findMatch(ast: LLangAst, kb: KnowledgeBase) {
+export function findWhenMatch(ast: LLangAst, kb: KnowledgeBase) {
 
     return first(kb.derivClauses, dc => {
         if (!('when' in dc)) return
