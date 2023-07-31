@@ -16,13 +16,11 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
  * Also provides WorldModel additions and elmininations (the "diff") 
  * to avoid having to recompute them.
  */
-export function tell(ast1: LLangAst, kb: KnowledgeBase): {
+export function tell(ast: LLangAst, kb: KnowledgeBase): {
     kb: KnowledgeBase,
     additions: WorldModel,
     eliminations: WorldModel,
 } {
-
-    const ast = ast1
 
     let additions: WorldModel = []
     let eliminations: WorldModel = []
