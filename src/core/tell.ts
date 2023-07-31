@@ -71,9 +71,9 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            if (ast.value.type === 'variable') {
-                additions = instantiateConcept($(ast.value).suchThat(true).$, kb)
-            } else if (ast.value.type === 'arbitrary-type') {
+            // if (ast.value.type === 'variable') {
+                // additions = instantiateConcept($(ast.value).suchThat(true).$, kb)
+            /* } else  */if (ast.value.type === 'arbitrary-type') {
                 additions = instantiateConcept(ast.value, kb)
             } else if (ast.value.type === 'implicit-reference') {
                 additions = instantiateConcept(removeImplicit(ast.value), kb)
