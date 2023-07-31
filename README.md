@@ -79,7 +79,7 @@ You also need some basic properties for buttons (down/up,key...).
 
 - newly created entities in tell() should be on top of deictic dict.
 
-- is a concept supposed to be (isa) itself?
+- is a concept supposed to be (isa) itself? NO!
 
 - when adding new props (treated as defaults) to a concept you have to add them to all existing instances of the concept.
 
