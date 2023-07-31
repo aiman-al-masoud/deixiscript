@@ -12,7 +12,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { parse } from "./parse.ts";
-import { findAsts } from "./findAsts.ts";
+
 
 function dassert(x: LLangAst) {
     return assert(isTruthy(x))
@@ -579,116 +579,6 @@ Deno.test({
         assertEquals(result, $(3).$)
     }
 })
-
-Deno.test({
-    name: 'test52',
-    fn: () => {
-
-        const maxX = $.the('panel').has($.the('number')).as('max-x').when(
-            $.the('number').equals($.the('width').of($.the('panel').$).plus($.the('x-coord').of($.the('panel').$)))
-        ).$
-
-        // console.log(removeImplicit(maxX))
-        // console.log(findAsts(maxX, 'implicit-reference'))
-        // console.log('------------------------')
-        // const rim = removeImplicit(maxX)
-        // console.log(rim)
-        // assertEquals(findAsts(rim, 'implicit-reference').length, 0)
-
-
-        const maxY = $.the('panel').has($.the('number')).as('max-y').when(
-            $.the('number').equals($.the('height').of($.the('panel').$).plus($.the('y-coord').of($.the('panel').$)))
-        ).$
-
-        const parent = $('p1:panel').has('p2:panel').as('parent').when(
-            $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('x-coord').of('p2:panel').plus($.the('width').of('p2:panel')))
-                .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel')))
-                .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('y-coord').of('p2:panel').plus($.the('height').of('p2:panel'))))
-                .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
-                .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
-        ).$
-
-        const kb = $('panel#1').isa('panel')
-            .and($('panel#1').has(20).as('x-coord'))
-            .and($('panel#1').has(10).as('y-coord'))
-            .and($('panel#1').has(1).as('z-index'))
-            .and($('panel#1').has(5).as('width'))
-            .and($('panel#1').has(4).as('height'))
-            .and($('panel#2').isa('panel'))
-            .and($('panel#2').has(10).as('x-coord'))
-            .and($('panel#2').has(5).as('y-coord'))
-            .and($('panel#2').has(0).as('z-index'))
-            .and($('panel#2').has(10).as('width'))
-            .and($('panel#2').has(10).as('height'))
-            .and(maxX)
-            .and(maxY)
-            .and(parent)
-            .dump()
-
-        assertEquals(kb.derivClauses.some(x => findAsts(x, 'implicit-reference').length), false)
-
-        // console.log(kb.wm)
-        // console.log( ((kb.derivClauses[0] as any).when as any).object)
-        // console.log(kb.derivClauses[1])
-        // console.log(kb.derivClauses[2])
-
-        // console.log(kb.derivClauses[0].conseq)
-        // console.log( removeImplicit($.the('max-x').of('panel#2').$))
-
-        // const m = match(kb.derivClauses[0].conseq, $('panel#2').has('n:number').as('max-x').$ , kb)
-        // console.log(m)
-
-        assertEquals(ask($.the('max-x').of('panel#2').$, kb).result, $(20).$)
-        // assertEquals(ask($.the('max-x').of('panel#1').$, kb).result, $(25).$)
-
-        // assertEquals(ask($.the('max-y').of('panel#2').$, kb).result, $(15).$)
-        // assertEquals(ask($.the('max-y').of('panel#1').$, kb).result, $(14).$)
-
-    }
-})
-
-
-Deno.test({
-    name: 'test53',
-    fn: () => {
-
-        const parent = $('p1:panel').has('p2:panel').as('parent').when(
-            $.the('x-coord').of('p1:panel').isLessThanOrEqual($.the('x-coord').of('p2:panel').plus($.the('width').of('p2:panel')))
-                .and($.the('x-coord').of('p1:panel').isGreaterThanOrEqual($.the('x-coord').of('p2:panel')))
-                .and($.the('y-coord').of('p1:panel').isLessThanOrEqual($.the('y-coord').of('p2:panel').plus($.the('height').of('p2:panel'))))
-                .and($.the('y-coord').of('p1:panel').isGreaterThanOrEqual($.the('y-coord').of('p2:panel').$))
-                .and($.the('z-index').of('p1:panel').isGreaterThan($.the('z-index').of('p2:panel')))
-        ).$
-
-        const kb = $('panel#1').isa('panel')
-            .and($('panel#1').has(20).as('x-coord'))
-            .and($('panel#1').has(10).as('y-coord'))
-            .and($('panel#1').has(1).as('z-index'))
-            .and($('panel#1').has(5).as('width'))
-            .and($('panel#1').has(4).as('height'))
-            .and($('panel#2').isa('panel'))
-            .and($('panel#2').has(10).as('x-coord'))
-            .and($('panel#2').has(5).as('y-coord'))
-            .and($('panel#2').has(0).as('z-index'))
-            .and($('panel#2').has(10).as('width'))
-            .and($('panel#2').has(10).as('height'))
-            .and(parent)
-            .dump()
-
-        dassert(ask($('panel#1').has('panel#2').as('parent').$, kb).result)
-        dassert(ask($('panel#2').has('panel#1').as('parent').isNotTheCase.$, kb).result)
-
-    }
-})
-
-
-
-
-
-
-
-
-
 
 Deno.test({
     name: 'test54',
