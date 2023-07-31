@@ -3,7 +3,7 @@ import { findAll } from "./findAll.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
+import { ArbitraryType, DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, findMatch, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
@@ -88,15 +88,8 @@ export function tell(ast1: LLangAst, kb: KnowledgeBase): {
             eliminations = result.additions
             break
         case 'generalized':
-            for (const dc of kb.derivClauses) {
-
-                const map = match(dc.conseq, ast, kb)
-                if (!map) continue
-                if (!('when' in dc)) return tell($(false).$, kb)
-
-                const whenn = subst(dc.when, map)
-                return tell(whenn, kb)
-            }
+            const when = findMatch(ast, kb)
+            if (when) return tell(when, kb)
             break
         default:
             additions = []
