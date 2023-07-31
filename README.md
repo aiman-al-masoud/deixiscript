@@ -3,7 +3,6 @@
 # Core Features
 
 - anaphora
-  - every/many anaphor
   - first/second/ ordinal vs cardinal...
 - tell()
   - less than and greater than as commands
@@ -122,3 +121,6 @@ You also need some basic properties for buttons (down/up,key...).
   overriden, all the others can, BE defaults to EQUALS in the most general case.
   All other verbs need to be prefixed with a helper/auxiliary (do/does) to let
   the parser know they're being used as verbs.
+
+- verbs aren't functions, verbs are procedures. noun-phrases are expressions, and thus are more akin to functions.
+
