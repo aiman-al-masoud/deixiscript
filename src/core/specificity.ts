@@ -5,7 +5,7 @@ import { KnowledgeBase, LLangAst } from "./types.ts";
  * Returns +ve if astOne is more specific than astTwo, -ve if the 
  * opposite is true, 0 if astOne and astTwo are equivalent or unrelated.
  */
-function compareSpecificities(astOne: LLangAst, astTwo: LLangAst, kb: KnowledgeBase) {
+export function compareSpecificities(astOne: LLangAst, astTwo: LLangAst, kb: KnowledgeBase) {
     const twoMoreSpec = match(astOne, astTwo, kb)
     const oneMoreSpec = match(astTwo, astOne, kb)
 

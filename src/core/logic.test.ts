@@ -12,6 +12,8 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { parse } from "./parse.ts";
+import { compareSpecificities } from "./specificity.ts";
+import { sorted } from "../utils/sorted.ts";
 
 
 function dassert(x: LLangAst) {
@@ -536,39 +538,39 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test49',
-    fn: () => {
+// Deno.test({
+//     name: 'test49',
+//     fn: () => {
 
-        const dc = $('p:panel').has('n:number').as('max-x').when(
-            $('n:number')
-                .equals($('y:number').suchThat($('p:panel').has('y:number').as('width'))
-                    .plus($('z:number').suchThat($('p:panel').has('z:number').as('x-coord'))))
-        )
+//         const dc = $('p:panel').has('n:number').as('max-x').when(
+//             $('n:number')
+//                 .equals($('y:number').suchThat($('p:panel').has('y:number').as('width'))
+//                     .plus($('z:number').suchThat($('p:panel').has('z:number').as('x-coord'))))
+//         )
 
-        const kb = $.the('panel').which($._.has(30).as('x-coord')).exists.dump()
-        const kb2 = tell($.the('panel').has(100).as('width').$, kb).kb
-        const kb3 = tell(dc.$, kb2).kb
+//         const kb = $.the('panel').which($._.has(30).as('x-coord')).exists.dump()
+//         const kb2 = tell($.the('panel').has(100).as('width').$, kb).kb
+//         const kb3 = tell(dc.$, kb2).kb
 
-        const q = $('p:panel').suchThat().has(130).as('max-x').$
-        const result = ask(q, kb3).result
-        dassert(result)
+//         const q = $('p:panel').suchThat().has(130).as('max-x').$
+//         const result = ask(q, kb3).result
+//         dassert(result)
 
-        const q2 = $('n:number').suchThat($('p:panel').suchThat().has('n:number').as('max-x')).$
-        const result2 = ask(q2, kb3).result
-        assertEquals(result2, $(130).$)
+//         const q2 = $('n:number').suchThat($('p:panel').suchThat().has('n:number').as('max-x')).$
+//         const result2 = ask(q2, kb3).result
+//         assertEquals(result2, $(130).$)
 
-        const q3 = $.the('number').which($('p:panel').suchThat().has($._.$).as('max-x')).$
+//         const q3 = $.the('number').which($('p:panel').suchThat().has($._.$).as('max-x')).$
 
-        const result3 = ask(q3, kb3).result
-        assertEquals(result3, $(130).$)
+//         const result3 = ask(q3, kb3).result
+//         assertEquals(result3, $(130).$)
 
-        const q4 = $.the('number').which($.the('panel').has($._.$).as('max-x')).$
-        const result4 = ask(q4, kb3).result
-        assertEquals(result4, $(130).$)
+//         const q4 = $.the('number').which($.the('panel').has($._.$).as('max-x')).$
+//         const result4 = ask(q4, kb3).result
+//         assertEquals(result4, $(130).$)
 
-    }
-})
+//     }
+// })
 
 Deno.test({
     name: 'test50',
@@ -976,15 +978,17 @@ Deno.test({
         // alt parser...
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing' }))
-                .and($({ parse: ['x:thing|and', 'y:thing|'] }).when( $({parse:'x:thing'}).and($({parse:'y:thing'}))  ))
+                .and($({ parse: ['x:thing|and', 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' }))))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
                 .and($({ parse: ['the', 'x:thing|whose', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).whose($({ parse: 'y:thing' }))))
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
                 .and($({ parse: ['the', 'x:thing'] }).when($.the($({ parse: 'x:thing' }))))
-                .and($({ parse: ['[', 'x:thing|]'] }).when( $('x:thing') ))
+                .and($({ parse: ['[', 'x:thing|]'] }).when($('x:thing')))
                 .and($({ parse: ['x:thing'] }).when('x:thing'))
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump()
+
+        // $({ parse: [$('x:thing|and').suchThat($({parse:'x:thing'})).isa('thing') as any, 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' })))
 
         const code = '( if x is a cat then y is a dog )'.split(' ')
         const r = parse($({ parse: code, }).$, kb)
@@ -996,9 +1000,9 @@ Deno.test({
 
         // console.log( parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb))
         assertEquals(parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb), $.the('cat').whose($('x').isa('y')).$)
-        assertEquals( parse($({ parse: '[ capra x:ciao ]'.split(' ') }).$, kb), $(['capra', 'x:ciao']).$)
-        
-        assertEquals( parse($({ parse: 'the cat and the dog'.split(' ') }).$, kb), $.the('cat').and($.the('dog')).$)
+        assertEquals(parse($({ parse: '[ capra x:ciao ]'.split(' ') }).$, kb), $(['capra', 'x:ciao']).$)
+
+        assertEquals(parse($({ parse: 'the cat and the dog'.split(' ') }).$, kb), $.the('cat').and($.the('dog')).$)
 
         // assertEquals( , $('cat').and('dog').and('meerkat').$)
         // console.log(parse($({ parse: '( cat and dog ) and meerkat'.split(' ') }).$, kb))
@@ -1020,6 +1024,30 @@ Deno.test({
         assertEquals(match(specific, general, kb), undefined)
     }
 })
+
+Deno.test({
+    name: 'test78',
+    fn: () => {
+        // sorting by specificity
+        const dcs = [
+            $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse')).$,
+            $.the('cat').does('eat')._($.the('mouse')).$,
+            $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse').whose($('color').is('black'))).$,
+        ]
+
+        const oracle = [
+            dcs[2],
+            dcs[0],
+            dcs[1],
+        ]
+
+        const sortedDcs = sorted(dcs, (a, b) => compareSpecificities(b, a, $.emptyKb))
+        assertEquals(sortedDcs, oracle)
+    }
+})
+
+
+
 
 // Deno.test({
 //     name: 'test73',

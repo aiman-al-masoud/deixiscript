@@ -15,13 +15,31 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (isTruthy(ask($(f).isa(template).$, kb).result)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'variable') {
-        return deepMapOf([[template, f]])
+        
+        if (template.value === f.value) return deepMapOf([[template, f]])
+
+        if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
+
+        // return deepMapOf([[template, f]])
+
     } else if (template instanceof Array && f instanceof Array) {
 
         return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
+        
         return matchImplicit(template, f, kb)
+        
+    } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
+        
+        // console.log(template, f)
+        const m1 = match(template.head, f.head, kb)
+        if (!m1) return undefined
+        if (template.description.type==='boolean' && template.description.value) return reduceMatchList([m1])
+
+        const m2 = match(template.description, f.description, kb)
+
+        return reduceMatchList([m1, m2])
 
     } else if (template.type === f.type) {
 
