@@ -977,6 +977,7 @@ Deno.test({
         const kb =
             $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing', }))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
+                .and($({ parse: ['the', 'x:thing|whose', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).whose($({ parse: 'y:thing' }))))
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
                 .and($({ parse: ['the', 'x:thing'] }).when($.the($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing'] }).when('x:thing'))
@@ -990,6 +991,9 @@ Deno.test({
 
         // console.log(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb))
         assertEquals(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
+
+        // console.log( parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb))
+        assertEquals(parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb), $.the('cat').whose($('x').isa('y')).$)
     }
 })
 

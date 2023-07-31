@@ -6,7 +6,10 @@ export function parse(
     kb: KnowledgeBase,
 ): LLangAst {
 
+    // console.log('ast=', ast)
     const when = findWhenMatch(ast, kb)
+    // console.log('when=', when)
+    // console.log('-------------------------')
     if (!when) return ast
 
     const entries = Object.entries(when)
