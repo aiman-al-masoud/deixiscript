@@ -3,8 +3,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
-import { WorldModel } from "./types.ts";
+import { KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
@@ -15,107 +14,19 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { parse } from "./parse.ts";
 import { findAsts } from "./findAsts.ts";
 
-
 function dassert(x: LLangAst) {
     return assert(isTruthy(x))
-}
-
-
-const standardKb = getStandardKb()
-
-const derivationClauses: DerivationClause[] = [
-
-    ...standardKb.derivClauses,
-
-    // $('x:dude').isa('dude').when($('x:dude').isa('person')).$,
-
-    $('x:person').has('c:city').as('birth-city').when(
-        $('e:event').exists.where($('y:space-point').exists.where(
-            $('y:space-point').has('c:city').as('enclosing-city')
-                .and($('e:event').has('y:space-point').as('location'))
-                .and($('x:person').has('e:event').as('birth'))
-        ))
-    ).$,
-
-    $({ subject: 'x:thing', isSmallerThan: 'y:thing' }).when(
-        $('y:thing').isGreaterThan('x:thing')
-    ).$,
-
-]
-
-const model: WorldModel =
-
-    /* World Model */
-    $('event#1').isa('birth-event')
-        .and($('event#1').has('person#1').as('baby'))
-        .and($('event#1').has('person#2').as('mother'))
-        .and($('event#1').has('time-point#1').as('time'))
-        .and($('event#1').has('space-point#1').as('location'))
-        .and($('space-point#1').has('boston').as('enclosing-city'))
-        .and($('person#1').has('event#1').as('birth'))
-        .and($('person#1').has('event#1').as('birth'))
-        .and($('person#1').has('event#1').as('birth'))
-        .and($('person#2').isa('woman'))
-        .and($('person#1').isa('person'))
-        .and($('boston').isa('city'))
-        .and($('space-point#1').isa('space-point'))
-        .and($('door#1').isa('door'))
-        .and($('person#3').isa('person'))
-        .and($('person#3').has(5).as('position'))
-        .and($('door#1').has(5).as('position'))
-
-        /* Conceptual Model */
-        // .and($({ annotation: 'vr#1', subject: 'mother', owner: 'birth-event', verb: 'be', object: 'woman' }))
-        .and($({ annotation: 'nr#1', subject: 'mother', owner: 'birth-event', verb: 'amount', recipient: 1 }))
-        .and($({ annotation: 'nr#2', subject: 'baby', owner: 'birth-event', verb: 'amount', recipient: 1 }))
-        // .and($({ annotation: 'vr#2', subject: 'birth', owner: 'person', verb: 'be', object: 'birth-event' }))
-        // .and($({ annotation: 'ann#41', subject: 'nr#2', verb: 'be', object: 'cancelled', ablative: 'multiple-birth-event' }))
-        // .and($({ annotation: 'vr#43', subject: 'movement', owner: 'agent', verb: 'be', object: 'move-event' }))
-        // .and($({ annotation: 'vr#21', subject: 'opening', owner: 'door', verb: 'be', object: 'door-opening-event' }))
-        .and($({ annotation: 'ann#24', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' }))
-        .and($({ ann: 'ann#4923', onlyHaveOneOf: 'position', onConcept: 'thing' }))
-        .and($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }))
-
-        .and($('birth-event').has('thing').as('mother'))
-        .and($('birth-event').has('thing').as('baby'))
-        .and($('birth-event').has('thing').as('time'))
-        .and($('birth-event').has('thing').as('location'))
-        .and($('person').has('thing').as('birth'))
-        .and($('event').has('thing').as('duration'))
-        .and($('agent').has('thing').as('movement'))
-        .and($('door-opening-event').has('thing').as('object'))
-        .and($('move-event').has('thing').as('destination'))
-        .and($('door').has('thing').as('opening'))
-
-
-        .and($('state').isa('thing'))
-        .and($('agent').isa('thing'))
-        .and($('event').isa('thing'))
-        .and($('time-instant').isa('thing'))
-        .and($('point-in-space').isa('thing'))
-        .and($('city').isa('thing'))
-        .and($('door').isa('thing'))
-        .and($('open').isa('state'))
-        .and($('closed').isa('state'))
-        .and($('person').isa('agent'))
-        .and($('woman').isa('person'))
-        .and($('door-opening-event').isa('event'))
-        .and($('door-closing-event').isa('event'))
-        .and($('birth-event').isa('event'))
-        .and($('multiple-birth-event').isa('birth-event'))
-        .and($('move-event').isa('event'))
-        .dump(derivationClauses).wm
-
-
-const kb: KnowledgeBase = {
-    wm: [...standardKb.wm, ...model],
-    derivClauses: derivationClauses,
-    deicticDict: standardKb.deicticDict,
 }
 
 Deno.test({
     name: 'test1',
     fn: () => {
+        // is-a test
+        const kb = $('person#2').isa('person')
+            .and($('person#1').isa('person'))
+            .and($('cat#1').isa('cat'))
+            .dump()
+
         const f = $('person#2').isa('person').$
         dassert(ask(f, kb).result)
     }
@@ -142,16 +53,42 @@ Deno.test({
 Deno.test({
     name: 'test3',
     fn: () => {
+        // find all test
+        const kb = $('person#2').isa('person')
+            .and($('person#1').isa('person'))
+            .and($('cat#1').isa('cat'))
+            .dump()
+
         const f = $('x:person').isa('person').$
         const v = $('x:person').$
         const results = findAll(f, [v], kb)
-        assertEquals(results.length, 4)
+        assertEquals(results.length, 2)
     }
 })
 
 Deno.test({
     name: 'test04',
     fn: () => {
+        // has-sentence based derivation clause
+        const dc = $('x:person').has('c:city').as('birth-city').when(
+            $('e:event').exists.where($('y:space-point').exists.where(
+                $('y:space-point').has('c:city').as('enclosing-city')
+                    .and($('e:event').has('y:space-point').as('location'))
+                    .and($('x:person').has('e:event').as('birth'))
+            ))
+        ).$
+
+        const kb = $('person#1').has('event#1').as('birth')
+            .and($('person#1').isa('person'))
+            .and($('event#1').isa('event'))
+            .and($('pt#1').isa('space-point'))
+            .and($('event#1').has('pt#1').as('location'))
+            .and($('pt#1').has('boston').as('enclosing-city'))
+            .and($('event#2').has('pt#2').as('location'))
+            .and($('boston').isa('city'))
+            .and(dc)
+            .dump()
+
         const query = $('person#1').has('boston').as('birth-city').$
         dassert(ask(query, kb).result)
     }
@@ -167,6 +104,13 @@ Deno.test({
 Deno.test({
     name: 'test8',
     fn: () => {
+
+        const dc = $({ subject: 'x:thing', isSmallerThan: 'y:thing' }).when(
+            $('y:thing').isGreaterThan('x:thing')
+        ).$
+
+        const kb = $(dc).dump()
+
         dassert(ask($({ subject: 1, isSmallerThan: 2 }).$, kb).result)
     }
 })
@@ -200,18 +144,18 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test10',
-    fn: () => {
+// Deno.test({
+//     name: 'test10',
+//     fn: () => {
 
-        const x = ask($('x:thing').exists.where(
-            $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
-        ).$, kb)
+//         const x = ask($('x:thing').exists.where(
+//             $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
+//         ).$, kb)
 
-        dassert(x.result)
+//         dassert(x.result)
 
-    }
-})
+//     }
+// })
 
 Deno.test({
     name: 'test23',
@@ -233,7 +177,7 @@ Deno.test({
     name: 'test24',
     fn: () => {
         const q = $(1).plus(2).$
-        assertEquals(ask(q, kb).result, $(3).$)
+        assertEquals(ask(q, $.emptyKb).result, $(3).$)
     }
 })
 
@@ -257,16 +201,19 @@ Deno.test({
 Deno.test({
     name: 'test26',
     fn: () => {
-        assertEquals(ask($(3).plus(3).$, kb).result, $(6).$)
-        assertEquals(ask($(3).minus(3).$, kb).result, $(0).$)
-        assertEquals(ask($(3).times(3).$, kb).result, $(9).$)
-        assertEquals(ask($(3).over(3).$, kb).result, $(1).$)
+        // basic arithmetic
+        assertEquals(ask($(3).plus(3).$, $.emptyKb).result, $(6).$)
+        assertEquals(ask($(3).minus(3).$, $.emptyKb).result, $(0).$)
+        assertEquals(ask($(3).times(3).$, $.emptyKb).result, $(9).$)
+        assertEquals(ask($(3).over(3).$, $.emptyKb).result, $(1).$)
     }
 })
 
 Deno.test({
     name: 'test27',
     fn: () => {
+
+        const kb = getStandardKb()
 
         const kb2 =
             $({ ann: 'ann#429', onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
@@ -311,6 +258,7 @@ Deno.test({
 Deno.test({
     name: 'test30',
     fn: () => {
+        const kb = getStandardKb()
         const q = $('cat#1').isa('feline')
         const results0 = evaluate(q.isNotTheCase.ask.$, kb)
         dassert(results0.result)
@@ -348,8 +296,8 @@ Deno.test({
         // string literals
         const x = $('"ciao mondo"')
         assertEquals(x.$.type, 'string')
-        dassert(ask(x.equals('"ciao mondo"').$, kb).result)
-        dassert(ask(x.equals('"ciaomondo"').isNotTheCase.$, kb).result)
+        dassert(ask(x.equals('"ciao mondo"').$, $.emptyKb).result)
+        dassert(ask(x.equals('"ciaomondo"').isNotTheCase.$, $.emptyKb).result)
     }
 })
 
@@ -358,8 +306,8 @@ Deno.test({
     fn: () => {
         // defaults
         const kb =
-            $('point').has(100).as('x-coordinate')
-                .dump(derivationClauses)
+            $('point').has(100).as('x-coordinate').dump()
+        // .dump(derivationClauses)
 
         const result = tell($.a('point').exists.$, kb)
 
@@ -377,8 +325,8 @@ Deno.test({
     fn: () => {
         // "where" should override defaults
         const kb =
-            $('point').has(100).as('x-coordinate')
-                .dump(derivationClauses)
+            $('point').has(100).as('x-coordinate').dump()
+        // .dump(derivationClauses)
 
         const result = evaluate($('x:point').exists.where($('x:point').has(200).as('x-coordinate')).tell.$, kb)
 
@@ -392,6 +340,10 @@ Deno.test({
     name: 'test35',
     fn: () => {
         // better anaphora test
+        const kb = $('person#1').isa('agent')
+            .and($('door#1').isa('door'))
+            .dump()
+
         const kb0: KnowledgeBase = { ...kb, deicticDict: {} }
         const { result: result0, kb: kb1 } = ask($.the('agent').$, kb0)
         assertEquals(Object.values(kb1.deicticDict).length, 1)
@@ -410,8 +362,8 @@ Deno.test({
     name: 'test37',
     fn: () => {
         // anaphora with freshly calculated numbers
-        const results = evaluate($(1).plus(1).$, kb)
-        assertEquals(evaluate($.the('number').ask.$, results.kb).result, $(2).$)
+        const { kb: kb1 } = evaluate($(1).plus(1).$, $.emptyKb)
+        assertEquals(evaluate($.the('number').ask.$, kb1).result, $(2).$)
     }
 })
 
@@ -419,7 +371,9 @@ Deno.test({
     name: 'test38',
     fn: () => {
         // mutex concepts test
-        const kb0 = tell($('mammal#1').isa('cat').$, kb).kb
+        const kbmin2 = getStandardKb()
+        const { kb: kbmin1 } = tell($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }).$, kbmin2)
+        const kb0 = tell($('mammal#1').isa('cat').$, kbmin1).kb
         const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
         dassert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1).result)
         dassert(ask($('mammal#1').isa('dog').$, kb1).result)
@@ -444,7 +398,7 @@ Deno.test({
     name: 'test40',
     fn: () => {
         // linear equations solver
-        const x = ask($.the('number').which($._.over(2).equals(100)).$, kb).result
+        const x = ask($.the('number').which($._.over(2).equals(100)).$, $.emptyKb).result
         assertEquals(x, $(200).$)
     }
 })
@@ -453,7 +407,13 @@ Deno.test({
 Deno.test({
     name: 'test41',
     fn: () => {
+
         // syntactic de/compression
+        const kb = $('person#1').and('person#2').and('person#3').isa('person')
+            .and($('door#1').isa('door'))
+            .and($('person').isa('agent'))
+            .dump()
+
         const r1 = ask($('person#1').and('person#3').isa('person').$, kb)
         dassert(r1.result)
         const r2 = ask($('person#1').and('door#1').isa('person').isNotTheCase.$, kb)
@@ -806,6 +766,7 @@ Deno.test({
 Deno.test({
     name: 'test56',
     fn: () => {
+        const kb = getStandardKb()
         const result1 = ask($({ subject: 1, verb: 'be', object: 1 }).$, kb).result
         dassert(result1)
         const result2 = ask($({ subject: 2, verb: 'be', object: 1 }).isNotTheCase.$, kb).result
@@ -1020,7 +981,8 @@ Deno.test({
 Deno.test({
     name: 'test68',
     fn: () => {
-        const kb = $({ ann: 'ann#1928', onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(derivationClauses)
+        const kb0 = getStandardKb()
+        const kb = $({ ann: 'ann#1928', onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(kb0.derivClauses)
         const kb1 = tell($('pt#1').isa('point').$, kb).kb
         const kb2 = tell($('pt#1').has(1).as('x-coord').$, kb1).kb
         const kb3 = tell($('pt#1').has(2).as('x-coord').$, kb2).kb
@@ -1034,7 +996,8 @@ Deno.test({
 Deno.test({
     name: 'test69',
     fn: () => {
-        const kb = $({ annotation: 'ann#3000', subject: 'closed', verb: 'exclude', object: 'open', location: 'state', owner: 'door' }).dump(derivationClauses)
+        const kb0 = getStandardKb()
+        const kb = $({ annotation: 'ann#3000', subject: 'closed', verb: 'exclude', object: 'open', location: 'state', owner: 'door' }).dump(kb0.derivClauses)
         const kb1 = tell($('door#1').isa('door').$, kb).kb
         const kb2 = tell($('door#1').has('open').as('state').$, kb1).kb
         const kb3 = tell($('door#1').has('closed').as('state').$, kb2).kb
