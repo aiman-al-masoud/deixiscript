@@ -150,7 +150,12 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
             ms.push(m)
             ff = ff.slice(tailIndex + 1)
         } else {
-            ms.push(match(t, ff[0], kb))
+
+            const ff0 = ff.at(0)
+            ms.push(match(t, ff0!, kb))
+            // ms.push( !ff0? undefined: match(t, ff0, kb))
+            // console.log('t=', t, 'ff[0]=', ff[0])
+
             ff = ff.slice(1)
         }
     })
@@ -165,8 +170,10 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
         astsEqual(template.value, $._.$) ? // no tail case
             f.value.length
             : f.value.findIndex((x, i) => {
+
                 const m1 = match(template.value, x, kb)
                 const m2 = match(template.seq, $(f.value.slice(0, i)).$, kb)
+
                 return reduceMatchList([m1, m2])
             })
 
