@@ -94,12 +94,6 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test7',
-    fn: () => {
-        dassert(ask($(2).isGreaterThan(1).$, $.emptyKb).result)
-    }
-})
 
 Deno.test({
     name: 'test8',
@@ -206,6 +200,7 @@ Deno.test({
         assertEquals(ask($(3).minus(3).$, $.emptyKb).result, $(0).$)
         assertEquals(ask($(3).times(3).$, $.emptyKb).result, $(9).$)
         assertEquals(ask($(3).over(3).$, $.emptyKb).result, $(1).$)
+        dassert(ask($(2).isGreaterThan(1).$, $.emptyKb).result)
     }
 })
 
