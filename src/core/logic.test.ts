@@ -14,6 +14,7 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { parse } from "./parse.ts";
 import { compareSpecificities } from "./specificity.ts";
 import { sorted } from "../utils/sorted.ts";
+import { parseNumber } from "../utils/parseNumber.ts";
 
 
 function dassert(x: LLangAst) {
@@ -927,10 +928,8 @@ Deno.test({
     name: 'test72',
     fn: () => {
         const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump()
-        const r = ask($.the('sum').of($(1).and(5)).$, kb).result
-        assertEquals(r, $(6).$)
-        // console.log(r)
-        // console.log(ask($.the('sum').of($(30).minus(2).and(1)).$, kb).result)
+        assertEquals(ask($.the('sum').of($(1).and(5)).$, kb).result, $(6).$)
+        assertEquals(ask($.the('sum').of($(30).minus(2).and(1)).$, kb).result, $(29).$)
     }
 })
 
@@ -952,6 +951,8 @@ Deno.test({
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
                 .and($('has').and('have').isa('habere'))
                 .and($({ parse: ['x:thing|x:habere', 'y:thing|as', 'z:thing|'] }).when($({ parse: 'x:thing' }).has($({ parse: 'y:thing' })).as($({ parse: 'z:thing' }))))
+                .and($({ parse: ['the', 'x:thing|of', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).of($({ parse: 'y:thing' }))))
+                .and($({ parse: ['x:thing|of', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).of($({ parse: 'y:thing' }))))
                 .and($({ parse: ['the', 'x:thing|in', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).in($({ parse: 'y:thing' }))))
                 .and($({ parse: ['the', 'x:thing'] }).when($.the($({ parse: 'x:thing' }))))
                 .and($({ parse: ['[', 'x:thing|]'] }).when($('x:thing')))
@@ -965,9 +966,8 @@ Deno.test({
 
         // const xThingAnd = $('x:thing|and').suchThat($({parse:'x:thing'}).isa('thing')).$
 
-        const code = '( if x is a cat then y is a dog )'.split(' ')
-        const r = parse($({ parse: code, }).$, kb)
-        assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
+        assertEquals(parse($({ parse: 'if x is a cat then y is a dog'.split(' '), }).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
+        assertEquals(parse($({ parse: '( if x is a cat then y is a dog )'.split(' '), }).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
         assertEquals(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
         assertEquals(parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb), $.the('cat').whose($('x').isa('y')).$)
         assertEquals(parse($({ parse: '[ capra x:ciao ]'.split(' ') }).$, kb), $(['capra', 'x:ciao']).$)
@@ -984,8 +984,8 @@ Deno.test({
         assertEquals(parse($({ parse: 'cat has high as hunger'.split(' ') }).$, kb), $('cat').has('high').as('hunger').$)
         assertEquals(parse($({ parse: 'cat have high as hunger'.split(' ') }).$, kb), $('cat').has('high').as('hunger').$)
         assertEquals(parse($({ parse: 'the cat is a feline when the sky has blue as color'.split(' ') }).$, kb), $.the('cat').isa('feline').when($.the('sky').has('blue').as('color')).$)
-
-        // console.log(parse($({ parse: '[ la x:thing ] when the x:thing'.split(' ') }).$, kb))
+        assertEquals(parse($({ parse: 'the sum of ( 1 and 2 )'.split(' ') }).$, kb), $.the('sum').of($('1').and('2')).$)
+        assertEquals(parse($({ parse: 'fib of 4'.split(' ').map(x => parseNumber(x) ?? x) }).$, kb), $.the('fib').of(4).$)
 
         // console.log(parse($({ parse: 'is a cat'.split(' ') }).$, kb))
         // console.log(parse($({ parse: '[ la x:thing ] when the thing'.split(' ') }).$, kb))
