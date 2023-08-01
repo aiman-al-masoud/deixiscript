@@ -36,7 +36,7 @@ export function removeImplicit(
 
             const complement = Object.entries({ ...ast, headType: undefined }).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
 
-            if (complement) {
+            if (complement && ast.headType.type === 'entity') { //TODO
                 return removeImplicit($.the(ast.headType.value).which($._.has(complement[1]).as(complement[0])).$)
             } else {
                 return { description: $(true).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }

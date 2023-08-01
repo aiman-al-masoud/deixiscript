@@ -9,6 +9,8 @@ import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
+import { compareSpecificities } from "./specificity.ts";
+import { sorted } from "../utils/sorted.ts";
 
 
 /**
@@ -61,8 +63,6 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             throw new Error(`ambiguous disjunction`)
         case 'when-derivation-clause':
         case 'after-derivation-clause':
-            // console.log(ast)
-            // addedDerivationClauses = [removeImplicit(ast)]
             addedDerivationClauses = [ast]
             break
         case 'if-else':
@@ -103,14 +103,18 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     ]
 
     const filtered = subtractWorldModels(kb.wm, eliminations)
+    const wm = addWorldModels(filtered, additions)
+
+    const derivClauses = !addedDerivationClauses.length ? kb.derivClauses
+        : sorted([...kb.derivClauses, ...addedDerivationClauses], (a, b) => compareSpecificities(b.conseq, a.conseq, kb))
 
     return {
         additions,
         eliminations,
         kb: {
             ...kb,
-            wm: addWorldModels(filtered, additions),
-            derivClauses: [...kb.derivClauses, ...addedDerivationClauses],
+            wm,
+            derivClauses,
         }
     }
 
@@ -129,6 +133,7 @@ export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): WorldModel {
             return tell(conseq, kb).additions
 
         }
+
         return []
     })
 

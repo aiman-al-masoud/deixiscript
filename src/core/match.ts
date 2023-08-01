@@ -147,12 +147,8 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
             ms.push(m)
             ff = ff.slice(tailIndex + 1)
         } else {
-
             const ff0 = ff.at(0)
-            // ms.push(match(t, ff0!, kb))
             ms.push(!ff0 ? undefined : match(t, ff0, kb))
-            // console.log('t=', t, 'ff[0]=', ff[0])
-
             ff = ff.slice(1)
         }
     })

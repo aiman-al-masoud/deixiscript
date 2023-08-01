@@ -745,6 +745,8 @@ Deno.test({
 Deno.test({
     name: 'test62',
     fn: () => {
+        // simple-sentence template can match compound formula (special case of
+        // a template can match a more-specific-than-itself formula ).
         const template = $('x:cat').has('red').as('color').$
         const kb = $('cat#1').isa('cat').dump()
         const f = $('y:dog').is('stupid').and($('cat#1').has('red').as('color')).$
@@ -776,10 +778,10 @@ Deno.test({
 Deno.test({
     name: 'test64',
     fn: () => {
-
+        // fibonacci test + automatic derivation clause sorting by specificity test
         const kb1 = $({ fibOf: 1 }).when(1)
-            .and($({ fibOf: 2 }).when(1))
             .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
+            .and($({ fibOf: 2 }).when(1)) // gets hoisted up (more specific than x:number)
             .dump()
 
         assertEquals(
@@ -934,49 +936,8 @@ Deno.test({
 
 
 Deno.test({
-    name: 'test73',
-    fn: () => {
-        // experiments w/ alternative parsing strategy (similar to DCGs)
-        const kb = $({ parse: ['x:thing', 'is', 'y:thing'] }).when($('x:thing').is('y:thing')).dump()
-        const code = 'cat is red'.split(' ')
-        const r = parse($({ parse: code }).$, kb)
-        assertEquals(r, $('cat').is('red').$)
-    }
-})
-
-Deno.test({
-    name: 'test74',
-    fn: () => {
-        // alt parser...
-        const kb = $({ parse: ['(', 'x:thing|)'], returnMe: true }).when('x:thing').dump()
-        const code = '( cat is a mammal )'.split(' ')
-        const r = parse($({ parse: code, returnMe: true }).$, kb)
-        assertEquals(r, $(['cat', 'is', 'a', 'mammal']).$)
-    }
-})
-
-
-Deno.test({
-    name: 'test75',
-    fn: () => {
-        // alt parser...
-        const kb =
-            $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing' }))
-                .and($({ parse: ['x:thing', 'is', 'a', 'y:thing'] }).when($('x:thing').isa('y:thing')))
-                .dump()
-
-        const code = '( cat is a mammal )'.split(' ')
-        const r = parse($({ parse: code }).$, kb)
-        assertEquals(r, $('cat').isa('mammal').$)
-    }
-})
-
-
-Deno.test({
     name: 'test76',
     fn: () => {
-
-
         // alt parser...
         const kb =
             $({ parse: ['x:thing|and', 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' })))
@@ -998,6 +959,9 @@ Deno.test({
                 .and($({ parse: ['x:thing'] }).when('x:thing'))
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump()
+
+        // console.log(kb.derivClauses.length)
+        // console.log(kb.derivClauses)
 
         // const xThingAnd = $('x:thing|and').suchThat($({parse:'x:thing'}).isa('thing')).$
 
@@ -1022,7 +986,6 @@ Deno.test({
         assertEquals(parse($({ parse: 'the cat is a feline when the sky has blue as color'.split(' ') }).$, kb), $.the('cat').isa('feline').when($.the('sky').has('blue').as('color')).$)
 
         // console.log(parse($({ parse: '[ la x:thing ] when the x:thing'.split(' ') }).$, kb))
-
 
         // console.log(parse($({ parse: 'is a cat'.split(' ') }).$, kb))
         // console.log(parse($({ parse: '[ la x:thing ] when the thing'.split(' ') }).$, kb))
@@ -1073,6 +1036,8 @@ Deno.test({
         assertEquals(sortedDcs, oracle)
     }
 })
+
+
 
 
 
