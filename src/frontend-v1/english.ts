@@ -215,11 +215,11 @@ export const syntaxes: SyntaxMap<
         { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
     conjunction: [
-        { types: ['simple-formula'], role: 'f1' },
+        { types: ['simple-formula', 'atom'], role: 'f1' },
         { types: ['space'], number: '*' },
         { literals: ['and'] },
         { types: ['space'], number: '*' },
-        { types: ['formula'], role: 'f2' },
+        { types: ['formula', 'atom'], role: 'f2' },
     ],
     formula: [
         { types: ['if-else', 'conjunction', 'derivation-clause', 'disjunction', 'existquant', 'math-expression', 'negation', 'simple-formula',], expand: 'keep-specific-type' } // order!
@@ -286,7 +286,7 @@ export const syntaxes: SyntaxMap<
         { types: ['math-expression', 'atom'], role: 'right' },
     ],
     "implicit-reference": [
-        { literals: ['the', 'an', 'a'], role:'isNew', replaceWith:false },
+        { literals: ['the', 'an', 'a'], role: 'isNew', replaceWith: false },
         { types: ['space'], number: '+' },
         { types: ['digits'], role: 'number', number: '1|0', defaultsTo: 1 },
         { types: ['space'], number: '*' },

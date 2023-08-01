@@ -979,13 +979,22 @@ Deno.test({
 
         // alt parser...
         const kb =
-            $({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing' }))
-                .and($({ parse: ['x:thing|and', 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' }))))
+            $({ parse: ['x:thing|and', 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' })))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
+                .and($({ parse: ['x:thing|when', 'y:thing|'], }).when($({ parse: 'x:thing' }).when($({ parse: 'y:thing' }))))
+                .and($('in').isa('preposition')) // currently not being used fully because cannot subst name of complement because it's a POJO key
                 .and($({ parse: ['the', 'x:thing|whose', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).whose($({ parse: 'y:thing' }))))
+                .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' })).in($({ parse: 'w:thing' }))))
+                .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' }))))
+                .and($({ parse: ['the', 'x:thing|which', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).which($({ parse: 'y:thing' }))))
+                .and($({ parse: ['is', 'a', 'y:thing'], }).when($._.isa($({ parse: 'y:thing' }))))
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
+                .and($('has').and('have').isa('habere'))
+                .and($({ parse: ['x:thing|x:habere', 'y:thing|as', 'z:thing|'] }).when($({ parse: 'x:thing' }).has($({ parse: 'y:thing' })).as($({ parse: 'z:thing' }))))
+                .and($({ parse: ['the', 'x:thing|in', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).in($({ parse: 'y:thing' }))))
                 .and($({ parse: ['the', 'x:thing'] }).when($.the($({ parse: 'x:thing' }))))
                 .and($({ parse: ['[', 'x:thing|]'] }).when($('x:thing')))
+                .and($({ parse: ['(', 'x:thing|)'] }).when($({ parse: 'x:thing' })))
                 .and($({ parse: ['x:thing'] }).when('x:thing'))
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump()
@@ -994,20 +1003,33 @@ Deno.test({
 
         const code = '( if x is a cat then y is a dog )'.split(' ')
         const r = parse($({ parse: code, }).$, kb)
-        // console.log(r)
         assertEquals(r, $('y').isa('dog').if($('x').isa('cat')).$)
-
-        // console.log(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb))
         assertEquals(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
-
-        // console.log( parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb))
         assertEquals(parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb), $.the('cat').whose($('x').isa('y')).$)
         assertEquals(parse($({ parse: '[ capra x:ciao ]'.split(' ') }).$, kb), $(['capra', 'x:ciao']).$)
-
         assertEquals(parse($({ parse: 'the cat and the dog'.split(' ') }).$, kb), $.the('cat').and($.the('dog')).$)
+        assertEquals(parse($({ parse: '( cat and dog ) and meerkat'.split(' ') }).$, kb), $('cat').and('dog').and('meerkat').$)
+        assertEquals(parse($({ parse: 'cat and dog and meerkat'.split(' ') }).$, kb), $('cat').and($('dog').and('meerkat')).$)
+        assertEquals(parse($({ parse: 'cat and ( dog and meerkat )'.split(' ') }).$, kb), $('cat').and($('dog').and('meerkat')).$)
+        assertEquals(parse($({ parse: 'the animal which is a cat'.split(' ') }).$, kb), $.the('animal').which($._.isa('cat')).$)
+        assertEquals(parse($({ parse: '( x and y and z ) is a mammal'.split(' ') }).$, kb), $('x').and($('y').and('z')).isa('mammal').$)
+        assertEquals(parse($({ parse: 'the cat does eat the mouse'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse')).$)
+        assertEquals(parse($({ parse: 'the cat does eat the mouse in the house'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse')).in($.the('house')).$)
+        assertEquals(parse($({ parse: 'the cat does eat ( the mouse in the house )'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse').in($.the('house'))).$)
+        assertEquals(parse($({ parse: 'it when the thing'.split(' ') }).$, kb), $('it').when($.the('thing')).$)
+        assertEquals(parse($({ parse: 'cat has high as hunger'.split(' ') }).$, kb), $('cat').has('high').as('hunger').$)
+        assertEquals(parse($({ parse: 'cat have high as hunger'.split(' ') }).$, kb), $('cat').has('high').as('hunger').$)
+        assertEquals(parse($({ parse: 'the cat is a feline when the sky has blue as color'.split(' ') }).$, kb), $.the('cat').isa('feline').when($.the('sky').has('blue').as('color')).$)
 
+        // console.log(parse($({ parse: '[ la x:thing ] when the x:thing'.split(' ') }).$, kb))
+
+
+        // console.log(parse($({ parse: 'is a cat'.split(' ') }).$, kb))
+        // console.log(parse($({ parse: '[ la x:thing ] when the thing'.split(' ') }).$, kb))
+        // console.log(parse($({ parse: '( x and y and z ) is a mammal'.split(' ') }).$, kb))
         // assertEquals( , $('cat').and('dog').and('meerkat').$)
         // console.log(parse($({ parse: '( cat and dog ) and meerkat'.split(' ') }).$, kb))
+        // console.log(parse($({ parse: 'cat and ( dog and meerkat )'.split(' ') }).$, kb))
         // console.log('-----------')
         // console.log($('cat').and('dog').and('meerkat').$)
     }
@@ -1049,6 +1071,14 @@ Deno.test({
 })
 
 
+
+// Deno.test({
+//     name: 'test79',
+//     fn: () => {
+//         const x  = $.the('cat').complement($.the('house').$, )
+//         console.log(x)
+//     }
+// })
 
 
 // Deno.test({

@@ -284,7 +284,7 @@ export class ExpBuilder<T extends LLangAst> {
         return $({ ...this.exp, object: makeAst(object) })
     }
 
-    protected complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
+    complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
 
         if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
             throw new Error(`bad exp.type=${this.exp.type}`)
@@ -359,7 +359,7 @@ function makeAst(x: LLangAst[]): LLangAst
 function makeAst<T extends LLangAst>(x: T): T
 function makeAst<T extends LLangAst>(x: ExpBuilder<T>): T
 function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>): LLangAst
-function makeAst(x: LLangAst[] | WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst>| (LLangAst | WmAtom)[]): LLangAst
+function makeAst(x: LLangAst[] | WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | (LLangAst | WmAtom)[]): LLangAst
 function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangAst[] | (LLangAst | WmAtom)[]): LLangAst {
 
     if (x instanceof ExpBuilder) {
@@ -410,11 +410,11 @@ export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: LLangAst): ExpBuilder<LLangAst>
 export function $(x: LLangAst[]): ExpBuilder<ListLiteral>
-export function $(x: (LLangAst|WmAtom)[]): ExpBuilder<ListLiteral>
+export function $(x: (LLangAst | WmAtom)[]): ExpBuilder<ListLiteral>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | (LLangAst|WmAtom)[]): ExpBuilder<LLangAst>
-export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[] | (LLangAst|WmAtom)[]): ExpBuilder<LLangAst> {
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | (LLangAst | WmAtom)[]): ExpBuilder<LLangAst>
+export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[] | (LLangAst | WmAtom)[]): ExpBuilder<LLangAst> {
 
     if (typeof x === 'boolean' || typeof x === 'string' || typeof x === 'number' || x instanceof Array || isLLangAst(x)) {
         return new ExpBuilder(makeAst(x))

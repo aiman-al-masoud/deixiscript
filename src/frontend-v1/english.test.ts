@@ -364,3 +364,14 @@ Deno.test({
 
     }
 })
+
+
+
+Deno.test({
+    name: 'test34',
+    fn: () => {
+        const ast = parser.parse('(the cat and the dog) are black')
+        assertEquals(ast, $.the('cat').and($.the('dog')).is('black').$)
+    }
+})
+

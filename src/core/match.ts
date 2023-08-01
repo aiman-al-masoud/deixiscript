@@ -1,9 +1,10 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, ImplicitReference } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, ImplicitReference, Entity } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -20,19 +21,15 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
 
-        // return deepMapOf([[template, f]])
-
     } else if (template instanceof Array && f instanceof Array) {
 
         return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
-
         return matchImplicit(template, f, kb)
 
     } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
 
-        // console.log(template, f)
         const m1 = match(template.head, f.head, kb)
         if (!m1) return undefined
         if (template.description.type === 'boolean' && template.description.value) return reduceMatchList([m1])
@@ -152,8 +149,8 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
         } else {
 
             const ff0 = ff.at(0)
-            ms.push(match(t, ff0!, kb))
-            // ms.push( !ff0? undefined: match(t, ff0, kb))
+            // ms.push(match(t, ff0!, kb))
+            ms.push(!ff0 ? undefined : match(t, ff0, kb))
             // console.log('t=', t, 'ff[0]=', ff[0])
 
             ff = ff.slice(1)
@@ -164,12 +161,18 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
 
 }
 
+
 function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBase) {
 
     const tailIndex =
         astsEqual(template.value, $._.$) ? // no tail case
             f.value.length
             : f.value.findIndex((x, i) => {
+
+                // TODO ---------
+                const list = f.value.slice(0, i).filter((x): x is Entity => x.type === 'entity').map(x => x.value)
+                if (hasUnmatched(list)) return undefined
+                // --------------
 
                 const m1 = match(template.value, x, kb)
                 const m2 = match(template.seq, $(f.value.slice(0, i)).$, kb)
