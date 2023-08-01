@@ -1057,12 +1057,16 @@ Deno.test({
             $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse')).$,
             $.the('cat').does('eat')._($.the('mouse')).$,
             $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse').whose($('color').is('black'))).$,
+            $.the('dog').is('stupid').$,
+            $.the('dog').which($._.has('white').as('color')).is('stupid').$,
         ]
 
         const oracle = [
             dcs[2],
             dcs[0],
             dcs[1],
+            dcs[4],
+            dcs[3],
         ]
 
         const sortedDcs = sorted(dcs, (a, b) => compareSpecificities(b, a, $.emptyKb))
