@@ -12,7 +12,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { parse } from "./parse.ts";
-import { compareSpecificities } from "./specificity.ts";
+import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
 

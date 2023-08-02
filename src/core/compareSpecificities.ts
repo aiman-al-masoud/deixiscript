@@ -14,23 +14,3 @@ export function compareSpecificities(astOne: LLangAst, astTwo: LLangAst, kb: Kno
 
     return 0 // unrelated or equivalent, no difference
 }
-
-// import { $ } from "./exp-builder.ts";
-// const x = compareSpecificities(
-//     $.the('cat').is('hungry').$,
-//     $.the('cat').which($._.is('white')).is('hungry').$,
-//     $.emptyKb,
-// )
-// console.log(x)
-
-
-// import { $ } from "./exp-builder.ts";
-// const x = compareSpecificities(
-//     $('cat').is('hungry').$,
-//     $('mammal').is('hungry').$,
-//     $('cat').isa('mammal').dump(),
-// )
-// console.log(x)
-
-
-

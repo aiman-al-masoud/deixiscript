@@ -330,7 +330,7 @@ export function isTruthy(ast: LLangAst) {
 }
 
 
-export function findWhenMatch(ast: LLangAst, kb: KnowledgeBase) {
+export function definitionOf(ast: LLangAst, kb: KnowledgeBase) {
 
     return first(kb.derivClauses, dc => {
         if (!('when' in dc)) return
@@ -345,8 +345,20 @@ export function findWhenMatch(ast: LLangAst, kb: KnowledgeBase) {
 
         const map = match(dc.conseq, ast, kb)
         if (!map) return
-        
+
         const res = subst(dc.when, map)
         return res
     })
+}
+
+export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
+
+    return kb.derivClauses.flatMap(dc => {
+        if (!('after' in dc)) return []
+        const map = match(definitionOf(dc.after, kb) ?? dc.after, definitionOf(ast, kb) ?? ast, kb)
+        if (!map) return []
+        const conseq = subst(dc.conseq, map)
+        return [conseq]
+    })
+
 }

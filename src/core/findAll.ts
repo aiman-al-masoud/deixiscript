@@ -1,4 +1,4 @@
-import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual, isTruthy, findWhenMatch } from "./types.ts";
+import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual, isTruthy, definitionOf } from "./types.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { uniq } from "../utils/uniq.ts";
@@ -18,7 +18,7 @@ export function findAll(
     partialResults?: DeepMap<Variable, Constant>[],
 ): DeepMap<Variable, Constant>[] {
 
-    const realAst = findWhenMatch(ast, kb) ?? ast
+    const realAst = definitionOf(ast, kb) ?? ast
 
     switch (realAst.type) {
 

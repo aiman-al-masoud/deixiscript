@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, findWhenMatch } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, definitionOf } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -23,7 +23,7 @@ export function ask(
         case 'entity':
         case 'string':
             {
-                const when = findWhenMatch(ast, kb0)
+                const when = definitionOf(ast, kb0)
                 if (when) return ask(when, kb0)
 
                 const lastTime = Math.max(...Object.values(kb0.deicticDict).concat(0))
@@ -62,7 +62,7 @@ export function ask(
 
         case 'has-formula':
 
-            const whennnnn = findWhenMatch(ast, kb0)
+            const whennnnn = definitionOf(ast, kb0)
             if (whennnnn) return ask(whennnnn, kb0)
 
             const t11 = ask(ast.subject, kb0).result
@@ -108,7 +108,7 @@ export function ask(
 
             if (ast.isNew) return { result: ast, kb: kb0 }
 
-            const wen = findWhenMatch(ast, kb0)
+            const wen = definitionOf(ast, kb0)
             if (wen) return ask(wen, kb0)
 
             const maps = findAll(ast.description, [ast.head], kb0)
@@ -175,7 +175,7 @@ export function ask(
         case 'generalized':
             const entries = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
             const formula2 = { ...ast, ...Object.fromEntries(entries) }
-            const whenn = findWhenMatch(formula2, kb0)
+            const whenn = definitionOf(formula2, kb0)
             if (whenn) return ask(whenn, kb0)
             return { result: $(false).$, kb: kb0 }
     }

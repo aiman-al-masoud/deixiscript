@@ -1,15 +1,14 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { match } from "./match.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, findWhenMatch, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
-import { compareSpecificities } from "./specificity.ts";
+import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 
 
@@ -75,7 +74,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                 const at = removeImplicit(ast.value)
                 additions = instantiateConcept(at.head, at.description, kb)
             } else {
-                throw new Error('!!!!! ')
+                throw new Error('!!!!!')
             }
 
             break
@@ -85,7 +84,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             eliminations = result.additions
             break
         case 'generalized':
-            const when = findWhenMatch(ast, kb)
+            const when = definitionOf(ast, kb)
             if (when) return tell(when, kb)
             break
         default:
@@ -95,7 +94,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     }
 
     const consequences = consequencesOf(ast, kb)
-    additions.push(...consequences)
+    const consequencesWm = consequences.flatMap(x => tell(x, kb).additions)
+    additions.push(...consequencesWm)
 
     eliminations = [
         ...eliminations,
@@ -118,28 +118,6 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         }
     }
 
-}
-
-function consequencesOf(ast: LLangAst, kb: KnowledgeBase): WorldModel {
-
-    const changes = kb.derivClauses.flatMap(dc => {
-
-        if ('after' in dc) {
-
-            const map = match(findWhenMatch(dc.after, kb) ?? dc.after, findWhenMatch(ast, kb) ?? ast, kb)
-            // const map = match(dc.after,ast, kb)
-
-            if (!map) return []
-
-            const conseq = subst(dc.conseq, map)
-            return tell(conseq, kb).additions
-
-        }
-
-        return []
-    })
-
-    return changes
 }
 
 function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
