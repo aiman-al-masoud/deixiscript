@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, WmAtom, WorldModel, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, findWhenMatch } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isLLangAst, isAtom, isTruthy, pointsToThings, findWhenMatch } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -22,13 +22,14 @@ export function ask(
         case 'number':
         case 'entity':
         case 'string':
+            {
+                const when = findWhenMatch(ast, kb0)
+                if (when) return ask(when, kb0)
 
-            const r1 = findWhenMatch(ast, kb0)
-            if (r1) return ask(r1, kb0)
-
-            const lastTime = Math.max(...Object.values(kb0.deicticDict).concat(0))
-            const deicticDict = { ...kb0.deicticDict, [ast.value as string]: lastTime + 1 }
-            return { result: ast, kb: { ...kb0, deicticDict } }
+                const lastTime = Math.max(...Object.values(kb0.deicticDict).concat(0))
+                const deicticDict = { ...kb0.deicticDict, [ast.value as string]: lastTime + 1 }
+                return { result: ast, kb: { ...kb0, deicticDict } }
+            }
         case 'list-literal':
         case 'list-pattern':
         case 'nothing':
@@ -38,17 +39,27 @@ export function ask(
             const t20 = ask(ast.object, kb0).result
             return { result: $(astsEqual(t10, t20)).$, kb: kb0 }
         case 'is-a-formula':
-            const t1 = ask(ast.subject, kb0).result
-            const t2 = ask(ast.object, kb0).result
+            const { result: t1 } = ask(ast.subject, kb0)
+            const { result: t2 } = ask(ast.object, kb0)
 
             if (!isAtom(t1) || !isAtom(t2)) return ask(decompress($(t1).isa(t2).$), kb0)
 
             if (t1.type === t2.value) return { result: $(true).$, kb: kb0 }
 
+            if (t2.value === 'thing') return { result: $(true).$, kb: kb0 }
+
             if (!isConst(t1) || !isConst(t2)) throw new Error(``)
 
-            const concepts = getConceptsOf(t1.value, kb0.wm)
-            return { result: $(concepts.includes(t2.value)).$, kb: kb0 }
+            const concepts = kb0.wm.filter(isIsASentence)
+                .filter(s => s[0] === t1.value)
+                .map(x => x[1])
+
+            const uniqConcepts = uniq(concepts)
+
+            if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb0 }
+
+            return { result: $(uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb0).result))).$, kb: kb0 }
+
         case 'has-formula':
 
             const whennnnn = findWhenMatch(ast, kb0)
@@ -87,8 +98,10 @@ export function ask(
                 return ask(ast.f2, kb1)
             }
         case 'existquant':
-            const thing = ask(ast.value, kb0).result
-            return { result: $(thing.type !== 'nothing').$, kb: kb0 }
+            {
+                const { result: thing } = ask(ast.value, kb0)
+                return { result: $(thing.type !== 'nothing').$, kb: kb0 }
+            }
         case 'variable':
             return ask($(ast).suchThat(true).$, kb0)
         case 'arbitrary-type':
@@ -125,14 +138,12 @@ export function ask(
             }
         case 'implicit-reference':
             return ask(removeImplicit(ast), kb0)
-
         case "command":
         case "question":
             throw new Error('!!!!')
         case 'after-derivation-clause':
         case 'when-derivation-clause':
             throw new Error(``)
-
         case 'math-expression':
 
             const leftSide = ask(ast.left, kb0).result
@@ -163,22 +174,11 @@ export function ask(
             )
         case 'generalized':
             const entries = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
-            const newObj = Object.fromEntries(entries)
-            const formula2 = { ...ast, ...newObj }
+            const formula2 = { ...ast, ...Object.fromEntries(entries) }
             const whenn = findWhenMatch(formula2, kb0)
             if (whenn) return ask(whenn, kb0)
             return { result: $(false).$, kb: kb0 }
     }
 
-}
-
-function getConceptsOf(x: WmAtom, cm: WorldModel): WmAtom[] {
-
-    const r = cm.filter(s => s[0] === x && isIsASentence(s))
-        .map(s => s[1])
-        .flatMap(c => [c, ...getConceptsOf(c, cm)])
-        .concat(['thing'])
-
-    return uniq(r)
 }
 
