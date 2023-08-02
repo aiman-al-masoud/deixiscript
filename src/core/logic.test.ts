@@ -11,7 +11,7 @@ import { subst } from "./subst.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { parse } from "./parse.ts";
+import { lin, mapValues, parse } from "./parse.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
@@ -973,14 +973,11 @@ Deno.test({
         assertEquals(parse($({ parse: 'the sum of ( 1 and 2 )'.split(' ') }).$, kb), $.the('sum').of($('1').and('2')).$)
         assertEquals(parse($({ parse: 'fib of 4'.split(' ').map(x => parseNumber(x) ?? x) }).$, kb), $.the('fib').of(4).$)
 
-        // console.log(parse($({ parse: 'is a cat'.split(' ') }).$, kb))
-        // console.log(parse($({ parse: '[ la x:thing ] when the thing'.split(' ') }).$, kb))
-        // console.log(parse($({ parse: '( x and y and z ) is a mammal'.split(' ') }).$, kb))
-        // assertEquals( , $('cat').and('dog').and('meerkat').$)
-        // console.log(parse($({ parse: '( cat and dog ) and meerkat'.split(' ') }).$, kb))
-        // console.log(parse($({ parse: 'cat and ( dog and meerkat )'.split(' ') }).$, kb))
-        // console.log('-----------')
-        // console.log($('cat').and('dog').and('meerkat').$)
+        // lin($('cat').and('dog').$, kb)
+        // lin($('cat').and($('dog').and('meerkat')).$, kb)
+        // lin($('cat').isa('feline').$, kb)
+        // lin($.the('cat').and($.the('dog')).$, kb)
+        // lin($('cat').does('eat')._('mouse').$, kb)
     }
 })
 

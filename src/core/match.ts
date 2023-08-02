@@ -113,10 +113,12 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
     } else if (template.type === 'variable' && isAtom(f)) {
         return deepMapOf([[template, f]])
-    } else if (
-        isSimpleFormula(template)
-        && (f.type === 'conjunction' || f.type === 'disjunction')
-    ) {
+
+    } else if (template.type === 'variable') {
+
+        return deepMapOf([[template, f]])
+
+    } else if (isSimpleFormula(template) && (f.type === 'conjunction' || f.type === 'disjunction')) {
         const m1 = match(template, f.f1, kb)
         const m2 = match(template, f.f2, kb)
         if (m1) return m1
