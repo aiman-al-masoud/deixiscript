@@ -54,10 +54,6 @@
   found first. Descending sort derivation clauses by "specificity" of their
   conseq. Has to be further tested. Tests: 64, 78
 
-- match() may have to take care of derivation clauses, semantic match rather
-  than purely syntactic match. Imagine an event expressed in terms of basic
-  has-sentences, but event handler expressed in higher level way. Tests 79,80,81
-
 - is a concept supposed to be (isa) itself? NO! But match() does check equality of consts before isa.
 
 ## Half Solved Problems
@@ -73,6 +69,10 @@
 
 - cat number 2 ---> explicit reference to constant "cat#2"? 'cat#2' works with
   new parser, obviously still inconvenient for voice mode.
+
+- match() may have to take care of derivation clauses, semantic match rather
+  than purely syntactic match. Imagine an event expressed in terms of basic
+  has-sentences, but event handler expressed in higher level way. Tests 79,80,81
 
 
 ## Problems
