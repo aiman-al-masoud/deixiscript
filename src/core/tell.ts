@@ -120,13 +120,15 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
 }
 
-export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): WorldModel {
+function consequencesOf(ast: LLangAst, kb: KnowledgeBase): WorldModel {
 
     const changes = kb.derivClauses.flatMap(dc => {
 
         if ('after' in dc) {
 
-            const map = match(dc.after, ast, kb)
+            const map = match(findWhenMatch(dc.after, kb) ?? dc.after, findWhenMatch(ast, kb) ?? ast, kb)
+            // const map = match(dc.after,ast, kb)
+
             if (!map) return []
 
             const conseq = subst(dc.conseq, map)

@@ -726,22 +726,8 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test61',
-    fn: () => {
 
-        const dc = $('screen#1').has('red').as('color').after($('x:button').has('down').as('state')).$
 
-        const kb = $(dc)
-            .and($('button#1').isa('button'))
-            .dump()
-
-        const a = $('button#1').has('down').as('state').$
-
-        const result = tell(a, kb)
-        dassert(ask($('screen#1').has('red').as('color').$, result.kb).result)
-    }
-})
 
 Deno.test({
     name: 'test62',
@@ -1037,9 +1023,62 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test79',
+    fn: () => {
+        // after clause test 1
+        const dc = $('screen#1').has('red').as('color').after($('x:button').has('down').as('state')).$
 
+        const kb = $(dc)
+            .and($('button#1').isa('button'))
+            .dump()
 
+        const a = $('button#1').has('down').as('state').$
 
+        const { kb: kb2 } = tell(a, kb)
+        dassert(ask($('screen#1').has('red').as('color').$, kb2).result)
+    }
+})
+
+Deno.test({
+    name: 'test80',
+    fn: () => {
+        // after clause test 2, with derived prop as "efficient cause"
+        const dc = $('screen#1').has('red').as('color')
+            .after($('x:button').has('down').as('state')).$
+
+        const kb = $(dc)
+            .and($('button#1').isa('button'))
+            .and($('x:button').is('down').when($('x:button').has('down').as('state')))
+            .dump()
+
+        const a = $('button#1').is('down').$
+
+        const { kb: kb2 } = tell(a, kb)
+        dassert(ask($('screen#1').has('red').as('color').$, kb2).result)
+    }
+})
+
+Deno.test({
+    name: 'test81',
+    fn: () => {
+        // after clause test 3, with simple clause as "efficient cause"
+        // but derived prop as delclared efficient cause
+
+        const dc = $('screen#1').has('red').as('color')
+            .after($('x:button').is('down')).$
+
+        const kb = $(dc)
+            .and($('button#1').isa('button'))
+            .and($('x:button').is('down').when($('x:button').has('down').as('state')))
+            .dump()
+
+        const a = $('button#1').has('down').as('state').$
+
+        const { kb: kb2 } = tell(a, kb)
+        dassert(ask($('screen#1').has('red').as('color').$, kb2).result)
+    }
+})
 
 // Deno.test({
 //     name: 'test79',
