@@ -520,6 +520,8 @@ Deno.test({
             .and($.a('cat').whose($('fur').has('black').as('color')).exists)
             .dump()
 
+        // console.log(kb0)
+
         const kb1 = tell($.the('cat').whose($('fur').has('red').as('color')).has(1).as('hunger')
             .and($.the('cat').whose($('fur').has('black').as('color')).has(1).as('hunger')).$, kb0).kb
 
@@ -531,11 +533,14 @@ Deno.test({
 
         const statement1 = $({ subject: $.the('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
         const statement2 = $({ subject: $.the('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
+        const statement3 = $({ subject: $.the('cat').whose($('blahblahblah').has('red').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
 
         const result1 = ask(statement1, kb2).result
         const result2 = ask(statement2, kb2).result
+        const result3 = ask(statement3, kb2).result
         dassert(result1)
         dassert(result2)
+        dassert(result3)
     }
 })
 

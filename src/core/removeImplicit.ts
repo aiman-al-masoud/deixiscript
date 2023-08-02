@@ -17,12 +17,13 @@ export function removeImplicit(
         const head = $(`x${10}:${ast.headType.value}`).$
 
         if (ast.whose) {
-            if (ast.whose.subject.type !== 'entity') throw new Error('')
 
-            const owned = $(`y${10}:${ast.whose.subject.value}`).$
+            const owned = $('y10:thing').$
 
-            const description = $(owned).exists.where($(head).has(owned)
-                .and(subst(ast.whose, [ast.whose.subject, owned])))
+            const description = $(owned).exists.where(
+                $(owned).isa(ast.whose.subject)
+                    .and($(head).has(owned))
+                    .and(subst(ast.whose, [ast.whose.subject, owned])))
                 .$
 
             return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
@@ -36,7 +37,7 @@ export function removeImplicit(
 
             const complement = Object.entries({ ...ast, headType: undefined }).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
 
-            if (complement && ast.headType.type === 'entity') { //TODO
+            if (complement) {
                 return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$)
             } else {
                 return { description: $(true).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
