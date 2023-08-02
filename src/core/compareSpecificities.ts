@@ -6,8 +6,15 @@ import { KnowledgeBase, LLangAst } from "./types.ts";
  * opposite is true, 0 if astOne and astTwo are equivalent or unrelated.
  */
 export function compareSpecificities(astOne: LLangAst, astTwo: LLangAst, kb: KnowledgeBase) {
-    const twoMoreSpec = match(astOne, astTwo, kb)
-    const oneMoreSpec = match(astTwo, astOne, kb)
+
+    // const defOfOne = definitionOf(astOne, kb) ?? astOne
+    // const defOfTwo = definitionOf(astTwo, kb) ?? astTwo
+
+    const defOfOne = astOne
+    const defOfTwo = astTwo
+
+    const twoMoreSpec = match(defOfOne, defOfTwo, kb)
+    const oneMoreSpec = match(defOfTwo, defOfOne, kb)
 
     if (oneMoreSpec && !twoMoreSpec) return 1
     if (twoMoreSpec && !oneMoreSpec) return -1
