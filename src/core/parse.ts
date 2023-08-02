@@ -37,7 +37,6 @@ export function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         ...Object.fromEntries(entries),
     } as LLangAst
 
-
     const x = kb.derivClauses
         .filter((dc): dc is WhenDerivationClause => dc.type === 'when-derivation-clause')
         .map(dc => {
@@ -51,12 +50,7 @@ export function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst {
         .at(0)
 
     if (!x) throw new Error(``)
-    console.log(x)
-
-    return $(1).$
-
-    // const y = findAsts(x, 'list-literal')[0] as ListLiteral
-    // console.log(y.value)
+    return x
 
 }
 
