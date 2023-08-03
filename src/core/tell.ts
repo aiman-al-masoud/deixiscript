@@ -54,9 +54,10 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'conjunction':
             const result1 = tell(ast.f1, kb)
-            const result2 = tell(ast.f2, kb)
+            const result2 = tell(ast.f2, /* kb */result1.kb)
+            // console.log(result2.kb.derivClauses.length)
             additions = addWorldModels(result1.additions, result2.additions)
-            addedDerivationClauses = result1.kb.derivClauses.concat(result2.kb.derivClauses)
+            addedDerivationClauses = /* result1.kb.derivClauses.concat( */result2.kb.derivClauses//)
             break
         case 'disjunction':
             throw new Error(`ambiguous disjunction`)

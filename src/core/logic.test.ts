@@ -11,7 +11,7 @@ import { subst } from "./subst.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { lin, mapValues, parse } from "./parse.ts";
+import { parse } from "./parse.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
@@ -449,32 +449,6 @@ Deno.test({
     }
 })
 
-
-Deno.test({
-    name: 'test44',
-    fn: () => {
-        // whose-clause in anaphor
-        const kb0 = $('house#1').isa('house')
-            .and($('house#2').isa('house'))
-            .and($('house#1').has('window#1').as('window'))
-            .and($('window#1').isa('window'))
-            .and($('window#1').has('open').as('state'))
-            .and($('house#2').has('window#2').as('window'))
-            .and($('window#2').isa('window'))
-            .and($('window#2').has('closed').as('state'))
-            .dump()
-
-        const q = $.the('house').whose($('window').has('open').as('state')).$
-        const result = ask(q, kb0).result
-        assertEquals(result, $('house#1').$)
-
-        const q2 = $.the('house').whose($('window').has('closed').as('state')).$
-        const result2 = ask(q2, kb0).result
-        assertEquals(result2, $('house#2').$)
-
-    }
-})
-
 Deno.test({
     name: 'test45',
     fn: () => {
@@ -502,45 +476,28 @@ Deno.test({
 })
 
 Deno.test({
-    name: 'test47',
-    fn: () => {
-        // creation of new thing via existquant+ANAPHOR
-        const kb0 = $.emptyKb
-        const kb1 = tell($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb0).kb
-        const result = ask($.a('cat').whose($('fur').has('red').as('color')).exists.$, kb1).result
-        dassert(result)
-    }
-})
-
-Deno.test({
     name: 'test48',
     fn: () => {
 
-        const kb0 = $.a('cat').whose($('fur').has('red').as('color')).exists
-            .and($.a('cat').whose($('fur').has('black').as('color')).exists)
+        const kb0 = $.a('cat').which($._.has('red').as('color')).exists
+            .and($.a('cat').which($._.has('black').as('color')).exists)
             .dump()
 
-        // console.log(kb0)
-
-        const kb1 = tell($.the('cat').whose($('fur').has('red').as('color')).has(1).as('hunger')
-            .and($.the('cat').whose($('fur').has('black').as('color')).has(1).as('hunger')).$, kb0).kb
+        const kb1 = tell($.the('cat').which($._.has('red').as('color')).has(1).as('hunger')
+            .and($.the('cat').which($._.has('black').as('color')).has(1).as('hunger')).$, kb0).kb
 
         const dc =
-            $({ subject: $.a('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' })
-                .when($.the('cat').has(1).as('hunger')).$
+            $.a('cat').which($._.has('red').as('color').is('hungry')).when($.the('cat').has(1).as('hunger')).$
 
         const kb2 = tell(dc, kb1).kb
 
-        const statement1 = $({ subject: $.the('cat').whose($('fur').has('red').as('color')).$, verb: 'be', object: 'hungry' }).$
-        const statement2 = $({ subject: $.the('cat').whose($('fur').has('black').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
-        const statement3 = $({ subject: $.the('cat').whose($('blahblahblah').has('red').as('color')).$, verb: 'be', object: 'hungry' }).isNotTheCase.$
+        const statement1 = $.the('cat').which($._.has('red').as('color').is('hungry')).$
+        const statement2 = $.the('cat').which($._.has('black').as('color').is('hungry')).isNotTheCase.$
 
         const result1 = ask(statement1, kb2).result
         const result2 = ask(statement2, kb2).result
-        const result3 = ask(statement3, kb2).result
         dassert(result1)
         dassert(result2)
-        dassert(result3)
     }
 })
 
@@ -934,7 +891,6 @@ Deno.test({
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing|when', 'y:thing|'], }).when($({ parse: 'x:thing' }).when($({ parse: 'y:thing' }))))
                 .and($('in').isa('preposition')) // currently not being used fully because cannot subst name of complement because it's a POJO key
-                .and($({ parse: ['the', 'x:thing|whose', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).whose($({ parse: 'y:thing' }))))
                 .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' })).in($({ parse: 'w:thing' }))))
                 .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' }))))
                 .and($({ parse: ['the', 'x:thing|which', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).which($({ parse: 'y:thing' }))))
@@ -952,15 +908,11 @@ Deno.test({
                 .and($({ parse: 'x:thing' }).when('x:thing'))
                 .dump()
 
-        // console.log(kb.derivClauses.length)
-        // console.log(kb.derivClauses)
 
-        // const xThingAnd = $('x:thing|and').suchThat($({parse:'x:thing'}).isa('thing')).$
 
         assertEquals(parse($({ parse: 'if x is a cat then y is a dog'.split(' '), }).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
         assertEquals(parse($({ parse: '( if x is a cat then y is a dog )'.split(' '), }).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
         assertEquals(parse($({ parse: '( if the cat is a feline then the dog is a canine )'.split(' ') }).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
-        assertEquals(parse($({ parse: 'the cat whose x is a y'.split(' ') }).$, kb), $.the('cat').whose($('x').isa('y')).$)
         assertEquals(parse($({ parse: '[ capra x:ciao ]'.split(' ') }).$, kb), $(['capra', 'x:ciao']).$)
         assertEquals(parse($({ parse: 'the cat and the dog'.split(' ') }).$, kb), $.the('cat').and($.the('dog')).$)
         assertEquals(parse($({ parse: '( cat and dog ) and meerkat'.split(' ') }).$, kb), $('cat').and('dog').and('meerkat').$)
@@ -1007,7 +959,7 @@ Deno.test({
         const dcs = [
             $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse')).$,
             $.the('cat').does('eat')._($.the('mouse')).$,
-            $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse').whose($('color').is('black'))).$,
+            $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse').which($._.is('black'))).$,
             $.the('dog').is('stupid').$,
             $.the('dog').which($._.has('white').as('color')).is('stupid').$,
         ]
@@ -1106,15 +1058,3 @@ Deno.test({
 // })
 
 
-// Deno.test({
-//     name: 'test77',
-//     fn: () => {
-//         // const x = ask($.a('cat').$, $.emptyKb).result
-//         // console.log(x)
-//         // console.log($('x:thing|').$)
-//         const t = $.the('capra').$//.whose($('fur').is('yellow')).$
-//         // const f = $.the('capra').whose($('fur').is('yellow')).$
-//         const f = $.the('capra').whose($('fur').is('yellow')).$
-//         console.log(match(t, f, $.emptyKb))
-//     }
-// })

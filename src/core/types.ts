@@ -118,7 +118,6 @@ export type ImplicitReference = {
     type: 'implicit-reference',
     headType: Entity,
     which?: LLangAst,
-    whose?: SimpleFormula,
     owner?: LLangAst,
     number: 1 | '*',
     isNew: boolean,

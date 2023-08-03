@@ -176,19 +176,6 @@ export class ExpBuilder<T extends LLangAst> {
         return tell(this.exp, { ...$.emptyKb, derivClauses: dcs ?? [] }).kb
     }
 
-    whose(ast: ExpBuilder<SimpleFormula>) {
-
-        if (this.exp.type !== 'implicit-reference') {
-            throw new Error('')
-        }
-
-        return new ExpBuilder<ImplicitReference>({
-            ...this.exp,
-            whose: makeAst(ast),
-        } as ImplicitReference)
-
-    }
-
     which(ast: ExpBuilder<SimpleFormula>) {
 
         if (this.exp.type !== 'implicit-reference') {
@@ -455,8 +442,3 @@ $.every = (x: ExpBuilderArg) => createImplicit(x, '*', false)
  */
 $.emptyKb = { wm: [], derivClauses: [], deicticDict: {} } as KnowledgeBase
 
-
-// const x = $({ parse: [$('capra').isa('scemo').$, $('capra').isa('scemo').$,] }).$
-// console.log(x)
-// const  y = $([$('capra').isa('scemo').$, $('capra').isa('scemo').$] ).$
-// console.log(y)

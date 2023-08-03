@@ -16,18 +16,8 @@ export function removeImplicit(
 
         const head = $(`x${10}:${ast.headType.value}`).$
 
-        if (ast.whose) {
+        if (ast.which) {
 
-            const owned = $('y10:thing').$
-
-            const description = $(owned).exists.where(
-                $(owned).isa(ast.whose.subject)
-                    .and($(head).has(owned))
-                    .and(subst(ast.whose, [ast.whose.subject, owned])))
-                .$
-
-            return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
-        } else if (ast.which) {
             const description = subst(ast.which, [$._.$, head])
             return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
 

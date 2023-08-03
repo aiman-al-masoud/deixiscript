@@ -39,7 +39,6 @@ const astTypes = stringLiterals(
     'locative-in',
     'complement',
     'string',
-    'whose-clause',
     'which-clause',
     'atom',
     'normal-atom',
@@ -292,7 +291,7 @@ export const syntaxes: SyntaxMap<
         { types: ['space'], number: '*' },
         { types: ['entity'], role: 'headType' },
         { types: ['space'], number: '*' },
-        { types: ['which-clause', 'whose-clause'], number: '1|0', expand: true },
+        { types: ['which-clause'], number: '1|0', expand: true },
         { types: ['space'], number: '*' },
         { types: ['complement'], number: '*', expand: true, sep: 'space' }, // sep space important
     ],
@@ -300,11 +299,6 @@ export const syntaxes: SyntaxMap<
         { literals: ['which'] },
         { types: ['space'], number: '*' },
         { types: ['simple-formula'], role: 'which' },
-    ],
-    'whose-clause': [
-        { literals: ['whose'] },
-        { types: ['space'], number: '*' },
-        { types: ['simple-formula'], role: 'whose' },
     ],
     command: [
         { types: ['formula'], role: 'f1' },

@@ -231,8 +231,8 @@ Deno.test({
         assertEquals(ast2, $._.has('red').as('color').$)
         const ast3 = parser.parse('the cat')
         assertEquals(ast3, $.the('cat').$)
-        const ast4 = parser.parse('the cat whose fur has red as color')
-        assertEquals(ast4, $.the('cat').whose($('fur').has('red').as('color')).$)
+        // const ast4 = parser.parse('the cat whose fur has red as color')
+        // assertEquals(ast4, $.the('cat').whose($('fur').has('red').as('color')).$)
         const ast5 = parser.parse('a cat which has red as color')
         assertEquals(ast5, $.the('cat').which($._.has('red').as('color')).$)
         const ast6 = parser.parse('the cat which has red as color does eat the mouse')
@@ -311,14 +311,14 @@ Deno.test({
         const ast1 = $.the('capra').which($._.has('black').as('color')).has('scemo').as('friend').$
         const x = linearize(ast1, syntaxes)
 
-        const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
-        const y = linearize(ast2, syntaxes)
+        // const ast2 = $.the('capra').whose($('tail').has('black').as('color')).has('scemo').as('friend').$
+        // const y = linearize(ast2, syntaxes)
 
         const ast3 = $.the('cat').does('eat')._($.the('mouse')).when($(true).equals(true)).$
         const z = linearize(ast3, syntaxes)
 
         assertEquals(parser.parse(x), ast1)
-        assertEquals(parser.parse(y), ast2)
+        // assertEquals(parser.parse(y), ast2)
         assertEquals(parser.parse(z), ast3)
 
     }
