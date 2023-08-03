@@ -116,7 +116,7 @@ export type ListPattern = {
 
 export type ImplicitReference = {
     type: 'implicit-reference',
-    headType: Entity,
+    headType: LLangAst,
     which?: LLangAst,
     owner?: LLangAst,
     number: 1 | '*',
@@ -200,7 +200,6 @@ export type AfterDerivationClause = {
     conseq: LLangAst,
     after: LLangAst,
 }
-
 
 export type IfElse = {
     type: 'if-else',

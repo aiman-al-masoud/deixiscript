@@ -4,6 +4,7 @@ import { subst } from "./subst.ts";
 import { ImplicitReference, LLangAst, isLLangAst } from "./types.ts";
 import { ArbitraryType } from "./types.ts"
 import { deepMapOf } from "../utils/DeepMap.ts";
+import { random } from "../utils/random.ts";
 
 
 export function removeImplicit(ast: ImplicitReference): ArbitraryType
@@ -14,14 +15,14 @@ export function removeImplicit(
 
     if (ast.type === 'implicit-reference') {
 
-        const head = $(`x${10}:${ast.headType.value}`).$
+        const head = $(`x${random()}:thing`).$
 
         if (ast.which) {
 
-            const description = subst(ast.which, [$._.$, head])
+            const description = $(head).isa(ast.headType).and(subst(ast.which, [$._.$, head])).$
             return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
 
-        } else if (ast.owner) {
+        } else if (ast.owner) { // a little ambiguous
             return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$)
         } else {
 
@@ -30,7 +31,7 @@ export function removeImplicit(
             if (complement) {
                 return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$)
             } else {
-                return { description: $(true).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
+                return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
             }
         }
 

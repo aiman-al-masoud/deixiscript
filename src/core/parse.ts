@@ -2,7 +2,7 @@ import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from "./exp-builder.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, KnowledgeBase, isLLangAst, definitionOf, WhenDerivationClause, ListLiteral } from "./types.ts";
+import { LLangAst, KnowledgeBase, isLLangAst, definitionOf, WhenDerivationClause } from "./types.ts";
 
 
 export function parse(

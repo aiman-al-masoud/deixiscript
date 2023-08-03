@@ -324,7 +324,6 @@ Deno.test({
         // "where" should override defaults
         const kb =
             $('point').has(100).as('x-coordinate').dump()
-        // .dump(derivationClauses)
 
         const result = evaluate($('x:point').exists.where($('x:point').has(200).as('x-coordinate')).tell.$, kb)
 
@@ -428,8 +427,6 @@ Deno.test({
         dassert(r8)
         const r9 = ask($('door#1').isa($('door').or('agent')).$, kb).result
         dassert(r9)
-        // const r3 = tell($('cat#1').and('cat#2').isa('cat').$, kb).additions
-        // console.log(r3)
     }
 })
 
@@ -538,6 +535,7 @@ Deno.test({
 Deno.test({
     name: 'test50',
     fn: () => {
+        // of-anaphor test
         const kb = $.a('cat').which($._.has(3).as('position')).exists.dump()
         const q = $.the('position').of($.the('cat').$).$
         const result = ask(q, kb).result
@@ -670,10 +668,10 @@ Deno.test({
 Deno.test({
     name: 'test59',
     fn: () => {
-        const x = $.the('mouse').in('house#1').exists.$
+        const x = $.a('mouse').in('house#1').exists.$
         tell(x, $.emptyKb).kb
 
-        const alt = $.the('mouse').which($._.has('house#1').as('location')).exists.$
+        const alt = $.a('mouse').which($._.has('house#1').as('location')).exists.$
         assertNotEquals(match(removeImplicit(x), removeImplicit(alt), $.emptyKb), undefined)
 
     }

@@ -5,9 +5,7 @@ import { uniq } from "../utils/uniq.ts";
 import { cartesian } from "../utils/cartesian.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { $ } from './exp-builder.ts'
-import { match } from "./match.ts";
 import { findAsts } from "./findAsts.ts";
-import { first } from "../utils/first.ts";
 import { solve } from "./solve.ts";
 import { zip } from "../utils/zip.ts";
 
@@ -23,6 +21,11 @@ export function findAll(
     switch (realAst.type) {
 
         case 'conjunction':
+
+            // numbers shouldn't constrain second conjunct
+            if (realAst.f1.type === 'is-a-formula' && astsEqual(realAst.f1.object, $('number').$)) {
+                return findAll(realAst.f2, findAsts(realAst.f2, 'variable'), kb)
+            }
 
             const vars1 = findAsts(realAst.f1, 'variable')
             const firstChoices = findAll(realAst.f1, vars1, kb, partialResults)
@@ -82,6 +85,7 @@ export function findAll(
         case "list-literal":
         case 'is-a-formula':
         case 'has-formula':
+            // console.log('variables=', variables, 'realAst=', realAst, 'wm=', kb.wm)
             const results = getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)
             return results
     }
