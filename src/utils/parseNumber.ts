@@ -6,6 +6,8 @@
  */
 export function parseNumber(string: string): number | undefined {
 
+    if (string === '') return undefined
+
     const nonDig = string.match(/\D/g)?.at(0)
 
     if (nonDig && nonDig !== '.') {
