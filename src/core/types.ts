@@ -360,3 +360,7 @@ export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
     })
 
 }
+
+export function isWhenDerivationClause(ast:LLangAst):ast is WhenDerivationClause{
+    return ast.type === 'when-derivation-clause'
+}

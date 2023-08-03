@@ -11,7 +11,7 @@ import { subst } from "./subst.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { parse } from "./parse.ts";
+import { linearize, parse, tokenize } from "./parse.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
@@ -888,10 +888,16 @@ Deno.test({
             $({ parse: ['x:thing|and', 'y:thing|'] }).when($({ parse: 'x:thing' }).and($({ parse: 'y:thing' })))
                 .and($({ parse: ['if', 'x:thing|then', 'y:thing|'], }).when($({ parse: 'y:thing' }).if($({ parse: 'x:thing' }))))
                 .and($({ parse: ['x:thing|when', 'y:thing|'], }).when($({ parse: 'x:thing' }).when($({ parse: 'y:thing' }))))
+                .and($({ parse: ['the', 'x:thing|which', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).which($({ parse: 'y:thing' }))))
                 .and($('in').isa('preposition')) // currently not being used fully because cannot subst name of complement because it's a POJO key
+
+
+                .and($({ parse: ['does', 'y:thing'] }).when($._.does($({ parse: 'y:thing' }))))
+
                 .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' })).in($({ parse: 'w:thing' }))))
                 .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' }))))
-                .and($({ parse: ['the', 'x:thing|which', 'y:thing|'] }).when($.the($({ parse: 'x:thing' })).which($({ parse: 'y:thing' }))))
+
+
                 .and($({ parse: ['is', 'a', 'y:thing'], }).when($._.isa($({ parse: 'y:thing' }))))
                 .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
                 .and($('has').and('have').isa('habere'))
@@ -928,11 +934,40 @@ Deno.test({
         assertEquals(parse($({ parse: 'the sum of ( 1 and 2 )'.split(' ') }).$, kb), $.the('sum').of($('1').and('2')).$)
         assertEquals(parse($({ parse: 'fib of 4'.split(' ').map(x => parseNumber(x) ?? x) }).$, kb), $.the('fib').of(4).$)
 
+
         // lin($('cat').and('dog').$, kb)
         // lin($('cat').and($('dog').and('meerkat')).$, kb)
         // lin($('cat').isa('feline').$, kb)
-        // lin($.the('cat').and($.the('dog')).$, kb)
+        const original = $.the('cat').and($.the('dog')).$
+        const code = linearize(original, kb)!
+        const ast = parse($({ parse: tokenize(code) }).$, kb)
+        assertEquals(ast, original)
         // lin($('cat').does('eat')._('mouse').$, kb)
+
+        const o1 = $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$
+        // const l1 = linearize(o1, kb)!
+        // console.log(l1)
+        // const a1 = parse($({ parse: tokenize(l1) }).$, kb)
+        // console.log(a1)
+        const x = 'the cat does eat (the mouse which does run)'
+        const ts = tokenize(x)
+        const a = parse($({ parse: ts }).$, kb)
+        assertEquals(o1, a)
+        // console.log(ts)
+        // console.log(a)
+
+        // assertEquals(a1, o1)
+
+        // const x = $.the('cat').which($._.does('eat') ).$
+        // console.log(x)
+        // console.log(linearize(x, kb))
+
+        // console.log(tokenize(''))
+
+        // const a1 = mapNodes($('cat').isa('feline').$, x => $({parse:x}).$ )
+        // const a2 = mapNodes(a1, x=>x.type==='generalized' && x['parse']  ? x['parse'] :x )
+        // console.log(a1)
+        // console.log(a2)
     }
 })
 
