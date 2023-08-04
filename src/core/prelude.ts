@@ -7,16 +7,6 @@ export function getStandardKb(): KnowledgeBase {
         deicticDict: {},
         derivClauses: [
 
-            // excludes annotation
-            $({ annotation: 'ann:thing', subject: 'p1:thing', verb: 'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
-                $('c:thing').has('ann:thing').as('part')
-                    .and($('ann:thing').isa('mutex-annotation'))
-                    .and($('ann:thing').has('p1:thing').as('p'))
-                    .and($('ann:thing').has('p2:thing').as('p'))
-                    .and($('ann:thing').has('prop:thing').as('prop'))
-                    .and($('ann:thing').has('c:thing').as('concept'))
-            ).$,
-
             // single-entry-for annotation
             $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when( // max=0 will probably not work
                 $('ann:thing').exists.where(
@@ -38,7 +28,7 @@ export function getStandardKb(): KnowledgeBase {
             ).$,
 
             // default copula behavior
-            $({ subject: 'x:thing', verb: 'be', object: 'y:thing' }).when(
+            $('x:thing').is('y:thing').when(
                 $('x:thing').equals('y:thing')
             ).$,
 

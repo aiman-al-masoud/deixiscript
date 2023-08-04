@@ -102,8 +102,10 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         ...additions.flatMap(s => excludedBy(s, kb)),
     ]
 
-    const filtered = subtractWorldModels(kb.wm, eliminations)
-    const wm = addWorldModels(filtered, additions)
+    // const filtered = subtractWorldModels(kb.wm, eliminations)
+    // const wm = addWorldModels(filtered, additions)
+    const wm0 = addWorldModels(kb.wm, additions)
+    const wm = subtractWorldModels(wm0, eliminations)
 
     const derivClauses = !addedDerivationClauses.length ? kb.derivClauses
         : sorted([...kb.derivClauses, ...addedDerivationClauses], (a, b) => compareSpecificities(b.conseq, a.conseq, kb))
@@ -134,45 +136,30 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
     const concepts = conceptsOf(h[0], kb)
 
-    const r = [...excludedByMutexAnnot(h, kb, concepts), ...excludedBySingleValueAnnot(h, kb, concepts)]
+    const r = excludedBySingleValueAnnot(h, kb, concepts)
 
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
 }
 
-function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
-
-    const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
-    const r  = qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false).filter(isNotNullish)
-    return r
-
-    // const hasSentences = kb.wm.filter(isHasSentence)
-    // const isASentences = kb.wm.filter(isIsASentence)
-    // const allMutex = isASentences.filter(x => x[1] === 'mutex-annotation').map(x => x[0])
-    // const pertainingMutex = hasSentences.filter(x => allMutex.includes(x[0]) && concepts.includes(x[1]) && x[2] === 'concept').map(x => x[0])
-    // const props = hasSentences.filter(x => pertainingMutex.includes(x[0]) && x[2] === 'p').map(x => x[1])
-    // const result = props.filter(x => x !== h[1])
-    // return result
-}
-
 function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
-    
+
     const qs2 =
-        concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max:'n:number' }))
+        concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }))
 
     const maxes =
-        qs2.flatMap(x=>findAll(x.$, [$('n:number').$], kb))
-        .map(x=>x.get($('n:number').$))
-        .filter(isNotNullish)
-        .map(x=>x.value)
+        qs2.flatMap(x => findAll(x.$, [$('n:number').$], kb))
+            .map(x => x.get($('n:number').$))
+            .filter(isNotNullish)
+            .map(x => x.value)
 
     if (!maxes.length) return []
-    
+
     // assume oldest-inserted values come first
     const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value)
-        
+
     const max = Math.min(...maxes as number[]) // most restrictive
-    const throwAway = old.slice(0, old.length-max+1)
+    const throwAway = old.slice(0, old.length - max + 1)
     return throwAway
 }
 

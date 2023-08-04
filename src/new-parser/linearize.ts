@@ -2,8 +2,8 @@ import { $ } from "../core/exp-builder.ts";
 import { mapAsts } from "../core/mapAsts.ts";
 import { match } from "../core/match.ts";
 import { subst } from "../core/subst.ts";
-import { LLangAst,KnowledgeBase,isAtom,isWhenDerivationClause,isConst } from "../core/types.ts";
-import { DeepMap,deepMapOf } from "../utils/DeepMap.ts";
+import { LLangAst, KnowledgeBase, isAtom, isWhenDerivationClause, isConst } from "../core/types.ts";
+import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { first } from "../utils/first.ts";
 
 export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined {

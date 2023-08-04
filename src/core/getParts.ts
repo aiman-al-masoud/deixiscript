@@ -12,7 +12,7 @@ export function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
         .filter(x => x[0] === concept)
         .filter(x => isTruthy(ask($(x[1]).isa('number-restriction').isNotTheCase.$, kb).result))
         .filter(x => isTruthy(ask($(x[1]).isa('mutex-concepts-annotation').isNotTheCase.$, kb).result))
-        .filter(x => isTruthy(ask($(x[1]).isa('mutex-annotation').isNotTheCase.$, kb).result))
+        // .filter(x => isTruthy(ask($(x[1]).isa('mutex-annotation').isNotTheCase.$, kb).result))
         .map(x => x[2])
 
     const all = supers.filter(x => x !== concept).flatMap(x => getParts(x, kb)).concat(parts)
