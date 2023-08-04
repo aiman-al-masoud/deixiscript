@@ -118,17 +118,11 @@ export type ImplicitReference = {
     type: 'implicit-reference',
     headType: LLangAst,
     which?: LLangAst,
-    // owner?: LLangAst,
     number: 1 | '*',
     isNew: boolean,
-    // complement?: [LLangAst, LLangAst],
-    complementName?:LLangAst,
-    complement?:LLangAst,
-} 
-
-// & {
-    // [complement: string]: LLangAst,
-// }
+    complementName?: LLangAst,
+    complement?: LLangAst,
+}
 
 export type ArbitraryType = {
     type: 'arbitrary-type',
@@ -148,7 +142,8 @@ export type MathExpression = {
 export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
-    // complement?: [LLangAst, LLangAst],
+    complementName?: LLangAst,
+    complement?: LLangAst,
     type: 'generalized',
 }
 

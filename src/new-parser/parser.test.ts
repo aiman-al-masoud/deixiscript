@@ -5,9 +5,6 @@ import { parse } from "./parse.ts";
 import { linearize } from "./linearize.ts";
 import { tokenize } from "./tokenize.ts";
 
-// function p(ast:LLangAst){
-//     return $({parse:ast})
-// }
 
 Deno.test({
     name: 'test76',
@@ -51,9 +48,7 @@ Deno.test({
         assertEquals(parse($({ parse: '( x and y and z ) is a mammal'.split(' ') }).$, kb), $('x').and($('y').and('z')).isa('mammal').$)
         assertEquals(parse($({ parse: 'the cat does eat the mouse'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse')).$)
         assertEquals(parse($({ parse: 'the cat does eat the mouse in the house'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse')).in($.the('house')).$)
-        
-        // assertEquals(parse($({ parse: 'the cat does eat ( the mouse in the house )'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse').in($.the('house'))).$)
-        
+        assertEquals(parse($({ parse: 'the cat does eat ( the mouse in the house )'.split(' ') }).$, kb), $.the('cat').does('eat')._($.the('mouse').in($.the('house'))).$)
         assertEquals(parse($({ parse: 'it when the thing'.split(' ') }).$, kb), $('it').when($.the('thing')).$)
         assertEquals(parse($({ parse: 'cat has high as hunger'.split(' ') }).$, kb), $('cat').has('high').as('hunger').$)
         assertEquals(parse($({ parse: 'cat have high as hunger'.split(' ') }).$, kb), $('cat').has('high').as('hunger').$)
