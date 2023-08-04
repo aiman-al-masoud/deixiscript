@@ -18,7 +18,9 @@ Deno.test({
             .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
 
 
-            .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' })).in($({ parse: 'w:thing' }))))
+            .and($.p( ['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|'] ).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing' ))  .in($.p('w:thing'))  ))
+
+
             .and($({ parse: ['x:thing|does', 'y:thing', 'z:thing|'] }).when($({ parse: 'x:thing' }).does($({ parse: 'y:thing' }))._($({ parse: 'z:thing' }))))
             .and($({ parse: ['is', 'a', 'y:thing'], }).when($._.isa($({ parse: 'y:thing' }))))
             .and($({ parse: ['x:thing|is', 'a', 'y:thing'], }).when($({ parse: 'x:thing' }).isa($({ parse: 'y:thing' }))))
