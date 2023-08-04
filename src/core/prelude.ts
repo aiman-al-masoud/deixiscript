@@ -18,7 +18,7 @@ export function getStandardKb(): KnowledgeBase {
             ).$,
 
             // single-entry-for annotation
-            $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when(
+            $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when( // max=0 will probably not work
                 $('ann:thing').exists.where(
                     $('ann:thing').isa('number-restriction')
                         .and($('c:thing').has('ann:thing').as('part'))
