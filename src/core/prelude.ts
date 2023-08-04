@@ -20,7 +20,7 @@ export function getStandardKb(): KnowledgeBase {
             // single-entry-for annotation
             $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when(
                 $('ann:thing').exists.where(
-                    $('ann:thing').isa('only-one-annotation')
+                    $('ann:thing').isa('number-restriction')
                         .and($('c:thing').has('ann:thing').as('part'))
                         .and($('ann:thing').has('prop:thing').as('prop'))
                         .and($('ann:thing').has('c:thing').as('concept'))
