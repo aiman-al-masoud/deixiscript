@@ -300,7 +300,9 @@ export class ExpBuilder<T extends LLangAst> {
        
         return new ExpBuilder({
             ...this.exp,
-            complement : [makeAst(name), makeAst(comp)]
+            // complement : [makeAst(name), makeAst(comp)]
+            complementName : makeAst(name),
+            complement: makeAst(comp),
         } as ImplicitReference)
         
     }
@@ -314,11 +316,11 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     of(owner: ExpBuilderArg) {
-        // return this.complement(owner, 'owner')
-            return new ExpBuilder({
-                ...this.exp,
-                owner: makeAst(owner),
-            })       
+        return this.complement(owner, 'owner')
+            // return new ExpBuilder({
+            //     ...this.exp,
+            //     owner: makeAst(owner),
+            // })       
     }
 
     get s(): ExpBuilder<LLangAst> {

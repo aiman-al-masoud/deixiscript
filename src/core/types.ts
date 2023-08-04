@@ -118,10 +118,12 @@ export type ImplicitReference = {
     type: 'implicit-reference',
     headType: LLangAst,
     which?: LLangAst,
-    owner?: LLangAst,
+    // owner?: LLangAst,
     number: 1 | '*',
     isNew: boolean,
-    complement?: [LLangAst, LLangAst],
+    // complement?: [LLangAst, LLangAst],
+    complementName?:LLangAst,
+    complement?:LLangAst,
 } 
 
 // & {

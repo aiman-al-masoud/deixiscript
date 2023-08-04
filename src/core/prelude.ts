@@ -62,6 +62,9 @@ export function getStandardKb(): KnowledgeBase {
 
             // pronouns as derivation clauses
             $('it').when('x:thing').$,
+
+
+            // $('x:thing').has('y:thing').as('owner').when($('y:thing').has('x:thing')  ).$,
         ],
     }
 }

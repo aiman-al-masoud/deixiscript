@@ -975,6 +975,24 @@ Deno.test({
     }
 })
 
+// Deno.test({
+//     name : 'test82',
+//     fn : ()=>{
+//         const kb = $('x:thing').has('y:thing').as('owner').when($('y:thing').has('x:thing') )
+//                     .and($('cat#1').has('claws#1'))
+//                     .dump()
+
+//         dassert(ask($('claws#1').has('cat#1').as('owner').$, kb).result)
+//         dassert(ask($('claws#1').has('ca#1').as('owner').isNotTheCase.$, kb).result)
+
+
+//         // const kb1 = $('x:thing').has('y:thing').as('owner').when($('y:thing').has('z:thing').as('x:thing') )
+//         //             .and($('cat#1').has('claws#1'))
+//         //             .dump()
+
+//     }
+// })
+
 
 // Deno.test({
 //     name: 'test79',
