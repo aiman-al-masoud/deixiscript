@@ -24,15 +24,24 @@ export function removeImplicit(
 
         } else if (ast.owner) { // a little ambiguous
             return removeImplicit($.the('thing').which($(ast.owner).has($._.$).as(ast.headType)).$)
+        
+        } else if (ast.complement){
+
+            // ast.complement[0]
+            // ast.complement[1]
+
+            return removeImplicit($.the(ast.headType).which($._.has(ast.complement[1]).as(ast.complement[0])).$)
+
+
         } else {
 
-            const complement = Object.entries({ ...ast, headType: undefined }).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
+            // const complement = Object.entries({ ...ast, headType: undefined }).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).at(0)
 
-            if (complement) {
-                return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$)
-            } else {
+            // if (complement) {
+                // return removeImplicit($.the(ast.headType).which($._.has(complement[1]).as(complement[0])).$)
+            // } else {
                 return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
-            }
+            // }
         }
 
     } else {

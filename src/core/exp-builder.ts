@@ -271,17 +271,38 @@ export class ExpBuilder<T extends LLangAst> {
         return $({ ...this.exp, object: makeAst(object) })
     }
 
+    // nounPhraseComplement(comp: ExpBuilderArg, name: string):ExpBuilder<LLangAst>{
+    //     return new ExpBuilder({
+    //         ...this.exp,
+    //         complement : [makeAst(name), makeAst(comp)]
+    //     } as ImplicitReference)
+    // }
+
+    // sentenceComplement(comp: ExpBuilderArg, name: string):ExpBuilder<LLangAst>{
+    // return new ExpBuilder({
+    //                 ...this.exp,
+    //                 [name]: makeAst(comp),
+    //             })
+    // }
+
     complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
 
         if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
             throw new Error(`bad exp.type=${this.exp.type}`)
         }
 
+        if (this.exp.type==='generalized'){
+            return new ExpBuilder({
+                ...this.exp,
+                [name]: makeAst(comp),
+            })
+        }
+       
         return new ExpBuilder({
             ...this.exp,
-            [name]: makeAst(comp),
-        })
-
+            complement : [makeAst(name), makeAst(comp)]
+        } as ImplicitReference)
+        
     }
 
     in(location: ExpBuilderArg) {
@@ -293,7 +314,11 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     of(owner: ExpBuilderArg) {
-        return this.complement(owner, 'owner')
+        // return this.complement(owner, 'owner')
+            return new ExpBuilder({
+                ...this.exp,
+                owner: makeAst(owner),
+            })       
     }
 
     get s(): ExpBuilder<LLangAst> {
@@ -441,4 +466,9 @@ $.every = (x: ExpBuilderArg) => createImplicit(x, '*', false)
  * Empty knowledge base.
  */
 $.emptyKb = { wm: [], derivClauses: [], deicticDict: {} } as KnowledgeBase
+
+/**
+ * Parse derivation clause (shorthand).
+ */
+$.p = (ast: ExpBuilderArg) => $({ parse: makeAst(ast) })
 

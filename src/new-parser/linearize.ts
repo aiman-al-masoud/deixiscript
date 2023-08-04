@@ -1,27 +1,10 @@
-import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
+import { $ } from "../core/exp-builder.ts";
+import { mapAsts } from "../core/mapAsts.ts";
+import { match } from "../core/match.ts";
+import { subst } from "../core/subst.ts";
+import { LLangAst,KnowledgeBase,isAtom,isWhenDerivationClause,isConst } from "../core/types.ts";
+import { DeepMap,deepMapOf } from "../utils/DeepMap.ts";
 import { first } from "../utils/first.ts";
-import { parseNumber } from "../utils/parseNumber.ts";
-import { $ } from "./exp-builder.ts";
-import { mapAsts } from "./mapAsts.ts";
-import { match } from "./match.ts";
-import { subst } from "./subst.ts";
-import { LLangAst, KnowledgeBase, definitionOf, isAtom, isConst, isWhenDerivationClause } from "./types.ts";
-
-
-export function parse(
-    ast: LLangAst,
-    kb: KnowledgeBase,
-): LLangAst {
-
-    const when = definitionOf(ast, kb)
-    if (!when) return ast
-
-    const ast2 = mapAsts(when, x => parse(x, kb))
-    return ast2
-}
-
-
-//----------------------------------work in progress--------------------------------------------
 
 export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined {
     const list = lin(ast, kb)
@@ -78,16 +61,3 @@ function unroll(ast: LLangAst): string {
 
     // return ast
 }
-
-
-//---------------------------------------------------------------------
-
-export function tokenize(code: string) {
-    return code.replace(/\(|\)|\[|\]/g, x => ' ' + x + ' ')
-        .split(/\s+/)
-        .filter(x => x.length)
-        .map(x => parseNumber(x) ?? x)
-        .map(x => x === 'true' ? true : x === 'false' ? false : x)
-}
-
-
