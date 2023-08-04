@@ -143,17 +143,17 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
 function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
 
-    // const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
-    // const r  = qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false).filter(isNotNullish)
-    // return r
+    const qs = concepts.map(c => $({ annotation: 'x:mutex-annotation', subject: h[1], verb: 'exclude', object: 'y:thing', location: h[2], owner: c }))
+    const r  = qs.flatMap(q => findAll(q.$, [$('x:mutex-annotation').$, $('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(x => x?.value !== h[1]).map(x => x?.value), false).filter(isNotNullish)
+    return r
 
-    const hasSentences = kb.wm.filter(isHasSentence)
-    const isASentences = kb.wm.filter(isIsASentence)
-    const allMutex = isASentences.filter(x => x[1] === 'mutex-annotation').map(x => x[0])
-    const pertainingMutex = hasSentences.filter(x => allMutex.includes(x[0]) && concepts.includes(x[1]) && x[2] === 'concept').map(x => x[0])
-    const props = hasSentences.filter(x => pertainingMutex.includes(x[0]) && x[2] === 'p').map(x => x[1])
-    const result = props.filter(x => x !== h[1])
-    return result
+    // const hasSentences = kb.wm.filter(isHasSentence)
+    // const isASentences = kb.wm.filter(isIsASentence)
+    // const allMutex = isASentences.filter(x => x[1] === 'mutex-annotation').map(x => x[0])
+    // const pertainingMutex = hasSentences.filter(x => allMutex.includes(x[0]) && concepts.includes(x[1]) && x[2] === 'concept').map(x => x[0])
+    // const props = hasSentences.filter(x => pertainingMutex.includes(x[0]) && x[2] === 'p').map(x => x[1])
+    // const result = props.filter(x => x !== h[1])
+    // return result
 }
 
 function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
