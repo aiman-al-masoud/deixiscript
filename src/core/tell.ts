@@ -160,18 +160,18 @@ function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts:
     const qs2 =
         concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max:'n:number' }))
 
-    const r2 =
+    const maxes =
         qs2.flatMap(x=>findAll(x.$, [$('n:number').$], kb))
         .map(x=>x.get($('n:number').$))
         .filter(isNotNullish)
         .map(x=>x.value)
 
-    if (!r2.length) return []
+    if (!maxes.length) return []
     
     // assume oldest-inserted values come first
     const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value)
         
-    const max = Math.max(...r2 as number[])
+    const max = Math.min(...maxes as number[]) // most restrictive
     const throwAway = old.slice(0, old.length-max+1)
     return throwAway
 }
