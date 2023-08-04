@@ -6,21 +6,6 @@ export function getStandardKb(): KnowledgeBase {
         wm: [],
         deicticDict: {},
         derivClauses: [
-            // // value restriction
-            // $({ annotation: 'vr:value-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'be', object: 'value:thing' }).when(
-            //     $('owner-concept:thing').has('vr:value-restriction').as('part')
-            //         .and($('vr:value-restriction').isa('value-restriction'))
-            //         .and($('vr:value-restriction').has('part:thing').as('subject'))
-            //         .and($('vr:value-restriction').has('value:thing').as('object'))
-            // ).$,
-
-            // // cancel annotation
-            // $({ annotation: 'ann:cancel-annotation', subject: 'old:thing', verb: 'be', object: 'cancelled', ablative: 'concept:thing' }).when(
-            //     $('concept:thing').has('ann:cancel-annotation').as('part')
-            //         .and($('ann:cancel-annotation').isa('cancel-annotation'))
-            //         .and($('ann:cancel-annotation').has('old:thing').as('subject'))
-            // ).$,
-
 
             // number restriction
             $({ annotation: 'nr:number-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'amount', recipient: 'value:thing' }).when(
@@ -41,11 +26,13 @@ export function getStandardKb(): KnowledgeBase {
             ).$,
 
             // single-entry-for annotation
-            $({ ann: 'ann:thing', onlyHaveOneOf: 'prop:thing', onConcept: 'c:thing' }).when(
-                $('c:thing').has('ann:thing').as('part')
-                    .and($('ann:thing').isa('only-one-annotation'))
-                    .and($('ann:thing').has('prop:thing').as('prop'))
-                    .and($('ann:thing').has('c:thing').as('concept'))
+            $({ onlyHaveOneOf: 'prop:thing', onConcept: 'c:thing' }).when(
+                $('ann:thing').exists.where(
+                    $('ann:thing').isa('only-one-annotation')
+                        .and($('c:thing').has('ann:thing').as('part'))
+                        .and($('ann:thing').has('prop:thing').as('prop'))
+                        .and($('ann:thing').has('c:thing').as('concept'))
+                )
             ).$,
 
             // mutually exclusive concepts annotation

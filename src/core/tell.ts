@@ -158,14 +158,14 @@ function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAto
 
 function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
     const qs2 =
-        concepts.map(c => $({ ann: 'x:only-one-annotation', onlyHaveOneOf: h[2], onConcept: c }))
+        concepts.map(c => $({ onlyHaveOneOf: h[2], onConcept: c }))
 
     const r2 =
-        qs2.flatMap(q => findAll(q.$, [$('x:only-one-annotation').$], kb))
+        qs2.some(q => isTruthy(ask(q.$, kb).result))
 
-    if (r2.length) {
+    if (r2) {
         const buf = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb)
-        return buf.map(x => x.get($('y:thing').$)?.value).filter(isNotNullish)
+        return buf.map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x=>x.value)
     } else {
         return []
     }

@@ -212,7 +212,7 @@ Deno.test({
         const kb = getStandardKb()
 
         const kb2 =
-            $({ ann: 'ann#429', onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
+            $({ onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
                 .and($('capra#1').has(1).as('last-thought-of'))
                 .dump(kb.derivClauses)
 
@@ -816,7 +816,7 @@ Deno.test({
     name: 'test68',
     fn: () => {
         const kb0 = getStandardKb()
-        const kb = $({ ann: 'ann#1928', onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(kb0.derivClauses)
+        const kb = $({ onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(kb0.derivClauses)
         const kb1 = tell($('pt#1').isa('point').$, kb).kb
         const kb2 = tell($('pt#1').has(1).as('x-coord').$, kb1).kb
         const kb3 = tell($('pt#1').has(2).as('x-coord').$, kb2).kb
