@@ -157,18 +157,24 @@ function excludedByMutexAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAto
 }
 
 function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
+    
     const qs2 =
-        concepts.map(c => $({ onlyHaveOneOf: h[2], onConcept: c }))
+        concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max:'n:number' }))
 
     const r2 =
-        qs2.some(q => isTruthy(ask(q.$, kb).result))
+        qs2.flatMap(x=>findAll(x.$, [$('n:number').$], kb))
+        .map(x=>x.get($('n:number').$))
+        .filter(isNotNullish)
+        .map(x=>x.value)
 
-    if (r2) {
-        const buf = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb)
-        return buf.map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value)
-    } else {
-        return []
-    }
+    if (!r2.length) return []
+    
+    // assume oldest-inserted values come first
+    const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value)
+        
+    const max = Math.max(...r2 as number[])
+    const throwAway = old.slice(0, old.length-max+1)
+    return throwAway
 }
 
 function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {

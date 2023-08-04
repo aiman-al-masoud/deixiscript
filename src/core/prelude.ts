@@ -7,14 +7,6 @@ export function getStandardKb(): KnowledgeBase {
         deicticDict: {},
         derivClauses: [
 
-            // number restriction
-            $({ annotation: 'nr:number-restriction', subject: 'part:thing', owner: 'owner-concept:thing', verb: 'amount', recipient: 'value:thing' }).when(
-                $('owner-concept:thing').has('nr:number-restriction').as('part')
-                    .and($('nr:number-restriction').isa('number-restriction'))
-                    .and($('nr:number-restriction').has('part:thing').as('subject'))
-                    .and($('nr:number-restriction').has('value:thing').as('object'))
-            ).$,
-
             // excludes annotation
             $({ annotation: 'ann:thing', subject: 'p1:thing', verb: 'exclude', object: 'p2:thing', location: 'prop:thing', owner: 'c:thing' }).when(
                 $('c:thing').has('ann:thing').as('part')
@@ -26,12 +18,13 @@ export function getStandardKb(): KnowledgeBase {
             ).$,
 
             // single-entry-for annotation
-            $({ onlyHaveOneOf: 'prop:thing', onConcept: 'c:thing' }).when(
+            $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when(
                 $('ann:thing').exists.where(
                     $('ann:thing').isa('only-one-annotation')
                         .and($('c:thing').has('ann:thing').as('part'))
                         .and($('ann:thing').has('prop:thing').as('prop'))
                         .and($('ann:thing').has('c:thing').as('concept'))
+                        .and($('ann:thing').has('n:number').as('max'))
                 )
             ).$,
 
@@ -39,8 +32,8 @@ export function getStandardKb(): KnowledgeBase {
             $({ concept: 'c1:thing', excludes: 'c2:thing' }).when(
                 $('ann:thing').exists.where(
                     $('ann:thing').isa('mutex-concepts-annotation')
-                    .and($('ann:thing').has('c1:thing').as('concept'))
-                    .and($('ann:thing').has('c2:thing').as('concept'))
+                        .and($('ann:thing').has('c1:thing').as('concept'))
+                        .and($('ann:thing').has('c2:thing').as('concept'))
                 )
             ).$,
 

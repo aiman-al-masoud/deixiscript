@@ -212,7 +212,7 @@ Deno.test({
         const kb = getStandardKb()
 
         const kb2 =
-            $({ onlyHaveOneOf: 'last-thought-of', onConcept: 'thing' })
+            $({ limitedNumOf: 'last-thought-of', onConcept: 'thing', max:1 })
                 .and($('capra#1').has(1).as('last-thought-of'))
                 .dump(kb.derivClauses)
 
@@ -816,7 +816,7 @@ Deno.test({
     name: 'test68',
     fn: () => {
         const kb0 = getStandardKb()
-        const kb = $({ onlyHaveOneOf: 'x-coord', onConcept: 'point' }).dump(kb0.derivClauses)
+        const kb = $({ limitedNumOf: 'x-coord', onConcept: 'point', max:1 }).dump(kb0.derivClauses)
         const kb1 = tell($('pt#1').isa('point').$, kb).kb
         const kb2 = tell($('pt#1').has(1).as('x-coord').$, kb1).kb
         const kb3 = tell($('pt#1').has(2).as('x-coord').$, kb2).kb
@@ -972,6 +972,28 @@ Deno.test({
 
         const { kb: kb2 } = tell(a, kb)
         dassert(ask($('screen#1').has('red').as('color').$, kb2).result)
+    }
+})
+
+Deno.test({
+    name : 'test82',
+    fn : ()=>{
+        // number restriction annotation test
+        const kb = getStandardKb()
+
+        const kb2 =
+            $({ limitedNumOf: 'last-thought-of', onConcept: 'thing', max:2 })
+                .and($('capra#1').has(1).as('last-thought-of'))
+                .and($('capra#2').has(1).as('last-thought-of'))
+                .dump(kb.derivClauses)
+
+        const kb3 = tell($('capra#1').has(2).as('last-thought-of').$, kb2).kb
+        const kb4 = tell($('capra#1').has(3).as('last-thought-of').$, kb3).kb
+        const kb5 = tell($('capra#1').has(4).as('last-thought-of').$, kb4).kb
+
+        assertEquals(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb5).map(x=>x.get($('x:thing').$)), [$(3).$, $(4).$])
+
+        assertEquals(findAll($('capra#2').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb5).map(x=>x.get($('x:thing').$)), [$(1).$])
     }
 })
 
