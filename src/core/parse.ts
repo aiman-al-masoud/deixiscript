@@ -34,7 +34,7 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
     if (isAtom(ast)) return ast
 
     const unwrap = (v: LLangAst) => mapAsts(v, x => x.type === 'generalized' && x['parse'] ? x['parse'] : x)
-    const wrap = (v: LLangAst) => mapAsts(v, x => $({ parse: x }).$, false)
+    const wrap = (v: LLangAst) => mapAsts(v, x => $({ parse: x }).$, { top: false })
 
     const newAst = wrap(ast)
     const whenDcs = kb.derivClauses.filter(isWhenDerivationClause)

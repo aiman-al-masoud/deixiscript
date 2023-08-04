@@ -177,7 +177,7 @@ export function ask(
             // const entries = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
             // const formula2 = { ...ast, ...Object.fromEntries(entries) }
 
-            const formula2 = mapAsts(ast, x => ask(x, kb0).result, false)
+            const formula2 = mapAsts(ast, x => ask(x, kb0).result, { top: false })
 
             const whenn = definitionOf(formula2, kb0)
             if (whenn) return ask(whenn, kb0)
