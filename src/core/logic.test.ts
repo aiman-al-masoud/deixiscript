@@ -367,7 +367,7 @@ Deno.test({
     fn: () => {
         // mutex concepts test
         const kbmin2 = getStandardKb()
-        const { kb: kbmin1 } = tell($({ ann: 'ann#9126', concept: 'cat', excludes: 'dog' }).$, kbmin2)
+        const { kb: kbmin1 } = tell($({ concept: 'cat', excludes: 'dog' }).$, kbmin2)
         const kb0 = tell($('mammal#1').isa('cat').$, kbmin1).kb
         const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
         dassert(ask($('mammal#1').isa('cat').isNotTheCase.$, kb1).result)

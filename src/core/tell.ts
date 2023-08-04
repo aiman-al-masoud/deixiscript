@@ -165,7 +165,7 @@ function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts:
 
     if (r2) {
         const buf = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb)
-        return buf.map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x=>x.value)
+        return buf.map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value)
     } else {
         return []
     }
@@ -175,12 +175,13 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
     const concepts = conceptsOf(is[0], kb)
 
-    const qs = concepts.map(c => $({ ann: 'x:mutex-concepts-annotation', concept: c, excludes: 'c2:thing' }))
+    const qs = concepts.map(c => $({ concept: c, excludes: 'c2:thing' }))
 
     const r =
-        qs.flatMap(q => findAll(q.$, [$('x:mutex-concepts-annotation').$, $('c2:thing').$], kb))
+        qs.flatMap(q => findAll(q.$, [$('c2:thing').$], kb))
             .map(x => x.get($('c2:thing').$))
-            .map(x => x?.value)
+            .filter(isNotNullish)
+            .map(x => x.value)
             .filter(x => x !== is[1])
 
     const result = r.map(x => [is[0], x] as IsASentence)

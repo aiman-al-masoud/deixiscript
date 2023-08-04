@@ -36,10 +36,12 @@ export function getStandardKb(): KnowledgeBase {
             ).$,
 
             // mutually exclusive concepts annotation
-            $({ ann: 'ann:thing', concept: 'c1:thing', excludes: 'c2:thing' }).when(
-                $('ann:thing').isa('mutex-concepts-annotation')
+            $({ concept: 'c1:thing', excludes: 'c2:thing' }).when(
+                $('ann:thing').exists.where(
+                    $('ann:thing').isa('mutex-concepts-annotation')
                     .and($('ann:thing').has('c1:thing').as('concept'))
                     .and($('ann:thing').has('c2:thing').as('concept'))
+                )
             ).$,
 
             // default copula behavior
