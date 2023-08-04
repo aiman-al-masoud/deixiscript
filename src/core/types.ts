@@ -361,6 +361,24 @@ export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
 
 }
 
-export function isWhenDerivationClause(ast:LLangAst):ast is WhenDerivationClause{
+export function isWhenDerivationClause(ast: LLangAst): ast is WhenDerivationClause {
     return ast.type === 'when-derivation-clause'
 }
+
+
+// export function mapNodes(ast: LLangAst, fn: (x: LLangAst) => LLangAst, top = true, lvl = 0): LLangAst {
+
+//     const entries = Object.entries(ast)
+//         .filter((e): e is [string, LLangAst] => isLLangAst(e[1]))
+
+//     const newEntries =
+//         entries.map(e => [e[0], mapNodes(e[1], fn, top, lvl + 1)])
+
+//     const nucleus = {
+//         ...ast,
+//         ...Object.fromEntries(newEntries),
+//     }
+
+//     return lvl !== 0 || top ? fn(nucleus) : nucleus
+
+// }

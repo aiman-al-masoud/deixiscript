@@ -6,6 +6,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
+import { mapAsts } from "./mapAsts.ts";
 
 
 export function ask(
@@ -129,15 +130,14 @@ export function ask(
             } else {
                 return { result: $('nothing').$, kb: kb0 }
             }
-
+        case 'implicit-reference':
+            return ask(removeImplicit(ast), kb0)
         case 'if-else':
             {
                 const { kb, result } = ask(ast.condition, kb0)
                 if (isTruthy(result)) return ask(ast.then, kb)
                 return ask(ast.otherwise, kb)
             }
-        case 'implicit-reference':
-            return ask(removeImplicit(ast), kb0)
         case "command":
         case "question":
             throw new Error('!!!!')
@@ -173,8 +173,12 @@ export function ask(
                 }
             )
         case 'generalized':
-            const entries = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
-            const formula2 = { ...ast, ...Object.fromEntries(entries) }
+
+            // const entries = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
+            // const formula2 = { ...ast, ...Object.fromEntries(entries) }
+
+            const formula2 = mapAsts(ast, x => ask(x, kb0).result, false)
+
             const whenn = definitionOf(formula2, kb0)
             if (whenn) return ask(whenn, kb0)
             return { result: $(false).$, kb: kb0 }

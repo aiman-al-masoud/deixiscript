@@ -2,9 +2,10 @@ import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { first } from "../utils/first.ts";
 import { parseNumber } from "../utils/parseNumber.ts";
 import { $ } from "./exp-builder.ts";
+import { mapAsts } from "./mapAsts.ts";
 import { match } from "./match.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, KnowledgeBase, isLLangAst, definitionOf, isAtom, GeneralizedFormula, isConst, isWhenDerivationClause } from "./types.ts";
+import { LLangAst, KnowledgeBase, definitionOf, isAtom, isConst, isWhenDerivationClause } from "./types.ts";
 
 
 export function parse(
@@ -15,12 +16,8 @@ export function parse(
     const when = definitionOf(ast, kb)
     if (!when) return ast
 
-    const entries = Object.entries(when)
-        .filter((e): e is [string, LLangAst] => isLLangAst(e[1]))
-        .map(e => [e[0], parse(e[1], kb)])
-
-    const ast2 = { ...when, ...Object.fromEntries(entries) }
-    return parse(ast2, kb)
+    const ast2 = mapAsts(when, x => parse(x, kb))
+    return ast2
 }
 
 
@@ -36,10 +33,10 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
 
     if (isAtom(ast)) return ast
 
-    const unwrap = (v: LLangAst) => mapNodes(v, x => x.type === 'generalized' && x['parse'] ? x['parse'] : x)
-    const wrap = (v: LLangAst) => mapNodes(v, x => $({ parse: x }).$)
+    const unwrap = (v: LLangAst) => mapAsts(v, x => x.type === 'generalized' && x['parse'] ? x['parse'] : x)
+    const wrap = (v: LLangAst) => mapAsts(v, x => $({ parse: x }).$, false)
 
-    const newAst = (wrap(ast) as GeneralizedFormula)['parse']
+    const newAst = wrap(ast)
     const whenDcs = kb.derivClauses.filter(isWhenDerivationClause)
 
     const x = first(whenDcs, dc => {
@@ -59,23 +56,6 @@ export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K,
     const entries = Array.from(m.entries())
     const newEntries = entries.map(e => [e[0], f(e[1])] as const)
     return deepMapOf(newEntries)
-}
-
-export function mapNodes(ast: LLangAst, fn: (x: LLangAst) => LLangAst): LLangAst {
-
-    const entries = Object.entries(ast)
-        .filter((e): e is [string, LLangAst] => isLLangAst(e[1]))
-
-    const newEntries =
-        entries
-            .map(e => [e[0], mapNodes(e[1], fn)])
-
-    return fn({
-        ...ast,
-        ...Object.fromEntries(newEntries),
-    })
-
-
 }
 
 function unroll(ast: LLangAst): string {
@@ -98,6 +78,7 @@ function unroll(ast: LLangAst): string {
 
     // return ast
 }
+
 
 //---------------------------------------------------------------------
 
