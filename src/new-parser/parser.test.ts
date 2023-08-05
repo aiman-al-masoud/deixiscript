@@ -53,6 +53,7 @@ Deno.test({
         assertEquals(parse($.p(tokenize('the sum of ( 1 and 2 )')).$, kb), $.the('sum').of($(1).and(2)).$)
         assertEquals(parse($.p(tokenize('fib of 4')).$, kb), $.the('fib').of(4).$)
         assertEquals(parse($.p(tokenize('cat#1')).$, kb), $('cat#1').$)
+        assertEquals(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb), $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$)
 
 
         // console.log(tok('"ciao mondo" is the (string) " ciao a tutti " 1 2 '))
@@ -91,11 +92,6 @@ Deno.test({
         // console.log(l1)
         // const a1 = parse($({ parse: tokenize(l1) ).$, kb)
         // console.log(a1)
-        const o1 = $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$
-        const x = 'the cat does eat (the mouse which does run)'
-        const ts = tokenize(x)
-        const a = parse($.p(ts).$, kb)
-        assertEquals(o1, a)
         // console.log(ts)
         // console.log(a)
 
