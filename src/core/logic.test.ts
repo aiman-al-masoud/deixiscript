@@ -278,7 +278,7 @@ Deno.test({
     fn: () => {
         // string literals
         const x = $('"ciao mondo"')
-        assertEquals(x.$.type, 'string')
+        // assertEquals(x.$.type, 'string')
         dassert(ask(x.equals('"ciao mondo"').$, $.emptyKb).result)
         dassert(ask(x.equals('"ciaomondo"').isNotTheCase.$, $.emptyKb).result)
     }

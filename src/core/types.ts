@@ -38,7 +38,7 @@ export type Constant =
     | Entity
     | Boolean
     | Number
-    | StringLiteral
+    // | StringLiteral
     | Nothing
 export type SimpleFormula =
     | AtomicFormula
@@ -92,10 +92,10 @@ export type Number = {
     value: number,
 }
 
-export type StringLiteral = {
-    type: 'string',
-    value: string,
-}
+// export type StringLiteral = {
+//     type: 'string',
+//     value: string,
+// }
 
 export type Variable = {
     type: 'variable',
@@ -217,7 +217,7 @@ export function isConst(t: LLangAst): t is Constant {
     return t.type === 'entity'
         || t.type === 'number'
         || t.type === 'boolean'
-        || t.type === 'string'
+        // || t.type === 'string'
 }
 
 export function isTerm(a: LLangAst): a is Term {
@@ -263,7 +263,7 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'boolean': true,
         'number': true,
         'entity': true,
-        'string': true,
+        // 'string': true,
         'command': true,
         'question': true,
         'nothing': true,

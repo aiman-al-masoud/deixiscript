@@ -79,7 +79,6 @@ export function findAll(
         case "entity":
         case "nothing":
         case "variable":
-        case "string":
         case "number":
         case "list-pattern":
         case "list-literal":

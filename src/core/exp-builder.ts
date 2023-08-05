@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, StringLiteral, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -335,7 +335,7 @@ function isStringLiteral(x: string): x is StringLiteralPattern {
 
 function makeAst(x: ListPat): ListPattern
 function makeAst(x: Var): Variable
-function makeAst(x: StringLiteralPattern): StringLiteral
+function makeAst(x: StringLiteralPattern): Entity
 function makeAst(x: WmAtom[]): ListLiteral
 function makeAst(x: number): Number
 function makeAst(x: boolean): Boolean
@@ -365,7 +365,7 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
         }
     } else if (isStringLiteral(x)) {
         return {
-            type: 'string',
+            type: 'entity',
             value: x.substring(1, x.length - 1),
         }
     } else if (isPat(x)) {
@@ -390,7 +390,7 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
 
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
-export function $(x: StringLiteralPattern): ExpBuilder<StringLiteral>
+export function $(x: StringLiteralPattern): ExpBuilder<Entity>
 export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
 export function $(x: 'nothing'): ExpBuilder<Nothing>
 export function $(x: string): ExpBuilder<Entity>

@@ -32,6 +32,7 @@ Deno.test({
             .dump()
 
 
+        assertEquals(tokenize('"ciao mondo" is the (string) " ciao a tutti " 1 2 false true 300'), ['"ciao mondo"', 'is', 'the', '(', 'string', ')', '" ciao a tutti "', 1, 2, false, true, 300])
         assertEquals(parse($.p(tokenize('if x is a cat then y is a dog')).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
         assertEquals(parse($.p(tokenize('( if x is a cat then y is a dog )')).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
         assertEquals(parse($.p(tokenize('( if the cat is a feline then the dog is a canine )')).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
@@ -52,6 +53,28 @@ Deno.test({
         assertEquals(parse($.p(tokenize('the sum of ( 1 and 2 )')).$, kb), $.the('sum').of($(1).and(2)).$)
         assertEquals(parse($.p(tokenize('fib of 4')).$, kb), $.the('fib').of(4).$)
         assertEquals(parse($.p(tokenize('cat#1')).$, kb), $('cat#1').$)
+
+
+        // console.log(tok('"ciao mondo" is the (string) " ciao a tutti " 1 2 '))
+
+        // console.log(parse($.p(tok('"ciao  mondo A"')).$, kb))
+
+        // console.log(tok('"ciao mondo" is (the string) " ciao a tutti " 1 2 '))
+
+        // assertEquals(parse($.p(tokenize('cat#1')).$, kb), $('cat#1').$)
+
+        // console.log(tokenize('" ciao mondo "'))
+        // console.log($.p(tokenize('" ciao mondo "')).$)
+        // console.log(parse($.p(tokenize('" ciao mondo "')).$, kb))
+
+
+        // const t = $.p(['"', 'x:thing|"']).$
+        // const f = $.p(tokenize('" ciao mondo "')).$
+        // console.log(t)
+        // console.log(f)
+        // const m = match(t ,f, kb)
+        // console.log(m)
+
 
 
         // lin($('cat').and('dog').$, kb)

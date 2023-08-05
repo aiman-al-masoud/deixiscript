@@ -22,7 +22,6 @@ export function ask(
         case 'boolean':
         case 'number':
         case 'entity':
-        case 'string':
             {
                 const when = definitionOf(ast, kb0)
                 if (when) return ask(when, kb0)
@@ -173,9 +172,6 @@ export function ask(
                 }
             )
         case 'generalized':
-
-            // const entries = Object.entries(ast).filter((e): e is [string, LLangAst] => isLLangAst(e[1])).map(e => [e[0], ask(e[1], kb0).result])
-            // const formula2 = { ...ast, ...Object.fromEntries(entries) }
 
             const formula2 = mapAsts(ast, x => ask(x, kb0).result, { top: false })
 
