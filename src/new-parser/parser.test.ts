@@ -19,6 +19,7 @@ Deno.test({
             .and($('+').and('-').and('*').and('/').isa('operator'))
             .and($('is').and('are').and('be').isa('esse'))
             .and($('esse').isa('verb'))
+            .and($.p(['does', 'x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing')).ask))
             .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
             .and($.p(['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).in($.p('w:thing'))))
             .and($.p(['x:thing|does', 'not', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).isNotTheCase))
@@ -27,6 +28,7 @@ Deno.test({
             .and($.p(['x:thing|is', 'a', 'y:thing']).when($.p('x:thing').isa($.p('y:thing'))))
             .and($.p(['x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing'))))
             .and($('has').and('have').isa('habere'))
+            .and($('habere').isa('verb'))
             .and($.p(['x:thing|x:habere', 'y:thing|as', 'z:thing|']).when($.p('x:thing').has($.p('y:thing')).as($.p('z:thing'))))
             .and($.p(['the', 'x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
             .and($.p(['x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
@@ -69,7 +71,15 @@ Deno.test({
         assertEquals(parse($.p(tokenize('THE CAT')).$, kb), $.the('cat').$)
         assertNotEquals(parse($.p(tokenize('"ciao mondo"')).$, kb), $('"CIAO MONDO"').$)
         assertEquals(parse($.p(tokenize('"ciao mondo"')).$, kb), $('"ciao mondo"').$)
+        assertEquals(parse($.p(tokenize('does the cat have the mouse')).$, kb), $.the('cat').does('have')._($.the('mouse')).ask.$)
 
+
+
+        // const original = $.the('cat').and($.the('dog')).$
+        const original = $.the('cat').does('eat')._($.the('mouse')).$
+        const code = linearize(original, kb)!
+        const ast = parse($.p(tokenize(code)).$, kb)
+        assertEquals(ast, original)
 
 
         // console.log(match(parse($.p(tokenize('1 is 1')).$, kb), $(1).is(1).$, kb))
@@ -94,16 +104,10 @@ Deno.test({
         // const m = match(t ,f, kb)
         // console.log(m)
 
-
-
         // lin($('cat').and('dog').$, kb)
         // lin($('cat').and($('dog').and('meerkat')).$, kb)
         // lin($('cat').isa('feline').$, kb)
-        // const original = $.the('cat').and($.the('dog')).$
-        const original = $.the('cat').does('eat')._($.the('mouse')).$
-        const code = linearize(original, kb)!
-        const ast = parse($.p(tokenize(code)).$, kb)
-        assertEquals(ast, original)
+
         // lin($('cat').does('eat')._('mouse').$, kb)
 
         // const l1 = linearize(o1, kb)!
