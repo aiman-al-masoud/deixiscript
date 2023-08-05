@@ -1,369 +1,133 @@
-// import { assertEquals, assertObjectMatch } from 'https://deno.land/std@0.186.0/testing/asserts.ts';
-// import { getParser } from '../parser/parser.ts';
-// import { SyntaxMap } from '../parser/types.ts'
-// import { stringLiterals } from '../utils/stringLiterals.ts'
-// import { ElementType } from '../utils/ElementType.ts'
-
-// const astTypes = stringLiterals('copula-sentence', 'noun-phrase', 'number-literal', 'verb-sentence', 'if-sentence', 'comparative-sentence', 'has-sentence', 'and-sentence', 'there-is-sentence')
-// const cstTypes = stringLiterals('saxon-genitive', 'of-genitive', 'sentence', 'space', 'identifier', 'such-that-phrase', 'to-dative', 'in-locative', 'complement',)
-// const roles = stringLiterals('id', 'digits', 'subject', 'object', 'head', 'owner', 'modifiers', 'condition', 'consequence', 'negation', 'verb', 'comparison', 'role', 'pluralizer', 'first', 'second', 'suchThat', 'receiver', 'location',)
-
-// type StType = ElementType<typeof astTypes> | ElementType<typeof cstTypes>
-// type Role = ElementType<typeof roles>
-
-// export const syntaxes: SyntaxMap<
-//     Role,
-//     StType
-// > = {
-//     space: [
-//         { number: '+', literals: [' ', '\n', '\t'] }
-//     ],
-//     identifier: [
-//         { number: '+', role: 'id', reduce: true, literals: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ':'], notEndWith: 's' }
-//     ],
-//     'number-literal': [
-//         { number: '+', role: 'digits', reduce: true, literals: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }
-//     ],
-//     'noun-phrase': [
-//         { literals: ['the', 'an', 'a',], number: '1|0' }, // an comes first! very important!
-//         { types: ['space'], number: '1|0' },
-//         { types: ['identifier'], role: 'modifiers', number: 'all-but-last', sep: 'space' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['saxon-genitive'], number: '1|0', expand: true },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['identifier'], role: 'head' },
-//         { literals: ['s'], number: '1|0', role: 'pluralizer' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['of-genitive'], number: '1|0', expand: true },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['such-that-phrase'], number: '1|0', expand: true }
-//     ],
-//     'such-that-phrase': [
-//         { literals: ['where'] },
-//         { types: ['sentence'], role: 'suchThat' },
-//     ],
-//     'of-genitive': [
-//         { literals: ['of'] },
-//         { types: ['space'] },
-//         { types: ['noun-phrase'], role: 'owner' },
-//     ],
-//     'saxon-genitive': [
-//         { types: ['identifier'], role: 'owner' },
-//         { literals: ["'s"] },
-//     ],
-//     'copula-sentence': [
-//         { types: ['noun-phrase'], role: 'subject' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['is', 'are', 'be'] },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['not'], role: 'negation', number: '1|0' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'object' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['complement'], expand: true, number: '*' },
-//     ],
-//     'verb-sentence': [
-//         { types: ['noun-phrase'], role: 'subject' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['does', 'do'] },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['not'], role: 'negation', number: '1|0' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['identifier'], role: 'verb' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'object', number: '1|0' },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['complement'], expand: true, number: '*' },
-//     ],
-//     'if-sentence': [
-//         { literals: ['if'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['sentence'], role: 'condition' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['then'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['sentence'], role: 'consequence' },
-//     ],
-//     'sentence': [
-//         { types: ['copula-sentence', 'if-sentence', 'verb-sentence', 'comparative-sentence', 'has-sentence'], expand: 'keep-specific-type' }
-//     ],
-//     'comparative-sentence': [
-//         { types: ['noun-phrase'], role: 'subject' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['is', 'are', 'be'] },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['more'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['identifier'], role: 'comparison' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['than'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'object' },
-//     ],
-//     'has-sentence': [
-//         { types: ['noun-phrase'], role: 'subject' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['has', 'have'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'object' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['as'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'role' },
-//     ],
-//     'and-sentence': [
-//         { types: ['sentence'], role: 'first' },
-//         { types: ['space'], number: '1|0' },
-//         { literals: ['and'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['sentence', 'and-sentence'], role: 'second' },
-//     ],
-//     'to-dative': [
-//         { literals: ['to'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'receiver' },
-//     ],
-//     'in-locative': [
-//         { literals: ['in'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'location' },
-//     ],
-//     'complement': [
-//         { types: ['to-dative', 'in-locative'], expand: true, sep: 'space' }
-//     ],
-//     'there-is-sentence': [
-//         { literals: ['there is'] },
-//         { types: ['space'], number: '1|0' },
-//         { types: ['noun-phrase'], role: 'subject' },
-//     ]
-
-// }
+import { assertEquals, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { $ } from "../core/exp-builder.ts"
+import { parse } from "./parse.ts";
+import { linearize } from "./linearize.ts";
+import { tokenize } from "./tokenize.ts";
 
 
-// const parse = (sourceCode: string) => getParser({ syntaxes, log: false }).parse(sourceCode)
+Deno.test({
+    name: 'test76',
+    fn: () => {
+        // alt parser...
 
-// Deno.test({
-//     name: 'test1',
-//     fn: () => {
-//         const r = parse('the best buruf of calabria')
-//         // console.log(r)
-//         assertEquals(r, {
-//             head: 'buruf',
-//             modifiers: ['best'],
-//             owner: {
-//                 head: 'calabria',
-//                 type: 'noun-phrase',
-//             },
-//             type: 'noun-phrase',
-//         })
-//     }
-// })
-
-// Deno.test({
-//     name: 'test2',
-//     fn: () => {
-//         const r = parse('x of matrix is red')
-
-//         assertObjectMatch(r as object, {
-//             subject: {
-//                 head: 'x',
-//                 owner: {
-//                     head: 'matrix',
-//                 }
-//             },
-//             object: {
-//                 head: 'red',
-//             }
-//         })
-
-//     }
-// })
+        const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing')))
+            .and($.p(['if', 'x:thing|then', 'y:thing|']).when($.p('y:thing').if($.p('x:thing'))))
+            .and($.p(['x:thing|when', 'y:thing|']).when($.p('x:thing').when($.p('y:thing'))))
+            .and($.p(['the', 'x:thing|which', 'y:thing|']).when($.the($.p('x:thing')).which($.p('y:thing'))))
+            .and($('in').isa('preposition')) // currently not being fully exploited 
+            .and($.p(['x:thing|o:operator', 'y:thing|']).when($.p('x:thing').mathOperation($.p('y:thing'), 'o:operator')))
+            .and($('+').and('-').and('*').and('/').isa('operator'))
+            .and($('is').and('are').and('be').isa('esse'))
+            .and($('esse').isa('verb'))
+            .and($.p(['does', 'x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing')).ask))
+            .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
+            .and($.p(['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).in($.p('w:thing'))))
+            .and($.p(['x:thing|does', 'not', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).isNotTheCase))
+            .and($.p(['x:thing|does', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing'))))
+            .and($.p(['is', 'a', 'y:thing']).when($._.isa($.p('y:thing'))))
+            .and($.p(['x:thing|is', 'a', 'y:thing']).when($.p('x:thing').isa($.p('y:thing'))))
+            .and($.p(['x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing'))))
+            .and($('has').and('have').isa('habere'))
+            .and($('habere').isa('verb'))
+            .and($.p(['x:thing|x:habere', 'y:thing|as', 'z:thing|']).when($.p('x:thing').has($.p('y:thing')).as($.p('z:thing'))))
+            .and($.p(['the', 'x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
+            .and($.p(['x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
+            .and($.p(['the', 'x:thing|in', 'y:thing|']).when($.the($.p('x:thing')).in($.p('y:thing'))))
+            .and($.p(['the', 'x:thing']).when($.the($.p('x:thing'))))
+            .and($.p(['[', 'x:thing|]']).when('x:thing'))
+            .and($.p(['(', 'x:thing|)']).when($.p('x:thing')))
+            .and($.p(['x:thing']).when('x:thing'))
+            .and($.p('x:thing').when('x:thing'))
+            .dump()
 
 
-// Deno.test({
-//     name: 'test3',
-//     fn: () => {
-//         const r = parse('if x is big then y is small')
-//         // console.log(r)
-
-//         assertObjectMatch(r as object, {
-//             condition: {
-//                 subject: { head: 'x' },
-//                 object: { head: 'big' },
-//                 type: 'copula-sentence',
-//             },
-//             consequence: {
-//                 subject: { head: 'y' },
-//                 object: { head: 'small' },
-//                 type: 'copula-sentence',
-//             },
-//             type: 'if-sentence',
-//         })
-//     }
-// })
-
-
-// Deno.test({
-//     name: 'test4',
-//     fn: () => {
-//         const r = parse('x is not red')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             subject: { head: "x", type: "noun-phrase" },
-//             negation: "not",
-//             object: { head: "red", type: "noun-phrase" },
-//             type: "copula-sentence"
-//         })
-//     }
-// })
-
-// Deno.test({
-//     name: 'test5',
-//     fn: () => {
-//         const r = parse("the car's door")
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             owner: 'car',
-//             head: 'door',
-//         })
-//     }
-// })
-
-// Deno.test({
-//     name: 'test6',
-//     fn: () => {
-//         const r = parse('the cat does eat the rat')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             subject: { head: "cat", type: "noun-phrase" },
-//             verb: "eat",
-//             object: { head: "rat", type: "noun-phrase" },
-//             type: "verb-sentence"
-//         })
-//     }
-// })
+        assertEquals(tokenize('"ciao mondo" is the (string) " ciao a tutti " 1 2 false true 300'), ['"ciao mondo"', 'is', 'the', '(', 'string', ')', '" ciao a tutti "', 1, 2, false, true, 300])
+        assertEquals(parse($.p(tokenize('if x is a cat then y is a dog')).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
+        assertEquals(parse($.p(tokenize('( if x is a cat then y is a dog )')).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
+        assertEquals(parse($.p(tokenize('( if the cat is a feline then the dog is a canine )')).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
+        assertEquals(parse($.p(tokenize('[ capra x:ciao ]')).$, kb), $(['capra', 'x:ciao']).$)
+        assertEquals(parse($.p(tokenize('the cat and the dog')).$, kb), $.the('cat').and($.the('dog')).$)
+        assertEquals(parse($.p(tokenize('( cat and dog ) and meerkat')).$, kb), $('cat').and('dog').and('meerkat').$)
+        assertEquals(parse($.p(tokenize('cat and dog and meerkat')).$, kb), $('cat').and($('dog').and('meerkat')).$)
+        assertEquals(parse($.p(tokenize('cat and ( dog and meerkat )')).$, kb), $('cat').and($('dog').and('meerkat')).$)
+        assertEquals(parse($.p(tokenize('the animal which is a cat')).$, kb), $.the('animal').which($._.isa('cat')).$)
+        assertEquals(parse($.p(tokenize('( x and y and z ) is a mammal')).$, kb), $('x').and($('y').and('z')).isa('mammal').$)
+        assertEquals(parse($.p(tokenize('the cat does eat the mouse')).$, kb), $.the('cat').does('eat')._($.the('mouse')).$)
+        assertEquals(parse($.p(tokenize('the cat does eat the mouse in the house')).$, kb), $.the('cat').does('eat')._($.the('mouse')).in($.the('house')).$)
+        assertEquals(parse($.p(tokenize('the cat does eat ( the mouse in the house )')).$, kb), $.the('cat').does('eat')._($.the('mouse').in($.the('house'))).$)
+        assertEquals(parse($.p(tokenize('it when the thing')).$, kb), $('it').when($.the('thing')).$)
+        assertEquals(parse($.p(tokenize('cat has high as hunger')).$, kb), $('cat').has('high').as('hunger').$)
+        assertEquals(parse($.p(tokenize('cat have high as hunger')).$, kb), $('cat').has('high').as('hunger').$)
+        assertEquals(parse($.p(tokenize('the cat is a feline when the sky has blue as color')).$, kb), $.the('cat').isa('feline').when($.the('sky').has('blue').as('color')).$)
+        assertEquals(parse($.p(tokenize('the sum of ( 1 and 2 )')).$, kb), $.the('sum').of($(1).and(2)).$)
+        assertEquals(parse($.p(tokenize('fib of 4')).$, kb), $.the('fib').of(4).$)
+        assertEquals(parse($.p(tokenize('cat#1')).$, kb), $('cat#1').$)
+        assertEquals(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb), $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$)
+        assertEquals(parse($.p(tokenize('1 be 1')).$, kb), $(1).is(1).$)
+        assertEquals(parse($.p(tokenize(' ( 1  + 2 ) + 3 ')).$, kb), $(1).plus(2).plus(3).$)
+        assertEquals(parse($.p(tokenize(' 1 + 2 + 3 ')).$, kb), $(1).plus($(2).plus(3)).$)
+        assertEquals(parse($.p(tokenize(' ( 1  - 2 ) * 3 ')).$, kb), $(1).minus(2).times(3).$)
+        assertEquals(parse($.p(tokenize('the cat does not eat the mouse')).$, kb), $.the('cat').does('eat')._($.the('mouse')).isNotTheCase.$)
+        assertEquals(parse($.p(tokenize('THE CAT')).$, kb), $.the('cat').$)
+        assertNotEquals(parse($.p(tokenize('"ciao mondo"')).$, kb), $('"CIAO MONDO"').$)
+        assertEquals(parse($.p(tokenize('"ciao mondo"')).$, kb), $('"ciao mondo"').$)
+        assertEquals(parse($.p(tokenize('does the cat have the mouse')).$, kb), $.the('cat').does('have')._($.the('mouse')).ask.$)
 
 
-// Deno.test({
-//     name: 'test7',
-//     fn: () => {
-//         const r = parse('x is more stupid than y')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             subject: { head: "x", type: "noun-phrase" },
-//             comparison: "stupid",
-//             object: { head: "y", type: "noun-phrase" },
-//             type: "comparative-sentence"
-//         })
-//     }
-// })
+
+        // const original = $.the('cat').and($.the('dog')).$
+        const original = $.the('cat').does('eat')._($.the('mouse')).$
+        const code = linearize(original, kb)!
+        const ast = parse($.p(tokenize(code)).$, kb)
+        assertEquals(ast, original)
 
 
-// Deno.test({
-//     name: 'test8',
-//     fn: () => {
-//         const r = parse('a counter has a number as a value')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             subject: { head: "counter", type: "noun-phrase" },
-//             object: { head: "number", type: "noun-phrase" },
-//             role: { head: "value", type: "noun-phrase" },
-//             type: "has-sentence"
-//         })
-//     }
-// })
+        // console.log(match(parse($.p(tokenize('1 is 1')).$, kb), $(1).is(1).$, kb))
+
+        // console.log(tok('"ciao mondo" is the (string) " ciao a tutti " 1 2 '))
+
+        // console.log(parse($.p(tok('"ciao  mondo A"')).$, kb))
+
+        // console.log(tok('"ciao mondo" is (the string) " ciao a tutti " 1 2 '))
+
+        // assertEquals(parse($.p(tokenize('cat#1')).$, kb), $('cat#1').$)
+
+        // console.log(tokenize('" ciao mondo "'))
+        // console.log($.p(tokenize('" ciao mondo "')).$)
+        // console.log(parse($.p(tokenize('" ciao mondo "')).$, kb))
 
 
-// Deno.test({
-//     name: 'test9',
-//     fn: () => {
-//         const r = parse('the cat does eat the mouse and the cat does enjoy it')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             first: {
-//                 subject: { head: "cat", type: "noun-phrase" },
-//                 verb: "eat",
-//                 object: { head: "mouse", type: "noun-phrase" },
-//                 type: "verb-sentence"
-//             },
-//             second: {
-//                 subject: { head: "cat", type: "noun-phrase" },
-//                 verb: "enjoy",
-//                 object: { head: "it", type: "noun-phrase" },
-//                 type: "verb-sentence"
-//             },
-//             type: "and-sentence"
-//         })
-//     }
-// })
+        // const t = $.p(['"', 'x:thing|"']).$
+        // const f = $.p(tokenize('" ciao mondo "')).$
+        // console.log(t)
+        // console.log(f)
+        // const m = match(t ,f, kb)
+        // console.log(m)
 
-// Deno.test({
-//     name: 'test10',
-//     fn: () => {
-//         const r = parse('a button where it is green')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             head: "button",
-//             suchThat: {
-//                 subject: { head: "it", type: "noun-phrase" },
-//                 object: { head: "green", type: "noun-phrase" },
-//                 type: "copula-sentence"
-//             },
-//             type: "noun-phrase"
-//         })
-//     }
-// })
+        // lin($('cat').and('dog').$, kb)
+        // lin($('cat').and($('dog').and('meerkat')).$, kb)
+        // lin($('cat').isa('feline').$, kb)
 
-// Deno.test({
-//     name: 'test11',
-//     fn: () => {
-//         const r = parse('you do give a five to me in the car')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             subject: { head: "you", type: "noun-phrase" },
-//             verb: "give",
-//             object: { head: "five", type: "noun-phrase" },
-//             receiver: { head: "me", type: "noun-phrase" },
-//             location: { head: "car", type: "noun-phrase" },
-//             type: "verb-sentence"
-//         })
-//     }
-// })
+        // lin($('cat').does('eat')._('mouse').$, kb)
 
-// Deno.test({
-//     name: 'test12',
-//     fn: () => {
-//         const r = parse('there is a red cat')
-//         // console.log(r)
-//         assertObjectMatch(r as object, {
-//             subject: { modifiers: ["red"], head: "cat", type: "noun-phrase" },
-//             type: "there-is-sentence"
-//         })
-//     }
-// })
+        // const l1 = linearize(o1, kb)!
+        // console.log(l1)
+        // const a1 = parse($({ parse: tokenize(l1) ).$, kb)
+        // console.log(a1)
+        // console.log(ts)
+        // console.log(a)
 
+        // assertEquals(a1, o1)
 
-// Deno.test({
-//     name: 'test13',
-//     fn: () => {
-//         const r = parse('')
-//         assertEquals(r as object, undefined)
-//     }
-// })
+        // const x = $.the('cat').which($._.does('eat') ).$
+        // console.log(x)
+        // console.log(linearize(x, kb))
 
-// Deno.test({
-//     name: 'test14',
-//     fn: () => {
-//         const parser = getParser({ syntaxes })
-//         const x = parser.parse('1 2 3')
-//         const y = parser.parse()
-//         const z = parser.parse()
-//         const w = parser.parse()
-//         const k = parser.parse()
-//         assertEquals(x, '1')
-//         assertEquals(y, { type: "space" })
-//         assertEquals(z, '2')
-//         assertEquals(w, { type: "space" })
-//         assertEquals(k, '3')
-//     }
-// })
+        // console.log(tokenize(''))
+
+        // const a1 = mapNodes($('cat').isa('feline').$, x => $({parse:x).$ )
+        // const a2 = mapNodes(a1, x=>x.type==='generalized' && x['parse']  ? x['parse'] :x )
+        // console.log(a1)
+        // console.log(a2)
+    }
+})

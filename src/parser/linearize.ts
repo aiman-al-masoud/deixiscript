@@ -1,61 +1,63 @@
+import { $ } from "../core/exp-builder.ts";
+import { mapAsts } from "../core/mapAsts.ts";
+import { match } from "../core/match.ts";
+import { subst } from "../core/subst.ts";
+import { LLangAst, KnowledgeBase, isAtom, isWhenDerivationClause, isConst } from "../core/types.ts";
+import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
+import { first } from "../utils/first.ts";
 
-import { deepEquals } from "../utils/deepEquals.ts";
-import { isNotNullish } from "../utils/isNotNullish.ts";
-import { AstNode, Member, Syntax, SyntaxMap, isNecessary } from "./types.ts";
+export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined {
+    const list = lin(ast, kb)
+    if (!list) return undefined
+    return unroll(list)
+}
 
-/**
- * Convert an AST to its textual representation in a given grammar.
- */
-export function linearize(ast: AstNode, syntaxMap: SyntaxMap): string {
-    if (typeof ast !== 'object') return ast + ''
-    if (ast instanceof Array) return ast + ''
-    if (!ast.type) throw new Error('')
-    const result = linearizeSyntax(syntaxMap[ast.type], syntaxMap, ast)
-    if (result === undefined) return ''
+function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
+
+    if (isAtom(ast)) return ast
+
+    const unwrap = (v: LLangAst) => mapAsts(v, x => x.type === 'generalized' && x['parse'] ? x['parse'] : x)
+    const wrap = (v: LLangAst) => mapAsts(v, x => $({ parse: x }).$, { top: false })
+
+    const newAst = wrap(ast)
+    const whenDcs = kb.derivClauses.filter(isWhenDerivationClause)
+
+    const x = first(whenDcs, dc => {
+        const m = match(dc.when, newAst, kb)
+        if (!m) return undefined
+        const m2 = mapValues(m, v => unwrap(v))
+        const m3 = mapValues(m2, v => lin(v, kb) ?? v)
+        const sub = subst(dc.conseq, m3)
+        return sub
+    })
+
+    const result = x ? unwrap(x) : x
     return result
 }
 
-function linearizeSyntax(
-    syntax: Syntax,
-    syntaxMap: SyntaxMap,
-    ast: AstNode,
-): string | undefined {
-    const pieces = syntax.map(m => linearizeMember(m, syntaxMap, ast))
-    if (!pieces.every(isNotNullish)) return undefined
-    return pieces.reduce((a, b) => a + b, '')
+export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K, V> {
+    const entries = Array.from(m.entries())
+    const newEntries = entries.map(e => [e[0], f(e[1])] as const)
+    return deepMapOf(newEntries)
 }
 
-function linearizeMember(
-    member: Member,
-    syntaxMap: SyntaxMap,
-    ast: AstNode,
-): string | undefined {
+function unroll(ast: LLangAst): string {
 
-    if (typeof ast !== 'object' || ast instanceof Array) return ast + ''
-
-    if (member.literals && isNecessary(member.number)) {
-        return member.literals[0]
+    if (ast.type === 'list-literal') {
+        return ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + ' ' + b, '')
+        // return $(ast.value.flatMap(x => unroll(x))).$
     }
 
-    if (member.role && ast[member.role] !== undefined) {
-        if (deepEquals(ast[member.role], member.defaultsTo)) return ''
-        return linearize(ast[member.role], syntaxMap)
+    if (ast.type === 'list-pattern') {
+        return unroll(ast.seq) + ' ' + unroll(ast.value)
+        // return $([unroll(ast.seq), ast.value]).$
     }
 
-    if (member.role && ast[member.role] === undefined) {
-        return undefined
-    }
+    if (isConst(ast)) return ast.value + ''
 
-    if (member.types) {
+    // console.log(ast)
+    // throw new Error('')
+    return ' '
 
-        for (const t of member.types) {
-            const s = syntaxMap[t]
-            if (s === undefined) throw new Error('')
-            const z = linearizeSyntax(s, syntaxMap, ast)
-            if (z !== undefined) return z
-        }
-
-    }
-
-    return ''
+    // return ast
 }
