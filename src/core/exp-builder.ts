@@ -189,7 +189,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    protected mathOperation(ast: ExpBuilderArg, op: MathExpression['operator']) {
+    mathOperation(ast: ExpBuilderArg, op: MathExpression['operator']) {
         return new ExpBuilder<MathExpression>({
             type: 'math-expression',
             left: this.exp as Atom,
