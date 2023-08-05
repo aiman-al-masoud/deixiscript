@@ -22,7 +22,6 @@ Deno.test({
             .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
             .and($.p(['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).in($.p('w:thing'))))
             .and($.p(['x:thing|does', 'not', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).isNotTheCase))
-
             .and($.p(['x:thing|does', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing'))))
             .and($.p(['is', 'a', 'y:thing']).when($._.isa($.p('y:thing'))))
             .and($.p(['x:thing|is', 'a', 'y:thing']).when($.p('x:thing').isa($.p('y:thing'))))
