@@ -56,6 +56,9 @@
 
 - is a concept supposed to be (isa) itself? NO! But match() does check equality of consts before isa.
 
+- entities and strings are serialized in the same way. They are the same thing.
+
+
 ## Half Solved Problems
 
 - maybe need to pass down new kb not old one within body of ask() for correct
@@ -74,6 +77,7 @@
   than purely syntactic match. Imagine an event expressed in terms of basic
   has-sentences, but event handler expressed in higher level way. Tests 79,80,81
 
+- tell()/instantiateConcept() are currently serializing 'thing' as partial information in "has" without "as". Is this a problem?
 
 ## Problems
 
@@ -82,11 +86,6 @@
 
 - possible problem with where in instantiateConcept() and multiple legal values
   on same attribute.
-
-- tell()/instantiateConcept()/expand()/isConst() are currently serializing
-  'thing' as partial information in "has" without "as".
-
-- entities and strings are serialized in the same way.
 
 - tell() should also affect the deictic dict, currently it doesn't.
 
@@ -101,6 +100,8 @@
 - less than greater than as vague commands (tell)
 
 - most used derivation clauses (annotations) get their own LLangAst
+
+- fix up new linearize()
 
 ## Limitations (Out of Scope Problems)
 
