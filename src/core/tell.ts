@@ -102,8 +102,6 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         ...additions.flatMap(s => excludedBy(s, kb)),
     ]
 
-    // const filtered = subtractWorldModels(kb.wm, eliminations)
-    // const wm = addWorldModels(filtered, additions)
     const wm0 = addWorldModels(kb.wm, additions)
     const wm = subtractWorldModels(wm0, eliminations)
 
@@ -133,16 +131,13 @@ function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
 }
 
 function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
-
     const concepts = conceptsOf(h[0], kb)
-
-    const r = excludedBySingleValueAnnot(h, kb, concepts)
-
+    const r = excludedByNumberRestriction(h, kb, concepts)
     const results = r.map(x => [h[0], x, h[2]] as HasSentence)
     return results
 }
 
-function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
+function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
 
     const qs2 =
         concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }))
@@ -156,10 +151,10 @@ function excludedBySingleValueAnnot(h: HasSentence, kb: KnowledgeBase, concepts:
     if (!maxes.length) return []
 
     // assume oldest-inserted values come first
-    const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value)
+    const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value).concat(h[1])
 
     const max = Math.min(...maxes as number[]) // most restrictive
-    const throwAway = old.slice(0, old.length - max + 1)
+    const throwAway = old.slice(0, old.length - max)
     return throwAway
 }
 

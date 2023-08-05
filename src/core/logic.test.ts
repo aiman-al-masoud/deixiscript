@@ -139,19 +139,6 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test10',
-//     fn: () => {
-
-//         const x = ask($('x:thing').exists.where(
-//             $({ annotation: 'x:thing', subject: 'open', verb: 'exclude', object: 'closed', location: 'state', owner: 'door' })
-//         ).$, kb)
-
-//         dassert(x.result)
-
-//     }
-// })
-
 Deno.test({
     name: 'test23',
     fn: () => {
@@ -620,7 +607,6 @@ Deno.test({
     }
 })
 
-
 Deno.test({
     name: 'test57',
     fn: () => {
@@ -684,9 +670,6 @@ Deno.test({
     }
 })
 
-
-
-
 Deno.test({
     name: 'test62',
     fn: () => {
@@ -742,7 +725,6 @@ Deno.test({
     }
 })
 
-
 Deno.test({
     name: 'test65',
     fn: () => {
@@ -786,8 +768,6 @@ Deno.test({
         assertEquals(result[0].get($('x:thing').$), $('stupid').$)
     }
 })
-
-
 
 Deno.test({
     name: 'test67',
@@ -978,22 +958,39 @@ Deno.test({
 Deno.test({
     name: 'test82',
     fn: () => {
-        // number restriction annotation test
+        // number restriction max=2 annotation test
         const kb = getStandardKb()
 
         const kb2 =
-            $({ limitedNumOf: 'last-thought-of', onConcept: 'thing', max: 2 })
-                .and($('capra#1').has(1).as('last-thought-of'))
-                .and($('capra#2').has(1).as('last-thought-of'))
+            $({ limitedNumOf: 'eye', onConcept: 'thing', max: 2 })
+                .and($('capra#1').has(1).as('eye'))
+                .and($('capra#2').has(1).as('eye'))
                 .dump(kb)
 
-        const kb3 = tell($('capra#1').has(2).as('last-thought-of').$, kb2).kb
-        const kb4 = tell($('capra#1').has(3).as('last-thought-of').$, kb3).kb
-        const kb5 = tell($('capra#1').has(4).as('last-thought-of').$, kb4).kb
+        const kb3 = tell($('capra#1').has(2).as('eye').$, kb2).kb
+        const kb4 = tell($('capra#1').has(3).as('eye').$, kb3).kb
+        const kb5 = tell($('capra#1').has(4).as('eye').$, kb4).kb
 
-        assertEquals(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb5).map(x => x.get($('x:thing').$)), [$(3).$, $(4).$])
+        assertEquals(findAll($('capra#1').has('x:thing').as('eye').$, [$('x:thing').$], kb5).map(x => x.get($('x:thing').$)), [$(3).$, $(4).$])
 
-        assertEquals(findAll($('capra#2').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb5).map(x => x.get($('x:thing').$)), [$(1).$])
+        assertEquals(findAll($('capra#2').has('x:thing').as('eye').$, [$('x:thing').$], kb5).map(x => x.get($('x:thing').$)), [$(1).$])
+    }
+})
+
+Deno.test({
+    name: 'test83',
+    fn: () => {
+        // number restriction max=0 annotation test
+        const kb = getStandardKb()
+
+        const kb2 =
+            $({ limitedNumOf: 'buruf', onConcept: 'thing', max: 0 })
+                .dump(kb)
+
+        const kb3 = tell($('capra#1').has(2).as('buruf').$, kb2).kb
+
+        assertEquals(findAll($('capra#1').has('x:thing').as('buruf').$, [$('x:thing').$], kb3).map(x => x.get($('x:thing').$)).length, 0)
+
     }
 })
 
