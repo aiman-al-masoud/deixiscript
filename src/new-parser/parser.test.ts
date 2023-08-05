@@ -66,6 +66,8 @@ Deno.test({
         assertEquals(parse($.p(tokenize(' 1 + 2 + 3 ')).$, kb), $(1).plus($(2).plus(3)).$)
         assertEquals(parse($.p(tokenize(' ( 1  - 2 ) * 3 ')).$, kb), $(1).minus(2).times(3).$)
         assertEquals(parse($.p(tokenize('the cat does not eat the mouse')).$, kb), $.the('cat').does('eat')._($.the('mouse')).isNotTheCase.$)
+        assertEquals(parse($.p(tokenize('THE CAT')).$, kb), $.the('cat').$)
+
 
         // console.log(match(parse($.p(tokenize('1 is 1')).$, kb), $(1).is(1).$, kb))
 
