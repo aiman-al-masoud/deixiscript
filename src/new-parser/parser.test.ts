@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+import { assertEquals, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "../core/exp-builder.ts"
 import { parse } from "./parse.ts";
 import { linearize } from "./linearize.ts";
@@ -67,6 +67,9 @@ Deno.test({
         assertEquals(parse($.p(tokenize(' ( 1  - 2 ) * 3 ')).$, kb), $(1).minus(2).times(3).$)
         assertEquals(parse($.p(tokenize('the cat does not eat the mouse')).$, kb), $.the('cat').does('eat')._($.the('mouse')).isNotTheCase.$)
         assertEquals(parse($.p(tokenize('THE CAT')).$, kb), $.the('cat').$)
+        assertNotEquals(parse($.p(tokenize('"ciao mondo"')).$, kb), $('"CIAO MONDO"').$)
+        assertEquals(parse($.p(tokenize('"ciao mondo"')).$, kb), $('"ciao mondo"').$)
+
 
 
         // console.log(match(parse($.p(tokenize('1 is 1')).$, kb), $(1).is(1).$, kb))
