@@ -51,7 +51,9 @@ export function solve(ast: Equality, kb: KnowledgeBase): Number | undefined {
 
         const k = ast.subject.right.type === 'number' ? ast.subject.right.value : (ast.subject.left as Atom).value as number
         const X = ast.subject.right.type !== 'number' ? ast.subject.right : ast.subject.left
-        const op = ast.subject.operator as '+' | '-' | '*' | '/'
+
+        if (ast.subject.operator.type !== 'entity') throw new Error(``)
+        const op = ast.subject.operator.value
         const kIsLeft = k === (ast.subject.left as Atom).value
 
         const newRhs = kIsLeft ? {
@@ -66,6 +68,7 @@ export function solve(ast: Equality, kb: KnowledgeBase): Number | undefined {
             '/': k * c,
         }[op]
 
+        if (newRhs === undefined) throw new Error(``)
 
         return solve($(X).equals(newRhs).$, kb)
     }

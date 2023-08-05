@@ -15,33 +15,16 @@ Deno.test({
             .and($.p(['x:thing|when', 'y:thing|']).when($.p('x:thing').when($.p('y:thing'))))
             .and($.p(['the', 'x:thing|which', 'y:thing|']).when($.the($.p('x:thing')).which($.p('y:thing'))))
             .and($('in').isa('preposition')) // currently not being fully exploited 
-            
-
-            // .and($('+').and('-').and('*').and('/').isa('operator'))
-            // .and($.p(['x:thing|o:operator', 'y:thing']).when($.p('x:thing').plus($.p('y:thing'))  ) )
-            .and($.p(['x:thing|+', 'y:thing|']).when($.p('x:thing').plus($.p('y:thing'))  ) )
-
-
+            .and($.p(['x:thing|o:operator', 'y:thing|']).when($.p('x:thing').mathOperation($.p('y:thing'), 'o:operator')))
+            .and($('+').and('-').and('*').and('/').isa('operator'))
             .and($('is').and('are').and('be').isa('esse'))
-            // .and($('is').isa('verb'))
             .and($('esse').isa('verb'))
-
             .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
-            
-
-
             .and($.p(['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).in($.p('w:thing'))))
             .and($.p(['x:thing|does', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing'))))
-            
-            
             .and($.p(['is', 'a', 'y:thing']).when($._.isa($.p('y:thing'))))
             .and($.p(['x:thing|is', 'a', 'y:thing']).when($.p('x:thing').isa($.p('y:thing'))))
-            
-
             .and($.p(['x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing'))))
-
-
-            
             .and($('has').and('have').isa('habere'))
             .and($.p(['x:thing|x:habere', 'y:thing|as', 'z:thing|']).when($.p('x:thing').has($.p('y:thing')).as($.p('z:thing'))))
             .and($.p(['the', 'x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
@@ -53,7 +36,6 @@ Deno.test({
             .and($.p(['x:thing']).when('x:thing'))
             .and($.p('x:thing').when('x:thing'))
             .dump()
-
 
 
         assertEquals(tokenize('"ciao mondo" is the (string) " ciao a tutti " 1 2 false true 300'), ['"ciao mondo"', 'is', 'the', '(', 'string', ')', '" ciao a tutti "', 1, 2, false, true, 300])
@@ -79,9 +61,9 @@ Deno.test({
         assertEquals(parse($.p(tokenize('cat#1')).$, kb), $('cat#1').$)
         assertEquals(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb), $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$)
         assertEquals(parse($.p(tokenize('1 be 1')).$, kb), $(1).is(1).$)
-        assertEquals( parse($.p(tokenize(' ( 1  + 2 ) + 3 ')).$, kb), $(1).plus(2).plus(3).$)
-        assertEquals( parse($.p(tokenize(' 1 + 2 + 3 ')).$, kb), $(1).plus($(2).plus(3)).$)
-
+        assertEquals(parse($.p(tokenize(' ( 1  + 2 ) + 3 ')).$, kb), $(1).plus(2).plus(3).$)
+        assertEquals(parse($.p(tokenize(' 1 + 2 + 3 ')).$, kb), $(1).plus($(2).plus(3)).$)
+        assertEquals(parse($.p(tokenize(' ( 1  - 2 ) * 3 ')).$, kb), $(1).minus(2).times(3).$)
 
 
 

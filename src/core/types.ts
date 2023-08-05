@@ -128,7 +128,7 @@ export type ArbitraryType = {
 
 export type MathExpression = {
     type: 'math-expression',
-    operator: '+' | '-' | '*' | '/' | '>' | '<' | '<=' | '>=',
+    operator: LLangAst,
     left: LLangAst,
     right: LLangAst,
 }

@@ -147,8 +147,10 @@ export function ask(
 
             const leftSide = ask(ast.left, kb0).result
             const rightSide = ask(ast.right, kb0).result
+            const op = ask(ast.operator, kb0).result
 
             if (leftSide.type !== 'number' || rightSide.type !== 'number') return { result: $(false).$, kb: kb0 }
+            if (op.type!=='entity') return { result: $(false).$, kb: kb0 }
 
             const left = leftSide.value
             const right = rightSide.value
@@ -162,7 +164,9 @@ export function ask(
                 '<': $(left < right).$,
                 '<=': $(left <= right).$,
                 '>=': $(left >= right).$,
-            }[ast.operator]
+            }[op.value]
+
+            if (result===undefined) return { result: $(false).$, kb: kb0 }
 
             return ask(
                 result,

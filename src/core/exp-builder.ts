@@ -189,12 +189,12 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    mathOperation(ast: ExpBuilderArg, op: MathExpression['operator']) {
+    mathOperation(ast: ExpBuilderArg, op: ExpBuilderArg) {
         return new ExpBuilder<MathExpression>({
             type: 'math-expression',
             left: this.exp as Atom,
             right: makeAst(ast) as MathExpression,
-            operator: op,
+            operator: makeAst(op),
         })
     }
 
