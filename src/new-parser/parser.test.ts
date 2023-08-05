@@ -19,7 +19,7 @@ Deno.test({
 
             // .and($('+').and('-').and('*').and('/').isa('operator'))
             // .and($.p(['x:thing|o:operator', 'y:thing']).when($.p('x:thing').plus($.p('y:thing'))  ) )
-            .and($.p(['x:thing|+', 'y:thing']).when($.p('x:thing').plus($.p('y:thing'))  ) )
+            .and($.p(['x:thing|+', 'y:thing|']).when($.p('x:thing').plus($.p('y:thing'))  ) )
 
 
             .and($('is').and('are').and('be').isa('esse'))
@@ -80,6 +80,8 @@ Deno.test({
         assertEquals(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb), $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$)
         assertEquals(parse($.p(tokenize('1 be 1')).$, kb), $(1).is(1).$)
         assertEquals( parse($.p(tokenize(' ( 1  + 22 ) + 2 ')).$, kb), $(1).plus(22).plus(2).$)
+        assertEquals( parse($.p(tokenize(' 1 + 2 + 3 ')).$, kb), $(1).plus($(2).plus(3)).$)
+
 
 
 
