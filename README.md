@@ -99,8 +99,6 @@
 
 - most used derivation clauses (annotations) get their own LLangAst
 
-- fix up new linearize()
-
 ## Limitations (Out of Scope Problems)
 
 - context sentitivity is incomplete
