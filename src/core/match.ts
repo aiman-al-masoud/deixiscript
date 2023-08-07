@@ -31,7 +31,18 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
-        return matchImplicit(template, f, kb)
+        // return matchImplicit(template, f, kb)
+
+        if (match(removeImplicit(template), removeImplicit(f), kb) === undefined) return undefined
+
+        const ms: AstMap[] = []
+        ms.push(deepMapOf([[template.headType, f.headType]]))
+
+        if (template.which && f.which) ms.push(deepMapOf([[template.which, f.which]]))
+        if (template.complementName && f.complementName) ms.push(deepMapOf([[template.complementName, f.complementName]]))
+        if (template.complement && f.complement) ms.push(deepMapOf([[template.complement, f.complement]]))
+
+        return reduceMatchList(ms)
 
     } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
 
@@ -207,6 +218,6 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
 
 }
 
-function matchImplicit(template: ImplicitReference, f: ImplicitReference, kb: KnowledgeBase) {
-    return match(removeImplicit(template), removeImplicit(f), kb)
-}
+// function matchImplicit(template: ImplicitReference, f: ImplicitReference, kb: KnowledgeBase) {
+//     return match(removeImplicit(template), removeImplicit(f), kb)
+// }

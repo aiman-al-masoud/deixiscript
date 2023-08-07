@@ -153,8 +153,8 @@ Deno.test({
             .and($('dog#1').isa('dog'))
             .dump()
 
-        // ((the number such that (the cat has the number as weight)) is (3))
-        const x = $('x:number').suchThat($('c:cat').suchThat().has('x:number').as('weight')).equals(3).$
+        const x = $.the('number').which($('cat#1').has($._).as('weight')).equals(3).$
+
         dassert(ask(x, kb2).result)
     }
 })
@@ -225,12 +225,9 @@ Deno.test({
                 .and($('cat#4').isa('cat'))
                 .dump()
 
-        const command = $('x:cat').suchThat().has('black').as('color').if($('cat#1').has('big').as('size'))
-
+        const command = $.the('cat').has('black').as('color').if($('cat#1').has('big').as('size'))
         const kb2 = tell(command.$, kb).kb
-
-        dassert(ask($('x:cat').suchThat().has('black').as('color').$, kb2).result)
-
+        dassert(ask($.the('cat').has('black').as('color').$, kb2).result)
     }
 })
 
@@ -488,40 +485,6 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test49',
-//     fn: () => {
-
-//         const dc = $('p:panel').has('n:number').as('max-x').when(
-//             $('n:number')
-//                 .equals($('y:number').suchThat($('p:panel').has('y:number').as('width'))
-//                     .plus($('z:number').suchThat($('p:panel').has('z:number').as('x-coord'))))
-//         )
-
-//         const kb = $.the('panel').which($._.has(30).as('x-coord')).exists.dump()
-//         const kb2 = tell($.the('panel').has(100).as('width').$, kb).kb
-//         const kb3 = tell(dc.$, kb2).kb
-
-//         const q = $('p:panel').suchThat().has(130).as('max-x').$
-//         const result = ask(q, kb3).result
-//         dassert(result)
-
-//         const q2 = $('n:number').suchThat($('p:panel').suchThat().has('n:number').as('max-x')).$
-//         const result2 = ask(q2, kb3).result
-//         assertEquals(result2, $(130).$)
-
-//         const q3 = $.the('number').which($('p:panel').suchThat().has($._.$).as('max-x')).$
-
-//         const result3 = ask(q3, kb3).result
-//         assertEquals(result3, $(130).$)
-
-//         const q4 = $.the('number').which($.the('panel').has($._.$).as('max-x')).$
-//         const result4 = ask(q4, kb3).result
-//         assertEquals(result4, $(130).$)
-
-//     }
-// })
-
 Deno.test({
     name: 'test50',
     fn: () => {
@@ -593,11 +556,16 @@ Deno.test({
             .and($(4).isa('number'))
             .dump()
 
-        const q = $('n:number')
-            .suchThat($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase).$
+        // const q = $('n:number')
+            // .suchThat($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase).$
 
-        const result = ask(q, kb).result
-        assertEquals(result, $(5).$)
+        // const q = $.the('number').which( $('m:number').exists.where($('m:number').isGreaterThan($._)).isNotTheCase ).$
+
+        const xs = findAll($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase.$, [$('n:number').$], kb)
+        assertEquals(xs[0].get($('n:number').$), $(5).$)
+
+        // const result = ask(q, kb).result
+        // assertEquals(result, $(5).$)
     }
 })
 
@@ -697,7 +665,6 @@ Deno.test({
                 .and($('bob#1').isa('male'))
                 // .and($('apple#1').isa('fruit'))
                 // .and($('it').when('x:thing'))
-                // .and($('it').when($('x:thing').suchThat($('x:thing').isa('male').isNotTheCase.and($('x:thing').isa('female').isNotTheCase))))
                 .and($('he').when('x:male').$)
                 .and($('she').when('x:female').$)
                 .dump()
@@ -1007,6 +974,17 @@ Deno.test({
         assertEquals(kb.derivClauses[0], $('it').when('x:thing').$)
     }
 })
+
+
+
+// Deno.test({
+//     name: 'test85',
+//     fn: () => {
+//         const kb = $.the('f').of($.a('number')).equals($.the('number').plus(1)).dump()
+//         console.log(kb.derivClauses)
+//         console.log(ask($.the('f').of(2).$ ,kb).result)
+//     }
+// })
 
 // Deno.test({
 //     name : 'test82',

@@ -9,12 +9,11 @@ import { first } from "../utils/first.ts";
 export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined {
     const list = lin(ast, kb)
     if (!list) return undefined
-    return unroll(list)
+    const r1 = unroll(list)
+    return r1
 }
 
 function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
-
-    // console.log(ast)
 
     if (isAtom(ast)) return ast
 
@@ -25,11 +24,25 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
     const whenDcs = kb.derivClauses.filter(isWhenDerivationClause)
 
     const x = first(whenDcs, dc => {
+
         const m = match(dc.when, newAst, kb)
         if (!m) return undefined
         const m2 = mapValues(m, v => unwrap(v))
+
+        // if (ast.type==='implicit-reference'){
+        //     console.log('newAst=', newAst)
+        //     console.log('dc.when=', dc.when)
+        //     console.log('m=', m.helperMap)
+        //     console.log('m2=', m2.helperMap)
+        // }
+
         const m3 = mapValues(m2, v => lin(v, kb) ?? v)
+
+        // if (ast.type==='implicit-reference') console.log('m3=', m3.helperMap)
         const sub = subst(dc.conseq, m3)
+        // if (ast.type==='implicit-reference') console.log('sub=', sub)
+
+
         return sub
     })
 
@@ -37,16 +50,22 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
     return result
 }
 
-export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K, V> {
+// export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K, V> {
+//     const entries = Array.from(m.entries())
+//     const newEntries = entries.map(e => [e[0], f(e[1])] as const)
+//     return deepMapOf(newEntries)
+// }
+
+export function mapValues<A>(m: DeepMap<A, A>, f: (v: A) => A): DeepMap<A, A> {
     const entries = Array.from(m.entries())
-    const newEntries = entries.map(e => [e[0], f(e[1])] as const)
+    const newEntries = entries.map(e => [f(e[0]), f(e[1])] as const)
     return deepMapOf(newEntries)
 }
 
 function unroll(ast: LLangAst): string {
 
     if (ast.type === 'list-literal') {
-        return '(' + ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '') + ')'
+        return '(' + ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '').trim() + ')'
         // return $(ast.value.flatMap(x => unroll(x))).$
     }
 
@@ -57,9 +76,5 @@ function unroll(ast: LLangAst): string {
 
     if (isConst(ast)) return ast.value + ''
 
-    // console.log(ast)
-    // throw new Error('')
-    return ' '
-
-    // return ast
+    throw new Error('')
 }

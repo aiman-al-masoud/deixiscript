@@ -3,7 +3,6 @@ import { $ } from "../core/exp-builder.ts"
 import { parse } from "./parse.ts";
 import { linearize } from "./linearize.ts";
 import { tokenize } from "./tokenize.ts";
-import { match } from "../core/match.ts";
 
 
 const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing')))
@@ -324,39 +323,20 @@ Deno.test({
 Deno.test({
     name: 'parser-test35',
     fn: () => {
-
-
         const original = $.the('cat').does('eat')._($.the('mouse').which($._.does('eat')._('cheese'))).$
         const code = linearize(original, kb)!
-
         const ast = parse($.p(tokenize(code)).$, kb)
         assertEquals(ast, original)
-
     }
 })
 
 Deno.test({
     name: 'parser-test36',
     fn: () => {
-
-        // const original = $.the('cat').does('eat')._( $.the('mouse').which($._.does('love')._($.the('cheese')))).$
-        // const original = $.the('mouse').which($._.does('love')._($.the('cheese'))).$
-        // const code = linearize(original, kb)!
-
-
-        // const wrap = (v: LLangAst) => mapAsts(v, x => $({ parse: x }).$, { top: false })
-        // const m = match(
-        //     $.the($.p('x:thing')).which($.p('y:thing')).$,
-        //     wrap($.the('mouse').which($._.does('love')._($.the('cheese'))).$),
-        //     kb,
-        // )
-
-        const m = match(
-            $.the('x:thing').which($('y:thing')).$,
-            $.the('mouse').which($._.does('love')._($.the('cheese'))).$,
-            kb,
-        )
-
-        console.log(m?.helperMap)
+        const original = $.the('cat').does('eat')._($.the('mouse').which($._.does('love')._($.the('cheese').and($.the('grain'))))).$
+        const code = linearize(original, kb)!
+        // console.log(code)
+        const ast = parse($.p(tokenize(code)).$, kb)
+        assertEquals(ast, original)
     }
 })
