@@ -130,6 +130,13 @@ export function ask(
                 return { result: $('nothing').$, kb: kb0 }
             }
         case 'implicit-reference':
+
+            // console.log('ast=', ast)
+            const w = definitionOf(ast, kb0)
+            // console.log('ast=', ast)
+            // console.log('w=', w)
+            if (w) return ask(w, kb0)
+
             return ask(removeImplicit(ast), kb0)
         case 'if-else':
             {

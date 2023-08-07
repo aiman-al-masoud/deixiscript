@@ -557,7 +557,7 @@ Deno.test({
             .dump()
 
         // const q = $('n:number')
-            // .suchThat($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase).$
+        // .suchThat($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase).$
 
         // const q = $.the('number').which( $('m:number').exists.where($('m:number').isGreaterThan($._)).isNotTheCase ).$
 
@@ -976,15 +976,15 @@ Deno.test({
 })
 
 
-
-// Deno.test({
-//     name: 'test85',
-//     fn: () => {
-//         const kb = $.the('f').of($.a('number')).equals($.the('number').plus(1)).dump()
-//         console.log(kb.derivClauses)
-//         console.log(ask($.the('f').of(2).$ ,kb).result)
-//     }
-// })
+Deno.test({
+    name: 'test85',
+    fn: () => {
+        // problem: "it" doesn't work
+        // problem: a vs the        
+        const kb = $.the('f').of($.the('number')).equals($.the('number').plus(1)).dump()
+        assertEquals(ask($.the('f').of(2).$, kb).result, $(3).$)
+    }
+})
 
 // Deno.test({
 //     name : 'test82',

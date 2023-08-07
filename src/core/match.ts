@@ -2,9 +2,10 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
+import { findAsts } from "./findAsts.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, ImplicitReference, Entity } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, Entity } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -31,16 +32,14 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
-        // return matchImplicit(template, f, kb)
-
         if (match(removeImplicit(template), removeImplicit(f), kb) === undefined) return undefined
 
-        const ms: AstMap[] = []
+        const ms: (AstMap | undefined)[] = []
         ms.push(deepMapOf([[template.headType, f.headType]]))
 
         if (template.which && f.which) ms.push(deepMapOf([[template.which, f.which]]))
         if (template.complementName && f.complementName) ms.push(deepMapOf([[template.complementName, f.complementName]]))
-        if (template.complement && f.complement) ms.push(deepMapOf([[template.complement, f.complement]]))
+        if (template.complement && f.complement) ms.push(findAsts(template.complement, 'variable').length ? match(template.complement, f.complement, kb) : deepMapOf([[template.complement, f.complement]])) // because sometimes you need to take into consideration single vars and sometimes just substitute the whole complement chunk
 
         return reduceMatchList(ms)
 
@@ -136,7 +135,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         return deepMapOf([[template, f]])
 
-    } else if (/* isSimpleFormula(template) && */ (f.type === 'conjunction' || f.type === 'disjunction')) {
+    } else if (f.type === 'conjunction' || f.type === 'disjunction') {
         const m1 = match(template, f.f1, kb)
         const m2 = match(template, f.f2, kb)
         if (m1) return m1
@@ -218,6 +217,3 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
 
 }
 
-// function matchImplicit(template: ImplicitReference, f: ImplicitReference, kb: KnowledgeBase) {
-//     return match(removeImplicit(template), removeImplicit(f), kb)
-// }
