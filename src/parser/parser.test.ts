@@ -3,6 +3,7 @@ import { $ } from "../core/exp-builder.ts"
 import { parse } from "./parse.ts";
 import { linearize } from "./linearize.ts";
 import { tokenize } from "./tokenize.ts";
+import { match } from "../core/match.ts";
 
 
 const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing')))
@@ -15,15 +16,7 @@ const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing
     .and($('is').and('are').and('be').isa('esse'))
     .and($('esse').isa('verb'))
     .and($.p(['does', 'x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing')).ask))
-
-
-
-
-    // .and($.p(['does', 'v:thing', 'z:thing']).when($._.does($.p('v:thing'))._($.p('z:thing'))  ))
     .and($.p(['does', 'v:thing', 'z:thing|']).when($._.does($.p('v:thing'))._($.p('z:thing'))))
-
-
-
     .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
     .and($.p(['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).in($.p('w:thing'))))
     .and($.p(['x:thing|does', 'not', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).isNotTheCase))
@@ -38,7 +31,7 @@ const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing
     .and($.p(['x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
     .and($.p(['the', 'x:thing|in', 'y:thing|']).when($.the($.p('x:thing')).in($.p('y:thing'))))
     .and($.p(['the', 'x:thing']).when($.the($.p('x:thing'))))
-    .and($.p(['[', 'x:thing|]']).when('x:thing'))
+    .and($.p(['[', 'l:thing|]']).when('l:thing')) //here
     .and($.p(['(', 'x:thing|)']).when($.p('x:thing')))
     .and($.p(['x:thing']).when('x:thing'))
     .and($.p('x:thing').when('x:thing'))
@@ -339,5 +332,31 @@ Deno.test({
         const ast = parse($.p(tokenize(code)).$, kb)
         assertEquals(ast, original)
 
+    }
+})
+
+Deno.test({
+    name: 'parser-test36',
+    fn: () => {
+
+        // const original = $.the('cat').does('eat')._( $.the('mouse').which($._.does('love')._($.the('cheese')))).$
+        // const original = $.the('mouse').which($._.does('love')._($.the('cheese'))).$
+        // const code = linearize(original, kb)!
+
+
+        // const wrap = (v: LLangAst) => mapAsts(v, x => $({ parse: x }).$, { top: false })
+        // const m = match(
+        //     $.the($.p('x:thing')).which($.p('y:thing')).$,
+        //     wrap($.the('mouse').which($._.does('love')._($.the('cheese'))).$),
+        //     kb,
+        // )
+
+        const m = match(
+            $.the('x:thing').which($('y:thing')).$,
+            $.the('mouse').which($._.does('love')._($.the('cheese'))).$,
+            kb,
+        )
+
+        console.log(m?.helperMap)
     }
 })

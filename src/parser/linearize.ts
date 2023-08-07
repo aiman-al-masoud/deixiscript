@@ -14,6 +14,8 @@ export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined 
 
 function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
 
+    // console.log(ast)
+
     if (isAtom(ast)) return ast
 
     const unwrap = (v: LLangAst) => mapAsts(v, x => x.type === 'generalized' && x['parse'] ? x['parse'] : x)
@@ -44,7 +46,7 @@ export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K,
 function unroll(ast: LLangAst): string {
 
     if (ast.type === 'list-literal') {
-        return '('+ ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '') + ')'
+        return '(' + ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '') + ')'
         // return $(ast.value.flatMap(x => unroll(x))).$
     }
 

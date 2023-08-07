@@ -9,6 +9,7 @@ import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, isTruthy,
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
+
     if (isConst(template) && isConst(f)) {
 
         if (template.value === f.value) return deepMapOf()
@@ -136,7 +137,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
     if (ms.some(x => x === undefined)) return undefined
-    
+
     return ms.map(x => x as AstMap)
         .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }
