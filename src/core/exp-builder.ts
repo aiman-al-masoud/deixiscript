@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, SimpleFormula } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -176,7 +176,7 @@ export class ExpBuilder<T extends LLangAst> {
         return tell(this.exp, kb ?? $.emptyKb).kb
     }
 
-    which(ast: ExpBuilder<SimpleFormula>) {
+    which(ast: ExpBuilder<LLangAst>) {
 
         if (this.exp.type !== 'implicit-reference') {
             throw new Error('')
