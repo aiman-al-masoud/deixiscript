@@ -58,6 +58,7 @@
 
 - entities and strings are serialized in the same way. They are the same thing.
 
+- if tell() gets a derived property that is also a has-formula, it will ignore the derived property and just serialize the formula as is. Nomore, now it checks for definitionOf().
 
 ## Half Solved Problems
 
@@ -80,9 +81,6 @@
 - tell()/instantiateConcept() are currently serializing 'thing' as partial information in "has" without "as". Is this a problem?
 
 ## Problems
-
-- if tell() gets a derived property that is also a has-formula, it will ignore
-  the derived property and just serialize the formula as is.
 
 - possible problem with where in instantiateConcept() and multiple legal values
   on same attribute.

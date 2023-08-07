@@ -70,7 +70,7 @@ Deno.test({
 Deno.test({
     name: 'test04',
     fn: () => {
-        // has-sentence based derivation clause
+        // has-sentence based derivation clause, ask() and tell() test
         const dc = $('x:person').has('c:city').as('birth-city').when(
             $('e:event').exists.where($('y:space-point').exists.where(
                 $('y:space-point').has('c:city').as('enclosing-city')
@@ -81,6 +81,7 @@ Deno.test({
 
         const kb = $('person#1').has('event#1').as('birth')
             .and($('person#1').isa('person'))
+            .and($('person#2').isa('person'))
             .and($('event#1').isa('event'))
             .and($('pt#1').isa('space-point'))
             .and($('event#1').has('pt#1').as('location'))
@@ -92,6 +93,10 @@ Deno.test({
 
         const query = $('person#1').has('boston').as('birth-city').$
         dassert(ask(query, kb).result)
+
+        const q2 = $('person#2').has('boston').as('birth-city').$
+        const kb1 = tell(q2, kb).kb //auto-creates new event & new spacepoint
+        dassert(ask(q2, kb1).result)
     }
 })
 

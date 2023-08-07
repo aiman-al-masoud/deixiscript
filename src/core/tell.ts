@@ -30,6 +30,10 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     switch (ast.type) {
 
         case 'has-formula':
+
+            const def = definitionOf(ast, kb)
+            if (def) return tell(def, kb)
+
             const t1 = ask(ast.subject, kb).result
             const t2 = ask(ast.object, kb).result
             const as = ask(ast.as, kb).result
