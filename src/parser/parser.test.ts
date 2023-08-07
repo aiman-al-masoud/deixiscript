@@ -306,3 +306,13 @@ Deno.test({
         assertEquals(ast, original)
     }
 })
+
+Deno.test({
+    name: 'parser-test34',
+    fn: () => {
+        const original = $.the('cat').does('eat')._($.the('mouse').which($._.does('run').and($._.does('hide')))).$
+        const code = linearize(original, kb)!
+        const ast = parse($.p(tokenize(code)).$, kb)
+        assertEquals(ast, original)
+    }
+})

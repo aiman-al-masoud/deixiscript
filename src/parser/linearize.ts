@@ -44,7 +44,7 @@ export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K,
 function unroll(ast: LLangAst): string {
 
     if (ast.type === 'list-literal') {
-        return ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + ' ' + b, '')
+        return '('+ ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '') + ')'
         // return $(ast.value.flatMap(x => unroll(x))).$
     }
 
