@@ -994,6 +994,15 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test84',
+    fn: () => {
+        // equality as an alias for derivation clause declaration in tell()
+        const kb = evaluate($('it').equals('x:thing').tell.$, $.emptyKb).kb
+        assertEquals(kb.derivClauses[0], $('it').when('x:thing').$)
+    }
+})
+
 // Deno.test({
 //     name : 'test82',
 //     fn : ()=>{

@@ -87,6 +87,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             const when = definitionOf(ast, kb)
             if (when) return tell(when, kb)
             break
+        case 'equality':
+            return tell($(ast.subject).when(ast.object).$, kb)
         default:
             additions = []
             addedDerivationClauses = []
