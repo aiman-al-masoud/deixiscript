@@ -4,7 +4,7 @@ import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, isSimpleFormula, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, ImplicitReference, Entity } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, ImplicitReference, Entity } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -20,6 +20,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (template.value === f.value) return deepMapOf([[template, f]])
 
         if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
+
+
+    } else if (template.type === 'list-literal' && f.type === 'list-literal') {
+        return matchLists(template.value, f.value, kb)
 
     } else if (template instanceof Array && f instanceof Array) {
 
@@ -62,7 +66,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
             return result
         })
 
-        return reduceMatchList(ms)
+
+        const r = reduceMatchList(ms)
+        return r
 
     } else if (template.type === 'list-pattern' && f.type === 'list-literal') {
 
@@ -130,7 +136,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
     if (ms.some(x => x === undefined)) return undefined
-
+    
     return ms.map(x => x as AstMap)
         .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }
@@ -163,10 +169,8 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
 function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBase) {
 
     const tailIndex =
-        astsEqual(template.value, $._.$) ? // no tail case
-            f.value.length
+        astsEqual(template.value, $._.$) ? f.value.length // no tail case 
             : f.value.findIndex((x, i) => {
-
                 // TODO ---------
                 const list = f.value.slice(0, i).filter((x): x is Entity => x.type === 'entity').map(x => x.value)
                 if (hasUnmatched(list)) return undefined
@@ -186,7 +190,14 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
     }
 
     const seq = f.value.slice(0, tailIndex)
-    const tail = f.value[tailIndex]
+    const tail = f.value.at(tailIndex)
+
+    if (tail === undefined) {
+        return {
+            m: deepMapOf([[template.seq, $(seq).$]]),
+            tailIndex,
+        }
+    }
 
     return {
         m: deepMapOf([[template.value, tail], [template.seq, $(seq).$]]),

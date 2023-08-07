@@ -15,6 +15,15 @@ const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing
     .and($('is').and('are').and('be').isa('esse'))
     .and($('esse').isa('verb'))
     .and($.p(['does', 'x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing')).ask))
+
+
+
+
+    // .and($.p(['does', 'v:thing', 'z:thing']).when($._.does($.p('v:thing'))._($.p('z:thing'))  ))
+    .and($.p(['does', 'v:thing', 'z:thing|']).when($._.does($.p('v:thing'))._($.p('z:thing'))))
+
+
+
     .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
     .and($.p(['x:thing|does', 'y:thing', 'z:thing|w:preposition', 'w:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).in($.p('w:thing'))))
     .and($.p(['x:thing|does', 'not', 'y:thing', 'z:thing|']).when($.p('x:thing').does($.p('y:thing'))._($.p('z:thing')).isNotTheCase))
@@ -34,6 +43,8 @@ const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing
     .and($.p(['x:thing']).when('x:thing'))
     .and($.p('x:thing').when('x:thing'))
     .dump()
+
+
 
 Deno.test({
     name: 'parser-test01',
@@ -314,5 +325,19 @@ Deno.test({
         const code = linearize(original, kb)!
         const ast = parse($.p(tokenize(code)).$, kb)
         assertEquals(ast, original)
+    }
+})
+
+Deno.test({
+    name: 'parser-test35',
+    fn: () => {
+
+
+        const original = $.the('cat').does('eat')._($.the('mouse').which($._.does('eat')._('cheese'))).$
+        const code = linearize(original, kb)!
+
+        const ast = parse($.p(tokenize(code)).$, kb)
+        assertEquals(ast, original)
+
     }
 })
