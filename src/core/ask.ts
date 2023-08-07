@@ -131,7 +131,6 @@ export function ask(
             }
         case 'implicit-reference':
 
-            // console.log('ast=', ast)
             const w = definitionOf(ast, kb0)
             // console.log('ast=', ast)
             // console.log('w=', w)
