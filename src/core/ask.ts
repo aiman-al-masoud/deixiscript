@@ -7,6 +7,7 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { mapAsts } from "./mapAsts.ts";
+import { match } from "./match.ts";
 
 
 export function ask(
@@ -76,7 +77,7 @@ export function ask(
             const ok = kb0.wm.filter(isHasSentence).some(hs => {
                 return t11.value === hs[0]
                     && t22.value === hs[1]
-                    && (as.value === hs[2] || as.value === 'thing')
+                    && match(as, $(hs[2]).$, kb0)
             })
 
             return { result: $(ok).$, kb: kb0 }

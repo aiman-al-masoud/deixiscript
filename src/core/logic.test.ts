@@ -426,7 +426,7 @@ Deno.test({
             .and($('capra#1').has('hoof#1').as('hoof'))
             .and($('capra#2').has('fur#2').as('fur'))
             .dump()
-
+        
         dassert(ask($('capra#1').has('fur#1').$, x).result)
         dassert(ask($('capra#1').has('fur#2').isNotTheCase.$, x).result)
         dassert(ask($('capra#2').has('fur#2').$, x).result)
