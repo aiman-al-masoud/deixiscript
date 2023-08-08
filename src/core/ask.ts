@@ -134,8 +134,6 @@ export function ask(
         case 'implicit-reference':
 
             const w = definitionOf(ast, kb0)
-            // console.log('ast=', ast)
-            // console.log('w=', w)
             if (w) return ask(w, kb0)
 
             return ask(removeImplicit(ast), kb0)
