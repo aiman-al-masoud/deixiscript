@@ -69,7 +69,11 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             addedDerivationClauses = [ast]
             break
         case 'if-else':
-            return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
+            {
+                const { kb: kb1, result } = ask(ast.condition, kb)
+                if (isTruthy(result)) return tell(ast.then, kb1)
+                return tell(ast.otherwise, kb1)
+            }
         case 'existquant':
 
             const v = removeImplicit(ast.value)
