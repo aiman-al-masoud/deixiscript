@@ -986,6 +986,18 @@ Deno.test({
     }
 })
 
+
+
+// Deno.test({
+//     name: 'test86',
+//     fn: () => {
+//         // const x  = match($.the('thing').$, $.the('number').$, $.emptyKb)
+//         const x  = match( $.the('number').$, $.the('thing').$, $.emptyKb)
+
+//         console.log(x)
+//     }
+// })
+
 // Deno.test({
 //     name : 'test82',
 //     fn : ()=>{

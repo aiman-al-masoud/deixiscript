@@ -19,7 +19,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
     } else if (template.type === 'variable' && f.type === 'variable') {
 
-        if (template.value === f.value) return deepMapOf([[template, f]])
+        if (template.varType === f.varType) return deepMapOf([[template, f]])
+
+        // if (f.varType==='thing')
 
         if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
 
