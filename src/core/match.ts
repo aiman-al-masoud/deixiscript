@@ -21,17 +21,11 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         if (template.varType === f.varType) return deepMapOf([[template, f]])
 
-        // if (f.varType==='thing')
-
         if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
-
 
     } else if (template.type === 'list-literal' && f.type === 'list-literal') {
         return matchLists(template.value, f.value, kb)
 
-    } else if (template instanceof Array && f instanceof Array) {
-
-        return matchLists(template, f, kb)
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
         if (match(removeImplicit(template), removeImplicit(f), kb) === undefined) return undefined
@@ -60,8 +54,8 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const templateT = template as { [x: string]: LLangAst }
         const fT = f as { [x: string]: LLangAst }
 
-        const templateKeys = Object.keys(template).filter(x => isLLangAst(templateT[x]) || (templateT[x] instanceof Array))
-        const fKeys = Object.keys(f).filter(x => isLLangAst(fT[x]) || (fT[x] instanceof Array))
+        const templateKeys = Object.keys(template).filter(x => isLLangAst(templateT[x]))
+        const fKeys = Object.keys(f).filter(x => isLLangAst(fT[x]))
 
         if (templateKeys.length !== fKeys.length) {
             return undefined
@@ -78,7 +72,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
             return result
         })
-
 
         const r = reduceMatchList(ms)
         return r
@@ -144,7 +137,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m2) return m2
     }
 
-
 }
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
@@ -177,7 +169,6 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
     return reduceMatchList(ms)
 
 }
-
 
 function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBase) {
 
