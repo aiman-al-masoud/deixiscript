@@ -251,7 +251,7 @@ export class ExpBuilder<T extends LLangAst> {
         return new ExpBuilder<ArbitraryType>({
             type: 'arbitrary-type',
             head: this.exp,
-            description: description ? makeAst(description) : $(true).$,
+            description: makeAst(description ?? true),
             number: 1,
             isNew: false,
         })
