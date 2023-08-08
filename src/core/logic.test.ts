@@ -121,30 +121,27 @@ Deno.test({
     name: 'test9',
     fn: () => {
 
-        const dc = [
+        const dc =
             $({ subject: 'x:thing', isLargerThan: 'y:thing' }).when(
-
                 $.thereIs($('v1:number').suchThat($.thereIs($('v2:number').suchThat(
                     $('x:thing').has('v1:number').as('volume')
                         .and($('y:thing').has('v2:number').as('volume'))
                         .and($('v1:number').isGreaterThan('v2:number'))
                 ))))
-
             ).$
-        ]
 
-        const wm = $('bucket#1').isa('bucket')
+        const kb = $('bucket#1').isa('bucket')
             .and($('apple#1').isa('apple'))
             .and($('bucket#1').has(2).as('volume'))
             .and($('apple#1').has(1).as('volume'))
-            .dump().wm
+            .and(dc)
+            .dump()
 
         const test1 = $({ subject: 'bucket#1', isLargerThan: 'apple#1' }).$
         const test2 = $({ subject: 'apple#1', isLargerThan: 'bucket#1' }).isNotTheCase.$
 
-        dassert(ask(test1, { wm: wm, derivClauses: dc, deicticDict: {}, }).result)
-        dassert(ask(test2, { wm: wm, derivClauses: dc, deicticDict: {}, }).result)
-
+        dassert(ask(test1, kb).result)
+        dassert(ask(test2, kb).result)
     }
 })
 
