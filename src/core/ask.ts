@@ -109,10 +109,9 @@ export function ask(
             return ask($(ast).suchThat(true).$, kb0)
         case 'arbitrary-type':
 
-            if (ast.isNew) return { result: ast, kb: kb0 }
-
-            const wen = definitionOf(ast, kb0)
-            if (wen) return ask(wen, kb0)
+            // if (ast.isNew) return { result: ast, kb: kb0 }
+            // const wen = definitionOf(ast, kb0)
+            // if (wen) return ask(wen, kb0)
 
             const maps = findAll(ast.description, [ast.head], kb0)
             const candidates = maps.map(x => x.get(ast.head)).filter(isNotNullish)
