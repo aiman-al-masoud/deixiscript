@@ -72,14 +72,13 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             return isTruthy(ask(ast.condition, kb).result) ? tell(ast.then, kb) : tell(ast.otherwise, kb)
         case 'existquant':
 
-            if (ast.value.type === 'arbitrary-type') {
-                additions = instantiateConcept(ast.value.head, ast.value.description, kb)
-            } else if (ast.value.type === 'implicit-reference') {
-                const at = removeImplicit(ast.value)
-                additions = instantiateConcept(at.head, at.description, kb)
-            } else {
+            const v = removeImplicit(ast.value)
+
+            if (v.type !== 'arbitrary-type') {
                 throw new Error('!!!!!')
             }
+
+            additions = instantiateConcept(v.head, v.description, kb)
 
             break
         case 'negation':
