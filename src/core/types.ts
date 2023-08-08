@@ -283,12 +283,12 @@ export function isLLangAst(x: unknown): x is LLangAst {
 
 }
 
-export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
-    return ast.type === 'equality'
-        || ast.type === 'is-a-formula'
-        || ast.type === 'has-formula'
-        || ast.type === 'generalized'
-}
+// export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
+//     return ast.type === 'equality'
+//         || ast.type === 'is-a-formula'
+//         || ast.type === 'has-formula'
+//         || ast.type === 'generalized'
+// }
 
 export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {
     return astOne.type === astTwo.type && deepEquals(astOne, astTwo)
