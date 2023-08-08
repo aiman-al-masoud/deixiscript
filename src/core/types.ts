@@ -3,6 +3,7 @@ import { deepEquals } from "../utils/deepEquals.ts"
 import { first } from "../utils/first.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
+import { ask } from "./ask.ts"
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
 import { match } from "./match.ts"
@@ -316,11 +317,6 @@ export function pointsToThings(ast: LLangAst): boolean {
         || ast.type === 'implicit-reference'
 }
 
-export function isTruthy(ast: LLangAst) {
-    return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
-}
-
-
 export function definitionOf(ast: LLangAst, kb: KnowledgeBase) {
 
     return first(kb.derivClauses, dc => {
@@ -364,4 +360,12 @@ export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
 
 export function isWhenDerivationClause(ast: LLangAst): ast is WhenDerivationClause {
     return ast.type === 'when-derivation-clause'
+}
+
+export function askBin(ast: LLangAst, kb: KnowledgeBase): boolean {
+    return isTruthy(ask(ast, kb).result)
+}
+
+export function isTruthy(ast: LLangAst) {
+    return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
 }

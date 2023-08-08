@@ -1,11 +1,10 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
-import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, isTruthy, ListPattern, ListLiteral, astsEqual, Entity } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, ListPattern, ListLiteral, astsEqual, Entity, askBin } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -15,13 +14,13 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         if (template.value === f.value) return deepMapOf()
 
-        if (isTruthy(ask($(f).isa(template).$, kb).result)) return deepMapOf([[template, f]])
+        if (askBin($(f).isa(template).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'variable') {
 
         if (template.varType === f.varType) return deepMapOf([[template, f]])
 
-        if (isTruthy(ask($(f.varType).isa(template.varType).$, kb).result)) return deepMapOf([[template, f]])
+        if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'list-literal' && f.type === 'list-literal') {
         return matchLists(template.value, f.value, kb)
@@ -110,7 +109,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (!m) return undefined
 
         const desc = subst(template.description, [template.head, f])
-        const ok = isTruthy(ask(desc, kb).result)
+        const ok = askBin(desc, kb)
         if (ok) return deepMapOf([[template, f]])
 
     } else if (template.type === 'implicit-reference' && f.type === 'arbitrary-type') {
@@ -119,7 +118,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
     } else if (template.type === 'variable' && isConst(f)) {
 
-        if (isTruthy(ask($(f).isa(template.varType).$, kb).result)) {
+        if (askBin($(f).isa(template.varType).$, kb)) {
             return deepMapOf([[template, f]])
         }
 
