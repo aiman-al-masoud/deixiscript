@@ -38,8 +38,6 @@ export function findAll(
             return findAll(realAst.value, variables, kb, partialResults)
         case "negation":
             return getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)
-        // TODO wrong:
-        // return findAll(realAst.f1, variables, kb, partialResults) 
         case "disjunction":
             const first = findAll(realAst.f1, variables, kb, partialResults)
             const second = findAll(realAst.f2, variables, kb, partialResults)
@@ -61,7 +59,6 @@ export function findAll(
             }
         case 'math-expression':
             return getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)
-        // throw new Error(`TODO!`)
         case "generalized":
             return [] // if no derivation clause = no matches!
         case "if-else":
@@ -84,7 +81,6 @@ export function findAll(
         case "list-literal":
         case 'is-a-formula':
         case 'has-formula':
-            // console.log('variables=', variables, 'realAst=', realAst, 'wm=', kb.wm)
             const results = getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)
             return results
     }
