@@ -71,8 +71,8 @@ export function ask(
 
                 const rast = $(t11).has(t22).as(as).$
 
-                const when = definitionOf(rast/* ast */, kb3)
-                if (when) return ask(when, kb3   /* kb0 */)
+                const when = definitionOf(rast, kb3)
+                if (when) return ask(when, kb3)
 
                 if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask(decompress($(t11).has(t22).as(as).$), kb0)
 
