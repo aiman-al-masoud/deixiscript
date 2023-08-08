@@ -124,7 +124,6 @@ Deno.test({
         const dc = [
             $({ subject: 'x:thing', isLargerThan: 'y:thing' }).when(
 
-
                 $.thereIs($('v1:number').suchThat($.thereIs($('v2:number').suchThat(
                     $('x:thing').has('v1:number').as('volume')
                         .and($('y:thing').has('v2:number').as('volume'))
