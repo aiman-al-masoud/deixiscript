@@ -115,51 +115,6 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    get exists() {
-
-        if (this.exp.type === 'implicit-reference' || this.exp.type === 'arbitrary-type') {
-            return new ExpBuilder<ExistentialQuantification>({
-                type: 'existquant',
-                value: this.exp,
-            })
-        }
-
-        if (this.exp.type !== 'variable') {
-            throw new Error(``)
-        }
-
-        return new ExpBuilder<ExistentialQuantification>({
-            type: 'existquant',
-            value: {
-                type: 'arbitrary-type',
-                head: this.exp as Variable,
-                description: $(false).$,
-                number: 1,
-                isNew: false,
-            }
-        })
-
-    }
-
-    where(formula: ExpBuilderArg) {
-
-        if (this.exp.type !== 'existquant') throw new Error(``)
-
-        if (this.exp.value.type !== 'arbitrary-type') throw new Error(``)
-
-        return new ExpBuilder<ExistentialQuantification>({
-            type: 'existquant',
-            value: {
-                head: this.exp.value.head,
-                description: makeAst(formula),
-                type: 'arbitrary-type',
-                number: 1,
-                isNew: false,
-            }
-        })
-
-    }
-
     get isNotTheCase() {
 
         return new ExpBuilder<Negation>({
@@ -297,9 +252,7 @@ export class ExpBuilder<T extends LLangAst> {
         return this.complement(owner, 'owner')
     }
 
-
 }
-
 
 type ExpBuilderArg = WmAtom | LLangAst | ExpBuilder<LLangAst> | WmAtom[]
 type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] | LLangAst[] | (LLangAst | WmAtom)[] }
@@ -375,7 +328,6 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
 
 }
 
-
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: StringLiteralPattern): ExpBuilder<Entity>
@@ -436,3 +388,10 @@ $.emptyKb = { wm: [], derivClauses: [], deicticDict: {} } as KnowledgeBase
  */
 $.p = (ast: ExpBuilderArg) => $({ parse: makeAst(ast) })
 
+/**
+ * Existential Quantificator
+ */
+$.thereIs = (ast: ExpBuilderArg) => new ExpBuilder<ExistentialQuantification>({
+    type: 'existquant',
+    value: makeAst(ast),
+})

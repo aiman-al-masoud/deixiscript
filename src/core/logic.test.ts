@@ -72,11 +72,13 @@ Deno.test({
     fn: () => {
         // has-sentence based derivation clause, ask() and tell() test
         const dc = $('x:person').has('c:city').as('birth-city').when(
-            $('e:event').exists.where($('y:space-point').exists.where(
+
+            $.thereIs($('e:event').suchThat($.thereIs($('y:space-point').suchThat(
                 $('y:space-point').has('c:city').as('enclosing-city')
                     .and($('e:event').has('y:space-point').as('location'))
                     .and($('x:person').has('e:event').as('birth'))
-            ))
+            ))))
+
         ).$
 
         const kb = $('person#1').has('event#1').as('birth')
@@ -121,11 +123,14 @@ Deno.test({
 
         const dc = [
             $({ subject: 'x:thing', isLargerThan: 'y:thing' }).when(
-                $('v1:number').exists.where($('v2:number').exists.where(
+
+
+                $.thereIs($('v1:number').suchThat($.thereIs($('v2:number').suchThat(
                     $('x:thing').has('v1:number').as('volume')
                         .and($('y:thing').has('v2:number').as('volume'))
                         .and($('v1:number').isGreaterThan('v2:number'))
-                ))
+                ))))
+
             ).$
         ]
 
@@ -234,7 +239,7 @@ Deno.test({
 Deno.test({
     name: 'test29',
     fn: () => {
-        const q = $('x:cat').exists.where($('x:cat').has('red').as('color'))
+        const q = $.thereIs($('x:cat').suchThat($('x:cat').has('red').as('color')))
         const kb2 = tell(q.$, $.emptyKb).kb
         dassert(ask(q.$, kb2).result)
     }
@@ -292,12 +297,11 @@ Deno.test({
         // defaults
         const kb =
             $('point').has(100).as('x-coordinate').dump()
-        // .dump(derivationClauses)
 
-        const result = tell($.a('point').exists.$, kb)
+        const result = tell($.thereIs($.a('point')).$, kb)
 
         const check = ask(
-            $.the('point').which($._.has(100).as('x-coordinate')).exists.$,
+            $.thereIs($.the('point').which($._.has(100).as('x-coordinate'))).$,
             result.kb,
         ).result
 
@@ -312,7 +316,7 @@ Deno.test({
         const kb =
             $('point').has(100).as('x-coordinate').dump()
 
-        const result = evaluate($('x:point').exists.where($('x:point').has(200).as('x-coordinate')).tell.$, kb)
+        const result = evaluate($.thereIs($('x:point').suchThat($('x:point').has(200).as('x-coordinate'))).tell.$, kb)
 
         dassert(ask($.the('point').has(200).as('x-coordinate').$, result.kb).result)
         dassert(ask($.the('point').has(100).as('x-coordinate').isNotTheCase.$, result.kb).result)
@@ -463,8 +467,8 @@ Deno.test({
     name: 'test48',
     fn: () => {
 
-        const kb0 = $.a('cat').which($._.has('red').as('color')).exists
-            .and($.a('cat').which($._.has('black').as('color')).exists)
+        const kb0 = $.thereIs($.a('cat').which($._.has('red').as('color')))
+            .and($.thereIs($.a('cat').which($._.has('black').as('color'))))
             .dump()
 
         const kb1 = tell($.the('cat').which($._.has('red').as('color')).has(1).as('hunger')
@@ -489,7 +493,7 @@ Deno.test({
     name: 'test50',
     fn: () => {
         // of-anaphor test
-        const kb = $.a('cat').which($._.has(3).as('position')).exists.dump()
+        const kb = $.thereIs($.a('cat').which($._.has(3).as('position'))).dump()
         const q = $.the('position').of($.the('cat').$).$
         const result = ask(q, kb).result
         assertEquals(result, $(3).$)
@@ -556,16 +560,8 @@ Deno.test({
             .and($(4).isa('number'))
             .dump()
 
-        // const q = $('n:number')
-        // .suchThat($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase).$
-
-        // const q = $.the('number').which( $('m:number').exists.where($('m:number').isGreaterThan($._)).isNotTheCase ).$
-
-        const xs = findAll($('m:number').exists.where($('m:number').isGreaterThan('n:number')).isNotTheCase.$, [$('n:number').$], kb)
+        const xs = findAll($.thereIs($('m:number').suchThat($('m:number').isGreaterThan('n:number'))).isNotTheCase.$, [$('n:number').$], kb)
         assertEquals(xs[0].get($('n:number').$), $(5).$)
-
-        // const result = ask(q, kb).result
-        // assertEquals(result, $(5).$)
     }
 })
 
@@ -625,10 +621,10 @@ Deno.test({
 Deno.test({
     name: 'test59',
     fn: () => {
-        const x = $.a('mouse').in('house#1').exists.$
+        const x = $.thereIs($.a('mouse').in('house#1')).$
         tell(x, $.emptyKb).kb
 
-        const alt = $.a('mouse').which($._.has('house#1').as('location')).exists.$
+        const alt = $.thereIs($.a('mouse').which($._.has('house#1').as('location'))).$
         assertNotEquals(match(removeImplicit(x), removeImplicit(alt), $.emptyKb), undefined)
 
     }
@@ -663,15 +659,12 @@ Deno.test({
         const kb =
             $('alice#1').isa('female')
                 .and($('bob#1').isa('male'))
-                // .and($('apple#1').isa('fruit'))
-                // .and($('it').when('x:thing'))
                 .and($('he').when('x:male').$)
                 .and($('she').when('x:female').$)
                 .dump()
 
         assertEquals(ask($('she').$, kb).result, $('alice#1').$)
         assertEquals(ask($('he').$, kb).result, $('bob#1').$)
-        // assertEquals(ask($('it').$, kb).result, $('apple#1').$)
     }
 })
 
