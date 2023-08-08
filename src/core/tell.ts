@@ -31,12 +31,15 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
         case 'has-formula':
 
-            const def = definitionOf(ast, kb)
-            if (def) return tell(def, kb)
+            const { result: t1, kb: kb1 } = ask(ast.subject, kb)
+            const { result: t2, kb: kb2 } = ask(ast.object, kb1)
+            const { result: as, kb: kb3 } = ask(ast.as, kb2)
 
-            const t1 = ask(ast.subject, kb).result
-            const t2 = ask(ast.object, kb).result
-            const as = ask(ast.as, kb).result
+            const rast = $(t1).has(t2).as(as).$
+
+            const def = definitionOf(rast, kb3)
+            if (def) return tell(def, kb3)
+
             if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error(`cannot serialize formula with non-constants!`)
 
             additions = [[t1.value, t2.value, as.value]]

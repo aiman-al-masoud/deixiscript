@@ -64,23 +64,26 @@ export function ask(
             return { result: $(uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb0).result))).$, kb: kb0 }
 
         case 'has-formula':
+            {
+                const { result: t11, kb: kb1 } = ask(ast.subject, kb0)
+                const { result: t22, kb: kb2 } = ask(ast.object, kb1)
+                const { result: as, kb: kb3 } = ask(ast.as, kb2)
 
-            const whennnnn = definitionOf(ast, kb0)
-            if (whennnnn) return ask(whennnnn, kb0)
+                const rast = $(t11).has(t22).as(as).$
 
-            const t11 = ask(ast.subject, kb0).result
-            const t22 = ask(ast.object, kb0).result
-            const as = ask(ast.as, kb0).result
+                const when = definitionOf(rast/* ast */, kb3)
+                if (when) return ask(when, kb3   /* kb0 */)
 
-            if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask(decompress($(t11).has(t22).as(as).$), kb0)
+                if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask(decompress($(t11).has(t22).as(as).$), kb0)
 
-            const ok = kb0.wm.filter(isHasSentence).some(hs => {
-                return t11.value === hs[0]
-                    && t22.value === hs[1]
-                    && match(as, $(hs[2]).$, kb0)
-            })
+                const ok = kb0.wm.filter(isHasSentence).some(hs => {
+                    return t11.value === hs[0]
+                        && t22.value === hs[1]
+                        && match(as, $(hs[2]).$, kb0)
+                })
 
-            return { result: $(ok).$, kb: kb0 }
+                return { result: $(ok).$, kb: kb0 }
+            }
         case 'negation':
             {
                 const { kb, result } = ask(ast.f1, kb0)

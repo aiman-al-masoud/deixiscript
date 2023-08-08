@@ -71,10 +71,13 @@ Deno.test({
     name: 'test04',
     fn: () => {
         // has-sentence based derivation clause, ask() and tell() test
-        const dc = $('x:person').has('c:city').as('birth-city').when(
+        // and implicit reference contextual resolution via new kb with 
+        // updated deicticDict from argument resolution
+
+        const dc = $('x:person').has($.the('city')).as('birth-city').when(
 
             $.thereIs($('e:event').suchThat($.thereIs($('y:space-point').suchThat(
-                $('y:space-point').has('c:city').as('enclosing-city')
+                $('y:space-point').has($.the('city')).as('enclosing-city')
                     .and($('e:event').has('y:space-point').as('location'))
                     .and($('x:person').has('e:event').as('birth'))
             ))))
@@ -90,14 +93,18 @@ Deno.test({
             .and($('pt#1').has('boston').as('enclosing-city'))
             .and($('event#2').has('pt#2').as('location'))
             .and($('boston').isa('city'))
+            .and($('nyc').isa('city'))
             .and(dc)
             .dump()
 
+        const kb0 = ask($('nyc').$, kb).kb // focus attention on wrong city
+
         const query = $('person#1').has('boston').as('birth-city').$
-        dassert(ask(query, kb).result)
+        const r = ask(query, kb0)
+        dassert(r.result)
 
         const q2 = $('person#2').has('boston').as('birth-city').$
-        const kb1 = tell(q2, kb).kb //auto-creates new event & new spacepoint
+        const kb1 = tell(q2, kb0).kb //auto-creates new event & new spacepoint
         dassert(ask(q2, kb1).result)
     }
 })
@@ -426,7 +433,7 @@ Deno.test({
             .and($('capra#1').has('hoof#1').as('hoof'))
             .and($('capra#2').has('fur#2').as('fur'))
             .dump()
-        
+
         dassert(ask($('capra#1').has('fur#1').$, x).result)
         dassert(ask($('capra#1').has('fur#2').isNotTheCase.$, x).result)
         dassert(ask($('capra#2').has('fur#2').$, x).result)
