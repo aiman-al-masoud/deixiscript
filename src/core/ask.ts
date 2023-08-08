@@ -35,9 +35,11 @@ export function ask(
         case 'nothing':
             return { result: ast, kb: kb0 }
         case 'equality':
-            const t10 = ask(ast.subject, kb0).result
-            const t20 = ask(ast.object, kb0).result
-            return { result: $(astsEqual(t10, t20)).$, kb: kb0 }
+            {
+                const { kb: kb1, result: s } = ask(ast.subject, kb0)
+                const { kb: kb2, result: o } = ask(ast.object, kb1)
+                return { result: $(astsEqual(s, o)).$, kb: kb2 }
+            }
         case 'is-a-formula':
             const { result: t1 } = ask(ast.subject, kb0)
             const { result: t2 } = ask(ast.object, kb0)
@@ -156,7 +158,7 @@ export function ask(
             const op = ask(ast.operator, kb0).result
 
             if (leftSide.type !== 'number' || rightSide.type !== 'number') return { result: $(false).$, kb: kb0 }
-            if (op.type!=='entity') return { result: $(false).$, kb: kb0 }
+            if (op.type !== 'entity') return { result: $(false).$, kb: kb0 }
 
             const left = leftSide.value
             const right = rightSide.value
@@ -172,7 +174,7 @@ export function ask(
                 '>=': $(left >= right).$,
             }[op.value]
 
-            if (result===undefined) return { result: $(false).$, kb: kb0 }
+            if (result === undefined) return { result: $(false).$, kb: kb0 }
 
             return ask(
                 result,
