@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, DerivationClause, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -52,23 +52,23 @@ export class ExpBuilder<T extends LLangAst> {
 
     }
 
-    after(atom: ExpBuilderArg) {
-
-        return new ExpBuilder<DerivationClause>({
-            type: 'after-derivation-clause',
-            conseq: this.exp,
-            after: makeAst(atom),
-        })
-    }
-
     when(formula: ExpBuilderArg) {
 
-        return new ExpBuilder<DerivationClause>({
+        return new ExpBuilder<WhenDerivationClause>({
             type: 'when-derivation-clause',
             conseq: this.exp,
             when: makeAst(formula),
         })
 
+    }
+
+    after(atom: ExpBuilderArg) {
+
+        return new ExpBuilder<AfterDerivationClause>({
+            type: 'after-derivation-clause',
+            conseq: this.exp,
+            after: makeAst(atom),
+        })
     }
 
     and(formula: ExpBuilderArg) {
