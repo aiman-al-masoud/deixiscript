@@ -297,18 +297,6 @@ export class ExpBuilder<T extends LLangAst> {
         return this.complement(owner, 'owner')
     }
 
-    get s(): ExpBuilder<LLangAst> {
-
-        if (this.exp.type !== 'implicit-reference') {
-            throw new Error(``)
-        }
-
-        return new ExpBuilder({
-            ...this.exp,
-            number: '*',
-        })
-
-    }
 
 }
 
