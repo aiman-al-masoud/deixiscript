@@ -2,7 +2,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
 import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
@@ -31,18 +31,15 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
         case 'has-formula':
 
-            const { result: t1, kb: kb1 } = ask(ast.subject, kb)
-            const { result: t2, kb: kb2 } = ask(ast.object, kb1)
-            const { result: as, kb: kb3 } = ask(ast.as, kb2)
+            const { rast, kb: kb1 } = evalArgs(ast, kb)
 
-            const rast = $(t1).has(t2).as(as).$
+            const def = definitionOf(rast, kb1)
+            if (def) return tell(def, kb1)
 
-            const def = definitionOf(rast, kb3)
-            if (def) return tell(def, kb3)
+            if (!isAtom(rast.subject) || !isAtom(rast.object) || !isAtom(rast.as)) return tell(decompress(rast), kb1)
+            if (!isConst(rast.subject) || !isConst(rast.object) || !isConst(rast.as)) throw new Error(`cannot serialize formula with non-constants!`)
 
-            if (!isConst(t1) || !isConst(t2) || !isConst(as)) throw new Error(`cannot serialize formula with non-constants!`)
-
-            additions = [[t1.value, t2.value, as.value]]
+            additions = [[rast.subject.value, rast.object.value, rast.as.value]]
             break
         case 'is-a-formula':
 

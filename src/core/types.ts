@@ -369,3 +369,19 @@ export function askBin(ast: LLangAst, kb: KnowledgeBase): boolean {
 export function isTruthy(ast: LLangAst) {
     return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
 }
+
+export function evalArgs<T extends LLangAst>(ast: T, kb0: KnowledgeBase): { rast: T, kb: KnowledgeBase }
+export function evalArgs(ast: LLangAst, kb0: KnowledgeBase) {
+    let kb1 = kb0
+    const rast = { ...ast } as GeneralizedFormula
+
+    Object.entries(ast).forEach(e => {
+        if (isLLangAst(e[1])) {
+            const { result, kb } = ask(e[1], kb1)
+            kb1 = kb
+            rast[e[0]] = result
+        }
+    })
+
+    return { rast, kb: kb1 }
+}
