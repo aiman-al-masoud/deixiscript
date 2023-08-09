@@ -337,6 +337,7 @@ Deno.test({
 
         const kb0: KnowledgeBase = { ...kb, deicticDict: {} }
         const { result: result0, kb: kb1 } = ask($.the('agent').$, kb0)
+        // console.log(kb1)
         assertEquals(Object.values(kb1.deicticDict).length, 1)
         const { result: result1, kb: kb2 } = ask($.the('agent').$, kb1)
         assertEquals(result1, result0)
@@ -477,17 +478,27 @@ Deno.test({
         const kb1 = tell($.the('cat').which($._.has('red').as('color')).has(1).as('hunger')
             .and($.the('cat').which($._.has('black').as('color')).has(1).as('hunger')).$, kb0).kb
 
+
         const dc =
-            $.a('cat').which($._.has('red').as('color').is('hungry')).when($.the('cat').has(1).as('hunger')).$
+            $.a('cat').which($._.has('red').as('color')).is('hungry').when($.the('cat').has(1).as('hunger')).$
 
         const kb2 = tell(dc, kb1).kb
 
-        const statement1 = $.the('cat').which($._.has('red').as('color').is('hungry')).$
-        const statement2 = $.the('cat').which($._.has('black').as('color').is('hungry')).isNotTheCase.$
+
+        const statement1 = $.the('cat').which($._.has('red').as('color')).is('hungry').$
+        const statement2 = $.the('cat').which($._.has('black').as('color')).is('hungry').isNotTheCase.$
+
+
+        // console.log(ask($.the('cat').which($._.has('red').as('color')).$, kb2))
+        // console.log(ask($.the('cat').which($._.has('black').as('color')).$, kb2))
+        // console.log(ask($.the('cat').which($._.has('purple').as('color')).$, kb2))
+        // console.log('====================================')
+
 
         const result1 = ask(statement1, kb2).result
-        const result2 = ask(statement2, kb2).result
         dassert(result1)
+        // console.log('---------------------------------')
+        const result2 = ask(statement2, kb2).result
         dassert(result2)
     }
 })
@@ -975,13 +986,19 @@ Deno.test({
 Deno.test({
     name: 'test85',
     fn: () => {
-        // problem: "it" doesn't work
         // problem: a vs the        
         const kb = $.the('f').of($.the('number')).equals($.the('number').plus(1)).dump()
         assertEquals(ask($.the('f').of(2).$, kb).result, $(3).$)
     }
 })
 
+Deno.test({
+    name: 'test86',
+    fn: () => {
+        const kb = $.the('f').of($.the('number')).equals($.the('thing').plus(1)).dump()
+        assertEquals(ask($.the('f').of(2).$, kb).result, $(3).$)
+    }
+})
 
 
 // Deno.test({

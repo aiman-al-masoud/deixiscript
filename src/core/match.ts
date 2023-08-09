@@ -16,12 +16,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         if (askBin($(f).isa(template).$, kb)) return deepMapOf([[template, f]])
 
-    } else if (template.type === 'variable' && f.type === 'variable') {
-
-        if (template.varType === f.varType) return deepMapOf([[template, f]])
-
-        if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
-
     } else if (template.type === 'list-literal' && f.type === 'list-literal') {
         return matchLists(template.value, f.value, kb)
 
@@ -47,6 +41,33 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const m2 = match(template.description, f.description, kb)
 
         return reduceMatchList([m1, m2])
+
+        // } else if (template.type === 'variable' && f.type === 'variable') {
+        //     if (template.varType === f.varType) return deepMapOf([[template, f]])
+        //     if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
+
+
+        // } else if (template.type === 'implicit-reference' && f.type === 'variable') {
+        //     return match(removeImplicit(template), f, kb)
+
+        // } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
+        //     const m1 = match(template.head, f, kb)
+        //     const m2 = match(template.description, $(true).$, kb)
+        //     if (reduceMatchList([m1, m2])) return deepMapOf([[template, f]])
+
+        // } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
+        //     const m1 = match(template, f.head, kb)
+        //     if (m1 !== undefined) return deepMapOf([[template, f]])
+
+        // } else if (template.type === 'variable' && f.type === 'math-expression') {
+        // if (template.varType === 'number') return deepMapOf([[template, f]])
+
+        // } else if (template.type === 'number' && f.type === 'math-expression') {
+        // return deepMapOf([[template, f]])
+
+        // } else if (template.type === 'implicit-reference' && f.type === 'arbitrary-type') {
+        // return match(removeImplicit(template), f, kb)
+
 
     } else if (template.type === f.type) {
 
@@ -80,25 +101,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const { m } = matchListPToList(template, f, kb)
         return m
 
-    } else if (template.type === 'implicit-reference' && f.type === 'variable') {
-
-        return match(removeImplicit(template), f, kb)
-
-    } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
-        const m1 = match(template.head, f, kb)
-        const m2 = match(template.description, $(true).$, kb)
-        if (reduceMatchList([m1, m2])) return deepMapOf([[template, f]])
-
-    } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
-        const m1 = match(template, f.head, kb)
-        if (m1 !== undefined) return deepMapOf([[template, f]])
-
-    } else if (template.type === 'variable' && f.type === 'math-expression') {
-        if (template.varType === 'number') return deepMapOf([[template, f]])
-
-    } else if (template.type === 'number' && f.type === 'math-expression') {
-        return deepMapOf([[template, f]])
-
     } else if (template.type === 'implicit-reference' && isConst(f)) {
 
         return match(removeImplicit(template), f, kb)
@@ -112,10 +114,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const ok = askBin(desc, kb)
         if (ok) return deepMapOf([[template, f]])
 
-    } else if (template.type === 'implicit-reference' && f.type === 'arbitrary-type') {
-
-        return match(removeImplicit(template), f, kb)
-
     } else if (template.type === 'variable' && isConst(f)) {
 
         if (askBin($(f).isa(template.varType).$, kb)) {
@@ -126,7 +124,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable') {
-
         return deepMapOf([[template, f]])
 
     } else if (f.type === 'conjunction' || f.type === 'disjunction') {
@@ -136,13 +133,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m2) return m2
     }
 
-}
-
-function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
-    if (ms.some(x => x === undefined)) return undefined
-
-    return ms.map(x => x as AstMap)
-        .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }
 
 function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
@@ -209,3 +199,9 @@ function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBa
 
 }
 
+function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
+    if (ms.some(x => x === undefined)) return undefined
+
+    return ms.map(x => x as AstMap)
+        .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
+}

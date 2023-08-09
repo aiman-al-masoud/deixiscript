@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf, isLLangAst, GeneralizedFormula } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -6,7 +6,6 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
-import { mapAsts } from "./mapAsts.ts";
 import { match } from "./match.ts";
 
 
@@ -29,7 +28,7 @@ export function ask(
 
                 const lastTime = Math.max(...Object.values(kb0.deicticDict).concat(0))
                 const deicticDict = { ...kb0.deicticDict, [ast.value as string]: lastTime + 1 }
-                return { result: ast, kb: { ...kb0, deicticDict } }
+                return { result: ast, kb: { ...kb0, deicticDict, wm: addWorldModels(kb0.wm, [[ast.value, ast.type]]) } }
             }
         case 'list-literal':
         case 'list-pattern':
@@ -65,20 +64,20 @@ export function ask(
 
         case 'has-formula':
             {
-                const { result: t11, kb: kb1 } = ask(ast.subject, kb0)
-                const { result: t22, kb: kb2 } = ask(ast.object, kb1)
-                const { result: as, kb: kb3 } = ask(ast.as, kb2)
-
-                const rast = $(t11).has(t22).as(as).$
+                const { rast, kb: kb3 } = evalArgs(ast, kb0)
 
                 const when = definitionOf(rast, kb3)
                 if (when) return ask(when, kb3)
 
-                if (!isAtom(t11) || !isAtom(t22) || !isAtom(as)) return ask(decompress($(t11).has(t22).as(as).$), kb0)
+                const s = rast.subject
+                const o = rast.object
+                const as = rast.as
+
+                if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return ask(decompress(rast), kb0)
 
                 const ok = kb0.wm.filter(isHasSentence).some(hs => {
-                    return t11.value === hs[0]
-                        && t22.value === hs[1]
+                    return s.value === hs[0]
+                        && o.value === hs[1]
                         && match(as, $(hs[2]).$, kb0)
                 })
 
@@ -113,8 +112,6 @@ export function ask(
         case 'arbitrary-type':
 
             // if (ast.isNew) return { result: ast, kb: kb0 }
-            // const wen = definitionOf(ast, kb0)
-            // if (wen) return ask(wen, kb0)
 
             const maps = findAll(ast.description, [ast.head], kb0)
             const candidates = maps.map(x => x.get(ast.head)).filter(isNotNullish)
@@ -135,63 +132,73 @@ export function ask(
                 return { result: $('nothing').$, kb: kb0 }
             }
         case 'implicit-reference':
-
-            const w = definitionOf(ast, kb0)
-            if (w) return ask(w, kb0)
-
-            return ask(removeImplicit(ast), kb0)
+            {
+                const { rast, kb: kb1 } = evalArgs(ast, kb0)
+                const w = definitionOf(rast, kb1)
+                if (w) return ask(w, kb1)
+                return ask(removeImplicit(ast), kb0)
+            }
         case 'if-else':
             {
                 const { kb, result } = ask(ast.condition, kb0)
                 if (isTruthy(result)) return ask(ast.then, kb)
                 return ask(ast.otherwise, kb)
             }
+        case 'math-expression':
+
+            const { rast } = evalArgs(ast, kb0)
+
+            const left = rast.left
+            const right = rast.right
+            const op = rast.operator
+
+            if (left.type !== 'number' || right.type !== 'number' || op.type !== 'entity') return { result: $(false).$, kb: kb0 }
+
+            const result = {
+                '+': $(left.value + right.value).$,
+                '-': $(left.value - right.value).$,
+                '*': $(left.value * right.value).$,
+                '/': $(left.value / right.value).$,
+                '>': $(left.value > right.value).$,
+                '<': $(left.value < right.value).$,
+                '<=': $(left.value <= right.value).$,
+                '>=': $(left.value >= right.value).$,
+            }[op.value]
+
+            return ask(
+                result ?? $('nothing').$,
+                kb0,
+            )
+
+        case 'generalized':
+            {
+                const { rast, kb: kb1 } = evalArgs(ast, kb0)
+                const when = definitionOf(rast, kb1)
+                if (when) return ask(when, kb1)
+                return { result: $(false).$, kb: kb0 }
+            }
         case "command":
         case "question":
-            throw new Error('!!!!')
         case 'after-derivation-clause':
         case 'when-derivation-clause':
             throw new Error(``)
-        case 'math-expression':
-
-            const leftSide = ask(ast.left, kb0).result
-            const rightSide = ask(ast.right, kb0).result
-            const op = ask(ast.operator, kb0).result
-
-            if (leftSide.type !== 'number' || rightSide.type !== 'number') return { result: $(false).$, kb: kb0 }
-            if (op.type !== 'entity') return { result: $(false).$, kb: kb0 }
-
-            const left = leftSide.value
-            const right = rightSide.value
-
-            const result = {
-                '+': $(left + right).$,
-                '-': $(left - right).$,
-                '*': $(left * right).$,
-                '/': $(left / right).$,
-                '>': $(left > right).$,
-                '<': $(left < right).$,
-                '<=': $(left <= right).$,
-                '>=': $(left >= right).$,
-            }[op.value]
-
-            if (result === undefined) return { result: $(false).$, kb: kb0 }
-
-            return ask(
-                result,
-                {
-                    ...kb0,
-                    wm: addWorldModels(kb0.wm, [[result.value, result.type]]),
-                }
-            )
-        case 'generalized':
-
-            const formula2 = mapAsts(ast, x => ask(x, kb0).result, { top: false })
-
-            const whenn = definitionOf(formula2, kb0)
-            if (whenn) return ask(whenn, kb0)
-            return { result: $(false).$, kb: kb0 }
     }
 
 }
 
+
+function evalArgs<T extends LLangAst>(ast: T, kb0: KnowledgeBase): { rast: T, kb: KnowledgeBase }
+function evalArgs(ast: LLangAst, kb0: KnowledgeBase) {
+    let kb1 = kb0
+    const rast = { ...ast } as GeneralizedFormula
+
+    Object.entries(ast).forEach(e => {
+        if (isLLangAst(e[1])) {
+            const { result, kb } = ask(e[1], kb1)
+            kb1 = kb
+            rast[e[0]] = result
+        }
+    })
+
+    return { rast, kb: kb1 }
+}
