@@ -11,7 +11,7 @@ const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing
     .and($.p(['the', 'x:thing|which', 'y:thing|']).when($.the($.p('x:thing')).which($.p('y:thing'))))
     .and($('in').isa('preposition')) // currently not being fully exploited 
     .and($.p(['x:thing|o:operator', 'y:thing|']).when($.p('x:thing').mathOperation($.p('y:thing'), 'o:operator')))
-    .and($('+').and('-').and('*').and('/').isa('operator'))
+    .and($('+').and('-').and('*').and('/').and('=').isa('operator'))
     .and($('is').and('are').and('be').isa('esse'))
     .and($('esse').isa('verb'))
     .and($.p(['does', 'x:thing|v:verb', 'z:thing|']).when($.p('x:thing').does($.p('v:verb'))._($.p('z:thing')).ask))
@@ -252,6 +252,13 @@ Deno.test({
 })
 
 Deno.test({
+    name: 'parser-test26.5',
+    fn: () => {
+        assertEquals(parse($.p(tokenize('1 = 2')).$, kb), $(1).mathOperation(2, '=').$)
+    }
+})
+
+Deno.test({
     name: 'parser-test27',
     fn: () => {
         assertEquals(parse($.p(tokenize('the cat does not eat the mouse')).$, kb), $.the('cat').does('eat')._($.the('mouse')).isNotTheCase.$)
@@ -340,3 +347,6 @@ Deno.test({
         assertEquals(ast, original)
     }
 })
+
+
+
