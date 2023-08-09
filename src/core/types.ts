@@ -334,14 +334,6 @@ export function definitionOf(ast: LLangAst, kb: KnowledgeBase) {
         if (!map) return
 
         const res = subst(dc.when, map)
-
-
-        // console.log('ast=', ast)
-        // console.log('dc.conseq=', dc.conseq)
-        // console.log('map=', map.helperMap)
-        // console.log('res=', res)
-
-
         return res
     })
 }
