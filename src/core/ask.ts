@@ -145,13 +145,17 @@ export function ask(
             }
         case 'math-expression':
 
-            const { rast } = evalArgs(ast, kb0)
+            const { rast, kb } = evalArgs(ast, kb0)
 
             const left = rast.left
             const right = rast.right
             const op = rast.operator
 
-            if (left.type !== 'number' || right.type !== 'number' || op.type !== 'entity') return { result: $(false).$, kb: kb0 }
+            if (
+                left.type !== 'number'
+                || right.type !== 'number'
+                || op.type !== 'entity'
+            ) return { result: $(false).$, kb: kb0 }
 
             const result = {
                 '+': $(left.value + right.value).$,
@@ -162,11 +166,12 @@ export function ask(
                 '<': $(left.value < right.value).$,
                 '<=': $(left.value <= right.value).$,
                 '>=': $(left.value >= right.value).$,
+                '=': ask($(left).equals(right).$, kb).result,
             }[op.value]
 
             return ask(
                 result ?? $('nothing').$,
-                kb0,
+                kb,
             )
 
         case 'generalized':

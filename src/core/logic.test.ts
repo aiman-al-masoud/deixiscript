@@ -1000,6 +1000,15 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test87',
+    fn: () => {
+        // math operation with equality aliases to Equality (ONLY in ask() for now)
+        const r = ask($(1).mathOperation(1, '=').$, $.emptyKb).result
+        assertEquals(r, $(true).$)
+    }
+})
+
 
 // Deno.test({
 //     name: 'test86',
