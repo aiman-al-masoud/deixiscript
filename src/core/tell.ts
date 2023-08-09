@@ -3,17 +3,17 @@ import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
-import { getParts } from "./getParts.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
+import { uniq } from "../utils/uniq.ts";
 
 
 /**
- * Assume the AST is true, and compute resulting knowledge base.
+ * Assumes the given AST is true, and compute resulting knowledge base.
  * Also provides WorldModel additions and elmininations (the "diff") 
  * to avoid having to recompute them.
  */
@@ -245,3 +245,18 @@ function instantiateConcept(
     return additions
 }
 
+function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
+
+    const supers = conceptsOf(concept, kb)
+
+    const parts = kb.wm
+        .filter(isHasSentence)
+        .filter(x => x[0] === concept)
+        .filter(x => isTruthy(ask($(x[1]).isa('number-restriction').isNotTheCase.$, kb).result))
+        .filter(x => isTruthy(ask($(x[1]).isa('mutex-concepts-annotation').isNotTheCase.$, kb).result))
+        .map(x => x[2])
+
+    const all = supers.filter(x => x !== concept).flatMap(x => getParts(x, kb)).concat(parts)
+    return uniq(all)
+
+}
