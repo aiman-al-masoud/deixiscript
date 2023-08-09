@@ -36,9 +36,8 @@ export function ask(
             return { result: ast, kb: kb0 }
         case 'equality':
             {
-                const { kb: kb1, result: s } = ask(ast.subject, kb0)
-                const { kb: kb2, result: o } = ask(ast.object, kb1)
-                return { result: $(astsEqual(s, o)).$, kb: kb2 }
+                const { rast, kb } = evalArgs(ast, kb0)
+                return { result: $(astsEqual(rast.subject, rast.object)).$, kb: kb }
             }
         case 'is-a-formula':
             const { result: t1 } = ask(ast.subject, kb0)
