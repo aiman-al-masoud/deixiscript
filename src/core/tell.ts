@@ -208,18 +208,7 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
             kb,
         )
     })
-
-    // const fillers = defaults.flatMap((d, i) => {
-    //     if (d === undefined) return []
-    //     if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
-
-    //     return instantiateConcept(
-    //         $(`x:${d}`).$,
-    //         $(id).has(`x:${d}`).as(parts[i]).$,
-    //         kb,
-    //     )
-    // })
-
+    
     return fillers
 }
 
