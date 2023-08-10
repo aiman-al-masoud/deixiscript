@@ -80,10 +80,12 @@
 
 - tell()/instantiateConcept() are currently serializing 'thing' as partial information in "has" without "as". Is this a problem?
 
-## Problems
+- possible problem with where in tell()'s existquant and multiple legal values
+  on same attribute. Latest wins out.
 
-- possible problem with where in instantiateConcept() and multiple legal values
-  on same attribute.
+- most used derivation clauses (annotations) get their own LLangAst. Less of a problem with shorter and better and less annotations.
+
+## Problems
 
 - tell() should also affect the deictic dict, currently it doesn't.
 
@@ -96,8 +98,6 @@
 - ordinal anaphora, first/second (or "the other...")
 
 - less than greater than as vague commands (tell)
-
-- most used derivation clauses (annotations) get their own LLangAst
 
 ## Limitations (Out of Scope Problems)
 
