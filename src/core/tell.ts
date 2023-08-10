@@ -2,7 +2,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Variable, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
@@ -41,6 +41,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             if (!isConst(rast.subject) || !isConst(rast.object) || !isConst(rast.as)) throw new Error(`cannot serialize formula with non-constants!`)
 
             additions = [[rast.subject.value, rast.object.value, rast.as.value]]
+
             break
         case 'is-a-formula':
 
@@ -83,9 +84,15 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                 throw new Error('!!!!!')
             }
 
-            additions = instantiateConcept(v.head, v.description, kb)
+            {
+                const id = v.head.varType + '#' + random()
+                const isa = $(id).isa(v.head.varType).$
+                const where = subst(v.description, [v.head, $(id).$])
 
-            break
+                const { kb: kb1 } = tell(isa, kb)
+                const result = tell(where, kb1)
+                return result
+            }
         case 'negation':
             const result = tell(ast.f1, kb)
             additions = result.eliminations
@@ -217,39 +224,6 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
     return result.value
 }
 
-/**
- * Creates a new instance of a concept (an individual).
- * Returns the additions to the World Model ONLY.
- */
-function instantiateConcept(
-    head: Variable,
-    description: LLangAst,
-    kb: KnowledgeBase,
-): WorldModel {
-
-    const id = head.varType + '#' + random()
-    const where = subst(description, [head, $(id).$])
-
-    const isAAdditions = tell($(id).isa(head.varType).$, kb).additions
-    const whereAdditions = tell(where, kb).additions
-
-    const conflicts = isAAdditions
-        .filter(isHasSentence)
-        .filter(x => whereAdditions.some(y => y[0] === x[0] && y[2] === y[2]))
-
-    const fillersWithoutConflicts = subtractWorldModels( // where prevails over defaults
-        isAAdditions,
-        conflicts,
-    )
-
-    const additions = addWorldModels(
-        fillersWithoutConflicts,
-        whereAdditions,
-    )
-
-    return additions
-}
-
 function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
 
     const supers = conceptsOf(concept, kb)
@@ -263,5 +237,4 @@ function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
 
     const all = supers.filter(x => x !== concept).flatMap(x => getParts(x, kb)).concat(parts)
     return uniq(all)
-
 }

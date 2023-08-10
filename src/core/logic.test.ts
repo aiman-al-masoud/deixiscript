@@ -328,13 +328,14 @@ Deno.test({
     fn: () => {
         // "where" should override defaults
         const kb =
-            $('point').has(100).as('x-coordinate').dump()
+            $('point').has(100).as('x-coordinate')
+                .and($({ limitedNumOf: 'x-coordinate', onConcept: 'point', max: 1 }))
+                .dump(getStandardKb())
 
         const result = evaluate($.thereIs($('x:point').suchThat($('x:point').has(200).as('x-coordinate'))).tell.$, kb)
 
         dassert(ask($.the('point').has(200).as('x-coordinate').$, result.kb).result)
         dassert(ask($.the('point').has(100).as('x-coordinate').isNotTheCase.$, result.kb).result)
-
     }
 })
 
@@ -348,7 +349,6 @@ Deno.test({
 
         const kb0: KnowledgeBase = { ...kb, deicticDict: {} }
         const { result: result0, kb: kb1 } = ask($.the('agent').$, kb0)
-        // console.log(kb1)
         assertEquals(Object.values(kb1.deicticDict).length, 1)
         const { result: result1, kb: kb2 } = ask($.the('agent').$, kb1)
         assertEquals(result1, result0)
