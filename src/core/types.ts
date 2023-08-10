@@ -241,10 +241,6 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
 
 }
 
-export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
-    return ast.type === 'is-a-formula' || ast.type === 'has-formula'
-}
-
 export function isWmAtom(x: unknown): x is WmAtom {
     return typeof x === 'string' || typeof x === 'boolean' || typeof x === 'number'
 }
@@ -281,8 +277,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'has-formula': true,
         'existquant': true,
         'conjunction': true,
-
-
         'complement': true,
     }
 
@@ -295,6 +289,10 @@ export function isLLangAst(x: unknown): x is LLangAst {
 //         || ast.type === 'is-a-formula'
 //         || ast.type === 'has-formula'
 //         || ast.type === 'generalized'
+// }
+
+// export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
+//     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
 // }
 
 export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {
