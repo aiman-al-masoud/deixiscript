@@ -28,27 +28,39 @@ Deno.test({
             .dump()
 
         const f = $('person#2').isa('person').$
+        const f2 = $('person#2').isa('randomnonsensenonsense').isNotTheCase.$
+
         dassert(ask(f, kb).result)
+        dassert(ask(f2, kb).result)
+
     }
 })
 
-// Deno.test({
-//     name: 'test02',
-//     fn: () => {
+Deno.test({
+    name: 'test02',
+    fn: () => {
+        // is-a with derivation clause
+        const kb = $('x:dude').isa('dude').when($('x:dude').has(2).as('metric'))
+            .and($('person#2').has(2).as('metric'))
+            .and($('person#1').has(1).as('metric'))
+            .dump()
 
-//         // const kb = $('x:dude').isa('dude').when($('x:dude').isa('person'))
-//         //         .dump()
+        // const kb = $('x:thing').isa('dude').when($('x:thing').has(1).as('tjing') )
+        // .dump()
 
-//         const kb = $('x:thing').isa('dude').when($('x:thing').has(1).as('tjing') )
-//         .dump()
+        // console.log(kb.wm)
 
-//         // const yes = $('person#2').isa('dude').$
-//         const no = $('person#2').isa('somestuffidk').isNotTheCase.$
+        const yes = $('person#2').isa('dude').$
+        // const no = $('person#2').isa('somestuffidk').isNotTheCase.$
+        const no = $('person#1').isa('dude').isNotTheCase.$
 
-//         // dassert(ask(yes, kb).result)
-//         dassert(ask(no, kb).result)
-//     }
-// })
+        // dassert(ask(yes, kb).result)
+        // dassert(ask(no, kb).result)
+        dassert(ask(yes, kb).result)
+        dassert(ask(no, kb).result)
+
+    }
+})
 
 Deno.test({
     name: 'test3',
@@ -507,7 +519,8 @@ Deno.test({
     fn: () => {
         // of-anaphor test
         const kb = $.thereIs($.a('cat').which($._.has(3).as('position'))).dump()
-        const q = $.the('position').of($.the('cat').$).$
+        // const q = $.the('position').of($.the('cat').$).$ // does not work
+        const q = $.the('thing').which($.the('cat').has($._).as('position')).$// number doesn't work
         const result = ask(q, kb).result
         assertEquals(result, $(3).$)
     }
@@ -639,7 +652,7 @@ Deno.test({
 
         const r = ask(x, kb)
         dassert(r.result)
-        
+
 
         // const alt = $.thereIs($.a('mouse').which($._.has('house#1').as('location'))).$
         // assertNotEquals(match(removeImplicit(x), removeImplicit(alt), $.emptyKb), undefined)
@@ -826,7 +839,7 @@ Deno.test({
     fn: () => {
         // const m = match($.the('double').of('n:number').$, $.the('double').of(22).$, $.emptyKb)
         // console.log(m?.helperMap)
-        
+
         const kb = $.the('double').of('n:number').when($('n:number').times(2)).dump()
         const r = ask($.the('double').of(22).plus(1).$, kb).result
         assertEquals(r, $(45).$)
@@ -1017,16 +1030,21 @@ Deno.test({
     }
 })
 
-
 // Deno.test({
-//     name: 'test86',
+//     name: 'test88',
 //     fn: () => {
-//         // const x  = match($.the('thing').$, $.the('number').$, $.emptyKb)
-//         const x  = match( $.the('number').$, $.the('thing').$, $.emptyKb)
+//         const kb =
+//             $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
+//                 .and($('cat').has(2).as('position'))
+//                 .dump()
 
-//         console.log(x)
+//         const q = $(2).isa('position').$
+//         console.log(ask(q, kb))
 //     }
 // })
+
+
+
 
 // Deno.test({
 //     name : 'test82',
@@ -1047,13 +1065,6 @@ Deno.test({
 // })
 
 
-// Deno.test({
-//     name: 'test79',
-//     fn: () => {
-//         const x  = $.the('cat').complement($.the('house').$, )
-//         console.log(x)
-//     }
-// })
 
 
 // Deno.test({

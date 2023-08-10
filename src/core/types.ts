@@ -24,17 +24,6 @@ export type KnowledgeBase = {
 
 /* LANGUAGE */
 
-
-export type Complement = {
-    type: 'complement',
-    complementName: LLangAst,
-    complement: LLangAst,
-    phrase: LLangAst,
-}
-
-
-
-
 export type LLangAst = Atom | Formula | Command | Question
 export type Atom =
     | Term
@@ -73,7 +62,6 @@ export type CompositeFormula =
 export type DerivationClause =
     | WhenDerivationClause
     | AfterDerivationClause
-
 
 export type Command = {
     type: 'command',
@@ -122,14 +110,19 @@ export type ListPattern = {
     /** tail */ value: LLangAst,
 }
 
+export type Complement = {
+    type: 'complement',
+    complementName: LLangAst,
+    complement: LLangAst,
+    phrase: LLangAst,
+}
+
 export type ImplicitReference = {
     type: 'implicit-reference',
     headType: LLangAst,
     which?: LLangAst,
     number: 1 | '*',
     isNew: boolean,
-    complementName?: LLangAst, // todo
-    complement?: LLangAst, // todo
 }
 
 export type ArbitraryType = {
@@ -150,12 +143,8 @@ export type MathExpression = {
 export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
-    complementName?: LLangAst, // todo
-    complement?: LLangAst, // todo
     type: 'generalized',
 }
-
-export type AstMap = DeepMap<LLangAst, LLangAst>
 
 export type Equality = {
     type: 'equality',
@@ -216,6 +205,8 @@ export type IfElse = {
     then: LLangAst,
     otherwise: LLangAst,
 }
+
+export type AstMap = DeepMap<LLangAst, LLangAst>
 
 export function isVar(t: LLangAst): t is Variable {
     return t.type === 'variable'

@@ -1,7 +1,6 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { $ } from "./exp-builder.ts";
-import { findAsts } from "./findAsts.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
 import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, ListPattern, ListLiteral, astsEqual, Entity, askBin } from "./types.ts";
@@ -19,6 +18,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'list-literal' && f.type === 'list-literal') {
         return matchLists(template.value, f.value, kb)
 
+    } else if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
+
+        return deepMapOf([[template.subject, f.subject], [template.object, f.object]])
+
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
 
         if (match(removeImplicit(template), removeImplicit(f), kb) === undefined) return undefined
@@ -27,8 +30,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         ms.push(deepMapOf([[template.headType, f.headType]]))
 
         if (template.which && f.which) ms.push(deepMapOf([[template.which, f.which]]))
-        // if (template.complementName && f.complementName) ms.push(deepMapOf([[template.complementName, f.complementName]]))
-        // if (template.complement && f.complement) ms.push(findAsts(template.complement, 'variable').length ? match(template.complement, f.complement, kb) : deepMapOf([[template.complement, f.complement]])) // because sometimes you need to take into consideration single vars and sometimes just substitute the whole complement chunk
 
         return reduceMatchList(ms)
 

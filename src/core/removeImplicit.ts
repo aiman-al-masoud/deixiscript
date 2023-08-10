@@ -1,7 +1,7 @@
 import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
-import { ImplicitReference, LLangAst, astsEqual } from "./types.ts";
+import { ImplicitReference, LLangAst } from "./types.ts";
 import { ArbitraryType } from "./types.ts"
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { random } from "../utils/random.ts";
@@ -18,24 +18,18 @@ export function removeImplicit(
         const head = $(`x${random()}:thing`).$
 
         if (ast.which) {
-
             const description = $(head).isa(ast.headType).and(subst(ast.which, [$._.$, head])).$
             return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
-
-        } else if (ast.complement && ast.complementName) {
-
-            if (astsEqual(ast.complementName, $('owner').$)) return removeImplicit($.the('thing').which($(ast.complement).has($._.$).as(ast.headType)).$)
-
-            return removeImplicit($.the(ast.headType).which($._.has(ast.complement).as(ast.complementName)).$)
-
         } else {
             return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
         }
 
     } else if (ast.type === 'complement') {
 
-        const x = { ...ast.phrase, complement: ast.complement, complementName: ast.complementName } as LLangAst
-        const r = removeImplicit(x)
+        const phrase = removeImplicit(ast.phrase)
+        if (phrase.type !== 'arbitrary-type') throw new Error(``)
+        const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
+        const r = removeImplicit({ ...phrase, description })
         return r
 
     } else {

@@ -40,10 +40,16 @@ export function ask(
                 return { result: $(astsEqual(rast.subject, rast.object)).$, kb: kb }
             }
         case 'is-a-formula':
-            const { result: t1 } = ask(ast.subject, kb0)
-            const { result: t2 } = ask(ast.object, kb0)
 
-            if (!isAtom(t1) || !isAtom(t2)) return ask(decompress($(t1).isa(t2).$), kb0)
+            const { rast: r, kb: kb1 } = evalArgs(ast, kb0)
+
+            const w = definitionOf(r, kb1)
+            if (w) return ask(w, kb1)
+
+            const t1 = r.subject
+            const t2 = r.object
+
+            if (!isAtom(t1) || !isAtom(t2)) return ask(decompress(r), kb1)
 
             if (t1.type === t2.value) return { result: $(true).$, kb: kb0 }
 
@@ -63,6 +69,7 @@ export function ask(
 
         case 'has-formula':
             {
+
                 const { rast, kb: kb3 } = evalArgs(ast, kb0)
 
                 const when = definitionOf(rast, kb3)
