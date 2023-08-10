@@ -96,6 +96,11 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'equality':
             return tell($(ast.subject).when(ast.object).$, kb)
+
+        case "complement":
+            return tell(removeImplicit(ast), kb)
+
+
         default:
             additions = []
             addedDerivationClauses = []

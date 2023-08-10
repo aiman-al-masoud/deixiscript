@@ -233,10 +233,17 @@ export class ExpBuilder<T extends LLangAst> {
         }
 
         return new ExpBuilder({
-            ...this.exp,
-            complementName: makeAst(name),
-            complement: makeAst(comp),
-        } as ImplicitReference | GeneralizedFormula)
+            type : 'complement',
+            complement : makeAst(comp),
+            complementName : makeAst(name),
+            phrase : this.exp,
+        })
+
+        // return new ExpBuilder({
+        //     ...this.exp,
+        //     complementName: makeAst(name),
+        //     complement: makeAst(comp),
+        // } as ImplicitReference | GeneralizedFormula)
 
     }
 

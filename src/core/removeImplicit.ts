@@ -32,6 +32,12 @@ export function removeImplicit(
             return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
         }
 
+    } else if (ast.type === 'complement') {
+
+        const x = { ...ast.phrase, complement: ast.complement, complementName: ast.complementName } as LLangAst
+        const r = removeImplicit(x)
+        return r
+
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')
         const subs = anaphors.map(x => [x, removeImplicit(x)] as [LLangAst, LLangAst])

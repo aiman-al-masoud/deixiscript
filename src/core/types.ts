@@ -24,6 +24,17 @@ export type KnowledgeBase = {
 
 /* LANGUAGE */
 
+
+export type Complement = {
+    type: 'complement',
+    complementName: LLangAst,
+    complement: LLangAst,
+    phrase: LLangAst,
+}
+
+
+
+
 export type LLangAst = Atom | Formula | Command | Question
 export type Atom =
     | Term
@@ -57,6 +68,8 @@ export type CompositeFormula =
     | MathExpression
     | ImplicitReference
     | ArbitraryType
+    | Complement
+
 export type DerivationClause =
     | WhenDerivationClause
     | AfterDerivationClause
@@ -115,8 +128,8 @@ export type ImplicitReference = {
     which?: LLangAst,
     number: 1 | '*',
     isNew: boolean,
-    complementName?: LLangAst,
-    complement?: LLangAst,
+    complementName?: LLangAst, // todo
+    complement?: LLangAst, // todo
 }
 
 export type ArbitraryType = {
@@ -137,8 +150,8 @@ export type MathExpression = {
 export type GeneralizedFormula = {
     [key: string]: LLangAst,
 } & {
-    complementName?: LLangAst,
-    complement?: LLangAst,
+    complementName?: LLangAst, // todo
+    complement?: LLangAst, // todo
     type: 'generalized',
 }
 
@@ -277,6 +290,9 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'has-formula': true,
         'existquant': true,
         'conjunction': true,
+
+
+        'complement': true,
     }
 
     return astTypes[x.type as LLangAst['type']]

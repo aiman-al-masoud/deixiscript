@@ -8,7 +8,6 @@ import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
 import { subst } from "./subst.ts";
-import { removeImplicit } from "./removeImplicit.ts";
 import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
@@ -636,10 +635,14 @@ Deno.test({
     name: 'test59',
     fn: () => {
         const x = $.thereIs($.a('mouse').in('house#1')).$
-        tell(x, $.emptyKb).kb
+        const kb = tell(x, $.emptyKb).kb
 
-        const alt = $.thereIs($.a('mouse').which($._.has('house#1').as('location'))).$
-        assertNotEquals(match(removeImplicit(x), removeImplicit(alt), $.emptyKb), undefined)
+        const r = ask(x, kb)
+        dassert(r.result)
+        
+
+        // const alt = $.thereIs($.a('mouse').which($._.has('house#1').as('location'))).$
+        // assertNotEquals(match(removeImplicit(x), removeImplicit(alt), $.emptyKb), undefined)
 
     }
 })
@@ -821,9 +824,14 @@ Deno.test({
 Deno.test({
     name: 'test71',
     fn: () => {
+        // const m = match($.the('double').of('n:number').$, $.the('double').of(22).$, $.emptyKb)
+        // console.log(m?.helperMap)
+        
         const kb = $.the('double').of('n:number').when($('n:number').times(2)).dump()
         const r = ask($.the('double').of(22).plus(1).$, kb).result
         assertEquals(r, $(45).$)
+
+
     }
 })
 

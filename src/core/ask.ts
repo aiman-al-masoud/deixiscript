@@ -134,6 +134,7 @@ export function ask(
             {
                 const { rast, kb: kb1 } = evalArgs(ast, kb0)
                 const w = definitionOf(rast, kb1)
+
                 if (w) return ask(w, kb1)
                 return ask(removeImplicit(ast), kb0)
             }
@@ -180,6 +181,17 @@ export function ask(
                 const when = definitionOf(rast, kb1)
                 if (when) return ask(when, kb1)
                 return { result: $(false).$, kb: kb0 }
+            }
+        case "complement":
+            {
+                const { result: complement, kb: kb1 } = ask(ast.complement, kb0)
+                const { result: complementName } = ask(ast.complementName, kb1)
+
+                const rast = { ...ast, complement, complementName }
+                const w = definitionOf(rast, kb1)
+                if (w) return ask(w, kb1)
+
+                return ask(removeImplicit(ast), kb1)
             }
         case "command":
         case "question":

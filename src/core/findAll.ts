@@ -8,6 +8,7 @@ import { $ } from './exp-builder.ts'
 import { findAsts } from "./findAsts.ts";
 import { solve } from "./solve.ts";
 import { zip } from "../utils/zip.ts";
+import { removeImplicit } from "./removeImplicit.ts";
 
 export function findAll(
     ast: LLangAst,
@@ -61,6 +62,9 @@ export function findAll(
             return getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)
         case "generalized":
             return [] // if no derivation clause = no matches!
+        case "complement":
+            return findAll(removeImplicit(ast), variables, kb)
+
         case "if-else":
             throw new Error(`TODO!`)
         case "implicit-reference":

@@ -26,9 +26,16 @@ const kb = $.p(['x:thing|and', 'y:thing|']).when($.p('x:thing').and($.p('y:thing
     .and($('has').and('have').isa('habere'))
     .and($('habere').isa('verb'))
     .and($.p(['x:thing|x:habere', 'y:thing|as', 'z:thing|']).when($.p('x:thing').has($.p('y:thing')).as($.p('z:thing'))))
-    .and($.p(['the', 'x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
+
+
+    // .and($.p(['the', 'x:thing|in', 'y:thing|']).when($.the($.p('x:thing')).in($.p('y:thing'))))
+    // .and($.p(['x:thing|of', 'y:thing|']).when($.p('x:thing').of($.p('y:thing'))))
+
     .and($.p(['x:thing|of', 'y:thing|']).when($.the($.p('x:thing')).of($.p('y:thing'))))
-    .and($.p(['the', 'x:thing|in', 'y:thing|']).when($.the($.p('x:thing')).in($.p('y:thing'))))
+
+    .and($.p(['x:thing|in', 'y:thing|']).when($.p('x:thing').in($.p('y:thing'))))
+
+
     .and($.p(['the', 'x:thing']).when($.the($.p('x:thing'))))
     .and($.p(['[', 'l:thing|]']).when('l:thing')) //here
     .and($.p(['(', 'x:thing|)']).when($.p('x:thing')))
@@ -190,7 +197,7 @@ Deno.test({
 Deno.test({
     name: 'parser-test19',
     fn: () => {
-        assertEquals(parse($.p(tokenize('the sum of ( 1 and 2 )')).$, kb), $.the('sum').of($(1).and(2)).$)
+        assertEquals(parse($.p(tokenize('sum of ( 1 and 2 )')).$, kb), $.the('sum').of($(1).and(2)).$)
 
     }
 })
