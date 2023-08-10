@@ -43,9 +43,6 @@ export function ask(
 
             const { rast: r, kb: kb1 } = evalArgs(ast, kb0)
 
-            const w = definitionOf(r, kb1)
-            if (w) return ask(w, kb1)
-
             const t1 = r.subject
             const t2 = r.object
 
@@ -65,7 +62,13 @@ export function ask(
 
             if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb0 }
 
-            return { result: $(uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb0).result))).$, kb: kb0 }
+            const ok = uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb0).result))
+            if (ok) return { result: $(true).$, kb: kb0 }
+
+            const w = definitionOf(r, kb1)
+            if (w) return ask(w, kb1)
+
+            return { result: $(false).$, kb: kb0 }
 
         case 'has-formula':
             {

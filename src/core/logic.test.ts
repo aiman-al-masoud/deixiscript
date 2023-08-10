@@ -1030,18 +1030,23 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test88',
-//     fn: () => {
-//         const kb =
-//             $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
-//                 .and($('cat').has(2).as('position'))
-//                 .dump()
+Deno.test({
+    name: 'test88',
+    fn: () => {
 
-//         const q = $(2).isa('position').$
-//         console.log(ask(q, kb))
-//     }
-// })
+        const kb =
+            $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
+                .and($('cat').has(2).as('position'))
+                .dump()
+
+        const q1 = $(2).isa('position').$
+        const q2 = $(3).isa('position').isNotTheCase.$
+
+        dassert(ask(q1, kb).result)
+        dassert(ask(q2, kb).result)
+
+    }
+})
 
 
 
