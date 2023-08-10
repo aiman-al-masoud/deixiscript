@@ -194,21 +194,17 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     const parts = getParts(concept, kb)
     const defaults = parts.map(p => findDefault(p, concept, kb))
-    const pds = zip(parts,defaults)
+    const pds = zip(parts, defaults)
 
-    const fillers = pds.flatMap(e=>{
+    const fillers = pds.flatMap(e => {
         const p = e[0]
         const d = e[1]
         if (d === undefined) return []
         if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(p).$, kb).additions
 
-        return instantiateConcept(
-            $(`x:${d}`).$,
-            $(id).has(`x:${d}`).as(p).$,
-            kb,
-        )
+        return tell($(id).has(`x:${d}`).as(p).$, kb).additions
     })
-    
+
     return fillers
 }
 
