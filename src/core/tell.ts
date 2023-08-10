@@ -10,6 +10,7 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
+import { zip } from "../utils/zip.ts";
 
 
 /**
@@ -193,17 +194,31 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
     const parts = getParts(concept, kb)
     const defaults = parts.map(p => findDefault(p, concept, kb))
+    const pds = zip(parts,defaults)
 
-    const fillers = defaults.flatMap((d, i) => {
+    const fillers = pds.flatMap(e=>{
+        const p = e[0]
+        const d = e[1]
         if (d === undefined) return []
-        if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
+        if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(p).$, kb).additions
 
         return instantiateConcept(
             $(`x:${d}`).$,
-            $(id).has(`x:${d}`).as(parts[i]).$,
+            $(id).has(`x:${d}`).as(p).$,
             kb,
         )
     })
+
+    // const fillers = defaults.flatMap((d, i) => {
+    //     if (d === undefined) return []
+    //     if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(parts[i]).$, kb).additions
+
+    //     return instantiateConcept(
+    //         $(`x:${d}`).$,
+    //         $(id).has(`x:${d}`).as(parts[i]).$,
+    //         kb,
+    //     )
+    // })
 
     return fillers
 }
