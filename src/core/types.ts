@@ -30,7 +30,7 @@ export type Atom =
     | ListPattern
     | ListLiteral
 export type Formula =
-    | SimpleFormula
+    | AtomicFormula
     | CompositeFormula
 export type Term =
     | Constant
@@ -40,10 +40,6 @@ export type Constant =
     | Boolean
     | Number
     | Nothing
-export type SimpleFormula =
-    | AtomicFormula
-    // | Equality
-    | GeneralizedFormula
 export type AtomicFormula =
     | IsAFormula
     | HasFormula
@@ -58,7 +54,7 @@ export type CompositeFormula =
     | ImplicitReference
     | ArbitraryType
     | Complement
-
+    | GeneralizedFormula
 export type DerivationClause =
     | WhenDerivationClause
     | AfterDerivationClause
@@ -145,12 +141,6 @@ export type GeneralizedFormula = {
 } & {
     type: 'generalized',
 }
-
-// export type Equality = {
-//     type: 'equality',
-//     subject: LLangAst,
-//     object: LLangAst,
-// }
 
 export type IsAFormula = {
     type: 'is-a-formula',
@@ -272,7 +262,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'math-expression': true,
         'when-derivation-clause': true,
         'after-derivation-clause': true,
-        // 'equality': true,
         'generalized': true,
         'has-formula': true,
         'existquant': true,
