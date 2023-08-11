@@ -1,4 +1,4 @@
-import { ImplicitReference, Conjunction, Disjunction, /* Equality, */ LLangAst, Variable, isLLangAst } from "./types.ts"
+import { ImplicitReference, Conjunction, Disjunction, LLangAst, Variable, isLLangAst } from "./types.ts"
 
 
 export function findAsts(ast: LLangAst, type: 'variable'): Variable[]
