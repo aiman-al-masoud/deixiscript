@@ -31,7 +31,7 @@ function leftAlignVar(m: MathExpression): MathExpression {
     const leftHasVars = findAsts(m.left, 'variable').length
     const rightHasVars = findAsts(m.right, 'variable').length
 
-    if (leftHasVars + rightHasVars > 1) throw new Error(``)
+    assert(leftHasVars + rightHasVars === 1)
 
     if (rightHasVars) return { ...m, left: m.right, right: m.left }
     return m
