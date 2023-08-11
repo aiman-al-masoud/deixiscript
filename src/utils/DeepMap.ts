@@ -23,4 +23,8 @@ export class DeepMap<K, V> extends Map<K, V>{
         return super.set(key, value)
     }
 
+    repr() {
+        return this.helperMap
+    }
+
 }

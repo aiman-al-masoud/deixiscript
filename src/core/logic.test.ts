@@ -12,6 +12,7 @@ import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
+import { print } from "../utils/print.ts";
 
 
 function dassert(x: LLangAst) {
@@ -1040,6 +1041,14 @@ Deno.test({
         assertEquals(x, $('ciao mondo').$)
     }
 })
+
+// Deno.test({
+//     name: 'test90',
+//     fn: () => {
+//         const x = match($('l:thing|x:thing').$, $(['a', 'b', 'c']).$, $.emptyKb)
+//         print(x)
+//     }
+// })
 
 // Deno.test({
 //     name: 'test73',
