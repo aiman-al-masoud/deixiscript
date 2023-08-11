@@ -1018,7 +1018,7 @@ Deno.test({
 Deno.test({
     name: 'test88',
     fn: () => {
-
+        // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
         const kb =
             $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
                 .and($('cat').has(2).as('position'))
