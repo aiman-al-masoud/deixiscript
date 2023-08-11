@@ -5,7 +5,6 @@ export function findAsts(ast: LLangAst, type: 'variable'): Variable[]
 export function findAsts(ast: LLangAst, type: 'conjunction'): Conjunction[]
 export function findAsts(ast: LLangAst, type: 'disjunction'): Disjunction[]
 export function findAsts(ast: LLangAst, type: 'implicit-reference'): ImplicitReference[]
-// export function findAsts(ast: LLangAst, type: 'equality'): Equality[]
 export function findAsts(ast: LLangAst, type: LLangAst['type']): LLangAst[]
 
 export function findAsts(ast: LLangAst, type: LLangAst['type']): LLangAst[] {
@@ -14,6 +13,6 @@ export function findAsts(ast: LLangAst, type: LLangAst['type']): LLangAst[] {
 
     if (ast.type === type) return [ast]
 
-    return subs.flatMap(x => findAsts(x, type, /* maxNesting - 1 */))
+    return subs.flatMap(x => findAsts(x, type))
 
 }
