@@ -10,7 +10,7 @@ import { KnowledgeBase, MathExpression, astsEqual } from "./types.ts";
  */
 export function solve(m: MathExpression, kb: KnowledgeBase) {
 
-    if (!isEquation(m)) throw new Error(``)
+    assert(isEquation(m))
     const eq = leftAlignVar(m)
     if (eq.left.type === 'variable') return eq.right //return ask(eq.right, kb).result
     assert(eq.left.type === 'math-expression')
