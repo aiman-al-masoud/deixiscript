@@ -7,15 +7,7 @@ export class ExpBuilder<T extends LLangAst> {
     constructor(readonly exp: T) { }
 
     equals(object: ExpBuilderArg) {
-
         return this.mathOperation(object, '=')
-
-        // return new ExpBuilder<Equality>({
-        //     type: 'equality',
-        //     subject: this.exp,
-        //     object: makeAst(object),
-        // })
-
     }
 
     isa(object: ExpBuilderArg) {
