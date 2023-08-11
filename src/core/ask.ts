@@ -7,6 +7,7 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { match } from "./match.ts";
+import { assert } from "../utils/assert.ts";
 
 
 export function ask(
@@ -47,7 +48,7 @@ export function ask(
 
             if (t2.value === 'thing') return { result: $(true).$, kb: kb0 }
 
-            if (!isConst(t1) || !isConst(t2)) throw new Error(``)
+            assert(isConst(t1) && isConst(t2))
 
             const concepts = kb0.wm.filter(isIsASentence)
                 .filter(s => s[0] === t1.value)
@@ -157,7 +158,7 @@ export function ask(
             const right = rast.right as Number
             const op = rast.operator
 
-            if (op.type !== 'entity') throw new Error(``)
+            assert(op.type === 'entity')
 
             const result = {
                 '+': $(left.value + right.value).$,

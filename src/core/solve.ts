@@ -1,3 +1,4 @@
+import { assert } from "../utils/assert.ts";
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
@@ -12,12 +13,13 @@ export function solve(m: MathExpression, kb: KnowledgeBase) {
     if (!isEquation(m)) throw new Error(``)
     const eq = leftAlignVar(m)
     if (eq.left.type === 'variable') return eq.right //return ask(eq.right, kb).result
-    if (eq.left.type !== 'math-expression') throw new Error(``)
+    assert(eq.left.type === 'math-expression')
 
     const op = eq.left.operator
-    if (op.type !== 'entity') throw new Error(``)
+    assert(op.type === 'entity')
+
     const inverseOp = invert(op.value)
-    if (!inverseOp) throw new Error(``)
+    assert(inverseOp)
 
     const newLhs = eq.left.left
     const newRhs = ask($(eq.right).mathOperation(eq.left.right, inverseOp).$, kb).result
