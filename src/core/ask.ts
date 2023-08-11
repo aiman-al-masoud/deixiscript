@@ -31,7 +31,7 @@ export function ask(
                 const deicticDict = { ...kb0.deicticDict, [ast.value as string]: lastTime + 1 }
                 return { result: ast, kb: { ...kb0, deicticDict, wm: addWorldModels(kb0.wm, [[ast.value, ast.type]]) } }
             }
-        case 'list-literal':
+        case 'list':
         case 'list-pattern':
         case 'nothing':
             return { result: ast, kb: kb0 }

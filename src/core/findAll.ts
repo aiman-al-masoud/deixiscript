@@ -80,7 +80,7 @@ export function findAll(
         case "variable":
         case "number":
         case "list-pattern":
-        case "list-literal":
+        case "list":
         case 'is-a-formula':
         case 'has-formula':
             const results = getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)

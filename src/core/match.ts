@@ -15,7 +15,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         if (askBin($(f).isa(template).$, kb)) return deepMapOf([[template, f]])
 
-    } else if (template.type === 'list-literal' && f.type === 'list-literal') {
+    } else if (template.type === 'list' && f.type === 'list') {
         return matchLists(template.value, f.value, kb)
 
     } else if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
@@ -97,7 +97,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const r = reduceMatchList(ms)
         return r
 
-    } else if (template.type === 'list-pattern' && f.type === 'list-literal') {
+    } else if (template.type === 'list-pattern' && f.type === 'list') {
 
         const { m } = matchListPToList(template, f, kb)
         return m
@@ -146,7 +146,7 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
     template.forEach(t => {
 
         if (t.type === 'list-pattern') {
-            const { m, tailIndex } = matchListPToList(t, { type: 'list-literal', value: ff }, kb)
+            const { m, tailIndex } = matchListPToList(t, { type: 'list', value: ff }, kb)
             ms.push(m)
             ff = ff.slice(tailIndex + 1)
         } else {

@@ -96,7 +96,7 @@ export type Variable = {
 }
 
 export type ListLiteral = {
-    type: 'list-literal',
+    type: 'list',
     value: LLangAst[],
 }
 
@@ -227,7 +227,7 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
 
     return isTerm(ast)
         || ast.type === 'list-pattern'
-        || ast.type === 'list-literal'
+        || ast.type === 'list'
 
 }
 
@@ -251,7 +251,7 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'question': true,
         'nothing': true,
         'variable': true,
-        'list-literal': true,
+        'list': true,
         'list-pattern': true,
         'implicit-reference': true,
         'negation': true,

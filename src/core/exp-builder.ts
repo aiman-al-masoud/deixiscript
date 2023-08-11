@@ -296,7 +296,7 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
         return { type: 'boolean', value: x }
     } else if (x instanceof Array) {
         return {
-            type: 'list-literal',
+            type: 'list',
             value: x.map(e => makeAst(e))
         }
     } else if (isStringLiteral(x)) {
