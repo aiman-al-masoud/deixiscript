@@ -28,12 +28,12 @@ export function solve(m: MathExpression, kb: KnowledgeBase) {
 }
 
 function leftAlignVar(m: MathExpression): MathExpression {
-    const leftHasVars = findAsts(m.left, 'variable').length
-    const rightHasVars = findAsts(m.right, 'variable').length
+    const leftVars = findAsts(m.left, 'variable').length
+    const rightVars = findAsts(m.right, 'variable').length
 
-    assert(leftHasVars + rightHasVars === 1)
+    assert(leftVars + rightVars === 1)
 
-    if (rightHasVars) return { ...m, left: m.right, right: m.left }
+    if (rightVars) return { ...m, left: m.right, right: m.left }
     return m
 }
 
