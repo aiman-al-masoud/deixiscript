@@ -495,20 +495,11 @@ Deno.test({
 
         const kb2 = tell(dc, kb1).kb
 
-
         const statement1 = $.the('cat').which($._.has('red').as('color')).is('hungry').$
         const statement2 = $.the('cat').which($._.has('black').as('color')).is('hungry').isNotTheCase.$
 
-
-        // console.log(ask($.the('cat').which($._.has('red').as('color')).$, kb2))
-        // console.log(ask($.the('cat').which($._.has('black').as('color')).$, kb2))
-        // console.log(ask($.the('cat').which($._.has('purple').as('color')).$, kb2))
-        // console.log('====================================')
-
-
         const result1 = ask(statement1, kb2).result
         dassert(result1)
-        // console.log('---------------------------------')
         const result2 = ask(statement2, kb2).result
         dassert(result2)
     }
@@ -837,14 +828,9 @@ Deno.test({
 Deno.test({
     name: 'test71',
     fn: () => {
-        // const m = match($.the('double').of('n:number').$, $.the('double').of(22).$, $.emptyKb)
-        // console.log(m?.helperMap)
-
         const kb = $.the('double').of('n:number').when($('n:number').times(2)).dump()
         const r = ask($.the('double').of(22).plus(1).$, kb).result
         assertEquals(r, $(45).$)
-
-
     }
 })
 
@@ -1003,7 +989,6 @@ Deno.test({
 //     }
 // })
 
-
 Deno.test({
     name: 'test85',
     fn: () => {
@@ -1024,7 +1009,7 @@ Deno.test({
 Deno.test({
     name: 'test87',
     fn: () => {
-        // math operation with equality aliases to Equality (ONLY in ask() for now)
+        // equality is now mathop with = as operator
         const r = ask($(1).mathOperation(1, '=').$, $.emptyKb).result
         assertEquals(r, $(true).$)
     }
@@ -1044,33 +1029,8 @@ Deno.test({
 
         dassert(ask(q1, kb).result)
         dassert(ask(q2, kb).result)
-
     }
 })
-
-
-
-
-// Deno.test({
-//     name : 'test82',
-//     fn : ()=>{
-//         const kb = $('x:thing').has('y:thing').as('owner').when($('y:thing').has('x:thing') )
-//                     .and($('cat#1').has('claws#1'))
-//                     .dump()
-
-//         dassert(ask($('claws#1').has('cat#1').as('owner').$, kb).result)
-//         dassert(ask($('claws#1').has('ca#1').as('owner').isNotTheCase.$, kb).result)
-
-
-//         // const kb1 = $('x:thing').has('y:thing').as('owner').when($('y:thing').has('z:thing').as('x:thing') )
-//         //             .and($('cat#1').has('claws#1'))
-//         //             .dump()
-
-//     }
-// })
-
-
-
 
 // Deno.test({
 //     name: 'test73',
@@ -1084,5 +1044,3 @@ Deno.test({
 //         console.log(r)
 //     }
 // })
-
-
