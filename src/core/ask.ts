@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf, evalArgs } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf, evalArgs, Number } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -153,22 +153,11 @@ export function ask(
 
             const { rast, kb } = evalArgs(ast, kb0)
 
-            const left = rast.left
-            const right = rast.right
+            const left = rast.left as Number
+            const right = rast.right as Number
             const op = rast.operator
 
-            if (op.type === 'entity' && op.value === '=') {
-                return {
-                    result: $(astsEqual(left, right)).$,
-                    kb,
-                }
-            }
-
-            if (
-                left.type !== 'number'
-                || right.type !== 'number'
-                || op.type !== 'entity'
-            ) return { result: $(false).$, kb: kb0 }
+            if (op.type !== 'entity') throw new Error(``)
 
             const result = {
                 '+': $(left.value + right.value).$,
@@ -179,7 +168,7 @@ export function ask(
                 '<': $(left.value < right.value).$,
                 '<=': $(left.value <= right.value).$,
                 '>=': $(left.value >= right.value).$,
-                // '=': ask($(left).equals(right).$, kb).result,
+                '=': $(astsEqual(left, right)).$
             }[op.value]
 
             return ask(

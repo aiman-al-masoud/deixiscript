@@ -1032,6 +1032,15 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test89',
+    fn: () => {
+        // string concatenation the usual way
+        const x = ask($('ciao').plus(' mondo').$, $.emptyKb).result
+        assertEquals(x, $('ciao mondo').$)
+    }
+})
+
 // Deno.test({
 //     name: 'test73',
 //     fn: () => {
