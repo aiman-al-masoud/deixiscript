@@ -99,6 +99,8 @@
 
 - less than greater than as vague commands (tell)
 
+- derivation clause from test88 crashes a couple of other tests if added to prelude
+
 ## Limitations (Out of Scope Problems)
 
 - context sentitivity is incomplete
