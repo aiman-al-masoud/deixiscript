@@ -8,7 +8,7 @@ export function getStandardKb(): KnowledgeBase {
         derivClauses: [
 
             // single-entry-for annotation
-            $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when( // max=0 will probably not work
+            $({ limitedNumOf: 'prop:thing', onConcept: 'c:thing', max: 'n:number' }).when(
 
                 $.thereIs($('ann:thing').suchThat(
                     $('ann:thing').isa('number-restriction')
