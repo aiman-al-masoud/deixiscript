@@ -90,7 +90,7 @@
 - tell() should also affect the deictic dict, currently it doesn't.
 
 - when adding new props (treated as defaults) to a concept you have to add them
-  to all existing instances of the concept.
+  to all existing instances of the concept. Maybe: x:thing has y:thing as z:thing after w:thing which x:thing isa has y:thing as z:thing
 
 - avoid default-creation-loops (an entity is created as a default for another, a
   third entity is created as a default for the default etc...)
