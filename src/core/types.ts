@@ -28,7 +28,7 @@ export type LLangAst = Atom | Formula | Command | Question
 export type Atom =
     | Term
     | ListPattern
-    | ListLiteral
+    | List
 export type Formula =
     | AtomicFormula
     | CompositeFormula
@@ -95,7 +95,7 @@ export type Variable = {
     varType: string,
 }
 
-export type ListLiteral = {
+export type List = {
     type: 'list',
     value: LLangAst[],
 }

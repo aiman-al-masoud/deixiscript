@@ -3,7 +3,7 @@ import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, ListPattern, ListLiteral, astsEqual, Entity, askBin } from "./types.ts";
+import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, ListPattern, List, astsEqual, Entity, askBin } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -160,7 +160,7 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
 
 }
 
-function matchListPToList(template: ListPattern, f: ListLiteral, kb: KnowledgeBase) {
+function matchListPToList(template: ListPattern, f: List, kb: KnowledgeBase) {
 
     const tailIndex =
         astsEqual(template.value, $._.$) ? f.value.length // no tail case 

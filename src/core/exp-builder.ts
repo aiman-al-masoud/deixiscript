@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction,/*  Equality, */ ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction,/*  Equality, */ ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -272,7 +272,7 @@ function isStringLiteral(x: string): x is StringLiteralPattern {
 function makeAst(x: ListPat): ListPattern
 function makeAst(x: Var): Variable
 function makeAst(x: StringLiteralPattern): Entity
-function makeAst(x: WmAtom[]): ListLiteral
+function makeAst(x: WmAtom[]): List
 function makeAst(x: number): Number
 function makeAst(x: boolean): Boolean
 function makeAst(x: 'nothing'): Nothing
@@ -326,14 +326,14 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
 export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: StringLiteralPattern): ExpBuilder<Entity>
-export function $(x: WmAtom[]): ExpBuilder<ListLiteral>
+export function $(x: WmAtom[]): ExpBuilder<List>
 export function $(x: 'nothing'): ExpBuilder<Nothing>
 export function $(x: string): ExpBuilder<Entity>
 export function $(x: number): ExpBuilder<Number>
 export function $(x: boolean): ExpBuilder<Boolean>
 export function $(x: LLangAst): ExpBuilder<LLangAst>
-export function $(x: LLangAst[]): ExpBuilder<ListLiteral>
-export function $(x: (LLangAst | WmAtom)[]): ExpBuilder<ListLiteral>
+export function $(x: LLangAst[]): ExpBuilder<List>
+export function $(x: (LLangAst | WmAtom)[]): ExpBuilder<List>
 export function $(x: GeneralizedInput): ExpBuilder<GeneralizedFormula>
 export function $(x: WmAtom): ExpBuilder<Constant>
 export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | (LLangAst | WmAtom)[]): ExpBuilder<LLangAst>
