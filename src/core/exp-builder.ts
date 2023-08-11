@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction, Equality, ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction,/*  Equality, */ ExistentialQuantification, HasFormula, IfElse, IsAFormula, ListLiteral, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -8,11 +8,13 @@ export class ExpBuilder<T extends LLangAst> {
 
     equals(object: ExpBuilderArg) {
 
-        return new ExpBuilder<Equality>({
-            type: 'equality',
-            subject: this.exp,
-            object: makeAst(object),
-        })
+        return this.mathOperation(object, '=')
+
+        // return new ExpBuilder<Equality>({
+        //     type: 'equality',
+        //     subject: this.exp,
+        //     object: makeAst(object),
+        // })
 
     }
 

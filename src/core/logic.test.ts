@@ -994,21 +994,21 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test84',
-    fn: () => {
-        // equality as an alias for derivation clause declaration in tell()
-        const kb = evaluate($('it').equals('x:thing').tell.$, $.emptyKb).kb
-        assertEquals(kb.derivClauses[0], $('it').when('x:thing').$)
-    }
-})
+// Deno.test({
+//     name: 'test84',
+//     fn: () => {
+//         // equality as an alias for derivation clause declaration in tell()
+//         const kb = evaluate($('it').equals('x:thing').tell.$, $.emptyKb).kb
+//         assertEquals(kb.derivClauses[0], $('it').when('x:thing').$)
+//     }
+// })
 
 
 Deno.test({
     name: 'test85',
     fn: () => {
         // problem: a vs the        
-        const kb = $.the('f').of($.the('number')).equals($.the('number').plus(1)).dump()
+        const kb = $.the('f').of($.the('number')).when($.the('number').plus(1)).dump()
         assertEquals(ask($.the('f').of(2).$, kb).result, $(3).$)
     }
 })
@@ -1016,7 +1016,7 @@ Deno.test({
 Deno.test({
     name: 'test86',
     fn: () => {
-        const kb = $.the('f').of($.the('number')).equals($.the('thing').plus(1)).dump()
+        const kb = $.the('f').of($.the('number')).when($.the('thing').plus(1)).dump()
         assertEquals(ask($.the('f').of(2).$, kb).result, $(3).$)
     }
 })

@@ -34,11 +34,6 @@ export function ask(
         case 'list-pattern':
         case 'nothing':
             return { result: ast, kb: kb0 }
-        case 'equality':
-            {
-                const { rast, kb } = evalArgs(ast, kb0)
-                return { result: $(astsEqual(rast.subject, rast.object)).$, kb: kb }
-            }
         case 'is-a-formula':
 
             const { rast: r, kb: kb1 } = evalArgs(ast, kb0)
@@ -162,6 +157,13 @@ export function ask(
             const right = rast.right
             const op = rast.operator
 
+            if (op.type === 'entity' && op.value === '=') {
+                return {
+                    result: $(astsEqual(left, right)).$,
+                    kb,
+                }
+            }
+
             if (
                 left.type !== 'number'
                 || right.type !== 'number'
@@ -177,7 +179,7 @@ export function ask(
                 '<': $(left.value < right.value).$,
                 '<=': $(left.value <= right.value).$,
                 '>=': $(left.value >= right.value).$,
-                '=': ask($(left).equals(right).$, kb).result,
+                // '=': ask($(left).equals(right).$, kb).result,
             }[op.value]
 
             return ask(

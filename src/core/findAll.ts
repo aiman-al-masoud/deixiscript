@@ -34,7 +34,6 @@ export function findAll(
             const secondChoices = getSecondChoices(realAst.f2, missingVars, kb, firstChoices)
             const result = combineChoices(firstChoices, secondChoices)
             return result
-
         case "existquant":
             return findAll(realAst.value, variables, kb, partialResults)
         case "negation":
@@ -58,23 +57,22 @@ export function findAll(
                 const result = combineChoices(first, secondChoices)
                 return result
             }
-        case 'math-expression':
-            return getCombos(variables, uniq(kb.wm.flatMap(x => x).map(c => $(c).$)), kb, realAst)
         case "generalized":
             return [] // if no derivation clause = no matches!
         case "complement":
             return findAll(removeImplicit(ast), variables, kb)
-
         case "if-else":
             throw new Error(`TODO!`)
         case "implicit-reference":
         case "question":
         case "command":
             throw new Error(`NEVER!`)
-        case "equality":
-            const v = findAsts(realAst, 'variable').at(0)
-            const n = solve(realAst, kb)
-            if (v !== undefined && n !== undefined && !isNaN(n.value)) return [deepMapOf([[v, n]])]
+        case 'math-expression':
+            try {
+                const v = variables[0]
+                const n = solve(realAst, kb) as Constant
+                return [deepMapOf([[v, n]])]
+            } catch { /**/ }
         // fallthrough
         case "boolean":
         case "entity":

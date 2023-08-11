@@ -42,7 +42,7 @@ export type Constant =
     | Nothing
 export type SimpleFormula =
     | AtomicFormula
-    | Equality
+    // | Equality
     | GeneralizedFormula
 export type AtomicFormula =
     | IsAFormula
@@ -146,11 +146,11 @@ export type GeneralizedFormula = {
     type: 'generalized',
 }
 
-export type Equality = {
-    type: 'equality',
-    subject: LLangAst,
-    object: LLangAst,
-}
+// export type Equality = {
+//     type: 'equality',
+//     subject: LLangAst,
+//     object: LLangAst,
+// }
 
 export type IsAFormula = {
     type: 'is-a-formula',
@@ -272,7 +272,7 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'math-expression': true,
         'when-derivation-clause': true,
         'after-derivation-clause': true,
-        'equality': true,
+        // 'equality': true,
         'generalized': true,
         'has-formula': true,
         'existquant': true,

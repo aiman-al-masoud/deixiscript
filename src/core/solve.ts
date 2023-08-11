@@ -1,83 +1,49 @@
 import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts";
-import { Atom, Equality, KnowledgeBase, Number } from "./types.ts";
-
+import { findAsts } from "./findAsts.ts";
+import { KnowledgeBase, MathExpression, astsEqual } from "./types.ts";
 
 /**
- * Interprets an Equality as a linear equation and solves it.
+ * Interprets AST as linear equation and solves it.
  * Returns the value of the variable.
  */
-export function solve(ast: Equality, kb: KnowledgeBase): Number | undefined {
+export function solve(m: MathExpression, kb: KnowledgeBase) {
 
-    // check if is equation
-    // check number of vars
+    if (!isEquation(m)) throw new Error(``)
+    const eq = leftAlignVar(m)
+    if (eq.left.type === 'variable') return eq.right //return ask(eq.right, kb).result
+    if (eq.left.type !== 'math-expression') throw new Error(``)
 
-    if (ast.subject.type === 'variable') {
-        const result = ask(ast.object, kb).result
-        if (result.type !== 'number') throw new Error(``)
-        return result
-    }
+    const op = eq.left.operator
+    if (op.type !== 'entity') throw new Error(``)
+    const inverseOp = invert(op.value)
+    if (!inverseOp) throw new Error(``)
 
-    if (ast.subject.type === 'math-expression' && ast.object.type !== 'math-expression') {
+    const newLhs = eq.left.left
+    const newRhs = ask($(eq.right).mathOperation(eq.left.right, inverseOp).$, kb).result
 
-        // k op X = c 
-        // k + X = c  ---> X = c - k
-        // k - X = c  ---> X = k - c
-        // k * X = c  ---> X = c/k
-        // k / X = c  ---> X = k/c
-
-        // X op k = c 
-        // X + k = c  ---> X = c - k
-        // X - k = c  ---> X = c + k
-        // X * k = c  ---> X = c/k
-        // X / k = c  ---> X = c * k
-
-        const res = ask(ast.object, kb).result
-        if (res.type !== 'number') throw new Error(``)
-        const c = res.value
-
-        // const left = ast.subject.left.type!=='variable' ?  ask(ast.subject.left, kb).result :ast.subject.left
-        // const right = ast.subject.right.type!=='variable'?  ask(ast.subject.right, kb).result : ast.subject.right
-
-        // const k = left.type === 'number' ? left.value : right.value as number
-        // const kIsLeft = k === left.value
-        // const X = kIsLeft ? ast.subject.right : ast.subject.left
-        // const op = ast.subject.operator as '+' | '-' | '*' | '/'
-
-        // ---------------------------------
-        // console.log(ast)
-        // console.log('left=', left, 'right=', right, 'k=', k, 'kIsLeft=', kIsLeft, 'X=', X)
-        // ---------------------------------
-
-        const k = ast.subject.right.type === 'number' ? ast.subject.right.value : (ast.subject.left as Atom).value as number
-        const X = ast.subject.right.type !== 'number' ? ast.subject.right : ast.subject.left
-
-        if (ast.subject.operator.type !== 'entity') throw new Error(``)
-        const op = ast.subject.operator.value
-        const kIsLeft = k === (ast.subject.left as Atom).value
-
-        const newRhs = kIsLeft ? {
-            '+': c - k,
-            '-': k - c,
-            '*': c / k,
-            '/': k / c,
-        }[op] : {
-            '+': c - k,
-            '-': k + c,
-            '*': c / k,
-            '/': k * c,
-        }[op]
-
-        if (newRhs === undefined) throw new Error(``)
-
-        return solve($(X).equals(newRhs).$, kb)
-    }
-
-    if (ast.subject.type === 'math-expression' && ast.object.type !== 'math-expression') {
-        return solve($(ast.object).equals(ast.subject).$, kb)
-    }
-
-    throw new Error('Bad equation')
+    return solve($(newLhs).equals(newRhs).$, kb)
 }
 
+function leftAlignVar(m: MathExpression): MathExpression {
+    const leftHasVars = findAsts(m.left, 'variable').length
+    const rightHasVars = findAsts(m.right, 'variable').length
 
+    if (leftHasVars + rightHasVars > 1) throw new Error(``)
+
+    if (rightHasVars) return { ...m, left: m.right, right: m.left }
+    return m
+}
+
+function invert(op: string) {
+    return {
+        '+': '-',
+        '-': '+',
+        '*': '/',
+        '/': '*',
+    }[op]
+}
+
+function isEquation(m: MathExpression) {
+    return astsEqual(m.operator, $('=').$)
+}
