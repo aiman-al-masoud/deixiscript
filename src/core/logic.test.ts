@@ -12,7 +12,6 @@ import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
-import { print } from "../utils/print.ts";
 
 
 function dassert(x: LLangAst) {
@@ -46,20 +45,11 @@ Deno.test({
             .and($('person#1').has(1).as('metric'))
             .dump()
 
-        // const kb = $('x:thing').isa('dude').when($('x:thing').has(1).as('tjing') )
-        // .dump()
-
-        // console.log(kb.wm)
-
         const yes = $('person#2').isa('dude').$
-        // const no = $('person#2').isa('somestuffidk').isNotTheCase.$
         const no = $('person#1').isa('dude').isNotTheCase.$
 
-        // dassert(ask(yes, kb).result)
-        // dassert(ask(no, kb).result)
         dassert(ask(yes, kb).result)
         dassert(ask(no, kb).result)
-
     }
 })
 
@@ -1042,13 +1032,17 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test90',
-//     fn: () => {
-//         const x = match($('l:thing|x:thing').$, $(['a', 'b', 'c']).$, $.emptyKb)
-//         print(x)
-//     }
-// })
+
+Deno.test({
+    name: 'test90',
+    fn: () => {
+        const t = $(['e:number', 'x:list']).$
+        const f = $([1, 2, 3, 4]).$
+        const m = match(t, f, $.emptyKb)
+        assertEquals(m, deepMapOf([[$('e:number').$, $(1).$ as unknown], [$('x:list').$, $([2, 3, 4]).$]]) as unknown)
+    }
+})
+
 
 // Deno.test({
 //     name: 'test73',

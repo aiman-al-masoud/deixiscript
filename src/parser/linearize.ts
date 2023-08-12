@@ -6,6 +6,7 @@ import { LLangAst, KnowledgeBase, isAtom, isWhenDerivationClause, isConst } from
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { first } from "../utils/first.ts";
 
+
 export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined {
     const list = lin(ast, kb)
     if (!list) return undefined
@@ -23,26 +24,19 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
     const newAst = wrap(ast)
     const whenDcs = kb.derivClauses.filter(isWhenDerivationClause)
 
-    const x = first(whenDcs, dc => {
+    // just unwrap dc.when instead?
 
+    const x = first(whenDcs, dc => {
         const m = match(dc.when, newAst, kb)
         if (!m) return undefined
-        const m2 = mapValues(m, v => unwrap(v))
-
-        // if (ast.type==='implicit-reference'){
-        //     console.log('newAst=', newAst)
-        //     console.log('dc.when=', dc.when)
-        //     console.log('m=', m.helperMap)
-        //     console.log('m2=', m2.helperMap)
-        // }
-
-        const m3 = mapValues(m2, v => lin(v, kb) ?? v)
-
-        // if (ast.type==='implicit-reference') console.log('m3=', m3.helperMap)
+        // print('newAst=', newAst)
+        // print('dc.when=', dc.when)
+        const m2 = mapStuff(m, v => unwrap(v))
+        // print('m2=', m2)
+        const m3 = mapStuff(m2, v => lin(v, kb) ?? v)
+        // print('m3=', m3)
         const sub = subst(dc.conseq, m3)
-        // if (ast.type==='implicit-reference') console.log('sub=', sub)
-
-
+        // print('sub=', sub)
         return sub
     })
 
@@ -50,13 +44,7 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
     return result
 }
 
-// export function mapValues<K, W, V>(m: DeepMap<K, W>, f: (v: W) => V): DeepMap<K, V> {
-//     const entries = Array.from(m.entries())
-//     const newEntries = entries.map(e => [e[0], f(e[1])] as const)
-//     return deepMapOf(newEntries)
-// }
-
-export function mapValues<A>(m: DeepMap<A, A>, f: (v: A) => A): DeepMap<A, A> {
+export function mapStuff<A>(m: DeepMap<A, A>, f: (v: A) => A): DeepMap<A, A> {
     const entries = Array.from(m.entries())
     const newEntries = entries.map(e => [f(e[0]), f(e[1])] as const)
     return deepMapOf(newEntries)
@@ -66,12 +54,6 @@ function unroll(ast: LLangAst): string {
 
     if (ast.type === 'list') {
         return '(' + ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '').trim() + ')'
-        // return $(ast.value.flatMap(x => unroll(x))).$
-    }
-
-    if (ast.type === 'list-pattern') {
-        return unroll(ast.seq) + ' ' + unroll(ast.value)
-        // return $([unroll(ast.seq), ast.value]).$
     }
 
     if (isConst(ast)) return ast.value + ''

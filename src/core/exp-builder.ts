@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction,/*  Equality, */ ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, ListPattern, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -259,17 +259,10 @@ function isVar(x: string): x is Var {
     return x.includes(':')
 }
 
-function isPat(x: string): x is ListPat {
-    const parts = x.split('|')
-    if (parts.length !== 2) return false
-    return isVar(parts[0])
-}
-
 function isStringLiteral(x: string): x is StringLiteralPattern {
     return x.at(0) === '"' && x.at(-1) === '"'
 }
 
-function makeAst(x: ListPat): ListPattern
 function makeAst(x: Var): Variable
 function makeAst(x: StringLiteralPattern): Entity
 function makeAst(x: WmAtom[]): List
@@ -304,14 +297,6 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
             type: 'entity',
             value: x.substring(1, x.length - 1),
         }
-    } else if (isPat(x)) {
-        const [seq, tail] = x.split('|')
-
-        return {
-            type: 'list-pattern',
-            seq: makeAst(seq),
-            value: makeAst(tail),
-        }
     } else if (isVar(x)) {
         const [value, varType] = x.split(':')
         return { type: 'variable', value, varType }
@@ -323,7 +308,6 @@ function makeAst(x: WmAtom | WmAtom[] | LLangAst | ExpBuilder<LLangAst> | LLangA
 
 }
 
-export function $(x: ListPat): ExpBuilder<ListPattern>
 export function $(x: Var): ExpBuilder<Variable>
 export function $(x: StringLiteralPattern): ExpBuilder<Entity>
 export function $(x: WmAtom[]): ExpBuilder<List>

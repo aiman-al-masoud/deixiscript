@@ -79,7 +79,6 @@ export function findAll(
         case "nothing":
         case "variable":
         case "number":
-        case "list-pattern":
         case "list":
         case 'is-a-formula':
         case 'has-formula':

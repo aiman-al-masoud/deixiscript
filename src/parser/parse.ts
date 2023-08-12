@@ -1,5 +1,4 @@
 import { mapAsts } from "../core/mapAsts.ts";
-
 import { LLangAst, KnowledgeBase, definitionOf } from "../core/types.ts";
 
 

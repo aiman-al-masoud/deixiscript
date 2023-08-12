@@ -2,12 +2,14 @@
 /**
  * Like console.log() but can be overridden via a repr() method.
  */
-export function print(x: unknown) {
+export function print(...printable: unknown[]) {
 
-    if (typeof x === 'object' && x !== null && 'repr' in x && typeof x.repr === 'function') {
-        console.log(x.repr())
-        return
-    }
+    const printList = printable.map(x => {
+        if (typeof x === 'object' && x !== null && 'repr' in x && typeof x.repr === 'function') {
+            return x.repr()
+        }
+        return x
+    })
 
-    console.log(x)
+    console.log(...printList)
 }

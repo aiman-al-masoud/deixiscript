@@ -27,7 +27,6 @@ export type KnowledgeBase = {
 export type LLangAst = Atom | Formula | Command | Question
 export type Atom =
     | Term
-    | ListPattern
     | List
 export type Formula =
     | AtomicFormula
@@ -92,18 +91,12 @@ export type Number = {
 export type Variable = {
     type: 'variable',
     /** name */ value: string,
-    varType: string,
+    varType: string, // maybe make => Constant
 }
 
 export type List = {
     type: 'list',
     value: LLangAst[],
-}
-
-export type ListPattern = {
-    type: 'list-pattern',
-    seq: LLangAst,
-    /** tail */ value: LLangAst,
 }
 
 export type Complement = {
@@ -225,9 +218,7 @@ export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
     if (ast instanceof Array) return false
     if (isWmAtom(ast)) return false
 
-    return isTerm(ast)
-        || ast.type === 'list-pattern'
-        || ast.type === 'list'
+    return isTerm(ast) || ast.type === 'list'
 
 }
 
@@ -252,7 +243,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'nothing': true,
         'variable': true,
         'list': true,
-        'list-pattern': true,
         'implicit-reference': true,
         'negation': true,
         'arbitrary-type': true,
@@ -272,17 +262,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
     return astTypes[x.type as LLangAst['type']]
 
 }
-
-// export function isSimpleFormula(ast: LLangAst): ast is SimpleFormula {
-//     return ast.type === 'equality'
-//         || ast.type === 'is-a-formula'
-//         || ast.type === 'has-formula'
-//         || ast.type === 'generalized'
-// }
-
-// export function isAtomicFormula(ast: LLangAst): ast is AtomicFormula {
-//     return ast.type === 'is-a-formula' || ast.type === 'has-formula'
-// }
 
 export function astsEqual(astOne: LLangAst, astTwo: LLangAst) {
     return astOne.type === astTwo.type && deepEquals(astOne, astTwo)

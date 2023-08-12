@@ -3,23 +3,19 @@ import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isAtom, isLLangAst, isConst, KnowledgeBase, ListPattern, List, astsEqual, Entity, askBin } from "./types.ts";
+import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, askBin } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
-
     if (isConst(template) && isConst(f)) {
-
         if (template.value === f.value) return deepMapOf()
-
         if (askBin($(f).isa(template).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'list' && f.type === 'list') {
-        return matchLists(template.value, f.value, kb)
+        return matchLists(template, f, kb)
 
     } else if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
-
         return deepMapOf([[template.subject, f.subject], [template.object, f.object]])
 
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
@@ -43,32 +39,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         return reduceMatchList([m1, m2])
 
-        // } else if (template.type === 'variable' && f.type === 'variable') {
-        //     if (template.varType === f.varType) return deepMapOf([[template, f]])
-        //     if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
-
-
-        // } else if (template.type === 'implicit-reference' && f.type === 'variable') {
-        //     return match(removeImplicit(template), f, kb)
-
-        // } else if (template.type === 'arbitrary-type' && f.type === 'variable') {
-        //     const m1 = match(template.head, f, kb)
-        //     const m2 = match(template.description, $(true).$, kb)
-        //     if (reduceMatchList([m1, m2])) return deepMapOf([[template, f]])
-
-        // } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
-        //     const m1 = match(template, f.head, kb)
-        //     if (m1 !== undefined) return deepMapOf([[template, f]])
-
-        // } else if (template.type === 'variable' && f.type === 'math-expression') {
-        // if (template.varType === 'number') return deepMapOf([[template, f]])
-
-        // } else if (template.type === 'number' && f.type === 'math-expression') {
-        // return deepMapOf([[template, f]])
-
-        // } else if (template.type === 'implicit-reference' && f.type === 'arbitrary-type') {
-        // return match(removeImplicit(template), f, kb)
-
+    } else if (template.type === 'variable' && f.type === 'variable') {
+        if (template.varType === f.varType) return deepMapOf([[template, f]])
+        if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === f.type) {
 
@@ -97,17 +70,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const r = reduceMatchList(ms)
         return r
 
-    } else if (template.type === 'list-pattern' && f.type === 'list') {
-
-        const { m } = matchListPToList(template, f, kb)
-        return m
-
     } else if (template.type === 'implicit-reference' && isConst(f)) {
-
         return match(removeImplicit(template), f, kb)
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
-
         const m = match(template.head, f, kb)
         if (!m) return undefined
 
@@ -121,8 +87,8 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
             return deepMapOf([[template, f]])
         }
 
-    } else if (template.type === 'variable' && isAtom(f)) {
-        return deepMapOf([[template, f]])
+    } else if (template.type === 'variable' && f.type === 'list') {
+        if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable') {
         return deepMapOf([[template, f]])
@@ -136,22 +102,41 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
 }
 
-function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
+function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
+    if (ms.some(x => x === undefined)) return undefined
 
-    if (template.length > f.length) return undefined
+    return ms.map(x => x as AstMap)
+        .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
+}
 
-    let ff = [...f]
+function toStringList(list: LLangAst[]) {
+    const result = list.filter((x): x is Entity => x.type === 'entity').map(x => x.value)
+    return result
+}
+
+function matchLists(template: List, formula: List, kb: KnowledgeBase) {
+
+    if (template.value.length > formula.value.length) return undefined
+
+    let ff = [...formula.value]
     const ms: (AstMap | undefined)[] = []
 
-    template.forEach(t => {
+    template.value.forEach((t, i) => {
 
-        if (t.type === 'list-pattern') {
-            const { m, tailIndex } = matchListPToList(t, { type: 'list', value: ff }, kb)
+        const tpp = template.value[i + 1] ?? $('nothing').$
+
+        if (t.type === 'variable' && t.varType === 'list') {
+            const k = ff.findIndex((x, j) => match(tpp, x, kb) && !hasUnmatched(toStringList(ff.slice(0, j))))
+
+            if (k === -1 && template.value[i + 1]) return ms.push(undefined)
+
+            const m = match(t, $(k === -1 ? ff : ff.slice(0, k)).$, kb)
             ms.push(m)
-            ff = ff.slice(tailIndex + 1)
+            ff = k === -1 ? [] : ff.slice(k)
         } else {
             const ff0 = ff.at(0)
-            ms.push(!ff0 ? undefined : match(t, ff0, kb))
+            const m = match(t, ff0 ?? $('nothing').$, kb)
+            ms.push(m)
             ff = ff.slice(1)
         }
     })
@@ -160,49 +145,26 @@ function matchLists(template: LLangAst[], f: LLangAst[], kb: KnowledgeBase) {
 
 }
 
-function matchListPToList(template: ListPattern, f: List, kb: KnowledgeBase) {
+// print(matchLists($(['x:number', 'y:list', 3]).$, $([0, 1, 2, 3]).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:number', 'y:list']).$, $([0, 1, 2, 3]).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:number', 'y:list', 'w:number']).$, $([0, 1, 2, 3]).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:number', 'y:list', 'w:entity']).$, $([0, 1, 2, 'cat']).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:list', 'and', 'y:list']).$, $(['cat', 'and', 'dog', 'and', 'buruf']).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['(', 'x:list', ')']).$, $(['(', 'cat', 'and', 'dog', ')']).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:list', 'and', 'y:list']).$, $(['(', 'cat', 'and', 'dog', ')', 'and', 'buruf']).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:list', 'and', 'y:list']).$, $(['cat', 'and', '(', 'dog', 'and', 'buruf', ')']).$, $.emptyKb))
+// print('-----------')
+// print(matchLists($(['x:list', 'y:buruf']).$, $([1,2,3,4,5]).$, $.emptyKb))
 
-    const tailIndex =
-        astsEqual(template.value, $._.$) ? f.value.length // no tail case 
-            : f.value.findIndex((x, i) => {
-                // TODO ---------
-                const list = f.value.slice(0, i).filter((x): x is Entity => x.type === 'entity').map(x => x.value)
-                if (hasUnmatched(list)) return undefined
-                // --------------
+// print(matchLists($(['x:list', 'o:operator', 'y:list']).$, $([1, 'x:thing', 2]).$, $.emptyKb))
 
-                const m1 = match(template.value, x, kb)
-                const m2 = match(template.seq, $(f.value.slice(0, i)).$, kb)
-
-                return reduceMatchList([m1, m2])
-            })
-
-    if (tailIndex < 0) {
-        return {
-            m: undefined,
-            tailIndex,
-        }
-    }
-
-    const seq = f.value.slice(0, tailIndex)
-    const tail = f.value.at(tailIndex)
-
-    if (tail === undefined) {
-        return {
-            m: deepMapOf([[template.seq, $(seq).$]]),
-            tailIndex,
-        }
-    }
-
-    return {
-        m: deepMapOf([[template.value, tail], [template.seq, $(seq).$]]),
-        tailIndex,
-    }
-
-}
-
-function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
-    if (ms.some(x => x === undefined)) return undefined
-
-    return ms.map(x => x as AstMap)
-        .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
-}
+// .and($.p(['x:list', 'is', 'a', 'y:list']).when($.p('x:list').isa($.p('y:list'))))
+// const m = match($(['x:list', 'is', 'a', 'y:list']).$, $(['x', 'is', 'a', 'cat']).$, $.emptyKb)
+// print(m)

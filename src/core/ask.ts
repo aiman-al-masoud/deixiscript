@@ -32,7 +32,6 @@ export function ask(
                 return { result: ast, kb: { ...kb0, deicticDict, wm: addWorldModels(kb0.wm, [[ast.value, ast.type]]) } }
             }
         case 'list':
-        case 'list-pattern':
         case 'nothing':
             return { result: ast, kb: kb0 }
         case 'is-a-formula':
@@ -48,7 +47,7 @@ export function ask(
 
             if (t2.value === 'thing') return { result: $(true).$, kb: kb0 }
 
-            assert(isConst(t1) && isConst(t2))
+            if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb0 }
 
             const concepts = kb0.wm.filter(isIsASentence)
                 .filter(s => s[0] === t1.value)
