@@ -153,11 +153,11 @@ export function ask(
 
             const { rast, kb } = evalArgs(ast, kb0)
 
+            const op = rast.operator
+            assert(op.type === 'entity')            
+
             const left = rast.left as Number
             const right = rast.right as Number
-            const op = rast.operator
-
-            assert(op.type === 'entity')
 
             const result = {
                 '+': $(left.value + right.value).$,
