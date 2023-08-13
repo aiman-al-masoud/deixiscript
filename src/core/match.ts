@@ -22,43 +22,12 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
         return match(removeImplicit(template), removeImplicit(f), kb)
 
-        // } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') { //TODO may be deleted, but I'm afraid of description=true case
-        //     const m1 = match(template.head, f.head, kb)
-        //     if (!m1) return undefined
-        //     if (template.description.type === 'boolean' && template.description.value) return reduceMatchList([m1])
-        //     const m2 = match(template.description, f.description, kb)
-        //     return reduceMatchList([m1, m2])
-
     } else if (template.type === 'variable' && f.type === 'variable') {
         if (template.varType === f.varType) return deepMapOf([[template, f]])
         if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === f.type) {
-
-        const templateT = template as { [x: string]: LLangAst }
-        const fT = f as { [x: string]: LLangAst }
-
-        const templateKeys = Object.keys(template).filter(x => isLLangAst(templateT[x]))
-        const fKeys = Object.keys(f).filter(x => isLLangAst(fT[x]))
-
-        if (templateKeys.length !== fKeys.length) {
-            return undefined
-        }
-
-        const ms = templateKeys.map(k => {
-
-            const v1 = templateT[k]
-            const v2 = fT[k]
-
-            if (!v1 || !v2) return undefined
-
-            const result = match(v1, v2, kb)
-
-            return result
-        })
-
-        const r = reduceMatchList(ms)
-        return r
+        return matchGeneric(template, f, kb)
 
     } else if (template.type === 'cardinality' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
@@ -102,6 +71,33 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m2) return m2
     }
 
+}
+
+function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {
+    const templateT = template as { [x: string]: LLangAst }
+    const fT = f as { [x: string]: LLangAst }
+
+    const templateKeys = Object.keys(template).filter(x => isLLangAst(templateT[x]))
+    const fKeys = Object.keys(f).filter(x => isLLangAst(fT[x]))
+
+    if (templateKeys.length !== fKeys.length) {
+        return undefined
+    }
+
+    const ms = templateKeys.map(k => {
+
+        const v1 = templateT[k]
+        const v2 = fT[k]
+
+        if (!v1 || !v2) return undefined
+
+        const result = match(v1, v2, kb)
+
+        return result
+    })
+
+    const r = reduceMatchList(ms)
+    return r
 }
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
