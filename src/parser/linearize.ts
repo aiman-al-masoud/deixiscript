@@ -1,7 +1,8 @@
+import { $ } from "../core/exp-builder.ts";
 import { mapAsts } from "../core/mapAsts.ts";
 import { match } from "../core/match.ts";
 import { subst } from "../core/subst.ts";
-import { LLangAst, KnowledgeBase, isAtom, isWhenDerivationClause, isConst } from "../core/types.ts";
+import { LLangAst, KnowledgeBase, isAtom, isWhenDerivationClause, isConst, Constant } from "../core/types.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { first } from "../utils/first.ts";
 
@@ -9,8 +10,9 @@ import { first } from "../utils/first.ts";
 export function linearize(ast: LLangAst, kb: KnowledgeBase): string | undefined {
     const list = lin(ast, kb)
     if (!list) return undefined
-    const r1 = unroll(list)
-    return r1
+    const toks = toTokens(list)
+    const code = toks.reduce((a, b) => (a + b.value).trim() + ' ', '')
+    return code
 }
 
 function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
@@ -42,13 +44,13 @@ export function mapStuff<A>(m: DeepMap<A, A>, f: (v: A) => A): DeepMap<A, A> {
     return deepMapOf(newEntries)
 }
 
-function unroll(ast: LLangAst): string {
+function toTokens(ast: LLangAst): Constant[] {
 
     if (ast.type === 'list') {
-        return '(' + ast.value.flatMap(x => unroll(x)).reduce((a, b) => a + b + ' ', '').trim() + ')'
+        return [$('(').$, ...ast.value.flatMap(x => toTokens(x)), $(')').$]
     }
 
-    if (isConst(ast)) return ast.value + ''
+    if (isConst(ast)) return [ast]
 
     throw new Error('')
 }
