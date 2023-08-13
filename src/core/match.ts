@@ -36,10 +36,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return match(removeImplicit(template), f, kb)
 
     } else if (template.type === 'which' && f.type === 'cardinality') {
-        // console.log('template=', template, 'f=', f)
-        // template cannot be converted by removeImplicit
-        // console.log('f=', removeImplicit(f) )//, 'f=', removeImplicit(f))
-
         return match(removeImplicit(template), removeImplicit(f), kb)
 
     } else if (template.type === 'cardinality' && f.type === 'which') {
