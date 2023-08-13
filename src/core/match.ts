@@ -135,6 +135,8 @@ function toStringList(list: LLangAst[]) {
 function matchLists(template: List, formula: List, kb: KnowledgeBase) {
 
     if (template.value.length > formula.value.length) return undefined
+    
+    if (template.value.length===0 && formula.value.length!==0) return undefined
 
     let ff = [...formula.value]
     const ms: (AstMap | undefined)[] = []
