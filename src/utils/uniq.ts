@@ -4,7 +4,7 @@ import { hash } from "./hash.ts"
  * Return copy of array with deduplicated elements in the same order
  * as first occurrence in original array.
  */
-export function uniq<T>(seq: T[]): T[] {
+export function uniq<T>(seq: readonly T[]): T[] {
     const seen: { [key: string]: boolean } = {}
 
     return seq.filter(e => {
