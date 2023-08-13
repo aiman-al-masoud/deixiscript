@@ -62,142 +62,142 @@ export type DerivationClause =
     | AfterDerivationClause
 
 export type Command = {
-    type: 'command',
-    f1: LLangAst,
+    readonly type: 'command',
+    readonly f1: LLangAst,
 }
 
 export type Question = {
-    type: 'question',
-    f1: LLangAst,
+    readonly type: 'question',
+    readonly f1: LLangAst,
 }
 
 export type Entity = {
-    type: 'entity',
-    value: string,
+    readonly type: 'entity',
+    readonly value: string,
 }
 
 export type Nothing = {
-    type: 'nothing',
-    value: '~',
+    readonly type: 'nothing',
+    readonly value: '~',
 }
 
 export type Boolean = {
-    type: 'boolean',
-    value: boolean,
+    readonly type: 'boolean',
+    readonly value: boolean,
 }
 
 export type Number = {
-    type: 'number',
-    value: number,
+    readonly type: 'number',
+    readonly value: number,
 }
 
 export type Variable = {
-    type: 'variable',
-    /** name */ value: string,
-    varType: string, // maybe make => Constant
+    readonly type: 'variable',
+    readonly /** name */ value: string,
+    readonly varType: string, // maybe make => Constant
 }
 
 export type List = {
-    type: 'list',
-    value: LLangAst[],
+    readonly type: 'list',
+    readonly value: LLangAst[],
 }
 
 export type Complement = {
-    type: 'complement',
-    complementName: LLangAst,
-    complement: LLangAst,
-    phrase: LLangAst,
+    readonly type: 'complement',
+    readonly complementName: LLangAst,
+    readonly complement: LLangAst,
+    readonly phrase: LLangAst,
 }
 
 export type Cardinality = {
-    type: 'cardinality',
-    number: Constant,
-    value: LLangAst,
+    readonly type: 'cardinality',
+    readonly number: Constant,
+    readonly value: LLangAst,
 }
 
 export type Which = {
-    type: 'which',
-    which: LLangAst,
-    inner: LLangAst,
+    readonly type: 'which',
+    readonly which: LLangAst,
+    readonly inner: LLangAst,
 }
 
 export type ImplicitReference = {
-    type: 'implicit-reference',
-    headType: LLangAst,
+    readonly type: 'implicit-reference',
+    readonly headType: LLangAst,
 }
 
 export type ArbitraryType = {
-    type: 'arbitrary-type',
-    head: Variable,
-    description: LLangAst,
-    number: Constant,
+    readonly type: 'arbitrary-type',
+    readonly head: Variable,
+    readonly description: LLangAst,
+    readonly number: Constant,
 }
 
 export type MathExpression = {
-    type: 'math-expression',
-    operator: LLangAst,
-    left: LLangAst,
-    right: LLangAst,
+    readonly type: 'math-expression',
+    readonly operator: LLangAst,
+    readonly left: LLangAst,
+    readonly right: LLangAst,
 }
 
 export type GeneralizedFormula = {
-    [key: string]: LLangAst,
+    readonly [key: string]: LLangAst,
 } & {
-    type: 'generalized',
+    readonly type: 'generalized',
 }
 
 export type IsAFormula = {
-    type: 'is-a-formula',
-    subject: LLangAst,
-    object: LLangAst,
+    readonly type: 'is-a-formula',
+    readonly subject: LLangAst,
+    readonly object: LLangAst,
 }
 
 export type HasFormula = {
-    type: 'has-formula',
-    subject: LLangAst,
-    object: LLangAst,
-    as: LLangAst,
+    readonly type: 'has-formula',
+    readonly subject: LLangAst,
+    readonly object: LLangAst,
+    readonly as: LLangAst,
 }
 
 export type Conjunction = {
-    type: 'conjunction',
-    f1: LLangAst,
-    f2: LLangAst,
+    readonly type: 'conjunction',
+    readonly f1: LLangAst,
+    readonly f2: LLangAst,
 }
 
 export type Disjunction = {
-    type: 'disjunction',
-    f1: LLangAst,
-    f2: LLangAst,
+    readonly type: 'disjunction',
+    readonly f1: LLangAst,
+    readonly f2: LLangAst,
 }
 
 export type Negation = {
-    type: 'negation',
-    f1: LLangAst,
+    readonly type: 'negation',
+    readonly f1: LLangAst,
 }
 
 export type ExistentialQuantification = {
-    type: 'existquant',
-    value: LLangAst,
+    readonly type: 'existquant',
+    readonly value: LLangAst,
 }
 
 export type WhenDerivationClause = {
-    type: 'when-derivation-clause',
-    conseq: LLangAst,
-    when: LLangAst,
+    readonly type: 'when-derivation-clause',
+    readonly conseq: LLangAst,
+    readonly when: LLangAst,
 }
 
 export type AfterDerivationClause = {
-    type: 'after-derivation-clause',
-    conseq: LLangAst,
-    after: LLangAst,
+    readonly type: 'after-derivation-clause',
+    readonly conseq: LLangAst,
+    readonly after: LLangAst,
 }
 
 export type IfElse = {
-    type: 'if-else',
-    condition: LLangAst,
-    then: LLangAst,
-    otherwise: LLangAst,
+    readonly type: 'if-else',
+    readonly condition: LLangAst,
+    readonly then: LLangAst,
+    readonly otherwise: LLangAst,
 }
 
 export type AstMap = DeepMap<LLangAst, LLangAst>
