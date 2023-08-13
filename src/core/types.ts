@@ -55,6 +55,7 @@ export type CompositeFormula =
     | Complement
     | GeneralizedFormula
     | Cardinality
+    | Which
 export type DerivationClause =
     | WhenDerivationClause
     | AfterDerivationClause
@@ -111,6 +112,12 @@ export type Cardinality = {
     type: 'cardinality',
     number: /* 1 | '*' */Constant,
     value: LLangAst,
+}
+
+export type Which = {
+    type: 'which',
+    which: LLangAst,
+    inner: LLangAst,
 }
 
 export type ImplicitReference = {
@@ -263,6 +270,7 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'conjunction': true,
         'complement': true,
         'cardinality': true,
+        'which': true,
     }
 
     return astTypes[x.type as LLangAst['type']]

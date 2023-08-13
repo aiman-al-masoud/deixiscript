@@ -130,10 +130,10 @@ export function ask(
             if (candidates.length === 1) {
                 return ask(sortedCandidates[0], kb0)
                 // } else if (ast.number === 1 && candidates.length > 1) {
-            } else if (ast.number.value===1 && candidates.length > 1) {
+            } else if (ast.number.value === 1 && candidates.length > 1) {
                 return ask(sortedCandidates[0], kb0)
                 // } else if (ast.number === '*' && candidates.length > 1) {
-            } else if (ast.number.value==='*' && candidates.length > 1) {
+            } else if (ast.number.value === '*' && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
                 return { result: andPhrase, kb: kb0 }
             } else {
@@ -201,6 +201,10 @@ export function ask(
                 return ask(removeImplicit(ast), kb1)
             }
         case 'cardinality':
+            {
+                return ask(removeImplicit(ast), kb0)
+            }
+        case 'which':
             {
                 return ask(removeImplicit(ast), kb0)
             }

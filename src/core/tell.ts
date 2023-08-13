@@ -105,7 +105,11 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         case "complement":
             return tell(removeImplicit(ast), kb)
         case 'cardinality':
-            {      
+            {
+                return tell(removeImplicit(ast), kb)
+            }
+        case 'which':
+            {
                 return tell(removeImplicit(ast), kb)
             }
         default:

@@ -24,6 +24,16 @@ export function removeImplicit(
             return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, /* isNew: ast.isNew */ }
         }
 
+    } else if (ast.type==='which'){
+
+        // console.log(ast)
+
+        const v = { ...ast, ...ast.inner, which: ast.which } as LLangAst
+        // @ts-ignore
+        delete v['inner']
+
+        return removeImplicit(v)
+
     } else if (ast.type === 'complement') {
 
         const phrase = removeImplicit(ast.phrase)

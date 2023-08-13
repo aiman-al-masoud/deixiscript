@@ -8,8 +8,8 @@ import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, ask
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
-
- 
+    
+    // if (template.type==='which' || f.type==='which') console.log(template.type, f.type)
 
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
@@ -46,23 +46,21 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (template.varType === f.varType) return deepMapOf([[template, f]])
         if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
-    } else if (template.type==='cardinality'  && f.type==='cardinality' ){
+    // } else if (template.type==='cardinality'  && f.type==='cardinality' ){
 
-        const v1 = { ...template, ...template.value, number:template.number } as LLangAst
-        //@ts-ignore
-        delete v1['value']
+    //     const v1 = { ...template, ...template.value, number:template.number } as LLangAst
+    //     //@ts-ignore
+    //     delete v1['value']
 
-        const v2 = { ...f, ...f.value, number:f.number } as LLangAst
-        //@ts-ignore
-        delete v2['value']
+    //     const v2 = { ...f, ...f.value, number:f.number } as LLangAst
+    //     //@ts-ignore
+    //     delete v2['value']
 
-        return match(v1, v2, kb)
+    //     return match(v1, v2, kb)
 
         // return match(removeImplicit(template), removeImplicit(f), kb)
 
-
     } else if (template.type === f.type) {
-
 
         const templateT = template as { [x: string]: LLangAst }
         const fT = f as { [x: string]: LLangAst }
@@ -93,8 +91,22 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
   
     } else if (template.type==='cardinality'  && isConst(f)){
-
         return match(removeImplicit(template), f, kb)
+
+    } else if (template.type==='which'  && isConst(f)){
+        return match(removeImplicit(template), f, kb)
+
+
+
+
+
+    } else if (template.type==='which' && f.type==='cardinality'){
+        return match(removeImplicit(template), removeImplicit(f), kb)
+    } else if (template.type==='cardinality' && f.type==='which'){
+        return match(removeImplicit(template), removeImplicit(f), kb)
+
+
+        
 
     } else if (template.type === 'implicit-reference' && isConst(f)) {
         return match(removeImplicit(template), f, kb)

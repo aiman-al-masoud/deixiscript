@@ -59,6 +59,8 @@ export function findAll(
             }
         case 'cardinality':
             return findAll(removeImplicit(realAst), variables, kb)
+        case 'which':
+            return findAll(removeImplicit(realAst), variables, kb)
         case "generalized":
             return [] // if no derivation clause = no matches!
         case "complement":

@@ -131,10 +131,16 @@ export class ExpBuilder<T extends LLangAst> {
         //     throw new Error('')
         // }
 
-        return new ExpBuilder<ImplicitReference>({
-            ...this.exp,
-            which: ast.$,
-        } as ImplicitReference)
+        // return new ExpBuilder<ImplicitReference>({
+        //     ...this.exp,
+        //     which: ast.$,
+        // } as ImplicitReference)
+
+        return new ExpBuilder({
+            type : 'which',
+            which : makeAst(ast),
+            inner : this.exp,
+        })
 
     }
 
@@ -217,7 +223,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     _(object: ExpBuilderArg) {
         if (this.exp.type !== 'generalized') throw new Error('')
-        return $({ ...this.exp, object: makeAst(object) })
+        return $({ ...this.exp, object: makeAst(object) }) //TODO: use complement
     }
 
     complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
