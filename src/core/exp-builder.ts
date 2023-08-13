@@ -211,12 +211,6 @@ export class ExpBuilder<T extends LLangAst> {
         return $({ subject: this.exp, verb: makeAst(verb), object: $._.$ })
     }
 
-    _(object: ExpBuilderArg) {
-        if (this.exp.type !== 'generalized') throw new Error('')
-        return $({ ...this.exp, object: makeAst(object) }) //TODO: use complement
-        // return this.complement(object, 'direct-object')
-    }
-
     complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
 
         return new ExpBuilder({
@@ -238,6 +232,10 @@ export class ExpBuilder<T extends LLangAst> {
 
     of(owner: ExpBuilderArg) {
         return this.complement(owner, 'owner')
+    }
+
+    _(object: ExpBuilderArg) {
+        return this.complement(object, 'direct-object')
     }
 
 }
