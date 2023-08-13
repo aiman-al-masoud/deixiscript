@@ -138,8 +138,8 @@ export class ExpBuilder<T extends LLangAst> {
     mathOperation(ast: ExpBuilderArg, op: ExpBuilderArg) {
         return new ExpBuilder<MathExpression>({
             type: 'math-expression',
-            left: this.exp as Atom,
-            right: makeAst(ast) as MathExpression,
+            left: this.exp,
+            right: makeAst(ast),
             operator: makeAst(op),
         })
     }
@@ -335,7 +335,7 @@ function createImplicit(x: ExpBuilderArg) {
     return new ExpBuilder<ImplicitReference>({
         type: 'implicit-reference',
         headType: makeAst(x),
-    } as ImplicitReference)
+    })
 }
 
 function makeNumber(x: ExpBuilderArg, number: 1 | '*') {
