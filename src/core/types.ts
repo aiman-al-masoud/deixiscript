@@ -110,7 +110,7 @@ export type Complement = {
 
 export type Cardinality = {
     type: 'cardinality',
-    number: /* 1 | '*' */Constant,
+    number: Constant,
     value: LLangAst,
 }
 
@@ -123,15 +123,14 @@ export type Which = {
 export type ImplicitReference = {
     type: 'implicit-reference',
     headType: LLangAst,
-    which?: LLangAst,
-    number: /* 1 | '*' */Constant,
+    number: Constant,
 }
 
 export type ArbitraryType = {
     type: 'arbitrary-type',
     head: Variable,
     description: LLangAst,
-    number: /* 1 | '*' */Constant,
+    number: Constant,
 }
 
 export type MathExpression = {

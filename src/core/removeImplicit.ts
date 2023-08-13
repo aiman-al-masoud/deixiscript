@@ -16,23 +16,15 @@ export function removeImplicit(
     if (ast.type === 'implicit-reference') {
 
         const head = $(`x${random()}:thing`).$
+        return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number }
 
-        if (ast.which) {
-            const description = $(head).isa(ast.headType).and(subst(ast.which, [$._.$, head])).$
-            return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, /* isNew: ast.isNew */ }
-        } else {
-            return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, /* isNew: ast.isNew */ }
-        }
+    } else if (ast.type === 'which') {
 
-    } else if (ast.type==='which'){
-
-        // console.log(ast)
-
-        const v = { ...ast, ...ast.inner, which: ast.which } as LLangAst
-        // @ts-ignore
-        delete v['inner']
-
-        return removeImplicit(v)
+        const inner = removeImplicit(ast.inner)
+        if (inner.type !== 'arbitrary-type') throw new Error(``)
+        const description = $(inner.description).and(subst(ast.which, [$._.$, inner.head])).$
+        const r = removeImplicit({ ...inner, description })
+        return r
 
     } else if (ast.type === 'complement') {
 
@@ -43,13 +35,9 @@ export function removeImplicit(
         return r
 
     } else if (ast.type === 'cardinality') {
-        // console.log('ast=', ast)
-
         const v = { ...ast, ...ast.value, number: ast.number } as LLangAst
         //@ts-ignore
         delete v['value']
-
-        // console.log('v=', v)
         return removeImplicit(v)
 
     } else {

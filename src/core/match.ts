@@ -8,8 +8,6 @@ import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, ask
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
-    
-    // if (template.type==='which' || f.type==='which') console.log(template.type, f.type)
 
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
@@ -22,43 +20,18 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return deepMapOf([[template.subject, f.subject], [template.object, f.object]])
 
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
+        return deepMapOf([[template.headType, f.headType]])
 
-        if (match(removeImplicit(template), removeImplicit(f), kb) === undefined) return undefined
-
-        const ms: (AstMap | undefined)[] = []
-        ms.push(deepMapOf([[template.headType, f.headType]]))
-
-        if (template.which && f.which) ms.push(deepMapOf([[template.which, f.which]]))
-
-        return reduceMatchList(ms)
-
-    } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
-
+    } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') { //TODO may be deleted, but I'm afraid of description=true case
         const m1 = match(template.head, f.head, kb)
         if (!m1) return undefined
         if (template.description.type === 'boolean' && template.description.value) return reduceMatchList([m1])
-
         const m2 = match(template.description, f.description, kb)
-
         return reduceMatchList([m1, m2])
 
     } else if (template.type === 'variable' && f.type === 'variable') {
         if (template.varType === f.varType) return deepMapOf([[template, f]])
         if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
-
-    // } else if (template.type==='cardinality'  && f.type==='cardinality' ){
-
-    //     const v1 = { ...template, ...template.value, number:template.number } as LLangAst
-    //     //@ts-ignore
-    //     delete v1['value']
-
-    //     const v2 = { ...f, ...f.value, number:f.number } as LLangAst
-    //     //@ts-ignore
-    //     delete v2['value']
-
-    //     return match(v1, v2, kb)
-
-        // return match(removeImplicit(template), removeImplicit(f), kb)
 
     } else if (template.type === f.type) {
 
@@ -69,8 +42,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const fKeys = Object.keys(f).filter(x => isLLangAst(fT[x]))
 
         if (templateKeys.length !== fKeys.length) {
-            // console.log('KEYS DO NOT MATCH!!!!')
-            // console.log('----------------')
             return undefined
         }
 
@@ -89,24 +60,18 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const r = reduceMatchList(ms)
         return r
 
-  
-    } else if (template.type==='cardinality'  && isConst(f)){
+
+    } else if (template.type === 'cardinality' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
 
-    } else if (template.type==='which'  && isConst(f)){
+    } else if (template.type === 'which' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
 
-
-
-
-
-    } else if (template.type==='which' && f.type==='cardinality'){
-        return match(removeImplicit(template), removeImplicit(f), kb)
-    } else if (template.type==='cardinality' && f.type==='which'){
+    } else if (template.type === 'which' && f.type === 'cardinality') {
         return match(removeImplicit(template), removeImplicit(f), kb)
 
-
-        
+    } else if (template.type === 'cardinality' && f.type === 'which') {
+        return match(removeImplicit(template), removeImplicit(f), kb)
 
     } else if (template.type === 'implicit-reference' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
@@ -137,7 +102,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m1) return m1
         if (m2) return m2
     }
-
 
 }
 
@@ -173,8 +137,8 @@ function toStringList(list: LLangAst[]) {
 function matchLists(template: List, formula: List, kb: KnowledgeBase) {
 
     if (template.value.length > formula.value.length) return undefined
-    
-    if (template.value.length===0 && formula.value.length!==0) return undefined
+
+    if (template.value.length === 0 && formula.value.length !== 0) return undefined
 
     let ff = [...formula.value]
     const ms: (AstMap | undefined)[] = []
