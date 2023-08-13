@@ -1043,6 +1043,20 @@ Deno.test({
     }
 })
 
+Deno.test({
+    name: 'test91',
+    fn: () => {
+        // conflict detection in patterns for variables referenced in >1 place
+        const t = $(['x:number', 'xs:list']).and('x:number').$
+        const f1 = $([1, 2, 3, 4]).and(1).$
+        const f2 = $([1, 2, 3, 4]).and(0).$
+
+        const m = match(t, f1, $.emptyKb)
+        assertEquals(m, deepMapOf([[$('x:number').$, $(1).$ as LLangAst], [$('xs:list').$, $([2, 3, 4]).$]]))
+        const m2 = match(t, f2, $.emptyKb)
+        assertEquals(m2, undefined)
+    }
+})
 
 // Deno.test({
 //     name: 'test73',

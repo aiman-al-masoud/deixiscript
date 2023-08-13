@@ -19,7 +19,9 @@ export class DeepMap<K, V> extends Map<K, V>{
     }
 
     override set(key: K, value: V): this {
-        this.helperMap.set(hash(key), value)
+        const h = hash(key)
+        if(this.helperMap.has(h)) return this
+        this.helperMap.set(h, value)
         return super.set(key, value)
     }
 

@@ -4,7 +4,7 @@ import { isNotNullish } from "../utils/isNotNullish.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, askBin } from "./types.ts";
+import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, askBin, astsEqual } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -106,7 +106,25 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
     if (!ms.every(isNotNullish)) return undefined
 
-    return ms.reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
+    let x = deepMapOf() as AstMap
+
+    for (const m of ms) {
+        if (mapsDisagree(x, m)) return undefined
+        x = deepMapOf([...x, ...m])
+    }
+
+    return x
+}
+
+function mapsDisagree(m1: AstMap, m2: AstMap) {
+    const ks1 = Array.from(m1.keys())
+    const ks2 = Array.from(m2.keys())
+    const ks = ks1.concat(ks2)
+    return ks.some(k => {
+        const v1 = m1.get(k)
+        const v2 = m2.get(k)
+        return v1 && v2 && !astsEqual(v1, v2)
+    })
 }
 
 function toStringList(list: LLangAst[]) {
