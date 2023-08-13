@@ -23,18 +23,16 @@ function lin(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
 
     const whenDcs = kb.derivClauses.filter(isWhenDerivationClause)
 
-    const x = first(whenDcs, dc => {
-
+    const result = first(whenDcs, dc => {
         const when = unwrap(dc.when)
         const m = match(when, ast, kb)
-
         if (!m) return undefined
         const m2 = mapStuff(m, v => lin(v, kb) ?? v)
         const sub = subst(dc.conseq, m2)
-        return sub
+        const sub2 = unwrap(sub)
+        return sub2
     })
 
-    const result = x ? unwrap(x) : x
     return result
 }
 
