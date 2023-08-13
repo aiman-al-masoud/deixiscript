@@ -115,8 +115,6 @@ export function ask(
             return ask($(ast).suchThat(true).$, kb0)
         case 'arbitrary-type':
 
-            // if (ast.isNew) return { result: ast, kb: kb0 }
-
             const maps = findAll(ast.description, [ast.head], kb0)
             const candidates = maps.map(x => x.get(ast.head)).filter(isNotNullish)
 
@@ -125,14 +123,10 @@ export function ask(
                 (c1, c2) => (kb0.deicticDict[c2.value as string] ?? 0) - (kb0.deicticDict[c1.value as string] ?? 0)
             )
 
-            // console.log(ast)
-
             if (candidates.length === 1) {
                 return ask(sortedCandidates[0], kb0)
-                // } else if (ast.number === 1 && candidates.length > 1) {
             } else if (ast.number.value === 1 && candidates.length > 1) {
                 return ask(sortedCandidates[0], kb0)
-                // } else if (ast.number === '*' && candidates.length > 1) {
             } else if (ast.number.value === '*' && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
                 return { result: andPhrase, kb: kb0 }
@@ -184,21 +178,19 @@ export function ask(
             {
                 const { rast, kb: kb1 } = evalArgs(ast, kb0)
                 const when = definitionOf(rast, kb1)
-                // console.log(rast)
-                // console.log(when)
                 if (when) return ask(when, kb1)
                 return { result: $(false).$, kb: kb0 }
             }
         case "complement":
             {
-                const { result: complement, kb: kb1 } = ask(ast.complement, kb0)
-                const { result: complementName } = ask(ast.complementName, kb1)
+                const { result: complementName, kb: kb1 } = ask(ast.complementName, kb0)
+                const { result: complement, kb: kb2 } = ask(ast.complement, kb1)
 
                 const rast = { ...ast, complement, complementName }
-                const w = definitionOf(rast, kb1)
-                if (w) return ask(w, kb1)
+                const w = definitionOf(rast, kb2)
+                if (w) return ask(w, kb2)
 
-                return ask(removeImplicit(ast), kb1)
+                return ask(removeImplicit(ast), kb2)
             }
         case 'cardinality':
             {
