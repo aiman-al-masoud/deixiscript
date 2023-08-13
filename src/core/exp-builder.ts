@@ -344,7 +344,6 @@ function makeNumber(x: ExpBuilderArg, number: 1 | '*') {
         type: 'cardinality',
         value: makeAst(x),
         number: $(number).$,
-        // isNew: false,
     })
 }
 
