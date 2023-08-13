@@ -54,6 +54,7 @@ export type CompositeFormula =
     | ArbitraryType
     | Complement
     | GeneralizedFormula
+    | Cardinality
 export type DerivationClause =
     | WhenDerivationClause
     | AfterDerivationClause
@@ -106,20 +107,24 @@ export type Complement = {
     phrase: LLangAst,
 }
 
+export type Cardinality = {
+    type: 'cardinality',
+    number: /* 1 | '*' */Constant,
+    value: LLangAst,
+}
+
 export type ImplicitReference = {
     type: 'implicit-reference',
     headType: LLangAst,
     which?: LLangAst,
-    number: 1 | '*',
-    isNew: boolean,
+    number: /* 1 | '*' */Constant,
 }
 
 export type ArbitraryType = {
     type: 'arbitrary-type',
     head: Variable,
     description: LLangAst,
-    number: 1 | '*',
-    isNew: boolean,
+    number: /* 1 | '*' */Constant,
 }
 
 export type MathExpression = {
@@ -257,6 +262,7 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'existquant': true,
         'conjunction': true,
         'complement': true,
+        'cardinality': true,
     }
 
     return astTypes[x.type as LLangAst['type']]

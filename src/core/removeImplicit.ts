@@ -19,9 +19,9 @@ export function removeImplicit(
 
         if (ast.which) {
             const description = $(head).isa(ast.headType).and(subst(ast.which, [$._.$, head])).$
-            return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
+            return { description: removeImplicit(description), head, type: 'arbitrary-type', number: ast.number, /* isNew: ast.isNew */ }
         } else {
-            return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, isNew: ast.isNew }
+            return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number, /* isNew: ast.isNew */ }
         }
 
     } else if (ast.type === 'complement') {
@@ -31,6 +31,16 @@ export function removeImplicit(
         const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
         const r = removeImplicit({ ...phrase, description })
         return r
+
+    } else if (ast.type === 'cardinality') {
+        // console.log('ast=', ast)
+
+        const v = { ...ast, ...ast.value, number: ast.number } as LLangAst
+        //@ts-ignore
+        delete v['value']
+
+        // console.log('v=', v)
+        return removeImplicit(v)
 
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')

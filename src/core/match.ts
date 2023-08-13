@@ -9,6 +9,8 @@ import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, ask
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
+ 
+
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
         if (askBin($(f).isa(template).$, kb)) return deepMapOf([[template, f]])
@@ -44,7 +46,23 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (template.varType === f.varType) return deepMapOf([[template, f]])
         if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
+    } else if (template.type==='cardinality'  && f.type==='cardinality' ){
+
+        const v1 = { ...template, ...template.value, number:template.number } as LLangAst
+        //@ts-ignore
+        delete v1['value']
+
+        const v2 = { ...f, ...f.value, number:f.number } as LLangAst
+        //@ts-ignore
+        delete v2['value']
+
+        return match(v1, v2, kb)
+
+        // return match(removeImplicit(template), removeImplicit(f), kb)
+
+
     } else if (template.type === f.type) {
+
 
         const templateT = template as { [x: string]: LLangAst }
         const fT = f as { [x: string]: LLangAst }
@@ -53,6 +71,8 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const fKeys = Object.keys(f).filter(x => isLLangAst(fT[x]))
 
         if (templateKeys.length !== fKeys.length) {
+            // console.log('KEYS DO NOT MATCH!!!!')
+            // console.log('----------------')
             return undefined
         }
 
@@ -70,6 +90,11 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
         const r = reduceMatchList(ms)
         return r
+
+  
+    } else if (template.type==='cardinality'  && isConst(f)){
+
+        return match(removeImplicit(template), f, kb)
 
     } else if (template.type === 'implicit-reference' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
@@ -100,6 +125,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m1) return m1
         if (m2) return m2
     }
+
 
 }
 

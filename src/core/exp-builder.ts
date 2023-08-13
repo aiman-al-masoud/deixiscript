@@ -1,5 +1,5 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -127,9 +127,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     which(ast: ExpBuilder<LLangAst>) {
 
-        if (this.exp.type !== 'implicit-reference') {
-            throw new Error('')
-        }
+        // if (this.exp.type !== 'implicit-reference') {
+        //     throw new Error('')
+        // }
 
         return new ExpBuilder<ImplicitReference>({
             ...this.exp,
@@ -201,8 +201,8 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'arbitrary-type',
             head: this.exp,
             description: makeAst(description ?? true),
-            number: 1,
-            isNew: false,
+            number: $(1).$,
+            // isNew: false,
         })
 
     }
@@ -222,9 +222,9 @@ export class ExpBuilder<T extends LLangAst> {
 
     complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
 
-        if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
-            throw new Error(`bad exp.type=${this.exp.type}`)
-        }
+        // if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
+        //     throw new Error(`bad exp.type=${this.exp.type}`)
+        // }
 
         return new ExpBuilder({
             type: 'complement',
@@ -341,21 +341,28 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[
  */
 $._ = $('')
 
-function createImplicit(x: ExpBuilderArg, number: ImplicitReference['number'], isNew: boolean) {
+function createImplicit(x: ExpBuilderArg) {
     return new ExpBuilder<ImplicitReference>({
         type: 'implicit-reference',
         headType: makeAst(x),
-        number,
-        isNew,
     } as ImplicitReference)
+}
+
+function makeNumber(x: ExpBuilderArg, number: 1 | '*') {
+    return new ExpBuilder<Cardinality>({
+        type: 'cardinality',
+        value: makeAst(x),
+        number : $(number).$,
+        // isNew: false,
+    })
 }
 
 /**
  * Creates an ImplicitReference.
  */
-$.the = (x: ExpBuilderArg) => createImplicit(x, 1, false)
-$.a = (x: ExpBuilderArg) => createImplicit(x, 1, true)
-$.every = (x: ExpBuilderArg) => createImplicit(x, '*', false)
+$.the = (x: ExpBuilderArg) => makeNumber(createImplicit(x), 1)
+$.a = (x: ExpBuilderArg) => makeNumber(createImplicit(x), 1)
+$.every = (x: ExpBuilderArg) => makeNumber(createImplicit(x), '*')
 
 /**
  * Empty knowledge base.

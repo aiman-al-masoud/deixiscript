@@ -477,9 +477,10 @@ Deno.test({
             .and($.thereIs($.a('cat').which($._.has('black').as('color'))))
             .dump()
 
+            
         const kb1 = tell($.the('cat').which($._.has('red').as('color')).has(1).as('hunger')
-            .and($.the('cat').which($._.has('black').as('color')).has(1).as('hunger')).$, kb0).kb
-
+        .and($.the('cat').which($._.has('black').as('color')).has(1).as('hunger')).$, kb0).kb
+        
 
         const dc =
             $.a('cat').which($._.has('red').as('color')).is('hungry').when($.the('cat').has(1).as('hunger')).$

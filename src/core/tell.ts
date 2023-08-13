@@ -104,7 +104,10 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case "complement":
             return tell(removeImplicit(ast), kb)
-
+        case 'cardinality':
+            {      
+                return tell(removeImplicit(ast), kb)
+            }
         default:
             additions = []
             addedDerivationClauses = []

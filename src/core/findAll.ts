@@ -57,6 +57,8 @@ export function findAll(
                 const result = combineChoices(first, secondChoices)
                 return result
             }
+        case 'cardinality':
+            return findAll(removeImplicit(realAst), variables, kb)
         case "generalized":
             return [] // if no derivation clause = no matches!
         case "complement":

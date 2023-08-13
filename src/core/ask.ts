@@ -125,11 +125,15 @@ export function ask(
                 (c1, c2) => (kb0.deicticDict[c2.value as string] ?? 0) - (kb0.deicticDict[c1.value as string] ?? 0)
             )
 
+            // console.log(ast)
+
             if (candidates.length === 1) {
                 return ask(sortedCandidates[0], kb0)
-            } else if (ast.number === 1 && candidates.length > 1) {
+                // } else if (ast.number === 1 && candidates.length > 1) {
+            } else if (ast.number.value===1 && candidates.length > 1) {
                 return ask(sortedCandidates[0], kb0)
-            } else if (ast.number === '*' && candidates.length > 1) {
+                // } else if (ast.number === '*' && candidates.length > 1) {
+            } else if (ast.number.value==='*' && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
                 return { result: andPhrase, kb: kb0 }
             } else {
@@ -154,7 +158,7 @@ export function ask(
             const { rast, kb } = evalArgs(ast, kb0)
 
             const op = rast.operator
-            assert(op.type === 'entity')            
+            assert(op.type === 'entity')
 
             const left = rast.left as Number
             const right = rast.right as Number
@@ -180,6 +184,8 @@ export function ask(
             {
                 const { rast, kb: kb1 } = evalArgs(ast, kb0)
                 const when = definitionOf(rast, kb1)
+                // console.log(rast)
+                // console.log(when)
                 if (when) return ask(when, kb1)
                 return { result: $(false).$, kb: kb0 }
             }
@@ -194,6 +200,11 @@ export function ask(
 
                 return ask(removeImplicit(ast), kb1)
             }
+        case 'cardinality':
+            {
+                return ask(removeImplicit(ast), kb0)
+            }
+
         case "command":
         case "question":
         case 'after-derivation-clause':
