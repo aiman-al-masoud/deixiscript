@@ -10,7 +10,7 @@ const kb =
     $.p(['x:list', 'and', 'y:list']).when($.p('x:list').and($.p('y:list')))
         .and($.p(['if', 'x:list', 'then', 'y:list']).when($.p('y:list').if($.p('x:list'))))
         .and($.p(['x:list', 'when', 'y:list']).when($.p('x:list').when($.p('y:list'))))
-        .and($.p(['the', 'x:thing', 'which', 'y:list']).when($.the($.p('x:thing')).which($.p('y:list'))))
+        .and($.p(['x:list', 'which', 'y:list']).when($.p('x:list').which($.p('y:list'))))
         .and($('in').isa('preposition')) // currently not being fully exploited 
         .and($.p(['x:list', 'o:operator', 'y:list']).when($.p('x:list').mathOperation($.p('y:list'), 'o:operator')))
         .and($('+').and('-').and('*').and('/').and('=').isa('operator'))
@@ -305,6 +305,7 @@ Deno.test({
     fn: () => {
         const original = $.the('cat').does('eat')._($.the('mouse')).$
         const code = linearize(original, kb)!
+        // console.log(code)
         const ast = parse($.p(tokenize(code)).$, kb)
         assertEquals(ast, original)
     }

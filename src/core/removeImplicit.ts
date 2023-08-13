@@ -21,7 +21,7 @@ export function removeImplicit(
     } else if (ast.type === 'which') {
 
         const inner = removeImplicit(ast.inner)
-        if (inner.type !== 'arbitrary-type') throw new Error(``)
+        if (inner.type!=='arbitrary-type') return ast
         const description = $(inner.description).and(subst(ast.which, [$._.$, inner.head])).$
         const r = removeImplicit({ ...inner, description })
         return r
