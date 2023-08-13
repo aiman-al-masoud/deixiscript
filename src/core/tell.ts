@@ -124,7 +124,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
     const consequences = consequencesOf(ast, kb)
     const consequencesWm = consequences.flatMap(x => tell(x, kb).additions)
-    additions.push(...consequencesWm)
+    additions = [...additions, ...consequencesWm]
 
     eliminations = [
         ...eliminations,

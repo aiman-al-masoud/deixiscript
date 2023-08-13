@@ -13,9 +13,9 @@ import { subst } from "./subst.ts"
 /* WORLD-CONCEPTUAL MODEL */
 
 export type WmAtom = string | number | boolean
-export type IsASentence = [WmAtom, WmAtom]
-export type HasSentence = [WmAtom, WmAtom, WmAtom]
-export type WorldModel = (IsASentence | HasSentence)[]
+export type IsASentence = readonly [WmAtom, WmAtom]
+export type HasSentence = readonly [WmAtom, WmAtom, WmAtom]
+export type WorldModel = readonly (IsASentence | HasSentence)[]
 
 export type KnowledgeBase = {
     readonly wm: WorldModel,
@@ -285,7 +285,7 @@ export function subtractWorldModels(wm1: WorldModel, wm2: WorldModel): WorldMode
 }
 
 export function addWorldModels(...wms: WorldModel[]): WorldModel {
-    return uniq(wms.reduce((wm1, wm2) => wm1.concat(wm2), []))
+    return uniq(wms.reduce((wm1, wm2) => [...wm1, ...wm2], []))
 }
 
 export function conceptsOf(concept: WmAtom, kb: KnowledgeBase) {
