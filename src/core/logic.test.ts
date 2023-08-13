@@ -596,13 +596,13 @@ Deno.test({
         const kb0 = tell(dc, $.emptyKb).kb
         const kb1 = tell($('red').and('green').isa('color').$, kb0).kb
         const kb2 = tell($('thing#1').is('red').$, kb1).kb
-        // const result0 = ask($('thing#1').has('red').as('color').$, kb2).result
-        // const result1 = ask($('thing#1').is('red').$, kb2).result
-        // const result2 = ask($('thing#1').has('black').as('color').isNotTheCase.$, kb2).result
+        const result0 = ask($('thing#1').has('red').as('color').$, kb2).result
+        const result1 = ask($('thing#1').is('red').$, kb2).result
+        const result2 = ask($('thing#1').has('black').as('color').isNotTheCase.$, kb2).result
 
-        // dassert(result0)
-        // dassert(result1)
-        // dassert(result2)
+        dassert(result0)
+        dassert(result1)
+        dassert(result2)
     }
 })
 
