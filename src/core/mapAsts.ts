@@ -1,3 +1,4 @@
+import { valueIs } from "../utils/valueIs.ts";
 import { LLangAst, isLLangAst } from "./types.ts";
 
 export function mapAsts(
@@ -13,7 +14,7 @@ export function mapAsts(
     }
 
     const entries = Object.entries(ast)
-        .filter((e): e is [string, LLangAst] => isLLangAst(e[1]))
+        .filter(valueIs(isLLangAst))
 
     const newEntries =
         entries.map(e => [e[0], mapAsts(e[1], fn, { ...args, lvl: args.lvl + 1 })])
