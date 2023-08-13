@@ -243,7 +243,6 @@ export class ExpBuilder<T extends LLangAst> {
 type ExpBuilderArg = WmAtom | LLangAst | ExpBuilder<LLangAst> | WmAtom[]
 type GeneralizedInput = { [key: string]: LLangAst | WmAtom | WmAtom[] | LLangAst[] | (LLangAst | WmAtom)[] }
 type Var = `${string}:${string}`
-type ListPat = `${Var}|${string}`
 type StringLiteralPattern = `"${string}"`
 
 function isVar(x: string): x is Var {
