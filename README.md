@@ -65,12 +65,6 @@
 - maybe need to pass down new kb not old one within body of ask() for correct
   anaphora
 
-- implicit references may be ambiguous from the point of view of creating a new
-  thing, or erroring out if you don't find an old one. Maybe the/a distinction
-  could help disambiguating. "A mouse which has the/a house as location". An
-  'isNew' prop has been added to ImplicitReference, it remains to be seen how to
-  use it in tell().
-
 - cat number 2 ---> explicit reference to constant "cat#2"? 'cat#2' works with
   new parser, obviously still inconvenient for voice mode.
 
@@ -100,6 +94,10 @@
 - less than greater than as vague commands (tell)
 
 - derivation clause from test88 crashes a couple of other tests if added to prelude
+
+- implicit references may be ambiguous from the point of view of creating a new
+  thing, or erroring out if you don't find an old one. Maybe the/a distinction
+  could help disambiguating. "A mouse which has the/a house as location".
 
 ## Limitations (Out of Scope Problems)
 
