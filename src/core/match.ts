@@ -22,12 +22,12 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
         return deepMapOf([[template.headType, f.headType]])
 
-    } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') { //TODO may be deleted, but I'm afraid of description=true case
-        const m1 = match(template.head, f.head, kb)
-        if (!m1) return undefined
-        if (template.description.type === 'boolean' && template.description.value) return reduceMatchList([m1])
-        const m2 = match(template.description, f.description, kb)
-        return reduceMatchList([m1, m2])
+        // } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') { //TODO may be deleted, but I'm afraid of description=true case
+        //     const m1 = match(template.head, f.head, kb)
+        //     if (!m1) return undefined
+        //     if (template.description.type === 'boolean' && template.description.value) return reduceMatchList([m1])
+        //     const m2 = match(template.description, f.description, kb)
+        //     return reduceMatchList([m1, m2])
 
     } else if (template.type === 'variable' && f.type === 'variable') {
         if (template.varType === f.varType) return deepMapOf([[template, f]])

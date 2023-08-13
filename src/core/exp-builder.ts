@@ -127,19 +127,10 @@ export class ExpBuilder<T extends LLangAst> {
 
     which(ast: ExpBuilder<LLangAst>) {
 
-        // if (this.exp.type !== 'implicit-reference') {
-        //     throw new Error('')
-        // }
-
-        // return new ExpBuilder<ImplicitReference>({
-        //     ...this.exp,
-        //     which: ast.$,
-        // } as ImplicitReference)
-
         return new ExpBuilder({
-            type : 'which',
-            which : makeAst(ast),
-            inner : this.exp,
+            type: 'which',
+            which: makeAst(ast),
+            inner: this.exp,
         })
 
     }
@@ -199,16 +190,15 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    suchThat(description?: ExpBuilderArg) {
+    suchThat(description: ExpBuilderArg) {
 
         if (this.exp.type !== 'variable') throw new Error(``)
 
         return new ExpBuilder<ArbitraryType>({
             type: 'arbitrary-type',
             head: this.exp,
-            description: makeAst(description ?? true),
+            description: makeAst(description),
             number: $(1).$,
-            // isNew: false,
         })
 
     }
@@ -224,13 +214,10 @@ export class ExpBuilder<T extends LLangAst> {
     _(object: ExpBuilderArg) {
         if (this.exp.type !== 'generalized') throw new Error('')
         return $({ ...this.exp, object: makeAst(object) }) //TODO: use complement
+        // return this.complement(object, 'direct-object')
     }
 
     complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
-
-        // if (this.exp.type !== 'implicit-reference' && this.exp.type !== 'generalized') {
-        //     throw new Error(`bad exp.type=${this.exp.type}`)
-        // }
 
         return new ExpBuilder({
             type: 'complement',
@@ -358,7 +345,7 @@ function makeNumber(x: ExpBuilderArg, number: 1 | '*') {
     return new ExpBuilder<Cardinality>({
         type: 'cardinality',
         value: makeAst(x),
-        number : $(number).$,
+        number: $(number).$,
         // isNew: false,
     })
 }
