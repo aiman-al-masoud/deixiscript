@@ -16,7 +16,7 @@ export function removeImplicit(
     if (ast.type === 'implicit-reference') {
 
         const head = $(`x${random()}:thing`).$
-        return { description: $(head).isa(ast.headType).$, head, type: 'arbitrary-type', number: ast.number }
+        return $(head).suchThat($(head).isa(ast.headType)).$
 
     } else if (ast.type === 'which') {
 
@@ -35,10 +35,7 @@ export function removeImplicit(
         return r
 
     } else if (ast.type === 'cardinality') {
-        const v = { ...ast, ...ast.value, number: ast.number } as LLangAst
-        //@ts-ignore
-        delete v['value']
-        return removeImplicit(v)
+        return { ...removeImplicit(ast.value), number: ast.number } as LLangAst
 
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')

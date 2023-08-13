@@ -123,7 +123,6 @@ export type Which = {
 export type ImplicitReference = {
     type: 'implicit-reference',
     headType: LLangAst,
-    number: Constant,
 }
 
 export type ArbitraryType = {
