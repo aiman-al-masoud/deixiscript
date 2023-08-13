@@ -29,7 +29,10 @@ export function removeImplicit(
     } else if (ast.type === 'complement') {
 
         const phrase = removeImplicit(ast.phrase)
+
+        if (phrase.type==='generalized') return phrase
         if (phrase.type !== 'arbitrary-type') throw new Error(``)
+
         const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
         const r = removeImplicit({ ...phrase, description })
         return r

@@ -103,7 +103,11 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             if (when) return tell(when, kb)
             break
         case "complement":
-            return tell(removeImplicit(ast), kb)
+            {
+                const when = definitionOf(ast, kb)
+                if (when) return tell(when, kb)
+                return tell(removeImplicit(ast), kb)
+            }
         case 'cardinality':
             {
                 return tell(removeImplicit(ast), kb)

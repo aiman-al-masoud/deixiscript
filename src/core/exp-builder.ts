@@ -1,14 +1,10 @@
 import { tell } from "./tell.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality, Complement } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
 
     constructor(readonly exp: T) { }
-
-    equals(object: ExpBuilderArg) {
-        return this.mathOperation(object, '=')
-    }
 
     isa(object: ExpBuilderArg) {
 
@@ -144,6 +140,10 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
+    equals(object: ExpBuilderArg) {
+        return this.mathOperation(object, '=')
+    }
+
     plus(ast: ExpBuilderArg) {
         return this.mathOperation(ast, '+')
     }
@@ -204,16 +204,16 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     is(object: ExpBuilderArg) {
-        return $({ subject: this.exp, verb: 'be', object: makeAst(object) })
+        return this.does('be')._(object)
     }
 
     does(verb: ExpBuilderArg) {
-        return $({ subject: this.exp, verb: makeAst(verb), object: $._.$ })
+        return $({ subject: this.exp, verb: makeAst(verb) })
     }
 
-    complement(comp: ExpBuilderArg, name: string): ExpBuilder<LLangAst> {
+    complement(comp: ExpBuilderArg, name: string) {
 
-        return new ExpBuilder({
+        return new ExpBuilder<Complement>({
             type: 'complement',
             complement: makeAst(comp),
             complementName: makeAst(name),

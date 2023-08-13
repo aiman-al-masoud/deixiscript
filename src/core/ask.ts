@@ -183,6 +183,7 @@ export function ask(
             }
         case "complement":
             {
+
                 const { result: complementName, kb: kb1 } = ask(ast.complementName, kb0)
                 const { result: complement, kb: kb2 } = ask(ast.complement, kb1)
 
