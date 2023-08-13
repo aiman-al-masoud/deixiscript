@@ -58,23 +58,17 @@ Deno.test({
     }
 })
 
-
 Deno.test({
     name: 'parser-test03',
     fn: () => {
-        // assertEquals(parse($.p(tokenize('( if x is a cat then y is a dog )')).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
         assertEquals(parse($.p(tokenize('if x is a cat then y is a dog')).$, kb), $('y').isa('dog').if($('x').isa('cat')).$)
     }
 })
 
-
 Deno.test({
     name: 'parser-test04',
     fn: () => {
-        // assertEquals(parse($.p(tokenize('( if the cat is a feline then the dog is a canine )')).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
-        assertEquals(parse($.p(tokenize('if the cat is a feline then the dog is a canine')).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
-        // assertEquals(parse($.p(tokenize('( 1 )')).$, kb), $(1).$)
-
+        assertEquals(parse($.p(tokenize('( if the cat is a feline then the dog is a canine )')).$, kb), $.the('dog').isa('canine').if($.the('cat').isa('feline')).$)
     }
 })
 
@@ -216,7 +210,6 @@ Deno.test({
 Deno.test({
     name: 'parser-test22',
     fn: () => {
-        // console.log(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb))
         assertEquals(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb), $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$)
     }
 })
@@ -224,9 +217,7 @@ Deno.test({
 Deno.test({
     name: 'parser-test23',
     fn: () => {
-        // assertEquals(parse($.p(tokenize('1 be 1')).$, kb), $(1).is(1).$)
         assertEquals(parse($.p(tokenize('1 + 2')).$, kb), $(1).plus(2).$)
-        // print(match($(['x:list', 'o:operator', 'y:list']).$, $([1, '+', 2]).$, $('+').isa('operator').dump()  ))
     }
 })
 
@@ -336,11 +327,7 @@ Deno.test({
     name: 'parser-test34',
     fn: () => {
         const original = $.the('cat').does('eat')._($.the('mouse').which($._.does('run').and($._.does('hide')))).$
-
-        // const original = $.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$
-
         const code = linearize(original, kb)!
-        // console.log(code)
         const ast = parse($.p(tokenize(code)).$, kb)
         assertEquals(ast, original)
     }
