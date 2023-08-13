@@ -1,5 +1,6 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
+import { isNotNullish, isNullish } from "../utils/isNotNullish.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
@@ -103,10 +104,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 }
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
-    if (ms.some(x => x === undefined)) return undefined
+    if (!ms.every(isNotNullish)) return undefined
 
-    return ms.map(x => x as AstMap)
-        .reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
+    return ms.reduce((x, y) => deepMapOf([...x, ...y]), deepMapOf())
 }
 
 function toStringList(list: LLangAst[]) {
