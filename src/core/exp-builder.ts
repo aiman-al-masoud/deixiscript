@@ -176,14 +176,14 @@ export class ExpBuilder<T extends LLangAst> {
         return this.mathOperation(atom, '<=')
     }
 
-    get ask(): ExpBuilder<Question> {
+    get ask() {
         return new ExpBuilder<Question>({
             type: 'question',
             f1: this.exp,
         })
     }
 
-    get tell(): ExpBuilder<Command> {
+    get tell() {
         return new ExpBuilder<Command>({
             type: 'command',
             f1: this.exp,
