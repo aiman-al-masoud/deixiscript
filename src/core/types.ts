@@ -93,7 +93,7 @@ export type Number = {
 
 export type Variable = {
     readonly type: 'variable',
-    readonly /** name */ value: string,
+    readonly value: string,
     readonly varType: string, // maybe make => Constant
 }
 
