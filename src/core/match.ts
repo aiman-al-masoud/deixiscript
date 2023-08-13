@@ -20,7 +20,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return deepMapOf([[template.subject, f.subject], [template.object, f.object]])
 
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
-        return deepMapOf([[template.headType, f.headType]])
+        return deepMapOf([[template.headType, f.headType]]) // unconditional return wrong!
 
         // } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') { //TODO may be deleted, but I'm afraid of description=true case
         //     const m1 = match(template.head, f.head, kb)
