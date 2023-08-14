@@ -57,8 +57,8 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'implicit-reference' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
 
-    } else if (template.type === 'variable' && f.type === 'list') {
-        if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
+    // } else if (template.type === 'variable' && f.type === 'list') {
+    //     if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable') {
         return deepMapOf([[template, f]])
