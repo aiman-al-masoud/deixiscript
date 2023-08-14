@@ -44,33 +44,25 @@ export function findAll(
             const combos = first.flatMap(m1 => second.flatMap(m2 => [deepMapOf([...m1, ...m2]), deepMapOf([...m2, ...m1])]))
             const res = uniq(combos)
             return res
+        case "implicit-reference":
+        case "question":
+        case "command":
         case "when-derivation-clause":
-            throw new Error(`TODO!`)
         case "after-derivation-clause":
+        case "if-else":
             throw new Error(`TODO!`)
         case "arbitrary-type":
             {
                 const vars = [...variables, realAst.head]
-                const first = findAll(realAst.head, [realAst.head], kb, partialResults)
-                const missingVars = getMissingVars(vars, first)
-                const secondChoices = getSecondChoices(realAst.description, missingVars, kb, first)
-                const result = combineChoices(first, secondChoices)
-                return result
+                return findAll($(realAst.head).and(realAst.description).$, vars, kb, partialResults)
             }
         case 'cardinality':
-            return findAll(removeImplicit(realAst), variables, kb)
         case 'which':
             return findAll(removeImplicit(realAst), variables, kb)
         case "generalized":
             return [] // if no derivation clause = no matches!
         case "complement":
             return findAll(removeImplicit(ast), variables, kb)
-        case "if-else":
-            throw new Error(`TODO!`)
-        case "implicit-reference":
-        case "question":
-        case "command":
-            throw new Error(`NEVER!`)
         case 'math-expression':
             try {
                 const v = variables[0]
