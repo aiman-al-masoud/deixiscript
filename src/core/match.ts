@@ -44,18 +44,15 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return match(removeImplicit(template), f, kb)
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
-        const m = match(template.head, f, kb)
-        if (!m) return undefined
+
+        if (!match($(template.head.varType).$, f, kb)) return undefined
 
         const desc = subst(template.description, [template.head, f])
         const ok = askBin(desc, kb)
         if (ok) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && isConst(f)) {
-
-        if (askBin($(f).isa(template.varType).$, kb)) {
-            return deepMapOf([[template, f]])
-        }
+        if (match($(template).suchThat(true).$, f, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'list') {
         if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
@@ -177,6 +174,3 @@ function matchLists(template: List, formula: List, kb: KnowledgeBase) {
 
 // print(matchLists($(['x:list', 'o:operator', 'y:list']).$, $([1, 'x:thing', 2]).$, $.emptyKb))
 
-// .and($.p(['x:list', 'is', 'a', 'y:list']).when($.p('x:list').isa($.p('y:list'))))
-// const m = match($(['x:list', 'is', 'a', 'y:list']).$, $(['x', 'is', 'a', 'cat']).$, $.emptyKb)
-// print(m)
