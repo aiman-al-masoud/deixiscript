@@ -1,6 +1,5 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
-import { isNotNullish } from "../utils/isNotNullish.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
