@@ -2,7 +2,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, isWmAtom, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
@@ -226,8 +226,7 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
 
     const result = ask($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
     if (result.type === 'nothing') return undefined
-    if (!isAtom(result)) throw new Error(``)
-    if (!isWmAtom(result.value)) throw new Error('')
+    if (!isConst(result)) throw new Error(``)
     return result.value
 }
 
