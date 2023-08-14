@@ -11,6 +11,7 @@ import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { zip } from "../utils/zip.ts";
+import { assert } from "../utils/assert.ts";
 
 
 /**
@@ -77,22 +78,19 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                 return tell(ast.otherwise, kb1)
             }
         case 'existquant':
-
             const v = removeImplicit(ast.value)
-
-            if (v.type !== 'arbitrary-type') {
-                throw new Error('!!!!!')
-            }
-
+            return tell(v, kb)
+        case 'arbitrary-type':
             {
-                const id = v.head.varType + '#' + random()
-                const isa = $(id).isa(v.head.varType).$
-                const where = subst(v.description, [v.head, $(id).$])
-
+                const id = ast.head.varType + '#' + random()
+                const isa = $(id).isa(ast.head.varType).$
+                const where = subst(ast.description, [ast.head, $(id).$])
                 const { kb: kb1 } = tell(isa, kb)
                 const result = tell(where, kb1)
                 return result
             }
+        case 'variable':
+            return tell($(ast).suchThat($(ast).isa(ast.varType)).$, kb)
         case 'negation':
             const result = tell(ast.f1, kb)
             additions = result.eliminations
@@ -226,7 +224,7 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
 
     const result = ask($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
     if (result.type === 'nothing') return undefined
-    if (!isConst(result)) throw new Error(``)
+    assert(isConst(result))
     return result.value
 }
 
