@@ -21,12 +21,26 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
         return match(removeImplicit(template), removeImplicit(f), kb)
 
+    } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
+        return match(template.description, f.description, kb)
+
     } else if (template.type === 'variable' && f.type === 'variable') {
-        if (template.varType === f.varType) return deepMapOf([[template, f]])
-        if (askBin($(f.varType).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
+        if (!match($(template.varType).$, $(f.varType).$, kb)) return undefined
+        return match($(template).suchThat(true).$, $(f).suchThat(true).$, kb)
 
     } else if (template.type === f.type) {
         return matchGeneric(template, f, kb)
+
+    } else if (template.type === 'variable' && isConst(f)) {
+        if (match($(template).suchThat(true).$, f, kb)) return deepMapOf([[template, f]])
+
+    } else if (template.type === 'arbitrary-type' && isConst(f)) {
+
+        if (!match($(template.head.varType).$, f, kb)) return undefined
+
+        const desc = subst(template.description, [template.head, f])
+        const ok = askBin(desc, kb)
+        if (ok) return deepMapOf([[template, f]])
 
     } else if (template.type === 'cardinality' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
@@ -42,17 +56,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
     } else if (template.type === 'implicit-reference' && isConst(f)) {
         return match(removeImplicit(template), f, kb)
-
-    } else if (template.type === 'arbitrary-type' && isConst(f)) {
-
-        if (!match($(template.head.varType).$, f, kb)) return undefined
-
-        const desc = subst(template.description, [template.head, f])
-        const ok = askBin(desc, kb)
-        if (ok) return deepMapOf([[template, f]])
-
-    } else if (template.type === 'variable' && isConst(f)) {
-        if (match($(template).suchThat(true).$, f, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable' && f.type === 'list') {
         if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
@@ -171,6 +174,5 @@ function matchLists(template: List, formula: List, kb: KnowledgeBase) {
 // print(matchLists($(['x:list', 'and', 'y:list']).$, $(['cat', 'and', '(', 'dog', 'and', 'buruf', ')']).$, $.emptyKb))
 // print('-----------')
 // print(matchLists($(['x:list', 'y:buruf']).$, $([1,2,3,4,5]).$, $.emptyKb))
-
 // print(matchLists($(['x:list', 'o:operator', 'y:list']).$, $([1, 'x:thing', 2]).$, $.emptyKb))
 
