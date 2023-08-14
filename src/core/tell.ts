@@ -32,32 +32,30 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     switch (ast.type) {
 
         case 'has-formula':
+            {
+                const { rast, kb: kb1 } = evalArgs(ast, kb)
 
-            const { rast, kb: kb1 } = evalArgs(ast, kb)
+                const def = definitionOf(rast, kb1)
+                if (def) return tell(def, kb1)
 
-            const def = definitionOf(rast, kb1)
-            if (def) return tell(def, kb1)
+                if (!isAtom(rast.subject) || !isAtom(rast.object) || !isAtom(rast.as)) return tell(decompress(rast), kb1)
+                assert(isConst(rast.subject) && isConst(rast.object) && isConst(rast.as))
 
-            if (!isAtom(rast.subject) || !isAtom(rast.object) || !isAtom(rast.as)) return tell(decompress(rast), kb1)
-            if (!isConst(rast.subject) || !isConst(rast.object) || !isConst(rast.as)) throw new Error(`cannot serialize formula with non-constants!`)
-
-            additions = [[rast.subject.value, rast.object.value, rast.as.value]]
-
+                additions = [[rast.subject.value, rast.object.value, rast.as.value]]
+            }
             break
         case 'is-a-formula':
+            {
+                const { rast } = evalArgs(ast, kb)
 
-            const t11 = ask(ast.subject, kb).result
-            const t21 = ask(ast.object, kb).result
+                if (!isAtom(rast.subject) || !isAtom(rast.object)) return tell(decompress(rast), kb)
+                assert(isConst(rast.subject) && isConst(rast.object))
 
-            if (!isAtom(t11) || !isAtom(t21)) return tell(decompress($(t11).isa(t21).$), kb)
-
-            if (!isConst(t11) || !isConst(t21)) throw new Error('cannot serialize formula with variables!')
-
-            additions = addWorldModels(
-                [[t11.value, t21.value]],
-                getDefaultFillers(t11.value, t21.value, kb),
-            )
-
+                additions = addWorldModels(
+                    [[rast.subject.value, rast.object.value]],
+                    getDefaultFillers(rast.subject.value, rast.object.value, kb),
+                )
+            }
             break
         case 'conjunction':
             const result1 = tell(ast.f1, kb)
@@ -107,17 +105,19 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                 return tell(removeImplicit(ast), kb)
             }
         case 'cardinality':
-            {
-                return tell(removeImplicit(ast), kb)
-            }
+            return tell(removeImplicit(ast), kb)
         case 'which':
-            {
-                return tell(removeImplicit(ast), kb)
-            }
-        default:
-            additions = []
-            addedDerivationClauses = []
-            break
+            return tell(removeImplicit(ast), kb)
+        case "number":
+        case "boolean":
+        case "entity":
+        case "nothing":
+        case "list":
+        case "math-expression":
+        case "implicit-reference":
+        case "command":
+        case "question":
+            throw new Error(`not implemented`)
     }
 
     const consequences = consequencesOf(ast, kb)
