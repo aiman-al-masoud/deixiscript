@@ -135,12 +135,12 @@ function matchLists(template: List, formula: List, kb: KnowledgeBase) {
 
     template.value.forEach((t, i) => {
 
-        const tpp = template.value[i + 1] ?? $('nothing').$
+        const nextT = template.value.at(i + 1)
 
         if (t.type === 'variable' && t.varType === 'list') {
-            const k = ff.findIndex((x, j) => match(tpp, x, kb) && !hasUnmatched(toStringList(ff.slice(0, j))))
+            const k = ff.findIndex((x, j) => match(nextT ?? $('nothing').$, x, kb) && !hasUnmatched(toStringList(ff.slice(0, j))))
 
-            if (k === -1 && template.value[i + 1]) return ms.push(undefined)
+            if (k === -1 && nextT) return ms.push(undefined)
 
             const m = match(t, $(k === -1 ? ff : ff.slice(0, k)).$, kb)
             ms.push(m)
