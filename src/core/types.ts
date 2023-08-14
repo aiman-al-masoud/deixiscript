@@ -301,6 +301,8 @@ export function pointsToThings(ast: LLangAst): boolean {
     return isAtom(ast)
         || ast.type === 'arbitrary-type'
         || ast.type === 'implicit-reference'
+        || ast.type === 'cardinality'
+        || ast.type === 'which'
 }
 
 export function definitionOf(ast: LLangAst, kb: KnowledgeBase) {
