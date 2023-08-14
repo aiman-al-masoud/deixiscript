@@ -101,16 +101,12 @@ function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {
 }
 
 function reduceMatchList(ms: (AstMap | undefined)[]): AstMap | undefined {
-    if (!ms.every(isNotNullish)) return undefined
-
-    let x = deepMapOf() as AstMap
-
-    for (const m of ms) {
-        if (mapsDisagree(x, m)) return undefined
-        x = deepMapOf([...x, ...m])
-    }
-
-    return x
+    return ms.reduce((a, m) => {
+        if (!m) return undefined
+        if (!a) return undefined
+        if (mapsDisagree(a, m)) return undefined
+        return deepMapOf([...a, ...m])
+    }, deepMapOf() as AstMap | undefined)
 }
 
 function mapsDisagree(m1: AstMap, m2: AstMap) {
