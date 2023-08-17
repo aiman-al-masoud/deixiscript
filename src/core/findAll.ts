@@ -1,4 +1,5 @@
-import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual, isTruthy, definitionOf } from "./types.ts";
+import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual, isTruthy } from "./types.ts";
+import { definitionOf } from "./definitionOf.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
 import { uniq } from "../utils/uniq.ts";

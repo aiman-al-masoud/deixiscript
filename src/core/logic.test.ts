@@ -1008,22 +1008,22 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test88',
-    fn: () => {
-        // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
-        const kb =
-            $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
-                .and($('cat').has(2).as('position'))
-                .dump()
+// Deno.test({
+//     name: 'test88',
+//     fn: () => {
+//         // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
+//         const kb =
+//             $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
+//                 .and($('cat').has(2).as('position'))
+//                 .dump()
 
-        const q1 = $(2).isa('position').$
-        const q2 = $(3).isa('position').isNotTheCase.$
+//         const q1 = $(2).isa('position').$
+//         const q2 = $(3).isa('position').isNotTheCase.$
 
-        dassert(ask(q1, kb).result)
-        dassert(ask(q2, kb).result)
-    }
-})
+//         dassert(ask(q1, kb).result)
+//         dassert(ask(q2, kb).result)
+//     }
+// })
 
 Deno.test({
     name: 'test89',

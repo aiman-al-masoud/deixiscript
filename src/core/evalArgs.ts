@@ -27,6 +27,8 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
     case 'entity':
     case 'boolean':
     case 'arbitrary-type':
+    case 'list':
+    case 'nothing':
       return { rast: ast, kb }
 
     default:

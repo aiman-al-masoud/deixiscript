@@ -1,4 +1,5 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf, Number } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number } from "./types.ts";
+import { definitionOf } from "./definitionOf.ts";
 import { evalArgs } from "./evalArgs.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
@@ -34,43 +35,47 @@ export function ask(
             }
         case 'list':
         case 'nothing':
-            return { result: ast, kb: kb }
+            {
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const w = definitionOf(rast, kbb)
+                if (w) return ask(w, kbb)
+                return { result: rast, kb: kbb }
+            }
         case 'is-a-formula':
+            {
+                const { rast, kb: kb1 } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kb1)
+                if (when) return ask(when, kb1)
 
-            const { rast: r, kb: kb1 } = evalArgs(ast, kb)
+                const t1 = rast.subject
+                const t2 = rast.object
 
-            const t1 = r.subject
-            const t2 = r.object
+                if (!isAtom(t1) || !isAtom(t2)) return ask(decompress(rast), kb1)
 
-            if (!isAtom(t1) || !isAtom(t2)) return ask(decompress(r), kb1)
+                if (t1.type === t2.value) return { result: $(true).$, kb: kb }
 
-            if (t1.type === t2.value) return { result: $(true).$, kb: kb }
+                if (t2.value === 'thing') return { result: $(true).$, kb: kb }
 
-            if (t2.value === 'thing') return { result: $(true).$, kb: kb }
+                if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb } // !!
 
-            if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb } // !!
+                const concepts = kb.wm.filter(isIsASentence)
+                    .filter(s => s[0] === t1.value)
+                    .map(x => x[1])
 
-            const concepts = kb.wm.filter(isIsASentence)
-                .filter(s => s[0] === t1.value)
-                .map(x => x[1])
+                const uniqConcepts = uniq(concepts)
 
-            const uniqConcepts = uniq(concepts)
+                if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb }
 
-            if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb }
+                const ok = uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb).result))
+                if (ok) return { result: $(true).$, kb: kb }
 
-            const ok = uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb).result))
-            if (ok) return { result: $(true).$, kb: kb }
-
-            const w = definitionOf(r, kb1)
-            if (w) return ask(w, kb1)
-
-            return { result: $(false).$, kb: kb }
+                return { result: $(false).$, kb: kb }
+            }
 
         case 'has-formula':
             {
 
                 const { rast, kb: kb1 } = evalArgs(ast, kb)
-
                 const when = definitionOf(rast, kb1)
                 if (when) return ask(when, kb1)
 
@@ -90,13 +95,18 @@ export function ask(
             }
         case 'negation':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kbb)
+                if (when) return ask(when, kbb)
+
                 const { kb: kb1, result } = ask(rast.f1, kb)
                 return { result: $(!isTruthy(result)).$, kb: kb1 }
             }
         case 'conjunction':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kbb)
+                if (when) return ask(when, kbb)
                 if (pointsToThings(rast.f1) || pointsToThings(rast.f2)) return { result: rast, kb: kb }
                 const { kb: kb1, result: f1 } = ask(rast.f1, kb)
                 if (!isTruthy(f1)) return { result: $(false).$, kb: kb1 }
@@ -104,7 +114,9 @@ export function ask(
             }
         case 'disjunction':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kbb)
+                if (when) return ask(when, kbb)
                 if (pointsToThings(rast.f1) || pointsToThings(rast.f2)) return { result: rast, kb: kb }
                 const { kb: kb1, result: f1 } = ask(rast.f1, kb)
                 if (isTruthy(f1)) return { result: $(true).$, kb: kb1 }
@@ -112,19 +124,23 @@ export function ask(
             }
         case 'existquant':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kbb)
+                if (when) return ask(when, kbb)
                 const { result: thing } = ask(rast.value, kb)
                 return { result: $(thing.type !== 'nothing').$, kb: kb }
             }
         case 'variable':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kbb)
+                if (when) return ask(when, kbb)
                 return ask($(rast).suchThat(true).$, kb)
             }
         case 'arbitrary-type':
-
-            const { rast } = evalArgs(ast, kb)
-
+            const { rast, kb: kbb } = evalArgs(ast, kb)
+            const when = definitionOf(rast, kbb)
+            if (when) return ask(when, kbb)
             const maps = findAll(rast.description, [rast.head], kb)
             const candidates = maps.map(x => x.get(rast.head)).filter(isNotNullish)
 
@@ -145,14 +161,19 @@ export function ask(
             }
         case 'implicit-reference':
             {
+
                 const { rast, kb: kb1 } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kb1)
+                if (when) return ask(when, kb1)
                 const w = definitionOf(rast, kb1)
                 if (w) return ask(w, kb1)
                 return ask(removeImplicit(ast), kb)
             }
         case 'if-else':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kbb)
+                if (when) return ask(when, kbb)
                 const { kb: kb1, result } = ask(rast.condition, kb)
                 if (isTruthy(result)) return ask(rast.then, kb1)
                 return ask(ast.otherwise, kb1)
@@ -160,6 +181,8 @@ export function ask(
         case 'math-expression':
             {
                 const { rast, kb: kb1 } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kb1)
+                if (when) return ask(when, kb1)
 
                 const op = rast.operator
                 assert(op.type === 'entity')
@@ -186,9 +209,11 @@ export function ask(
             }
         case 'generalized':
             {
+
                 const { rast, kb: kb1 } = evalArgs(ast, kb)
                 const when = definitionOf(rast, kb1)
                 if (when) return ask(when, kb1)
+
                 return { result: $(false).$, kb: kb }
             }
         case "complement":
@@ -200,12 +225,18 @@ export function ask(
             }
         case 'cardinality':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const w = definitionOf(rast, kbb)
+                if (w) return ask(w, kbb)
+
+
                 return ask(removeImplicit(rast), kb)
             }
         case 'which':
             {
-                const { rast } = evalArgs(ast, kb)
+                const { rast, kb: kbb } = evalArgs(ast, kb)
+                const w = definitionOf(rast, kbb)
+                if (w) return ask(w, kbb)
                 return ask(removeImplicit(rast), kb)
             }
 
