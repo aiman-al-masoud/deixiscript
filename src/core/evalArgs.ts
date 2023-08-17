@@ -30,13 +30,13 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase): { rast: LLangAst, kb
     case 'which':
     case 'arbitrary-type':
     case "when-derivation-clause":
+    case "implicit-reference":
     case "after-derivation-clause":
       return { rast: ast, kb }
 
     case "is-a-formula":
     case "has-formula":
     case "math-expression":
-    case "implicit-reference":
     case "generalized":
       {
         const res = Object.entries(ast).filter(valueIs(isLLangAst)).reduce((a, e) => {
