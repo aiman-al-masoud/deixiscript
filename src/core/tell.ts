@@ -38,9 +38,9 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
                 const { rast, kb: kb1 } = evalArgs(ast, kb)
 
                 const def = definitionOf(rast, kb1)
-                if (def) return tell(def, kb1)
+                if (def) return evaluate($(def).tell.$, kb1)
 
-                if (!isAtom(rast.subject) || !isAtom(rast.object) || !isAtom(rast.as)) return tell(decompress(rast), kb1)
+                if (!isAtom(rast.subject) || !isAtom(rast.object) || !isAtom(rast.as)) return evaluate($(decompress(rast)).tell.$, kb1)
                 assert(isConst(rast.subject) && isConst(rast.object) && isConst(rast.as))
 
                 additions = [[rast.subject.value, rast.object.value, rast.as.value]]
@@ -50,7 +50,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             {
                 const { rast } = evalArgs(ast, kb)
 
-                if (!isAtom(rast.subject) || !isAtom(rast.object)) return tell(decompress(rast), kb)
+                if (!isAtom(rast.subject) || !isAtom(rast.object)) return evaluate($(decompress(rast)).tell.$, kb)
                 assert(isConst(rast.subject) && isConst(rast.object))
 
                 additions = addWorldModels(
@@ -61,8 +61,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'conjunction':
             {
-                const result1 = tell(ast.f1, kb)
-                const result2 = tell(ast.f2, result1.kb)
+                const result1 = evaluate($(ast.f1).tell.$, kb)
+                const result2 = evaluate($(ast.f2).tell.$, result1.kb)
                 additions = addWorldModels(result1.additions, result2.additions)
                 addedDerivationClauses = result2.kb.derivClauses
             }
@@ -76,30 +76,30 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         case 'if-else':
             {
                 const { kb: kb1, result } = evaluate(ast.condition, kb)
-                if (isTruthy(result)) return tell(ast.then, kb1)
-                return tell(ast.otherwise, kb1)
+                if (isTruthy(result)) return evaluate($(ast.then).tell.$, kb1)
+                return evaluate($(ast.otherwise).tell.$, kb1)
             }
         case 'existquant':
             {
                 const v = removeImplicit(ast.value)
-                return tell(v, kb)
+                return evaluate($(v).tell.$, kb)
             }
         case 'arbitrary-type':
             {
                 const id = ast.head.varType + '#' + random()
-                const isa = $(id).isa(ast.head.varType).$
+                const isa = $(id).isa(ast.head.varType)
                 const where = subst(ast.description, [ast.head, $(id).$])
-                const { kb: kb1 } = tell(isa, kb)
-                const result = tell(where, kb1)
+                const { kb: kb1 } = evaluate(isa.tell.$, kb)
+                const result = evaluate($(where).tell.$, kb1)
                 return result
             }
         case 'variable':
             {
-                return tell($(ast).suchThat($(ast).isa(ast.varType)).$, kb)
+                return evaluate($(ast).suchThat($(ast).isa(ast.varType)).tell.$, kb)
             }
         case 'negation':
             {
-                const result = tell(ast.f1, kb)
+                const result = evaluate($(ast.f1).tell.$, kb)
                 additions = result.eliminations
                 eliminations = result.additions
             }
@@ -107,22 +107,22 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
         case 'generalized':
             {
                 const when = definitionOf(ast, kb)
-                if (when) return tell(when, kb)
+                if (when) return evaluate($(when).tell.$, kb)
             }
             break
         case "complement":
             {
                 const when = definitionOf(ast, kb)
-                if (when) return tell(when, kb)
-                return tell(removeImplicit(ast), kb)
+                if (when) return evaluate($(when).tell.$, kb)
+                return evaluate($(ast).tell.$, kb)
             }
         case 'cardinality':
             {
-                return tell(removeImplicit(ast), kb)
+                return evaluate($(removeImplicit(ast)).tell.$, kb)
             }
         case 'which':
             {
-                return tell(removeImplicit(ast), kb)
+                return evaluate($(removeImplicit(ast)).tell.$, kb)
             }
         case "number":
         case "boolean":
@@ -137,7 +137,7 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     }
 
     const consequences = consequencesOf(ast, kb)
-    const consequencesWm = consequences.flatMap(x => tell(x, kb).additions)
+    const consequencesWm = consequences.flatMap(x => evaluate($(x).tell.$, kb).additions)
     additions = [...additions, ...consequencesWm]
 
     eliminations = [
@@ -228,9 +228,9 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
         const p = e[0]
         const d = e[1]
         if (d === undefined) return []
-        if (typeof d === 'number' || typeof d === 'boolean') return tell($(id).has(d).as(p).$, kb).additions
+        if (typeof d === 'number' || typeof d === 'boolean') return evaluate($(id).has(d).as(p).tell.$, kb).additions
 
-        return tell($(id).has(`x:${d}`).as(p).$, kb).additions
+        return evaluate($(id).has(`x:${d}`).as(p).tell.$, kb).additions
     })
 
     return fillers
