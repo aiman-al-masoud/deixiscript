@@ -1,6 +1,6 @@
 import { valueIs } from "../utils/valueIs.ts"
 import { evaluate } from "./evaluate.ts"
-import { LLangAst, KnowledgeBase, isLLangAst } from "./types.ts"
+import { LLangAst, KnowledgeBase, isLLangAst, pointsToThings } from "./types.ts"
 
 
 export function evalArgs<T extends LLangAst>(ast: T, kb: KnowledgeBase): { rast: T, kb: KnowledgeBase }
@@ -35,7 +35,8 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
       {
 
         const res = Object.entries(ast).filter(valueIs(isLLangAst)).reduce((a, e) => {
-          const r = e[1].type === 'complement' || e[1].type === 'generalized' ? { result: e[1], kb } : evaluate(e[1], a.kb)
+          if (!pointsToThings(e[1])) return a
+          const r = evaluate(e[1], a.kb)
           return { rast: { ...a.rast, [e[0]]: r.result }, kb: r.kb }
         }, { rast: ast, kb: kb })
         return res
