@@ -45,7 +45,7 @@ export function ask(
 
                 if (t2.value === 'thing') return { result: $(true).$, kb: kb }
 
-                if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb } // !!
+                // if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb } // !!
 
                 const concepts = kb.wm.filter(isIsASentence)
                     .filter(s => s[0] === t1.value)
