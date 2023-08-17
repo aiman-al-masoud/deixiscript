@@ -33,8 +33,9 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
 
     default:
       {
+
         const res = Object.entries(ast).filter(valueIs(isLLangAst)).reduce((a, e) => {
-          const r = ask(e[1], a.kb)
+          const r = e[1].type === 'complement' || e[1].type === 'generalized' ? { result: e[1], kb } : ask(e[1], a.kb)
           return { rast: { ...a.rast, [e[0]]: r.result }, kb: r.kb }
         }, { rast: ast, kb: kb })
         return res

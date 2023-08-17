@@ -1,6 +1,4 @@
 import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number } from "./types.ts";
-import { definitionOf } from "./definitionOf.ts";
-import { evalArgs } from "./evalArgs.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -27,9 +25,6 @@ export function ask(
         case 'number':
         case 'entity':
             {
-                // const { rast } = evalArgs(ast, kb)
-                // const when = definitionOf(rast, kb)
-                // if (when) return ask(when, kb)
                 const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
                 const deicticDict = { ...kb.deicticDict, [ast.value as string]: lastTime + 1 }
                 return { result: ast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, [[ast.value, ast.type]]) } }
@@ -37,17 +32,10 @@ export function ask(
         case 'list':
         case 'nothing':
             {
-                // const { rast, kb: kbb } = evalArgs(ast, kb)
-                // const w = definitionOf(rast, kbb)
-                // if (w) return ask(w, kbb)
                 return { result: ast, kb }
             }
         case 'is-a-formula':
             {
-                // const { rast, kb: kb1 } = evalArgs(ast, kb)
-                // const when = definitionOf(rast, kb1)
-                // if (when) return ask(when, kb1)
-                // if (!isAtom(t1) || !isAtom(t2)) return ask(decompress(ast), kb)
 
                 const t1 = ast.subject
                 const t2 = ast.object
@@ -76,16 +64,11 @@ export function ask(
 
         case 'has-formula':
             {
+                const s = ast.subject
+                const o = ast.object
+                const as = ast.as
 
-                const { rast, kb: kb1 } = evalArgs(ast, kb)
-                const when = definitionOf(rast, kb1)
-                if (when) return ask(when, kb1)
-
-                const s = rast.subject
-                const o = rast.object
-                const as = rast.as
-
-                if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return ask(decompress(rast), kb)
+                if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return evaluate(decompress(ast), kb)
 
                 const ok = kb.wm.filter(isHasSentence).some(hs => {
                     return s.value === hs[0]
@@ -97,11 +80,7 @@ export function ask(
             }
         case 'negation':
             {
-                const { rast, kb: kbb } = evalArgs(ast, kb)
-                const when = definitionOf(rast, kbb)
-                if (when) return ask(when, kbb)
-
-                const { kb: kb1, result } = ask(rast.f1, kb)
+                const { kb: kb1, result } = evaluate(ast.f1, kb)
                 return { result: $(!isTruthy(result)).$, kb: kb1 }
             }
         case 'conjunction':
@@ -149,10 +128,7 @@ export function ask(
             }
         case 'implicit-reference':
             {
-                // const { rast, kb: kb1 } = evalArgs(ast, kb)
-                // const when = definitionOf(rast, kb1)
-                // if (when) return ask(when, kb1)
-                return evaluate(/* removeImplicit(ast) */ast, kb)
+                return evaluate(removeImplicit(ast), kb)
             }
         case 'if-else':
             {
@@ -187,35 +163,19 @@ export function ask(
             }
         case 'generalized':
             {
-
-                const { rast, kb: kb1 } = evalArgs(ast, kb)
-                const when = definitionOf(rast, kb1)
-                if (when) return ask(when, kb1)
-
                 return { result: $(false).$, kb: kb }
             }
         case "complement":
             {
-                const { rast, kb: kb2 } = evalArgs(ast, kb)
-                const w = definitionOf(rast, kb2)
-                if (w) return ask(w, kb2)
-                return ask(removeImplicit(ast), kb2)
+                return evaluate(removeImplicit(ast), kb)
             }
         case 'cardinality':
             {
-                const { rast, kb: kbb } = evalArgs(ast, kb)
-                const w = definitionOf(rast, kbb)
-                if (w) return ask(w, kbb)
-
-
-                return ask(removeImplicit(rast), kb)
+                return evaluate(removeImplicit(ast), kb)
             }
         case 'which':
             {
-                const { rast, kb: kbb } = evalArgs(ast, kb)
-                const w = definitionOf(rast, kbb)
-                if (w) return ask(w, kbb)
-                return ask(removeImplicit(rast), kb)
+                return evaluate(removeImplicit(ast), kb)
             }
 
         case "command":
