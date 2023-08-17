@@ -4,7 +4,7 @@ import { LLangAst, KnowledgeBase, isLLangAst, pointsToThings } from "./types.ts"
 
 
 export function evalArgs<T extends LLangAst>(ast: T, kb: KnowledgeBase): { rast: T, kb: KnowledgeBase }
-export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
+export function evalArgs(ast: LLangAst, kb: KnowledgeBase): { rast: LLangAst, kb: KnowledgeBase } {
 
   switch (ast.type) {
 
@@ -15,23 +15,29 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
         const rast = { ...ast, complement, /* complementName */ }
         return { rast, kb: kb2 }
       }
-    // case 'if-else':
-    // case 'conjunction':
-    // case 'disjunction':
-    // case 'variable':
-    // case 'number':
-    // case 'entity':
-    // case 'boolean':
-    // case 'list':
-    // case 'nothing':
-    // case 'negation':
-    // case 'existquant':
+    case 'if-else':
+    case 'conjunction':
+    case 'disjunction':
+    case 'variable':
+    case 'number':
+    case 'entity':
+    case 'boolean':
+    case 'list':
+    case 'nothing':
+    case 'negation':
+    case 'existquant':
     case 'cardinality':
     case 'which':
     case 'arbitrary-type':
+    case "when-derivation-clause":
+    case "after-derivation-clause":
       return { rast: ast, kb }
 
-    default:
+    case "is-a-formula":
+    case "has-formula":
+    case "math-expression":
+    case "implicit-reference":
+    case "generalized":
       {
         const res = Object.entries(ast).filter(valueIs(isLLangAst)).reduce((a, e) => {
           if (!pointsToThings(e[1])) return a
@@ -40,6 +46,10 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
         }, { rast: ast, kb: kb })
         return res
       }
+    case "command":
+    case "question":
+      throw new Error(``)
+
   }
 
 }
