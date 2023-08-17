@@ -15,25 +15,24 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
         const rast = { ...ast, complement, /* complementName */ }
         return { rast, kb: kb2 }
       }
-    case 'if-else':
+    // case 'if-else':
+    // case 'conjunction':
+    // case 'disjunction':
+    // case 'variable':
+    // case 'number':
+    // case 'entity':
+    // case 'boolean':
+    // case 'list':
+    // case 'nothing':
+    // case 'negation':
+    // case 'existquant':
     case 'cardinality':
     case 'which':
-    case 'conjunction':
-    case 'disjunction':
-    case 'existquant':
-    case 'negation':
-    case 'variable':
-    case 'number':
-    case 'entity':
-    case 'boolean':
     case 'arbitrary-type':
-    case 'list':
-    case 'nothing':
       return { rast: ast, kb }
 
     default:
       {
-
         const res = Object.entries(ast).filter(valueIs(isLLangAst)).reduce((a, e) => {
           if (!pointsToThings(e[1])) return a
           const r = evaluate(e[1], a.kb)
