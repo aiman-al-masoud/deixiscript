@@ -1,5 +1,6 @@
 import { mapAsts } from "../core/mapAsts.ts";
-import { LLangAst, KnowledgeBase, definitionOf } from "../core/types.ts";
+import { LLangAst, KnowledgeBase } from "../core/types.ts";
+import { definitionOf } from "../core/definitionOf.ts";
 
 
 export function parse(
