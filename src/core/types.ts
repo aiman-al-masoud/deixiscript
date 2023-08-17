@@ -297,13 +297,16 @@ export function pointsToThings(ast: LLangAst): boolean {
         return pointsToThings(ast.f1) && pointsToThings(ast.f2)
     }
 
+    if (ast.type === 'complement') {
+        return pointsToThings(ast.phrase)
+    }
+
     return isAtom(ast)
         || ast.type === 'arbitrary-type'
         || ast.type === 'implicit-reference'
         || ast.type === 'cardinality'
         || ast.type === 'which'
         || ast.type === 'math-expression'
-
 }
 
 export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
