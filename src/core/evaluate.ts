@@ -15,19 +15,14 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
 } {
     if (ast.type === 'command') {
 
-        if (ast.f1.type === 'has-formula' || ast.f1.type==='is-a-formula' || ast.f1.type === 'complement' || ast.f1.type==='generalized') {
-            const { rast, kb: kb1 } = evalArgs(ast.f1, knowledgeBase)
+        const { rast, kb: kb1 } = evalArgs(ast.f1, knowledgeBase)
+        const def = rast.type !== 'conjunction' ? definitionOf(rast, kb1) : undefined
 
-            const def = definitionOf(rast, kb1)
-            if (def) return evaluate($(def).tell.$, kb1)
+        if (def) return evaluate($(def).tell.$, kb1)
 
-            const rast2 =  rast.type==='has-formula' || rast.type=='is-a-formula' ? decompress(rast) : rast
+        const rast2 = rast.type === 'has-formula' || rast.type == 'is-a-formula' ? decompress(rast) : rast
 
-
-            return { ...tell(rast2, kb1), result: $(true).$, }
-        }
-      
-        return {...tell(ast.f1, knowledgeBase),result: $(true).$,}
+        return { ...tell(rast2, kb1), result: $(true).$, }
 
     } else if (ast.type === 'question') {
 
