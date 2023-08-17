@@ -1,4 +1,4 @@
-import { tell } from "./tell.ts"
+import { evaluate } from "./evaluate.ts"
 import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality, Complement } from "./types.ts"
 
 
@@ -118,7 +118,7 @@ export class ExpBuilder<T extends LLangAst> {
     }
 
     dump(kb?: KnowledgeBase) {
-        return tell(this.exp, kb ?? $.emptyKb).kb
+        return evaluate(this.tell.$, kb ?? $.emptyKb).kb
     }
 
     which(ast: ExpBuilder<LLangAst>) {
