@@ -1,10 +1,10 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
 import { definitionOf } from "./definitionOf.ts";
-import { evalArgs } from "./evalArgs.ts";
-import { decompress } from "./decompress.ts";
+// import { evalArgs } from "./evalArgs.ts";
+// import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
@@ -35,27 +35,18 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
         case 'has-formula':
             {
-                const { rast, kb: kb1 } = evalArgs(ast, kb)
 
-                const def = definitionOf(rast, kb1)
-                if (def) return evaluate($(def).tell.$, kb1)
-
-                if (!isAtom(rast.subject) || !isAtom(rast.object) || !isAtom(rast.as)) return evaluate($(decompress(rast)).tell.$, kb1)
-                assert(isConst(rast.subject) && isConst(rast.object) && isConst(rast.as))
-
-                additions = [[rast.subject.value, rast.object.value, rast.as.value]]
+                assert(isConst(ast.subject) && isConst(ast.object) && isConst(ast.as))
+                additions = [[ast.subject.value, ast.object.value, ast.as.value]]
             }
             break
         case 'is-a-formula':
             {
-                const { rast } = evalArgs(ast, kb)
-
-                if (!isAtom(rast.subject) || !isAtom(rast.object)) return evaluate($(decompress(rast)).tell.$, kb)
-                assert(isConst(rast.subject) && isConst(rast.object))
+                assert(isConst(ast.subject) && isConst(ast.object))
 
                 additions = addWorldModels(
-                    [[rast.subject.value, rast.object.value]],
-                    getDefaultFillers(rast.subject.value, rast.object.value, kb),
+                    [[ast.subject.value, ast.object.value]],
+                    getDefaultFillers(ast.subject.value, ast.object.value, kb),
                 )
             }
             break
@@ -112,8 +103,6 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case "complement":
             {
-                const when = definitionOf(ast, kb)
-                if (when) return evaluate($(when).tell.$, kb)
                 return evaluate($(ast).tell.$, kb)
             }
         case 'cardinality':
@@ -246,8 +235,6 @@ function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom |
 
 function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
 
-    const supers = conceptsOf(concept, kb)
-
     const parts = kb.wm
         .filter(isHasSentence)
         .filter(x => x[0] === concept)
@@ -255,6 +242,10 @@ function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
         .filter(x => isTruthy(evaluate($(x[1]).isa('mutex-concepts-annotation').isNotTheCase.$, kb).result))
         .map(x => x[2])
 
-    const all = supers.filter(x => x !== concept).flatMap(x => getParts(x, kb)).concat(parts)
+    const supers = conceptsOf(concept, kb).filter(x => x !== concept)
+
+    // console.log(concept, supers)
+
+    const all = supers.flatMap(x => getParts(x, kb)).concat(parts)
     return uniq(all)
 }

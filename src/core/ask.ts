@@ -41,9 +41,14 @@ export function ask(
 
                 assert(isConst(t1) && isConst(t2))
 
+                if (t1.value === 'thing' && t2.value!=='thing') return { result: $(false).$, kb: kb }
+
+
                 if (t1.type === t2.value) return { result: $(true).$, kb: kb }
 
                 if (t2.value === 'thing') return { result: $(true).$, kb: kb }
+
+
 
                 // if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb } // !!
 

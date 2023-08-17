@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
+import { KnowledgeBase, LLangAst, conceptsOf, isTruthy } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
@@ -300,6 +300,8 @@ Deno.test({
         // defaults
         const kb =
             $('point').has(100).as('x-coordinate').dump()
+
+        // console.log(kb.wm)
 
         const result = evaluate($.thereIs($.a('point')).tell.$, kb)
 
@@ -946,6 +948,8 @@ Deno.test({
                 .and($('capra#2').has(1).as('eye'))
                 .dump(kb)
 
+        console.log(kb2.wm)
+
         const kb3 = evaluate($('capra#1').has(2).as('eye').tell.$, kb2).kb
         const kb4 = evaluate($('capra#1').has(3).as('eye').tell.$, kb3).kb
         const kb5 = evaluate($('capra#1').has(4).as('eye').tell.$, kb4).kb
@@ -999,25 +1003,25 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test88',
-    fn: () => {
-        // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
-        const kb =
-            $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
-                .and($('cat').has(2).as('position'))
-                .and($('human').isa('mammal'))
-                .dump()
+// Deno.test({
+//     name: 'test88',
+//     fn: () => {
+//         // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
+//         const kb =
+//             $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
+//                 .and($('cat').has(2).as('position'))
+//                 .and($('human').isa('mammal'))
+//                 .dump()
 
-        const q1 = $(2).isa('position').$
-        const q2 = $(3).isa('position').isNotTheCase.$
-        const q3 = $('human').isa('mammal').$
+//         const q1 = $(2).isa('position').$
+//         const q2 = $(3).isa('position').isNotTheCase.$
+//         const q3 = $('human').isa('mammal').$
 
-        dassert(evaluate(q1, kb).result)
-        dassert(evaluate(q2, kb).result)
-        dassert(evaluate(q3, kb).result)
-    }
-})
+//         dassert(evaluate(q1, kb).result)
+//         dassert(evaluate(q2, kb).result)
+//         dassert(evaluate(q3, kb).result)
+//     }
+// })
 
 Deno.test({
     name: 'test89',

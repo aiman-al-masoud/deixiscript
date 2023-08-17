@@ -15,19 +15,20 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
 } {
     if (ast.type === 'command') {
 
-        const { rast, kb: kb1 } = evalArgs(ast.f1, knowledgeBase)
+        if (ast.f1.type === 'has-formula' || ast.f1.type==='is-a-formula' || ast.f1.type === 'complement') {
+            const { rast, kb: kb1 } = evalArgs(ast.f1, knowledgeBase)
 
-        // if (!astsEqual(ast.f1, rast)) console.log(ast.f1, rast)
-        // if (!deepEquals(knowledgeBase, kb1)){
-        //     console.log(knowledgeBase.deicticDict, kb1.deicticDict)
-        //     console.log('--------------------')
-        // }
+            const def = definitionOf(rast, kb1)
+            if (def) return evaluate($(def).tell.$, kb1)
 
-        return {
-            // ...tell(ast.f1, knowledgeBase),
-            ...tell(rast, knowledgeBase),
-            result: $(true).$,
+            const rast2 =  rast.type==='has-formula' || rast.type=='is-a-formula' ? decompress(rast) : rast
+
+
+            return { ...tell(rast2, kb1), result: $(true).$, }
         }
+      
+        return {...tell(ast.f1, knowledgeBase),result: $(true).$,}
+
     } else if (ast.type === 'question') {
 
         return evaluate(ast.f1, knowledgeBase)
