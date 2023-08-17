@@ -1,4 +1,5 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf, evalArgs, Number } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, definitionOf, Number } from "./types.ts";
+import { evalArgs } from "./evalArgs.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { decompress } from "./decompress.ts";
@@ -24,12 +25,12 @@ export function ask(
         case 'number':
         case 'entity':
             {
-                const when = definitionOf(ast, kb)
+                const { rast } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kb)
                 if (when) return ask(when, kb)
-
                 const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
-                const deicticDict = { ...kb.deicticDict, [ast.value as string]: lastTime + 1 }
-                return { result: ast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, [[ast.value, ast.type]]) } }
+                const deicticDict = { ...kb.deicticDict, [rast.value as string]: lastTime + 1 }
+                return { result: rast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, [[ast.value, ast.type]]) } }
             }
         case 'list':
         case 'nothing':
@@ -89,34 +90,43 @@ export function ask(
             }
         case 'negation':
             {
-                const { kb: kb1, result } = ask(ast.f1, kb)
+                const { rast } = evalArgs(ast, kb)
+                const { kb: kb1, result } = ask(rast.f1, kb)
                 return { result: $(!isTruthy(result)).$, kb: kb1 }
             }
         case 'conjunction':
             {
-                if (pointsToThings(ast.f1) || pointsToThings(ast.f2)) return { result: ast, kb: kb }
-                const { kb: kb1, result: f1 } = ask(ast.f1, kb)
+                const { rast } = evalArgs(ast, kb)
+                if (pointsToThings(rast.f1) || pointsToThings(rast.f2)) return { result: rast, kb: kb }
+                const { kb: kb1, result: f1 } = ask(rast.f1, kb)
                 if (!isTruthy(f1)) return { result: $(false).$, kb: kb1 }
-                return ask(ast.f2, kb1)
+                return ask(rast.f2, kb1)
             }
         case 'disjunction':
             {
-                if (pointsToThings(ast.f1) || pointsToThings(ast.f2)) return { result: ast, kb: kb }
-                const { kb: kb1, result: f1 } = ask(ast.f1, kb)
+                const { rast } = evalArgs(ast, kb)
+                if (pointsToThings(rast.f1) || pointsToThings(rast.f2)) return { result: rast, kb: kb }
+                const { kb: kb1, result: f1 } = ask(rast.f1, kb)
                 if (isTruthy(f1)) return { result: $(true).$, kb: kb1 }
-                return ask(ast.f2, kb1)
+                return ask(rast.f2, kb1)
             }
         case 'existquant':
             {
-                const { result: thing } = ask(ast.value, kb)
+                const { rast } = evalArgs(ast, kb)
+                const { result: thing } = ask(rast.value, kb)
                 return { result: $(thing.type !== 'nothing').$, kb: kb }
             }
         case 'variable':
-            return ask($(ast).suchThat(true).$, kb)
+            {
+                const { rast } = evalArgs(ast, kb)
+                return ask($(rast).suchThat(true).$, kb)
+            }
         case 'arbitrary-type':
 
-            const maps = findAll(ast.description, [ast.head], kb)
-            const candidates = maps.map(x => x.get(ast.head)).filter(isNotNullish)
+            const { rast } = evalArgs(ast, kb)
+
+            const maps = findAll(rast.description, [rast.head], kb)
+            const candidates = maps.map(x => x.get(rast.head)).filter(isNotNullish)
 
             const sortedCandidates = sorted(
                 candidates,
@@ -125,9 +135,9 @@ export function ask(
 
             if (candidates.length === 1) {
                 return ask(sortedCandidates[0], kb)
-            } else if (ast.number.value === 1 && candidates.length > 1) {
+            } else if (rast.number.value === 1 && candidates.length > 1) {
                 return ask(sortedCandidates[0], kb)
-            } else if (ast.number.value === '*' && candidates.length > 1) {
+            } else if (rast.number.value === '*' && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
                 return { result: andPhrase, kb: kb }
             } else {
@@ -137,14 +147,14 @@ export function ask(
             {
                 const { rast, kb: kb1 } = evalArgs(ast, kb)
                 const w = definitionOf(rast, kb1)
-
                 if (w) return ask(w, kb1)
                 return ask(removeImplicit(ast), kb)
             }
         case 'if-else':
             {
-                const { kb: kb1, result } = ask(ast.condition, kb)
-                if (isTruthy(result)) return ask(ast.then, kb1)
+                const { rast } = evalArgs(ast, kb)
+                const { kb: kb1, result } = ask(rast.condition, kb)
+                if (isTruthy(result)) return ask(rast.then, kb1)
                 return ask(ast.otherwise, kb1)
             }
         case 'math-expression':
@@ -183,23 +193,20 @@ export function ask(
             }
         case "complement":
             {
-
-                const { result: complementName, kb: kb1 } = ask(ast.complementName, kb)
-                const { result: complement, kb: kb2 } = ask(ast.complement, kb1)
-
-                const rast = { ...ast, complement, complementName }
+                const { rast, kb: kb2 } = evalArgs(ast, kb)
                 const w = definitionOf(rast, kb2)
                 if (w) return ask(w, kb2)
-
                 return ask(removeImplicit(ast), kb2)
             }
         case 'cardinality':
             {
-                return ask(removeImplicit(ast), kb)
+                const { rast } = evalArgs(ast, kb)
+                return ask(removeImplicit(rast), kb)
             }
         case 'which':
             {
-                return ask(removeImplicit(ast), kb)
+                const { rast } = evalArgs(ast, kb)
+                return ask(removeImplicit(rast), kb)
             }
 
         case "command":

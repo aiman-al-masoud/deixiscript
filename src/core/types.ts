@@ -3,7 +3,6 @@ import { deepEquals } from "../utils/deepEquals.ts"
 import { first } from "../utils/first.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
-import { valueIs } from "../utils/valueIs.ts"
 import { ask } from "./ask.ts"
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
@@ -303,6 +302,8 @@ export function pointsToThings(ast: LLangAst): boolean {
         || ast.type === 'implicit-reference'
         || ast.type === 'cardinality'
         || ast.type === 'which'
+        || ast.type === 'math-expression'
+
 }
 
 export function definitionOf(ast: LLangAst, kb: KnowledgeBase) {
@@ -348,16 +349,5 @@ export function askBin(ast: LLangAst, kb: KnowledgeBase): boolean {
 
 export function isTruthy(ast: LLangAst) {
     return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
-}
-
-export function evalArgs<T extends LLangAst>(ast: T, kb0: KnowledgeBase): { rast: T, kb: KnowledgeBase }
-export function evalArgs(ast: LLangAst, kb0: KnowledgeBase) {
-
-    const res = Object.entries(ast).filter(valueIs(isLLangAst)).reduce((a, e) => {
-        const r = ask(e[1], a.kb)
-        return { rast: { ...a.rast, [e[0]]: r.result }, kb: r.kb }
-    }, { rast: ast, kb: kb0 })
-
-    return res
 }
 

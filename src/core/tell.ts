@@ -2,7 +2,8 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { ask } from "./ask.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, evalArgs, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, definitionOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
+import { evalArgs } from "./evalArgs.ts";
 import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
@@ -58,10 +59,13 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             }
             break
         case 'conjunction':
-            const result1 = tell(ast.f1, kb)
-            const result2 = tell(ast.f2, result1.kb)
-            additions = addWorldModels(result1.additions, result2.additions)
-            addedDerivationClauses = result2.kb.derivClauses
+            {
+                const { rast } = evalArgs(ast, kb)
+                const result1 = tell(rast.f1, kb)
+                const result2 = tell(rast.f2, result1.kb)
+                additions = addWorldModels(result1.additions, result2.additions)
+                addedDerivationClauses = result2.kb.derivClauses
+            }
             break
         case 'disjunction':
             throw new Error(`ambiguous disjunction`)
@@ -71,43 +75,64 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'if-else':
             {
-                const { kb: kb1, result } = ask(ast.condition, kb)
-                if (isTruthy(result)) return tell(ast.then, kb1)
-                return tell(ast.otherwise, kb1)
+                const { rast } = evalArgs(ast, kb)
+                const { kb: kb1, result } = ask(rast.condition, kb)
+                if (isTruthy(result)) return tell(rast.then, kb1)
+                return tell(rast.otherwise, kb1)
             }
         case 'existquant':
-            const v = removeImplicit(ast.value)
-            return tell(v, kb)
+            {
+                const { rast } = evalArgs(ast, kb)
+                const v = removeImplicit(rast.value)
+                return tell(v, kb)
+            }
         case 'arbitrary-type':
             {
-                const id = ast.head.varType + '#' + random()
-                const isa = $(id).isa(ast.head.varType).$
-                const where = subst(ast.description, [ast.head, $(id).$])
+                const { rast } = evalArgs(ast, kb)
+                const id = rast.head.varType + '#' + random()
+                const isa = $(id).isa(rast.head.varType).$
+                const where = subst(rast.description, [rast.head, $(id).$])
                 const { kb: kb1 } = tell(isa, kb)
                 const result = tell(where, kb1)
                 return result
             }
         case 'variable':
-            return tell($(ast).suchThat($(ast).isa(ast.varType)).$, kb)
+            {
+                const { rast } = evalArgs(ast, kb)
+                return tell($(rast).suchThat($(rast).isa(rast.varType)).$, kb)
+            }
         case 'negation':
-            const result = tell(ast.f1, kb)
-            additions = result.eliminations
-            eliminations = result.additions
+            {
+                const { rast } = evalArgs(ast, kb)
+                const result = tell(rast.f1, kb)
+                additions = result.eliminations
+                eliminations = result.additions
+            }
             break
         case 'generalized':
-            const when = definitionOf(ast, kb)
-            if (when) return tell(when, kb)
+            {
+                const { rast } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kb)
+                if (when) return tell(when, kb)
+            }
             break
         case "complement":
             {
-                const when = definitionOf(ast, kb)
+                const { rast } = evalArgs(ast, kb)
+                const when = definitionOf(rast, kb)
                 if (when) return tell(when, kb)
-                return tell(removeImplicit(ast), kb)
+                return tell(removeImplicit(rast), kb)
             }
         case 'cardinality':
-            return tell(removeImplicit(ast), kb)
+            {
+                const { rast } = evalArgs(ast, kb)
+                return tell(removeImplicit(rast), kb)
+            }
         case 'which':
-            return tell(removeImplicit(ast), kb)
+            {
+                const { rast } = evalArgs(ast, kb)
+                return tell(removeImplicit(rast), kb)
+            }
         case "number":
         case "boolean":
         case "entity":
