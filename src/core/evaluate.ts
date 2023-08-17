@@ -24,11 +24,9 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     } else {
 
         const { rast, kb: kb1 } = evalArgs(ast, knowledgeBase)
-        const when = definitionOf(rast, kb1)
-        if (when) {
-            const v = evaluate(when, kb1)
-            if (isTruthy(v.result)) return v
-        }
+        const when = definitionOf(rast, kb1) ?? $(false).$
+        const v = ask(when, kb1)
+        if (isTruthy(v.result)) return { ...v, additions: [], eliminations: [] }
         const rast2 = decompress(rast)
 
         return {
