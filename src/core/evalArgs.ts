@@ -10,9 +10,9 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase) {
 
     case 'complement':
       {
-        const { result: complementName, kb: kb1 } = evaluate(ast.complementName, kb)
-        const { result: complement, kb: kb2 } = evaluate(ast.complement, kb1)
-        const rast = { ...ast, complement, complementName }
+        // const { result: complementName, kb: kb1 } = evaluate(ast.complementName, kb)
+        const { result: complement, kb: kb2 } = evaluate(ast.complement, kb /* kb1 */)
+        const rast = { ...ast, complement, /* complementName */ }
         return { rast, kb: kb2 }
       }
     case 'if-else':
