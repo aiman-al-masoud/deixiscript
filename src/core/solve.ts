@@ -1,5 +1,5 @@
 import { assert } from "../utils/assert.ts";
-import { ask } from "./ask.ts";
+import { evaluate } from "./evaluate.ts";
 import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { KnowledgeBase, MathExpression, astsEqual } from "./types.ts";
@@ -22,7 +22,7 @@ export function solve(m: MathExpression, kb: KnowledgeBase) {
     assert(inverseOp)
 
     const newLhs = eq.left.left
-    const newRhs = ask($(eq.right).mathOperation(eq.left.right, inverseOp).$, kb).result
+    const newRhs = evaluate($(eq.right).mathOperation(eq.left.right, inverseOp).$, kb).result
 
     return solve($(newLhs).equals(newRhs).$, kb)
 }
