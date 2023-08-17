@@ -1,7 +1,6 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
-import { ask } from "./ask.ts";
 import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, isAtom, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
 import { definitionOf } from "./definitionOf.ts";
 import { evalArgs } from "./evalArgs.ts";
@@ -14,6 +13,7 @@ import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
 import { zip } from "../utils/zip.ts";
 import { assert } from "../utils/assert.ts";
+import { evaluate } from "./evaluate.ts";
 
 
 /**
@@ -76,10 +76,10 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'if-else':
             {
-                const { rast } = evalArgs(ast, kb)
-                const { kb: kb1, result } = ask(rast.condition, kb)
-                if (isTruthy(result)) return tell(rast.then, kb1)
-                return tell(rast.otherwise, kb1)
+                // const { rast } = evalArgs(ast, kb)
+                const { kb: kb1, result } = evaluate(ast.condition, kb)
+                if (isTruthy(result)) return tell(ast.then, kb1)
+                return tell(ast.otherwise, kb1)
             }
         case 'existquant':
             {
@@ -248,7 +248,7 @@ function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
 
 function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined {
 
-    const result = ask($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
+    const result = evaluate($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
     if (result.type === 'nothing') return undefined
     assert(isConst(result))
     return result.value
@@ -261,8 +261,8 @@ function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
     const parts = kb.wm
         .filter(isHasSentence)
         .filter(x => x[0] === concept)
-        .filter(x => isTruthy(ask($(x[1]).isa('number-restriction').isNotTheCase.$, kb).result))
-        .filter(x => isTruthy(ask($(x[1]).isa('mutex-concepts-annotation').isNotTheCase.$, kb).result))
+        .filter(x => isTruthy(evaluate($(x[1]).isa('number-restriction').isNotTheCase.$, kb).result))
+        .filter(x => isTruthy(evaluate($(x[1]).isa('mutex-concepts-annotation').isNotTheCase.$, kb).result))
         .map(x => x[2])
 
     const all = supers.filter(x => x !== concept).flatMap(x => getParts(x, kb)).concat(parts)
