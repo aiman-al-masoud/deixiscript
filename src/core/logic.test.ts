@@ -1,7 +1,6 @@
 import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { tell } from "./tell.ts";
 import { KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
@@ -71,7 +70,7 @@ Deno.test({
 Deno.test({
     name: 'test04',
     fn: () => {
-        // has-sentence based derivation clause, evaluate() and tell() test
+        // has-sentence based derivation clause, ask and tell test
         // and implicit reference contextual resolution via new kb with 
         // updated deicticDict from argument resolution
 
@@ -104,9 +103,9 @@ Deno.test({
         const r = evaluate(query, kb0)
         dassert(r.result)
 
-        const q2 = $('person#2').has('boston').as('birth-city').$
-        const kb1 = tell(q2, kb0).kb //auto-creates new event & new spacepoint
-        dassert(evaluate(q2, kb1).result)
+        const q2 = $('person#2').has('boston').as('birth-city')
+        const kb1 = evaluate(q2.tell.$, kb0).kb //auto-creates new event & new spacepoint
+        dassert(evaluate(q2.ask.$, kb1).result)
     }
 })
 
@@ -217,7 +216,7 @@ Deno.test({
                 .and($('capra#1').has(1).as('last-thought-of'))
                 .dump(kb)
 
-        const kb3 = tell($('capra#1').has(2).as('last-thought-of').$, kb2).kb
+        const kb3 = evaluate($('capra#1').has(2).as('last-thought-of').tell.$, kb2).kb
         assertEquals(findAll($('capra#1').has('x:thing').as('last-thought-of').$, [$('x:thing').$], kb3).length, 1)
     }
 })
@@ -235,7 +234,7 @@ Deno.test({
                 .dump()
 
         const command = $.the('cat').has('black').as('color').if($('cat#1').has('big').as('size'))
-        const kb2 = tell(command.$, kb).kb
+        const kb2 = evaluate(command.tell.$, kb).kb
         dassert(evaluate($.the('cat').has('black').as('color').$, kb2).result)
     }
 })
@@ -244,8 +243,8 @@ Deno.test({
     name: 'test29',
     fn: () => {
         const q = $.thereIs($('x:cat').suchThat($('x:cat').has('red').as('color')))
-        const kb2 = tell(q.$, $.emptyKb).kb
-        dassert(evaluate(q.$, kb2).result)
+        const kb2 = evaluate(q.tell.$, $.emptyKb).kb
+        dassert(evaluate(q.ask.$, kb2).result)
     }
 })
 
@@ -278,7 +277,7 @@ Deno.test({
         const q = $('cat#1').has('red').as('color')
         const kb1 = q.dump()
         dassert(evaluate(q.$, kb1).result)
-        const result = tell(q.isNotTheCase.$, kb1)
+        const result = evaluate(q.isNotTheCase.tell.$, kb1)
         const kb2 = result.kb
         dassert(evaluate(q.isNotTheCase.$, kb2).result)
     }
@@ -302,7 +301,7 @@ Deno.test({
         const kb =
             $('point').has(100).as('x-coordinate').dump()
 
-        const result = tell($.thereIs($.a('point')).$, kb)
+        const result = evaluate($.thereIs($.a('point')).tell.$, kb)
 
         const check = evaluate(
             $.thereIs($.the('point').which($._.has(100).as('x-coordinate'))).$,
@@ -365,12 +364,12 @@ Deno.test({
     fn: () => {
         // mutex concepts test
         const kbmin2 = getStandardKb()
-        const { kb: kbmin1 } = tell($({ concept: 'cat', excludes: 'dog' }).$, kbmin2)
-        const kb0 = tell($('mammal#1').isa('cat').$, kbmin1).kb
-        const kb1 = tell($('mammal#1').isa('dog').$, kb0).kb
+        const { kb: kbmin1 } = evaluate($({ concept: 'cat', excludes: 'dog' }).tell.$, kbmin2)
+        const kb0 = evaluate($('mammal#1').isa('cat').tell.$, kbmin1).kb
+        const kb1 = evaluate($('mammal#1').isa('dog').tell.$, kb0).kb
         dassert(evaluate($('mammal#1').isa('cat').isNotTheCase.$, kb1).result)
         dassert(evaluate($('mammal#1').isa('dog').$, kb1).result)
-        const kb2 = tell($('mammal#1').isa('cat').$, kb0).kb
+        const kb2 = evaluate($('mammal#1').isa('cat').tell.$, kb0).kb
         dassert(evaluate($('mammal#1').isa('dog').isNotTheCase.$, kb2).result)
         dassert(evaluate($('mammal#1').isa('cat').$, kb2).result)
     }
@@ -477,14 +476,15 @@ Deno.test({
             .dump()
 
 
-        const kb1 = tell($.the('cat').which($._.has('red').as('color')).has(1).as('hunger')
-            .and($.the('cat').which($._.has('black').as('color')).has(1).as('hunger')).$, kb0).kb
+        const kb1 = evaluate($.the('cat').which($._.has('red').as('color')).has(1).as('hunger')
+            .and($.the('cat').which($._.has('black').as('color')).has(1).as('hunger')).tell.$, kb0).kb
 
 
         const dc =
-            $.a('cat').which($._.has('red').as('color')).is('hungry').when($.the('cat').has(1).as('hunger')).$
+            $.a('cat').which($._.has('red').as('color')).is('hungry').when($.the('cat').has(1).as('hunger'))
+                .tell.$
 
-        const kb2 = tell(dc, kb1).kb
+        const kb2 = evaluate(dc, kb1).kb
 
         const statement1 = $.the('cat').which($._.has('red').as('color')).is('hungry').$
         const statement2 = $.the('cat').which($._.has('black').as('color')).is('hungry').isNotTheCase.$
@@ -588,13 +588,14 @@ Deno.test({
 Deno.test({
     name: 'test57',
     fn: () => {
+
         const dc = $('x:thing').is('c:color').when(
             $('x:thing').has('c:color').as('color')
-        ).$
+        )
 
-        const kb0 = tell(dc, $.emptyKb).kb
-        const kb1 = tell($('red').and('green').isa('color').$, kb0).kb
-        const kb2 = tell($('thing#1').is('red').$, kb1).kb
+        const kb0 = evaluate(dc.tell.$, $.emptyKb).kb
+        const kb1 = evaluate($('red').and('green').isa('color').tell.$, kb0).kb
+        const kb2 = evaluate($('thing#1').is('red').tell.$, kb1).kb
         const result0 = evaluate($('thing#1').has('red').as('color').$, kb2).result
         const result1 = evaluate($('thing#1').is('red').$, kb2).result
         const result2 = evaluate($('thing#1').has('black').as('color').isNotTheCase.$, kb2).result
@@ -630,8 +631,8 @@ Deno.test({
 Deno.test({
     name: 'test59',
     fn: () => {
-        const x = $.thereIs($.a('mouse').in('house#1')).$
-        const kb = tell(x, $.emptyKb).kb
+        const x = $.thereIs($.a('mouse').in('house#1')).tell.$
+        const kb = evaluate(x, $.emptyKb).kb
 
         const r = evaluate(x, kb)
         dassert(r.result)
@@ -775,10 +776,10 @@ Deno.test({
     fn: () => {
         const kb0 = getStandardKb()
         const kb = $({ limitedNumOf: 'x-coord', onConcept: 'point', max: 1 }).dump(kb0)
-        const kb1 = tell($('pt#1').isa('point').$, kb).kb
-        const kb2 = tell($('pt#1').has(1).as('x-coord').$, kb1).kb
-        const kb3 = tell($('pt#1').has(2).as('x-coord').$, kb2).kb
-        const kb4 = tell($('pt#1').has(3).as('x-coord').$, kb3).kb
+        const kb1 = evaluate($('pt#1').isa('point').tell.$, kb).kb
+        const kb2 = evaluate($('pt#1').has(1).as('x-coord').tell.$, kb1).kb
+        const kb3 = evaluate($('pt#1').has(2).as('x-coord').tell.$, kb2).kb
+        const kb4 = evaluate($('pt#1').has(3).as('x-coord').tell.$, kb3).kb
         const x = findAll($('pt#1').has('x:thing').as('x-coord').$, [$('x:thing').$], kb4)
         assertEquals(x.length, 1)
         assertEquals(evaluate($.the('number').which($('pt#1').has($._).as('x-coord')).$, kb4).result, $(3).$)
@@ -790,10 +791,10 @@ Deno.test({
     fn: () => {
         const kb0 = getStandardKb()
         const kb = $({ limitedNumOf: 'state', onConcept: 'thing', max: 1 }).dump(kb0)
-        const kb1 = tell($('door#1').isa('door').$, kb).kb
-        const kb2 = tell($('door#1').has('open').as('state').$, kb1).kb
-        const kb3 = tell($('door#1').has('closed').as('state').$, kb2).kb
-        const kb4 = tell($('door#1').has('open').as('state').$, kb3).kb
+        const kb1 = evaluate($('door#1').isa('door').tell.$, kb).kb
+        const kb2 = evaluate($('door#1').has('open').as('state').tell.$, kb1).kb
+        const kb3 = evaluate($('door#1').has('closed').as('state').tell.$, kb2).kb
+        const kb4 = evaluate($('door#1').has('open').as('state').tell.$, kb3).kb
         dassert(evaluate($('door#1').has('closed').as('state').$, kb3).result)
         dassert(evaluate($('door#1').has('open').as('state').isNotTheCase.$, kb3).result)
         dassert(evaluate($('door#1').has('open').as('state').$, kb4).result)
@@ -886,9 +887,9 @@ Deno.test({
             .and($('button#1').isa('button'))
             .dump()
 
-        const a = $('button#1').has('down').as('state').$
+        const a = $('button#1').has('down').as('state').tell.$
 
-        const { kb: kb2 } = tell(a, kb)
+        const { kb: kb2 } = evaluate(a, kb)
         dassert(evaluate($('screen#1').has('red').as('color').$, kb2).result)
     }
 })
@@ -905,9 +906,9 @@ Deno.test({
             .and($('x:button').is('down').when($('x:button').has('down').as('state')))
             .dump()
 
-        const a = $('button#1').is('down').$
+        const a = $('button#1').is('down').tell.$
 
-        const { kb: kb2 } = tell(a, kb)
+        const { kb: kb2 } = evaluate(a, kb)
         dassert(evaluate($('screen#1').has('red').as('color').$, kb2).result)
     }
 })
@@ -926,9 +927,9 @@ Deno.test({
             .and($('x:button').is('down').when($('x:button').has('down').as('state')))
             .dump()
 
-        const a = $('button#1').has('down').as('state').$
+        const a = $('button#1').has('down').as('state').tell.$
 
-        const { kb: kb2 } = tell(a, kb)
+        const { kb: kb2 } = evaluate(a, kb)
         dassert(evaluate($('screen#1').has('red').as('color').$, kb2).result)
     }
 })
@@ -945,9 +946,9 @@ Deno.test({
                 .and($('capra#2').has(1).as('eye'))
                 .dump(kb)
 
-        const kb3 = tell($('capra#1').has(2).as('eye').$, kb2).kb
-        const kb4 = tell($('capra#1').has(3).as('eye').$, kb3).kb
-        const kb5 = tell($('capra#1').has(4).as('eye').$, kb4).kb
+        const kb3 = evaluate($('capra#1').has(2).as('eye').tell.$, kb2).kb
+        const kb4 = evaluate($('capra#1').has(3).as('eye').tell.$, kb3).kb
+        const kb5 = evaluate($('capra#1').has(4).as('eye').tell.$, kb4).kb
 
         assertEquals(findAll($('capra#1').has('x:thing').as('eye').$, [$('x:thing').$], kb5).map(x => x.get($('x:thing').$)), [$(3).$, $(4).$])
 
@@ -965,21 +966,12 @@ Deno.test({
             $({ limitedNumOf: 'buruf', onConcept: 'thing', max: 0 })
                 .dump(kb)
 
-        const kb3 = tell($('capra#1').has(2).as('buruf').$, kb2).kb
+        const kb3 = evaluate($('capra#1').has(2).as('buruf').tell.$, kb2).kb
 
         assertEquals(findAll($('capra#1').has('x:thing').as('buruf').$, [$('x:thing').$], kb3).map(x => x.get($('x:thing').$)).length, 0)
 
     }
 })
-
-// Deno.test({
-//     name: 'test84',
-//     fn: () => {
-//         // equality as an alias for derivation clause declaration in tell()
-//         const kb = evaluate($('it').equals('x:thing').tell.$, $.emptyKb).kb
-//         assertEquals(kb.derivClauses[0], $('it').when('x:thing').$)
-//     }
-// })
 
 Deno.test({
     name: 'test85',
