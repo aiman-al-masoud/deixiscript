@@ -306,7 +306,7 @@ export function pointsToThings(ast: LLangAst): boolean {
         || ast.type === 'implicit-reference'
         || ast.type === 'cardinality'
         || ast.type === 'which'
-        || ast.type === 'math-expression'
+        || ast.type === 'math-expression' //!!!!!!!! not true sometimes
 }
 
 export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
