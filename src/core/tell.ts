@@ -2,7 +2,7 @@ import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
-import { definitionOf } from "./definitionOf.ts";
+// import { definitionOf } from "./definitionOf.ts";
 // import { evalArgs } from "./evalArgs.ts";
 // import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
