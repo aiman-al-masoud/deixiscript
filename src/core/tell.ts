@@ -97,8 +97,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'generalized':
             {
-                const when = definitionOf(ast, kb)
-                if (when) return evaluate($(when).tell.$, kb)
+                // const when = definitionOf(ast, kb)
+                // if (when) return evaluate($(when).tell.$, kb)
             }
             break
         case "complement":

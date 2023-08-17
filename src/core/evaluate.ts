@@ -15,7 +15,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
 } {
     if (ast.type === 'command') {
 
-        if (ast.f1.type === 'has-formula' || ast.f1.type==='is-a-formula' || ast.f1.type === 'complement') {
+        if (ast.f1.type === 'has-formula' || ast.f1.type==='is-a-formula' || ast.f1.type === 'complement' || ast.f1.type==='generalized') {
             const { rast, kb: kb1 } = evalArgs(ast.f1, knowledgeBase)
 
             const def = definitionOf(rast, kb1)

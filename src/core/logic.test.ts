@@ -948,7 +948,7 @@ Deno.test({
                 .and($('capra#2').has(1).as('eye'))
                 .dump(kb)
 
-        console.log(kb2.wm)
+        // console.log(kb2.wm)
 
         const kb3 = evaluate($('capra#1').has(2).as('eye').tell.$, kb2).kb
         const kb4 = evaluate($('capra#1').has(3).as('eye').tell.$, kb3).kb
