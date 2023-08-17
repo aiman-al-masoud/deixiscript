@@ -24,13 +24,12 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     } else {
 
         const { rast, kb: kb1 } = evalArgs(ast, knowledgeBase)
-        const when = definitionOf(rast, kb1) //?? $(false).$
+        const when = definitionOf(rast, kb1)
         if (when) {
             const v = evaluate(when, kb1)
             if (isTruthy(v.result)) return v
         }
-
-        const rast2 = ast.type === 'is-a-formula' || ast.type === 'has-formula' ? decompress(rast) : rast
+        const rast2 = decompress(rast)
 
         return {
             ...ask(rast2, kb1),
