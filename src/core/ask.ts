@@ -1,7 +1,6 @@
 import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
-import { decompress } from "./decompress.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
@@ -68,7 +67,7 @@ export function ask(
                 const o = ast.object
                 const as = ast.as
 
-                if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return evaluate(decompress(ast), kb)
+                if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return evaluate(ast, kb)
 
                 const ok = kb.wm.filter(isHasSentence).some(hs => {
                     return s.value === hs[0]
