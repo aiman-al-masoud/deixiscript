@@ -61,9 +61,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'conjunction':
             {
-                const { rast } = evalArgs(ast, kb)
-                const result1 = tell(rast.f1, kb)
-                const result2 = tell(rast.f2, result1.kb)
+                const result1 = tell(ast.f1, kb)
+                const result2 = tell(ast.f2, result1.kb)
                 additions = addWorldModels(result1.additions, result2.additions)
                 addedDerivationClauses = result2.kb.derivClauses
             }
@@ -76,63 +75,54 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             break
         case 'if-else':
             {
-                // const { rast } = evalArgs(ast, kb)
                 const { kb: kb1, result } = evaluate(ast.condition, kb)
                 if (isTruthy(result)) return tell(ast.then, kb1)
                 return tell(ast.otherwise, kb1)
             }
         case 'existquant':
             {
-                const { rast } = evalArgs(ast, kb)
-                const v = removeImplicit(rast.value)
+                const v = removeImplicit(ast.value)
                 return tell(v, kb)
             }
         case 'arbitrary-type':
             {
-                const { rast } = evalArgs(ast, kb)
-                const id = rast.head.varType + '#' + random()
-                const isa = $(id).isa(rast.head.varType).$
-                const where = subst(rast.description, [rast.head, $(id).$])
+                const id = ast.head.varType + '#' + random()
+                const isa = $(id).isa(ast.head.varType).$
+                const where = subst(ast.description, [ast.head, $(id).$])
                 const { kb: kb1 } = tell(isa, kb)
                 const result = tell(where, kb1)
                 return result
             }
         case 'variable':
             {
-                const { rast } = evalArgs(ast, kb)
-                return tell($(rast).suchThat($(rast).isa(rast.varType)).$, kb)
+                return tell($(ast).suchThat($(ast).isa(ast.varType)).$, kb)
             }
         case 'negation':
             {
-                const { rast } = evalArgs(ast, kb)
-                const result = tell(rast.f1, kb)
+                const result = tell(ast.f1, kb)
                 additions = result.eliminations
                 eliminations = result.additions
             }
             break
         case 'generalized':
             {
-                const { rast } = evalArgs(ast, kb)
-                const when = definitionOf(rast, kb)
+                const when = definitionOf(ast, kb)
                 if (when) return tell(when, kb)
             }
             break
         case "complement":
             {
-                const { rast } = evalArgs(ast, kb)
-                const when = definitionOf(rast, kb)
+                const when = definitionOf(ast, kb)
                 if (when) return tell(when, kb)
-                return tell(removeImplicit(rast), kb)
+                return tell(removeImplicit(ast), kb)
             }
         case 'cardinality':
             {
-                const { rast } = evalArgs(ast, kb)
-                return tell(removeImplicit(rast), kb)
+                return tell(removeImplicit(ast), kb)
             }
         case 'which':
             {
-                const { rast } = evalArgs(ast, kb)
-                return tell(removeImplicit(rast), kb)
+                return tell(removeImplicit(ast), kb)
             }
         case "number":
         case "boolean":
