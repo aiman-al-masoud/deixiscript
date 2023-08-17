@@ -2,7 +2,6 @@ import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.1
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { tell } from "./tell.ts";
-import { ask } from "./ask.ts";
 import { KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
@@ -1008,22 +1007,25 @@ Deno.test({
     }
 })
 
-// Deno.test({
-//     name: 'test88',
-//     fn: () => {
-//         // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
-//         const kb =
-//             $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
-//                 .and($('cat').has(2).as('position'))
-//                 .dump()
+Deno.test({
+    name: 'test88',
+    fn: () => {
+        // overridable is-a, making sure that "any entity" isa "any role it may even temporarily accrue" 
+        const kb =
+            $('x:thing').isa('y:thing').when($.thereIs($('z:thing').suchThat($('z:thing').has('x:thing').as('y:thing'))))
+                .and($('cat').has(2).as('position'))
+                .and($('human').isa('mammal'))
+                .dump()
 
-//         const q1 = $(2).isa('position').$
-//         const q2 = $(3).isa('position').isNotTheCase.$
+        const q1 = $(2).isa('position').$
+        const q2 = $(3).isa('position').isNotTheCase.$
+        const q3 = $('human').isa('mammal').$
 
-//         dassert(evaluate(q1, kb).result)
-//         dassert(evaluate(q2, kb).result)
-//     }
-// })
+        dassert(evaluate(q1, kb).result)
+        dassert(evaluate(q2, kb).result)
+        dassert(evaluate(q3, kb).result)
+    }
+})
 
 Deno.test({
     name: 'test89',

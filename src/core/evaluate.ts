@@ -4,7 +4,7 @@ import { definitionOf } from "./definitionOf.ts";
 import { evalArgs } from "./evalArgs.ts";
 import { $ } from "./exp-builder.ts";
 import { tell } from "./tell.ts";
-import { KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
+import { KnowledgeBase, LLangAst, WorldModel, isTruthy } from "./types.ts";
 
 export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     kb: KnowledgeBase,
@@ -24,8 +24,12 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
     } else {
 
         const { rast, kb: kb1 } = evalArgs(ast, knowledgeBase)
-        const when = definitionOf(rast, kb1)
-        if (when) return evaluate(when, kb1)
+        const when = definitionOf(rast, kb1) //?? $(false).$
+        if (when) {
+            const v = evaluate(when, kb1)
+            if (isTruthy(v.result)) return v
+        }
+
         const rast2 = ast.type === 'is-a-formula' || ast.type === 'has-formula' ? decompress(rast) : rast
 
         return {
