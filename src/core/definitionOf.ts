@@ -7,8 +7,8 @@ import { LLangAst, KnowledgeBase, isConst, astsEqual, isWhenDerivationClause, As
 
 export function definitionOf(ast: LLangAst, kb: KnowledgeBase) {
   return first(kb.derivClauses.filter(isWhenDerivationClause), dc => {
-    const matchF = getMatchFunction(ast)
 
+    const matchF = getMatchFunction(ast)
     const map = matchF(dc.conseq, ast, kb)
     if (!map) return
 
@@ -21,9 +21,9 @@ function strictMatch(t: LLangAst, f: LLangAst) {
   if (astsEqual(t, f)) return deepMapOf() as AstMap
 }
 
-function neverMatch(t: LLangAst, f: LLangAst) {
-  return undefined
-}
+// function neverMatch(t: LLangAst, f: LLangAst) {
+//   return undefined
+// }
 
 function getMatchFunction(ast: LLangAst) {
 
