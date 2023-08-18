@@ -102,8 +102,8 @@ Deno.test({
             
             const kb0 = evaluate($('nyc').$, kb).kb // focus attention on wrong city
             
-        console.log(kb0.deicticDict)
-        console.log(kb0.wm)
+        // console.log(kb0.deicticDict)
+        // console.log(kb0.wm)
 
         const query = $('person#1').has('boston').as('birth-city').$
         const r = evaluate(query, kb0)
