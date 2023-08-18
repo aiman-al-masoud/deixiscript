@@ -5,7 +5,7 @@ import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, Wm
 // import { definitionOf } from "./definitionOf.ts";
 // import { evalArgs } from "./evalArgs.ts";
 // import { decompress } from "./decompress.ts";
-import { removeImplicit } from "./removeImplicit.ts";
+// import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
@@ -72,7 +72,8 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             }
         case 'existquant':
             {
-                const v = removeImplicit(ast.value)
+                // const v = removeImplicit(ast.value)
+                const v = ast.value
                 return evaluate($(v).tell.$, kb)
             }
         case 'arbitrary-type':
@@ -99,19 +100,22 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
             {
                 // const when = definitionOf(ast, kb)
                 // if (when) return evaluate($(when).tell.$, kb)
+                throw new Error(``)
             }
-            break
         case "complement":
             {
-                return evaluate($(ast).tell.$, kb)
+                throw new Error(``)
+                // return evaluate($(ast).tell.$, kb)
             }
         case 'cardinality':
             {
-                return evaluate($(removeImplicit(ast)).tell.$, kb)
+                throw new Error(``)
+                // return evaluate($(removeImplicit(ast)).tell.$, kb)
             }
         case 'which':
             {
-                return evaluate($(removeImplicit(ast)).tell.$, kb)
+                throw new Error(``)
+                // return evaluate($(removeImplicit(ast)).tell.$, kb)
             }
         case "number":
         case "boolean":

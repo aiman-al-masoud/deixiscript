@@ -1,7 +1,7 @@
 import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
-import { removeImplicit } from "./removeImplicit.ts";
+// import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
@@ -41,18 +41,14 @@ export function ask(
 
                 assert(isConst(t1) && isConst(t2))
 
-                if (t1.value === 'thing' && t2.value!=='thing') return { result: $(false).$, kb: kb }
-
+                if (t1.value === 'thing' && t2.value !== 'thing') return { result: $(false).$, kb: kb }
 
                 if (t1.type === t2.value) return { result: $(true).$, kb: kb }
 
                 if (t2.value === 'thing') return { result: $(true).$, kb: kb }
 
-
-
-                // if (!isConst(t1) || !isConst(t2)) return { result: $(false).$, kb: kb } // !!
-
-                const concepts = kb.wm.filter(isIsASentence)
+                const concepts = kb.wm
+                    .filter(isIsASentence)
                     .filter(s => s[0] === t1.value)
                     .map(x => x[1])
 
@@ -112,6 +108,11 @@ export function ask(
             }
         case 'arbitrary-type':
 
+            // console.log('arbitype=', ast)
+            // console.log('-----------------')
+            // assert(ast.head.type==='variable')
+            if (ast.head.type !== 'variable') return { result: ast.head, kb } //TODO
+
             const maps = findAll(ast.description, [ast.head], kb)
             const candidates = maps.map(x => x.get(ast.head)).filter(isNotNullish)
 
@@ -132,7 +133,8 @@ export function ask(
             }
         case 'implicit-reference':
             {
-                return evaluate(removeImplicit(ast), kb)
+                // return evaluate(removeImplicit(ast), kb)
+                throw new Error(``)
             }
         case 'if-else':
             {
@@ -167,19 +169,23 @@ export function ask(
             }
         case 'generalized':
             {
+                // throw new Error(``)
                 return { result: $(false).$, kb: kb }
             }
         case "complement":
             {
-                return evaluate(removeImplicit(ast), kb)
+                throw new Error(``)
+                // return evaluate(removeImplicit(ast), kb)
             }
         case 'cardinality':
             {
-                return evaluate(removeImplicit(ast), kb)
+                throw new Error(``)
+                // return evaluate(removeImplicit(ast), kb)
             }
         case 'which':
             {
-                return evaluate(removeImplicit(ast), kb)
+                throw new Error(``)
+                // return evaluate(removeImplicit(ast), kb)
             }
 
         case "command":

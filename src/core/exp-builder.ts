@@ -8,6 +8,7 @@ export class ExpBuilder<T extends LLangAst> {
 
     isa(object: ExpBuilderArg) {
 
+
         return new ExpBuilder<IsAFormula>({
             type: 'is-a-formula',
             subject: this.exp,

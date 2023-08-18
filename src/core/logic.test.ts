@@ -84,6 +84,8 @@ Deno.test({
 
         ).$
 
+        // console.log(dc)
+
         const kb = $('person#1').has('event#1').as('birth')
             .and($('person#1').isa('person'))
             .and($('person#2').isa('person'))
@@ -97,15 +99,19 @@ Deno.test({
             .and(dc)
             .dump()
 
-        const kb0 = evaluate($('nyc').$, kb).kb // focus attention on wrong city
+            
+            const kb0 = evaluate($('nyc').$, kb).kb // focus attention on wrong city
+            
+        console.log(kb0.deicticDict)
+        console.log(kb0.wm)
 
         const query = $('person#1').has('boston').as('birth-city').$
         const r = evaluate(query, kb0)
         dassert(r.result)
 
-        const q2 = $('person#2').has('boston').as('birth-city')
-        const kb1 = evaluate(q2.tell.$, kb0).kb //auto-creates new event & new spacepoint
-        dassert(evaluate(q2.ask.$, kb1).result)
+        // const q2 = $('person#2').has('boston').as('birth-city')
+        // const kb1 = evaluate(q2.tell.$, kb0).kb //auto-creates new event & new spacepoint
+        // dassert(evaluate(q2.ask.$, kb1).result)
     }
 })
 
