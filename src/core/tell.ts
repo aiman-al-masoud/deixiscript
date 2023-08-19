@@ -1,7 +1,8 @@
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, consequencesOf, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
+import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
+import { consequencesOf } from "./consequencesOf.ts";
 // import { definitionOf } from "./definitionOf.ts";
 // import { evalArgs } from "./evalArgs.ts";
 // import { decompress } from "./decompress.ts";

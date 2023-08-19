@@ -3,13 +3,8 @@ import { deepEquals } from "../utils/deepEquals.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
 import { ask } from "./ask.ts";
-// import { ask } from "./ask.ts"
-import { definitionOf } from "./definitionOf.ts";
-import { evaluate } from "./evaluate.ts"
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
-import { match } from "./match.ts"
-import { subst } from "./subst.ts"
 
 /* WORLD-CONCEPTUAL MODEL */
 
@@ -314,20 +309,12 @@ export function pointsToThings(ast: LLangAst): boolean {
         || ast.type === 'math-expression' //!!!!!!!! not true sometimes
 }
 
-export function consequencesOf(ast: LLangAst, kb: KnowledgeBase): LLangAst[] {
-
-    return kb.derivClauses.flatMap(dc => {
-        if (!('after' in dc)) return []
-        const map = match(definitionOf(dc.after, kb) ?? dc.after, definitionOf(ast, kb) ?? ast, kb)
-        if (!map) return []
-        const conseq = subst(dc.conseq, map)
-        return [conseq]
-    })
-
-}
-
 export function isWhenDerivationClause(ast: LLangAst): ast is WhenDerivationClause {
     return ast.type === 'when-derivation-clause'
+}
+
+export function isAfterDerivationClause(ast: LLangAst): ast is AfterDerivationClause {
+    return ast.type === 'after-derivation-clause'
 }
 
 export function askBin(ast: LLangAst, kb: KnowledgeBase): boolean {
