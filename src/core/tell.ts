@@ -21,7 +21,10 @@ import { evaluate } from "./evaluate.ts";
  * Also provides WorldModel additions and elmininations (the "diff") 
  * to avoid having to recompute them.
  */
-export function tell(ast: LLangAst, kb: KnowledgeBase): {
+export function tell(
+    ast: LLangAst,
+    kb: KnowledgeBase,
+): {
     kb: KnowledgeBase,
     additions: WorldModel,
     eliminations: WorldModel,
@@ -35,13 +38,13 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
 
         case 'has-formula':
             {
-
                 assert(isConst(ast.subject) && isConst(ast.object) && isConst(ast.as))
                 additions = [[ast.subject.value, ast.object.value, ast.as.value]]
             }
             break
         case 'is-a-formula':
             {
+
                 assert(isConst(ast.subject) && isConst(ast.object))
 
                 additions = addWorldModels(
@@ -130,13 +133,19 @@ export function tell(ast: LLangAst, kb: KnowledgeBase): {
     }
 
     const consequences = consequencesOf(ast, kb)
+    // console.log('consequences=', consequences)
     const consequencesWm = consequences.flatMap(x => evaluate($(x).tell.$, kb).additions)
+    // console.log('consequencesWm=', consequencesWm)
+
     additions = [...additions, ...consequencesWm]
+    // console.log('additions=', additions)
 
     eliminations = [
         ...eliminations,
         ...additions.flatMap(s => excludedBy(s, kb)),
     ]
+
+
 
     const wm0 = addWorldModels(kb.wm, additions)
     const wm = subtractWorldModels(wm0, eliminations)
@@ -196,7 +205,9 @@ function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts
 
 function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
+    // console.log('excludedByIsA')
     const concepts = conceptsOf(is[0], kb)
+    // console.log('concepts=',concepts)
 
     const qs = concepts.map(c => $({ concept: c, excludes: 'c2:thing' }))
 
@@ -208,6 +219,7 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
             .filter(x => x !== is[1])
 
     const result = r.map(x => [is[0], x] as IsASentence)
+
 
     return result
 }

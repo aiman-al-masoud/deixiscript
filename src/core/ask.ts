@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number } from "./types.ts";
+import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number, WorldModel } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 // import { removeImplicit } from "./removeImplicit.ts";
@@ -26,7 +26,8 @@ export function ask(
             {
                 const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
                 const deicticDict = { ...kb.deicticDict, [ast.value as string]: lastTime + 1 }
-                return { result: ast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, [[ast.value, ast.type]]) } }
+                const deltaWm: WorldModel = ast.type === 'number' ? [[ast.value, ast.type]] : []
+                return { result: ast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, deltaWm) } }
             }
         case 'list':
         case 'nothing':
@@ -41,7 +42,8 @@ export function ask(
 
                 assert(isConst(t1) && isConst(t2))
 
-                if (t1.value === 'thing' && t2.value !== 'thing') return { result: $(false).$, kb: kb }
+                // if (t1.value === 'thing' && t2.value !== 'thing') return { result: $(false).$, kb: kb }
+                // if (t1.value === 'entity' && t2.value !== 'entity') return { result: $(false).$, kb: kb } //wrong, and entity ISA thing
 
                 if (t1.type === t2.value) return { result: $(true).$, kb: kb }
 
@@ -52,11 +54,13 @@ export function ask(
                     .filter(s => s[0] === t1.value)
                     .map(x => x[1])
 
+                // console.log('ask isa concepts=', concepts)
+
                 const uniqConcepts = uniq(concepts)
 
                 if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb }
 
-                const ok = uniqConcepts.some(x => isTruthy(ask($(x).isa(t2.value).$, kb).result))
+                const ok = uniqConcepts.some(x => isTruthy(evaluate($(x).isa(t2.value).$, kb).result))
                 if (ok) return { result: $(true).$, kb: kb }
 
                 return { result: $(false).$, kb: kb }
@@ -68,7 +72,8 @@ export function ask(
                 const o = ast.object
                 const as = ast.as
 
-                if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return evaluate(ast, kb)
+                // if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return evaluate(ast, kb)
+                assert(isAtom(s) && isAtom(o) && isAtom(as))
 
                 const ok = kb.wm.filter(isHasSentence).some(hs => {
                     return s.value === hs[0]

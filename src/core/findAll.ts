@@ -1,7 +1,7 @@
 import { LLangAst, Constant, KnowledgeBase, Variable, astsEqual, isTruthy } from "./types.ts";
 import { definitionOf } from "./definitionOf.ts";
 import { subst } from "./subst.ts";
-import { ask } from "./ask.ts";
+// import { ask } from "./ask.ts";
 import { uniq } from "../utils/uniq.ts";
 import { cartesian } from "../utils/cartesian.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
@@ -9,7 +9,10 @@ import { $ } from './exp-builder.ts'
 import { findAsts } from "./findAsts.ts";
 import { solve } from "./solve.ts";
 import { zip } from "../utils/zip.ts";
-import { assert } from "../utils/assert.ts";
+// import { assert } from "../utils/assert.ts";
+import { evaluate } from "./evaluate.ts";
+// import { print } from "../utils/print.ts";
+// import { ask } from "./ask.ts";
 // import { removeImplicit } from "./removeImplicit.ts";
 
 export function findAll(
@@ -122,28 +125,34 @@ function getCombos(
     ast: LLangAst,
 ): DeepMap<Variable, Constant>[] {
 
-
+    // console.log('getCombos')
     // vars = vars.filter(x=>x.type==='variable')
 
     // assert(vars.every(x=>x.type==='variable'), 'badly wrong!')
 
-
     if (vars.length === 0) {
-        const isTrue = isTruthy(ask(ast, kb).result)
+        const isTrue = isTruthy(evaluate(ast, kb).result)
         return isTrue ? [deepMapOf()] : []
     }
 
+    // console.log('ast=', ast)
+
     const varToCands = vars.map(v => {
 
-        const candidates = consts.filter(c => isTruthy(ask($(c.value).isa(v.varType).$, kb).result))
+        const candidates = consts.filter(c => isTruthy(evaluate($(c.value).isa(v.varType).$, kb).result))
         return candidates.map(c => [v, c] as const)
     })
 
+    // console.log('varToCands=', varToCands)
+
     const allCombos = cartesian(...varToCands ?? []).map(x => deepMapOf(x))
+
+    // console.log('allCombos=', allCombos)
 
     const results = allCombos.filter(c => {
         const sub = subst(ast, c)
-        const isTrue = isTruthy(ask(sub, kb).result)
+        // console.log('sub=', sub)
+        const isTrue = isTruthy(evaluate(sub, kb).result)
         return isTrue
     })
 

@@ -20,10 +20,11 @@ Deno.test({
     name: 'test1',
     fn: () => {
         // is-a test
-        const kb = $('person#2').isa('person')
-            .and($('person#1').isa('person'))
-            .and($('cat#1').isa('cat'))
-            .dump()
+        const kb =
+            $('person#2').isa('person')
+                .and($('person#1').isa('person'))
+                .and($('cat#1').isa('cat'))
+                .dump()
 
         const f = $('person#2').isa('person').$
         const f2 = $('person#2').isa('randomnonsensenonsense').isNotTheCase.$
@@ -99,9 +100,9 @@ Deno.test({
             .and(dc)
             .dump()
 
-            
-            const kb0 = evaluate($('nyc').$, kb).kb // focus attention on wrong city
-            
+
+        const kb0 = evaluate($('nyc').$, kb).kb // focus attention on wrong city
+
         // console.log(kb0.deicticDict)
         // console.log(kb0.wm)
 
