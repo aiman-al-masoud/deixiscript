@@ -1,7 +1,6 @@
 import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number, WorldModel } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
-// import { removeImplicit } from "./removeImplicit.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { sorted } from "../utils/sorted.ts";
 import { uniq } from "../utils/uniq.ts";
@@ -36,14 +35,10 @@ export function ask(
             }
         case 'is-a-formula':
             {
-
                 const t1 = ast.subject
                 const t2 = ast.object
 
                 assert(isConst(t1) && isConst(t2))
-
-                // if (t1.value === 'thing' && t2.value !== 'thing') return { result: $(false).$, kb: kb }
-                // if (t1.value === 'entity' && t2.value !== 'entity') return { result: $(false).$, kb: kb } //wrong, and entity ISA thing
 
                 if (t1.type === t2.value) return { result: $(true).$, kb: kb }
 
@@ -54,27 +49,20 @@ export function ask(
                     .filter(s => s[0] === t1.value)
                     .map(x => x[1])
 
-                // console.log('ask isa concepts=', concepts)
-
                 const uniqConcepts = uniq(concepts)
 
                 if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb }
 
                 const ok = uniqConcepts.some(x => isTruthy(evaluate($(x).isa(t2.value).$, kb).result))
-                
+
                 return { result: $(ok).$, kb: kb }
-
-                // if (ok) return { result: $(true).$, kb: kb }
-                // return { result: $(false).$, kb: kb }
             }
-
         case 'has-formula':
             {
                 const s = ast.subject
                 const o = ast.object
                 const as = ast.as
 
-                // if (!isAtom(s) || !isAtom(o) || !isAtom(as)) return evaluate(ast, kb)
                 assert(isAtom(s) && isAtom(o) && isAtom(as))
 
                 const ok = kb.wm.filter(isHasSentence).some(hs => {
@@ -115,9 +103,6 @@ export function ask(
             }
         case 'arbitrary-type':
 
-            // console.log('arbitype=', ast)
-            // console.log('-----------------')
-            // assert(ast.head.type==='variable')
             if (ast.head.type !== 'variable') return { result: ast.head, kb } //TODO
 
             const maps = findAll(ast.description, [ast.head], kb)
@@ -138,11 +123,7 @@ export function ask(
             } else {
                 return { result: $('nothing').$, kb: kb }
             }
-        case 'implicit-reference':
-            {
-                // return evaluate(removeImplicit(ast), kb)
-                throw new Error(``)
-            }
+
         case 'if-else':
             {
                 const { kb: kb1, result } = evaluate(ast.condition, kb)
@@ -174,27 +155,13 @@ export function ask(
                     kb,
                 )
             }
-        case 'generalized':
-            {
-                // throw new Error(``)
-                return { result: $(false).$, kb: kb }
-            }
-        case "complement":
-            {
-                throw new Error(``)
-                // return evaluate(removeImplicit(ast), kb)
-            }
-        case 'cardinality':
-            {
-                throw new Error(``)
-                // return evaluate(removeImplicit(ast), kb)
-            }
-        case 'which':
-            {
-                throw new Error(``)
-                // return evaluate(removeImplicit(ast), kb)
-            }
 
+        case 'generalized':
+            return { result: $(false).$, kb: kb }
+        case 'implicit-reference':
+        case "complement":
+        case 'cardinality':
+        case 'which':
         case "command":
         case "question":
         case 'after-derivation-clause':
