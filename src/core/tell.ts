@@ -3,10 +3,6 @@ import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
 import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
 import { consequencesOf } from "./consequencesOf.ts";
-// import { definitionOf } from "./definitionOf.ts";
-// import { evalArgs } from "./evalArgs.ts";
-// import { decompress } from "./decompress.ts";
-// import { removeImplicit } from "./removeImplicit.ts";
 import { random } from "../utils/random.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
@@ -45,7 +41,6 @@ export function tell(
             break
         case 'is-a-formula':
             {
-
                 assert(isConst(ast.subject) && isConst(ast.object))
 
                 additions = addWorldModels(
@@ -76,7 +71,6 @@ export function tell(
             }
         case 'existquant':
             {
-                // const v = removeImplicit(ast.value)
                 const v = ast.value
                 return evaluate($(v).tell.$, kb)
             }
@@ -101,26 +95,9 @@ export function tell(
             }
             break
         case 'generalized':
-            {
-                // const when = definitionOf(ast, kb)
-                // if (when) return evaluate($(when).tell.$, kb)
-                throw new Error(``)
-            }
         case "complement":
-            {
-                throw new Error(``)
-                // return evaluate($(ast).tell.$, kb)
-            }
         case 'cardinality':
-            {
-                throw new Error(``)
-                // return evaluate($(removeImplicit(ast)).tell.$, kb)
-            }
         case 'which':
-            {
-                throw new Error(``)
-                // return evaluate($(removeImplicit(ast)).tell.$, kb)
-            }
         case "number":
         case "boolean":
         case "entity":
@@ -134,12 +111,8 @@ export function tell(
     }
 
     const consequences = consequencesOf(ast, kb)
-    // console.log('consequences=', consequences)
     const consequencesWm = consequences.flatMap(x => evaluate($(x).tell.$, kb).additions)
-    // console.log('consequencesWm=', consequencesWm)
-
     additions = [...additions, ...consequencesWm]
-    // console.log('additions=', additions)
 
     eliminations = [
         ...eliminations,
@@ -149,7 +122,7 @@ export function tell(
     const wm0 = addWorldModels(kb.wm, additions)
     const wm = subtractWorldModels(wm0, eliminations)
 
-    const derivClauses = sorted([...kb.derivClauses, ...addedDerivationClauses], (a, b) => compareSpecificities(b.conseq, a.conseq, kb)) /*  !addedDerivationClauses.length ? kb.derivClauses */ //:  
+    const derivClauses = sorted([...kb.derivClauses, ...addedDerivationClauses], (a, b) => compareSpecificities(b.conseq, a.conseq, kb))
 
     return {
         additions,
@@ -203,10 +176,7 @@ function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts
 
 function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
-    // console.log('excludedByIsA')
     const concepts = conceptsOf(is[0], kb)
-    // console.log('concepts=',concepts)
-
     const qs = concepts.map(c => $({ concept: c, excludes: 'c2:thing' }))
 
     const r =
@@ -257,9 +227,6 @@ function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
         .map(x => x[2])
 
     const supers = conceptsOf(concept, kb).filter(x => x !== concept)
-
-    // console.log(concept, supers)
-
     const all = supers.flatMap(x => getParts(x, kb)).concat(parts)
     return uniq(all)
 }
