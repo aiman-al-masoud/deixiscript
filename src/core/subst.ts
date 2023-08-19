@@ -2,6 +2,8 @@ import { LLangAst, AstMap, isLLangAst, astsEqual } from "./types.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
 import { hash } from "../utils/hash.ts";
 import { sorted } from "../utils/sorted.ts";
+import { $ } from "./exp-builder.ts";
+import { valueIs } from "../utils/valueIs.ts";
 
 
 export function subst<T extends LLangAst>(formula: T, map: AstMap): T
@@ -22,25 +24,25 @@ export function subst(formula: LLangAst, arg: unknown): LLangAst {
 }
 
 function substOnce(
-    ast: LLangAst | LLangAst[],
+    ast: LLangAst,
     oldTerm: LLangAst,
     replacement: LLangAst,
-): LLangAst | LLangAst[] {
-
-    if (ast instanceof Array) {
-        return ast.map(e => substOnce(e, oldTerm, replacement) as LLangAst)
-    }
+): LLangAst {
 
     if (astsEqual(oldTerm, ast)) {
         return replacement
     }
 
+    if (ast.type === 'list') {
+        return $(ast.value.map(e => substOnce(e, oldTerm, replacement))).$
+    }
+
     const newEntries = Object.entries(ast)
-        .filter(e => isLLangAst(e[1]) || e[1] instanceof Array)
-        .map(e => [e[0], substOnce(e[1] as LLangAst, oldTerm, replacement)] as const)
+        .filter(valueIs(isLLangAst))
+        .map(e => [e[0], substOnce(e[1], oldTerm, replacement)] as const)
 
     return {
         ...ast,
         ...Object.fromEntries(newEntries),
-    } as LLangAst
+    }
 }
