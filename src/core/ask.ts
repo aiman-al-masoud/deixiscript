@@ -61,9 +61,11 @@ export function ask(
                 if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb }
 
                 const ok = uniqConcepts.some(x => isTruthy(evaluate($(x).isa(t2.value).$, kb).result))
-                if (ok) return { result: $(true).$, kb: kb }
+                
+                return { result: $(ok).$, kb: kb }
 
-                return { result: $(false).$, kb: kb }
+                // if (ok) return { result: $(true).$, kb: kb }
+                // return { result: $(false).$, kb: kb }
             }
 
         case 'has-formula':
