@@ -51,19 +51,17 @@ export function findAll(
         case "when-derivation-clause":
         case "after-derivation-clause":
         case "if-else":
-            throw new Error(`TODO!`)
+        case 'cardinality':
+        case 'which':
+        case "complement":
+            throw new Error(``)
         case "arbitrary-type":
             {
                 const vars = uniq([...variables, realAst.head])
                 return findAll($(realAst.head).and(realAst.description).$, vars, kb, partialResults)
             }
-        case 'cardinality':
-        case 'which':
-            throw new Error(``)
         case "generalized":
-            return [] // if no derivation clause = no matches!
-        case "complement":
-            throw new Error(``)
+            return [] // if no derivation clause = no matches!    
         case 'math-expression':
             try {
                 const v = variables[0]
