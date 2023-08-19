@@ -34,7 +34,7 @@ function substOnce(
     }
 
     if (ast.type === 'list') {
-        return $(ast.value.map(e => substOnce(e, oldTerm, replacement))).$
+        return $(ast.value.map(x => substOnce(x, oldTerm, replacement))).$
     }
 
     const newEntries = Object.entries(ast)
