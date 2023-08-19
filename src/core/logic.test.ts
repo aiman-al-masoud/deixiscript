@@ -1066,6 +1066,14 @@ Deno.test({
 })
 
 // Deno.test({
+//     name: 'test92',
+//     fn: () => {
+//         const kb = $('capra#1').isa('capra').dump()
+//         console.log(kb.deicticDict)
+//     }
+// })
+
+// Deno.test({
 //     name: 'test73',
 //     fn: () => {
 //         const kb =

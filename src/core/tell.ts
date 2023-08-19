@@ -145,13 +145,10 @@ export function tell(
         ...additions.flatMap(s => excludedBy(s, kb)),
     ]
 
-
-
     const wm0 = addWorldModels(kb.wm, additions)
     const wm = subtractWorldModels(wm0, eliminations)
 
-    const derivClauses = !addedDerivationClauses.length ? kb.derivClauses
-        : sorted([...kb.derivClauses, ...addedDerivationClauses], (a, b) => compareSpecificities(b.conseq, a.conseq, kb))
+    const derivClauses = sorted([...kb.derivClauses, ...addedDerivationClauses], (a, b) => compareSpecificities(b.conseq, a.conseq, kb)) /*  !addedDerivationClauses.length ? kb.derivClauses */ //:  
 
     return {
         additions,

@@ -34,6 +34,13 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase): { rast: LLangAst, kb
     case "after-derivation-clause":
       return { rast: ast, kb }
 
+    // case "is-a-formula":
+      // {
+      //   const { result:object, kb:kb1 } = evaluate(ast.object, kb)
+      //   const { result:subject, kb:kb2 } = evaluate(ast.subject, kb1)
+      //   const rast= {...ast,subject,object}
+      //   return {rast, kb:kb2}
+      // }
     case "is-a-formula":
     case "has-formula":
     case "math-expression":
