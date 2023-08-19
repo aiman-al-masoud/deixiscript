@@ -29,11 +29,12 @@ export function findAll(
                 return findAll(realAst.f2, vars, kb)
             }
 
-            const vars1 = uniq(findAsts(realAst.f1, 'variable'))
-            const firstChoices = findAll(realAst.f1, vars1, kb, partialResults)
+            const varsF1 = uniq(findAsts(realAst.f1, 'variable'))
+            const firstChoices = findAll(realAst.f1, varsF1, kb, partialResults)
             const missingVars = uniq(getMissingVars(variables, firstChoices))
-            const secondChoices = getSecondChoices(realAst.f2, missingVars, kb, firstChoices)
-            const result = combineChoices(firstChoices, secondChoices)
+            const secondChoices = firstChoices.map(m1 => findAll(subst(realAst.f2, m1), missingVars, kb, firstChoices))
+            const zipped = zip(firstChoices, secondChoices)
+            const result = zipped.flatMap(e => e[1].map(m2 => deepMapOf([...e[0], ...m2])))
             return result
         case "existquant":
             return findAll(realAst.value, variables, kb, partialResults)
@@ -118,18 +119,3 @@ function getMissingVars(variables: Variable[], partRes: DeepMap<Variable, Consta
     const unfoundVars = variables.filter(v => !foundVars.some(w => astsEqual(w, v)))
     return unfoundVars
 }
-
-function getSecondChoices(ast: LLangAst, vars: Variable[], kb: KnowledgeBase, firstChoices: DeepMap<Variable, Constant>[]) {
-    const result = firstChoices.map(m1 => findAll(subst(ast, m1), vars, kb, firstChoices))
-    return result
-}
-
-function combineChoices(
-    firstChoices: DeepMap<Variable, Constant>[],
-    secondChoices: DeepMap<Variable, Constant>[][],
-) {
-    const zipped = zip(firstChoices, secondChoices)
-    const result = zipped.flatMap(e => e[1].map(m2 => deepMapOf([...e[0], ...m2])))
-    return result
-}
-
