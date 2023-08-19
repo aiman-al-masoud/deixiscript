@@ -1046,7 +1046,7 @@ Deno.test({
         const t = $(['e:number', 'x:list']).$
         const f = $([1, 2, 3, 4]).$
         const m = match(t, f, $.emptyKb)
-        assertEquals(m, deepMapOf([[$('e:number').$, $(1).$ as unknown], [$('x:list').$, $([2, 3, 4]).$]]) as unknown)
+        assertEquals(m, deepMapOf([[$('e:number').$, $(1).$ as LLangAst], [$('x:list').$, $([2, 3, 4]).$]]))
     }
 })
 
