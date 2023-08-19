@@ -1,7 +1,7 @@
 import { LLangAst, AstMap, isLLangAst, astsEqual } from "./types.ts";
 import { DeepMap, deepMapOf } from "../utils/DeepMap.ts";
-import { hash } from "../utils/hash.ts";
-import { sorted } from "../utils/sorted.ts";
+// import { hash } from "../utils/hash.ts";
+// import { sorted } from "../utils/sorted.ts";
 import { $ } from "./exp-builder.ts";
 import { valueIs } from "../utils/valueIs.ts";
 
@@ -13,8 +13,8 @@ export function subst(formula: LLangAst, arg: unknown): LLangAst {
 
     if (arg instanceof DeepMap) {
         const subs = Array.from(arg.entries())
-        const sortedSubs = sorted(subs, (s1, s2) => hash(s2[0]).length - hash(s1[0]).length)
-        return sortedSubs.reduce((f, s) => substOnce(f, s[0], s[1]) as LLangAst, formula)
+        // const sortedSubs = sorted(subs, (s1, s2) => hash(s2[0]).length - hash(s1[0]).length)
+        return /* sortedSubs */subs.reduce((f, s) => substOnce(f, s[0], s[1]) as LLangAst, formula)
 
     } else if (arg instanceof Array) {
         return subst(formula, deepMapOf([arg] as [LLangAst, LLangAst][]))
