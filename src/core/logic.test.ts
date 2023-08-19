@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
 import { $ } from "./exp-builder.ts";
 import { findAll } from "./findAll.ts";
-import { KnowledgeBase, LLangAst, conceptsOf, isTruthy } from "./types.ts";
+import { KnowledgeBase, LLangAst, isTruthy } from "./types.ts";
 import { getStandardKb } from "./prelude.ts";
 import { evaluate } from "./evaluate.ts";
 import { solve } from "./solve.ts";
