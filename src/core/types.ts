@@ -285,9 +285,7 @@ export function addWorldModels(...wms: WorldModel[]): WorldModel {
 }
 
 export function conceptsOf(concept: WmAtom, kb: KnowledgeBase) {
-    // console.log('conceptsOf')
     const maps = findAll($(concept).isa('x:thing').$, [$('x:thing').$], kb)
-    // console.log('....')
     return maps.map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
 }
 
