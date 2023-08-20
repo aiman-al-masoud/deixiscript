@@ -1,16 +1,14 @@
 import { $ } from "./exp-builder.ts";
-import { findAll } from "./findAll.ts";
 import { subst } from "./subst.ts";
-import { DerivationClause, HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, addWorldModels, conceptsOf, isConst, isHasSentence, isIsASentence, isTruthy, subtractWorldModels } from "./types.ts";
+import { DerivationClause, KnowledgeBase, LLangAst, WorldModel, addWorldModels, isConst, isTruthy, subtractWorldModels } from "./types.ts";
 import { consequencesOf } from "./consequencesOf.ts";
 import { random } from "../utils/random.ts";
-import { isNotNullish } from "../utils/isNotNullish.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
-import { uniq } from "../utils/uniq.ts";
-import { zip } from "../utils/zip.ts";
 import { assert } from "../utils/assert.ts";
 import { evaluate } from "./evaluate.ts";
+import { defaultFillersOf } from "./getDefaultFillers.ts";
+import { excludedBy } from "./excludedBy.ts";
 
 
 /**
@@ -45,7 +43,7 @@ export function tell(
 
                 additions = addWorldModels(
                     [[ast.subject.value, ast.object.value]],
-                    getDefaultFillers(ast.subject.value, ast.object.value, kb),
+                    defaultFillersOf(ast.subject.value, ast.object.value, kb),
                 )
             }
             break
@@ -136,97 +134,3 @@ export function tell(
 
 }
 
-function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
-
-    if (isIsASentence(s)) {
-        return excludedByIsA(s, kb)
-    } else {
-        return excludedByHas(s, kb)
-    }
-
-}
-
-function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
-    const concepts = conceptsOf(h[0], kb)
-    const r = excludedByNumberRestriction(h, kb, concepts)
-    const results = r.map(x => [h[0], x, h[2]] as HasSentence)
-    return results
-}
-
-function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
-
-    const qs2 =
-        concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }))
-
-    const maxes =
-        qs2.flatMap(x => findAll(x.$, [$('n:number').$], kb))
-            .map(x => x.get($('n:number').$))
-            .filter(isNotNullish)
-            .map(x => x.value)
-
-    if (!maxes.length) return []
-
-    // assume oldest-inserted values come first
-    const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value).concat(h[1])
-
-    const max = Math.min(...maxes as number[]) // most restrictive
-    const throwAway = old.slice(0, old.length - max)
-    return throwAway
-}
-
-function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
-
-    const concepts = conceptsOf(is[0], kb)
-    const qs = concepts.map(c => $({ concept: c, excludes: 'c2:thing' }))
-
-    const r =
-        qs.flatMap(q => findAll(q.$, [$('c2:thing').$], kb))
-            .map(x => x.get($('c2:thing').$))
-            .filter(isNotNullish)
-            .map(x => x.value)
-            .filter(x => x !== is[1])
-
-    const result = r.map(x => [is[0], x] as IsASentence)
-
-
-    return result
-}
-
-function getDefaultFillers(id: WmAtom, concept: WmAtom, kb: KnowledgeBase) {
-    const parts = getParts(concept, kb)
-    const defaults = parts.map(p => findDefault(p, concept, kb))
-    const pds = zip(parts, defaults)
-
-    const fillers = pds.flatMap(e => {
-        const p = e[0]
-        const d = e[1]
-        if (d === undefined) return []
-        if (typeof d === 'number' || typeof d === 'boolean') return evaluate($(id).has(d).as(p).tell.$, kb).additions
-
-        return evaluate($(id).has(`x:${d}`).as(p).tell.$, kb).additions
-    })
-
-    return fillers
-}
-
-function findDefault(part: WmAtom, concept: WmAtom, kb: KnowledgeBase): WmAtom | undefined {
-
-    const result = evaluate($('x:thing').suchThat($(concept).has('x:thing').as(part)).$, kb).result
-    if (result.type === 'nothing') return undefined
-    assert(isConst(result))
-    return result.value
-}
-
-function getParts(concept: WmAtom, kb: KnowledgeBase): WmAtom[] {
-
-    const parts = kb.wm
-        .filter(isHasSentence)
-        .filter(x => x[0] === concept)
-        .filter(x => isTruthy(evaluate($(x[1]).isa('number-restriction').isNotTheCase.$, kb).result))
-        .filter(x => isTruthy(evaluate($(x[1]).isa('mutex-concepts-annotation').isNotTheCase.$, kb).result))
-        .map(x => x[2])
-
-    const supers = conceptsOf(concept, kb).filter(x => x !== concept)
-    const all = supers.flatMap(x => getParts(x, kb)).concat(parts)
-    return uniq(all)
-}
