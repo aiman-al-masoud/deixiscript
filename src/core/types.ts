@@ -295,12 +295,15 @@ export function pointsToThings(ast: LLangAst): boolean {
         return pointsToThings(ast.phrase)
     }
 
+    if (ast.type === 'math-expression') {
+        return ast.operator.type === 'entity' && ['+', '-', '*', '/'].includes(ast.operator.value)
+    }
+
     return isAtom(ast)
         || ast.type === 'arbitrary-type'
         || ast.type === 'implicit-reference'
         || ast.type === 'cardinality'
         || ast.type === 'which'
-        || ast.type === 'math-expression' //!!!!!!!! not true sometimes
 }
 
 export function isWhenDerivationClause(ast: LLangAst): ast is WhenDerivationClause {
