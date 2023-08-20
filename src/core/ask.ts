@@ -78,14 +78,14 @@ export function ask(
             }
         case 'conjunction':
             {
-                if (pointsToThings(ast.f1) || pointsToThings(ast.f2)) return { result: ast, kb: kb }
+                if (pointsToThings(ast)) return { result: ast, kb: kb }
                 const { kb: kb1, result: f1 } = evaluate(ast.f1, kb)
                 if (!isTruthy(f1)) return { result: $(false).$, kb: kb1 }
                 return evaluate(ast.f2, kb1)
             }
         case 'disjunction':
             {
-                if (pointsToThings(ast.f1) || pointsToThings(ast.f2)) return { result: ast, kb: kb }
+                if (pointsToThings(ast)) return { result: ast, kb: kb }
                 const { kb: kb1, result: f1 } = evaluate(ast.f1, kb)
                 if (isTruthy(f1)) return { result: $(true).$, kb: kb1 }
                 return evaluate(ast.f2, kb1)
