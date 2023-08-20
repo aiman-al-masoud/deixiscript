@@ -220,13 +220,8 @@ export function isIsASentence(s: IsASentence | HasSentence): s is IsASentence {
     return s.length === 2
 }
 
-export function isAtom(ast: LLangAst | WmAtom | WmAtom[]): ast is Atom {
-
-    if (ast instanceof Array) return false
-    if (isWmAtom(ast)) return false
-
+export function isAtom(ast: LLangAst): ast is Atom {
     return isTerm(ast) || ast.type === 'list'
-
 }
 
 export function isWmAtom(x: unknown): x is WmAtom {
