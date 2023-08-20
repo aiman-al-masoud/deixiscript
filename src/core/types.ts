@@ -16,7 +16,7 @@ export type WorldModel = readonly (IsASentence | HasSentence)[]
 export type KnowledgeBase = {
     readonly wm: WorldModel,
     readonly derivClauses: DerivationClause[],
-    readonly deicticDict: { readonly [id: string]: number },
+    readonly deicticDict: { readonly [hashId: string]: number },
 }
 
 /* LANGUAGE */

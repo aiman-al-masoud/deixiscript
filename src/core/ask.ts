@@ -7,6 +7,7 @@ import { uniq } from "../utils/uniq.ts";
 import { match } from "./match.ts";
 import { assert } from "../utils/assert.ts";
 import { evaluate } from "./evaluate.ts";
+import { hash } from "../utils/hash.ts";
 
 
 export function ask(
@@ -22,16 +23,13 @@ export function ask(
         case 'boolean':
         case 'number':
         case 'entity':
-            {
-                const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
-                const deicticDict = { ...kb.deicticDict, [ast.value as string]: lastTime + 1 }
-                const deltaWm: WorldModel = ast.type === 'number' ? [[ast.value, ast.type]] : []
-                return { result: ast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, deltaWm) } }
-            }
         case 'list':
         case 'nothing':
             {
-                return { result: ast, kb }
+                const lastTime = Math.max(...Object.values(kb.deicticDict).concat(0))
+                const deicticDict = { ...kb.deicticDict, [hash(ast.value)]: lastTime + 1 }
+                const deltaWm: WorldModel = ast.type === 'number' ? [[ast.value, ast.type]] : []
+                return { result: ast, kb: { ...kb, deicticDict, wm: addWorldModels(kb.wm, deltaWm) } }
             }
         case 'is-a-formula':
             {
@@ -106,7 +104,7 @@ export function ask(
 
             const sortedCandidates = sorted(
                 candidates,
-                (c1, c2) => (kb.deicticDict[c2.value as string] ?? 0) - (kb.deicticDict[c1.value as string] ?? 0)
+                (c1, c2) => (kb.deicticDict[hash(c2.value)] ?? 0) - (kb.deicticDict[hash(c1.value)] ?? 0)
             )
 
             if (candidates.length === 1) {
