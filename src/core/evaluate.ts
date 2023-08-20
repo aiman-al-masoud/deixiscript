@@ -8,7 +8,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { tell } from "./tell.ts";
 import { KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
 
-export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
+export function evaluate(ast: LLangAst, kb: KnowledgeBase): {
     kb: KnowledgeBase,
     result: LLangAst,
     additions: WorldModel,
@@ -16,7 +16,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
 } {
     if (ast.type === 'command') {
 
-        const { rast, kb: kb1 } = evalArgs(ast.f1, knowledgeBase)
+        const { rast, kb: kb1 } = evalArgs(ast.f1, kb)
         const def = rast.type !== 'conjunction' ? definitionOf(rast, kb1) : undefined
         if (def) return evaluate($(def).tell.$, kb1)
         const rast2 = rast.type === 'has-formula' || rast.type == 'is-a-formula' ? decompress(rast) : rast
@@ -25,12 +25,12 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
 
     } else if (ast.type === 'question') {
 
-        return evaluate(ast.f1, knowledgeBase)
+        return evaluate(ast.f1, kb)
 
     } else {
 
-        const { rast, kb: kb1 } = evalArgs(ast, knowledgeBase)
-        const when = (rast.type !== 'conjunction' ? definitionOf(rast, kb1) : undefined) //?? $(false).$
+        const { rast, kb: kb1 } = evalArgs(ast, kb)
+        const when = rast.type !== 'conjunction' ? definitionOf(rast, kb1) : undefined
         if (when) return evaluate(when, kb1)
         const rast2 = rast.type === 'has-formula' || rast.type == 'is-a-formula' ? decompress(rast) : rast
         const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
@@ -40,5 +40,7 @@ export function evaluate(ast: LLangAst, knowledgeBase: KnowledgeBase): {
             additions: [],
             eliminations: [],
         }
+
     }
 }
+
