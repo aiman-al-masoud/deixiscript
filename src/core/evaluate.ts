@@ -23,10 +23,6 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase): {
         const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
         return { ...tell(rast3, kb1), result: $(true).$, }
 
-    } else if (ast.type === 'question') {
-
-        return evaluate(ast.f1, kb)
-
     } else {
 
         const { rast, kb: kb1 } = evalArgs(ast, kb)

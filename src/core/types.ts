@@ -21,7 +21,7 @@ export type KnowledgeBase = {
 
 /* LANGUAGE */
 
-export type LLangAst = Atom | Formula | Command | Question
+export type LLangAst = Atom | Formula | Command
 export type Atom =
     | Term
     | List
@@ -59,11 +59,6 @@ export type DerivationClause =
 
 export type Command = {
     readonly type: 'command',
-    readonly f1: LLangAst,
-}
-
-export type Question = {
-    readonly type: 'question',
     readonly f1: LLangAst,
 }
 
@@ -242,7 +237,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'number': true,
         'entity': true,
         'command': true,
-        'question': true,
         'nothing': true,
         'variable': true,
         'list': true,

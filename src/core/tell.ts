@@ -100,7 +100,6 @@ export function tell(
         case "math-expression":
         case "implicit-reference":
         case "command":
-        case "question":
         case 'variable': // return evaluate($(ast).suchThat($(ast).isa(ast.varType)).tell.$, kb)
             throw new Error(`not implemented`)
     }

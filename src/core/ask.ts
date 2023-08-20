@@ -1,4 +1,4 @@
-import { isConst, KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number, WorldModel } from "./types.ts";
+import { KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number, WorldModel } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
@@ -158,8 +158,7 @@ export function ask(
         case 'cardinality':
         case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
         case 'which':
-        case "command":
-        case "question":
+        case "command":// case "question":
         case 'after-derivation-clause':
         case 'when-derivation-clause':
             throw new Error(``)

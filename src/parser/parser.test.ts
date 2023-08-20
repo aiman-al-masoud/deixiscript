@@ -17,7 +17,7 @@ const kb =
         .and($('is').and('are').and('be').isa('esse'))
         .and($('esse').isa('verb'))
         .and($.p(['x:list', 'x:habere', 'y:list', 'as', 'z:list']).when($.p('x:list').has($.p('y:list')).as($.p('z:list'))))
-        .and($.p(['does', 'x:list', 'v:verb', 'z:list']).when($.p('x:list').does($.p('v:verb'))._($.p('z:list')).ask))
+        .and($.p(['does', 'x:list', 'v:verb', 'z:list']).when($.p('x:list').does($.p('v:verb'))._($.p('z:list'))))
         .and($.p(['does', 'v:thing', 'z:list']).when($._.does($.p('v:thing'))._($.p('z:list'))))
         .and($.p(['does', 'v:thing']).when($._.does($.p('v:thing'))))
         .and($.p(['x:list', 'does', 'v:thing', 'z:list', 'p:preposition', 'c:list']).when($.p('x:list').does($.p('v:thing'))._($.p('z:list')).in($.p('c:list'))))
@@ -286,7 +286,7 @@ Deno.test({
 Deno.test({
     name: 'parser-test31',
     fn: () => {
-        assertEquals(parse($.p(tokenize('does the cat have the mouse')).$, kb), $.the('cat').does('have')._($.the('mouse')).ask.$)
+        assertEquals(parse($.p(tokenize('does the cat have the mouse')).$, kb), $.the('cat').does('have')._($.the('mouse')).$)
     }
 })
 

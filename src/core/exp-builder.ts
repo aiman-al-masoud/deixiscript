@@ -1,5 +1,5 @@
 import { evaluate } from "./evaluate.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Question, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality, Complement } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality, Complement } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -176,14 +176,7 @@ export class ExpBuilder<T extends LLangAst> {
     isLessThanOrEqual(atom: ExpBuilderArg) {
         return this.mathOperation(atom, '<=')
     }
-
-    get ask() {
-        return new ExpBuilder<Question>({
-            type: 'question',
-            f1: this.exp,
-        })
-    }
-
+    
     get tell() {
         return new ExpBuilder<Command>({
             type: 'command',

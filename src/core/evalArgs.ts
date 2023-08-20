@@ -54,7 +54,6 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase): { rast: LLangAst, kb
         return res
       }
     case "command":
-    case "question":
       throw new Error(``)
 
   }

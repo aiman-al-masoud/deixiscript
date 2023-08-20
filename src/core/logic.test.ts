@@ -251,7 +251,7 @@ Deno.test({
     fn: () => {
         const q = $.thereIs($('x:cat').suchThat($('x:cat').has('red').as('color')))
         const kb2 = evaluate(q.tell.$, $.emptyKb).kb
-        dassert(evaluate(q.ask.$, kb2).result)
+        dassert(evaluate(q.$, kb2).result)
     }
 })
 
@@ -260,10 +260,10 @@ Deno.test({
     fn: () => {
         const kb = getStandardKb()
         const q = $('cat#1').isa('feline')
-        const results0 = evaluate(q.isNotTheCase.ask.$, kb)
+        const results0 = evaluate(q.isNotTheCase.$, kb)
         dassert(results0.result)
         const results1 = evaluate(q.tell.$, kb)
-        const results2 = evaluate(q.ask.$, results1.kb)
+        const results2 = evaluate(q.$, results1.kb)
         dassert(results2.result)
     }
 })
@@ -364,7 +364,7 @@ Deno.test({
     fn: () => {
         // anaphora with freshly calculated numbers
         const { kb: kb1 } = evaluate($(1).plus(1).$, $.emptyKb)
-        assertEquals(evaluate($.the('number').ask.$, kb1).result, $(2).$)
+        assertEquals(evaluate($.the('number').$, kb1).result, $(2).$)
     }
 })
 

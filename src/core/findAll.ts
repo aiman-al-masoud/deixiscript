@@ -47,7 +47,6 @@ export function findAll(
             const res = uniq(combos)
             return res
         case "implicit-reference":
-        case "question":
         case "command":
         case "when-derivation-clause":
         case "after-derivation-clause":
