@@ -64,6 +64,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         //     if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable') {
+        // if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
         return deepMapOf([[template, f]])
 
     } else if (f.type === 'conjunction' || f.type === 'disjunction') {

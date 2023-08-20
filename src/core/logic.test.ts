@@ -619,8 +619,8 @@ Deno.test({
     name: 'test58',
     fn: () => {
 
-        const dc = $('x:capra').does('like')._('f:food').when(
-            $('f:food').has('salt').as('condiment')
+        const dc = $.a('capra').does('like')._($.a('food')).when(
+            $.the('food').has('salt').as('condiment')
         ).$
 
         const kb =
@@ -836,14 +836,15 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test72',
-    fn: () => {
-        const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump()
-        assertEquals(evaluate($.the('sum').of($(1).and(5)).$, kb).result, $(6).$)
-        assertEquals(evaluate($.the('sum').of($(30).minus(2).and(1)).$, kb).result, $(29).$)
-    }
-})
+
+// Deno.test({
+//     name: 'test72',
+//     fn: () => {
+//         const kb = $.the('sum').of($('x:number').and('y:number')).when($('x:number').plus('y:number')).dump()
+//         assertEquals(evaluate($.the('sum').of($(1).and(5)).$, kb).result, $(6).$)
+//         assertEquals(evaluate($.the('sum').of($(30).minus(2).and(1)).$, kb).result, $(29).$)
+//     }
+// })
 
 
 

@@ -36,11 +36,12 @@ export function ask(
                 const t1 = ast.subject
                 const t2 = ast.object
 
-                assert(isConst(t1) && isConst(t2))
+                assert(isAtom(t2))
 
                 if (t1.type === t2.value) return { result: $(true).$, kb: kb }
-
                 if (t2.value === 'thing') return { result: $(true).$, kb: kb }
+
+                assert(isAtom(t1), JSON.stringify(t1)+'-----'+JSON.stringify(t2))
 
                 const concepts = kb.wm
                     .filter(isIsASentence)
@@ -49,9 +50,9 @@ export function ask(
 
                 const uniqConcepts = uniq(concepts)
 
-                if (uniqConcepts.includes(t2.value)) return { result: $(true).$, kb: kb }
+                if (uniqConcepts.includes(t2.value as string)) return { result: $(true).$, kb: kb }
 
-                const ok = uniqConcepts.some(x => isTruthy(evaluate($(x).isa(t2.value).$, kb).result))
+                const ok = uniqConcepts.some(x => isTruthy(evaluate($(x).isa(t2).$, kb).result))
 
                 return { result: $(ok).$, kb: kb }
             }
