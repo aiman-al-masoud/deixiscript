@@ -81,10 +81,6 @@ export function tell(
                 const result = evaluate($(where).tell.$, kb1)
                 return result
             }
-        case 'variable':
-            {
-                return evaluate($(ast).suchThat($(ast).isa(ast.varType)).tell.$, kb)
-            }
         case 'negation':
             {
                 const result = evaluate($(ast.f1).tell.$, kb)
@@ -105,6 +101,7 @@ export function tell(
         case "implicit-reference":
         case "command":
         case "question":
+        case 'variable': // return evaluate($(ast).suchThat($(ast).isa(ast.varType)).tell.$, kb)
             throw new Error(`not implemented`)
     }
 
