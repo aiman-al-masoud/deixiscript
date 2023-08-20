@@ -653,14 +653,14 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name: 'test60',
-    fn: () => {
-        // a variable is just a "special case" of arbitrary type
-        const kb = $('cat#1').isa('cat').dump()
-        assertEquals(evaluate($('x:cat').$, kb).result, $('cat#1').$)
-    }
-})
+// Deno.test({
+//     name: 'test60',
+//     fn: () => {
+//         // a variable is just a "special case" of arbitrary type
+//         const kb = $('cat#1').isa('cat').dump()
+//         assertEquals(evaluate($('x:cat').$, kb).result, $('cat#1').$)
+//     }
+// })
 
 Deno.test({
     name: 'test62',
@@ -682,12 +682,12 @@ Deno.test({
         const kb =
             $('alice#1').isa('female')
                 .and($('bob#1').isa('male'))
-                .and($('he').when('x:male').$)
-                .and($('she').when('x:female').$)
+                .and($('he').when($.the('male')).$)
+                .and($('she').when($.the('female')).$)
                 .dump()
 
-        assertEquals(evaluate($('she').$, kb).result, $('alice#1').$)
         assertEquals(evaluate($('he').$, kb).result, $('bob#1').$)
+        assertEquals(evaluate($('she').$, kb).result, $('alice#1').$)
     }
 })
 

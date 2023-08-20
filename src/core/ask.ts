@@ -97,10 +97,6 @@ export function ask(
                 const { result: thing } = evaluate(ast.value, kb)
                 return { result: $(thing.type !== 'nothing').$, kb: kb }
             }
-        case 'variable':
-            {
-                return evaluate($(ast).suchThat(true).$, kb)
-            }
         case 'arbitrary-type':
 
             if (ast.head.type !== 'variable') return { result: ast.head, kb } //TODO
@@ -161,6 +157,7 @@ export function ask(
         case 'implicit-reference':
         case "complement":
         case 'cardinality':
+        case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
         case 'which':
         case "command":
         case "question":
