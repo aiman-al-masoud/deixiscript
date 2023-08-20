@@ -7,7 +7,7 @@ export function decompress(ast: LLangAst): LLangAst {
 
     const logiConn = findAsts(ast, 'conjunction').at(0) ?? findAsts(ast, 'disjunction').at(0)
 
-    if (logiConn && pointsToThings(logiConn.f1) && pointsToThings(logiConn.f2)) {
+    if (logiConn && pointsToThings(logiConn)) {
         const withF1 = subst(ast, [logiConn, logiConn.f1])
         const withF2 = subst(ast, [logiConn, logiConn.f2])
         return {
