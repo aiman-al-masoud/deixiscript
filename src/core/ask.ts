@@ -114,9 +114,9 @@ export function ask(
                 return evaluate(sortedCandidates[0], kb)
             } else if (astsEqual(ast.number, $('*').$) && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
-                return { result: andPhrase, kb: kb }
+                return evaluate(andPhrase, kb)
             } else {
-                return { result: $('nothing').$, kb: kb }
+                return evaluate($('nothing').$, kb)
             }
 
         case 'if-else':
