@@ -184,7 +184,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    suchThat(description: ExpBuilderArg, number?: ExpBuilderArg ) {
+    suchThat(description: ExpBuilderArg, number?: ExpBuilderArg) {
 
         if (this.exp.type !== 'variable') throw new Error(``)
 
@@ -192,7 +192,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'arbitrary-type',
             head: this.exp,
             description: makeAst(description),
-            number: makeAst(number??1) as Constant,
+            number: makeAst(number ?? 1),
         })
 
     }
@@ -325,7 +325,7 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[
  */
 $._ = $('')
 
-function createImplicit(x: ExpBuilderArg, number: 1 | '*') {
+function createImplicit(x: ExpBuilderArg, number: number) {
     return new ExpBuilder<ImplicitReference>({
         type: 'implicit-reference',
         headType: makeAst(x),
@@ -338,7 +338,7 @@ function createImplicit(x: ExpBuilderArg, number: 1 | '*') {
  */
 $.the = (x: ExpBuilderArg) => createImplicit(x, 1)
 $.a = (x: ExpBuilderArg) => createImplicit(x, 1)
-$.every = (x: ExpBuilderArg) => createImplicit(x, '*')
+$.every = (x: ExpBuilderArg) => createImplicit(x, Infinity)
 
 
 /**
