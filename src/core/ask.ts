@@ -1,4 +1,4 @@
-import { KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number, WorldModel } from "./types.ts";
+import { KnowledgeBase, isHasSentence, LLangAst, astsEqual, isIsASentence, addWorldModels, isAtom, isTruthy, pointsToThings, Number, WorldModel, Entity } from "./types.ts";
 import { findAll, } from "./findAll.ts";
 import { $ } from "./exp-builder.ts";
 import { isNotNullish } from "../utils/isNotNullish.ts";
@@ -108,16 +108,11 @@ export function ask(
                 (c1, c2) => (kb.deicticDict[hash(c2.value)] ?? 0) - (kb.deicticDict[hash(c1.value)] ?? 0)
             )
 
-            if (sortedCandidates.length === 1) {
-                return evaluate(sortedCandidates[0], kb)
-            } else if (astsEqual(ast.number, $(1).$) && sortedCandidates.length > 1) {
-                return evaluate(sortedCandidates[0], kb)
-            } else if (astsEqual(ast.number, $('*').$) && sortedCandidates.length > 1) {
-                const andPhrase = sortedCandidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
-                return evaluate(andPhrase, kb)
-            } else {
-                return evaluate($('nothing').$, kb)
-            }
+            const num = evaluate(ast.number, kb).result as Number | Entity
+            const n = num.value === '*' ? undefined : num.value as number
+            const slice = sortedCandidates.slice(0, n).map($)
+            const res = slice.slice(1).reduce((a, b) => a.and(b), slice[0] ?? $('nothing')).$
+            return evaluate(res, kb)
 
         case 'if-else':
             {
