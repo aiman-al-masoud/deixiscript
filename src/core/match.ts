@@ -149,23 +149,3 @@ function matchLists(template: List, formula: List, kb: KnowledgeBase) {
     return reduceMatchList(ms)
 
 }
-
-// print(matchLists($(['x:number', 'y:list', 3]).$, $([0, 1, 2, 3]).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:number', 'y:list']).$, $([0, 1, 2, 3]).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:number', 'y:list', 'w:number']).$, $([0, 1, 2, 3]).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:number', 'y:list', 'w:entity']).$, $([0, 1, 2, 'cat']).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:list', 'and', 'y:list']).$, $(['cat', 'and', 'dog', 'and', 'buruf']).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['(', 'x:list', ')']).$, $(['(', 'cat', 'and', 'dog', ')']).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:list', 'and', 'y:list']).$, $(['(', 'cat', 'and', 'dog', ')', 'and', 'buruf']).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:list', 'and', 'y:list']).$, $(['cat', 'and', '(', 'dog', 'and', 'buruf', ')']).$, $.emptyKb))
-// print('-----------')
-// print(matchLists($(['x:list', 'y:buruf']).$, $([1,2,3,4,5]).$, $.emptyKb))
-// print(matchLists($(['x:list', 'o:operator', 'y:list']).$, $([1, 'x:thing', 2]).$, $.emptyKb))
-
