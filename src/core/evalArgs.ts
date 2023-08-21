@@ -26,7 +26,6 @@ export function evalArgs(ast: LLangAst, kb: KnowledgeBase): { rast: LLangAst, kb
     case 'nothing':
     case 'negation':
     case 'existquant':
-    case 'cardinality':
     case 'which':
     case 'arbitrary-type':
     case "when-derivation-clause":

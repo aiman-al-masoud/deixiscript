@@ -16,12 +16,12 @@ export function removeImplicit(
     if (ast.type === 'implicit-reference') {
 
         const head = $(`x${random()}:thing`).$
-        return $(head).suchThat($(head).isa(ast.headType)).$
+        return $(head).suchThat($(head).isa(ast.headType), ast.number).$
 
     } else if (ast.type === 'which') {
 
         const inner = removeImplicit(ast.inner)
-        if (inner.type!=='arbitrary-type') return ast
+        if (inner.type !== 'arbitrary-type') return ast
         const description = $(inner.description).and(subst(ast.which, [$._.$, inner.head])).$
         const r = removeImplicit({ ...inner, description })
         return r
@@ -30,15 +30,12 @@ export function removeImplicit(
 
         const phrase = removeImplicit(ast.phrase)
 
-        if (phrase.type==='generalized') return phrase
+        if (phrase.type === 'generalized') return phrase
         if (phrase.type !== 'arbitrary-type') throw new Error(``)
 
         const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
         const r = removeImplicit({ ...phrase, description })
         return r
-
-    } else if (ast.type === 'cardinality') {
-        return { ...removeImplicit(ast.value), number: ast.number } as LLangAst
 
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')

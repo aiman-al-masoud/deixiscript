@@ -1,5 +1,5 @@
 import { evaluate } from "./evaluate.ts"
-import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Cardinality, Complement } from "./types.ts"
+import { LLangAst, Atom, Conjunction, Constant, Disjunction, ExistentialQuantification, HasFormula, IfElse, IsAFormula, List, Variable, GeneralizedFormula, Number, Boolean, WmAtom, Entity, MathExpression, ImplicitReference, Command, isLLangAst, ArbitraryType, KnowledgeBase, Nothing, Negation, WhenDerivationClause, AfterDerivationClause, Complement } from "./types.ts"
 
 
 export class ExpBuilder<T extends LLangAst> {
@@ -176,7 +176,7 @@ export class ExpBuilder<T extends LLangAst> {
     isLessThanOrEqual(atom: ExpBuilderArg) {
         return this.mathOperation(atom, '<=')
     }
-    
+
     get tell() {
         return new ExpBuilder<Command>({
             type: 'command',
@@ -184,7 +184,7 @@ export class ExpBuilder<T extends LLangAst> {
         })
     }
 
-    suchThat(description: ExpBuilderArg) {
+    suchThat(description: ExpBuilderArg, number?: ExpBuilderArg ) {
 
         if (this.exp.type !== 'variable') throw new Error(``)
 
@@ -192,7 +192,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'arbitrary-type',
             head: this.exp,
             description: makeAst(description),
-            number: $(1).$,
+            number: makeAst(number??1) as Constant,
         })
 
     }
@@ -325,17 +325,10 @@ export function $(x: WmAtom | WmAtom[] | GeneralizedInput | LLangAst | LLangAst[
  */
 $._ = $('')
 
-function createImplicit(x: ExpBuilderArg) {
+function createImplicit(x: ExpBuilderArg, number: 1 | '*') {
     return new ExpBuilder<ImplicitReference>({
         type: 'implicit-reference',
         headType: makeAst(x),
-    })
-}
-
-function makeNumber(x: ExpBuilderArg, number: 1 | '*') {
-    return new ExpBuilder<Cardinality>({
-        type: 'cardinality',
-        value: makeAst(x),
         number: $(number).$,
     })
 }
@@ -343,9 +336,10 @@ function makeNumber(x: ExpBuilderArg, number: 1 | '*') {
 /**
  * Creates an ImplicitReference.
  */
-$.the = (x: ExpBuilderArg) => makeNumber(createImplicit(x), 1)
-$.a = (x: ExpBuilderArg) => makeNumber(createImplicit(x), 1)
-$.every = (x: ExpBuilderArg) => makeNumber(createImplicit(x), '*')
+$.the = (x: ExpBuilderArg) => createImplicit(x, 1)
+$.a = (x: ExpBuilderArg) => createImplicit(x, 1)
+$.every = (x: ExpBuilderArg) => createImplicit(x, '*')
+
 
 /**
  * Empty knowledge base.

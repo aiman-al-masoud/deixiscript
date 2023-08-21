@@ -51,7 +51,6 @@ export function findAll(
         case "when-derivation-clause":
         case "after-derivation-clause":
         case "if-else":
-        case 'cardinality':
         case 'which':
         case "complement":
             throw new Error(``)

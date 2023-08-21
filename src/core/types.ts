@@ -51,7 +51,6 @@ export type CompositeFormula =
     | ArbitraryType
     | Complement
     | GeneralizedFormula
-    | Cardinality
     | Which
 export type DerivationClause =
     | WhenDerivationClause
@@ -100,12 +99,6 @@ export type Complement = {
     readonly phrase: LLangAst,
 }
 
-export type Cardinality = {
-    readonly type: 'cardinality',
-    readonly number: Constant,
-    readonly value: LLangAst,
-}
-
 export type Which = {
     readonly type: 'which',
     readonly which: LLangAst,
@@ -115,13 +108,14 @@ export type Which = {
 export type ImplicitReference = {
     readonly type: 'implicit-reference',
     readonly headType: LLangAst,
+    readonly number: LLangAst,
 }
 
 export type ArbitraryType = {
     readonly type: 'arbitrary-type',
     readonly head: Variable,
     readonly description: LLangAst,
-    readonly number: Constant,
+    readonly number: LLangAst,
 }
 
 export type MathExpression = {
@@ -254,7 +248,6 @@ export function isLLangAst(x: unknown): x is LLangAst {
         'existquant': true,
         'conjunction': true,
         'complement': true,
-        'cardinality': true,
         'which': true,
     }
 
@@ -296,7 +289,6 @@ export function pointsToThings(ast: LLangAst): boolean {
     return isAtom(ast)
         || ast.type === 'arbitrary-type'
         || ast.type === 'implicit-reference'
-        || ast.type === 'cardinality'
         || ast.type === 'which'
 }
 

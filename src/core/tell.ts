@@ -90,7 +90,6 @@ export function tell(
             break
         case 'generalized':
         case "complement":
-        case 'cardinality':
         case 'which':
         case "number":
         case "boolean":

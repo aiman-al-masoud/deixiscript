@@ -41,7 +41,7 @@ export function ask(
                 if (t1.type === t2.value) return { result: $(true).$, kb: kb }
                 if (t2.value === 'thing') return { result: $(true).$, kb: kb }
 
-                assert(isAtom(t1), JSON.stringify(t1)+'-----'+JSON.stringify(t2))
+                assert(isAtom(t1), JSON.stringify(t1) + '-----' + JSON.stringify(t2))
 
                 const concepts = kb.wm
                     .filter(isIsASentence)
@@ -110,9 +110,9 @@ export function ask(
 
             if (candidates.length === 1) {
                 return evaluate(sortedCandidates[0], kb)
-            } else if (ast.number.value === 1 && candidates.length > 1) {
+            } else if (astsEqual(ast.number, $(1).$) && candidates.length > 1) {
                 return evaluate(sortedCandidates[0], kb)
-            } else if (ast.number.value === '*' && candidates.length > 1) {
+            } else if (astsEqual(ast.number, $('*').$) && candidates.length > 1) {
                 const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
                 return { result: andPhrase, kb: kb }
             } else {
@@ -155,10 +155,9 @@ export function ask(
             return { result: $(false).$, kb: kb }
         case 'implicit-reference':
         case "complement":
-        case 'cardinality':
         case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
         case 'which':
-        case "command":// case "question":
+        case "command":
         case 'after-derivation-clause':
         case 'when-derivation-clause':
             throw new Error(``)
