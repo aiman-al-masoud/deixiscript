@@ -3,7 +3,7 @@ import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, askBin, astsEqual } from "./types.ts";
+import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, askBin, astsEqual, Cardinality, Which, ImplicitReference, Constant } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
@@ -18,18 +18,12 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'is-a-formula' && f.type === 'is-a-formula') {
         return deepMapOf([[template.subject, f.subject], [template.object, f.object]])
 
-    } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
-        return match(removeImplicit(template), removeImplicit(f), kb)
-
     } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
         return match(template.description, f.description, kb)
 
     } else if (template.type === 'variable' && f.type === 'variable') {
         if (!match($(template.varType).$, $(f.varType).$, kb)) return undefined
         return match($(template).suchThat(true).$, $(f).suchThat(true).$, kb)
-
-    } else if (template.type === f.type) {
-        return matchGeneric(template, f, kb)
 
     } else if (template.type === 'variable' && f.type === 'arbitrary-type') {
         return match($(template).suchThat(true).$, f, kb)
@@ -45,23 +39,14 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const ok = askBin(desc, kb)
         if (ok) return deepMapOf([[template, f]])
 
-    } else if (template.type === 'cardinality' && isConst(f)) {
-        return match(removeImplicit(template), f, kb)
-
-    } else if (template.type === 'which' && isConst(f)) {
-        return match(removeImplicit(template), f, kb)
-
-    } else if (template.type === 'implicit-reference' && isConst(f)) {
-        return match(removeImplicit(template), f, kb)
-
-    } else if (template.type === 'which' && f.type === 'cardinality') {
+    } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
         return match(removeImplicit(template), removeImplicit(f), kb)
 
-    } else if (template.type === 'cardinality' && f.type === 'which') {
+    } else if (isThing(template) && isThing(f) && template.type !== f.type) {
         return match(removeImplicit(template), removeImplicit(f), kb)
 
-        // } else if (template.type === 'variable' && f.type === 'list') {
-        //     if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
+    } else if (template.type === f.type) {
+        return matchGeneric(template, f, kb)
 
     } else if (template.type === 'variable') {
         // if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
@@ -74,6 +59,10 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (m2) return m2
     }
 
+}
+
+function isThing(ast: LLangAst): ast is Cardinality | Which | ImplicitReference | Constant {
+    return ast.type === 'cardinality' || ast.type === 'which' || ast.type === 'implicit-reference' || isConst(ast)
 }
 
 function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {
