@@ -108,12 +108,12 @@ export function ask(
                 (c1, c2) => (kb.deicticDict[hash(c2.value)] ?? 0) - (kb.deicticDict[hash(c1.value)] ?? 0)
             )
 
-            if (candidates.length === 1) {
+            if (sortedCandidates.length === 1) {
                 return evaluate(sortedCandidates[0], kb)
-            } else if (astsEqual(ast.number, $(1).$) && candidates.length > 1) {
+            } else if (astsEqual(ast.number, $(1).$) && sortedCandidates.length > 1) {
                 return evaluate(sortedCandidates[0], kb)
-            } else if (astsEqual(ast.number, $('*').$) && candidates.length > 1) {
-                const andPhrase = candidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
+            } else if (astsEqual(ast.number, $('*').$) && sortedCandidates.length > 1) {
+                const andPhrase = sortedCandidates.map(x => $(x)).reduce((a, b) => a.and(b)).$
                 return evaluate(andPhrase, kb)
             } else {
                 return evaluate($('nothing').$, kb)
