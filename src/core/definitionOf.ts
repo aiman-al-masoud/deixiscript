@@ -21,15 +21,9 @@ function strictMatch(t: LLangAst, f: LLangAst) {
   if (astsEqual(t, f)) return deepMapOf() as AstMap
 }
 
-// function neverMatch(t: LLangAst, f: LLangAst) {
-//   return undefined
-// }
-
 function getMatchFunction(ast: LLangAst) {
 
-  if (isConst(ast)) {
-    return strictMatch
-  }
+  if (isConst(ast)) return strictMatch
 
   return match
 }
