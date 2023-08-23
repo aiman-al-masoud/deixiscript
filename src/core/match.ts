@@ -40,11 +40,11 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         const ok = isTruthy(evaluate(desc, kb, { asIs: true }).result)
         if (ok) return deepMapOf([[template, f]])
 
-    } else if (isThing(template) && isThing(f) && template.type !== f.type) {
-        return match(removeImplicit(template), removeImplicit(f), kb)
-
     } else if (template.type === f.type) {
         return matchGeneric(template, f, kb)
+
+    } else if (isThing(template) && isThing(f)) {
+        return match(removeImplicit(template), removeImplicit(f), kb)
 
     } else if (template.type === 'variable') {
         // if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
