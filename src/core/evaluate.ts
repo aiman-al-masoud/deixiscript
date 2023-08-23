@@ -8,7 +8,7 @@ import { removeImplicit } from "./removeImplicit.ts";
 import { tell } from "./tell.ts";
 import { KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
 
-export function evaluate(ast: LLangAst, kb: KnowledgeBase): {
+export function evaluate(ast: LLangAst, kb: KnowledgeBase, args: { asIs: boolean } = { asIs: false }): {
     kb: KnowledgeBase,
     result: LLangAst,
     additions: WorldModel,
@@ -16,6 +16,7 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase): {
 } {
     const x = ast.type === 'command' ? ast.f1 : ast
     const f = ast.type === 'command' ? tell : ask
+    if (args.asIs) return { result: $(true).$, additions: [], eliminations: [], ...f(ast, kb) }
     return execAst(x, kb, f)
 }
 

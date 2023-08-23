@@ -2,7 +2,6 @@ import { DeepMap } from "../utils/DeepMap.ts"
 import { deepEquals } from "../utils/deepEquals.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
-import { ask } from "./ask.ts";
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
 
@@ -298,10 +297,6 @@ export function isWhenDerivationClause(ast: LLangAst): ast is WhenDerivationClau
 
 export function isAfterDerivationClause(ast: LLangAst): ast is AfterDerivationClause {
     return ast.type === 'after-derivation-clause'
-}
-
-export function askBin(ast: LLangAst, kb: KnowledgeBase): boolean {
-    return isTruthy(ask(ast, kb).result)
 }
 
 export function isTruthy(ast: LLangAst) {

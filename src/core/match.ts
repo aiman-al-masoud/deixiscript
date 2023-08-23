@@ -1,16 +1,17 @@
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
+import { evaluate } from "./evaluate.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, askBin, astsEqual, Which, ImplicitReference, Constant } from "./types.ts";
+import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, /* askBin, */ astsEqual, Which, ImplicitReference, Constant, isTruthy } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
-        if (askBin($(f).isa(template).$, kb)) return deepMapOf([[template, f]])
+        if (isTruthy(evaluate($(f).isa(template).$, kb, {asIs:true}).result)) return deepMapOf([[template, f]])
 
     } else if (template.type === 'list' && f.type === 'list') {
         return matchLists(template, f, kb)
@@ -36,7 +37,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (!match($(template.head.varType).$, f, kb)) return undefined
 
         const desc = subst(template.description, [template.head, f])
-        const ok = askBin(desc, kb)
+        const ok = isTruthy(evaluate(desc, kb, {asIs:true}).result)
         if (ok) return deepMapOf([[template, f]])
 
     } else if (template.type === 'implicit-reference' && f.type === 'implicit-reference') {
