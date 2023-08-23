@@ -1,7 +1,7 @@
 import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
-import { ImplicitReference, LLangAst } from "./types.ts";
+import { ImplicitReference, LLangAst, pointsToThings } from "./types.ts";
 import { ArbitraryType } from "./types.ts"
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { random } from "../utils/random.ts";
@@ -27,8 +27,8 @@ export function removeImplicit(ast: LLangAst): LLangAst {
     } else if (ast.type === 'complement') {
 
         const phrase = removeImplicit(ast.phrase)
-        
-        if (phrase.type === 'generalized') return ast
+
+        if (!pointsToThings(ast)) return ast
         if (phrase.type !== 'arbitrary-type') throw new Error(``)
 
         const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
