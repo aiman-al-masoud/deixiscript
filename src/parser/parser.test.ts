@@ -31,6 +31,7 @@ const kb =
         .and($.p(['x:list', 'of', 'y:list']).when($.p('x:list').of($.p('y:list'))))
         .and($.p(['x:list', 'in', 'y:list']).when($.p('x:list').in($.p('y:list'))))
         .and($.p(['the', 'x:list']).when($.the($.p('x:list')))) //
+        .and($.p(['the', 'x:thing']).when($.the($.p('x:thing')))) //
         .and($.p(['[', 'l:list', ']']).when('l:list'))
         .and($.p(['(', 'x:list', ')']).when($.p('x:list')))
         .and($.p(['x:thing']).when('x:thing'))
