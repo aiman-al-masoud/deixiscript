@@ -29,14 +29,14 @@ export function removeImplicit(
     } else if (ast.type === 'complement') {
 
         const phrase = removeImplicit(ast.phrase)
-
-        if (phrase.type === 'generalized') return phrase
+        
+        if (phrase.type === 'generalized') return ast
         if (phrase.type !== 'arbitrary-type') throw new Error(``)
 
         const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
         const r = removeImplicit({ ...phrase, description })
         return r
-        
+
     } else {
         const anaphors = findAsts(ast, 'implicit-reference')
         const subs = anaphors.map(x => [x, removeImplicit(x)] as [LLangAst, LLangAst])

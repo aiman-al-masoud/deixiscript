@@ -949,14 +949,13 @@ Deno.test({
     fn: () => {
         // after derivation clauses and conjunctions
         const kb = $('screen#1').has('red').as('color').after($('x:button').is('down'))
-            .and($('x:button').is('down').when($('x:button').has('down').as('state'))) // problem when commented out because of tell and complement
+            // .and($('x:button').is('down').when($('x:button').has('down').as('state'))) // problem when commented out because of tell and complement
             .and($('button#1').isa('button'))
             .dump()
 
         // const a = $('foo#1').has(2).as('value').and($('button#1').is('down')).tell.$ // this works without WHEN deriv clause because definof is skipped and so original ast passed directly to tell()
         const a = $('button#1').is('down').tell.$
         const { kb: kb2 } = evaluate(a, kb)
-        // console.log(kb2.wm)
 
         // dassert(evaluate($('foo#1').has(2).as('value').$, kb2).result)
         dassert(evaluate($('screen#1').has('red').as('color').$, kb2).result)

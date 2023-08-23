@@ -20,6 +20,7 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase): {
 }
 
 function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) {
+
     const { rast, kb: kb1 } = evalArgs(ast, kb)
     const when = definitionOf(rast, kb1)
     if (when) return execAst(when, kb1, f)

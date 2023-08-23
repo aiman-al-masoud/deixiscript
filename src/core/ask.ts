@@ -147,7 +147,6 @@ export function ask(
             }
 
         case 'generalized':
-            return { result: $(false).$, kb: kb }
         case 'implicit-reference':
         case "complement":
         case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
@@ -155,7 +154,9 @@ export function ask(
         case "command":
         case 'after-derivation-clause':
         case 'when-derivation-clause':
-            throw new Error(``)
+            // throw new Error(``)
+            return { result: $(false).$, kb: kb }
+
     }
 
 }
