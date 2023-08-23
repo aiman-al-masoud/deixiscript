@@ -21,7 +21,7 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase): {
 
 function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) {
     const { rast, kb: kb1 } = evalArgs(ast, kb)
-    const when = rast.type !== 'conjunction' ? definitionOf(rast, kb1) : undefined
+    const when = definitionOf(rast, kb1)
     if (when) return execAst(when, kb1, f)
     const rast2 = decompress(rast)
     const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)

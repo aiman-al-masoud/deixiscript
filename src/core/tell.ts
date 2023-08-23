@@ -100,10 +100,11 @@ export function tell(
         case "implicit-reference":
         case "command":
         case 'variable': // return evaluate($(ast).suchThat($(ast).isa(ast.varType)).tell.$, kb)
-            throw new Error(`not implemented`)
+            break
+        // throw new Error(`not implemented `+ast.type)
     }
 
-    const consequences = consequencesOf(ast, kb)
+    const consequences = consequencesOf(ast, kb) // move to evaluate()
     const consequencesWm = consequences.flatMap(x => evaluate($(x).tell.$, kb).additions)
     additions = [...additions, ...consequencesWm]
 
