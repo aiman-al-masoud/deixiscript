@@ -194,7 +194,7 @@ export function isConst(t: LLangAst): t is Constant {
     return t.type === 'entity'
         || t.type === 'number'
         || t.type === 'boolean'
-    // || t.type === 'nothing'
+        || t.type === 'nothing' // slower
 }
 
 export function isTerm(a: LLangAst): a is Term {
