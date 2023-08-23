@@ -36,7 +36,7 @@ export function removeImplicit(ast: LLangAst): LLangAst {
         return r
 
     } else {
-        const anaphors = findAsts(ast, 'implicit-reference')
+        const anaphors = findAsts(ast, 'implicit-reference')// how is it still working?
         const subs = anaphors.map(x => [x, removeImplicit(x)] as [LLangAst, LLangAst])
         if (subs.length === 0) return ast
         const result = subst(ast, deepMapOf(subs))
