@@ -9,9 +9,7 @@ import { random } from "../utils/random.ts";
 
 export function removeImplicit(ast: ImplicitReference): ArbitraryType
 export function removeImplicit<T extends LLangAst>(ast: T): T
-export function removeImplicit(
-    ast: LLangAst,
-): LLangAst {
+export function removeImplicit(ast: LLangAst): LLangAst {
 
     if (ast.type === 'implicit-reference') {
 
