@@ -8,12 +8,12 @@ export function decompress(ast: LLangAst): LLangAst {
     const logiConn = findAsts(ast, 'conjunction').at(0) ?? findAsts(ast, 'disjunction').at(0)
 
     if (logiConn && pointsToThings(logiConn)) {
-        const withF1 = subst(ast, [logiConn, logiConn.f1])
-        const withF2 = subst(ast, [logiConn, logiConn.f2])
+        const f1 = subst(ast, [logiConn, logiConn.f1])
+        const f2 = subst(ast, [logiConn, logiConn.f2])
         return {
             type: ast.type === 'negation' ? opposite(logiConn.type) : logiConn.type, // de morgan
-            f1: decompress(withF1),
-            f2: decompress(withF2),
+            f1: decompress(f1),
+            f2: decompress(f2),
         }
     }
 
