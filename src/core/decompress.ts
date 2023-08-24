@@ -1,6 +1,6 @@
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, pointsToThings } from "./types.ts";
+import { Conjunction, Disjunction, LLangAst, pointsToThings } from "./types.ts";
 
 export function decompress<T extends LLangAst>(ast: T): T
 export function decompress(ast: LLangAst): LLangAst {
@@ -21,6 +21,6 @@ export function decompress(ast: LLangAst): LLangAst {
 
 }
 
-function opposite(type: 'conjunction' | 'disjunction'): 'conjunction' | 'disjunction' {
+function opposite(type: Conjunction['type'] | Disjunction['type']) {
     return type === 'conjunction' ? 'disjunction' : 'conjunction'
 }
