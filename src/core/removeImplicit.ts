@@ -27,9 +27,9 @@ export function removeImplicit(ast: LLangAst): LLangAst {
     } else if (ast.type === 'complement') {
 
         if (!pointsToThings(ast)) return ast
-        
+
         const phrase = removeImplicit(ast.phrase)
-        if (phrase.type !== 'arbitrary-type') throw new Error(``)
+        if (phrase.type !== 'arbitrary-type') return ast
 
         const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
         const r = removeImplicit({ ...phrase, description })

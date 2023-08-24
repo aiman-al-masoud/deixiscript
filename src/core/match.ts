@@ -4,10 +4,12 @@ import { evaluate } from "./evaluate.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, /* askBin, */ astsEqual, Which, ImplicitReference, Constant, isTruthy } from "./types.ts";
+import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, /* askBin, */ astsEqual, Which, ImplicitReference, Constant, isTruthy, pointsToThings } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
+
+
 
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
@@ -63,7 +65,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 }
 
 function isThing(ast: LLangAst): ast is Which | ImplicitReference | Constant {
-    return ast.type === 'which' || ast.type === 'implicit-reference' || isConst(ast)
+    return ast.type === 'which' || ast.type === 'implicit-reference' || (ast.type==='complement' &&  pointsToThings(ast)) || isConst(ast)
 }
 
 function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {

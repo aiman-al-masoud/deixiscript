@@ -10,6 +10,12 @@ import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
+import { evalArgs } from "./evalArgs.ts";
+import { definitionOf } from "./definitionOf.ts";
+import { decompress } from "./decompress.ts";
+import { findAsts } from "./findAsts.ts";
+import { removeImplicit } from "./removeImplicit.ts";
+import { mapAsts } from "./mapAsts.ts";
 
 
 function dassert(x: LLangAst) {
@@ -1083,6 +1089,37 @@ Deno.test({
         assertEquals(m2, undefined)
     }
 })
+
+
+
+// function explicate(ast:LLangAst, kb:KnowledgeBase){
+//     // const { rast, kb: kb1 } = evalArgs(ast, kb)
+//     // const when = definitionOf(rast, kb1)
+//     // if (when) return (when, kb1, f)
+//     // const rast2 = decompress(rast)
+//     // const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
+//     const when = definitionOf(ast, kb)
+//     // console.log('when=', when)
+//     if (!when) return ast
+//     const ast2 = mapAsts(when, x => explicate(x, kb))
+//     return ast2
+
+// }
+
+// Deno.test({
+//     name : 'test93',
+//     fn : ()=>{
+//         // explicate()
+
+//         const kb = $.the('f').of($.the('thing')).when($.the('thing').plus(1)).dump()
+//         // console.log(kb.derivClauses)
+//         const x = explicate($.the('f').of( $.the('f').of(3) ).$, kb)
+//         // const x = explicate($.the('f').of(2).$, kb)
+//         console.log(x)
+        
+//     }
+// })
+
 
 // Deno.test({
 //     name: 'test92',
