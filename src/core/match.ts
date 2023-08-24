@@ -22,6 +22,14 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === 'arbitrary-type' && f.type === 'arbitrary-type') {
         return match(template.description, f.description, kb)
 
+    } else if (template.type === 'arbitrary-type' && isConst(f)) {
+
+        if (!match($(template.head).$, f, kb)) return undefined
+
+        const desc = subst(template.description, [template.head, f])
+        const ok = isTruthy(evaluate(desc, kb, { asIs: true }).result)
+        if (ok) return deepMapOf([[template, f]])
+
     } else if (template.type === 'variable' && f.type === 'variable') {
         if (!match($(template.varType).$, $(f.varType).$, kb)) return undefined
         return match($(template).suchThat(true).$, $(f).suchThat(true).$, kb)
@@ -34,24 +42,16 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         if (!match($(template.varType).$, f, kb)) return undefined
         return deepMapOf([[template, f]])
 
-    } else if (template.type === 'arbitrary-type' && isConst(f)) {
-
-        if (!match($(template.head).$, f, kb)) return undefined
-
-        const desc = subst(template.description, [template.head, f])
-        const ok = isTruthy(evaluate(desc, kb, { asIs: true }).result)
-        if (ok) return deepMapOf([[template, f]])
+    } else if (template.type === 'variable') {
+        // if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
+        // if (isTruthy(evaluate($(f).isa(template.varType).$, kb, {asIs:true}).result)) return deepMapOf([[template, f]])
+        return deepMapOf([[template, f]])
 
     } else if (template.type === f.type) {
         return matchGeneric(template, f, kb)
 
     } else if (isThing(template) && isThing(f)) {
         return match(removeImplicit(template), removeImplicit(f), kb)
-
-    } else if (template.type === 'variable') {
-        // if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
-        // if (isTruthy(evaluate($(f).isa(template.varType).$, kb, {asIs:true}).result)) return deepMapOf([[template, f]])
-        return deepMapOf([[template, f]])
 
     } else if (f.type === 'conjunction' /* || f.type === 'disjunction' */) {
         const m1 = match(template, f.f1, kb)
