@@ -2,7 +2,7 @@ import { ask } from "./ask.ts";
 import { decompress } from "./decompress.ts";
 import { definitionOf } from "./definitionOf.ts";
 import { evalArgs } from "./evalArgs.ts";
-import { $ } from "./exp-builder.ts";
+// import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { tell } from "./tell.ts";
@@ -16,7 +16,7 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase, args: { asIs: boolean
 } {
     const x = ast.type === 'command' ? ast.f1 : ast
     const f = ast.type === 'command' ? tell : ask
-    if (args.asIs) return { result: $(true).$, additions: [], eliminations: [], ...f(ast, kb) }
+    if (args.asIs) return { additions: [], eliminations: [], ...f(ast, kb) }
     return execAst(x, kb, f)
 }
 
@@ -29,7 +29,6 @@ function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) 
     const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
 
     return {
-        result: $(true).$,
         additions: [],
         eliminations: [],
         ...f(rast3, kb1),

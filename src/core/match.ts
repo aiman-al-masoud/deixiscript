@@ -30,11 +30,13 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return match($(template).suchThat(true).$, f, kb)
 
     } else if (template.type === 'variable' && isConst(f)) {
-        if (match($(template).suchThat(true).$, f, kb)) return deepMapOf([[template, f]])
+
+        if (!match($(template.varType).$, f, kb)) return undefined
+        return deepMapOf([[template, f]])
 
     } else if (template.type === 'arbitrary-type' && isConst(f)) {
 
-        if (!match($(template.head.varType).$, f, kb)) return undefined
+        if (!match($(template.head).$, f, kb)) return undefined
 
         const desc = subst(template.description, [template.head, f])
         const ok = isTruthy(evaluate(desc, kb, { asIs: true }).result)

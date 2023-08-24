@@ -112,7 +112,7 @@ export type ImplicitReference = {
 
 export type ArbitraryType = {
     readonly type: 'arbitrary-type',
-    readonly head: Variable,
+    readonly head: LLangAst,
     readonly description: LLangAst,
     readonly number: LLangAst,
 }
@@ -186,10 +186,6 @@ export type IfElse = {
 
 export type AstMap = DeepMap<LLangAst, LLangAst>
 
-export function isVar(t: LLangAst): t is Variable {
-    return t.type === 'variable'
-}
-
 export function isConst(t: LLangAst): t is Constant {
     return t.type === 'entity'
         || t.type === 'number'
@@ -198,7 +194,7 @@ export function isConst(t: LLangAst): t is Constant {
 }
 
 export function isTerm(a: LLangAst): a is Term {
-    return isVar(a) || isConst(a)
+    return isConst(a) || a.type === 'variable'
 }
 
 export function isHasSentence(s: IsASentence | HasSentence): s is HasSentence {
@@ -302,4 +298,3 @@ export function isAfterDerivationClause(ast: LLangAst): ast is AfterDerivationCl
 export function isTruthy(ast: LLangAst) {
     return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
 }
-

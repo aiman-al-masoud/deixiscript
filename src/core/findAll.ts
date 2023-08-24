@@ -56,7 +56,7 @@ export function findAll(
             throw new Error(``)
         case "arbitrary-type":
             {
-                const vars = uniq([...variables, realAst.head])
+                const vars =  uniq([...variables, ...findAsts(realAst, 'variable')]) /* uniq([...variables, realAst.head]) */
                 return findAll($(realAst.head).and(realAst.description).$, vars, kb, partialResults)
             }
         case "generalized":

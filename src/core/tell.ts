@@ -23,6 +23,7 @@ export function tell(
     kb: KnowledgeBase,
     additions: WorldModel,
     eliminations: WorldModel,
+    result: LLangAst,
 } {
 
     let additions: WorldModel = []
@@ -74,12 +75,20 @@ export function tell(
             }
         case 'arbitrary-type':
             {
-                const id = ast.head.varType + '#' + random()
-                const isa = $(id).isa(ast.head.varType)
-                const where = subst(ast.description, [ast.head, $(id).$])
-                const { kb: kb1 } = evaluate(isa.tell.$, kb)
-                const result = evaluate($(where).tell.$, kb1)
+                const x = evaluate($(ast.head).tell.$, kb)
+                const where = subst(ast.description, [ast.head, x.result])
+                const result = evaluate($(where).tell.$, x.kb)
                 return result
+            }
+        case 'variable':
+            {
+                const id = ast.varType + '#' + random()
+                const isa = $(id).isa(ast.varType).tell.$
+                const x = evaluate(isa, kb)
+                return {
+                    ...x,
+                    result: $(id).$
+                }
             }
         case 'negation':
             {
@@ -99,7 +108,6 @@ export function tell(
         case "math-expression":
         case "implicit-reference":
         case "command":
-        case 'variable': // return evaluate($(ast).suchThat($(ast).isa(ast.varType)).tell.$, kb)
             break
         // throw new Error(`not implemented `+ast.type)
     }
@@ -121,6 +129,7 @@ export function tell(
     return {
         additions,
         eliminations,
+        result: $(true).$,
         kb: {
             ...kb,
             wm,

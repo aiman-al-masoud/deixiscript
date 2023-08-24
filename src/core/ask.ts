@@ -98,10 +98,11 @@ export function ask(
             }
         case 'arbitrary-type':
 
-            if (ast.head.type !== 'variable') return { result: ast.head, kb } //TODO
+            const head = ast.head
+            if (head.type !== 'variable') return { result: head, kb }
 
-            const maps = findAll(ast.description, [ast.head], kb)
-            const candidates = maps.map(x => x.get(ast.head)).filter(isNotNullish)
+            const maps = findAll(ast.description, [head], kb)
+            const candidates = maps.map(x => x.get(head)).filter(isNotNullish)
 
             const sortedCandidates = sorted(
                 candidates,
