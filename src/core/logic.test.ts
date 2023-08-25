@@ -10,12 +10,12 @@ import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
-import { evalArgs } from "./evalArgs.ts";
-import { definitionOf } from "./definitionOf.ts";
-import { decompress } from "./decompress.ts";
-import { findAsts } from "./findAsts.ts";
-import { removeImplicit } from "./removeImplicit.ts";
-import { mapAsts } from "./mapAsts.ts";
+// import { evalArgs } from "./evalArgs.ts";
+// import { definitionOf } from "./definitionOf.ts";
+// import { decompress } from "./decompress.ts";
+// import { findAsts } from "./findAsts.ts";
+// import { removeImplicit } from "./removeImplicit.ts";
+// import { mapAsts } from "./mapAsts.ts";
 
 
 function dassert(x: LLangAst) {
