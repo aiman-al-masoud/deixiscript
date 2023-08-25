@@ -9,8 +9,6 @@ import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, /* 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
-
-
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
         if (isTruthy(evaluate($(f).isa(template).$, kb, { asIs: true }).result)) return deepMapOf([[template, f]])
@@ -65,7 +63,7 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 }
 
 function isThing(ast: LLangAst): ast is Which | ImplicitReference | Constant {
-    return ast.type === 'which' || ast.type === 'implicit-reference' || (ast.type==='complement' &&  pointsToThings(ast)) || isConst(ast)
+    return ast.type === 'which' || ast.type === 'implicit-reference' || (ast.type === 'complement' && pointsToThings(ast)) || isConst(ast)
 }
 
 function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {
