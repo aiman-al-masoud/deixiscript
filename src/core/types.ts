@@ -307,3 +307,27 @@ export function isAfterDerivationClause(ast: LLangAst): ast is AfterDerivationCl
 export function isTruthy(ast: LLangAst) {
     return !astsEqual(ast, $(false).$) && !astsEqual(ast, $('nothing').$)
 }
+
+
+
+// type AtomAst<T = unknown> = EntityAst | ListAst<T>
+// type MyAst<T = unknown> = AtomAst<T> | CommandAst<T>
+
+// type EntityAst = {
+//     type: 'entity',
+//     value: string,
+// }
+
+// type ListAst<T = MyAst> = {
+//     type: 'list',
+//     value: T[],
+// }
+
+// type CommandAst<T = MyAst> = {
+//     type: 'command',
+//     value: T,
+// }
+// const x = {} as EntityAst<ListAst>
+// const x = {} as EntityAst
+// const x = {} as ListAst
+// x.value[0].type==='list' && x.value[0].value
