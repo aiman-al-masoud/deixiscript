@@ -20,13 +20,15 @@ export type KnowledgeBase = {
 
 /* LANGUAGE */
 
-export type LLangAst = Atom | Formula | Command
+export type LLangAst = BasicLLangAst | NaturalisticLLangAst
+export type BasicLLangAst =
+    | Atom
+    | CompositeFormula
+    | AtomicFormula
+    | Command
 export type Atom =
     | Term
     | List
-export type Formula =
-    | AtomicFormula
-    | CompositeFormula
 export type Term =
     | Constant
     | Variable
@@ -46,14 +48,16 @@ export type CompositeFormula =
     | DerivationClause
     | IfElse
     | MathExpression
-    | ImplicitReference
     | ArbitraryType
-    | Complement
-    | GeneralizedFormula
-    | Which
 export type DerivationClause =
     | WhenDerivationClause
     | AfterDerivationClause
+export type NaturalisticLLangAst =
+    | ImplicitReference
+    | Complement
+    | Which
+    | GeneralizedFormula
+
 
 export type Command = {
     readonly type: 'command',
