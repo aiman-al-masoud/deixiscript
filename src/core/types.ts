@@ -221,6 +221,11 @@ export function wmSentencesEqual(s1: IsASentence | HasSentence, s2: IsASentence 
     return s1[0] === s2[0] && s1[1] === s2[1] && s1[2] === s2[2]
 }
 
+export function isBasic(x: LLangAst): x is BasicLLangAst {
+    return isAtom(x) || x.type === 'command' || x.type === 'is-a-formula' || x.type === 'has-formula'
+        || x.type === 'conjunction' || x.type === 'disjunction' || x.type === 'negation' || x.type === 'existquant' || isWhenDerivationClause(x) || isAfterDerivationClause(x) || x.type === 'if-else' || x.type === 'math-expression' || x.type === 'arbitrary-type'
+}
+
 export function isLLangAst(x: unknown): x is LLangAst {
 
     if (x === null || typeof x !== 'object' || !('type' in x)) return false
