@@ -1,6 +1,6 @@
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
-import { HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, conceptsOf, isAtom, isIsASentence } from "./types.ts"
+import { HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, conceptsOf, isAtom, isConst, isIsASentence } from "./types.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
 import { evaluate } from "./evaluate.ts";
 
@@ -32,8 +32,12 @@ function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts
 
   if (!maxes.length) return []
 
+  const old = foo(evaluate($('y:thing').suchThat($(h[0]).has('y:thing').as(h[2]).$, Infinity).$, kb).result).filter(isConst).filter(x => x.type !== 'nothing').map(x => x.value).concat(h[1])
+
   // assume oldest-inserted values come first
-  const old = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value).concat(h[1])
+  // const good = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value).concat(h[1])
+
+  // console.log(old, good)
 
   const max = Math.min(...maxes as number[]) // most restrictive
   const throwAway = old.slice(0, old.length - max)
@@ -64,6 +68,7 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
 
 function foo(x: LLangAst): LLangAst[] {
-  if (x.type === 'conjunction') return [x.f1, ...foo(x.f2)]
+  // console.log(x)
+  if (x.type === 'conjunction') return [...foo(x.f2), ...foo(x.f1)] // reverse: oldest first
   return [x]
 }
