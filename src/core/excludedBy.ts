@@ -1,6 +1,6 @@
 import { $ } from "./exp-builder.ts"
 // import { findAll } from "./findAll.ts"
-import { HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, conceptsOf, isAtom, isConst, isIsASentence } from "./types.ts"
+import { HasSentence, IsASentence, KnowledgeBase, WmAtom, WorldModel, conceptsOf, conjToList, isAtom, isConst, isIsASentence } from "./types.ts"
 // import { isNotNullish } from "../utils/isNotNullish.ts"
 import { evaluate } from "./evaluate.ts";
 
@@ -27,7 +27,7 @@ function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts
   const qs2Bad = concepts.map(c => $('n:number').suchThat($({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }), Infinity).$)
 
   const maxes = qs2Bad.map(x => evaluate(x, kb).result)
-    .flatMap(foo)
+    .flatMap(conjToList)
     .filter(isAtom)
     .filter(x => x.type !== 'nothing')
     .map(x => x.value)
@@ -42,7 +42,7 @@ function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts
 
   if (!maxes.length) return []
 
-  const old = foo(evaluate($('y:thing').suchThat($(h[0]).has('y:thing').as(h[2]).$, Infinity).$, kb).result).filter(isConst).filter(x => x.type !== 'nothing').map(x => x.value).concat(h[1])
+  const old = conjToList(evaluate($('y:thing').suchThat($(h[0]).has('y:thing').as(h[2]).$, Infinity).$, kb).result).filter(isConst).filter(x => x.type !== 'nothing').map(x => x.value).concat(h[1])
 
   // assume oldest-inserted values come first
   // const good = findAll($(h[0]).has('y:thing').as(h[2]).$, [$('y:thing').$], kb).map(x => x.get($('y:thing').$)).filter(isNotNullish).map(x => x.value).concat(h[1])
@@ -64,7 +64,7 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
   // $({ concept: c, excludes: 'c2:thing' })
 
   const r = qs.flatMap(q => evaluate(q.$, kb).result)
-    .flatMap(foo)
+    .flatMap(conjToList)
     .filter(isAtom)
     .map(x => x.value)
     .filter(x => x !== is[1])
@@ -77,8 +77,3 @@ function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 }
 
 
-function foo(x: LLangAst): LLangAst[] {
-  // console.log(x)
-  if (x.type === 'conjunction') return [...foo(x.f2), ...foo(x.f1)] // reverse: oldest first
-  return [x]
-}

@@ -1,9 +1,10 @@
 import { DeepMap } from "../utils/DeepMap.ts"
 import { deepEquals } from "../utils/deepEquals.ts"
-import { isNotNullish } from "../utils/isNotNullish.ts"
+// import { isNotNullish } from "../utils/isNotNullish.ts"
 import { uniq } from "../utils/uniq.ts"
+import { evaluate } from "./evaluate.ts";
 import { $ } from "./exp-builder.ts"
-import { findAll } from "./findAll.ts"
+// import { findAll } from "./findAll.ts"
 
 /* WORLD-CONCEPTUAL MODEL */
 
@@ -272,8 +273,13 @@ export function addWorldModels(...wms: WorldModel[]): WorldModel {
 }
 
 export function conceptsOf(concept: WmAtom, kb: KnowledgeBase) {
-    const maps = findAll($(concept).isa('x:thing').$, [$('x:thing').$], kb)
-    return maps.map(x => x.get($('x:thing').$)).filter(isNotNullish).map(x => x.value)
+    const xs = conjToList(evaluate($('x:thing').suchThat($(concept).isa('x:thing'), Infinity).$, kb).result).filter(x => x.type !== 'nothing').filter(isConst).map(x => x.value)
+    return xs
+}
+
+export function conjToList(x: LLangAst): LLangAst[] {
+    if (x.type === 'conjunction') return [...conjToList(x.f2), ...conjToList(x.f1)] // reverse: oldest first
+    return [x]
 }
 
 export function pointsToThings(ast: LLangAst): boolean {
