@@ -1,7 +1,8 @@
 import { $ } from "./exp-builder.ts"
 import { findAll } from "./findAll.ts"
-import { HasSentence, IsASentence, KnowledgeBase, WmAtom, WorldModel, conceptsOf, isIsASentence } from "./types.ts"
+import { HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, conceptsOf, isAtom, isIsASentence } from "./types.ts"
 import { isNotNullish } from "../utils/isNotNullish.ts"
+import { evaluate } from "./evaluate.ts";
 
 export function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
 
@@ -42,16 +43,27 @@ function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts
 function excludedByIsA(is: IsASentence, kb: KnowledgeBase): WorldModel {
 
   const concepts = conceptsOf(is[0], kb)
-  const qs = concepts.map(c => $({ concept: c, excludes: 'c2:thing' }))
+  const qs = concepts.map(c => $('c2:thing').suchThat($({ concept: c, excludes: 'c2:thing' }), Infinity))
 
-  const r = qs.flatMap(q => findAll(q.$, [$('c2:thing').$], kb))
-    .map(x => x.get($('c2:thing').$))
-    .filter(isNotNullish)
+  // evaluate()
+  // $()
+  // $({ concept: c, excludes: 'c2:thing' })
+
+  const r = qs.flatMap(q => evaluate(q.$, kb).result)
+    .flatMap(foo)
+    .filter(isAtom)
     .map(x => x.value)
     .filter(x => x !== is[1])
+  // .map(x => x.get($('c2:thing').$))
+  // .filter(isNotNullish)
 
   const result = r.map(x => [is[0], x] as IsASentence)
 
-
   return result
+}
+
+
+function foo(x: LLangAst): LLangAst[] {
+  if (x.type === 'conjunction') return [x.f1, ...foo(x.f2)]
+  return [x]
 }
