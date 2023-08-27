@@ -57,7 +57,7 @@ Deno.test({
     fn: () => {
         assertEquals(
             parse($.p(tokenize('if x is a cat then y is a dog')).$, kb),
-            $('y').isa('dog').if($('x').isa('cat')).$
+            $('y').isa('dog').if($('x').isa('cat')).$,
         )
     }
 })
@@ -143,11 +143,11 @@ Deno.test({
 Deno.test({
     name: 'parser-test12',
     fn: () => {
+        // console.log(removeImplicit($.the('cat').does('eat')._($.the('mouse')).$))
         assertEquals(
             removeImplicit(parse($.p(tokenize('the cat does eat the mouse')).$, kb)),
             removeImplicit($.the('cat').does('eat')._($.the('mouse')).$),
         )
-
     }
 })
 
@@ -158,7 +158,6 @@ Deno.test({
             removeImplicit(parse($.p(tokenize('the cat does eat the mouse in the house')).$, kb)),
             removeImplicit($.the('cat').does('eat')._($.the('mouse')).in($.the('house')).$),
         )
-
     }
 })
 
