@@ -26,7 +26,6 @@ function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) 
     const when = definitionOf(rast, kb1)
     if (when) return execAst(when, kb1, f)
     const rast2 = decompress(rast)
-    // const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
     const rast3 = removeImplicit(rast2) // put before "definitionOf"
 
     return {
