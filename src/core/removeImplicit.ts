@@ -23,7 +23,7 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
             }
         case 'complement':
             {
-                if (!pointsToThings(ast)) return ast
+                // if (!pointsToThings(ast)) return ast
 
                 const phrase = removeImplicit(ast.phrase, i + 1)
                 if (phrase.type !== 'arbitrary-type') return { ...ast, phrase }
@@ -32,14 +32,13 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
                 const r = removeImplicit({ ...phrase, description }, i + 1)
                 return r
             }
-        
 
         default:
             // const anaphors = findAsts(ast, 'implicit-reference')
             const anaphors = findAsts(ast, 'complement', 'which', 'implicit-reference')
             const subs = anaphors.map(x => [x, removeImplicit(x, i + 1)] as [LLangAst, LLangAst])
             const result = subst(ast, deepMapOf(subs))
-            // if(findAsts(result, 'complement', 'which', 'implicit-reference').length) console.log(anaphors)
+            // if (findAsts(result, 'which', 'implicit-reference').length) console.log(anaphors)
             return result
 
     }
