@@ -32,7 +32,7 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
                 return r
             }
         default:
-            const anaphors = findAsts(ast, 'implicit-reference'/* , 'complement', 'which' */)
+            const anaphors = findAsts(ast, 'implicit-reference')
             const subs = anaphors.map(x => [x, removeImplicit(x, i + 1)] as [LLangAst, LLangAst])
             const result = subst(ast, deepMapOf(subs))
             return result
