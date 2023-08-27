@@ -104,8 +104,6 @@ export function ask(
             const maps = findAll(ast.description, [head], kb)
             const candidates = maps.map(x => x.get(head)).filter(isNotNullish)
 
-            // console.log(kb.deicticDict)
-
             const sortedCandidates = sorted(
                 candidates,
                 (c1, c2) => (kb.deicticDict[hash(c2.value)] ?? 0) - (kb.deicticDict[hash(c1.value)] ?? 0)
