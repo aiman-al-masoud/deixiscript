@@ -57,9 +57,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === f.type) {
         return matchGeneric(template, f, kb)
 
-        // } else if (isThing(template) && isThing(f)) {
-        //     return match(removeImplicit(template), removeImplicit(f), kb)
-
     } else if (f.type === 'conjunction' /* || f.type === 'disjunction' */) {
         const m1 = match(template, f.f1, kb)
         const m2 = match(template, f.f2, kb)
@@ -68,10 +65,6 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     }
 
 }
-
-// function isThing(ast: LLangAst): ast is Which | ImplicitReference | Constant {
-//     return ast.type === 'which' || ast.type === 'implicit-reference' || (ast.type === 'complement' && pointsToThings(ast)) || isConst(ast)
-// }
 
 function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {
     const templateT = template as { [x: string]: LLangAst }
