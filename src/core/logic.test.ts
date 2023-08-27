@@ -10,6 +10,7 @@ import { match } from "./match.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
+import { removeImplicit } from "./removeImplicit.ts";
 // import { evalArgs } from "./evalArgs.ts";
 // import { definitionOf } from "./definitionOf.ts";
 // import { decompress } from "./decompress.ts";
@@ -705,7 +706,7 @@ Deno.test({
             .and($({ fibOf: 'x:number' }).when($({ fibOf: $('x:number').minus(1).$ }).plus($({ fibOf: $('x:number').minus(2).$ }))))
             .and($({ fibOf: 2 }).when(1)) // gets hoisted up (more specific than x:number)
             .dump()
-
+            
         assertEquals(
             evaluate($({ fibOf: 6 }).$, kb1).result,
             $(8).$
@@ -878,7 +879,7 @@ Deno.test({
             $.the('cat').which($._.has('red').as('color')).does('eat')._($.the('mouse').which($._.is('black'))).$,
             $.the('dog').is('stupid').$,
             $.the('dog').which($._.has('white').as('color')).is('stupid').$,
-        ]
+        ].map(removeImplicit)
 
         const oracle = [
             dcs[2],
@@ -1090,16 +1091,6 @@ Deno.test({
     }
 })
 
-Deno.test({
-    name:'test93', 
-    fn:()=>{
-        const f = $(1).$
-        const t = $.the('number').$
-        const m = match(t,f, $.emptyKb)
-        assert(!!m)
-        // console.log(m)
-    }
-})
 
 // function explicate(ast:LLangAst, kb:KnowledgeBase){
 //     // const { rast, kb: kb1 } = evalArgs(ast, kb)

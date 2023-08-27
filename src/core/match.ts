@@ -3,18 +3,14 @@ import { assert } from "../utils/assert.ts";
 import { hasUnmatched } from "../utils/hasUnmatched.ts";
 import { evaluate } from "./evaluate.ts";
 import { $ } from "./exp-builder.ts";
-import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
 import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, astsEqual, isTruthy } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
 
-    template = removeImplicit(template)
-    f = removeImplicit(f)
 
     assert(template.type !== 'implicit-reference' && f.type !== 'implicit-reference' && template.type !== 'which' && f.type !== 'which')
-
 
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
