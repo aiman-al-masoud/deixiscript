@@ -1090,7 +1090,16 @@ Deno.test({
     }
 })
 
-
+Deno.test({
+    name:'test93', 
+    fn:()=>{
+        const f = $(1).$
+        const t = $.the('number').$
+        const m = match(t,f, $.emptyKb)
+        assert(!!m)
+        // console.log(m)
+    }
+})
 
 // function explicate(ast:LLangAst, kb:KnowledgeBase){
 //     // const { rast, kb: kb1 } = evalArgs(ast, kb)

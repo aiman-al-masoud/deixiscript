@@ -3,7 +3,7 @@ import { decompress } from "./decompress.ts";
 import { definitionOf } from "./definitionOf.ts";
 import { evalArgs } from "./evalArgs.ts";
 // import { $ } from "./exp-builder.ts";
-import { findAsts } from "./findAsts.ts";
+// import { findAsts } from "./findAsts.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { tell } from "./tell.ts";
 import { KnowledgeBase, LLangAst, WorldModel } from "./types.ts";
@@ -26,7 +26,8 @@ function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) 
     const when = definitionOf(rast, kb1)
     if (when) return execAst(when, kb1, f)
     const rast2 = decompress(rast)
-    const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
+    // const rast3 = findAsts(rast2, 'when-derivation-clause').length ? rast2 : removeImplicit(rast2)
+    const rast3 = removeImplicit(rast2) // put before "definitionOf"
 
     return {
         additions: [],

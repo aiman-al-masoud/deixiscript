@@ -4,10 +4,13 @@ import { evaluate } from "./evaluate.ts";
 import { $ } from "./exp-builder.ts";
 import { removeImplicit } from "./removeImplicit.ts";
 import { subst } from "./subst.ts";
-import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, /* askBin, */ astsEqual, Which, ImplicitReference, Constant, isTruthy, pointsToThings } from "./types.ts";
+import { LLangAst, AstMap, isLLangAst, isConst, KnowledgeBase, List, Entity, astsEqual, isTruthy } from "./types.ts";
 
 
 export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMap | undefined {
+
+    template = removeImplicit(template)
+    f = removeImplicit(f)
 
     if (isConst(template) && isConst(f)) {
         if (template.value === f.value) return deepMapOf()
@@ -50,8 +53,8 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
     } else if (template.type === f.type) {
         return matchGeneric(template, f, kb)
 
-    } else if (isThing(template) && isThing(f)) {
-        return match(removeImplicit(template), removeImplicit(f), kb)
+        // } else if (isThing(template) && isThing(f)) {
+        //     return match(removeImplicit(template), removeImplicit(f), kb)
 
     } else if (f.type === 'conjunction' /* || f.type === 'disjunction' */) {
         const m1 = match(template, f.f1, kb)
@@ -62,9 +65,9 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
 
 }
 
-function isThing(ast: LLangAst): ast is Which | ImplicitReference | Constant {
-    return ast.type === 'which' || ast.type === 'implicit-reference' || (ast.type === 'complement' && pointsToThings(ast)) || isConst(ast)
-}
+// function isThing(ast: LLangAst): ast is Which | ImplicitReference | Constant {
+//     return ast.type === 'which' || ast.type === 'implicit-reference' || (ast.type === 'complement' && pointsToThings(ast)) || isConst(ast)
+// }
 
 function matchGeneric(template: LLangAst, f: LLangAst, kb: KnowledgeBase) {
     const templateT = template as { [x: string]: LLangAst }
