@@ -1,7 +1,7 @@
 import { $ } from "./exp-builder.ts"
-import { findAll } from "./findAll.ts"
+// import { findAll } from "./findAll.ts"
 import { HasSentence, IsASentence, KnowledgeBase, LLangAst, WmAtom, WorldModel, conceptsOf, isAtom, isConst, isIsASentence } from "./types.ts"
-import { isNotNullish } from "../utils/isNotNullish.ts"
+// import { isNotNullish } from "../utils/isNotNullish.ts"
 import { evaluate } from "./evaluate.ts";
 
 export function excludedBy(s: HasSentence | IsASentence, kb: KnowledgeBase) {
@@ -23,12 +23,22 @@ function excludedByHas(h: HasSentence, kb: KnowledgeBase): WorldModel {
 
 function excludedByNumberRestriction(h: HasSentence, kb: KnowledgeBase, concepts: WmAtom[]): WmAtom[] {
 
-  const qs2 = concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }))
+  // const qs2 = concepts.map(c => $({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }))
+  const qs2Bad = concepts.map(c => $('n:number').suchThat($({ limitedNumOf: h[2], onConcept: c, max: 'n:number' }), Infinity).$)
 
-  const maxes = qs2.flatMap(x => findAll(x.$, [$('n:number').$], kb))
-    .map(x => x.get($('n:number').$))
-    .filter(isNotNullish)
+  const maxes = qs2Bad.map(x => evaluate(x, kb).result)
+    .flatMap(foo)
+    .filter(isAtom)
+    .filter(x => x.type !== 'nothing')
     .map(x => x.value)
+
+  // const maxes = 
+  //   qs2.flatMap(x => findAll(x.$, [$('n:number').$], kb))
+  //   .map(x => x.get($('n:number').$))
+  //   .filter(isNotNullish)
+  //   .map(x => x.value)
+
+  // console.log(maxesBad, maxes)
 
   if (!maxes.length) return []
 
