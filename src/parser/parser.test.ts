@@ -164,8 +164,10 @@ Deno.test({
 Deno.test({
     name: 'parser-test14',
     fn: () => {
-        assertEquals(parse($.p(tokenize('the cat does eat ( the mouse in the house )')).$, kb), $.the('cat').does('eat')._($.the('mouse').in($.the('house'))).$)
-
+        assertEquals(
+            removeImplicit(parse($.p(tokenize('the cat does eat ( the mouse in the house )')).$, kb)), 
+            removeImplicit($.the('cat').does('eat')._($.the('mouse').in($.the('house'))).$),
+        )
     }
 })
 
@@ -199,7 +201,10 @@ Deno.test({
 Deno.test({
     name: 'parser-test18',
     fn: () => {
-        assertEquals(parse($.p(tokenize('the cat is a feline when the sky has blue as color')).$, kb), $.the('cat').isa('feline').when($.the('sky').has('blue').as('color')).$)
+        assertEquals(
+            removeImplicit(parse($.p(tokenize('the cat is a feline when the sky has blue as color')).$, kb)), 
+            removeImplicit($.the('cat').isa('feline').when($.the('sky').has('blue').as('color')).$),
+        )
 
     }
 })
@@ -207,8 +212,10 @@ Deno.test({
 Deno.test({
     name: 'parser-test19',
     fn: () => {
-        assertEquals(parse($.p(tokenize('the sum of ( 1 and 2 )')).$, kb), $.the('sum').of($(1).and(2)).$)
-
+        assertEquals(
+            removeImplicit(parse($.p(tokenize('the sum of ( 1 and 2 )')).$, kb)), 
+            removeImplicit($.the('sum').of($(1).and(2)).$),
+        )
     }
 })
 
@@ -216,13 +223,13 @@ Deno.test({
     name: 'parser-test20',
     fn: () => {
 
-        console.log(parse($.p(tokenize('the fib of 4')).$, kb))
-        console.log('---------------------------------')
-        console.log(removeImplicit($.the('fib').of(4).$))
-        // assertEquals(
-        //     parse($.p(tokenize('the fib of 4')).$, kb), 
-        //     removeImplicit($.the('fib').of(4).$),
-        // )
+        // console.log(parse($.p(tokenize('the fib of 4')).$, kb))
+        // console.log('---------------------------------')
+        // console.log(removeImplicit($.the('fib').of(4).$))
+        assertEquals(
+            removeImplicit(parse($.p(tokenize('the fib of 4')).$, kb)), 
+            removeImplicit($.the('fib').of(4).$),
+        )
 
     }
 })
@@ -239,7 +246,7 @@ Deno.test({
     name: 'parser-test22',
     fn: () => {
         assertEquals(
-            parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb),
+            removeImplicit(parse($.p(tokenize('the cat does eat (the mouse which does run)')).$, kb)),
             removeImplicit($.the('cat').does('eat')._($.the('mouse').which($._.does('run'))).$),
         )
     }
