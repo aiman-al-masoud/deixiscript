@@ -22,11 +22,7 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase, args: { asIs: boolean
 
 function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) {
 
-    const { rast, kb: kb1 } = evalArgs(ast, kb)
-    const when = definitionOf(rast, kb1)
-    if (when) return execAst(when, kb1, f)
-    const rast2 = decompress(rast)
-    const rast3 = removeImplicit(rast2) // put before "definitionOf"
+    const { ast: rast3, kb: kb1 } = translate(ast, kb)
 
     return {
         additions: [],
@@ -35,3 +31,12 @@ function execAst(ast: LLangAst, kb: KnowledgeBase, f: typeof tell | typeof ask) 
     }
 }
 
+
+function translate(ast: LLangAst, kb: KnowledgeBase): { ast: LLangAst, kb: KnowledgeBase } {
+    const { rast, kb: kb1 } = evalArgs(ast, kb)
+    const when = definitionOf(rast, kb1)
+    if (when) return translate(when, kb1)
+    const rast2 = decompress(rast)
+    const rast3 = removeImplicit(rast2) // put before "definitionOf"
+    return { ast: rast3, kb: kb1 }
+}
