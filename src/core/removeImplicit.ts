@@ -2,8 +2,8 @@ import { $ } from "./exp-builder.ts";
 import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
-import { LLangAst, pointsToThings } from "./types.ts";
-import { assert } from "../utils/assert.ts";
+import { LLangAst } from "./types.ts";
+// import { assert } from "../utils/assert.ts";
 
 
 export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: increments even if never used
@@ -19,21 +19,18 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
                 if (inner.type !== 'arbitrary-type') return { ...ast, inner }
 
                 const description = $(inner.description).and(subst(ast.which, [$._.$, inner.head])).$
-                const r = removeImplicit({ ...inner, description }, i + 1)
-                return r
+                return $(inner.head).suchThat(description, inner.number).$
             }
         case 'complement':
             {
-                // if (!pointsToThings(ast)) return ast
-
                 const phrase = removeImplicit(ast.phrase, i + 1)
-                if (phrase.type !== 'arbitrary-type') return { ...ast, phrase }
+                const complement = removeImplicit(ast.complement, i + 2)
+                const complementName = removeImplicit(ast.complementName, i + 3)
 
-                const description = $(phrase.description).and($(phrase.head).has(ast.complement).as(ast.complementName)).$
-                const r = removeImplicit({ ...phrase, description }, i + 1)
-                return r
+                if (phrase.type !== 'arbitrary-type') return { ...ast, phrase, complement, complementName }
+                const description = $(phrase.description).and($(phrase).has(complement).as(complementName)).$
+                return $(phrase.head).suchThat(description, phrase.number).$
             }
-
         default:
             // const anaphors = findAsts(ast, 'implicit-reference')
             const anaphors = findAsts(ast, 'complement', 'which', 'implicit-reference')
