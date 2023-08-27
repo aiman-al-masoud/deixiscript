@@ -3,6 +3,7 @@ import { findAsts } from "./findAsts.ts";
 import { subst } from "./subst.ts";
 import { deepMapOf } from "../utils/DeepMap.ts";
 import { LLangAst, pointsToThings } from "./types.ts";
+import { assert } from "../utils/assert.ts";
 
 
 export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: increments even if never used
@@ -39,6 +40,7 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
             const subs = anaphors.map(x => [x, removeImplicit(x, i + 1)] as [LLangAst, LLangAst])
             const result = subst(ast, deepMapOf(subs))
             // if (findAsts(result, 'which', 'implicit-reference').length) console.log(anaphors)
+            // assert(!findAsts(result, 'which', 'implicit-reference').length)
             return result
 
     }
