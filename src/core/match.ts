@@ -46,9 +46,8 @@ export function match(template: LLangAst, f: LLangAst, kb: KnowledgeBase): AstMa
         return deepMapOf([[template, f]])
 
     } else if (template.type === 'variable') {
-        // if (askBin($(f).isa(template.varType).$, kb)) return deepMapOf([[template, f]])
-        // if (isTruthy(evaluate($(f).isa(template.varType).$, kb, {asIs:true}).result)) return deepMapOf([[template, f]])
-        return deepMapOf([[template, f]])
+        if (isTruthy(evaluate($(f).isa(template.varType).$, kb, { asIs: true }).result)) return deepMapOf([[template, f]])
+        // return deepMapOf([[template, f]])
 
     } else if (template.type === f.type) {
         return matchGeneric(template, f, kb)
