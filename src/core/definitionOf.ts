@@ -3,7 +3,7 @@ import { first } from "../utils/first.ts"
 import { $ } from "./exp-builder.ts";
 import { match } from "./match.ts"
 import { subst } from "./subst.ts"
-import { LLangAst, KnowledgeBase, isConst, astsEqual, isWhenDerivationClause, AstMap, isLLangAst } from "./types.ts"
+import { LLangAst, KnowledgeBase, isConst, astsEqual, isWhenDerivationClause, AstMap } from "./types.ts"
 
 
 export function definitionOf(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
