@@ -109,7 +109,7 @@ export function ask(
                 (c1, c2) => (kb.deicticDict[hash(c2.value)] ?? 0) - (kb.deicticDict[hash(c1.value)] ?? 0)
             )
 
-            const { result: n } = evaluate(ast.number, kb)
+            const { result: n } = evaluate(ast.cardinality, kb)
             assert(n.type === 'number')
             const slice = sortedCandidates.slice(0, n.value).map($)
             const res = slice.slice(1).reduce((a, b) => a.and(b), slice[0] ?? $('nothing')).$

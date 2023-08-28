@@ -112,14 +112,14 @@ export type Which = {
 export type ImplicitReference = {
     readonly type: 'implicit-reference',
     readonly headType: LLangAst,
-    readonly number: LLangAst,
+    readonly cardinality: LLangAst,
 }
 
 export type ArbitraryType = {
     readonly type: 'arbitrary-type',
     readonly head: LLangAst,
     readonly description: LLangAst,
-    readonly number: LLangAst,
+    readonly cardinality: LLangAst,
 }
 
 export type MathExpression = {

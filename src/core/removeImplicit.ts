@@ -12,14 +12,14 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
         case 'implicit-reference':
 
             const head = $(`x${i}:thing`).$
-            return $(head).suchThat($(head).isa(ast.headType), ast.number).$
+            return $(head).suchThat($(head).isa(ast.headType), ast.cardinality).$
         case 'which':
             {
                 const inner = removeImplicit(ast.inner, i + 1)
                 if (inner.type !== 'arbitrary-type') return { ...ast, inner }
 
                 const description = $(inner.description).and(subst(ast.which, [$._.$, inner.head])).$
-                return $(inner.head).suchThat(description, inner.number).$
+                return $(inner.head).suchThat(description, inner.cardinality).$
             }
         case 'complement':
             {
@@ -29,7 +29,7 @@ export function removeImplicit(ast: LLangAst, i = 0): LLangAst { // problem: inc
 
                 if (phrase.type !== 'arbitrary-type') return { ...ast, phrase, complement, complementName }
                 const description = $(phrase.description).and($(phrase).has(complement).as(complementName)).$
-                return $(phrase.head).suchThat(description, phrase.number).$
+                return $(phrase.head).suchThat(description, phrase.cardinality).$
             }
         default:
             // const anaphors = findAsts(ast, 'implicit-reference')

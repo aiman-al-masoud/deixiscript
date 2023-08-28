@@ -192,7 +192,7 @@ export class ExpBuilder<T extends LLangAst> {
             type: 'arbitrary-type',
             head: this.exp,
             description: makeAst(description),
-            number: makeAst(number ?? 1),
+            cardinality: makeAst(number ?? 1),
         })
 
     }
@@ -329,7 +329,7 @@ function createImplicit(x: ExpBuilderArg, number: number) {
     return new ExpBuilder<ImplicitReference>({
         type: 'implicit-reference',
         headType: makeAst(x),
-        number: $(number).$,
+        cardinality: $(number).$,
     })
 }
 
