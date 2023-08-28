@@ -147,10 +147,10 @@ export function ask(
                 )
             }
 
+        case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
         case 'generalized':
         case 'implicit-reference':
         case "complement":
-        case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
         case 'which':
         case "command":
         case 'after-derivation-clause':
