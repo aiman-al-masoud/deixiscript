@@ -147,7 +147,8 @@ export function ask(
                 )
             }
 
-        case 'variable': // return evaluate($(ast).suchThat(true).$, kb)
+        case 'variable':
+            return evaluate($(ast).suchThat(true).$, kb)
         case 'generalized':
         case 'implicit-reference':
         case "complement":
