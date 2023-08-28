@@ -39,8 +39,8 @@ function getMatchFunction(ast: LLangAst) {
   return match
 }
 
-
 // export function def(ast: LLangAst, kb: KnowledgeBase) {
+// if (ast.type === 'when-derivation-clause' || ast.type === 'after-derivation-clause') return undefined
 //   const old = Object.entries(ast).filter(valueIs(isLLangAst))
 //   const newTuples = old.map(x => [x[0], definitionOf(x[1], kb) ?? x[1]] as const)
 //   const ast2 = { ...ast, ...Object.fromEntries(newTuples) }
