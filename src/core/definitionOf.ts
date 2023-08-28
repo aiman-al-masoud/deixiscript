@@ -15,6 +15,8 @@ export function definitionOf(ast: LLangAst, kb: KnowledgeBase): LLangAst | undef
     return $(f1 ?? ast.f1).and(f2 ?? ast.f2).$
   }
 
+  if (ast.type === 'when-derivation-clause' || ast.type === 'after-derivation-clause') return undefined
+
   return first(kb.derivClauses.filter(isWhenDerivationClause), dc => {
 
     const matchF = getMatchFunction(ast)
