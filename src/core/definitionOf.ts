@@ -1,9 +1,10 @@
 import { deepMapOf } from "../utils/DeepMap.ts"
 import { first } from "../utils/first.ts"
+import { valueIs } from "../utils/valueIs.ts";
 import { $ } from "./exp-builder.ts";
 import { match } from "./match.ts"
 import { subst } from "./subst.ts"
-import { LLangAst, KnowledgeBase, isConst, astsEqual, isWhenDerivationClause, AstMap } from "./types.ts"
+import { LLangAst, KnowledgeBase, isConst, astsEqual, isWhenDerivationClause, AstMap, isLLangAst } from "./types.ts"
 
 
 export function definitionOf(ast: LLangAst, kb: KnowledgeBase): LLangAst | undefined {
@@ -35,4 +36,12 @@ function getMatchFunction(ast: LLangAst) {
   if (isConst(ast)) return strictMatch
 
   return match
+}
+
+
+export function def(ast: LLangAst, kb: KnowledgeBase) {
+  const old = Object.entries(ast).filter(valueIs(isLLangAst))
+  const newTuples = old.map(x => [x[0], definitionOf(x[1], kb) ?? x[1]] as const)
+  const ast2 = { ...ast, ...Object.fromEntries(newTuples) }
+  return definitionOf(ast2, kb) ?? ast2
 }

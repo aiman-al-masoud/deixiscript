@@ -11,7 +11,9 @@ import { deepMapOf } from "../utils/DeepMap.ts";
 import { compareSpecificities } from "./compareSpecificities.ts";
 import { sorted } from "../utils/sorted.ts";
 import { removeImplicit } from "./removeImplicit.ts";
-import { definitionOf } from "./definitionOf.ts";
+import { def, definitionOf } from "./definitionOf.ts";
+import { parse } from "../parser/parse.ts";
+import { hardLin } from "../parser/hardLin.ts";
 // import { evalArgs } from "./evalArgs.ts";
 // import { definitionOf } from "./definitionOf.ts";
 // import { decompress } from "./decompress.ts";
@@ -1093,16 +1095,21 @@ Deno.test({
 })
 
 
-// Deno.test({
-//     name : 'test93',
-//     fn : ()=>{
-//         const kb = getStandardKb()
-//         // const q2 = $({ concept: 'thing', excludes: 'x:thing' }).$ 
-//         const q = $('x:thing').suchThat($({ concept: 'thing', excludes: 'x:thing' }))  .$ 
-//         const x = definitionOf(q, kb)
-//         console.log(x)
-//     }
-// })
+Deno.test({
+    name : 'test93',
+    fn : ()=>{
+        const kb = getStandardKb()
+        const q = $('x:thing').suchThat($({ concept: 'thing', excludes: 'x:thing' })).$ 
+        console.log(hardLin(q))
+        console.log('-----------')
+        const x = def(q, kb)
+        const code = hardLin(x)
+        console.log(code)
+
+        // console.log('----------')
+        // console.log(hardLin($.the('cat').which($._.has('red').as('color')).$))
+    }
+})
 
 // function explicate(ast:LLangAst, kb:KnowledgeBase){
 //     // const { rast, kb: kb1 } = evalArgs(ast, kb)
