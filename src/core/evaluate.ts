@@ -16,7 +16,7 @@ export function evaluate(ast: LLangAst, kb: KnowledgeBase, args: { asIs: boolean
     const f = ast.type === 'command' ? tell : ask
     if (args.asIs) return { additions: [], eliminations: [], ...f(ast, kb) }
     const { ast: ast2, kb: kb1 } = uglify(ast1, kb)
-    
+
     return {
         additions: [],
         eliminations: [],
