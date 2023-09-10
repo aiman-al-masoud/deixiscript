@@ -1,3 +1,4 @@
+.pytest_cache/
+__pycache__/
+.env/
 docs/attachments/
-*.gfo
-/src/main/*.html
