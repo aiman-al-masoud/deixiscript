@@ -1,24 +1,34 @@
 from typing import Callable
 from language import Ast, Explicit
 
-def substF(old:Callable[[Ast], bool] | Ast, makeNew:Callable[[Ast], Ast] | Ast, ast:Ast):
+
+
+def subst(old:Callable[[Ast], bool] | Ast, new:Callable[[Ast], Ast] | Ast, ast:Ast):
 
     if isinstance(old, Ast):
-        return substF(lambda x: x == old, makeNew, ast)
+        return subst(lambda x: x == old, new, ast)
 
-    if isinstance(makeNew, Ast):
-        return substF(old, lambda _:makeNew, ast)
+    if isinstance(new, Ast):
+        return subst(old, lambda _:new, ast)
 
-    if old(ast): return makeNew(ast)
+    if old(ast): return new(ast)
 
-    if isinstance(ast, tuple): return tuple([ substF(old, makeNew, v) for v in ast])
+    if isinstance(ast, tuple): return tuple([ subst(old, new, v) for v in ast])
     if isinstance(ast, Explicit): return ast
 
-    d = {k: substF(old, makeNew, v) for k, v in ast.__dict__.items()}
+    d = {k: subst(old, new, v) for k, v in ast.__dict__.items()}
 
     return ast.__class__(**d)
 
-def subst(ast:Ast, old:Ast, new:Ast)->Ast:
-    return substF(old, new, ast)
-
+# # def subst(ast:Ast, old:Ast, new:Ast)->Ast:
+# def subst(old:Ast, new:Ast, ast:Ast,)->Ast:
+#     return substF(old, new, ast)
 # subst = substF
+
+# def substt(x):
+#     return substt
+
+# substt(lambda x:x)(lambda y:y)(1)
+
+
+

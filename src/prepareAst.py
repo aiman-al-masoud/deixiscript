@@ -1,9 +1,9 @@
-from typing import Type, cast
+from typing import cast
 from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Implicit, KnowledgeBase, Negation, NounPhrase, Result, VerbSentence, copyAst
 from functools import reduce
-from subst import  subst, substF
+from subst import  subst
 
 def prepareAst(ast:Ast, kb:KnowledgeBase)->Result:
     # check for match in analytic derivaton clauses
@@ -40,7 +40,7 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     referents = tuple(e(i).get(kb) for i in implicits)
     kb1 = reduce(lambda a,b: e(b).ask(a).kb, referents, kb)
     xs = zip(implicits, referents)
-    new = reduce(lambda a,b: subst(a, b[0],b[1]) , xs, ast)
+    new = reduce(lambda a,b: subst(b[0],b[1], a) , xs, ast)
     return Result(new, kb1)
 
 
@@ -66,15 +66,15 @@ def decompress(ast:Ast)->Ast:
     if tups:  
         tup = cast(tuple, tups[0])
         and_phrase = reduce(lambda a,b: e(a)._and(b), [e(t) for t in tup]).e
-        return decompress(subst(ast, tup, and_phrase))
+        return decompress(subst(tup, and_phrase, ast))
     
     conns = findConjs(ast)
     if not conns: return ast
     conn = cast(BinExp, conns[0])
     if not isNounPhrasish(conn): return ast
 
-    l = decompress(subst(ast, conn, conn.left))
-    r = decompress(subst(ast, conn, conn.right))
+    l = decompress(subst(conn, conn.left, ast))
+    r = decompress(subst(conn, conn.right, ast))
 
     return BinExp( 
         opposite(conn.op) if isinstance(ast, Negation) else conn.op, 
@@ -92,14 +92,14 @@ def opposite(x:Ast)->str:
     return 'and' if x == 'or' else 'and'
 
 def expandNegations(ast:Ast): 
-    return substF(
+    return subst(
         isNegVerbSen, 
         lambda x: Negation(copyAst(x, 'negation', False)),
         ast,
     )
 
 def expandCommands(ast:Ast):
-    return substF(
+    return subst(
         isCommandVerbSen,
         lambda x: Command(copyAst(x, 'command', False)),
         ast,
