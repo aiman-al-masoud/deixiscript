@@ -93,3 +93,6 @@ class DeicticDict:
 class Result:
     head:Ast
     kb:KnowledgeBase
+
+def copyAst(ast:Ast, key:str, val:Ast):
+    return ast.__class__(**{**ast.__dict__, key:val})

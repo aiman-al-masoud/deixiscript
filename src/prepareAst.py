@@ -1,9 +1,9 @@
-from typing import cast
+from typing import Type, cast
 from expbuilder import e
 from findAsts import findAsts
-from language import Ast, BinExp, Command, Implicit, KnowledgeBase, Negation, NounPhrase, Result, VerbSentence
+from language import Ast, BinExp, Command, Implicit, KnowledgeBase, Negation, NounPhrase, Result, VerbSentence, copyAst
 from functools import reduce
-from subst import subst
+from subst import  subst, substF
 
 def prepareAst(ast:Ast, kb:KnowledgeBase)->Result:
     # check for match in analytic derivaton clauses
@@ -14,25 +14,25 @@ def prepareAst(ast:Ast, kb:KnowledgeBase)->Result:
     return Result(x4, x3.kb)
     # the result should be an ast without any implicit references
 
-def expandNegations(ast:Ast)->Ast:
-    match ast:
-        case VerbSentence(v, s, o, True, c, a, t):
-            return Negation(VerbSentence(v, s, o, False, c, a, t))
-        case int(x) | float(x) | str(x):
-            return ast
-        case _:
-            d = {k:expandNegations(v) for k,v in ast.__dict__.items()}
-            return ast.__class__(**d)
+# def expandNegations(ast:Ast)->Ast:
+#     match ast:
+#         case VerbSentence(v, s, o, True, c, a, t):
+#             return Negation(VerbSentence(v, s, o, False, c, a, t))
+#         case int(x) | float(x) | str(x):
+#             return ast
+#         case _:
+#             d = {k:expandNegations(v) for k,v in ast.__dict__.items()}
+#             return ast.__class__(**d)
 
-def expandCommands(ast:Ast)->Ast:
-     match ast:
-        case VerbSentence(v, s, o, n, True, a, t):
-            return Command(VerbSentence(v, s, o, n, False, a, t))
-        case int(x) | float(x) | str(x):
-            return ast
-        case _:
-            d = {k:expandNegations(v) for k,v in ast.__dict__.items()}
-            return ast.__class__(**d)
+# def expandCommands(ast:Ast)->Ast:
+#      match ast:
+#         case VerbSentence(v, s, o, n, True, a, t):
+#             return Command(VerbSentence(v, s, o, n, False, a, t))
+#         case int(x) | float(x) | str(x):
+#             return ast
+#         case _:
+#             d = {k:expandNegations(v) for k,v in ast.__dict__.items()}
+#             return ast.__class__(**d)
 
 def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     # TODO: sort by specificity to avoid subnounphrase problem 
@@ -43,9 +43,22 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     new = reduce(lambda a,b: subst(a, b[0],b[1]) , xs, ast)
     return Result(new, kb1)
 
+
+# def isA(typ):
+#     def f (x):
+#         return isinstance(x, typ) 
+#     return f
+
 isConn = lambda x : isinstance(x, BinExp) and x.op in ['and', 'or']
 findConjs= lambda x: findAsts(x, isConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
+isNegVerbSen = lambda x:isinstance(x, VerbSentence) and bool(x.negation)
+isCommandVerbSen = lambda x:isinstance(x, VerbSentence) and bool(x.command)
+
+
+
+# isA(BinExp)(1)
+
 
 def decompress(ast:Ast)->Ast:
 
@@ -78,6 +91,16 @@ def opposite(x:Ast)->str:
     if x not in ['and', 'or']: raise Exception('')
     return 'and' if x == 'or' else 'and'
 
+def expandNegations(ast:Ast): 
+    return substF(
+        isNegVerbSen, 
+        lambda x: Negation(copyAst(x, 'negation', False)),
+        ast,
+    )
 
-
-
+def expandCommands(ast:Ast):
+    return substF(
+        isCommandVerbSen,
+        lambda x: Command(copyAst(x, 'command', False)),
+        ast,
+    )

@@ -33,6 +33,7 @@ def test4():
     x = expandNegations(e('buruf').does_not('have')._('food').e)
     y = it_is_false_that(e('buruf').does('have')._('food').e).e
     assert x == y
+    # print(expandNegations(e('buruf').does_not('have')._('food')._and('capra').e))
 
 # circular import tests (eval <-> expbuilder) 
 def test5():
