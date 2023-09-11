@@ -5,14 +5,14 @@ from language import Ast, BinExp, Command, Implicit, KnowledgeBase, Negation, No
 from functools import reduce
 from subst import  subst
 
-def prepareAst(ast:Ast, kb:KnowledgeBase)->Result:
-    # check for match in analytic derivaton clauses
-    x1 = expandNegations(ast)
-    x2 = expandCommands(x1)
-    x3 = removeImplicit(x2, kb)
-    x4 = decompress(x3.head)
-    return Result(x4, x3.kb)
-    # the result should be an ast without any implicit references
+# def prepareAst(ast:Ast, kb:KnowledgeBase)->Result:
+#     # check for match in analytic derivaton clauses
+#     x1 = expandNegations(ast)
+#     x2 = expandCommands(x1)
+#     x3 = removeImplicit(x2, kb)
+#     x4 = decompress(x3.head)
+#     return Result(x4, x3.kb)
+#     # the result should be an ast without any implicit references
 
 # def expandNegations(ast:Ast)->Ast:
 #     match ast:
