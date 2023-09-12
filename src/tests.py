@@ -87,7 +87,6 @@ def test13():
     assert ('cat#1', 'fish', 'food') in y.kb.wm
 
 # removeImplicit tests
-
 def test14():
     r1 = e('cat#1').does('be')._('cat').tell()
     r2 = e('cat#2').does('be')._('cat').tell(r1.kb)
@@ -101,4 +100,11 @@ def test14():
     # # print(x.kb.dd)
     # print(linearize(x.head))
 
-# test14()
+# negation ask tests 
+def test15():
+    q = e('capra').does('have')._(1)._as('age')
+    qn = it_is_false_that(q)
+    kb = q.tell().kb
+    assert q.get(kb)
+    assert not qn.get(kb)
+    
