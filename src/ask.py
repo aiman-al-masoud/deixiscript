@@ -43,7 +43,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case VerbSentence(v, s, o, False):
             raise Exception('')
         case Negation(v):
-            return Result(not e(v).get(kb), kb)
+            r1 = e(v).ask(kb)
+            return Result(not r1.head, r1.kb)
         case Command(v):
             return tell(ast,kb)
         case _:
