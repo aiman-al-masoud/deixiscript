@@ -5,7 +5,7 @@ from src.prepareAst import decompress, expandCommands, expandNegations, removeIm
 def evaluate(ast:Ast, kb:KnowledgeBase)->Result:
     """
     TOP LEVEL ONLY!
-    NOT supposed to be called recursively by any other function! 
+    NOT supposed to be called by any other function! 
     """
     # TODO: check for match in analytic derivaton clauses
     x1 = expandNegations(ast)
