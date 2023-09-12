@@ -20,9 +20,3 @@ def linearize(ast:Ast)->str:
             return 'it is false that '+linearize(v)
         case _:
             raise Exception()
-
-
-# from expbuilder import __, the
-
-# print(linearize(the('capra').does('eat')._(the('grass')).e))
-# print(linearize(the('capra').does('be')._('stupid').e))
