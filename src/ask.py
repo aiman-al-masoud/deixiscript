@@ -40,7 +40,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('+', l, r):
             raise Exception('')
         case VerbSentence('be', s, o, False):
-            head = s == o or e(s).does('have')._(o)._as('super').get(kb)
+            head = s == o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
         case VerbSentence('have',s, o, False, False, a):
             head = (s,o,a) in kb.wm
@@ -81,7 +81,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             # r = reduce(lambda a,_: red(a, e(h).tell(a.kb)), range(c), Result(tuple(), kb))
             # return r
         case VerbSentence('be', s, o, False):
-            return e(s).does('have')._(o)._as('super').tell(kb)
+            return e(s).does('have')._(o).as_('super').tell(kb)
         case VerbSentence('have', s, o, False, False, a):
             kb1 = kb.addToWm((s, o, a))
             return Result(True, kb1)

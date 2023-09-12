@@ -29,7 +29,7 @@ class VerbSentence:
     object:'Ast'
     negation:'Ast'
     command:'Ast'
-    _as:'Ast'
+    as_:'Ast'
     to:'Ast'
 
 @dataclass(frozen=True)

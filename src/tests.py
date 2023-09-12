@@ -1,5 +1,5 @@
 from typing import cast
-from expbuilder import a, does, e, every, it_is_false_that, the
+from expbuilder import does, e, every, i, it_is_false_that
 from language import Implicit, KnowledgeBase, VerbSentence
 from prepareAst import decompress, expandNegations, removeImplicit
 from subst import subst
@@ -46,12 +46,12 @@ def test6():
     assert findAsts(x, lambda x:isinstance(x, int)) == (3, 1)
 
 def test7():
-    x = the('cat').does('jump')._and(the('dog').does('run')).e
-    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
+    x = i('cat').does('jump')._and(i('dog').does('run')).e
+    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').e, i('dog').e)
 
 def test8(): # sub-nounphrase problem: need to sort by specificity before using subst
-    x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
-    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').which(does('jump')).e, the('cat').e)
+    x = i('cat').which(does('jump')).does('lick')._(i('cat')).e
+    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').which(does('jump')).e, i('cat').e)
 
 # decompress tests
 def test9():
@@ -76,14 +76,14 @@ def test11():
 
 # tell (create) new entities tests 
 def test12():
-    x = a('cat').tell()
-    y = a('cat').tell(x.kb)
-    z = a('cat').tell(y.kb)    
+    x = i('cat').tell()
+    y = i('cat').tell(x.kb)
+    z = i('cat').tell(y.kb)    
     assert set(cast(tuple, every('cat').get(z.kb))) == {'cat', 'cat#1', 'cat#2'}
 
 def test13():
-    x = a('cat').tell()
-    y = a('cat').which(does('have')._('fish')._as('food')).tell(x.kb)
+    x = i('cat').tell()
+    y = i('cat').which(does('have')._('fish').as_('food')).tell(x.kb)
     assert ('cat#1', 'fish', 'food') in y.kb.wm
 
 # removeImplicit tests
@@ -102,9 +102,11 @@ def test14():
 
 # negation ask tests 
 def test15():
-    q = e('capra#1').does('have')._(1)._as('age')
+    q = e('capra#1').does('have')._(1).as_('age')
     qn = it_is_false_that(q)
     kb = q.tell().kb
     assert q.get(kb)
     assert not qn.get(kb)
     
+
+# print(a(i('cat').which(does('have')._(a(i('tail'))))).e)

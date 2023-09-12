@@ -22,14 +22,14 @@ class ExpBuilder(Generic[T]):
     def __add__(self, x:'ExpBuilder'):
         return self.binop('+', x)
 
-    def do(self, verb:'Ast|ExpBuilder', negation:bool):
+    def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
         return ExpBuilder(VerbSentence(makeAst(verb), self.e, _, negation, False, _, _))
 
     def does(self, verb:'Ast|ExpBuilder'):        
-        return self.do(verb, False)
+        return self.verbSen(verb, False)
 
     def does_not(self, verb:'Ast|ExpBuilder'):
-        return self.do(verb, True)
+        return self.verbSen(verb, True)
 
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
         if not isinstance(self.e, VerbSentence): raise Exception()
@@ -40,8 +40,8 @@ class ExpBuilder(Generic[T]):
     def _(self, object:'Ast|ExpBuilder'):
         return self.complement('object', object)
       
-    def _as(self, _as:'Ast|ExpBuilder'):
-        return self.complement('_as', _as)
+    def as_(self, as_:'Ast|ExpBuilder'):
+        return self.complement('as_', as_)
 
     def which(self, which:'Ast|ExpBuilder'):
         return ExpBuilder(Which(self.e, makeAst(which)))
@@ -62,14 +62,14 @@ class ExpBuilder(Generic[T]):
         return tell(self.e, kb)
         
 
-def e(x:'Ast|ExpBuilder'):
+def i(x:Ast): # implicit
+    return ExpBuilder(Noun(x))
+
+def e(x:Ast|ExpBuilder): # explicit
     return ExpBuilder(makeAst(x))
-
-def the(x:Ast):
-    return ExpBuilder(Noun(x))
-
-def a(x:Ast):
-    return ExpBuilder(Noun(x))
+    
+def a(x:Ast|ExpBuilder):
+    return ExpBuilder(Noun(makeAst(x)))
     # return ExpBuilder(Numerality(Noun(x), 1, -1))
 
 def every(x:Ast):
