@@ -1,12 +1,9 @@
-# from language import Ast, Noun, NounPhrase
+from expbuilder import e
+from language import KnowledgeBase, NounPhrase
 
 
-# def matchAst(template:Ast, ast:Ast):
-#     match template, ast:
+def matchNp(template:NounPhrase, ast:NounPhrase, kb:KnowledgeBase):
+    r1 = e(template).tell(kb)
+    r2 = e(ast).ask(r1.kb)
+    return r1.head == r2.head
 
-#        case NounPhrase(headX, y,z), NounPhrase(headY, y,z):
-            
-#             pass
-
-#        case _:
-#             pass
