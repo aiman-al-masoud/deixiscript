@@ -61,7 +61,7 @@ Ast = NounPhrasish | Negation | DerivationClause | VerbSentence | Command
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:Set['WmSentence']
-    dcs:Tuple[DerivationClause]
+    dcs:Set[DerivationClause]
     dd:'DeicticDict'
 
     def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
@@ -74,7 +74,7 @@ class KnowledgeBase:
     @classmethod
     @property
     def empty(cls):
-        return cls(set(), tuple(), DeicticDict({}))
+        return cls(set(), set(), DeicticDict({}))
 
 WmSentence = Tuple[Ast, Ast, Ast]
 
