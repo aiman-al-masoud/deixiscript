@@ -3,8 +3,8 @@ from language import Ast, KnowledgeBase, NounPhrase
 
 
 #
-# Two sentences are synonymous in a context kb, when
-# their truth values co-vary in kb.
+# Two expressions are synonymous in a context kb, when
+# their truth values (or referents) co-vary in kb.
 #
 def matchFm(template:Ast, ast:Ast, kb:KnowledgeBase):
     r1 = e(template).tell(kb)
