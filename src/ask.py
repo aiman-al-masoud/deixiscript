@@ -1,7 +1,7 @@
 from functools import reduce
-from expbuilder import e, _, every, the
-from language import Ast, BinExp, Command, KnowledgeBase, Negation, Noun, NounPhrase, Numerality, Result, VerbSentence, Which
-from subst import subst
+from expbuilder import e, _, every
+from language import Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, Result, VerbSentence, Which
+from subst import rp
 
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
@@ -19,7 +19,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Which(h, w):
             things = e(h).get(kb)
             assert isinstance(things, tuple)
-            cands = tuple(x for x in things if e(subst(_, x, w)).get(kb))
+            cands = tuple(x for x in things if e(rp(_, x, w)).get(kb))
             return Result(cands, kb)
         case Numerality(h, c, o):
             raise Exception('')
@@ -63,7 +63,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(id, r1.kb)
         case Which(h, w):
             r1 = tell(h, kb)
-            ww = subst(_, r1.head, w)
+            ww = rp(_, r1.head, w)
             r2 = tell(ww, r1.kb)
             return Result(r1.head, r2.kb)
         case Numerality(h, c, o):

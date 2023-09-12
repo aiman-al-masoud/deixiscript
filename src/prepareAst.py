@@ -3,7 +3,8 @@ from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Implicit, KnowledgeBase, Negation, NounPhrase, Result, VerbSentence, copyAst
 from functools import reduce
-from subst import  subst
+from subst import  subst, rp
+
 
 # def prepareAst(ast:Ast, kb:KnowledgeBase)->Result:
 #     # check for match in analytic derivaton clauses
@@ -40,14 +41,9 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     referents = tuple(e(i).get(kb) for i in implicits)
     kb1 = reduce(lambda a,b: e(b).ask(a).kb, referents, kb)
     xs = zip(implicits, referents)
-    new = reduce(lambda a,b: subst(b[0],b[1], a) , xs, ast)
+    new = reduce(lambda a,b: rp(b[0],b[1],a) , xs, ast)
     return Result(new, kb1)
 
-
-# def isA(typ):
-#     def f (x):
-#         return isinstance(x, typ) 
-#     return f
 
 isConn = lambda x : isinstance(x, BinExp) and x.op in ['and', 'or']
 findConjs= lambda x: findAsts(x, isConn)
@@ -56,25 +52,22 @@ isNegVerbSen = lambda x:isinstance(x, VerbSentence) and bool(x.negation)
 isCommandVerbSen = lambda x:isinstance(x, VerbSentence) and bool(x.command)
 
 
-
-# isA(BinExp)(1)
-
-
 def decompress(ast:Ast)->Ast:
 
     tups = findTuples(ast)
+    
     if tups:  
         tup = cast(tuple, tups[0])
         and_phrase = reduce(lambda a,b: e(a)._and(b), [e(t) for t in tup]).e
-        return decompress(subst(tup, and_phrase, ast))
+        return decompress(rp(tup, and_phrase, ast))
     
     conns = findConjs(ast)
     if not conns: return ast
     conn = cast(BinExp, conns[0])
     if not isNounPhrasish(conn): return ast
 
-    l = decompress(subst(conn, conn.left, ast))
-    r = decompress(subst(conn, conn.right, ast))
+    l = decompress(rp(conn, conn.left, ast))
+    r = decompress(rp(conn, conn.right, ast))
 
     return BinExp( 
         opposite(conn.op) if isinstance(ast, Negation) else conn.op, 
@@ -91,16 +84,12 @@ def opposite(x:Ast)->str:
     if x not in ['and', 'or']: raise Exception('')
     return 'and' if x == 'or' else 'and'
 
-def expandNegations(ast:Ast): 
-    return subst(
-        isNegVerbSen, 
-        lambda x: Negation(copyAst(x, 'negation', False)),
-        ast,
-    )
+expandNegations = subst(isNegVerbSen)(lambda x: Negation(copyAst(x, 'negation', False)))
+expandCommands = subst(isCommandVerbSen)(lambda x: Command(copyAst(x, 'command', False)))
 
-def expandCommands(ast:Ast):
-    return subst(
-        isCommandVerbSen,
-        lambda x: Command(copyAst(x, 'command', False)),
-        ast,
-    )
+# def expandCommands(ast:Ast):
+#     return subst(
+#         isCommandVerbSen,
+#         lambda x: Command(copyAst(x, 'command', False)),
+#         ast,
+#     )
