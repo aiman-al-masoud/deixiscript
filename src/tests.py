@@ -102,7 +102,7 @@ def test14():
 
 # negation ask tests 
 def test15():
-    q = e('capra').does('have')._(1)._as('age')
+    q = e('capra#1').does('have')._(1)._as('age')
     qn = it_is_false_that(q)
     kb = q.tell().kb
     assert q.get(kb)
