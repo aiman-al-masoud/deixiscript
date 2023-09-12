@@ -1,5 +1,5 @@
 convert any Ast (except for derivation clauses) to world model stuff?
-A specific function just to do that, so as to simplify the implementation of Command(Negate). The tell() function has already basically almost the same purpose.
+A specific function just to do that, so as to simplify the implementation of Command(Negate), and to avoid having to manage additions/eliminations. The tell() function has already basically almost the same purpose.
 
 
 - check for a match with analytic derivation clauses
