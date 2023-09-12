@@ -20,9 +20,14 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             things = e(h).get(kb)
             assert isinstance(things, tuple)
             cands = tuple(x for x in things if e(subst(_)(x)(w)).get(kb))
-            return Result(cands, kb)
+            return e(cands).ask(kb)
         case Numerality(h, c, o):
             raise Exception('')
+            # things = e(h).get(kb)
+            # assert isinstance(things, tuple)
+            # sortedThings = tuple(sorted(things, key=lambda x: kb.dd[x]))
+            # cands = sortedThings[:c]
+            # return e(cands).ask(kb)
         case BinExp('=', l, r):
             return Result(l==r, kb)
         case BinExp('and', l, r):
@@ -69,6 +74,12 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(r1.head, r2.kb)
         case Numerality(h, c, o):
             raise Exception('')
+            # assert isinstance(c, int)
+            # def red(r1:Result, r2:Result):
+            #     head = (*r1.head, r2.head) if isinstance(r1.head, tuple) else (r1.head, r2.head)
+            #     return Result(head, r2.kb)
+            # r = reduce(lambda a,_: red(a, e(h).tell(a.kb)), range(c), Result(tuple(), kb))
+            # return r
         case VerbSentence('be', s, o, False):
             return e(s).does('have')._(o)._as('super').tell(kb)
         case VerbSentence('have', s, o, False, False, a):

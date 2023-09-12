@@ -1,5 +1,5 @@
 from typing import cast
-from expbuilder import does, e, every, it_is_false_that, the
+from expbuilder import a, does, e, every, it_is_false_that, the
 from language import Implicit, KnowledgeBase, VerbSentence
 from prepareAst import decompress, expandNegations, removeImplicit
 from subst import subst
@@ -76,14 +76,14 @@ def test11():
 
 # tell (create) new entities tests 
 def test12():
-    x = the('cat').tell()
-    y = the('cat').tell(x.kb)
-    z = the('cat').tell(y.kb)    
-    assert set(cast(tuple, the('cat').get(z.kb))) == {'cat', 'cat#1', 'cat#2'}
+    x = a('cat').tell()
+    y = a('cat').tell(x.kb)
+    z = a('cat').tell(y.kb)    
+    assert set(cast(tuple, every('cat').get(z.kb))) == {'cat', 'cat#1', 'cat#2'}
 
 def test13():
-    x = the('cat').tell()
-    y = the('cat').which(does('have')._('fish')._as('food')).tell(x.kb)
+    x = a('cat').tell()
+    y = a('cat').which(does('have')._('fish')._as('food')).tell(x.kb)
     assert ('cat#1', 'fish', 'food') in y.kb.wm
 
 # removeImplicit tests

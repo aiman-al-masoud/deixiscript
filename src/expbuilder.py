@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from language import Ast, BinExp, Command, KnowledgeBase, Negation, Noun, VerbSentence, Which
+from language import Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, VerbSentence, Which
 
 T  =  TypeVar('T', bound='Ast')
 _ = ''
@@ -69,10 +69,11 @@ def the(x:Ast):
     return ExpBuilder(Noun(x))
 
 def a(x:Ast):
-    return the(x)
+    return ExpBuilder(Noun(x))
+    # return ExpBuilder(Numerality(Noun(x), 1, -1))
 
 def every(x:Ast):
-    return the(x)
+    return ExpBuilder(Noun(x))
 
 def does(v:Ast):
     return e(_).does(v)
@@ -85,3 +86,4 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
 
 def new(x:Ast|ExpBuilder)->Ast:
     return Command(makeAst(x))
+

@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Dict, Set, Tuple
+from dataclasses import astuple, dataclass
+from typing import Dict, Iterator, Set, Tuple
 
 @dataclass(frozen=True)
 class Noun:
