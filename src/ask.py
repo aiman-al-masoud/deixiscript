@@ -73,5 +73,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case VerbSentence('have', s, o, False, False, a):
             kb1 = kb.addToWm((s, o, a))
             return Result(True, kb1)
+        case Negation(v):
+            raise Exception('')
         case _:
             raise Exception('')
