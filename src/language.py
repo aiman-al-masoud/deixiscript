@@ -68,8 +68,7 @@ class KnowledgeBase:
         return KnowledgeBase(**{**self.__dict__, 'dd':dd})
     
     def addToWm(self, s:'WmSentence')->'KnowledgeBase':
-        wm = {*self.wm, s}
-        return KnowledgeBase(wm, self.dcs, self.dd)
+        return KnowledgeBase(self.wm | {s}, self.dcs, self.dd)
     
     @classmethod
     @property
