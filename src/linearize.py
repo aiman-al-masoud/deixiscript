@@ -1,5 +1,5 @@
-from language import Ast, BinExp, Negation, Noun, VerbSentence
 from functools import reduce
+from language import Ast, BinExp, Negation, Noun, VerbSentence
 
 def linearize(ast:Ast)->str:
 
