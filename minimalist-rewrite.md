@@ -2,7 +2,8 @@ convert any Ast (except for derivation clauses) to world model stuff?
 A specific function just to do that, so as to simplify the implementation of Command(Negate), and to avoid having to manage additions/eliminations. The tell() function has already basically almost the same purpose.
 
 
-is verb sentence the only kind of AST that could have to be decompressed?
+- is verb sentence the only kind of AST that could have to be decompressed?
+- but it is not the only overridable AST (nouns for pronouns, other nounphrases for "funcs')
 
 
 
