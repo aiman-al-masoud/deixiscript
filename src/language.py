@@ -56,7 +56,7 @@ Explicit = str | float | int | bool  | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
-Ast = NounPhrasish | Negation | DerivationClause | VerbSentence | Command
+Ast = NounPhrasish | VerbSentence | Negation | DerivationClause | Command
 
 @dataclass(frozen=True)
 class KnowledgeBase:
