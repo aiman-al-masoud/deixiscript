@@ -11,6 +11,7 @@ def matchAst(template:Ast, ast:Ast, kb:KnowledgeBase):
     r2 = it_is_false_that(template).tell(kb)
     return e(ast).get(r1.kb)==r1.head and it_is_false_that(ast).get(r2.kb)==r2.head
 
+# What about analytic derivation clauses?
 
 # def matchNp(template:NounPhrase, ast:NounPhrase, kb:KnowledgeBase):
 #     r1 = e(template).tell(kb)
