@@ -51,8 +51,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
         case Command(v):
-            r1 = tell(ast, kb)
-            return Result(r1.head, r1.kb)
+            return tell(ast, kb)
         case _:
             raise Exception('')
 
