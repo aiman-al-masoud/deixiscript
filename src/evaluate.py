@@ -12,7 +12,7 @@ def evaluate(ast:Ast, kb:KnowledgeBase=KnowledgeBase.empty)->Result:
     x1 = expandNegations(ast)
     x2 = expandCommands(x1)
     x3 = removeImplicit(x2, kb)
-    x4 = decompress(x3.head)    
+    x4 = decompress(x3.head) # should be free of implicit references 
     x5 = e(x4).ask(x3.kb)
     # TODO: check for consequences in synthetic derivation clauses
     return x5
