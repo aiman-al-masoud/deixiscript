@@ -1,6 +1,22 @@
+from typing import Literal
 from expbuilder import e, it_is_false_that
 from language import Ast, KnowledgeBase
 
+
+def cmprGener(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ', 'GE', 'NE']:
+   
+    m1 = matchAst(ast1, ast2, kb)
+    m2 = matchAst(ast2, ast1, kb)
+
+    match m1, m2:
+        case True, True:
+            return 'EQ'
+        case True, False:
+            return 'GE'
+        case False, True:
+            return 'LE'
+        case _:
+            return 'NE'        
 
 #
 # Two expressions are synonymous in a context kb, when
@@ -12,11 +28,6 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase):
  
     without1 = it_is_false_that(specific).tell(kb)
     without2 = e(generic).get(without1.kb)
-
-    # print(with1)
-    # print(with2)
-    # print(without1)
-    # print(without2)
 
     # return areConcordant(with1.head, with2) and not without2
     return areConcordant(with1.head, with2) and (areConcordant(without1.head, without2) or not without2)

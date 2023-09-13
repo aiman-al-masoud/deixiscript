@@ -1,9 +1,11 @@
+from functools import partial
 from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import Implicit, KnowledgeBase, VerbSentence
-from matchAst import matchAst
-from prepareAst import decompress, expandNegations, removeImplicit
+from language import BinExp, Implicit, KnowledgeBase, VerbSentence
+from linearize import linearize
+from matchAst import matchAst, cmprGener
+from normalized import decompress, expandNegations, normalized, removeImplicit
 from subst import subst
 from findAsts import findAsts
 
@@ -116,7 +118,7 @@ def test16():
 
     assert ('cat', 'mouse', 'food') not in kb2.wm
 
-# matchAst tests
+# matchAst and match tests
 def test17():
     genr = i('cat').e
     spec = i('cat').which(does('have')._('mouse#1')).e
@@ -128,16 +130,27 @@ def test17():
 def test18():
     genr = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
-    m1 = matchAst(genr, spec, KnowledgeBase.empty)
-    m2 = matchAst(spec, genr, KnowledgeBase.empty)
-    assert m1
-    assert not m2
+
+    f = partial(cmprGener, KnowledgeBase.empty)
+    assert f(genr,spec)=='GE'
+    assert f(spec,genr)=='LE'
 
 def test19():
-    genr = 'it'
-    spec = 'it'
-    m1 = matchAst(genr, spec, KnowledgeBase.empty)
-    assert m1
+    f = partial(cmprGener, KnowledgeBase.empty)
+    assert f('it', 'it') == 'EQ'
+    assert f('it', 'buruf') == 'NE'
+
+# normalized tests
+def test20():
+    kb = i('cat').tell().kb
+    kb1 = i('cat').tell(kb).kb
+
+    x = every('cat').does('jump').e
+    y = normalized(x, kb1).head
+
+    assert isinstance(y, BinExp)
+    assert e('cat#1').does('jump').e == y.left or e('cat').does('jump').e == y.left
+    assert e('cat#1').does('jump').e == y.right or e('cat').does('jump').e == y.right
 
 
 # print(a(i('cat').which(does('have')._(a(i('tail'))))).e)

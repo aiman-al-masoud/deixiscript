@@ -6,6 +6,16 @@ from functools import reduce
 from subst import  subst
 
 
+def normalized(ast:Ast, kb:KnowledgeBase)->Result:
+    # TODO: check for definitions in analytic derivaton clauses
+    x1 = expandNegations(ast)
+    x2 = expandCommands(x1)
+    x3 = removeImplicit(x2, kb)
+    x4 = decompress(x3.head)
+    # TODO: check for consequences in synthetic derivation clauses
+    return Result(x4, x3.kb)
+
+
 def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     # TODO: sort by specificity to avoid subnounphrase problem 
 

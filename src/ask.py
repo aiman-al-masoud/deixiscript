@@ -1,6 +1,6 @@
 from functools import reduce
 from expbuilder import e, _, every
-from language import AnalyticDerivationClause, Ast, BinExp, Command, DerivationClause, KnowledgeBase, Negation, Noun, Numerality, Result, SyntheticDerivationClause, VerbSentence, Which
+from language import Ast, BinExp, Command, DerivationClause, KnowledgeBase, Negation, Noun, Numerality, Result, VerbSentence, Which
 from subst import subst
 
 
@@ -97,6 +97,5 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = tell(l, kb)
             r2 = tell(r, r1.kb)
             return r2
-            # raise Exception('')
         case _:
             raise Exception('')
