@@ -70,7 +70,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Which(h, w):
             r1 = tell(h, kb)
             ww = subst(_)(r1.head)(w)
-            r2 = tell(ww, kb.updateWm(r1.addition))
+            r2 = tell(ww, kb.addWm(r1.addition))
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
@@ -84,7 +84,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(s).does('have')._(o).as_('super').tell(kb)
         case VerbSentence('have', s, o, False, False, a):
             delta = {(s, o, a)}
-            return Result(True, kb.updateWm(delta), delta)
+            return Result(True, kb.addWm(delta), delta)
         case AnalyticDerivationClause(_, _) | SyntheticDerivationClause(_, _):
             raise Exception('')
         case Negation(AnalyticDerivationClause(_, _) | SyntheticDerivationClause(_, _)):

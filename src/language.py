@@ -67,7 +67,7 @@ class KnowledgeBase:
     def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
         return KnowledgeBase(**{**self.__dict__, 'dd':dd})
     
-    def updateWm(self, wm:'WorldModel')->'KnowledgeBase':
+    def addWm(self, wm:'WorldModel')->'KnowledgeBase':
         return KnowledgeBase(self.wm | wm, self.dcs, self.dd)
     
     @classmethod
