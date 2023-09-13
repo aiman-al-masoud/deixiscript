@@ -1,6 +1,6 @@
 from functools import reduce
 from expbuilder import e, _, every
-from language import Ast, BinExp, Command, DerivationClause, KnowledgeBase, Negation, Noun, Numerality, Result, VerbSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, Derivation, KnowledgeBase, Negation, Noun, Numerality, Result, SyntheticDerivation, VerbSentence, Which
 from subst import subst
 
 
@@ -84,9 +84,13 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case VerbSentence('have', s, o, False, False, a):
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
-        case DerivationClause():
+        case AnalyticDerivation():
+            return Result(ast, kb.addDef(ast))
+        case SyntheticDerivation():
             raise Exception('')
-        case Negation(DerivationClause()):
+        case Negation(AnalyticDerivation()):
+            raise Exception('')
+        case Negation(SyntheticDerivation()):
             raise Exception('')
         case Negation(v):
             r1 = tell(v, kb)
@@ -98,4 +102,5 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             r2 = tell(r, r1.kb)
             return r2
         case _:
-            raise Exception('')
+            print(ast)
+            raise Exception('tell', ast)

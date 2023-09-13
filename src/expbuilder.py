@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from language import Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, VerbSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, VerbSentence, Which
 
 T  =  TypeVar('T', bound='Ast')
 _ = ''
@@ -45,6 +45,9 @@ class ExpBuilder(Generic[T]):
 
     def which(self, which:'Ast|ExpBuilder'):
         return ExpBuilder(Which(self.e, makeAst(which)))
+
+    def when(self, definition:'Ast|ExpBuilder'):
+        return ExpBuilder(AnalyticDerivation(self.e, makeAst(definition)))
 
     def ask(self, kb=KnowledgeBase.empty):
         from ask import ask

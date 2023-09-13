@@ -1,10 +1,10 @@
-from functools import partial
-from typing import cast
+from functools import cmp_to_key, partial
+from typing import List, Optional, Tuple, cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import BinExp, Implicit, KnowledgeBase, VerbSentence
+from language import AnalyticDerivation, Ast, BinExp, Implicit, KnowledgeBase, VerbSentence
 from linearize import linearize
-from matchAst import matchAst, cmprGener
+from matchAst import matchAst, compareGenerality, compareGenAnalyticDc
 from normalized import decompress, expandNegations, normalized, removeImplicit
 from subst import subst
 from findAsts import findAsts
@@ -131,12 +131,12 @@ def test18():
     genr = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
 
-    f = partial(cmprGener, KnowledgeBase.empty)
+    f = partial(compareGenerality, KnowledgeBase.empty)
     assert f(genr,spec)=='GE'
     assert f(spec,genr)=='LE'
 
 def test19():
-    f = partial(cmprGener, KnowledgeBase.empty)
+    f = partial(compareGenerality, KnowledgeBase.empty)
     assert f('it', 'it') == 'EQ'
     assert f('it', 'buruf') == 'NE'
 
@@ -153,5 +153,19 @@ def test20():
     assert e('cat#1').does('jump').e == y.right or e('cat').does('jump').e == y.right
 
 
-# print(a(i('cat').which(does('have')._(a(i('tail'))))).e)
 
+
+# TODO: return Ast list of PASSAGES!!
+# do you need subst?? not if you update the DD!! Right?!
+def definitionOf(kb:KnowledgeBase, ast:Ast)->Ast:
+    ds = [d for d in kb.adcs if matchAst(d.definendum, ast)]
+    cmp = partial(compareGenAnalyticDc, kb)
+    sortedDs = sorted(ds, key=cmp_to_key(cmp))
+    defs = [d.definition for d in sortedDs]
+    if defs: return definitionOf(kb, defs[0])
+    return ast
+
+# kb = i('he').when(i('male')).tell().kb
+# kb = i('male').when(i('thing').which(does('be')._('man'))).tell(kb).kb
+# def1 = definitionOf(kb, i('he').e)
+# print(def1)

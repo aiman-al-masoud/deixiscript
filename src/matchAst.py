@@ -1,9 +1,15 @@
 from typing import Literal
 from expbuilder import e, it_is_false_that
-from language import Ast, KnowledgeBase
+from language import AnalyticDerivation, Ast, KnowledgeBase
 
 
-def cmprGener(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ', 'GE', 'NE']:
+def compareGenAnalyticDc(kb:KnowledgeBase, d1:AnalyticDerivation, d2:AnalyticDerivation):
+    v = compareGenerality(kb, d1.definendum, d2.definendum)
+    if v == 'EQ' or v == 'NE': return 0
+    if v =='GE': return 1
+    return -1
+
+def compareGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ', 'GE', 'NE']:
    
     m1 = matchAst(ast1, ast2, kb)
     m2 = matchAst(ast2, ast1, kb)
@@ -22,7 +28,7 @@ def cmprGener(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ', 'GE', '
 # Two expressions are synonymous in a context kb, when
 # their truth values (or referents) co-vary in kb.
 #
-def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase):
+def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     with1 = e(specific).tell(kb)
     with2 = e(generic).get(with1.kb)
  

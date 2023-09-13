@@ -37,15 +37,13 @@ class Negation:
     value:'Ast'
 
 @dataclass(frozen=True)
-class DerivationClause:
-    consequence:'Ast'
-
-@dataclass(frozen=True)
-class AnalyticDerivationClause(DerivationClause):
+class AnalyticDerivation:
+    definendum:'Ast'
     definition:'Ast'
 
 @dataclass(frozen=True)
-class SyntheticDerivationClause(DerivationClause):
+class SyntheticDerivation:
+    effect:'Ast'
     cause:'Ast'
 
 @dataclass(frozen=True)
@@ -56,25 +54,26 @@ Explicit = str | float | int | bool  | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
-Ast = NounPhrasish | VerbSentence | Negation | Command | DerivationClause
+Derivation = AnalyticDerivation | SyntheticDerivation
+Ast = NounPhrasish | VerbSentence | Negation | Command  | Derivation
 
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:'WorldModel'
-    dcs:Set[DerivationClause]
+    adcs:Set[AnalyticDerivation]
     dd:'DeicticDict'
 
     def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
         return KnowledgeBase(**{**self.__dict__, 'dd':dd})
     
     def addWm(self, wm:'WorldModel')->'KnowledgeBase':
-        return KnowledgeBase(self.wm | wm, self.dcs, self.dd)
+        return KnowledgeBase(self.wm | wm, self.adcs, self.dd)
     
     def subWm(self, wm:'WorldModel')->'KnowledgeBase':
-        return KnowledgeBase(self.wm - wm, self.dcs, self.dd)
+        return KnowledgeBase(self.wm - wm, self.adcs, self.dd)
     
-    def addDc(self, dc:DerivationClause)->'KnowledgeBase':
-        raise Exception('')
+    def addDef(self, dc:AnalyticDerivation)->'KnowledgeBase':
+        return KnowledgeBase(self.wm, self.adcs | {dc}, self.dd)
 
     @classmethod
     @property
