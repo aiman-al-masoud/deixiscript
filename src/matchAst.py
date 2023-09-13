@@ -6,12 +6,12 @@ from language import Ast, KnowledgeBase
 # Two expressions are synonymous in a context kb, when
 # their truth values (or referents) co-vary in kb.
 #
-def matchAst(template:Ast, ast:Ast, kb:KnowledgeBase):
-    with1 = e(ast).tell(kb)
-    with2 = e(template).get(with1.kb)
+def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase):
+    with1 = e(specific).tell(kb)
+    with2 = e(generic).get(with1.kb)
 
-    without1 = it_is_false_that(ast).tell(kb)
-    without2 = e(template).get(without1.kb)
+    without1 = it_is_false_that(specific).tell(kb)
+    without2 = e(generic).get(without1.kb)
 
     return areConcordant(with1.head, with2) and not without2
 

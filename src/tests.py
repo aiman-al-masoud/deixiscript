@@ -118,18 +118,18 @@ def test16():
 
 # matchAst tests
 def test17():
-    temp = i('cat').e
-    form = i('cat').which(does('have')._('mouse#1')).e
-    m1 = matchAst(temp, form, KnowledgeBase.empty)
-    m2 = matchAst(form, temp, KnowledgeBase.empty)
+    genr = i('cat').e
+    spec = i('cat').which(does('have')._('mouse#1')).e
+    m1 = matchAst(genr, spec, KnowledgeBase.empty)
+    m2 = matchAst(spec, genr, KnowledgeBase.empty)
     assert m1
     assert not m2
 
 def test18():
-    temp = e('cat#1').does('have')._('mouse#1').e
-    form = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
-    m1 = matchAst(temp, form, KnowledgeBase.empty)
-    m2 = matchAst(form, temp, KnowledgeBase.empty)
+    genr = e('cat#1').does('have')._('mouse#1').e
+    spec = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
+    m1 = matchAst(genr, spec, KnowledgeBase.empty)
+    m2 = matchAst(spec, genr, KnowledgeBase.empty)
     assert m1
     assert not m2
 
