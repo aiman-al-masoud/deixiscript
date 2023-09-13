@@ -28,16 +28,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             # sortedThings = tuple(sorted(things, key=lambda x: kb.dd[x]))
             # cands = sortedThings[:c]
             # return e(cands).ask(kb)
-        case BinExp('=', l, r):
-            return Result(l==r, kb)
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
             if not r1.head: return Result(False, r1.kb)
             r2 = e(r).ask(r1.kb)
             return r2
         case BinExp('or', l, r):
-            raise Exception('')
-        case BinExp('+', l, r):
             raise Exception('')
         case VerbSentence('be', s, o, False):
             head = s == o or e(s).does('have')._(o).as_('super').get(kb)
@@ -50,6 +46,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(not r1.head, r1.kb)
         case Command(v):
             return tell(v, kb)
+        case BinExp('=', l, r):
+            return Result(l==r, kb)
+        case BinExp('+', l, r):
+            raise Exception('')
         case _:
             raise Exception('')
 
