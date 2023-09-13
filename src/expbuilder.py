@@ -84,6 +84,6 @@ def it_is_false_that(x:Ast|ExpBuilder):
 def makeAst(x:Ast|ExpBuilder)->Ast:
     return x if isinstance(x, Ast) else x.e
 
-def new(x:Ast|ExpBuilder)->Ast:
-    return Command(makeAst(x))
+def new(x:Ast|ExpBuilder):
+    return ExpBuilder(Command(makeAst(x)))
 

@@ -51,7 +51,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
         case Command(v):
-            return tell(ast, kb)
+            return tell(v, kb)
         case _:
             raise Exception('')
 
@@ -90,10 +90,10 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Negation(AnalyticDerivationClause(_, _) | SyntheticDerivationClause(_, _)):
             raise Exception('')
         case Negation(v):
-            # r1 = tell(v, kb)
-            # wm1 = kb.wm - r1.addition
-            raise Exception('')
+            r1 = tell(v, kb)
+            kb1 = kb.subWm(r1.addition).updateDD(r1.kb.dd)
+            return Result(r1.head, kb1)
         case BinExp('and', l, r):
-            raise Exception('')            
+            raise Exception('')
         case _:
             raise Exception('')

@@ -1,5 +1,6 @@
 from typing import cast
-from expbuilder import does, e, every, i, it_is_false_that
+from evaluate import evaluate
+from expbuilder import does, e, every, i, it_is_false_that, new
 from language import Implicit, KnowledgeBase, VerbSentence
 from prepareAst import decompress, expandNegations, removeImplicit
 from subst import subst
@@ -96,10 +97,6 @@ def test14():
     assert isinstance(y.subject, tuple)
     assert set(y.subject) == {'cat', 'cat#1', 'cat#2'}
 
-    # x = prepareAst(x, r2.kb)
-    # # print(x.kb.dd)
-    # print(linearize(x.head))
-
 # negation ask tests 
 def test15():
     q = e('capra#1').does('have')._(1).as_('age')
@@ -108,5 +105,15 @@ def test15():
     assert q.get(kb)
     assert not qn.get(kb)
     
+def test16():
+
+    q = new(new(i('cat')).does('have')._(new(i('mouse'))).as_('food')).e
+    kb = evaluate(q).kb
+    q2 = new(i('cat').does_not('have')._(i('mouse')).as_('food')).e
+    kb2 = evaluate(q2, kb).kb
+
+    assert ('cat', 'mouse', 'food') not in kb2.wm
+
+
 
 # print(a(i('cat').which(does('have')._(a(i('tail'))))).e)

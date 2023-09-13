@@ -70,6 +70,9 @@ class KnowledgeBase:
     def addWm(self, wm:'WorldModel')->'KnowledgeBase':
         return KnowledgeBase(self.wm | wm, self.dcs, self.dd)
     
+    def subWm(self, wm:'WorldModel')->'KnowledgeBase':
+        return KnowledgeBase(self.wm - wm, self.dcs, self.dd)
+
     @classmethod
     @property
     def empty(cls): 

@@ -1,19 +1,37 @@
-from typing import cast
+from typing import List, cast
 from expbuilder import e
 from findAsts import findAsts
-from language import Ast, BinExp, Command, Implicit, KnowledgeBase, Negation, NounPhrase, Result, VerbSentence, copyAst
+from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, Noun, NounPhrase, Result, VerbSentence, copyAst
 from functools import reduce
 from subst import  subst
 
 
 def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     # TODO: sort by specificity to avoid subnounphrase problem 
-    implicits = findAsts(ast, lambda x : isinstance(x, Implicit))
-    referents = tuple(e(i).get(kb) for i in implicits)
-    kb1 = reduce(lambda a,b: e(b).ask(a).kb, referents, kb)
+
+    implicits = findAsts(ast, isImplicitish)
+    referents:List[Ast] = []
+    kb1 = kb
+
+    for i in implicits:
+        r1 = e(i).ask(kb1)
+        kb1 = r1.kb
+        referents.append(r1.head)
+    
     xs = zip(implicits, referents)
     new = reduce(lambda a,b: subst(b[0])(b[1])(a) , xs, ast)
     return Result(new, kb1)
+
+
+def isImplicitish(ast:Ast): # only IMPLICIT-CONTAINING NOUNPHRASES
+    if isinstance(ast, Implicit): return True
+    if isinstance(ast, Explicit): return False
+    return isNounPhrasish(ast) and any([isImplicitish(x) for x in ast.__dict__.values()])
+
+def isNounPhrasish(ast:Ast):
+    if isinstance(ast, NounPhrase): return True
+    if isinstance(ast, Command): return isNounPhrasish(ast.value)
+    return isinstance(ast, BinExp) and isNounPhrasish(ast.left) and isNounPhrasish(ast.right)
 
 isConn = lambda x : isinstance(x, BinExp) and x.op in ['and', 'or']
 findConjs= lambda x: findAsts(x, isConn)
@@ -25,7 +43,7 @@ def decompress(ast:Ast)->Ast:
 
     tups = findTuples(ast)
 
-    if tups:  
+    if tups and tups[0]:  
         tup = cast(tuple, tups[0])
         and_phrase = reduce(lambda a,b: e(a)._and(b), [e(t) for t in tup]).e
         return decompress(subst(tup)(and_phrase)(ast))
@@ -43,10 +61,6 @@ def decompress(ast:Ast)->Ast:
         l, 
         r,
     )
-
-def isNounPhrasish(ast:Ast)->bool:
-    if isinstance(ast, NounPhrase): return True
-    return isinstance(ast, BinExp) and isNounPhrasish(ast.left) and isNounPhrasish(ast.right)
 
 def opposite(x:Ast)->str:
     if x not in ['and', 'or']: raise Exception('')
