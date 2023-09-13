@@ -72,6 +72,9 @@ class KnowledgeBase:
     
     def subWm(self, wm:'WorldModel')->'KnowledgeBase':
         return KnowledgeBase(self.wm - wm, self.dcs, self.dd)
+    
+    def addDc(self, dc:DerivationClause)->'KnowledgeBase':
+        raise Exception('')
 
     @classmethod
     @property
