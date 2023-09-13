@@ -45,8 +45,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case VerbSentence('have',s, o, False, False, a):
             head = (s,o,a) in kb.wm
             return Result(head, kb)
-        case VerbSentence(v, s, o, False):
-            raise Exception('')
         case Negation(v):
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
