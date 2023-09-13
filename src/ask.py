@@ -58,7 +58,8 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
         case int(x) | float(x) | str(x):
-            raise Exception('')
+            # raise Exception('')
+            return Result(x, kb)
         case Noun(h):
             n = every(h).count(kb)
             id = h if n == 0 else f'{h}#{n}'
@@ -90,7 +91,8 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Negation(v):
             r1 = tell(v, kb)
             kb1 = kb.subWm(r1.addition).updateDD(r1.kb.dd)
-            return Result(r1.head, kb1) # return Result(tuple(), kb1)
+            return Result(r1.head, kb1) 
+            # return Result(tuple(), kb1)
         case BinExp('and', l, r):
             r1 = tell(l, kb)
             r2 = tell(r, r1.kb)

@@ -133,6 +133,12 @@ def test18():
     assert m1
     assert not m2
 
+def test19():
+    genr = 'it'
+    spec = 'it'
+    m1 = matchAst(genr, spec, KnowledgeBase.empty)
+    assert m1
+
 
 # print(a(i('cat').which(does('have')._(a(i('tail'))))).e)
 
