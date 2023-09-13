@@ -116,7 +116,7 @@ def test16():
 
     assert ('cat', 'mouse', 'food') not in kb2.wm
 
-
+# matchAst tests
 def test17():
     temp = i('cat').e
     form = i('cat').which(does('have')._('mouse#1')).e
@@ -132,7 +132,6 @@ def test18():
     m2 = matchAst(form, temp, KnowledgeBase.empty)
     assert m1
     assert not m2
-
 
 
 # print(a(i('cat').which(does('have')._(a(i('tail'))))).e)
