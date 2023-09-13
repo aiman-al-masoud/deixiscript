@@ -3,12 +3,14 @@ A specific function just to do that, so as to simplify the implementation of Com
 
 - verb sentence may be the only kind of AST that may need decompression, but it is not the only overridable AST (nouns for pronouns, other nounphrases for "funcs')
 
+# CONVERTING AN AST TO BASE FORM
 - check for a match with analytic derivation clauses
 - if there is a match, execute the definition, else go on
 - expand negations, & other stuff that doesn't require KB
 - resolve each INP (implicit noun phrase) into a list of constants
 - substitute INPs with lists of constants by decompressing
 - produce a new knowledge base (update deictic dict, add new created new entities)
+
 
 what about a function specifically meant only to ask/tell NounPhrases?
 
