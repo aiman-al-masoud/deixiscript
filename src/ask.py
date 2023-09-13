@@ -85,9 +85,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case VerbSentence('have', s, o, False, False, a):
             delta = {(s, o, a)}
             return Result(True, kb.updateWm(delta), delta)
-        case AnalyticDerivationClause(f1, f2) | SyntheticDerivationClause(f1, f2):
+        case AnalyticDerivationClause(_, _) | SyntheticDerivationClause(_, _):
             raise Exception('')
-        case Negation(AnalyticDerivationClause(f1, f2) | SyntheticDerivationClause(f1, f2)):
+        case Negation(AnalyticDerivationClause(_, _) | SyntheticDerivationClause(_, _)):
             raise Exception('')
         case Negation(v):
             # r1 = tell(v, kb)
