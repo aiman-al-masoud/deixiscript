@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, FrozenSet, Set, Tuple, cast
+from typing import Dict, Set, Tuple
 
 @dataclass(frozen=True)
 class Noun:
