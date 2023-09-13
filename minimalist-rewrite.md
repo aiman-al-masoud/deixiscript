@@ -20,6 +20,8 @@ Temporarily ignore: defaults, number restriction, mutex concepts, parser, equati
 
 All "argument passing" (derivation clauses) through deictic dictionary, not match and subst.
 
+Can evaluate be called recursively as long as you still have a separate "normalize" function that produces an AST in normalized form that can be called before actually executing an AST at the "top-top level of the program"?
+
 --------------------------------
 
 Experimental idea (for later or never): deictic dictionary could be "adjusted/biased" at any time to point to entities with specific qualities, maybe this could help to make the language more context sensitive. For example "it does jump" would increment the "timestamp" of jumping entities (based on the verb "jump") causing the pronoun "it" to point to one of them.
