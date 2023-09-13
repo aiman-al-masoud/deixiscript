@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Dict, Set, Tuple
+from dataclasses import dataclass, field
+from typing import Dict, FrozenSet, Set, Tuple, cast
 
 @dataclass(frozen=True)
 class Noun:
@@ -60,22 +60,23 @@ Ast = NounPhrasish | Negation | DerivationClause | VerbSentence | Command
 
 @dataclass(frozen=True)
 class KnowledgeBase:
-    wm:Set['WmSentence']
+    wm:'WorldModel'
     dcs:Set[DerivationClause]
     dd:'DeicticDict'
 
     def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
         return KnowledgeBase(**{**self.__dict__, 'dd':dd})
     
-    def addToWm(self, s:'WmSentence')->'KnowledgeBase':
-        return KnowledgeBase(self.wm | {s}, self.dcs, self.dd)
+    def updateWm(self, wm:'WorldModel')->'KnowledgeBase':
+        return KnowledgeBase(self.wm | wm, self.dcs, self.dd)
     
     @classmethod
     @property
-    def empty(cls):
+    def empty(cls): 
         return cls(set(), set(), DeicticDict({}))
 
 WmSentence = Tuple[Ast, Ast, Ast]
+WorldModel = Set[WmSentence]
 
 @dataclass(frozen=True)
 class DeicticDict:
@@ -92,6 +93,7 @@ class DeicticDict:
 class Result:
     head:Ast
     kb:KnowledgeBase
+    addition:WorldModel = field(default_factory=lambda:set())
 
 def copyAst(ast:Ast, key:str, val:Ast):
     return ast.__class__(**{**ast.__dict__, key:val})

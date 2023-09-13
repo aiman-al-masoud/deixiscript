@@ -51,7 +51,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
         case Command(v):
-            return tell(ast,kb)
+            r1 = tell(ast, kb)
+            return Result(r1.head, r1.kb)
         case _:
             raise Exception('')
 
@@ -66,12 +67,13 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             id = h if n == 0 else f'{h}#{n}'
             sup = 'thing' if id == h else h
             r1 = e(id).does('be')._(sup).tell(kb)
-            return Result(id, r1.kb)
+            return Result(id,  r1.kb, r1.addition)
+            # return Result(id, r1.kb)
         case Which(h, w):
             r1 = tell(h, kb)
             ww = subst(_)(r1.head)(w)
-            r2 = tell(ww, r1.kb)
-            return Result(r1.head, r2.kb)
+            r2 = tell(ww, kb.updateWm(r1.addition))
+            return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
             # assert isinstance(c, int)
@@ -83,13 +85,15 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case VerbSentence('be', s, o, False):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case VerbSentence('have', s, o, False, False, a):
-            kb1 = kb.addToWm((s, o, a))
-            return Result(True, kb1)
+            delta = {(s, o, a)}
+            return Result(True, kb.updateWm(delta), delta)
+        case AnalyticDerivationClause(f1, f2) | SyntheticDerivationClause(f1, f2):
+            raise Exception('')
+        case Negation(AnalyticDerivationClause(f1, f2) | SyntheticDerivationClause(f1, f2)):
+            raise Exception('')
         case Negation(v):
-            raise Exception('')
-        case AnalyticDerivationClause(co, d):
-            raise Exception('')
-        case SyntheticDerivationClause(co, ca):
+            # r1 = tell(v, kb)
+            # wm1 = kb.wm - r1.addition
             raise Exception('')
         case _:
             raise Exception('')
