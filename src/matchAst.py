@@ -7,13 +7,17 @@ from language import Ast, KnowledgeBase, NounPhrase
 # their truth values (or referents) co-vary in kb.
 #
 def matchAst(template:Ast, ast:Ast, kb:KnowledgeBase):
-    r1 = e(template).tell(kb)
-    r2 = it_is_false_that(template).tell(kb)
-    return e(ast).get(r1.kb)==r1.head and it_is_false_that(ast).get(r2.kb)==r2.head
+    withAst = e(ast).tell(kb)
+    tempWith = e(template).get(withAst.kb)
+
+    withoutAst = it_is_false_that(ast).tell(kb)
+    tempWithout = e(template).get(withoutAst.kb)
+
+    return areConcordant(tempWith, withAst.head) and not tempWithout
+
+def areConcordant(ast1:Ast, ast2:Ast):
+    if isinstance(ast1, tuple): return ast2 in ast1
+    if isinstance(ast2, tuple): return ast1 in ast2
+    return ast1 == ast2
 
 # What about analytic derivation clauses?
-
-# def matchNp(template:NounPhrase, ast:NounPhrase, kb:KnowledgeBase):
-#     r1 = e(template).tell(kb)
-#     r2 = e(ast).ask(r1.kb) # TODO: only one (latest) result!! cardinality
-#     return r1.head == r2.head

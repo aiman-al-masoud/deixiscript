@@ -2,6 +2,7 @@ from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
 from language import Implicit, KnowledgeBase, VerbSentence
+from matchAst import matchAst
 from prepareAst import decompress, expandNegations, removeImplicit
 from subst import subst
 from findAsts import findAsts
@@ -116,4 +117,23 @@ def test16():
     assert ('cat', 'mouse', 'food') not in kb2.wm
 
 
+def test17():
+    temp = i('cat').e
+    form = i('cat').which(does('have')._('mouse#1')).e
+    m1 = matchAst(temp, form, KnowledgeBase.empty)
+    m2 = matchAst(form, temp, KnowledgeBase.empty)
+    assert m1
+    assert not m2
+
+def test18():
+    temp = e('cat#1').does('have')._('mouse#1').e
+    form = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
+    m1 = matchAst(temp, form, KnowledgeBase.empty)
+    m2 = matchAst(form, temp, KnowledgeBase.empty)
+    assert m1
+    assert not m2
+
+
+
 # print(a(i('cat').which(does('have')._(a(i('tail'))))).e)
+
