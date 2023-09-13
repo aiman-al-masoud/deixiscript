@@ -7,13 +7,13 @@ from language import Ast, KnowledgeBase, NounPhrase
 # their truth values (or referents) co-vary in kb.
 #
 def matchAst(template:Ast, ast:Ast, kb:KnowledgeBase):
-    withAst = e(ast).tell(kb)
-    tempWith = e(template).get(withAst.kb)
+    with1 = e(ast).tell(kb)
+    with2 = e(template).get(with1.kb)
 
-    withoutAst = it_is_false_that(ast).tell(kb)
-    tempWithout = e(template).get(withoutAst.kb)
+    without1 = it_is_false_that(ast).tell(kb)
+    without2 = e(template).get(without1.kb)
 
-    return areConcordant(tempWith, withAst.head) and not tempWithout
+    return areConcordant(with1.head, with2) and not without2
 
 def areConcordant(ast1:Ast, ast2:Ast):
     if isinstance(ast1, tuple): return ast2 in ast1
