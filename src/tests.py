@@ -104,7 +104,8 @@ def test15():
     kb = q.tell().kb
     assert q.get(kb)
     assert not qn.get(kb)
-    
+
+# negation with tell tests
 def test16():
 
     q = new(new(i('cat')).does('have')._(new(i('mouse'))).as_('food')).e
@@ -113,7 +114,6 @@ def test16():
     kb2 = evaluate(q2, kb).kb
 
     assert ('cat', 'mouse', 'food') not in kb2.wm
-
 
 
 # print(a(i('cat').which(does('have')._(a(i('tail'))))).e)
