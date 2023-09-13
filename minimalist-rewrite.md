@@ -7,9 +7,9 @@ A specific function just to do that, so as to simplify the implementation of Com
 - check for a match with analytic derivation clauses
 - if there is a match, execute the definition, else go on
 - expand negations, & other stuff that doesn't require KB
-- resolve each noun phrase in a sentence to a list of constants
+- resolve each INP (implicit noun phrase) into a list of constants
+- substitute INPs with lists of constants by decompressing
 - produce a new knowledge base (update deictic dict, add new created new entities)
-- substitute list of constants into sentence by decompressing
 
 what about a function specifically meant only to ask/tell NounPhrases?
 
