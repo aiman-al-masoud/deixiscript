@@ -68,7 +68,6 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             sup = 'thing' if id == h else h
             r1 = e(id).does('be')._(sup).tell(kb)
             return Result(id,  r1.kb, r1.addition)
-            # return Result(id, r1.kb)
         case Which(h, w):
             r1 = tell(h, kb)
             ww = subst(_)(r1.head)(w)
