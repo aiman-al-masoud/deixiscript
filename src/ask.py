@@ -95,5 +95,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             # r1 = tell(v, kb)
             # wm1 = kb.wm - r1.addition
             raise Exception('')
+        case BinExp('and', l, r):
+            raise Exception('')            
         case _:
             raise Exception('')
