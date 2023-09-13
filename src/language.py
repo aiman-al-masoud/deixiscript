@@ -37,13 +37,15 @@ class Negation:
     value:'Ast'
 
 @dataclass(frozen=True)
-class AnalyticDerivationClause:
+class DerivationClause:
     consequence:'Ast'
+
+@dataclass(frozen=True)
+class AnalyticDerivationClause(DerivationClause):
     definition:'Ast'
 
 @dataclass(frozen=True)
-class SyntheticDerivationClause:
-    consequence:'Ast'
+class SyntheticDerivationClause(DerivationClause):
     cause:'Ast'
 
 @dataclass(frozen=True)
@@ -54,9 +56,7 @@ Explicit = str | float | int | bool  | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
-DerivationClause = AnalyticDerivationClause |  SyntheticDerivationClause
 Ast = NounPhrasish | Negation | DerivationClause | VerbSentence | Command
-
 
 @dataclass(frozen=True)
 class KnowledgeBase:
