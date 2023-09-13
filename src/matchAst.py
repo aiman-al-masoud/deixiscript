@@ -1,5 +1,5 @@
 from expbuilder import e, it_is_false_that
-from language import Ast, KnowledgeBase, NounPhrase
+from language import Ast, KnowledgeBase
 
 
 #
