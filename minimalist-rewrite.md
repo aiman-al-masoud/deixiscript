@@ -20,22 +20,8 @@ Temporarily ignore: defaults, number restriction, mutex concepts, parser, equati
 
 All "argument passing" (derivation clauses) through deictic dictionary, not match and subst.
 
-Match maybe can return a comparison value (more/less specific, unrelated or identical?) Can match be made "semantic?", ie: matching formulas also based on derivation clauses?
-
-
-### Every reference is implicit
-
-- more importance to deictic dict (determines whether ref to concept or individual)
-- articles aren't necessary
-
-- what about the creation of the concept in the WM?
-
 --------------------------------
 
 Experimental idea (for later or never): deictic dictionary could be "adjusted/biased" at any time to point to entities with specific qualities, maybe this could help to make the language more context sensitive. For example "it does jump" would increment the "timestamp" of jumping entities (based on the verb "jump") causing the pronoun "it" to point to one of them.
-
-Can performance be improved by turning list of derivation clauses into hashmap? Because maybe an ast could be hashed and matched to another with a hash? Maybe not possible because of specificity problem (how do I make sure to hash things the proper way when new more/less specific dervation clauses can be added dynamically).
-
-Could is-a really only be treated in the "derived sense"? Only has-sentences in world model
 
 Random AST generator for fuzz testing?
