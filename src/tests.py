@@ -18,17 +18,17 @@ from findAsts import findAsts
 
 # subst tests
 def test1():
-    x = subst('capra')('cat')(e('capra').does('eat').e)
+    x = subst('capra', 'cat', e('capra').does('eat').e)
     y = e('cat').does('eat').e
     assert x == y
 
 def test2():
-    x =subst('capra')('cat')(e('capra')._and('cavallo')._and('capra').e)
+    x =subst('capra', 'cat', e('capra')._and('cavallo')._and('capra').e)
     y  =e('cat')._and('cavallo')._and('cat').e
     assert x == y
 
 def test3():
-    x = subst('capra')('cat')(('capra', 'capra'))
+    x = subst('capra', 'cat', ('capra', 'capra'))
     y = ('cat','cat')
     assert x == y
 

@@ -1,7 +1,7 @@
 from typing import List, cast
 from expbuilder import e
 from findAsts import findAsts
-from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, Noun, NounPhrase, NounPhrasish, Result, SimpleSentence, copyAst
+from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, NounPhrase, NounPhrasish, Result, SimpleSentence, copyAst
 from functools import cmp_to_key, partial, reduce
 from matchAst import compareGenAnalyticDc, matchAst
 from subst import  subst
@@ -30,7 +30,7 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
         referents.append(r1.head)
     
     xs = zip(implicits, referents)
-    new = reduce(lambda a,b: subst(b[0])(b[1])(a) , xs, ast)
+    new = reduce(lambda a,b: subst(b[0],b[1],a) , xs, ast)
     return Result(new, kb1)
 
 def isImplicitNounPhrase(ast:Ast):
@@ -59,15 +59,15 @@ def decompress(ast:Ast)->Ast:
     if tups and tups[0]:  
         tup = cast(tuple, tups[0])
         and_phrase = reduce(lambda a,b: e(a)._and(b), [e(t) for t in tup]).e
-        return decompress(subst(tup)(and_phrase)(ast))
+        return decompress(subst(tup,and_phrase,ast))
     
     conns = findConjs(ast)
     if not conns: return ast
     conn = cast(BinExp, conns[0])
     if not isNounPhrasish(conn): return ast
 
-    l = decompress(subst(conn)(conn.left)(ast))
-    r = decompress(subst(conn)(conn.right)(ast))
+    l = decompress(subst(conn,conn.left,ast))
+    r = decompress(subst(conn,conn.right,ast))
 
     return BinExp( 
         opposite(conn.op) if isinstance(ast, Negation) else conn.op, 
@@ -80,11 +80,10 @@ def opposite(x:Ast)->str:
     return 'and' if x == 'or' else 'and'
 
 expandNegations \
-    = subst(isNegVerbSen)(lambda x: Negation(copyAst(x, 'negation', False)))
+    = partial(subst, isNegVerbSen, lambda x: Negation(copyAst(x, 'negation', False)))
 
 expandCommands \
-    = subst(isCommandVerbSen)(lambda x: Command(copyAst(x, 'command', False)))
-
+      = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
 
 # TODO: return Ast list of PASSAGES!!
 # do you need subst?? not if you update the DD!! Right?!

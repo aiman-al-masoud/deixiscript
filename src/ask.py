@@ -19,7 +19,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Which(h, w):
             things = e(h).get(kb)
             assert isinstance(things, tuple)
-            cands = tuple(x for x in things if e(subst(_)(x)(w)).get(kb))
+            cands = tuple(x for x in things if e(subst(_, x, w)).get(kb))
             return e(cands).ask(kb)
         case Numerality(h, c, o):
             raise Exception('')
@@ -68,7 +68,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(id,  r1.kb, r1.addition)
         case Which(h, w):
             r1 = tell(h, kb)
-            ww = subst(_)(r1.head)(w)
+            ww = subst(_, r1.head, w)
             r2 = tell(ww, kb.addWm(r1.addition))
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
