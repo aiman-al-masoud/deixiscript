@@ -13,7 +13,7 @@ def normalized(ast:Ast, kb:KnowledgeBase)->Result:
     x2 = expandCommands(x1)
     x3 = removeImplicit(x2, kb)
     x4 = decompress(x3.head)
-    # TODO: check for consequences in synthetic derivation clauses
+    # TODO: check for triggered effects in synthetic derivation clauses
     return Result(x4, x3.kb)
 
 
