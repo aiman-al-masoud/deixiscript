@@ -155,16 +155,6 @@ def test20():
 
 
 
-# TODO: return Ast list of PASSAGES!!
-# do you need subst?? not if you update the DD!! Right?!
-def definitionOf(kb:KnowledgeBase, ast:Ast)->Ast:
-    ds = [d for d in kb.adcs if matchAst(d.definendum, ast)]
-    cmp = partial(compareGenAnalyticDc, kb)
-    sortedDs = sorted(ds, key=cmp_to_key(cmp))
-    defs = [d.definition for d in sortedDs]
-    if defs: return definitionOf(kb, defs[0])
-    return ast
-
 # kb = i('he').when(i('male')).tell().kb
 # kb = i('male').when(i('thing').which(does('be')._('man'))).tell(kb).kb
 # def1 = definitionOf(kb, i('he').e)

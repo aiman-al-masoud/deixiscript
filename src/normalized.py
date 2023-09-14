@@ -2,7 +2,8 @@ from typing import List, cast
 from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, Noun, NounPhrase, Result, VerbSentence, copyAst
-from functools import reduce
+from functools import cmp_to_key, partial, reduce
+from matchAst import compareGenAnalyticDc, matchAst
 from subst import  subst
 
 
@@ -81,3 +82,14 @@ expandNegations \
 
 expandCommands \
     = subst(isCommandVerbSen)(lambda x: Command(copyAst(x, 'command', False)))
+
+
+# TODO: return Ast list of PASSAGES!!
+# do you need subst?? not if you update the DD!! Right?!
+def definitionOf(kb:KnowledgeBase, ast:Ast)->Ast:
+    ds = [d for d in kb.adcs if matchAst(d.definendum, ast)]
+    cmp = partial(compareGenAnalyticDc, kb)
+    sortedDs = sorted(ds, key=cmp_to_key(cmp))
+    defs = [d.definition for d in sortedDs]
+    if defs: return definitionOf(kb, defs[0])
+    return ast
