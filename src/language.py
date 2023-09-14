@@ -53,9 +53,9 @@ class Command:
 Explicit = str | float | int | bool  | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp
+NounPhrasish = NounPhrase | BinExp | Command
 Derivation = AnalyticDerivation | SyntheticDerivation
-Ast = NounPhrasish | VerbSentence | Negation | Command  | Derivation
+Ast = NounPhrasish | VerbSentence | Negation | Derivation
 
 @dataclass(frozen=True)
 class KnowledgeBase:
