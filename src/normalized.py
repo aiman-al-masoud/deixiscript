@@ -1,4 +1,6 @@
-from typing import List, cast
+from dataclasses import dataclass
+from types import SimpleNamespace
+from typing import Dict, List, Literal, Sequence, Tuple, TypedDict, cast
 from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, NounPhrase, NounPhrasish, Result, SimpleSentence, copyAst
@@ -16,22 +18,26 @@ def normalized(ast:Ast, kb:KnowledgeBase)->Result:
     # TODO: check for triggered effects in synthetic derivation clauses
     return Result(x4, x3.kb)
 
-
 def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
-    # TODO: sort by specificity to avoid subnounphrase problem 
+    r =  evalImplicit(ast, kb)
+    new = reduce(lambda a,b: subst(b[0],b[1],a) , r.zipped, ast)
+    return Result(new, r.kb)
 
-    implicits = findAsts(ast, isImplicitNounPhrase)
-    referents:List[Ast] = []
-    kb1 = kb
+def evalImplicit(ast:Ast, kb:KnowledgeBase):
 
-    for i in implicits:
-        r1 = e(i).ask(kb1)
-        kb1 = r1.kb
-        referents.append(r1.head)
+    @dataclass(frozen=True)
+    class X:
+        kb:KnowledgeBase
+        zipped:List[Tuple[Ast, Ast]]
     
-    xs = zip(implicits, referents)
-    new = reduce(lambda a,b: subst(b[0],b[1],a) , xs, ast)
-    return Result(new, kb1)
+    def red(a:X, b:Ast)->X:
+        r1=e(b).ask(a.kb)
+        return X(r1.kb, [*a.zipped, (b, r1.head)])
+
+     # TODO: sort by specificity to avoid subnounphrase problem
+    implicits = findAsts(ast, isImplicitNounPhrase)
+    r = reduce(red, implicits, X(kb, []))
+    return r
 
 def isImplicitNounPhrase(ast:Ast):
     return isImplicitish(ast) and isNounPhrasish(ast)
