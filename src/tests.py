@@ -5,7 +5,7 @@ from expbuilder import does, e, every, i, it_is_false_that, new
 from language import AnalyticDerivation, Ast, BinExp, Implicit, KnowledgeBase, SimpleSentence
 from linearize import linearize
 from matchAst import matchAst, compareGenerality, compareGenAnalyticDc
-from normalized import decompress, expandNegations, normalized, removeImplicit
+from normalized import decompress, expandNegations, normalized#, removeImplicit
 from subst import subst
 from findAsts import findAsts
 
@@ -90,15 +90,15 @@ def test13():
     y = i('cat').which(does('have')._('fish').as_('food')).tell(x.kb)
     assert ('cat#1', 'fish', 'food') in y.kb.wm
 
-# removeImplicit tests
-def test14():
-    r1 = e('cat#1').does('be')._('cat').tell()
-    r2 = e('cat#2').does('be')._('cat').tell(r1.kb)
-    x = every('cat').does('eat')._('mouse#1').e
-    y = removeImplicit(x, r2.kb).head
-    assert isinstance(y, SimpleSentence)
-    assert isinstance(y.subject, tuple)
-    assert set(y.subject) == {'cat', 'cat#1', 'cat#2'}
+# # removeImplicit tests
+# def test14():
+#     r1 = e('cat#1').does('be')._('cat').tell()
+#     r2 = e('cat#2').does('be')._('cat').tell(r1.kb)
+#     x = every('cat').does('eat')._('mouse#1').e
+#     y = removeImplicit(x, r2.kb).head
+#     assert isinstance(y, SimpleSentence)
+#     assert isinstance(y.subject, tuple)
+#     assert set(y.subject) == {'cat', 'cat#1', 'cat#2'}
 
 # negation ask tests 
 def test15():

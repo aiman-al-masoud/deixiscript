@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from types import SimpleNamespace
-from typing import Dict, List, Literal, Sequence, Tuple, TypedDict, cast
+from typing import List, Tuple, cast
 from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, NounPhrase, NounPhrasish, Result, SimpleSentence, copyAst
@@ -10,33 +9,29 @@ from subst import  subst
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
-    # TODO: check for definitions in analytic derivaton clauses
+    # TODO: check for definitions in analytic derivaton clauses, and update KB
     x1 = expandNegations(ast)
     x2 = expandCommands(x1)
-    x3 = removeImplicit(x2, kb)
-    x4 = decompress(x3.head)
+    x3 = evalImplicit(ast, kb)
+    x4 = reduce(lambda a,b: subst(b[0],b[1],a), x3.zipped, x2)
+    x5 = decompress(x4)
+    return Result(x5, x3.kb)
     # TODO: check for triggered effects in synthetic derivation clauses
-    return Result(x4, x3.kb)
-
-def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
-    r =  evalImplicit(ast, kb)
-    new = reduce(lambda a,b: subst(b[0],b[1],a) , r.zipped, ast)
-    return Result(new, r.kb)
 
 def evalImplicit(ast:Ast, kb:KnowledgeBase):
 
     @dataclass(frozen=True)
-    class X:
+    class C:
         kb:KnowledgeBase
         zipped:List[Tuple[Ast, Ast]]
     
-    def red(a:X, b:Ast)->X:
+    def red(a:C, b:Ast)->C:
         r1=e(b).ask(a.kb)
-        return X(r1.kb, [*a.zipped, (b, r1.head)])
+        return C(r1.kb, [*a.zipped, (b, r1.head)])
 
      # TODO: sort by specificity to avoid subnounphrase problem
     implicits = findAsts(ast, isImplicitNounPhrase)
-    r = reduce(red, implicits, X(kb, []))
+    r = reduce(red, implicits, C(kb, []))
     return r
 
 def isImplicitNounPhrase(ast:Ast):
