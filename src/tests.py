@@ -2,7 +2,7 @@ from functools import cmp_to_key, partial
 from typing import List, Optional, Tuple, cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import AnalyticDerivation, Ast, BinExp, Implicit, KnowledgeBase, VerbSentence
+from language import AnalyticDerivation, Ast, BinExp, Implicit, KnowledgeBase, SimpleSentence
 from linearize import linearize
 from matchAst import matchAst, compareGenerality, compareGenAnalyticDc
 from normalized import decompress, expandNegations, normalized, removeImplicit
@@ -96,7 +96,7 @@ def test14():
     r2 = e('cat#2').does('be')._('cat').tell(r1.kb)
     x = every('cat').does('eat')._('mouse#1').e
     y = removeImplicit(x, r2.kb).head
-    assert isinstance(y, VerbSentence)
+    assert isinstance(y, SimpleSentence)
     assert isinstance(y.subject, tuple)
     assert set(y.subject) == {'cat', 'cat#1', 'cat#2'}
 

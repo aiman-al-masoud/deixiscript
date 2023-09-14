@@ -23,7 +23,7 @@ class BinExp:
     right:'Ast'
 
 @dataclass(frozen=True)
-class VerbSentence:
+class SimpleSentence:
     verb:'Ast'
     subject:'Ast'
     object:'Ast'
@@ -53,9 +53,9 @@ class Command:
 Explicit = str | float | int | bool  | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp | Command
+NounPhrasish = NounPhrase | BinExp | Command | Negation
 Derivation = AnalyticDerivation | SyntheticDerivation
-Ast = NounPhrasish | VerbSentence | Negation | Derivation
+Ast = NounPhrasish | SimpleSentence | Derivation
 
 @dataclass(frozen=True)
 class KnowledgeBase:

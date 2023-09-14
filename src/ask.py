@@ -1,6 +1,6 @@
 from functools import reduce
 from expbuilder import e, _, every
-from language import AnalyticDerivation, Ast, BinExp, Command, Derivation, KnowledgeBase, Negation, Noun, Numerality, Result, SyntheticDerivation, VerbSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, Derivation, KnowledgeBase, Negation, Noun, Numerality, Result, SyntheticDerivation, SimpleSentence, Which
 from subst import subst
 
 
@@ -35,10 +35,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return r2
         case BinExp('or', l, r):
             raise Exception('')
-        case VerbSentence('be', s, o, False):
+        case SimpleSentence('be', s, o, False):
             head = s == o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
-        case VerbSentence('have',s, o, False, False, a):
+        case SimpleSentence('have',s, o, False, False, a):
             head = (s,o,a) in kb.wm
             return Result(head, kb)
         case Negation(v):
@@ -79,9 +79,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             #     return Result(head, r2.kb)
             # r = reduce(lambda a,_: red(a, e(h).tell(a.kb)), range(c), Result(tuple(), kb))
             # return r
-        case VerbSentence('be', s, o, False):
+        case SimpleSentence('be', s, o, False):
             return e(s).does('have')._(o).as_('super').tell(kb)
-        case VerbSentence('have', s, o, False, False, a):
+        case SimpleSentence('have', s, o, False, False, a):
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
         case AnalyticDerivation():

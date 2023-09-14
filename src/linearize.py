@@ -1,5 +1,5 @@
 from functools import reduce
-from language import Ast, BinExp, Negation, Noun, VerbSentence
+from language import Ast, BinExp, Negation, Noun, SimpleSentence
 
 def linearize(ast:Ast)->str:
 
@@ -12,7 +12,7 @@ def linearize(ast:Ast)->str:
             return '( '+content+' )'
         case Noun(x):
             return 'the '+linearize(x)
-        case VerbSentence(v, s, o, n, c, a, t):
+        case SimpleSentence(v, s, o, n, c, a, t):
             return linearize(s)+' does '+(' not ' if n else '')  +linearize(v)+' '+linearize(o)
         case BinExp(op, l, r):
             return '( '+ linearize(l) +' ' + linearize(op) + ' '+linearize(r) +' )'

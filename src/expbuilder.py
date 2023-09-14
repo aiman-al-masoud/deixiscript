@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from language import AnalyticDerivation, Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, VerbSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, SimpleSentence, Which
 
 T  =  TypeVar('T', bound='Ast')
 _ = ''
@@ -23,7 +23,7 @@ class ExpBuilder(Generic[T]):
         return self.binop('+', x)
 
     def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
-        return ExpBuilder(VerbSentence(makeAst(verb), self.e, _, negation, False, _, _))
+        return ExpBuilder(SimpleSentence(makeAst(verb), self.e, _, negation, False, _, _))
 
     def does(self, verb:'Ast|ExpBuilder'):        
         return self.verbSen(verb, False)
@@ -32,9 +32,9 @@ class ExpBuilder(Generic[T]):
         return self.verbSen(verb, True)
 
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
-        if not isinstance(self.e, VerbSentence): raise Exception()
+        if not isinstance(self.e, SimpleSentence): raise Exception()
 
-        v = VerbSentence(**{**self.e.__dict__, name : makeAst(thing)})
+        v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)})
         return ExpBuilder(v)
 
     def _(self, object:'Ast|ExpBuilder'):

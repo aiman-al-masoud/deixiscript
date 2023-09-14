@@ -1,7 +1,7 @@
 from typing import List, cast
 from expbuilder import e
 from findAsts import findAsts
-from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, Noun, NounPhrase, Result, VerbSentence, copyAst
+from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, Noun, NounPhrase, NounPhrasish, Result, SimpleSentence, copyAst
 from functools import cmp_to_key, partial, reduce
 from matchAst import compareGenAnalyticDc, matchAst
 from subst import  subst
@@ -20,7 +20,7 @@ def normalized(ast:Ast, kb:KnowledgeBase)->Result:
 def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     # TODO: sort by specificity to avoid subnounphrase problem 
 
-    implicits = findAsts(ast, isImplicitish)
+    implicits = findAsts(ast, isImplicitNounPhrase)
     referents:List[Ast] = []
     kb1 = kb
 
@@ -33,23 +33,24 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
     new = reduce(lambda a,b: subst(b[0])(b[1])(a) , xs, ast)
     return Result(new, kb1)
 
+def isImplicitNounPhrase(ast:Ast):
+    return isImplicitish(ast) and isNounPhrasish(ast)
 
-def isImplicitish(ast:Ast): # only IMPLICIT-CONTAINING NOUNPHRASES
-    if not isNounPhrasish(ast): return False
+def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
     if isinstance(ast, Implicit): return True
     return any([isImplicitish(x) for x in ast.__dict__.values()])
 
 def isNounPhrasish(ast:Ast):
+    if not isinstance(ast, NounPhrasish): return False
     if isinstance(ast, NounPhrase): return True
-    if isinstance(ast, Command): return isNounPhrasish(ast.value)
-    return isinstance(ast, BinExp) and isNounPhrasish(ast.left) and isNounPhrasish(ast.right)
+    return all([isNounPhrasish(x) for x in ast.__dict__.values()])
 
 isConn = lambda x : isinstance(x, BinExp) and x.op in ['and', 'or']
 findConjs= lambda x: findAsts(x, isConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
-isNegVerbSen = lambda x:isinstance(x, VerbSentence) and bool(x.negation)
-isCommandVerbSen = lambda x:isinstance(x, VerbSentence) and bool(x.command)
+isNegVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.negation)
+isCommandVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.command)
 
 def decompress(ast:Ast)->Ast:
 
