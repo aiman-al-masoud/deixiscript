@@ -35,9 +35,10 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase)->Result:
 
 
 def isImplicitish(ast:Ast): # only IMPLICIT-CONTAINING NOUNPHRASES
-    if isinstance(ast, Implicit): return True
+    if not isNounPhrasish(ast): return False
     if isinstance(ast, Explicit): return False
-    return isNounPhrasish(ast) and any([isImplicitish(x) for x in ast.__dict__.values()])
+    if isinstance(ast, Implicit): return True
+    return any([isImplicitish(x) for x in ast.__dict__.values()])
 
 def isNounPhrasish(ast:Ast):
     if isinstance(ast, NounPhrase): return True
