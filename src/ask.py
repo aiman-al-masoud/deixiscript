@@ -45,7 +45,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
 
         case SimpleSentence():
-            return Result(False, kb)
+            return Result(False, kb) # TODO: default write
 
 
         case Negation(v):
@@ -92,9 +92,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)        
         
-        
+
         case SimpleSentence():
-            return Result(False, kb)
+            return Result(False, kb) # TODO: default write
 
 
         case AnalyticDerivation():
