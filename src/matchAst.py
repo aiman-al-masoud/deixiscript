@@ -31,7 +31,7 @@ def compareGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ',
 #
 def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
 
-    if generic == specific: return True
+    if generic == specific: return True # what about inheritance?
 
     with1 = e(specific).tell(kb)
     with2 = e(generic).get(with1.kb)
