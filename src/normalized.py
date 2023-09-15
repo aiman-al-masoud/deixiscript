@@ -86,7 +86,7 @@ expandNegations \
 expandCommands \
       = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
 
-# TODO: return Ast list of PASSAGES!!
+# TODO: return Ast list of PASSAGES?
 def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
     kb1 = evalImplicit(ast, kb).kb
     ds = [d for d in kb1.adcs if matchAst(d.definendum, ast)]
