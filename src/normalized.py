@@ -87,11 +87,11 @@ expandCommands \
       = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
 
 # TODO: return Ast list of PASSAGES!!
-# do you need subst?? not if you update the DD!! Right?!
-def definitionOf(kb:KnowledgeBase, ast:Ast)->Ast:
-    ds = [d for d in kb.adcs if matchAst(d.definendum, ast)]
-    cmp = partial(compareGenAnalyticDc, kb)
+def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
+    kb1 = evalImplicit(ast, kb).kb
+    ds = [d for d in kb1.adcs if matchAst(d.definendum, ast)]
+    cmp = partial(compareGenAnalyticDc, kb1)
     sortedDs = sorted(ds, key=cmp_to_key(cmp))
     defs = [d.definition for d in sortedDs]
-    if defs: return definitionOf(kb, defs[0])
-    return ast
+    if defs: return definitionOf(kb1, defs[0])
+    return Result(ast, kb1)
