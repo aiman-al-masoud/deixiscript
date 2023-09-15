@@ -161,8 +161,6 @@ def test22():
     assert nps2 == npsOracle 
     assert nps != npsOracle
 
-    # print(nps == npsOracle)
-    # print(nps2 == npsOracle)
     # print([linearize(x) for x in nps])
     # print([linearize(x) for x in nps2])
 
