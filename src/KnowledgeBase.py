@@ -10,7 +10,7 @@ class KnowledgeBase:
     dd:'DeicticDict'
 
     def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
-        return KnowledgeBase(**{**self.__dict__, 'dd':dd})
+        return KnowledgeBase(self.wm, self.adcs, dd)
     
     def addWm(self, wm:'WorldModel')->'KnowledgeBase':
         return KnowledgeBase(self.wm | wm, self.adcs, self.dd)
@@ -42,7 +42,7 @@ class DeicticDict:
         latest = max([*self.d.values(), 0]) + 1
         return DeicticDict({ **self.d, ast:latest})
 
-    def __getitem__(self, key: Ast) -> int:
+    def __getitem__(self, key: Ast)->int:
         return self.d.get(key, 0)
 
 @dataclass(frozen=True)
