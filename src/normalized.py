@@ -1,10 +1,9 @@
-from dataclasses import dataclass
-from typing import List, Tuple, cast
+from typing import cast
 from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence, copyAst
 from functools import partial, reduce
-from matchAst import matchAst
+from matchAst import matchAst, sortByGenerality
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 
@@ -13,26 +12,21 @@ def normalized(ast:Ast, kb:KnowledgeBase)->Result:
     # TODO: check for definitions in analytic derivaton clauses, and update KB
     x1 = expandNegations(ast)
     x2 = expandCommands(x1)
-    x3 = evalImplicit(ast, kb)
-    x4 = reduce(lambda a,b: subst(b[0],b[1],a), x3.zipped, x2)
-    x5 = decompress(x4)
-    return Result(x5, x3.kb)
+    x3 = removeImplicit(x2, kb)
+    x4 = decompress(x3.head)
+    return Result(x4, x3.kb)
     # TODO: check for triggered effects in synthetic derivation clauses
 
-def evalImplicit(ast:Ast, kb:KnowledgeBase):
 
-    @dataclass(frozen=True)
-    class C:
-        kb:KnowledgeBase
-        zipped:List[Tuple[Ast, Ast]]
-    
-    def red(a:C, b:Ast)->C:
-        r1=e(b).ask(a.kb)
-        return C(r1.kb, [*a.zipped, (b, r1.head)])
+def removeImplicit(ast:Ast, kb:KnowledgeBase):
 
-    # TODO: sort by specificity to avoid subnounphrase problem
+    def red(a:Result, b:Ast)->Result:
+        r1 = e(b).ask(a.kb)
+        return Result(subst(b, r1.head, a.head), r1.kb)
+
     implicits = findAsts(ast, isImplicitNounPhrase)
-    r = reduce(red, implicits, C(kb, []))
+    sortedImplicitis = sortByGenerality(kb, implicits)
+    r = reduce(red, sortedImplicitis, Result(ast, kb))
     return r
 
 def isImplicitNounPhrase(ast:Ast):
@@ -89,7 +83,7 @@ expandCommands \
 
 # TODO: return Ast list of PASSAGES?
 def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
-    kb1 = evalImplicit(ast, kb).kb
+    kb1 = removeImplicit(ast, kb).kb
     defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast)]
     if defs: return definitionOf(kb1, defs[0])
     return Result(ast, kb1)

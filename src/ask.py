@@ -113,6 +113,8 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = tell(l, kb)
             r2 = tell(r, r1.kb)
             return r2
+        case Command(v):
+            return tell(v, kb)
         case _:
             print(ast)
             raise Exception('tell', ast)
