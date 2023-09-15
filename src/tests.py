@@ -148,7 +148,6 @@ def test21():
 
 # sort nounphrases by generality tests
 # LATER!!sort analytic derivation clauses by generality tests, maybe need to introduce default "action" for even un-defined verbs
-# make sortByGenerality() function, rm compare funcs
 def test22():
 
     nps = [
