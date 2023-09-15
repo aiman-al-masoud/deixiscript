@@ -1,9 +1,8 @@
-from functools import cmp_to_key, partial
 from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import  Ast, BinExp, Implicit
-from matchAst import matchAst, compareGenerality
+from language import  BinExp, Implicit
+from matchAst import matchAst, sortByGenerality#, compareGenerality
 from normalized import decompress, expandNegations, normalized
 from subst import subst
 from findAsts import findAsts
@@ -122,14 +121,12 @@ def test18():
     genr = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
 
-    f = partial(compareGenerality, KnowledgeBase.empty)
-    assert f(genr,spec)=='GE'
-    assert f(spec,genr)=='LE'
+    assert matchAst(genr, spec)
+    assert not matchAst(spec, genr)
 
 def test19():
-    f = partial(compareGenerality, KnowledgeBase.empty)
-    assert f('it', 'it') == 'EQ'
-    assert f('it', 'buruf') == 'NE'
+    assert matchAst('it', 'it')
+    assert not matchAst('it', 'buruf')
 
 # normalized tests
 def test20():
@@ -161,19 +158,12 @@ def test22():
     ]
 
     npsOracle = [nps[2], nps[0], nps[1]] # ascending generality
-
-    def compare(kb:KnowledgeBase, ast1:Ast, ast2:Ast):
-        r = compareGenerality(kb, ast1, ast2)
-        if r =='NE' or r=='EQ': return 0
-        return 1 if r=='GE' else -1
-    
-    cmp = partial(compare, KnowledgeBase.empty)
-    nps2 = sorted(nps, key=cmp_to_key(cmp))
+    nps2 = sortByGenerality(KnowledgeBase.empty, nps)
+    assert nps2 == npsOracle 
+    assert nps != npsOracle
 
     # print(nps == npsOracle)
     # print(nps2 == npsOracle)
-    assert nps2 == npsOracle 
-    assert nps != npsOracle
     # print([linearize(x) for x in nps])
     # print([linearize(x) for x in nps2])
 

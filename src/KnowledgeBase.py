@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from functools import cmp_to_key, partial
 from typing import Dict, Set, Tuple
 from language import AnalyticDerivation, Ast
 
@@ -19,10 +18,9 @@ class KnowledgeBase:
         return KnowledgeBase(self.wm - wm, self.adcs, self.dd)
     
     def addDef(self, dc:AnalyticDerivation)->'KnowledgeBase':
-        from matchAst import compareGenAnalyticDc
-        cmp = partial(compareGenAnalyticDc, self)
+        from matchAst import sortByGenerality
         dcs = self.adcs | {dc}
-        sortedDcs = sorted(dcs, key=cmp_to_key(cmp))
+        sortedDcs = sortByGenerality(self, dcs)
         setDcs = set(sortedDcs)
         return KnowledgeBase(self.wm, setDcs, self.dd)
 

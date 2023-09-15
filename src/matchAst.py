@@ -1,29 +1,27 @@
-from typing import Literal
+from functools import cmp_to_key, partial
+from typing import Iterable, Literal, Sequence, TypeVar
 from expbuilder import e, it_is_false_that
 from language import AnalyticDerivation, Ast
 from KnowledgeBase import KnowledgeBase
 
+T = TypeVar('T', bound=Ast)
 
-def compareGenAnalyticDc(kb:KnowledgeBase, d1:AnalyticDerivation, d2:AnalyticDerivation):
-    v = compareGenerality(kb, d1.definendum, d2.definendum)
-    if v == 'EQ' or v == 'NE': return 0
-    if v =='GE': return 1
-    return -1
+def sortByGenerality(kb:KnowledgeBase, asts:Iterable[T]):
+    cmp = partial(compareAst, kb)
+    res = sorted(asts, key=cmp_to_key(cmp))
+    return res
 
-def compareGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ', 'GE', 'NE']:
-   
-    m1 = matchAst(ast1, ast2, kb)
-    m2 = matchAst(ast2, ast1, kb)
+def compareAst(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 
-    match m1, m2:
-        case True, True:
-            return 'EQ'
-        case True, False:
-            return 'GE'
-        case False, True:
-            return 'LE'
+    match ast1, ast2:
+        case AnalyticDerivation(d1, _), AnalyticDerivation(d2, _):
+            return compareAst(kb, d1, d2)
         case _:
-            return 'NE'        
+            m1 = matchAst(ast1, ast2, kb)
+            m2 = matchAst(ast2, ast1, kb)
+
+            if m1 and m2: return 0
+            return 1 if m1 and not m2 else -1
 
 #
 # Two expressions are synonymous in a context kb, when
@@ -31,7 +29,7 @@ def compareGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal['LE', 'EQ',
 #
 def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
 
-    if generic == specific: return True # what about inheritance?
+    if generic == specific: return True
 
     with1 = e(specific).tell(kb)
     with2 = e(generic).get(with1.kb)
