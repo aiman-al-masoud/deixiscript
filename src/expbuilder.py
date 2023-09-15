@@ -65,7 +65,10 @@ class ExpBuilder(Generic[T]):
     def tell(self, kb=KnowledgeBase.empty):
         from ask import tell
         return tell(self.e, kb)
-        
+    
+    def tellKb(self, kb=KnowledgeBase.empty):
+        return self.tell(kb).kb
+
 
 def i(x:Ast): # implicit
     return ExpBuilder(Noun(x))

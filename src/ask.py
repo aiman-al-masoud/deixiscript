@@ -1,6 +1,6 @@
 from functools import reduce
 from expbuilder import e, _, every
-from language import AnalyticDerivation, Ast, BinExp, Command, Derivation, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result
 
@@ -59,8 +59,8 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
         case int(x) | float(x) | str(x):
-            # raise Exception('')
-            return Result(x, kb)
+            kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
+            return Result(x, kb1)
         case Noun(h):
             n = every(h).count(kb)
             id = h if n == 0 else f'{h}#{n}'

@@ -143,6 +143,10 @@ def test20():
     assert e('cat#1').does('jump').e == y.left or e('cat').does('jump').e == y.left
     assert e('cat#1').does('jump').e == y.right or e('cat').does('jump').e == y.right
 
+# tell insert new constant into WM tests
+def test21():
+    kb = e(1).tellKb()
+    assert (1, 'int', 'super') in kb.wm
 
 
 # kb = i('he').when(i('male')).tell().kb
