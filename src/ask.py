@@ -45,7 +45,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
 
         case SimpleSentence():
-            return Result(False, kb) # TODO: default write
+            return Result(False, kb) # TODO: default read
 
 
         case Negation(v):
