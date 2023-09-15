@@ -14,14 +14,16 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             kb1 = reduce(lambda a,b: e(b).ask(a).kb , xs, kb)
             return Result(xs, kb1)
         case Noun(h):
-            things = {x for s in kb.wm for x in s}
-            cands = tuple(x for x in things if e(x).does('be')._(h).get(kb))
-            return e(cands).ask(kb)
+            cands1 = {x for s in kb.wm for x in s}
+            cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
+            cands3 = cands2[0] if len(cands2)==1 else cands2 
+            return e(cands3).ask(kb)
         case Which(h, w):
-            things = e(h).get(kb)
-            assert isinstance(things, tuple)
-            cands = tuple(x for x in things if e(subst(_, x, w)).get(kb))
-            return e(cands).ask(kb)
+            cands1 = e(h).get(kb)
+            cands2 = cands1 if isinstance(cands1, tuple) else (cands1,)
+            cands3 = tuple(x for x in cands2 if e(subst(_, x, w)).get(kb))
+            cands4 = cands3[0] if len(cands3)==1 else cands3
+            return e(cands4).ask(kb)
         case Numerality(h, c, o):
             raise Exception('')
             # things = e(h).get(kb)

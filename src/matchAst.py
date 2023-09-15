@@ -1,5 +1,5 @@
 from functools import cmp_to_key, partial
-from typing import Iterable, Literal, Sequence, TypeVar
+from typing import Iterable, Literal, TypeVar
 from expbuilder import e, it_is_false_that
 from language import AnalyticDerivation, Ast
 from KnowledgeBase import KnowledgeBase
@@ -37,10 +37,4 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     without1 = it_is_false_that(specific).tell(kb)
     without2 = e(generic).get(without1.kb)
 
-    return areConcordant(with1.head, with2) and not without2
-
-def areConcordant(ast1:Ast, ast2:Ast):
-    if isinstance(ast1, tuple): return ast2 in ast1
-    if isinstance(ast2, tuple): return ast1 in ast2
-    return ast1 == ast2
-
+    return with1.head == with2 and not without2
