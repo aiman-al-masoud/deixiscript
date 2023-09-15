@@ -1,5 +1,5 @@
 from functools import reduce
-from language import Ast, BinExp, Negation, Noun, SimpleSentence
+from language import AnalyticDerivation, Ast, BinExp, Negation, Noun, SimpleSentence, Which
 
 def linearize(ast:Ast)->str:
 
@@ -18,5 +18,9 @@ def linearize(ast:Ast)->str:
             return '( '+ linearize(l) +' ' + linearize(op) + ' '+linearize(r) +' )'
         case Negation(v):
             return 'it is false that '+linearize(v)
+        case AnalyticDerivation(a, b):
+            return linearize(a) + ' when ' + linearize(b)
+        case Which(h, w):
+            return linearize(h) + ' which ' + linearize(w)
         case _:
-            raise Exception()
+            raise Exception(ast)

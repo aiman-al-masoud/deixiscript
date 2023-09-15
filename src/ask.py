@@ -42,6 +42,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence('have',s, o, False, False, a):
             head = (s,o,a) in kb.wm
             return Result(head, kb)
+
+
+        case SimpleSentence():
+            return Result(False, kb)
+
+
         case Negation(v):
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
@@ -52,7 +58,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('+', l, r):
             raise Exception('')
         case _:
-            raise Exception('')
+            raise Exception('ask', ast)
 
 
 def tell(ast:Ast, kb:KnowledgeBase)->Result:
@@ -84,7 +90,13 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence('have', s, o, False, False, a):
             delta = {(s, o, a)}
-            return Result(True, kb.addWm(delta), delta)
+            return Result(True, kb.addWm(delta), delta)        
+        
+        
+        case SimpleSentence():
+            return Result(False, kb)
+
+
         case AnalyticDerivation():
             return Result(ast, kb.addDef(ast))
         case SyntheticDerivation():

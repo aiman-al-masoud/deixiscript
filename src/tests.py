@@ -1,8 +1,8 @@
-from functools import partial
+from functools import cmp_to_key, partial
 from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import  BinExp, Implicit
+from language import  Ast, BinExp, Implicit
 from matchAst import matchAst, compareGenerality
 from normalized import decompress, expandNegations, normalized
 from subst import subst
@@ -149,8 +149,32 @@ def test21():
     assert (1, 'int', 'super') in kb.wm
     assert 1 in kb.dd
 
+# sort nounphrases by generality tests
+# LATER!!sort analytic derivation clauses by generality tests, maybe need to introduce default "action" for even un-defined verbs
+# make sortByGenerality() function, rm compare funcs
+def test22():
 
-# kb = i('he').when(i('male')).tell().kb
-# kb = i('male').when(i('thing').which(does('be')._('man'))).tell(kb).kb
-# def1 = definitionOf(kb, i('he').e)
-# print(def1)
+    nps = [
+        i('cat').which(does('be')._('red')).e,
+        i('cat').e,
+        i('cat').which(does('be')._('red')._and(does('be')._('black'))).e,
+    ]
+
+    npsOracle = [nps[2], nps[0], nps[1]] # ascending generality
+
+    def compare(kb:KnowledgeBase, ast1:Ast, ast2:Ast):
+        r = compareGenerality(kb, ast1, ast2)
+        if r =='NE' or r=='EQ': return 0
+        return 1 if r=='GE' else -1
+    
+    cmp = partial(compare, KnowledgeBase.empty)
+    nps2 = sorted(nps, key=cmp_to_key(cmp))
+
+    # print(nps == npsOracle)
+    # print(nps2 == npsOracle)
+    assert nps2 == npsOracle 
+    assert nps != npsOracle
+    # print([linearize(x) for x in nps])
+    # print([linearize(x) for x in nps2])
+
+
