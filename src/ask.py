@@ -60,7 +60,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
     match ast:
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
-            return Result(x, kb1)
+            return e(x).ask(kb1)
         case Noun(h):
             n = every(h).count(kb)
             id = h if n == 0 else f'{h}#{n}'

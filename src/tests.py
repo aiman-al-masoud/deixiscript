@@ -147,6 +147,7 @@ def test20():
 def test21():
     kb = e(1).tellKb()
     assert (1, 'int', 'super') in kb.wm
+    assert 1 in kb.dd
 
 
 # kb = i('he').when(i('male')).tell().kb
