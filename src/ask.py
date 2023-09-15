@@ -39,7 +39,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence('be', s, o, False):
             head = s == o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
-        case SimpleSentence('have',s, o, False, False, a):
+        case SimpleSentence('have', s, o, False, False, a):
             head = (s,o,a) in kb.wm
             return Result(head, kb)
 
