@@ -29,7 +29,7 @@ def evalImplicit(ast:Ast, kb:KnowledgeBase):
         r1=e(b).ask(a.kb)
         return C(r1.kb, [*a.zipped, (b, r1.head)])
 
-     # TODO: sort by specificity to avoid subnounphrase problem
+    # TODO: sort by specificity to avoid subnounphrase problem
     implicits = findAsts(ast, isImplicitNounPhrase)
     r = reduce(red, implicits, C(kb, []))
     return r
