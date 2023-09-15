@@ -1,7 +1,8 @@
 from expbuilder import e
-from language import Ast, KnowledgeBase, Result
+from language import Ast
 from normalized import normalized
-from linearize import linearize
+from KnowledgeBase import KnowledgeBase, Result
+
 
 def evaluate(ast:Ast, kb:KnowledgeBase=KnowledgeBase.empty)->Result:
     """

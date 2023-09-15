@@ -1,14 +1,15 @@
 from functools import reduce
 from expbuilder import e, _, every
-from language import AnalyticDerivation, Ast, BinExp, Command, Derivation, KnowledgeBase, Negation, Noun, Numerality, Result, SyntheticDerivation, SimpleSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, Derivation, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from subst import subst
+from KnowledgeBase import KnowledgeBase, Result
 
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
         case str(x) | int(x)| float(x):
-            return Result(x, kb.updateDD(kb.dd.copy(x)))
+            return Result(x, kb.updateDD(kb.dd.update(x)))
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a).kb , xs, kb)
             return Result(xs, kb1)

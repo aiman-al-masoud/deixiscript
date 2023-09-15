@@ -1,6 +1,7 @@
 from typing import Literal
 from expbuilder import e, it_is_false_that
-from language import AnalyticDerivation, Ast, KnowledgeBase
+from language import AnalyticDerivation, Ast
+from KnowledgeBase import KnowledgeBase
 
 
 def compareGenAnalyticDc(kb:KnowledgeBase, d1:AnalyticDerivation, d2:AnalyticDerivation):

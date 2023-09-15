@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from typing import List, Tuple, cast
 from expbuilder import e
 from findAsts import findAsts
-from language import Ast, BinExp, Command, Explicit, Implicit, KnowledgeBase, Negation, NounPhrase, NounPhrasish, Result, SimpleSentence, copyAst
-from functools import cmp_to_key, partial, reduce
-from matchAst import compareGenAnalyticDc, matchAst
+from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence, copyAst
+from functools import partial, reduce
+from matchAst import matchAst
 from subst import  subst
+from KnowledgeBase import KnowledgeBase, Result
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
@@ -89,9 +90,6 @@ expandCommands \
 # TODO: return Ast list of PASSAGES?
 def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
     kb1 = evalImplicit(ast, kb).kb
-    ds = [d for d in kb1.adcs if matchAst(d.definendum, ast)]
-    cmp = partial(compareGenAnalyticDc, kb1)
-    sortedDs = sorted(ds, key=cmp_to_key(cmp))
-    defs = [d.definition for d in sortedDs]
+    defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast)]
     if defs: return definitionOf(kb1, defs[0])
     return Result(ast, kb1)

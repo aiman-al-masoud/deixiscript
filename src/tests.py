@@ -1,13 +1,14 @@
-from functools import cmp_to_key, partial
-from typing import List, Optional, Tuple, cast
+from functools import partial
+from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import AnalyticDerivation, Ast, BinExp, Implicit, KnowledgeBase, SimpleSentence
-from linearize import linearize
-from matchAst import matchAst, compareGenerality, compareGenAnalyticDc
-from normalized import decompress, expandNegations, normalized#, removeImplicit
+from language import  BinExp, Implicit
+from matchAst import matchAst, compareGenerality
+from normalized import decompress, expandNegations, normalized
 from subst import subst
 from findAsts import findAsts
+from KnowledgeBase import KnowledgeBase
+from linearize import linearize
 
 # 
 # clear; pytest tests.py
@@ -90,16 +91,6 @@ def test13():
     y = i('cat').which(does('have')._('fish').as_('food')).tell(x.kb)
     assert ('cat#1', 'fish', 'food') in y.kb.wm
 
-# # removeImplicit tests
-# def test14():
-#     r1 = e('cat#1').does('be')._('cat').tell()
-#     r2 = e('cat#2').does('be')._('cat').tell(r1.kb)
-#     x = every('cat').does('eat')._('mouse#1').e
-#     y = removeImplicit(x, r2.kb).head
-#     assert isinstance(y, SimpleSentence)
-#     assert isinstance(y.subject, tuple)
-#     assert set(y.subject) == {'cat', 'cat#1', 'cat#2'}
-
 # negation ask tests 
 def test15():
     q = e('capra#1').does('have')._(1).as_('age')
@@ -151,7 +142,6 @@ def test20():
     assert isinstance(y, BinExp)
     assert e('cat#1').does('jump').e == y.left or e('cat').does('jump').e == y.left
     assert e('cat#1').does('jump').e == y.right or e('cat').does('jump').e == y.right
-
 
 
 

@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from language import AnalyticDerivation, Ast, BinExp, Command, KnowledgeBase, Negation, Noun, Numerality, SimpleSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, Which
+from KnowledgeBase import KnowledgeBase
+
 
 T  =  TypeVar('T', bound='Ast')
 _ = ''
