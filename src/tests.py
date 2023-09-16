@@ -52,7 +52,7 @@ def test7():
     x = i('cat').does('jump')._and(i('dog').does('run')).e
     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').e, i('dog').e)
 
-def test8(): # sub-nounphrase problem: need to sort by specificity before using subst
+def test8():
     x = i('cat').which(does('jump')).does('lick')._(i('cat')).e
     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').which(does('jump')).e, i('cat').e)
 
