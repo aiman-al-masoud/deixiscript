@@ -23,6 +23,9 @@ class KnowledgeBase:
         sortedDcs = sortByGenerality(self, dcs)
         setDcs = set(sortedDcs)
         return KnowledgeBase(self.wm, setDcs, self.dd)
+    
+    def rmDef(self, dc:AnalyticDerivation)->'KnowledgeBase':
+        raise Exception('rmDef()')
 
     @classmethod
     @property

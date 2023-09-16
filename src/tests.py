@@ -174,5 +174,12 @@ def test25():
     maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
     assert correct == maybeSorted 
 
+def test26():
+    kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse'))._and(i('horse').does('move'))).tellKb()
+    x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1)
+    assert x.head == e('man').does('sit').on('horse')._and(e('horse').does('move')).e
+    # print(x.head)
+    # print(x.kb.wm)
+    # print(linearize(x.head))
+    # assert x.head == e('man').does('sit').on('horse')._and(e('horse').does('move'))
 
-# print(linearize(e('capra').does('buruf').to('capra').e))

@@ -3,16 +3,21 @@ from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence, copyAst
 from functools import partial, reduce
+from linearize import linearize
 from matchAst import matchAst, sortByGenerality
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
+
     # TODO: check for definitions in analytic derivaton clauses, and update KB
-    x1 = expandNegations(ast)
+    x0 = definitionOf(kb, ast)
+    
+
+    x1 = expandNegations(x0.head)
     x2 = expandCommands(x1)
-    x3 = removeImplicit(x2, kb)
+    x3 = removeImplicit(x2, x0.kb)
     x4 = decompress(x3.head)
     return Result(x4, x3.kb)
     # TODO: check for triggered effects in synthetic derivation clauses
@@ -81,9 +86,19 @@ expandNegations \
 expandCommands \
       = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
 
+
+
+def removeCommands(x:Ast):
+    p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
+    y = p(x)
+    z = p(y)
+    return z
+
 # TODO: return Ast list of PASSAGES?
 def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
     kb1 = removeImplicit(ast, kb).kb
-    defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast)]
+    ast1 = removeCommands(ast)
+    defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast1)]
+
     if defs: return definitionOf(kb1, defs[0])
     return Result(ast, kb1)
