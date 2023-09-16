@@ -2,7 +2,7 @@ from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
 from language import  BinExp, Implicit
-from matchAst import matchAst, sortByGenerality#, compareGenerality
+from matchAst import matchAst, sortByGenerality
 from normalized import decompress, expandNegations, normalized
 from subst import subst
 from findAsts import findAsts
@@ -82,6 +82,11 @@ def test13():
     y = i('cat').which(does('have')._('fish').as_('food')).tell(x.kb)
     assert ('cat#1', 'fish', 'food') in y.kb.wm
 
+def test21():
+    kb = e(1).tellKb() # new constant
+    assert (1, 'int', 'super') in kb.wm
+    assert 1 in kb.dd
+
 # negation ask tests 
 def test15():
     q = e('capra#1').does('have')._(1).as_('age')
@@ -92,27 +97,21 @@ def test15():
 
 # negation with tell tests
 def test16():
-
-    q = new(new(i('cat')).does('have')._(new(i('mouse'))).as_('food')).e
-    kb = evaluate(q).kb
+    kb = new(i('cat')).does('have')._(new(i('mouse'))).as_('food').tellKb()
     q2 = new(i('cat').does_not('have')._(i('mouse')).as_('food')).e
     kb2 = evaluate(q2, kb).kb
-
     assert ('cat', 'mouse', 'food') not in kb2.wm
 
-# matchAst and match tests
+# matchAst tests
 def test17():
     genr = i('cat').e
     spec = i('cat').which(does('have')._('mouse#1')).e
-    m1 = matchAst(genr, spec, KnowledgeBase.empty)
-    m2 = matchAst(spec, genr, KnowledgeBase.empty)
-    assert m1
-    assert not m2
+    assert matchAst(genr, spec, KnowledgeBase.empty)
+    assert not matchAst(spec, genr, KnowledgeBase.empty)
 
 def test18():
     genr = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
-
     assert matchAst(genr, spec)
     assert not matchAst(spec, genr)
 
@@ -131,12 +130,6 @@ def test20():
     assert isinstance(y, BinExp)
     assert e('cat#1').does('jump').e == y.left or e('cat').does('jump').e == y.left
     assert e('cat#1').does('jump').e == y.right or e('cat').does('jump').e == y.right
-
-# tell insert new constant into WM tests
-def test21():
-    kb = e(1).tellKb()
-    assert (1, 'int', 'super') in kb.wm
-    assert 1 in kb.dd
 
 # sort nounphrases by generality tests
 def test22():
