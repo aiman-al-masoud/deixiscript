@@ -152,9 +152,6 @@ def test22():
     assert nps2 == npsOracle 
     assert nps != npsOracle
 
-    # print([linearize(x) for x in nps])
-    # print([linearize(x) for x in nps2])
-
 # default (w/o analytic clauses) simple-sentence "understanding" tests
 def test23():
     kb = i('capra').does('run').to(i('cibo')).tellKb()
