@@ -3,7 +3,7 @@ from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
 from language import  BinExp, Implicit
 from matchAst import matchAst, sortByGenerality
-from normalized import decompress, expandNegations, normalized
+from normalized import decompressed, expandNegations, normalized
 from subst import subst
 from findAsts import findAsts
 from KnowledgeBase import KnowledgeBase
@@ -58,12 +58,12 @@ def test8():
 
 # decompress tests
 def test9():
-    x = decompress(e('capra')._and('cavallo').does('jump').e)
+    x = decompressed(e('capra')._and('cavallo').does('jump').e)
     y = e('capra').does('jump')._and(e('cavallo').does('jump')).e
     assert x==y
 
 def test10():
-    x = decompress(e(('capra', 'cavallo', 'gatto')).does('jump').e)
+    x = decompressed(e(('capra', 'cavallo', 'gatto')).does('jump').e)
     y = e('capra').does('jump')._and(e('cavallo').does('jump'))._and(e('gatto').does('jump')).e
     assert x == y
 

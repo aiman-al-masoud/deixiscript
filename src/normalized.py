@@ -14,7 +14,7 @@ def normalized(ast:Ast, kb:KnowledgeBase)->Result:
     x1 = expandNegations(x0.head)
     x2 = expandCommands(x1)
     x3 = removeImplicit(x2, x0.kb)
-    x4 = decompress(x3.head)
+    x4 = decompressed(x3.head)
     return Result(x4, x3.kb)
     # TODO: check for triggered effects in synthetic derivation clauses
 
@@ -49,22 +49,22 @@ findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
 isNegVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.negation)
 isCommandVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.command)
 
-def decompress(ast:Ast)->Ast:
+def decompressed(ast:Ast)->Ast:
 
     tups = findTuples(ast)
 
     if tups and tups[0]:  
         tup = cast(tuple, tups[0])
         and_phrase = reduce(lambda a,b: e(a)._and(b), [e(t) for t in tup]).e
-        return decompress(subst(tup,and_phrase,ast))
+        return decompressed(subst(tup,and_phrase,ast))
     
     conns = findConjs(ast)
     if not conns: return ast
     conn = cast(BinExp, conns[0])
     if not isNounPhrasish(conn): return ast
 
-    l = decompress(subst(conn,conn.left,ast))
-    r = decompress(subst(conn,conn.right,ast))
+    l = decompressed(subst(conn,conn.left,ast))
+    r = decompressed(subst(conn,conn.right,ast))
 
     return BinExp( 
         opposite(conn.op) if isinstance(ast, Negation) else conn.op, 
