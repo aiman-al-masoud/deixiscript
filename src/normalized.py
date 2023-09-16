@@ -10,7 +10,6 @@ from KnowledgeBase import KnowledgeBase, Result
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
-
     x0 = definitionOf(kb, ast)
     x1 = expandNegations(x0.head)
     x2 = expandCommands(x1)
