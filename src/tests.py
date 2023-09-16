@@ -171,8 +171,4 @@ def test24():
     maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
     assert correct == maybeSorted
 
-    # print([linearize(x) for x in sortedXs])
-    # print(sample(xs, len(xs)))
-
-
 # print(linearize(e('capra').does('buruf').to('capra').e))
