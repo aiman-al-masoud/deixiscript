@@ -37,7 +37,6 @@ def test4():
     x = expandNegations(e('buruf').does_not('have')._('food').e)
     y = it_is_false_that(e('buruf').does('have')._('food').e).e
     assert x == y
-    # print(expandNegations(e('buruf').does_not('have')._('food')._and('capra').e))
 
 # circular import tests (eval <-> expbuilder) 
 def test5():
@@ -69,12 +68,7 @@ def test10():
     assert x == y
 
 def test11():
-    pass
-    # x = it_is_false_that(e('cat')._and('dog').does('jump').e).e
-    # y = decompress(x)
-    # print(linearize(x))
-    # print(linearize(y))
-    # pass
+    pass  # TODO: with demorgan
 
 # tell (create) new entities tests 
 def test12():
