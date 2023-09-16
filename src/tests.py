@@ -59,8 +59,6 @@ def test8(): # sub-nounphrase problem: need to sort by specificity before using 
 
 # decompress tests
 def test9():
-    pass
-
     x = decompress(e('capra')._and('cavallo').does('jump').e)
     y = e('capra').does('jump')._and(e('cavallo').does('jump')).e
     assert x==y
