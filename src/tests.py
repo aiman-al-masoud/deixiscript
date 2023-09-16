@@ -164,4 +164,15 @@ def test24():
     maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
     assert correct == maybeSorted
 
+# sort analytic derivation clauses by generality tests
+def test25():
+    s1 = i('capra').does('run').on(i('hill')).to(i('food')).when(2).e
+    s2 = i('capra').does('run').on(i('hill')).when(2).e
+    s3 = i('capra').does('run').when(1).e
+    correct = [s1,s2,s3]
+    shuffled = [s2,s1,s3]
+    maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
+    assert correct == maybeSorted 
+
+
 # print(linearize(e('capra').does('buruf').to('capra').e))
