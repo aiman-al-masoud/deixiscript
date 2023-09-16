@@ -11,10 +11,7 @@ from KnowledgeBase import KnowledgeBase, Result
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
 
-    # TODO: check for definitions in analytic derivaton clauses, and update KB
     x0 = definitionOf(kb, ast)
-    
-
     x1 = expandNegations(x0.head)
     x2 = expandCommands(x1)
     x3 = removeImplicit(x2, x0.kb)
