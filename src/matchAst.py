@@ -7,21 +7,21 @@ from KnowledgeBase import KnowledgeBase
 T = TypeVar('T', bound=Ast)
 
 def sortByGenerality(kb:KnowledgeBase, asts:Iterable[T]):
-    cmp = partial(compareAst, kb)
+    cmp = partial(compareByGenerality, kb)
     res = sorted(asts, key=cmp_to_key(cmp))
     return res
 
-def compareAst(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
+def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 
     match ast1, ast2:
         case AnalyticDerivation(d1, _), AnalyticDerivation(d2, _):
-            return compareAst(kb, d1, d2)
+            return compareByGenerality(kb, d1, d2)
         case _:
             m1 = matchAst(ast1, ast2, kb)
             m2 = matchAst(ast2, ast1, kb)
 
-            if m1 and m2: return 0
-            return 1 if m1 and not m2 else -1
+            if m1 == m2: return 0
+            return 1 if m1 else -1
 
 #
 # Two expressions are synonymous in a context kb, when
