@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Dict
 
 @dataclass(frozen=True)
 class Noun:
@@ -30,6 +31,13 @@ class SimpleSentence:
     command:'Ast'
     as_:'Ast'
     to:'Ast'
+    on:'Ast'
+
+    @property
+    def complements(self)->Dict[str, 'Ast']:
+        out = ['verb', 'subject', 'object', 'negation', 'command']
+        d = {k:v for k,v in self.__dict__.items() if k not in out}
+        return d
 
 @dataclass(frozen=True)
 class Negation:

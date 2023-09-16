@@ -25,7 +25,7 @@ class ExpBuilder(Generic[T]):
         return self.binop('+', x)
 
     def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
-        return ExpBuilder(SimpleSentence(makeAst(verb), self.e, _, negation, False, _, _))
+        return ExpBuilder(SimpleSentence(makeAst(verb), self.e, _, negation, False, _, _, _))
 
     def does(self, verb:'Ast|ExpBuilder'):        
         return self.verbSen(verb, False)
@@ -39,11 +39,10 @@ class ExpBuilder(Generic[T]):
         v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)})
         return ExpBuilder(v)
 
-    def _(self, object:'Ast|ExpBuilder'):
-        return self.complement('object', object)
-      
-    def as_(self, as_:'Ast|ExpBuilder'):
-        return self.complement('as_', as_)
+    def _(self, object:'Ast|ExpBuilder'): return self.complement('object', object)
+    def as_(self, as_:'Ast|ExpBuilder'): return self.complement('as_', as_)
+    def to(self, to:'Ast|ExpBuilder'): return self.complement('to', to)
+    def on(self, on:'Ast|ExpBuilder'): return self.complement('on', on)
 
     def which(self, which:'Ast|ExpBuilder'):
         return ExpBuilder(Which(self.e, makeAst(which)))

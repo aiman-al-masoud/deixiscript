@@ -12,8 +12,13 @@ def linearize(ast:Ast)->str:
             return '( '+content+' )'
         case Noun(x):
             return 'the '+linearize(x)
-        case SimpleSentence(v, s, o, n, c, a, t):
-            return linearize(s)+' does '+(' not ' if n else '')  +linearize(v)+' '+linearize(o)
+        case SimpleSentence(v, s, o, n, c):
+            
+            complements = [k + ' ' + linearize(v) for k,v in ast.complements.items() if v]
+            complementsStr = reduce(lambda a,b:a+' '+b, complements, '')
+            verb = ' does '+(' not ' if n else '')  +linearize(v) 
+            return linearize(s) + verb + ' ' +linearize(o) + complementsStr
+
         case BinExp(op, l, r):
             return '( '+ linearize(l) +' ' + linearize(op) + ' '+linearize(r) +' )'
         case Negation(v):

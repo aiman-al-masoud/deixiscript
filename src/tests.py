@@ -147,7 +147,6 @@ def test21():
     assert 1 in kb.dd
 
 # sort nounphrases by generality tests
-# LATER!!sort analytic derivation clauses by generality tests, maybe need to introduce default "action" for even un-defined verbs
 def test22():
 
     nps = [
@@ -164,4 +163,27 @@ def test22():
     # print([linearize(x) for x in nps])
     # print([linearize(x) for x in nps2])
 
+# default (w/o analytic clauses) simple-sentence "understanding" tests
+def test23():
+    kb = i('capra').does('run').to(i('cibo')).tellKb()
+    assert i('capra').does('run').get(kb)
+    assert i('capra').does('run').to(i('cibo')).get(kb)
+    assert not i('capra').does('hide').get(kb)
+    assert not i('capra').does('run').to(i('hill')).get(kb)
 
+# sort simple-sentences by generality tests
+def test24():
+    s1 = i('capra').does('give')._(i('present')).to(i('pecora')).on(i('collina')).e
+    s2 = i('capra').does('give')._(i('present')).to(i('pecora')).e
+    s3 = i('capra').does('give')._(i('present')).e
+    s4 = i('capra').does('give').e
+    correct = [s1,s2,s3,s4]
+    shuffled = [s4,s2,s3,s1]
+    maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
+    assert correct == maybeSorted
+
+    # print([linearize(x) for x in sortedXs])
+    # print(sample(xs, len(xs)))
+
+
+# print(linearize(e('capra').does('buruf').to('capra').e))

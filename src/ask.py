@@ -1,5 +1,5 @@
 from functools import reduce
-from expbuilder import e, _, every
+from expbuilder import does, e, _, every, i
 from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result
@@ -26,11 +26,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return e(cands4).ask(kb)
         case Numerality(h, c, o):
             raise Exception('')
-            # things = e(h).get(kb)
-            # assert isinstance(things, tuple)
             # sortedThings = tuple(sorted(things, key=lambda x: kb.dd[x]))
             # cands = sortedThings[:c]
-            # return e(cands).ask(kb)
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
             if not r1.head: return Result(False, r1.kb)
@@ -44,12 +41,9 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence('have', s, o, False, False, a):
             head = (s,o,a) in kb.wm
             return Result(head, kb)
-
-
         case SimpleSentence():
-            return Result(False, kb) # TODO: default read
-
-
+            action = simpleSentenceToAction(ast)
+            return ask(action, kb)
         case Negation(v):
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
@@ -82,23 +76,14 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
-            # assert isinstance(c, int)
-            # def red(r1:Result, r2:Result):
-            #     head = (*r1.head, r2.head) if isinstance(r1.head, tuple) else (r1.head, r2.head)
-            #     return Result(head, r2.kb)
-            # r = reduce(lambda a,_: red(a, e(h).tell(a.kb)), range(c), Result(tuple(), kb))
-            # return r
         case SimpleSentence('be', s, o, False):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence('have', s, o, False, False, a):
             delta = {(s, o, a)}
-            return Result(True, kb.addWm(delta), delta)        
-        
-
-        case SimpleSentence():
-            return Result(False, kb) # TODO: default write
-
-
+            return Result(True, kb.addWm(delta), delta)
+        case SimpleSentence(v, s, o, False, False):
+            action = simpleSentenceToAction(ast)
+            return tell(action, kb)
         case AnalyticDerivation():
             return Result(ast, kb.addDef(ast))
         case SyntheticDerivation():
@@ -120,3 +105,11 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case _:
             print(ast)
             raise Exception('tell', ast)
+
+
+def simpleSentenceToAction(ast:SimpleSentence):
+    args1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
+    args2 = [does('have')._(v).as_(k) for k,v in args1.items() if v]
+    args3 = reduce(lambda a,b:a._and(b), args2)
+    actio = i('action').which(args3).e
+    return actio
