@@ -40,7 +40,7 @@ estimate of the mental roadmap that was taken:
   - [metaphysics](#metaphysics-the-basic-principles)
   - [declarative vs imperative?](#declarative-vs-imperative)
   - [the case for predicate logic](#the-case-for-predicate-logic)
-  - [the problem with predicate logic (no deixis)](#the-problem-with-predicate-logic-no-deixis)
+  - [the problems with predicate logic (no deixis)](#the-problem-with-predicate-logic-no-deixis)
   - [adapting predicate logic to support deixis](#adapting-predicate-logic-to-support-deixis)
 - [What about higher level abstractions?](#what-about-higher-level-abstractions)
   - [derivation clauses](#derivation-clauses)
