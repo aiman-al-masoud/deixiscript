@@ -1,34 +1,19 @@
 # Deixiscript: an approach to spoken naturalistic programming
 
-The issues will be raised following the logical flow of ideas: primary goals will be
-stated, solutions will be proposed, their points and counter-points will be
-elucidated, and finally: a decision will follow to go forth in a particular
-direction.
-
-It may well be that any given design choice may not necessarily be the best, but
-an attempt will be made at motivating it and comparing it with the alternatives.
-
-There will also be two final sections, one is dedicated to discussing possible
-future extensions that build upon this work, and the other is an appendix that
-details some of the related projects that preceded and insipired this work, and
-to which reference will be made throughout this work.
-
-The following is an outline of the topics, organized temporally, as a rough
-estimate of the mental roadmap that was taken:
+A comprehensive outline of the topics, organized as a kind of roadmap:
 
 - [Do we need a spoken programming language?](#do-we-need-a-spoken-programming-language)
+  - [programming by speech](#programming-by-speech)
   - [advantages of speech](#advantages-of-speech)
   - [disadvantages of speech](#disadvantages-of-speech)
-- [Should it imitate natural speech?](#does-a-spoken-programming-language-have-to-imitate-natural-speech)
-  - [programming by speech](#programming-by-speech)
-  - [naturalistic programming](#naturalistic-programming)
+- [Should it imitate _natural_ speech?](#does-a-spoken-programming-language-have-to-imitate-natural-speech)
   - [deixis]()
   - [syntactic/semantic compression]()
-  - [formalist vs non-formalist approach](#formalist-vs-non-formalist)
+  - [naturalistic programming](#naturalistic-programming)
 - [Choosing a Grammar](#how-should-natural-language-be-approximated)
+  - [formalist vs non-formalist approach](#formalist-vs-non-formalist)
   - [all grammars leak](#all-grammars-leak)
   - [analytic vs synthetic grammar?](#analytic-vs-synthetic-grammar)
-  - [syntax vs morphology?](#syntax-vs-morphology)
   - [dependency vs constituency parsing?](#dependency-vs-constituency-parsing)
 - [Choosing the Constituents](#what-shall-the-basic-constituents-of-a-sentence-be)
   - [noun phrases](#noun-phrases)
@@ -38,15 +23,13 @@ estimate of the mental roadmap that was taken:
   - [drawing a parallel with programming language structures](#drawing-a-parallel-with-programming-language-structures)
 - [Representing the World](#how-to-represent-the-world)
   - [metaphysics](#metaphysics-the-basic-principles)
-  - [declarative vs imperative?](#declarative-vs-imperative)
-  - [the case for predicate logic](#the-case-for-predicate-logic)
-  - [the problems with predicate logic (no deixis)](#the-problem-with-predicate-logic-no-deixis)
+  <!-- - [declarative vs imperative?](#declarative-vs-imperative) -->
+  - [the problems with predicate logic (no deixis, no compression)](#the-problem-with-predicate-logic-no-deixis)
   - [adapting predicate logic to support deixis](#adapting-predicate-logic-to-support-deixis)
 - [Higher level abstractions](#what-about-higher-level-abstractions)
-  - [derivation clauses](#derivation-clauses)
-  - [analytic (a priori) derivation clauses](#analytic-a-priori-derivation-clauses)
-  - [synthetic (a posteriori) derivation clauses](#synthetic-a-posteriori-derivation-clauses)
   - [matching sentences by synonymy](#matching-sentences-by-syntax-and-semantics)
+  - [analytic (a priori) derivations](#analytic-a-priori-derivation-clauses)
+  - [synthetic (a posteriori) derivations](#synthetic-a-posteriori-derivation-clauses)
 - [Handling I/O](#how-to-handle-io)
   - [world model as the interface to the outer world](#world-model-sentences-as-the-interface-to-the-outer-world)
   - [event driven programming](#event-driven-programming)
@@ -55,11 +38,14 @@ estimate of the mental roadmap that was taken:
   - [better context sensitivity through deixis](#context-sensitivity-through-a-better-handling-of-deixis)
   - [tenses](#tense)
   - [about the license](#about-the-license)
-- [Previous related work](#previous-related-work)
+- [Related work](#previous-related-work)
   - [Pegasus](#pegasus)
-  - [Machines like us](#machines-like-us)
+  - [Machines Like Us](#machines-like-us)
   - [ALVIN](#alvin)
   - [Programming by Voice Efficiency in the Reactive and Imperative Paradigm](#programming-by-voice-efficiency-in-the-reactive-and-imperative-paradigm)
+  - [Natural language programming: Styles, strategies, and contrasts (1981)]()
+  - [Osmosian]()
+  - [SN]()
 
 # Do we need a spoken programming language?
 
