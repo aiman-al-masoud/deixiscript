@@ -16,7 +16,7 @@ from linearize import linearize
 # pytest tests.py -v   # verbose test results
 # 
 
-# subst tests
+# %% subst tests
 def test1():
     x = subst('capra', 'cat', e('capra').does('eat').e)
     y = e('cat').does('eat').e
@@ -32,7 +32,7 @@ def test3():
     y = ('cat','cat')
     assert x == y
 
-# expand negation tests
+# %% expand negation tests
 def test4():
     x = expandNegations(e('buruf').does_not('have')._('food').e)
     y = it_is_false_that(e('buruf').does('have')._('food').e).e
@@ -43,7 +43,7 @@ def test5():
     x = e(1).get(KnowledgeBase.empty)
     assert x == 1
 
-# findAsts tests
+# %% findAsts tests
 def test6():
     x = e('capra')._and(3)._and(1)._and('gatto').e
     assert findAsts(x, lambda x:isinstance(x, int)) == (3, 1)
@@ -56,7 +56,7 @@ def test8():
     x = i('cat').which(does('jump')).does('lick')._(i('cat')).e
     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').which(does('jump')).e, i('cat').e)
 
-# decompress tests
+# %% decompress tests
 def test9():
     x = decompressed(e('capra')._and('cavallo').does('jump').e)
     y = e('capra').does('jump')._and(e('cavallo').does('jump')).e
@@ -70,7 +70,7 @@ def test10():
 def test11():
     pass  # TODO: with demorgan
 
-# tell (create) new entities tests 
+# %% tell (create) new entities tests 
 def test12():
     x = i('cat').tell()
     y = i('cat').tell(x.kb)
@@ -87,7 +87,7 @@ def test21():
     assert (1, 'int', 'super') in kb.wm
     assert 1 in kb.dd
 
-# negation ask tests 
+# %% negation ask tests 
 def test15():
     q = e('capra#1').does('have')._(1).as_('age')
     qn = it_is_false_that(q)
@@ -95,14 +95,14 @@ def test15():
     assert q.get(kb)
     assert not qn.get(kb)
 
-# negation with tell tests
+# %% negation with tell tests
 def test16():
     kb = new(i('cat')).does('have')._(new(i('mouse'))).as_('food').tellKb()
     q2 = new(i('cat').does_not('have')._(i('mouse')).as_('food')).e
     kb2 = evaluate(q2, kb).kb
     assert ('cat', 'mouse', 'food') not in kb2.wm
 
-# matchAst tests
+# %% matchAst tests
 def test17():
     genr = i('cat').e
     spec = i('cat').which(does('have')._('mouse#1')).e
@@ -119,7 +119,7 @@ def test19():
     assert matchAst('it', 'it')
     assert not matchAst('it', 'buruf')
 
-# sort nounphrases by generality tests
+# %% sort nounphrases by generality tests
 def test22():
 
     nps = [
@@ -133,7 +133,7 @@ def test22():
     assert nps2 == npsOracle 
     assert nps != npsOracle
 
-# default (w/o analytic clauses) simple-sentence "understanding" tests
+# %% default (w/o analytic clauses) simple-sentence "understanding" tests
 def test23():
     kb = i('capra').does('run').to(i('cibo')).tellKb()
     assert i('capra').does('run').get(kb)
@@ -141,7 +141,7 @@ def test23():
     assert not i('capra').does('hide').get(kb)
     assert not i('capra').does('run').to(i('hill')).get(kb)
 
-# sort simple-sentences by generality tests
+# %% simple-sentences by generality tests
 def test24():
     s1 = i('capra').does('give')._(i('present')).to(i('pecora')).on(i('collina')).e
     s2 = i('capra').does('give')._(i('present')).to(i('pecora')).e
@@ -152,7 +152,7 @@ def test24():
     maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
     assert correct == maybeSorted
 
-# sort analytic derivation clauses by generality tests
+# %% sort analytic derivation clauses by generality tests
 def test25():
     s1 = i('capra').does('run').on(i('hill')).to(i('food')).when(2).e
     s2 = i('capra').does('run').on(i('hill')).when(2).e
@@ -162,7 +162,7 @@ def test25():
     maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
     assert correct == maybeSorted 
 
-# normalized tests
+# %% normalized tests
 def test20():
     kb = i('cat').tell().kb
     kb1 = i('cat').tell(kb).kb
@@ -184,7 +184,7 @@ def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-i
     x = normalized(i('they').e, kb2)
     assert findAsts(x.head, lambda x:x=='capra')
 
-# numerality tests
+# %% numerality tests
 def test28():
     kb1 = i('capra').tellKb()
     kb2 = i('capra').tellKb(kb1)
@@ -196,8 +196,10 @@ def test28():
     assert isinstance(many, tuple) and len(many)==3
     assert isinstance(single, str)
 
-# or-operator ask test
+# %% or-operator ask test
 def test29():
     assert e(1).equals(2)._or(e(3).equals(3)).get()
     assert not e(1).equals(2)._or(e(3).equals(2)).get()
 
+
+# %%
