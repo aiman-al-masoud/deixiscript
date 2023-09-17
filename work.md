@@ -42,7 +42,7 @@ estimate of the mental roadmap that was taken:
   - [the case for predicate logic](#the-case-for-predicate-logic)
   - [the problems with predicate logic (no deixis)](#the-problem-with-predicate-logic-no-deixis)
   - [adapting predicate logic to support deixis](#adapting-predicate-logic-to-support-deixis)
-- [What about higher level abstractions?](#what-about-higher-level-abstractions)
+- [Higher level abstractions](#what-about-higher-level-abstractions)
   - [derivation clauses](#derivation-clauses)
   - [analytic (a priori) derivation clauses](#analytic-a-priori-derivation-clauses)
   - [synthetic (a posteriori) derivation clauses](#synthetic-a-posteriori-derivation-clauses)
