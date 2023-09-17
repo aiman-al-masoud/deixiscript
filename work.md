@@ -23,7 +23,7 @@ estimate of the mental roadmap that was taken:
   - [programming by speech](#programming-by-speech)
   - [naturalistic programming](#naturalistic-programming)
   - [deixis]()
-  - [compression]()
+  - [syntactic/semantic compression]()
   - [formalist vs non-formalist](#formalist-vs-non-formalist)
   - [where computer science and linguistics meet](#where-computer-science-and-linguistics-meet)
 - [How should natural language be approximated?](#how-should-natural-language-be-approximated)
