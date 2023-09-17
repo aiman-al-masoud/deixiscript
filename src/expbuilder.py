@@ -1,11 +1,13 @@
 from dataclasses import dataclass
-from typing import Generic, TypeVar
+from typing import Annotated, Generic, TypeVar
 from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, Which
 from KnowledgeBase import KnowledgeBase
 
 
-T  =  TypeVar('T', bound='Ast')
-_ = ''
+_=''    
+'''linguistic gap denoting the empty noun-phrase'''
+
+T=TypeVar('T', bound='Ast')
 
 @dataclass(frozen=True)
 class ExpBuilder(Generic[T]):
@@ -21,7 +23,10 @@ class ExpBuilder(Generic[T]):
     def _and(self, x:'Ast|ExpBuilder'):
         return self.binop('and', x)
     
-    def __add__(self, x:'ExpBuilder'):
+    def _or(self, x:'Ast|ExpBuilder'):
+        return self.binop('or', x)
+    
+    def plus(self, x:'ExpBuilder'):
         return self.binop('+', x)
 
     def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
@@ -69,15 +74,16 @@ class ExpBuilder(Generic[T]):
         return self.tell(kb).kb
 
 
-def i(x:Ast): # implicit
+def i(x:Ast):
+    '''implicit'''
     return ExpBuilder(Noun(x))
 
-def e(x:Ast|ExpBuilder): # explicit
+def e(x:Ast|ExpBuilder):
+    '''explicit'''
     return ExpBuilder(makeAst(x))
     
 def a(x:Ast|ExpBuilder):
-    return ExpBuilder(Noun(makeAst(x)))
-    # return ExpBuilder(Numerality(Noun(x), 1, -1))
+    return ExpBuilder(Numerality(Noun(makeAst(x)), 1, -1))
 
 def every(x:Ast):
     return ExpBuilder(Noun(x))
@@ -94,3 +100,12 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
 def new(x:Ast|ExpBuilder):
     return ExpBuilder(Command(makeAst(x)))
 
+
+# ------------------
+# def the(card:int=1):
+#     def f(x:Ast):
+#         return ExpBuilder(Numerality(x, card, -1))
+#     return f
+
+# the()('capra').does('run')
+# # ------------------

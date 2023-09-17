@@ -25,16 +25,20 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             cands4 = cands3[0] if len(cands3)==1 else cands3
             return e(cands4).ask(kb)
         case Numerality(h, c, o):
-            raise Exception('')
-            # sortedThings = tuple(sorted(things, key=lambda x: kb.dd[x]))
-            # cands = sortedThings[:c]
+            cands1 = e(h).get(kb)
+            cands2 = cands1 if isinstance(cands1, tuple) else (cands1,)
+            cands3 = tuple(sorted(cands2, key=lambda x:kb.dd[x]))
+            cands4 = cands3[:c]
+            cands5 = cands4[0] if len(cands4)==1 else cands4
+            return e(cands5).ask(kb)
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
-            if not r1.head: return Result(False, r1.kb)
             r2 = e(r).ask(r1.kb)
-            return r2
+            return Result(r1.head and r2.head, r2.kb)
         case BinExp('or', l, r):
-            raise Exception('')
+            r1 = e(l).ask(kb)
+            r2 = e(r).ask(r1.kb)
+            return Result(r1.head or r2.head, r2.kb)
         case SimpleSentence('be', s, o, False):
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)

@@ -1,6 +1,6 @@
 from typing import cast
 from evaluate import evaluate
-from expbuilder import does, e, every, i, it_is_false_that, new
+from expbuilder import a, does, e, every, i, it_is_false_that, new
 from language import  BinExp, Implicit, SimpleSentence
 from matchAst import matchAst, sortByGenerality
 from normalized import decompressed, expandNegations, normalized
@@ -183,3 +183,21 @@ def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-i
     kb2 = i('capra').tellKb(kb1)
     x = normalized(i('they').e, kb2)
     assert findAsts(x.head, lambda x:x=='capra')
+
+# numerality tests
+def test28():
+    kb1 = i('capra').tellKb()
+    kb2 = i('capra').tellKb(kb1)
+    kb3 = i('capra').tellKb(kb2)
+
+    many = i('capra').get(kb3)
+    single = a('capra').get(kb3)
+
+    assert isinstance(many, tuple) and len(many)==3
+    assert isinstance(single, str)
+
+# or-operator ask test
+def test29():
+    assert e(1).equals(2)._or(e(3).equals(3)).get()
+    assert not e(1).equals(2)._or(e(3).equals(2)).get()
+

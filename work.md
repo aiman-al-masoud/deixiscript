@@ -33,7 +33,7 @@ estimate of the mental roadmap that was taken:
   - [dependency vs constituency parsing?](#dependency-vs-constituency-parsing)
 - [What shall the basic constituents of a sentence be?](#what-shall-the-basic-constituents-of-a-sentence-be)
   - [noun phrases](#noun-phrases)
-  - [relative clauses](#relative-clauses)
+  - [relative clauses & gapping](#relative-clauses)
   - [verb sentences (aka: simple sentences)](#verb-sentences-aka-simple-sentences)
   - [compound and complex sentences](#compound-and-complex-sentences)
   - [drawing a parallel with programming language structures](#drawing-a-parallel-with-programming-language-structures)
