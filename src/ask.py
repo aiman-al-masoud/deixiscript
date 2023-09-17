@@ -14,7 +14,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             kb1 = reduce(lambda a,b: e(b).ask(a).kb , xs, kb)
             return Result(xs, kb1)
         case Noun(h):
-            cands1 = {x for s in kb.wm for x in s}
+            cands1 = {x for s in kb.wm for x in s} | {h}
             cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
             cands3 = cands2[0] if len(cands2)==1 else cands2 
             return e(cands3).ask(kb)
@@ -69,10 +69,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(x).ask(kb1)
         case Noun(h):
             n = every(h).count(kb)
-            id = h if n == 0 else f'{h}#{n}'
-            sup = 'thing' if id == h else h # or maybe just: h
-            r1 = e(id).does('be')._(sup).tell(kb)
-            return Result(id,  r1.kb, r1.addition)
+            id = f'{h}#{n}'
+            r1 = e(id).does('be')._(h).tell(kb) # if there is an individual cat -> there is also the concept of a cat, concepts are "eternal"
+            return Result(id, r1.kb, r1.addition)
         case Which(h, w):
             r1 = tell(h, kb)
             ww = subst(_, r1.head, w)

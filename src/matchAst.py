@@ -37,4 +37,12 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     without1 = it_is_false_that(specific).tell(kb)
     without2 = e(generic).get(without1.kb)
 
-    return with1.head == with2 and not without2
+    return agree(with1.head, with2) and not agree(without1.head, without2)
+
+def agree(ast1:Ast, ast2:Ast):
+
+    if ast1==ast2: return True
+    if isinstance(ast1, tuple): return ast2 in set(ast1)
+    if isinstance(ast2, tuple): return agree(ast2, ast1)
+
+
