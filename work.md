@@ -7,7 +7,7 @@ A comprehensive outline of the topics, organized as a kind of roadmap:
   - [advantages of speech](#advantages-of-speech)
   - [disadvantages of speech](#disadvantages-of-speech)
 - [Should it imitate _natural_ speech?](#does-a-spoken-programming-language-have-to-imitate-natural-speech)
-  - [naturalistic programming](#naturalistic-programming)
+  - [natural vs artificial](#naturalistic-programming)
   - [deixis]()
   - [syntactic/semantic compression]()
 - [Choosing a Grammar](#how-should-natural-language-be-approximated)
