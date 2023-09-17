@@ -46,7 +46,7 @@ estimate of the mental roadmap that was taken:
   - [derivation clauses](#derivation-clauses)
   - [analytic (a priori) derivation clauses](#analytic-a-priori-derivation-clauses)
   - [synthetic (a posteriori) derivation clauses](#synthetic-a-posteriori-derivation-clauses)
-  - [matching sentences by syntax and semantics](#matching-sentences-by-syntax-and-semantics)
+  - [matching sentences by synonymy](#matching-sentences-by-syntax-and-semantics)
 - [How to handle I/O?](#how-to-handle-io)
   - [world model sentences as the interface to the outer world](#world-model-sentences-as-the-interface-to-the-outer-world)
   - [event driven programming](#event-driven-programming)
