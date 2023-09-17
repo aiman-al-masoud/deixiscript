@@ -1,7 +1,7 @@
 from typing import cast
 from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new
-from language import  BinExp, Implicit
+from language import  BinExp, Implicit, SimpleSentence
 from matchAst import matchAst, sortByGenerality
 from normalized import decompressed, expandNegations, normalized
 from subst import subst
@@ -119,18 +119,6 @@ def test19():
     assert matchAst('it', 'it')
     assert not matchAst('it', 'buruf')
 
-# normalized tests
-def test20():
-    kb = i('cat').tell().kb
-    kb1 = i('cat').tell(kb).kb
-
-    x = every('cat').does('jump').e
-    y = normalized(x, kb1).head
-
-    assert isinstance(y, BinExp)
-    assert e('cat#1').does('jump').e == y.left or e('cat').does('jump').e == y.left
-    assert e('cat#1').does('jump').e == y.right or e('cat').does('jump').e == y.right
-
 # sort nounphrases by generality tests
 def test22():
 
@@ -174,12 +162,24 @@ def test25():
     maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
     assert correct == maybeSorted 
 
-def test26():
+# normalized tests
+def test20():
+    kb = i('cat').tell().kb
+    kb1 = i('cat').tell(kb).kb
+    n = normalized(every('cat').does('jump').e, kb1).head
+
+    assert isinstance(n, BinExp)
+    assert isinstance(n.left, SimpleSentence)
+    assert isinstance(n.right, SimpleSentence)
+    assert len(findAsts(n, lambda x: x == 'cat' or x == 'cat#1')) == 2
+
+def test26(): # with analytic derivation clause
     kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse'))._and(i('horse').does('move'))).tellKb()
     x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1)
     assert x.head == e('man').does('sit').on('horse')._and(e('horse').does('move')).e
-    # print(x.head)
-    # print(x.kb.wm)
-    # print(linearize(x.head))
-    # assert x.head == e('man').does('sit').on('horse')._and(e('horse').does('move'))
 
+def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-incremented
+    kb1 = i('they').when(i('thing')).tellKb()
+    kb2 = i('capra').tellKb(kb1)
+    x = normalized(i('they').e, kb2)
+    assert findAsts(x.head, lambda x:x=='capra')

@@ -36,7 +36,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('or', l, r):
             raise Exception('')
         case SimpleSentence('be', s, o, False):
-            head = s == o or e(s).does('have')._(o).as_('super').get(kb)
+            head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
         case SimpleSentence('have', s, o, False, False, a):
             head = (s,o,a) in kb.wm
@@ -66,7 +66,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Noun(h):
             n = every(h).count(kb)
             id = h if n == 0 else f'{h}#{n}'
-            sup = 'thing' if id == h else h
+            sup = 'thing' if id == h else h # or maybe just: h
             r1 = e(id).does('be')._(sup).tell(kb)
             return Result(id,  r1.kb, r1.addition)
         case Which(h, w):
