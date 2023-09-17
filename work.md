@@ -30,7 +30,7 @@ estimate of the mental roadmap that was taken:
   - [analytic vs synthetic grammar?](#analytic-vs-synthetic-grammar)
   - [syntax vs morphology?](#syntax-vs-morphology)
   - [dependency vs constituency parsing?](#dependency-vs-constituency-parsing)
-- [What shall the basic constituents of a sentence be?](#what-shall-the-basic-constituents-of-a-sentence-be)
+- [Choosing the Constituents](#what-shall-the-basic-constituents-of-a-sentence-be)
   - [noun phrases](#noun-phrases)
   - [relative clauses & gapping](#relative-clauses)
   - [verb sentences (aka: simple sentences)](#verb-sentences-aka-simple-sentences)
