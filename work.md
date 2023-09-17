@@ -24,7 +24,7 @@ estimate of the mental roadmap that was taken:
   - [naturalistic programming](#naturalistic-programming)
   - [deixis]()
   - [syntactic/semantic compression]()
-  - [formalist vs non-formalist](#formalist-vs-non-formalist)
+  - [formalist vs non-formalist approach](#formalist-vs-non-formalist)
   - [where computer science and linguistics meet](#where-computer-science-and-linguistics-meet)
 - [How should natural language be approximated?](#how-should-natural-language-be-approximated)
   - [all grammars leak](#all-grammars-leak)
