@@ -31,14 +31,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             cands4 = cands3[:c]
             cands5 = cands4[0] if len(cands4)==1 else cands4
             return e(cands5).ask(kb)
-        case BinExp('and', l, r):
-            r1 = e(l).ask(kb)
-            r2 = e(r).ask(r1.kb)
-            return Result(r1.head and r2.head, r2.kb)
-        case BinExp('or', l, r):
-            r1 = e(l).ask(kb)
-            r2 = e(r).ask(r1.kb)
-            return Result(r1.head or r2.head, r2.kb)
         case SimpleSentence('be', s, o, False):
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
@@ -51,12 +43,20 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Negation(v):
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
-        case Command(v):
-            return tell(v, kb)
+        case BinExp('and', l, r):
+            r1 = e(l).ask(kb)
+            r2 = e(r).ask(r1.kb)
+            return Result(r1.head and r2.head, r2.kb)
+        case BinExp('or', l, r):
+            r1 = e(l).ask(kb)
+            r2 = e(r).ask(r1.kb)
+            return Result(r1.head or r2.head, r2.kb)
         case BinExp('=', l, r):
             return Result(l==r, kb)
         case BinExp('+', l, r):
             raise Exception('')
+        case Command(v):
+            return tell(v, kb)
         case _:
             raise Exception('ask', ast)
 
@@ -112,8 +112,8 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
 
 
 def simpleSentenceToAction(ast:SimpleSentence):
-    args1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
-    args2 = [does('have')._(v).as_(k) for k,v in args1.items() if v]
-    args3 = reduce(lambda a,b:a._and(b), args2)
-    actio = i('action').which(args3).e
-    return actio
+    x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
+    x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
+    x3 = reduce(lambda a,b:a._and(b), x2)
+    x4 = i('action').which(x3).e
+    return x4
