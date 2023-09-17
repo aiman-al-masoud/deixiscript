@@ -48,7 +48,7 @@ estimate of the mental roadmap that was taken:
   - [synthetic (a posteriori) derivation clauses](#synthetic-a-posteriori-derivation-clauses)
   - [matching sentences by synonymy](#matching-sentences-by-syntax-and-semantics)
 - [Handling I/O](#how-to-handle-io)
-  - [world model sentences as the interface to the outer world](#world-model-sentences-as-the-interface-to-the-outer-world)
+  - [world model as the interface to the outer world](#world-model-sentences-as-the-interface-to-the-outer-world)
   - [event driven programming](#event-driven-programming)
 - [Future work](#future-work)
   - [context sensitivity through a better handling of deixis](#context-sensitivity-through-a-better-handling-of-deixis)
