@@ -33,7 +33,7 @@ estimate of the mental roadmap that was taken:
 - [Choosing the Constituents](#what-shall-the-basic-constituents-of-a-sentence-be)
   - [noun phrases](#noun-phrases)
   - [relative clauses & gapping](#relative-clauses)
-  - [verb sentences (aka: simple sentences)](#verb-sentences-aka-simple-sentences)
+  - [simple sentences](#verb-sentences-aka-simple-sentences)
   - [compound and complex sentences](#compound-and-complex-sentences)
   - [drawing a parallel with programming language structures](#drawing-a-parallel-with-programming-language-structures)
 - [How to represent the world?](#how-to-represent-the-world)
