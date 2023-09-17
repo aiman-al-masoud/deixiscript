@@ -2,6 +2,10 @@
 
 An outline of the topics, mostly organized as a roadmap:
 
+- [Overview]()
+  - [intro/abstract]()
+  - [main goals]()
+  - [coding setup]()
 - [Do we need a spoken programming language?]()
   - [programming by speech]()
   - [advantages of speech]()
@@ -36,7 +40,7 @@ An outline of the topics, mostly organized as a roadmap:
 - [Future work]()
   - [ambiguous sentence recognition]()
   - [better context sensitivity through deixis]()
-  - [tenses]()
+  - [tenses (past, future)]()
   - [about the license]()
 - [Related work]()
   - [Pegasus]()
