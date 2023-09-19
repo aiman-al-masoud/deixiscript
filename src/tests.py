@@ -217,4 +217,23 @@ def test30():
     assert matchAst(r.head, specific.e, kb2)
     # print(linearize(r.head))
 
+# multiple additions with and  
+def test31():
+    
+    r = e('cat#1').does('have')._('mouse#1').as_('food') \
+    ._and( e('cat#2').does('have')._('mouse#2').as_('food')) \
+    ._and( e('cat#3').does('have')._('mouse#3').as_('food')) \
+    .tell()
+
+    assert len(r.addition) == 3
+    
+# # negate tell action
+# def test32():
+#     kb1 = i('man').tellKb()
+#     kb2 = i('horse').tellKb(kb1)
+#     s = e('man#1').does('ride').on('horse#1')
+#     kb3 = s.tellKb(kb2)
+#     kb4 = it_is_false_that(s).tellKb(kb3)
+#     print(kb4.wm)
+
 

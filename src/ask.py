@@ -103,7 +103,7 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('and', l, r):
             r1 = tell(l, kb)
             r2 = tell(r, r1.kb)
-            return r2
+            return Result(True, r2.kb, r1.addition | r2.addition)
         case Command(v):
             return tell(v, kb)
         case _:
@@ -114,5 +114,11 @@ def simpleSentenceToAction(ast:SimpleSentence):
     x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
     x3 = reduce(lambda a,b:a._and(b), x2)
+
+    # # action-participants based hash: does NOT work with understand and generality sort tests
+    # entries = tuple(str(k)+'='+str(v) for k,v in x1.items() if v)
+    # actionId = reduce(lambda a,b:a+b, entries)
+    # x4 = e(actionId).which(x3).e
+
     x4 = i('action').which(x3).e
     return x4
