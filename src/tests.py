@@ -10,10 +10,10 @@ from KnowledgeBase import KnowledgeBase
 from linearize import linearize
 
 # 
-# clear; pytest tests.py
-# pytest tests.py -k test12   # filter out a test
-# pytest tests.py -s   # show all print messages
-# pytest tests.py -v   # verbose test results
+# clear; pytest-3 tests.py
+# pytest-3 tests.py -k test12   # filter out a test
+# pytest-3 tests.py -s   # show all print messages
+# pytest-3 tests.py -v   # verbose test results
 # 
 
 # %% subst tests
