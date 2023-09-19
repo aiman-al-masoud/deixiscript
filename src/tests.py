@@ -223,19 +223,26 @@ def test30():
 def test31():
     
     r = e('cat#1').does('have')._('mouse#1').as_('food') \
-    ._and( e('cat#2').does('have')._('mouse#2').as_('food')) \
-    ._and( e('cat#3').does('have')._('mouse#3').as_('food')) \
+    ._and(e('cat#2').does('have')._('mouse#2').as_('food')) \
+    ._and(e('cat#3').does('have')._('mouse#3').as_('food')) \
     .tell()
 
     assert len(r.addition) == 3
     
-# # negate tell action
-# def test32():
-#     kb1 = i('man').tellKb()
-#     kb2 = i('horse').tellKb(kb1)
-#     s = e('man#1').does('ride').on('horse#1')
-#     kb3 = s.tellKb(kb2)
-#     kb4 = it_is_false_that(s).tellKb(kb3)
-#     print(kb4.wm)
+# negate tell action
+def test32():
+    kb1 = i('man').tellKb()
+    kb2 = i('horse').tellKb(kb1)
+    s = e('man#1').does('ride').on('horse#1')
+    kb3 = s.tellKb(kb2)
+    kb4 = it_is_false_that(s).tellKb(kb3)
 
+    assert s.get(kb3)
+    assert not s.get(kb4)
+    # print(kb3.wm)
+    # print(kb4.wm)
 
+def test33():
+    kb1 = e('man#1').does('ride').on('horse#1').tellKb()
+    kb2 = e('man#1').does('ride').on('horse#1').tellKb(kb1)
+    # print(kb2)

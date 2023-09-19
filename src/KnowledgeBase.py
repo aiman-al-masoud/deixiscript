@@ -51,3 +51,5 @@ class Result:
     head:Ast
     kb:KnowledgeBase
     addition:WorldModel = field(default_factory=lambda:set())
+    # eliminations:WorldModel
+    # warning:str

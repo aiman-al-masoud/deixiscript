@@ -40,7 +40,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(head, kb)
         case SimpleSentence():
             action = simpleSentenceToAction(ast)
-            # print(action.head)
             return ask(action, kb)
         case Negation(v):
             r1 = e(v).ask(kb)
@@ -87,7 +86,12 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
         case SimpleSentence(v, s, o, False, False):
-            action = simpleSentenceToAction(ast)
+            action = simpleSentenceToAction(ast, tell=True)
+
+            # TODO: other strategy maybe get equal existing action if any 
+            # x = subst(action.head, i('action').e, action)
+            # print(e(x).get(kb))
+
             return tell(action, kb)
         case AnalyticDerivation():
             return Result(ast, kb.addDef(ast))
@@ -111,16 +115,17 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             raise Exception('tell', ast)
 
 
-def simpleSentenceToAction(ast:SimpleSentence):
+def simpleSentenceToAction(ast:SimpleSentence, tell=False):
     x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
     x3 = reduce(lambda a,b:a._and(b), x2)
 
-    # # action-participants based hash: does NOT work with understand and generality sort tests because search (ask) needs to be implicit but here there is explicit head
-    # entries = tuple(str(k)+'='+str(v) for k,v in x1.items() if v)
-    # actionId = reduce(lambda a,b:a+b, entries)
-    # x4 = e(actionId).which(x3).e
-    # return x4
+    if tell:
+        entries = tuple(str(k)+'='+str(v) for k,v in x1.items() if v)
+        actionId = reduce(lambda a,b:a+';'+b, entries)
+        x4 = e(x3)._and(does('be')._('action').e)
+        x5 = e(actionId).which(x4).e
+        return x5
 
     x4 = i('action').which(x3).e
     return x4
