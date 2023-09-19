@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Annotated, Generic, TypeVar
+from typing import Generic, TypeVar
 from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, Which
 from KnowledgeBase import KnowledgeBase
 
@@ -67,9 +67,8 @@ class ExpBuilder(Generic[T]):
         return len(r) if isinstance(r, tuple) else 1
     
     def tell(self, kb=KnowledgeBase.empty):
-        from ask import tell
-        return tell(self.e, kb)
-    
+        return new(self).ask(kb)
+
     def tellKb(self, kb=KnowledgeBase.empty):
         return self.tell(kb).kb
 
