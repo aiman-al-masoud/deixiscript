@@ -119,6 +119,7 @@ def simpleSentenceToAction(ast:SimpleSentence):
     # entries = tuple(str(k)+'='+str(v) for k,v in x1.items() if v)
     # actionId = reduce(lambda a,b:a+b, entries)
     # x4 = e(actionId).which(x3).e
+    # return x4
 
     x4 = i('action').which(x3).e
     return x4
