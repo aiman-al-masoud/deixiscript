@@ -123,48 +123,49 @@ def test19():
 
 # %% sort nounphrases by generality tests
 def test22():
-
-    nps = [
+    correct = [  # ascending generality
+        i('cat').which(does('be')._('red')._and(does('be')._('black'))).e,
         i('cat').which(does('be')._('red')).e,
         i('cat').e,
-        i('cat').which(does('be')._('red')._and(does('be')._('black'))).e,
     ]
+    wrong = [correct[2], correct[0], correct[1]]
+    maybe = sortByGenerality(KnowledgeBase.empty, correct)
+    assert correct != wrong
+    assert maybe == correct
 
-    npsOracle = [nps[2], nps[0], nps[1]] # ascending generality
-    nps2 = sortByGenerality(KnowledgeBase.empty, nps)
-    assert nps2 == npsOracle 
-    assert nps != npsOracle
-
-# %% default (w/o analytic clauses) simple-sentence "understanding" tests
+# %% simple-sentence understanding yes-no questions
 def test23():
-    kb = i('capra').does('run').to(i('cibo')).tellKb()
-    assert i('capra').does('run').get(kb)
-    assert i('capra').does('run').to(i('cibo')).get(kb)
-    assert not i('capra').does('hide').get(kb)
-    assert not i('capra').does('run').to(i('hill')).get(kb)
+    kb = i('cat').does('run').to(i('fish')).tellKb()
 
-# %% simple-sentences by generality tests
+    assert i('cat').does('run').get(kb)
+    assert i('cat').does('run').to(i('fish')).get(kb)
+    assert not i('cat').does('hide').get(kb)
+    assert not i('cat').does('run').to(i('hill')).get(kb)
+
+# %% sort simple-sentences by generality tests
 def test24():
-    s1 = i('capra').does('give')._(i('present')).to(i('pecora')).on(i('collina')).e
-    s2 = i('capra').does('give')._(i('present')).to(i('pecora')).e
-    s3 = i('capra').does('give')._(i('present')).e
-    s4 = i('capra').does('give').e
-    correct = [s1,s2,s3,s4]
-    shuffled = [s4,s2,s3,s1]
-    maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
-    assert correct == maybeSorted
+    correct = [
+        i('son').does('give')._(i('present')).to(i('mother')).on(i('birthday')).e,
+        i('son').does('give')._(i('present')).to(i('mother')).e,
+        i('son').does('give')._(i('present')).e,
+        i('son').does('give').e,
+    ]
+    wrong = [correct[1], correct[3], correct[0], correct[2]]
+    maybe = sortByGenerality(KnowledgeBase.empty, wrong)
+    assert maybe == correct
 
 # %% sort analytic derivation clauses by generality tests
 def test25():
-    s1 = i('capra').does('run').on(i('hill')).to(i('food')).when(2).e
-    s2 = i('capra').does('run').on(i('hill')).when(2).e
-    s3 = i('capra').does('run').when(1).e
-    correct = [s1,s2,s3]
-    shuffled = [s2,s1,s3]
-    maybeSorted = sortByGenerality(KnowledgeBase.empty, shuffled)
-    assert correct == maybeSorted 
+    correct = [
+        i('capra').does('run').on(i('hill')).to(i('food')).when(2).e,
+        i('capra').does('run').on(i('hill')).when(2).e,
+        i('capra').does('run').when(1).e,
+    ]
+    wrong = [correct[2], correct[0], correct[1]]
+    maybe = sortByGenerality(KnowledgeBase.empty, wrong)
+    assert maybe == correct
 
-# %% normalized tests
+# %% normalization tests
 def test20():
     kb = i('cat').tellKb()
     n = normalized(every('cat').does('jump').e, kb).head
