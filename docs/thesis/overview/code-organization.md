@@ -7,3 +7,5 @@ The English subset will be interpreted rather than compiled.
 The core components of the interpreter will require no dependecies besides Python's (included) standard library.
 
 The code will be available under GPLv3 for inspection and future research.
+
+What follows is an overview of modules. TODO.

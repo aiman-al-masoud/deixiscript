@@ -4,7 +4,7 @@ An outline of the topics:
 
 - [Overview]()
   - [goals](./overview/goals.md)
-  - [coding setup](./overview/coding-setup.md)
+  - [code organization](./overview/code-organization.md)
 - [Programming by Speech]()
   - [advantages of speech]()
   - [disadvantages of speech]()
