@@ -1,13 +1,11 @@
 # Deixiscript
 
-An outline of the topics, mostly organized as a roadmap:
+An outline of the topics:
 
 - [Overview]()
-  - [intro/abstract]()
-  - [main goals]()
-  - [coding setup]()
-- [Do we need a spoken programming language?]()
-  - [programming by speech]()
+  - [goals](./overview/goals.md)
+  - [coding setup](./overview/coding-setup.md)
+- [Programming by Speech]()
   - [advantages of speech]()
   - [disadvantages of speech]()
   - [should it imitate _natural_ speech?]()
@@ -55,6 +53,8 @@ An outline of the topics, mostly organized as a roadmap:
   - [better context sensitivity through deixis]()
   - [tenses (past, future)]()
   - [naturalistic style]()
+  - ["dialects" translations]()
+  - [compile to code]()
   - [about the license]()
 - [Related work]()
   - [Pegasus]()
