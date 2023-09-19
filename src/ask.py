@@ -106,7 +106,6 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Command(v):
             return tell(v, kb)
         case _:
-            print(ast)
             raise Exception('tell', ast)
 
 
