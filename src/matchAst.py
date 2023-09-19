@@ -3,6 +3,7 @@ from typing import Iterable, Literal, TypeVar
 from expbuilder import e, it_is_false_that
 from language import AnalyticDerivation, Ast
 from KnowledgeBase import KnowledgeBase
+from linearize import linearize
 
 T = TypeVar('T', bound=Ast)
 
@@ -34,6 +35,14 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     with1 = e(specific).tell(kb)
     with2 = e(generic).get(with1.kb)
  
+    # TODO: removing specific from KB may still leave out other similar sentneces!
+    # remove generic in 'without1'?
+    # TODO: need to call evaluate() recursively from ask()/tell(), cuz:
+    # - Simple get/ask() called on noun phrase does not resolve
+    # implicit references, it stupidly checks args as they are and returns false.
+    # - Calling tell() on negation of generic should remove all synonymous
+    # facts from KB.
+
     without1 = it_is_false_that(specific).tell(kb)
     without2 = e(generic).get(without1.kb)
 

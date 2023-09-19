@@ -1,6 +1,7 @@
 from functools import reduce
 from expbuilder import does, e, _, every, i
 from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
+from linearize import linearize
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result
 

@@ -86,11 +86,14 @@ def removeCommands(x:Ast):
     z = p(y)
     return z
 
-# TODO: return Ast list of PASSAGES?
 def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
-    kb1 = removeImplicit(ast, kb).kb
+    
+    x1 = removeImplicit(ast, kb)
+    # TODO: re-consider subst at every step, because if you don't how will 
+    # 'defintion' know the cardinality of a nounphrase?
+    kb1 = x1.kb
     ast1 = removeCommands(ast)
-    defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast1)]
+    defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast1, kb1)]
 
     if defs: return definitionOf(kb1, defs[0])
     return Result(ast, kb1)

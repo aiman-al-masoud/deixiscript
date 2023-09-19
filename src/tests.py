@@ -178,7 +178,7 @@ def test20():
 def test26(): # with analytic derivation clause
     kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse'))._and(i('horse').does('move'))).tellKb()
     x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1).head
-    # TODO problem: how does derivation know that sentence was called with singular?
+    # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
 
 def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-incremented
