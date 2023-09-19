@@ -40,6 +40,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(head, kb)
         case SimpleSentence():
             action = simpleSentenceToAction(ast)
+            # print(action.head)
             return ask(action, kb)
         case Negation(v):
             r1 = e(v).ask(kb)
@@ -115,7 +116,7 @@ def simpleSentenceToAction(ast:SimpleSentence):
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
     x3 = reduce(lambda a,b:a._and(b), x2)
 
-    # # action-participants based hash: does NOT work with understand and generality sort tests
+    # # action-participants based hash: does NOT work with understand and generality sort tests because search (ask) needs to be implicit but here there is explicit head
     # entries = tuple(str(k)+'='+str(v) for k,v in x1.items() if v)
     # actionId = reduce(lambda a,b:a+b, entries)
     # x4 = e(actionId).which(x3).e
