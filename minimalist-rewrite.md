@@ -1,3 +1,7 @@
+Some and Every as values of cardinality in Numerality? Do NOT just assume that tuple means 'AND'?
+Default connective when using implicit is 'OR'? Because that will match more stuff more easily. Eg: "man ride horse" -> concept of man rides concept of horse, or individual man rides etc...
+
+
 Can evaluate be called recursively as long as you still have a separate "normalize" function that produces an AST in normalized form that can be called before actually executing an AST at the "top-top level of the program"? Would benefit matchAst()
 
 convert any Ast (except for derivation clauses) to world model stuff?
