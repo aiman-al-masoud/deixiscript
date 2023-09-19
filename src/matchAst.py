@@ -36,7 +36,7 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     with2 = e(generic).get(with1.kb)
  
     # TODO: removing specific from KB may still leave out other similar sentneces!
-    # remove generic in 'without1'?
+    # itisfalsethat generic (instead of specific) in 'without1'?
     # TODO: need to call evaluate() recursively from ask()/tell(), cuz:
     # - Simple get/ask() called on noun phrase does not resolve
     # implicit references, it stupidly checks args as they are and returns false.

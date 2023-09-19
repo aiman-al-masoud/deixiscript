@@ -63,12 +63,12 @@ def test9():
     assert x==y
 
 def test10():
-    x = decompressed(e(('capra', 'cavallo', 'gatto')).does('jump').e)
+    x = decompressed(e('capra')._and('cavallo')._and('gatto').does('jump').e)
     y = e('capra').does('jump')._and(e('cavallo').does('jump'))._and(e('gatto').does('jump')).e
     assert x == y
 
 def test11(): #  with demorgan's rule I
-    x = it_is_false_that(e((2,3)).equals(1)).e
+    x = it_is_false_that(e(2)._and(3).equals(1)).e
     d = decompressed(x)
     y = it_is_false_that(e(2).equals(1))._or(it_is_false_that(e(3).equals(1))).e
     assert d == y
@@ -204,7 +204,17 @@ def test29():
     assert e(1).equals(2)._or(e(3).equals(3)).get()
     assert not e(1).equals(2)._or(e(3).equals(2)).get()
 
+# matching a general implicit sentence to a specific explicit sentence
+def test30():
+   
+    specific = e('man#1').does('ride').on('horse#1') # specific
+    general = i('man').does('ride').on(i('horse')) # general
 
-# %%
-# print(linearize(e((1,2,3)).does('run').e))
-# print(linearize(it_is_false_that( e(1).does('have')._(2).as_(4) ).e))
+    kb1 = i('man').tellKb()
+    kb2 = i('horse').tellKb(kb1)
+    
+    r = normalized(general.e, kb2) # problem: matchAst doesn't internally call normalize!
+    assert matchAst(r.head, specific.e, kb2)
+    # print(linearize(r.head))
+
+
