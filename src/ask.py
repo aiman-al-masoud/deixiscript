@@ -40,7 +40,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             head = (s,o,a) in kb.wm
             return Result(head, kb)
         case SimpleSentence():
-            action = simpleSentenceToAction(ast)
+            action = __simpleSentenceToAction(ast)
             return ask(action, kb)
         case Negation(v):
             r1 = e(v).ask(kb)
@@ -58,12 +58,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('+', l, r):
             raise Exception('')
         case Command(v):
-            return tell(v, kb)
+            return __tell(v, kb)
         case _:
             raise Exception('ask', ast)
 
 
-def tell(ast:Ast, kb:KnowledgeBase)->Result:
+def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
         case int(x) | float(x) | str(x):
@@ -75,9 +75,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(old).does('be')._(h).tell(kb) # if there is an individual cat -> there is also the concept of a cat, concepts are "eternal"
             return Result(old, r1.kb, r1.addition)
         case Which(h, w):
-            r1 = tell(h, kb)
+            r1 = e(h).tell(kb)
             ww = subst(_, r1.head, w)
-            r2 = tell(ww, kb.addWm(r1.addition))
+            r2 = e(ww).tell(kb.addWm(r1.addition))
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
@@ -87,9 +87,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
         case SimpleSentence(v, s, o, False, False):
-            action = simpleSentenceToAction(ast)
+            action = __simpleSentenceToAction(ast)
             old = e(action).get(kb)
-            r1 = tell(action, kb)
+            r1 = e(action).tell(kb)
             subbed = {subst(r1.head, old, x) for x in r1.addition}
             if old: return Result(old, kb, cast(WorldModel, subbed))
             return r1
@@ -102,20 +102,20 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Negation(SyntheticDerivation()):
             raise Exception('')
         case Negation(v):
-            r1 = tell(v, kb)
+            r1 = e(v).tell(kb)
             kb1 = kb.subWm(r1.addition).updateDD(r1.kb.dd)
             return Result(True, kb1)
         case BinExp('and', l, r):
-            r1 = tell(l, kb)
-            r2 = tell(r, r1.kb)
+            r1 = e(l).tell(kb)
+            r2 = e(r).tell(r1.kb)
             return Result(True, r2.kb, r1.addition | r2.addition)
         case Command(v):
-            return tell(v, kb)
+            return e(v).tell(kb)
         case _:
             raise Exception('tell', ast)
 
 
-def simpleSentenceToAction(ast:SimpleSentence):
+def __simpleSentenceToAction(ast:SimpleSentence):
     x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
     x3 = reduce(lambda a,b:a._and(b), x2)
