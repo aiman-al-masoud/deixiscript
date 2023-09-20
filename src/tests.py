@@ -1,6 +1,6 @@
 from typing import cast
 from evaluate import evaluate
-from expbuilder import a, does, e, every, i, it_is_false_that, new
+from expbuilder import does, e, every, i, it_is_false_that, new, the
 from language import  BinExp, Implicit, SimpleSentence
 from matchAst import matchAst, sortByGenerality
 from normalized import decompressed, expandNegations, normalized
@@ -175,17 +175,19 @@ def test20():
     assert isinstance(n.right, SimpleSentence)
     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
 
-def test26(): # with analytic derivation clause
-    kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse'))._and(i('horse').does('move'))).tellKb()
-    x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1).head
-    # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
-    assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
+# def test26(): # with analytic derivation clause
+#     kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse'))._and(i('horse').does('move'))).tellKb()
+#     x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1).head
+#     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
+#     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
 
 def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-incremented
     kb1 = i('they').when(i('thing')).tellKb()
     kb2 = i('capra').tellKb(kb1)
-    x = normalized(i('they').e, kb2)
-    assert findAsts(x.head, lambda x:x=='capra')
+
+    r = i('they').idiom.ask(kb2)
+    assert isinstance(r.head, tuple)
+    assert 'capra#1' in set(r.head)
 
 # %% numerality tests
 def test28():
@@ -194,7 +196,7 @@ def test28():
     kb3 = i('capra').tellKb(kb2)
 
     multiple = i('capra').get(kb3)
-    single   = a('capra').get(kb3)
+    single   = the(1)('capra').get(kb3)
 
     assert isinstance(multiple, tuple)
     assert isinstance(single, str)

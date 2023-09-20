@@ -3,17 +3,16 @@ from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence, copyAst
 from functools import partial, reduce
-from matchAst import matchAst, sortByGenerality
+from matchAst import sortByGenerality
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 from linearize import linearize
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
-    x0 = definitionOf(kb, ast)
-    x1 = expandNegations(x0.head)
+    x1 = expandNegations(ast)
     x2 = expandCommands(x1)
-    x3 = removeImplicit(x2, x0.kb)
+    x3 = removeImplicit(x2, kb)
     x4 = decompressed(x3.head)
     return Result(x4, x3.kb)
     # TODO: check for triggered effects in synthetic derivation clauses
@@ -86,14 +85,17 @@ def removeCommands(x:Ast):
     z = p(y)
     return z
 
-def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
-    
-    x1 = removeImplicit(ast, kb)
-    # TODO: re-consider subst at every step, because if you don't how will 
-    # 'defintion' know the cardinality of a nounphrase?
-    kb1 = x1.kb
-    ast1 = removeCommands(ast)
-    defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast1, kb1)]
+# def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
 
-    if defs: return definitionOf(kb1, defs[0])
-    return Result(ast, kb1)
+#     # if not isinstance(ast, Idiom):
+#         # return Result(ast, kb)
+    
+#     x1 = removeImplicit(ast, kb)
+#     # TODO: re-consider subst at every step, because if you don't how will 
+#     # 'defintion' know the cardinality of a nounphrase?
+#     kb1 = x1.kb
+#     ast1 = removeCommands(ast)
+#     defs = [d.definition for d in kb1.adcs if matchAst(d.definendum, ast1, kb1)]
+
+#     if defs: return definitionOf(kb1, defs[0])
+#     return Result(ast, kb1)

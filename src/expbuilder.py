@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, Which
+from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from KnowledgeBase import KnowledgeBase
 
 
@@ -54,6 +54,10 @@ class ExpBuilder(Generic[T]):
 
     def when(self, definition:'Ast|ExpBuilder'):
         return ExpBuilder(AnalyticDerivation(self.e, makeAst(definition)))
+    
+    @property
+    def idiom(self):
+        return ExpBuilder(Idiom(self.e))
 
     def ask(self, kb=KnowledgeBase.empty):
         from ask import ask
@@ -73,16 +77,13 @@ class ExpBuilder(Generic[T]):
         return self.tell(kb).kb
 
 
-def i(x:Ast):
-    '''implicit'''
-    return ExpBuilder(Noun(x))
-
 def e(x:Ast|ExpBuilder):
     '''explicit'''
     return ExpBuilder(makeAst(x))
-    
-def a(x:Ast|ExpBuilder):
-    return ExpBuilder(Numerality(Noun(makeAst(x)), 1, -1))
+
+def i(x:Ast):
+    '''implicit'''
+    return ExpBuilder(Noun(x))
 
 def every(x:Ast):
     return ExpBuilder(Noun(x))
@@ -99,12 +100,7 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
 def new(x:Ast|ExpBuilder):
     return ExpBuilder(Command(makeAst(x)))
 
-
-# ------------------
-# def the(card:int=1):
-#     def f(x:Ast):
-#         return ExpBuilder(Numerality(x, card, -1))
-#     return f
-
-# the()('capra').does('run')
-# # ------------------
+def the(card:int=1):
+    def f(x:Ast):
+        return ExpBuilder(Numerality(x, card, -1))
+    return f
