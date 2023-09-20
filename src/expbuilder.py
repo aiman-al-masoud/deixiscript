@@ -1,7 +1,9 @@
 from dataclasses import dataclass
-from typing import Generic, TypeVar
+from functools import partial
+from typing import Generic, TypeVar, cast
 from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from KnowledgeBase import KnowledgeBase
+from subst import subst
 
 
 _=''    
@@ -64,7 +66,7 @@ class ExpBuilder(Generic[T]):
         return ask(self.e, kb)
 
     def get(self, kb=KnowledgeBase.empty):
-        return self.ask(kb).head
+        return e(removeCommands(self.e)).ask(kb).head
     
     def count(self, kb=KnowledgeBase.empty):
         r = self.get(kb)
@@ -104,3 +106,9 @@ def the(card:int=1):
     def f(x:Ast):
         return ExpBuilder(Numerality(x, card, -1))
     return f
+
+def removeCommands(x:Ast):
+    p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
+    y = p(x)
+    z = p(y)
+    return z

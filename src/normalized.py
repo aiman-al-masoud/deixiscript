@@ -10,6 +10,9 @@ from linearize import linearize
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
+    
+    if isNounPhrasish(ast): return Result(ast, kb) # the point is that the stuff down there is only needed for simplesnetences and simplesentences wrapped in commands
+
     x1 = expandNegations(ast)
     x2 = expandCommands(x1)
     x3 = removeImplicit(x2, kb)
@@ -79,11 +82,6 @@ expandNegations \
 expandCommands \
       = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
 
-def removeCommands(x:Ast):
-    p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
-    y = p(x)
-    z = p(y)
-    return z
 
 # def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
 

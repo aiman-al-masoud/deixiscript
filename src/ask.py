@@ -1,8 +1,7 @@
-from functools import reduce
+from functools import partial, reduce
 from typing import cast
-from expbuilder import does, e, _, every, i
+from expbuilder import does, e, _, every, i, new
 from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
-from normalized import removeCommands
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
 from linearize import linearize
@@ -34,26 +33,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             cands4 = cands3[:c]
             cands5 = cands4[0] if len(cands4)==1 else cands4
             return e(cands5).ask(kb)
-        case SimpleSentence('be', s, o, False):
-            head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
-            return Result(head, kb)
-        case SimpleSentence('have', s, o, False, False, a):
-            head = (s,o,a) in kb.wm
-            return Result(head, kb)
-        case SimpleSentence():
-            action = __simpleSentenceToAction(ast)
-            return ask(action, kb)
-        case Idiom(v):
-            # TODO: removeImplicit? Or put it somewhere else because it is also needed elsewhere!
-            # TODO: subst is needed for cardinality preservation problem!
-            # TODO: remove command, but then add it back!?
-            # TODO: return as-is sentence if no def
-            from matchAst import matchAst
-            v2 = removeCommands(v)
-            defs = [d.definition for d in kb.adcs if matchAst(d.definendum, v2, kb)]
-            def0 = defs[0]
-            r1 = e(def0).ask(kb)
-            return r1
         case Negation(v):
             r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
@@ -69,6 +48,22 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(l==r, kb)
         case BinExp('+', l, r):
             raise Exception('')
+        case SimpleSentence('be', s, o, False):
+            head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
+            return Result(head, kb)
+        case SimpleSentence('have', s, o, False, False, a):
+            head = (s,o,a) in kb.wm
+            return Result(head, kb)
+        case SimpleSentence():
+            action = __simpleSentenceToAction(ast)
+            return ask(action, kb)
+        case Idiom(v):
+            # TODO: removeImplicit? Or put it somewhere else because it is also needed elsewhere!
+            # TODO: subst is needed for cardinality preservation problem!
+            from matchAst import matchAst
+            d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
+            r = e(new(d) if isinstance(v, Command) else d).ask(kb)
+            return r
         case Command(v):
             return __tell(v, kb)
         case _:
@@ -133,3 +128,4 @@ def __simpleSentenceToAction(ast:SimpleSentence):
     x3 = reduce(lambda a,b:a._and(b), x2)
     x4 = i('action').which(x3).e
     return x4
+

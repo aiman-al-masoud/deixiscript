@@ -30,11 +30,6 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 #
 def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
 
-    if generic == specific: return True
-
-    with1 = e(specific).tell(kb)
-    with2 = e(generic).get(with1.kb)
- 
     # TODO: removing specific from KB may still leave out other similar sentneces!
     # itisfalsethat generic (instead of specific) in 'without1'?
     # TODO: need to call evaluate() recursively from ask()/tell(), cuz:
@@ -42,8 +37,12 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     # implicit references, it stupidly checks args as they are and returns false.
     # - Calling tell() on negation of generic should remove all synonymous
     # facts from KB.
-    # maybe no need for full eval/normalize, but possible to skip definitionOf part?
 
+    if generic == specific: return True
+
+    with1 = e(specific).tell(kb)
+    with2 = e(generic).get(with1.kb)
+ 
     without1 = it_is_false_that(specific).tell(kb)
     without2 = e(generic).get(without1.kb)
 
@@ -54,5 +53,4 @@ def agree(ast1:Ast, ast2:Ast):
     if ast1==ast2: return True
     if isinstance(ast1, tuple): return ast2 in set(ast1)
     if isinstance(ast2, tuple): return agree(ast2, ast1)
-
 
