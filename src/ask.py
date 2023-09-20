@@ -1,9 +1,10 @@
 from functools import reduce
+from typing import cast
 from expbuilder import does, e, _, every, i
 from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
-from linearize import linearize
 from subst import subst
-from KnowledgeBase import KnowledgeBase, Result
+from KnowledgeBase import KnowledgeBase, Result, WorldModel
+from linearize import linearize
 
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
@@ -70,9 +71,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(x).ask(kb1)
         case Noun(h):
             n = every(h).count(kb)
-            id = f'{h}#{n}'
-            r1 = e(id).does('be')._(h).tell(kb) # if there is an individual cat -> there is also the concept of a cat, concepts are "eternal"
-            return Result(id, r1.kb, r1.addition)
+            old = f'{h}#{n}'
+            r1 = e(old).does('be')._(h).tell(kb) # if there is an individual cat -> there is also the concept of a cat, concepts are "eternal"
+            return Result(old, r1.kb, r1.addition)
         case Which(h, w):
             r1 = tell(h, kb)
             ww = subst(_, r1.head, w)
@@ -86,13 +87,12 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
         case SimpleSentence(v, s, o, False, False):
-            action = simpleSentenceToAction(ast, tell=True)
-
-            # TODO: other strategy maybe get equal existing action if any 
-            # x = subst(action.head, i('action').e, action)
-            # print(e(x).get(kb))
-
-            return tell(action, kb)
+            action = simpleSentenceToAction(ast)
+            old = e(action).get(kb)
+            r1 = tell(action, kb)
+            subbed = {subst(r1.head, old, x) for x in r1.addition}
+            if old: return Result(old, kb, cast(WorldModel, subbed))
+            return r1
         case AnalyticDerivation():
             return Result(ast, kb.addDef(ast))
         case SyntheticDerivation():
@@ -115,17 +115,9 @@ def tell(ast:Ast, kb:KnowledgeBase)->Result:
             raise Exception('tell', ast)
 
 
-def simpleSentenceToAction(ast:SimpleSentence, tell=False):
+def simpleSentenceToAction(ast:SimpleSentence):
     x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
     x3 = reduce(lambda a,b:a._and(b), x2)
-
-    if tell:
-        entries = tuple(str(k)+'='+str(v) for k,v in x1.items() if v)
-        actionId = reduce(lambda a,b:a+';'+b, entries)
-        x4 = e(x3)._and(does('be')._('action').e)
-        x5 = e(actionId).which(x4).e
-        return x5
-
     x4 = i('action').which(x3).e
     return x4

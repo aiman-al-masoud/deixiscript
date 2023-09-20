@@ -137,12 +137,10 @@ def test22():
 def test23():
     kb = e('cat#1').does('run').to('fish#1').tellKb()
 
-    # print(kb.wm)
-
     assert e('cat#1').does('run').get(kb)
-    # assert e('cat#1').does('run').to('fish#1').get(kb)
-    # assert not e('cat#1').does('hide').get(kb)
-    # assert not e('cat#1').does('run').to('hill#1').get(kb)
+    assert e('cat#1').does('run').to('fish#1').get(kb)
+    assert not e('cat#1').does('hide').get(kb)
+    assert not e('cat#1').does('run').to('hill#1').get(kb)
 
 # %% sort simple-sentences by generality tests
 def test24():
@@ -229,7 +227,7 @@ def test31():
 
     assert len(r.addition) == 3
     
-# negate tell action
+# negate tell simple sentence
 def test32():
     kb1 = i('man').tellKb()
     kb2 = i('horse').tellKb(kb1)
@@ -239,10 +237,10 @@ def test32():
 
     assert s.get(kb3)
     assert not s.get(kb4)
-    # print(kb3.wm)
-    # print(kb4.wm)
 
+# multiple executuions of the same simple sentences are idempotent
 def test33():
-    kb1 = e('man#1').does('ride').on('horse#1').tellKb()
-    kb2 = e('man#1').does('ride').on('horse#1').tellKb(kb1)
-    # print(kb2)
+    r1 = e('man#1').does('ride').on('horse#1').tell()
+    r2 = e('man#1').does('ride').on('horse#1').tell(r1.kb)
+    assert r1.kb.wm == r2.kb.wm
+    assert r1.addition == r2.addition
