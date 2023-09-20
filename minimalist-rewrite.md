@@ -25,6 +25,11 @@ Temporarily ignore: defaults, number restriction, mutex concepts, parser, equati
 
 All "argument passing" (derivation clauses) through deictic dictionary, not match and subst.
 
+Normalized:
+- no implicit references, only explicit
+- everything is decompressed
+- verb sentences don't cotain negations or commands
+
 --------------------------------
 
 Experimental idea (for later or never): deictic dictionary could be "adjusted/biased" at any time to point to entities with specific qualities, maybe this could help to make the language more context sensitive. For example "it does jump" would increment the "timestamp" of jumping entities (based on the verb "jump") causing the pronoun "it" to point to one of them.
