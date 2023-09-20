@@ -47,6 +47,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             # TODO: removeImplicit? Or put it somewhere else because it is also needed elsewhere!
             # TODO: subst is needed for cardinality preservation problem!
             # TODO: remove command, but then add it back!?
+            # TODO: return as-is sentence if no def
             from matchAst import matchAst
             v2 = removeCommands(v)
             defs = [d.definition for d in kb.adcs if matchAst(d.definendum, v2, kb)]
