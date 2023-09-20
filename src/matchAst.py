@@ -42,6 +42,7 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     # implicit references, it stupidly checks args as they are and returns false.
     # - Calling tell() on negation of generic should remove all synonymous
     # facts from KB.
+    # maybe no need for full eval/normalize, but possible to skip definitionOf part?
 
     without1 = it_is_false_that(specific).tell(kb)
     without2 = e(generic).get(without1.kb)
