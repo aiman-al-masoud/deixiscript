@@ -238,7 +238,7 @@ def test32():
     assert s.get(kb3)
     assert not s.get(kb4)
 
-# multiple executuions of the same simple sentences are idempotent
+# multiple executions of the same simple sentences are idempotent
 def test33():
     r1 = e('man#1').does('ride').on('horse#1').tell()
     r2 = e('man#1').does('ride').on('horse#1').tell(r1.kb)
