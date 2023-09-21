@@ -77,6 +77,11 @@ class ExpBuilder(Generic[T]):
 
     def tellKb(self, kb=KnowledgeBase.empty):
         return self.tell(kb).kb
+    
+    @property
+    def lin(self):
+        from linearize import linearize
+        return linearize(self.e)
 
 
 def e(x:Ast|ExpBuilder):

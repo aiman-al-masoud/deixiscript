@@ -5,8 +5,6 @@ from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhr
 from functools import partial, reduce
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
-from linearize import linearize
-
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
     x1 = expandNegations(ast)

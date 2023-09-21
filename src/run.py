@@ -5,13 +5,12 @@ from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, 
 from normalized import normalized
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
-from linearize import linearize
 
 
 def run(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
-        case Command(SimpleSentence()) | SimpleSentence(): # TODO: maybe nested Command/SimpleSentence???
+        case Command(SimpleSentence()) | SimpleSentence(): # TODO: maybe nested Command/SimpleSentence??? what about negation and idiom
             n = normalized(ast, kb)
             return __ask(n.head, n.kb)
         case _:

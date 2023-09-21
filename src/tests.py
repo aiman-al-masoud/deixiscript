@@ -6,7 +6,6 @@ from normalized import decompressed, expandNegations, normalized
 from subst import subst
 from findAsts import findAsts
 from KnowledgeBase import KnowledgeBase
-from linearize import linearize
 
 # 
 # clear; pytest-3 tests.py
@@ -247,3 +246,15 @@ def test33():
     r2 = e('man#1').does('ride').on('horse#1').tell(r1.kb)
     assert r1.kb.wm == r2.kb.wm
     assert r1.addition == r2.addition
+
+# matchAst with other similar "noise" specific sentences in KB
+def test34():
+    kb1 = new(i('cat')).does('eat')._(new(i('mouse'))).tellKb()
+    kb2 = i('cat').tellKb(kb1)
+    kb3 = i('mouse').tellKb(kb2)
+
+    spec = e('cat#2').does('eat')._('mouse#2').e
+    gen = i('cat').does('eat')._(i('mouse')).e
+
+    assert matchAst(gen, spec, kb3)
+    assert not matchAst(spec, gen, kb3)

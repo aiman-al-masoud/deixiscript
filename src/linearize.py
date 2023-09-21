@@ -27,6 +27,6 @@ def linearize(ast:Ast)->str:
         case Which(h, w):
             return linearize(h) + ' which ' + linearize(w)
         case Command(v):# TODO!!!
-            return linearize(v) + '!'
+            return '(' + linearize(v) +')' + '!'
         case _:
             raise Exception(ast)
