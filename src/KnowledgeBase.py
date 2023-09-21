@@ -53,5 +53,4 @@ class Result:
     addition:WorldModel = field(default_factory=lambda:set())
     # eliminations:WorldModel
     # warning:str
-    # passages:List[Result or Ast] or prev:Result|None # like writer monad pattern, log all expansion steps
-
+    # prev:'Result|None' # like writer pattern
