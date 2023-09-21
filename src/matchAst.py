@@ -38,8 +38,8 @@ def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
     without1 = it_is_false_that(generic).tell(kb)
     without2 = e(specific).get(without1.kb)
 
-    return agree(with1.head, with2) and not agree(without1.head, without2)
+    return with2 and not without2
+    # return agree(with1.head, with2) and not agree(without1.head, without2)
 
-
-def agree(ast1:Ast, ast2:Ast):
-    return  bool(ast1) == bool(ast2)
+# def agree(ast1:Ast, ast2:Ast):
+#     return  bool(ast1) == bool(ast2)
