@@ -3,16 +3,12 @@ from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence, copyAst
 from functools import partial, reduce
-from matchAst import sortByGenerality
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 from linearize import linearize
 
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
-    
-    if isNounPhrasish(ast): return Result(ast, kb) # the point is that the stuff down there is only needed for simplesnetences and simplesentences wrapped in commands
-
     x1 = expandNegations(ast)
     x2 = expandCommands(x1)
     x3 = removeImplicit(x2, kb)
@@ -27,7 +23,8 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase):
         return Result(subst(b, r1.head, a.head), r1.kb)
 
     implicits = findAsts(ast, isImplicitNounPhrase)
-    sortedImplicitis = sortByGenerality(kb, implicits)
+    # sortedImplicitis = sortByGenerality(kb, implicits) # TODO
+    sortedImplicitis = implicits
     r = reduce(red, sortedImplicitis, Result(ast, kb))
     return r
 

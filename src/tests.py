@@ -1,5 +1,4 @@
 from typing import cast
-from evaluate import evaluate
 from expbuilder import does, e, every, i, it_is_false_that, new, the
 from language import  BinExp, Implicit, SimpleSentence
 from matchAst import matchAst, sortByGenerality
@@ -99,10 +98,10 @@ def test15():
 
 # %% negation with tell tests
 def test16():
-    kb = new(i('cat')).does('have')._(new(i('mouse'))).as_('food').tellKb()
-    q2 = new(i('cat').does_not('have')._(i('mouse')).as_('food')).e
-    kb2 = evaluate(q2, kb).kb
-    assert ('cat', 'mouse', 'food') not in kb2.wm
+    kb1 = new(i('cat')).does('have')._(new(i('mouse'))).as_('food').tellKb()
+    kb2 = i('cat').does_not('have')._(i('mouse')).as_('food').tellKb(kb1)
+    assert ('cat#1', 'mouse#1', 'food') in kb1.wm
+    assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
 # %% matchAst tests
 def test17():
@@ -214,9 +213,11 @@ def test30():
 
     kb1 = i('man').tellKb()
     kb2 = i('horse').tellKb(kb1)
-    
-    r = normalized(general.e, kb2) # problem: matchAst doesn't internally call normalize!
-    assert matchAst(r.head, specific.e, kb2)
+
+    assert matchAst(general.e, specific.e, kb2)
+
+    # r = normalized(general.e, kb2) # problem: matchAst doesn't internally call normalize!
+    # assert matchAst(r.head, specific.e, kb2)
     # print(linearize(r.head))
 
 # multiple additions with and  

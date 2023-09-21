@@ -1,13 +1,24 @@
-from functools import partial, reduce
+from functools import reduce
 from typing import cast
 from expbuilder import does, e, _, every, i, new
 from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
+from normalized import normalized
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
 from linearize import linearize
 
 
-def ask(ast:Ast, kb:KnowledgeBase)->Result:
+def evaluate(ast:Ast, kb:KnowledgeBase)->Result:
+
+    match ast:
+        case Command(SimpleSentence()) | SimpleSentence(): # TODO: maybe nested Command/SimpleSentence???
+            n = normalized(ast, kb)
+            return __ask(n.head, n.kb)
+        case _:
+            return __ask(ast,kb)
+
+
+def __ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
         case str(x) | int(x)| float(x):
@@ -56,7 +67,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(head, kb)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
-            return ask(action, kb)
+            return e(action).ask(kb)
         case Idiom(v):
             # TODO: removeImplicit? Or put it somewhere else because it is also needed elsewhere!
             # TODO: subst is needed for cardinality preservation problem!
