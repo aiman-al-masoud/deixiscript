@@ -19,7 +19,7 @@ def normalized(ast:Ast, kb:KnowledgeBase)->Result:
 def removeImplicit(ast:Ast, kb:KnowledgeBase):
 
     def red(a:Result, b:Ast):
-        r1 = e(b).ask(a.kb)
+        r1 = e(b).run(a.kb)
         return Result(subst(b, r1.head, a.head), r1.kb)
 
     implicits = findAsts(ast, isImplicitNounPhrase)

@@ -8,7 +8,7 @@ from KnowledgeBase import KnowledgeBase, Result, WorldModel
 from linearize import linearize
 
 
-def evaluate(ast:Ast, kb:KnowledgeBase)->Result:
+def run(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
         case Command(SimpleSentence()) | SimpleSentence(): # TODO: maybe nested Command/SimpleSentence???
@@ -24,36 +24,36 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
         case str(x) | int(x)| float(x):
             return Result(x, kb.updateDD(kb.dd.update(x)))
         case tuple(xs):
-            kb1 = reduce(lambda a,b: e(b).ask(a).kb , xs, kb)
+            kb1 = reduce(lambda a,b: e(b).run(a).kb , xs, kb)
             return Result(xs, kb1)
         case Noun(h):
             cands1 = {x for s in kb.wm for x in s} | {h}
             cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
             cands3 = cands2[0] if len(cands2)==1 else cands2 
-            return e(cands3).ask(kb)
+            return e(cands3).run(kb)
         case Which(h, w):
             cands1 = e(h).get(kb)
             cands2 = cands1 if isinstance(cands1, tuple) else (cands1,)
             cands3 = tuple(x for x in cands2 if e(subst(_, x, w)).get(kb))
             cands4 = cands3[0] if len(cands3)==1 else cands3
-            return e(cands4).ask(kb)
+            return e(cands4).run(kb)
         case Numerality(h, c, o):
             cands1 = e(h).get(kb)
             cands2 = cands1 if isinstance(cands1, tuple) else (cands1,)
             cands3 = tuple(sorted(cands2, key=lambda x:kb.dd[x]))
             cands4 = cands3[:c]
             cands5 = cands4[0] if len(cands4)==1 else cands4
-            return e(cands5).ask(kb)
+            return e(cands5).run(kb)
         case Negation(v):
-            r1 = e(v).ask(kb)
+            r1 = e(v).run(kb)
             return Result(not r1.head, r1.kb)
         case BinExp('and', l, r):
-            r1 = e(l).ask(kb)
-            r2 = e(r).ask(r1.kb)
+            r1 = e(l).run(kb)
+            r2 = e(r).run(r1.kb)
             return Result(r1.head and r2.head, r2.kb)
         case BinExp('or', l, r):
-            r1 = e(l).ask(kb)
-            r2 = e(r).ask(r1.kb)
+            r1 = e(l).run(kb)
+            r2 = e(r).run(r1.kb)
             return Result(r1.head or r2.head, r2.kb)
         case BinExp('=', l, r):
             return Result(l==r, kb)
@@ -67,13 +67,13 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(head, kb)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
-            return e(action).ask(kb)
+            return e(action).run(kb)
         case Idiom(v):
             # TODO: removeImplicit? Or put it somewhere else because it is also needed elsewhere!
             # TODO: subst is needed for cardinality preservation problem!
             from matchAst import matchAst
             d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
-            r = e(new(d) if isinstance(v, Command) else d).ask(kb)
+            r = e(new(d) if isinstance(v, Command) else d).run(kb)
             return r
         case Command(v):
             return __tell(v, kb)
@@ -86,7 +86,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
     match ast:
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
-            return e(x).ask(kb1)
+            return e(x).run(kb1)
         case Noun(h):
             n = every(h).count(kb)
             old = f'{h}#{n}'

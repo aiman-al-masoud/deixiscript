@@ -184,7 +184,7 @@ def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-i
     kb1 = i('they').when(i('thing')).tellKb()
     kb2 = i('capra').tellKb(kb1)
 
-    r = i('they').idiom.ask(kb2)
+    r = i('they').idiom.run(kb2)
     assert isinstance(r.head, tuple)
     assert 'capra#1' in set(r.head)
 

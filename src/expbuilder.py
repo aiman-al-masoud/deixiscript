@@ -61,19 +61,19 @@ class ExpBuilder(Generic[T]):
     def idiom(self):
         return ExpBuilder(Idiom(self.e))
 
-    def ask(self, kb=KnowledgeBase.empty): # TODO: change name to eval
-        from ask import evaluate
-        return evaluate(self.e, kb)
+    def run(self, kb=KnowledgeBase.empty):
+        from run import run
+        return run(self.e, kb)
 
     def get(self, kb=KnowledgeBase.empty):
-        return e(removeCommands(self.e)).ask(kb).head
+        return e(removeCommands(self.e)).run(kb).head
     
     def count(self, kb=KnowledgeBase.empty):
         r = self.get(kb)
         return len(r) if isinstance(r, tuple) else 1
     
     def tell(self, kb=KnowledgeBase.empty):
-        return new(self).ask(kb)
+        return new(self).run(kb)
 
     def tellKb(self, kb=KnowledgeBase.empty):
         return self.tell(kb).kb
