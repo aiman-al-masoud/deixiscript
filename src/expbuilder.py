@@ -22,10 +22,10 @@ class ExpBuilder(Generic[T]):
     def equals(self, x:'Ast|ExpBuilder'):
         return self.binop('=', x)
 
-    def _and(self, x:'Ast|ExpBuilder'):
+    def and_(self, x:'Ast|ExpBuilder'):
         return self.binop('and', x)
     
-    def _or(self, x:'Ast|ExpBuilder'):
+    def or_(self, x:'Ast|ExpBuilder'):
         return self.binop('or', x)
     
     def plus(self, x:'ExpBuilder'):

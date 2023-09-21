@@ -21,8 +21,8 @@ def test1():
     assert x == y
 
 def test2():
-    x = subst('capra', 'cat', e('capra')._and('cavallo')._and('capra').e)
-    y = e('cat')._and('cavallo')._and('cat').e
+    x = subst('capra', 'cat', e('capra').and_('cavallo').and_('capra').e)
+    y = e('cat').and_('cavallo').and_('cat').e
     assert x == y
 
 def test3():
@@ -43,11 +43,11 @@ def test5():
 
 # %% findAsts tests
 def test6():
-    x = e('capra')._and(3)._and(1)._and('gatto').e
+    x = e('capra').and_(3).and_(1).and_('gatto').e
     assert findAsts(x, lambda x:isinstance(x, int)) == (3, 1)
 
 def test7():
-    x = i('cat').does('jump')._and(i('dog').does('run')).e
+    x = i('cat').does('jump').and_(i('dog').does('run')).e
     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').e, i('dog').e)
 
 def test8():
@@ -56,19 +56,19 @@ def test8():
 
 # %% decompress tests
 def test9():
-    x = decompressed(e('capra')._and('cavallo').does('jump').e)
-    y = e('capra').does('jump')._and(e('cavallo').does('jump')).e
+    x = decompressed(e('capra').and_('cavallo').does('jump').e)
+    y = e('capra').does('jump').and_(e('cavallo').does('jump')).e
     assert x==y
 
 def test10():
-    x = decompressed(e('capra')._and('cavallo')._and('gatto').does('jump').e)
-    y = e('capra').does('jump')._and(e('cavallo').does('jump'))._and(e('gatto').does('jump')).e
+    x = decompressed(e('capra').and_('cavallo').and_('gatto').does('jump').e)
+    y = e('capra').does('jump').and_(e('cavallo').does('jump')).and_(e('gatto').does('jump')).e
     assert x == y
 
 def test11(): #  with demorgan's rule I
-    x = it_is_false_that(e(2)._and(3).equals(1)).e
+    x = it_is_false_that(e(2).and_(3).equals(1)).e
     d = decompressed(x)
-    y = it_is_false_that(e(2).equals(1))._or(it_is_false_that(e(3).equals(1))).e
+    y = it_is_false_that(e(2).equals(1)).or_(it_is_false_that(e(3).equals(1))).e
     assert d == y
 
 # %% tell (create) new entities tests 
@@ -111,7 +111,7 @@ def test17():
 
 def test18():
     genr = e('cat#1').does('have')._('mouse#1').e
-    spec = e('cat#1').does('have')._('mouse#1')._and(e('cat#1').does('have')._('mouse#2')).e
+    spec = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
     assert matchAst(genr, spec)
     assert not matchAst(spec, genr)
 
@@ -122,7 +122,7 @@ def test19():
 # %% sort nounphrases by generality tests
 def test22():
     correct = [  # ascending generality
-        i('cat').which(does('be')._('red')._and(does('be')._('black'))).e,
+        i('cat').which(does('be')._('red').and_(does('be')._('black'))).e,
         i('cat').which(does('be')._('red')).e,
         i('cat').e,
     ]
@@ -174,7 +174,7 @@ def test20():
     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
 
 # def test26(): # with analytic derivation clause
-#     kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse'))._and(i('horse').does('move'))).tellKb()
+#     kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse')).and_(i('horse').does('move'))).tellKb()
 #     x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1).head
 #     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
 #     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
@@ -201,8 +201,8 @@ def test28():
 
 # %% or-operator ask test
 def test29():
-    assert e(1).equals(2)._or(e(3).equals(3)).get()
-    assert not e(1).equals(2)._or(e(3).equals(2)).get()
+    assert e(1).equals(2).or_(e(3).equals(3)).get()
+    assert not e(1).equals(2).or_(e(3).equals(2)).get()
 
 # matching a general implicit sentence to a specific explicit sentence
 def test30():
@@ -223,8 +223,8 @@ def test30():
 def test31():
     
     r = e('cat#1').does('have')._('mouse#1').as_('food') \
-    ._and(e('cat#2').does('have')._('mouse#2').as_('food')) \
-    ._and(e('cat#3').does('have')._('mouse#3').as_('food')) \
+    .and_(e('cat#2').does('have')._('mouse#2').as_('food')) \
+    .and_(e('cat#3').does('have')._('mouse#3').as_('food')) \
     .tell()
 
     assert len(r.addition) == 3

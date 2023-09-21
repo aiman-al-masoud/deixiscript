@@ -135,7 +135,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 def __simpleSentenceToAction(ast:SimpleSentence):
     x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
-    x3 = reduce(lambda a,b:a._and(b), x2)
+    x3 = reduce(lambda a,b:a.and_(b), x2)
     x4 = i('action').which(x3).e
     return x4
 

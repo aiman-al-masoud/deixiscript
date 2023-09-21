@@ -53,7 +53,7 @@ def decompressed(ast:Ast)->Ast:
 
     if tups:
         tup = cast(tuple, tups[0])
-        and_phrase = reduce(lambda a,b: e(a)._or(b), tup).e
+        and_phrase = reduce(lambda a,b: e(a).or_(b), tup).e
         subbed = subst(tup, and_phrase, ast)
         return decompressed(subbed)
     
