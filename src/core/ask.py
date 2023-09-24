@@ -60,10 +60,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(l==r, kb)
         case BinExp('+', l, r):
             raise Exception('')
-        case SimpleSentence('be', subject=s, object=o):
+        case SimpleSentence(verb='be', subject=s, object=o):
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
-        case SimpleSentence('have', subject=s, object=o, as_=a):
+        case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             ok = (s,o,a) in kb.wm
             return Result(ok, kb)
         case SimpleSentence():
@@ -100,9 +100,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
-        case SimpleSentence('be', subject=s, object=o):
+        case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
-        case SimpleSentence('have', subject=s, object=o, as_=a):
+        case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
         case SimpleSentence():
