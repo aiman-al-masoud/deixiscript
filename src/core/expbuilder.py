@@ -54,21 +54,21 @@ class ExpBuilder(Generic[T]):
     def idiom(self):
         return ExpBuilder(Idiom(self.e))
 
-    def run(self, kb=KnowledgeBase.empty):
+    def run(self, kb=KnowledgeBase()):
         from ask import ask
         return ask(self.e, kb)
 
-    def get(self, kb=KnowledgeBase.empty):
+    def get(self, kb=KnowledgeBase()):
         return e(self.e).run(kb).head
     
-    def count(self, kb=KnowledgeBase.empty):
+    def count(self, kb=KnowledgeBase()):
         r = self.get(kb)
         return len(r) if isinstance(r, tuple) else 1
     
-    def tell(self, kb=KnowledgeBase.empty):
+    def tell(self, kb=KnowledgeBase()):
         return new(self.e).run(kb)
 
-    def tellKb(self, kb=KnowledgeBase.empty):
+    def tellKb(self, kb=KnowledgeBase()):
         return self.tell(kb).kb
     
     @property
@@ -108,11 +108,6 @@ def the(card:int|str)->Callable[[str], ExpBuilder]|ExpBuilder:
         case str(x):
             return ExpBuilder(Noun(x))
 
-# def removeCommands(x:Ast):
-#     p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
-#     y = p(x)
-#     z = p(y)
-#     return z
 
 # .s in expbuilder to pluralize   the('cat').s
 # the(1).th('cat') or the(1).st('cat')  

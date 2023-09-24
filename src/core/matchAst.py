@@ -28,7 +28,7 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 # their truth values co-vary in kb. 
 # The truth value of a noun phrase is the existence of a referent.
 #
-def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase.empty):
+def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
 
     if generic == specific: return True
 

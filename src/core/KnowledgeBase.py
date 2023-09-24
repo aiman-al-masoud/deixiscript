@@ -2,35 +2,6 @@ from dataclasses import dataclass
 from typing import Dict, FrozenSet, Tuple
 from language import AnalyticDerivation, Ast
 
-@dataclass(frozen=True)
-class KnowledgeBase:
-    wm:'WorldModel'
-    adcs:FrozenSet[AnalyticDerivation]
-    dd:'DeicticDict'
-
-    def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
-        return KnowledgeBase(self.wm, self.adcs, dd)
-    
-    def addWm(self, wm:'WorldModel')->'KnowledgeBase':
-        return KnowledgeBase(self.wm | wm, self.adcs, self.dd)
-    
-    def subWm(self, wm:'WorldModel')->'KnowledgeBase':
-        return KnowledgeBase(self.wm - wm, self.adcs, self.dd)
-    
-    def addDef(self, dc:AnalyticDerivation)->'KnowledgeBase':
-        from matchAst import sortByGenerality
-        dcs = self.adcs | {dc}
-        sortedDcs = sortByGenerality(self, dcs)
-        setDcs = frozenset(sortedDcs)
-        return KnowledgeBase(self.wm, setDcs, self.dd)
-    
-    def rmDef(self, dc:AnalyticDerivation)->'KnowledgeBase':
-        raise Exception('rmDef()')
-
-    @classmethod
-    @property
-    def empty(cls): 
-        return cls(frozenset(), frozenset(), DeicticDict({}))
 
 WmSentence = Tuple[Ast, Ast, Ast]
 WorldModel = FrozenSet[WmSentence]
@@ -45,6 +16,32 @@ class DeicticDict:
 
     def __getitem__(self, key: Ast)->int:
         return self.d.get(key, 0)
+
+@dataclass(frozen=True)
+class KnowledgeBase:
+    wm:WorldModel= frozenset()
+    adcs:FrozenSet[AnalyticDerivation]= frozenset()
+    dd:DeicticDict= DeicticDict({})
+
+    def __add__(self, o:'WorldModel|DeicticDict|AnalyticDerivation'):
+        match o:
+            case frozenset():
+                return KnowledgeBase(self.wm | o, self.adcs, self.dd)
+            case DeicticDict():
+                return KnowledgeBase(self.wm, self.adcs, o)
+            case AnalyticDerivation():
+                from matchAst import sortByGenerality
+                dcs = self.adcs | {o}
+                sortedDcs = sortByGenerality(self, dcs)
+                setDcs = frozenset(sortedDcs)
+                return KnowledgeBase(self.wm, setDcs, self.dd)
+
+    def __sub__(self, o:'WorldModel|AnalyticDerivation'):
+        match o:
+            case frozenset():
+                return KnowledgeBase(self.wm - o, self.adcs, self.dd)
+            case AnalyticDerivation():
+                raise Exception()
 
 @dataclass(frozen=True)
 class Result:

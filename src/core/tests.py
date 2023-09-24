@@ -1,4 +1,3 @@
-from typing import cast
 from expbuilder import does, e, every, it_is_false_that, new, the, _
 from language import Implicit
 from matchAst import matchAst, sortByGenerality
@@ -38,7 +37,7 @@ def test3():
 
 # circular import tests (eval <-> expbuilder) 
 def test5():
-    x = e(1).get(KnowledgeBase.empty)
+    x = e(1).get()
     assert x == 1
 
 # %% findAsts tests
@@ -75,8 +74,12 @@ def test11(): #  with demorgan's rule I
 def test12():
     x = the('cat').tell()
     y = the('cat').tell(x.kb)
-    z = the('cat').tell(y.kb)  
-    assert set(cast(tuple, every('cat').get(z.kb))) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
+    z = the('cat').tell(y.kb)
+
+    w = every('cat').get(z.kb)
+    
+    assert isinstance(w, tuple)
+    assert set(w) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
 
 def test13(): # create from which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tellKb()
@@ -128,7 +131,7 @@ def test22():
         the('cat').e,
     ]
     wrong = [correct[2], correct[0], correct[1]]
-    maybe = sortByGenerality(KnowledgeBase.empty, correct)
+    maybe = sortByGenerality(KnowledgeBase(), correct)
     assert correct != wrong
     assert maybe == correct
 
@@ -150,7 +153,7 @@ def test24():
         the('son').does('give').e,
     ]
     wrong = [correct[1], correct[3], correct[0], correct[2]]
-    maybe = sortByGenerality(KnowledgeBase.empty, wrong)
+    maybe = sortByGenerality(KnowledgeBase(), wrong)
     assert maybe == correct
 
 # %% sort analytic derivation clauses by generality tests
@@ -161,7 +164,7 @@ def test25():
         the('capra').does('run').when(1).e,
     ]
     wrong = [correct[2], correct[0], correct[1]]
-    maybe = sortByGenerality(KnowledgeBase.empty, wrong)
+    maybe = sortByGenerality(KnowledgeBase(), wrong)
     assert maybe == correct
 
 # %% normalization tests

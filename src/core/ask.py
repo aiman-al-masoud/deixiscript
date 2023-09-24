@@ -23,7 +23,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             d = __makeAdLitteram(v, kb)
             return e(d).run(kb)
         case str(x) | int(x)| float(x):
-            return Result(x, kb.updateDD(kb.dd.update(x)))
+            return Result(x, kb + kb.dd.update(x))
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).run(a).kb , xs, kb)
             return Result(xs, kb1)
@@ -96,7 +96,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Which(h, w):
             r1 = e(h).tell(kb)
             ww = subst(_, r1.head, w)
-            r2 = e(ww).tell(kb.addWm(r1.addition))
+            r2 = e(ww).tell(kb + r1.addition)
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
@@ -104,16 +104,16 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             delta = frozenset({(s, o, a)})
-            return Result(True, kb.addWm(delta), delta)
+            return Result(True, kb + delta, delta)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             new = e(action).get(kb)
             r1 = e(action).tell(kb)
-            subbed = {subst(r1.head, new, x) for x in r1.addition}
-            if new: return Result(new, kb, cast(WorldModel, subbed))
+            subbed = frozenset({subst(r1.head, new, x) for x in r1.addition})
+            if new: return Result(new, kb, cast(WorldModel, subbed)) # TODO: bad cast
             return r1
         case AnalyticDerivation():
-            return Result(ast, kb.addDef(ast))
+            return Result(ast, kb + ast)
         case SyntheticDerivation():
             raise Exception('')
         case Negation(AnalyticDerivation()):
@@ -122,7 +122,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             raise Exception('')
         case Negation(v):
             r1 = e(v).tell(kb)
-            kb1 = kb.subWm(r1.addition).updateDD(r1.kb.dd)
+            kb1 = kb - r1.addition + r1.kb.dd
             return Result(True, kb1)
         case BinExp('and'|'or', l, r): # TODO tell or like and?
             r1 = e(l).tell(kb)

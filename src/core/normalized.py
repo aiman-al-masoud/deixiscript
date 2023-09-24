@@ -1,4 +1,3 @@
-from typing import cast
 from expbuilder import e
 from findAsts import findAsts
 from language import Ast, BinExp, Explicit, Implicit, Negation, NounPhrase, NounPhrasish
@@ -43,14 +42,16 @@ def decompressed(ast:Ast)->Ast:
     tups = findTuples(ast)
 
     if tups:
-        tup = cast(tuple, tups[0])
+        tup = tups[0]
+        assert isinstance(tup, tuple) 
         and_phrase = reduce(lambda a,b: e(a).or_(b), tup).e
         subbed = subst(tup, and_phrase, ast)
         return decompressed(subbed)
     
     conns = findNounPhrasishConjs(ast)
     if not conns: return ast
-    conn = cast(BinExp, conns[0])
+    conn = conns[0]
+    assert isinstance(conn, BinExp)
 
     op = opposite(conn.op) if isinstance(ast, Negation) else conn.op
     left = decompressed(subst(conn,conn.left,ast))
