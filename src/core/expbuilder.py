@@ -29,14 +29,15 @@ class ExpBuilder(Generic[T]):
     def plus(self, x:'ExpBuilder'):
         return self.binop('+', x)
 
-    def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
-        return ExpBuilder(SimpleSentence(makeAst(verb), self.e, negation=negation))
+    # def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
+    #     return ExpBuilder(SimpleSentence(makeAst(verb), self.e, negation=negation))
 
     def does(self, verb:'Ast|ExpBuilder'):        
-        return self.verbSen(verb, False)
+        # return self.verbSen(verb, False)
+        return ExpBuilder(SimpleSentence(makeAst(verb), self.e))
 
-    def does_not(self, verb:'Ast|ExpBuilder'):
-        return self.verbSen(verb, True)
+    # def does_not(self, verb:'Ast|ExpBuilder'):
+    #     return self.verbSen(verb, True)
 
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
         if not isinstance(self.e, SimpleSentence): raise Exception()

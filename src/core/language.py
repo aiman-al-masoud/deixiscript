@@ -55,6 +55,7 @@ class SimpleSentence:
     to:'Ast'=False
     on:'Ast'=False
     # TODO: use None instead
+    # TODO: remove negation and command, it's something that the parser can handle
 
     def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
         x1 = [(k,v) for k,v in self.__dict__.items()]

@@ -6,6 +6,11 @@ from normalized import decompressed, isImplicitish, removeImplicit
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
 
+# Idiom
+# TODO: removeImplicit! Maybe needed also here?
+# TODO: subst is needed for cardinality preservation problem!
+# TODO: stipulate that Idiom cannot contain Command
+# TODO: Command(Idiom()) where?!
 
 def run(ast:Ast, kb:KnowledgeBase)->Result:
     
@@ -13,27 +18,26 @@ def run(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
 
-        case SimpleSentence(command=True):
-            x = copyAst(ast, 'command', False)
-            return run(Command(x), kb)
+        # case SimpleSentence(command=True):
+        #     x = copyAst(ast, 'command', False)
+        #     return run(Command(x), kb)
 
-        case SimpleSentence()|Command(SimpleSentence())|Idiom(SimpleSentence())|Negation(SimpleSentence()) if isImplicitish(ast):
-            x1 = removeImplicit(ast, kb)
-            x2 = decompressed(x1.head)
-            return run(x2, x1.kb)
+        # case SimpleSentence()|Command(SimpleSentence())|Idiom(SimpleSentence())|Negation(SimpleSentence()) if isImplicitish(ast):
+        #     x1 = removeImplicit(ast, kb)
+        #     x2 = decompressed(x1.head)
+        #     return run(x2, x1.kb)
         
-        case Command(SimpleSentence(negation=True)):
-            v = copyAst(ast.value, 'negation', False)
-            x = Command(Negation(v))
-            return run(x, kb)
+        # case Command(SimpleSentence(negation=True)):
+        #     v = copyAst(ast.value, 'negation', False)
+        #     x = Command(Negation(v))
+        #     return run(x, kb)
 
-        case SimpleSentence(negation=True):
-            x = copyAst(ast, 'negation', False)
-            return run(Negation(x), kb)
+        # case SimpleSentence(negation=True):
+        #     x = copyAst(ast, 'negation', False)
+        #     return run(Negation(x), kb)
         
         case Command(v):
             return __tell(v, kb)
-
         case _:
             return __ask(ast,kb)
 
@@ -42,6 +46,20 @@ def run(ast:Ast, kb:KnowledgeBase)->Result:
 def __ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
+
+
+        case SimpleSentence() if isImplicitish(ast):
+            r = __expand(ast, kb)
+            return e(r.head).run(r.kb)
+
+
+        case Idiom(v):
+            from matchAst import matchAst
+            d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
+            r = e(d).run(kb)
+            return r
+
+
         case str(x) | int(x)| float(x):
             return Result(x, kb.updateDD(kb.dd.update(x)))
         case tuple(xs):
@@ -83,21 +101,12 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence('be', s, object=o, negation=False, command=False):
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
-        case SimpleSentence('have', s, object=o, negation=False, command=False, as_=a):
+        case SimpleSentence('have', s, object=o, as_=a, negation=False, command=False):
             ok = (s,o,a) in kb.wm
             return Result(ok, kb)
-        case SimpleSentence():
+        case SimpleSentence(negation=False):
             action = __simpleSentenceToAction(ast)
             return e(action).run(kb)
-        case Idiom(v):
-            # TODO: removeImplicit! Maybe needed also here?
-            # TODO: subst is needed for cardinality preservation problem!
-            # TODO: stipulate that Idiom cannot contain Command
-            # TODO: Command(Idiom()) where?!
-            from matchAst import matchAst
-            d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
-            r = e(d).run(kb)
-            return r
         case _:
             raise Exception('ask', ast)
 
@@ -105,13 +114,17 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
 def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
+
+        case SimpleSentence() if isImplicitish(ast):
+            r = __expand(ast, kb)
+            return e(r.head).tell(r.kb)
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
             return e(x).run(kb1)
         case Noun(h):
             n = every(h).count(kb)
             new = f'{h}#{n}'
-            r1 = e(new).does('be')._(h).tell(kb)
+            r1 = e(new).does('be')._(h).tell(kb)            
             return Result(new, r1.kb, r1.addition)
         case Which(h, w):
             r1 = e(h).tell(kb)
@@ -144,7 +157,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(v).tell(kb)
             kb1 = kb.subWm(r1.addition).updateDD(r1.kb.dd)
             return Result(True, kb1)
-        case BinExp('and', l, r):
+        case BinExp('and'|'or', l, r): # TODO tell or like and?
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
             return Result(True, r2.kb, r1.addition | r2.addition)
@@ -161,3 +174,7 @@ def __simpleSentenceToAction(ast:SimpleSentence):
     x4 = the('action').which(x3).e
     return x4
 
+def __expand(ast:SimpleSentence, kb:KnowledgeBase):
+    x1 = removeImplicit(ast, kb)
+    x2 = decompressed(x1.head)
+    return Result(x2, x1.kb)

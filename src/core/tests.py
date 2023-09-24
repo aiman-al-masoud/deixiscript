@@ -100,9 +100,9 @@ def test16():
     kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tellKb()
 
     #TODO: broken!
-    # kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tellKb(kb1)
+    kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tellKb(kb1)
 
-    kb2 = the('cat').does_not('have')._(the('mouse')).as_('food').tellKb(kb1)
+    # kb2 = the('cat').does_not('have')._(the('mouse')).as_('food').tellKb(kb1)
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
@@ -264,8 +264,12 @@ def test35():
     kb1 = the('mouse').tellKb()
     kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb(kb1)
 
+    # print(kb2.wm)
+    # assert ('mouse#2', 'mouse', 'super') in kb2.wm
+
     assert e('cat#1').does('eat')._('mouse#2').get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
     assert the('mouse').which(e('cat#1').does('eat')._(_)).get(kb2) == 'mouse#2'
+
 
     # the(1)( the('mouse').which(e('cat#1').does('eat')._(_)) )
