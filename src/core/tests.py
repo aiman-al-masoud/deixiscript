@@ -264,12 +264,8 @@ def test35():
     kb1 = the('mouse').tellKb()
     kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb(kb1)
 
-    # print(kb2.wm)
-    # assert ('mouse#2', 'mouse', 'super') in kb2.wm
-
     assert e('cat#1').does('eat')._('mouse#2').get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
     assert the('mouse').which(e('cat#1').does('eat')._(_)).get(kb2) == 'mouse#2'
-
 
     # the(1)( the('mouse').which(e('cat#1').does('eat')._(_)) )
