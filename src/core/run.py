@@ -12,54 +12,18 @@ from KnowledgeBase import KnowledgeBase, Result, WorldModel
 # TODO: stipulate that Idiom cannot contain Command
 # TODO: Command(Idiom()) where?!
 
-def run(ast:Ast, kb:KnowledgeBase)->Result:
-    
-    # TODO: check for triggered effects in synthetic derivation clauses
+def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
-
-        # case SimpleSentence(command=True):
-        #     x = copyAst(ast, 'command', False)
-        #     return run(Command(x), kb)
-
-        # case SimpleSentence()|Command(SimpleSentence())|Idiom(SimpleSentence())|Negation(SimpleSentence()) if isImplicitish(ast):
-        #     x1 = removeImplicit(ast, kb)
-        #     x2 = decompressed(x1.head)
-        #     return run(x2, x1.kb)
-        
-        # case Command(SimpleSentence(negation=True)):
-        #     v = copyAst(ast.value, 'negation', False)
-        #     x = Command(Negation(v))
-        #     return run(x, kb)
-
-        # case SimpleSentence(negation=True):
-        #     x = copyAst(ast, 'negation', False)
-        #     return run(Negation(x), kb)
-        
-        case Command(v):
-            return __tell(v, kb)
-        case _:
-            return __ask(ast,kb)
-
-
-
-def __ask(ast:Ast, kb:KnowledgeBase)->Result:
-
-    match ast:
-
 
         case SimpleSentence() if isImplicitish(ast):
-            r = __expand(ast, kb)
+            r = __makeExplicit(ast, kb)
             return e(r.head).run(r.kb)
-
-
         case Idiom(v):
             from matchAst import matchAst
             d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
             r = e(d).run(kb)
             return r
-
-
         case str(x) | int(x)| float(x):
             return Result(x, kb.updateDD(kb.dd.update(x)))
         case tuple(xs):
@@ -107,6 +71,8 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence(negation=False):
             action = __simpleSentenceToAction(ast)
             return e(action).run(kb)
+        case Command(v):
+            return __tell(v, kb)
         case _:
             raise Exception('ask', ast)
 
@@ -116,7 +82,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
     match ast:
 
         case SimpleSentence() if isImplicitish(ast):
-            r = __expand(ast, kb)
+            r = __makeExplicit(ast, kb)
             return e(r.head).tell(r.kb)
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
@@ -161,8 +127,6 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
             return Result(True, r2.kb, r1.addition | r2.addition)
-        # case Command(v):
-        #     return e(v).tell(kb)
         case _:
             raise Exception('tell', ast)
 
@@ -174,7 +138,7 @@ def __simpleSentenceToAction(ast:SimpleSentence):
     x4 = the('action').which(x3).e
     return x4
 
-def __expand(ast:SimpleSentence, kb:KnowledgeBase):
+def __makeExplicit(ast:SimpleSentence, kb:KnowledgeBase):
     x1 = removeImplicit(ast, kb)
     x2 = decompressed(x1.head)
     return Result(x2, x1.kb)

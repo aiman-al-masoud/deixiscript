@@ -29,15 +29,8 @@ class ExpBuilder(Generic[T]):
     def plus(self, x:'ExpBuilder'):
         return self.binop('+', x)
 
-    # def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
-    #     return ExpBuilder(SimpleSentence(makeAst(verb), self.e, negation=negation))
-
     def does(self, verb:'Ast|ExpBuilder'):        
-        # return self.verbSen(verb, False)
         return ExpBuilder(SimpleSentence(makeAst(verb), self.e))
-
-    # def does_not(self, verb:'Ast|ExpBuilder'):
-    #     return self.verbSen(verb, True)
 
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
@@ -45,7 +38,6 @@ class ExpBuilder(Generic[T]):
         #TODO: copyAst dedup
         v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)})
         return ExpBuilder(v)
-        
 
     def _(self, object:'Ast|ExpBuilder'): return self.complement('object', object)
     def as_(self, as_:'Ast|ExpBuilder'): return self.complement('as_', as_)
@@ -63,12 +55,11 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(Idiom(self.e))
 
     def run(self, kb=KnowledgeBase.empty):
-        from run import run
-        return run(self.e, kb)
+        from run import ask
+        return ask(self.e, kb)
 
     def get(self, kb=KnowledgeBase.empty):
         return e(self.e).run(kb).head
-        # return e(removeCommands(self.e)).run(kb).head
     
     def count(self, kb=KnowledgeBase.empty):
         r = self.get(kb)
@@ -89,10 +80,6 @@ class ExpBuilder(Generic[T]):
 def e(x:Ast|ExpBuilder):
     '''explicit'''
     return ExpBuilder(makeAst(x))
-
-# def i(x:Ast):
-#     '''implicit'''
-#     return ExpBuilder(Noun(x))
 
 def every(x:Ast):
     return ExpBuilder(Noun(x))
