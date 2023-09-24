@@ -1,8 +1,8 @@
 from typing import cast
 from expbuilder import e
 from findAsts import findAsts
-from language import Ast, BinExp, Command, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence, copyAst
-from functools import partial, reduce
+from language import Ast, BinExp, Explicit, Implicit, Negation, NounPhrase, NounPhrasish
+from functools import reduce
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 
