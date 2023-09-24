@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from functools import partial
-from typing import Generic, TypeVar, cast
+from typing import Callable, Generic, TypeVar, cast, overload
 from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from KnowledgeBase import KnowledgeBase
 from subst import subst
@@ -88,9 +88,9 @@ def e(x:Ast|ExpBuilder):
     '''explicit'''
     return ExpBuilder(makeAst(x))
 
-def i(x:Ast):
-    '''implicit'''
-    return ExpBuilder(Noun(x))
+# def i(x:Ast):
+#     '''implicit'''
+#     return ExpBuilder(Noun(x))
 
 def every(x:Ast):
     return ExpBuilder(Noun(x))
@@ -107,13 +107,24 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
 def new(x:Ast|ExpBuilder):
     return ExpBuilder(Command(makeAst(x)))
 
-def the(card:int=1):
-    def f(x:Ast):
-        return ExpBuilder(Numerality(x, card, -1))
-    return f
+@overload
+def the(card:int)->Callable[[str], ExpBuilder]:...
+@overload
+def the(card:str)->ExpBuilder:...
+def the(card:int|str)->Callable[[str], ExpBuilder]|ExpBuilder:
+
+    match card:
+        case int(x):
+            return lambda s:ExpBuilder(Numerality(Noun(s), x, -1))
+        case str(x):
+            return ExpBuilder(Noun(x))
 
 def removeCommands(x:Ast):
     p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
     y = p(x)
     z = p(y)
     return z
+
+# .s in expbuilder to pluralize   the('cat').s
+# the(1).th('cat') or the(1).st('cat')  
+

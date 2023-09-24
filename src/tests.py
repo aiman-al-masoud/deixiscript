@@ -1,5 +1,5 @@
 from typing import cast
-from expbuilder import does, e, every, i, it_is_false_that, new, the
+from expbuilder import does, e, every, it_is_false_that, new, the
 from language import  BinExp, Implicit, SimpleSentence
 from matchAst import matchAst, sortByGenerality
 from normalized import decompressed, expandNegations, normalized
@@ -47,12 +47,12 @@ def test6():
     assert findAsts(x, lambda x:isinstance(x, int)) == (3, 1)
 
 def test7():
-    x = i('cat').does('jump').and_(i('dog').does('run')).e
-    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').e, i('dog').e)
+    x = the('cat').does('jump').and_(the('dog').does('run')).e
+    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
 
 def test8():
-    x = i('cat').which(does('jump')).does('lick')._(i('cat')).e
-    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (i('cat').which(does('jump')).e, i('cat').e)
+    x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
+    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').which(does('jump')).e, the('cat').e)
 
 # %% decompress tests
 def test9():
@@ -73,13 +73,13 @@ def test11(): #  with demorgan's rule I
 
 # %% tell (create) new entities tests 
 def test12():
-    x = i('cat').tell()
-    y = i('cat').tell(x.kb)
-    z = i('cat').tell(y.kb)  
+    x = the('cat').tell()
+    y = the('cat').tell(x.kb)
+    z = the('cat').tell(y.kb)  
     assert set(cast(tuple, every('cat').get(z.kb))) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
 
 def test13(): # create from which (relative clause)
-    kb1 = i('cat').which(does('have')._('fish').as_('food')).tellKb()
+    kb1 = the('cat').which(does('have')._('fish').as_('food')).tellKb()
     assert ('cat#1', 'fish', 'food') in kb1.wm
 
 def test21():
@@ -97,15 +97,15 @@ def test15():
 
 # %% negation with tell tests
 def test16():
-    kb1 = new(i('cat')).does('have')._(new(i('mouse'))).as_('food').tellKb()
-    kb2 = i('cat').does_not('have')._(i('mouse')).as_('food').tellKb(kb1)
+    kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tellKb()
+    kb2 = the('cat').does_not('have')._(the('mouse')).as_('food').tellKb(kb1)
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
 # %% matchAst tests
 def test17():
-    genr = i('cat').e
-    spec = i('cat').which(does('have')._('mouse#1').as_('prey')).e
+    genr = the('cat').e
+    spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
     assert matchAst(genr, spec)
     assert not matchAst(spec, genr)
 
@@ -122,9 +122,9 @@ def test19():
 # %% sort nounphrases by generality tests
 def test22():
     correct = [  # ascending generality
-        i('cat').which(does('be')._('red').and_(does('be')._('black'))).e,
-        i('cat').which(does('be')._('red')).e,
-        i('cat').e,
+        the('cat').which(does('be')._('red').and_(does('be')._('black'))).e,
+        the('cat').which(does('be')._('red')).e,
+        the('cat').e,
     ]
     wrong = [correct[2], correct[0], correct[1]]
     maybe = sortByGenerality(KnowledgeBase.empty, correct)
@@ -143,10 +143,10 @@ def test23():
 # %% sort simple-sentences by generality tests
 def test24():
     correct = [
-        i('son').does('give')._(i('present')).to(i('mother')).on(i('birthday')).e,
-        i('son').does('give')._(i('present')).to(i('mother')).e,
-        i('son').does('give')._(i('present')).e,
-        i('son').does('give').e,
+        the('son').does('give')._(the('present')).to(the('mother')).on(the('birthday')).e,
+        the('son').does('give')._(the('present')).to(the('mother')).e,
+        the('son').does('give')._(the('present')).e,
+        the('son').does('give').e,
     ]
     wrong = [correct[1], correct[3], correct[0], correct[2]]
     maybe = sortByGenerality(KnowledgeBase.empty, wrong)
@@ -155,9 +155,9 @@ def test24():
 # %% sort analytic derivation clauses by generality tests
 def test25():
     correct = [
-        i('capra').does('run').on(i('hill')).to(i('food')).when(2).e,
-        i('capra').does('run').on(i('hill')).when(2).e,
-        i('capra').does('run').when(1).e,
+        the('capra').does('run').on(the('hill')).to(the('food')).when(2).e,
+        the('capra').does('run').on(the('hill')).when(2).e,
+        the('capra').does('run').when(1).e,
     ]
     wrong = [correct[2], correct[0], correct[1]]
     maybe = sortByGenerality(KnowledgeBase.empty, wrong)
@@ -165,7 +165,7 @@ def test25():
 
 # %% normalization tests
 def test20():
-    kb = i('cat').tellKb()
+    kb = the('cat').tellKb()
     n = normalized(every('cat').does('jump').e, kb).head
     # PROBLEM: cat concept also included in expansion!
     assert isinstance(n, BinExp)
@@ -174,26 +174,26 @@ def test20():
     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
 
 # def test26(): # with analytic derivation clause
-#     kb1 = i('man').does('ride').on(i('horse')).when(i('man').does('sit').on(i('horse')).and_(i('horse').does('move'))).tellKb()
-#     x = normalized(new(new(i('man')).does('ride').on(new(i('horse')))).e, kb1).head
+#     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
+#     x = normalized(new(new(the('man')).does('ride').on(new(the('horse')))).e, kb1).head
 #     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
 #     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
 
 def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-incremented
-    kb1 = i('they').when(i('thing')).tellKb()
-    kb2 = i('capra').tellKb(kb1)
+    kb1 = the('they').when(the('thing')).tellKb()
+    kb2 = the('capra').tellKb(kb1)
 
-    r = i('they').idiom.run(kb2)
+    r = the('they').idiom.run(kb2)
     assert isinstance(r.head, tuple)
     assert 'capra#1' in set(r.head)
 
 # %% numerality tests
 def test28():
-    kb1 = i('capra').tellKb()
-    kb2 = i('capra').tellKb(kb1)
-    kb3 = i('capra').tellKb(kb2)
+    kb1 = the('capra').tellKb()
+    kb2 = the('capra').tellKb(kb1)
+    kb3 = the('capra').tellKb(kb2)
 
-    multiple = i('capra').get(kb3)
+    multiple = the('capra').get(kb3)
     single   = the(1)('capra').get(kb3)
 
     assert isinstance(multiple, tuple)
@@ -208,16 +208,12 @@ def test29():
 def test30():
    
     specific = e('man#1').does('ride').on('horse#1') # specific
-    general = i('man').does('ride').on(i('horse')) # general
+    general = the('man').does('ride').on(the('horse')) # general
 
-    kb1 = i('man').tellKb()
-    kb2 = i('horse').tellKb(kb1)
+    kb1 = the('man').tellKb()
+    kb2 = the('horse').tellKb(kb1)
 
     assert matchAst(general.e, specific.e, kb2)
-
-    # r = normalized(general.e, kb2) # problem: matchAst doesn't internally call normalize!
-    # assert matchAst(r.head, specific.e, kb2)
-    # print(linearize(r.head))
 
 # multiple additions with and  
 def test31():
@@ -231,8 +227,8 @@ def test31():
     
 # negate tell simple sentence
 def test32():
-    kb1 = i('man').tellKb()
-    kb2 = i('horse').tellKb(kb1)
+    kb1 = the('man').tellKb()
+    kb2 = the('horse').tellKb(kb1)
     s = e('man#1').does('ride').on('horse#1')
     kb3 = s.tellKb(kb2)
     kb4 = it_is_false_that(s).tellKb(kb3)
@@ -249,12 +245,13 @@ def test33():
 
 # matchAst with other similar "noise" specific sentences in KB
 def test34():
-    kb1 = new(i('cat')).does('eat')._(new(i('mouse'))).tellKb()
-    kb2 = i('cat').tellKb(kb1)
-    kb3 = i('mouse').tellKb(kb2)
+    kb1 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb()
+    kb2 = the('cat').tellKb(kb1)
+    kb3 = the('mouse').tellKb(kb2)
 
     spec = e('cat#2').does('eat')._('mouse#2').e
-    gen = i('cat').does('eat')._(i('mouse')).e
+    gen = the('cat').does('eat')._(the('mouse')).e
 
     assert matchAst(gen, spec, kb3)
     assert not matchAst(spec, gen, kb3)
+

@@ -1,6 +1,6 @@
 from functools import reduce
 from typing import cast
-from expbuilder import does, e, _, every, i, new
+from expbuilder import does, e, _, every, new, the
 from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from normalized import normalized
 from subst import subst
@@ -136,6 +136,6 @@ def __simpleSentenceToAction(ast:SimpleSentence):
     x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
     x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
     x3 = reduce(lambda a,b:a.and_(b), x2)
-    x4 = i('action').which(x3).e
+    x4 = the('action').which(x3).e
     return x4
 
