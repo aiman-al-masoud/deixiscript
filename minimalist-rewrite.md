@@ -1,3 +1,7 @@
+everything the user says will be assumed to be Implicit and Idiomatic, but explicit ids and ad-litteram sentences need to be considered at a certain point during the execution in the interpreter.
+
+if there is an individual cat -> there is also the concept of a cat, concepts are "eternal", no need to create concepts in tell
+
 Some and Every as values of cardinality in Numerality? Do NOT just assume that tuple means 'AND'?
 Default connective when using implicit is 'OR'? Because that will match more stuff more easily. Eg: "man ride horse" -> concept of man rides concept of horse, or individual man rides etc...
 
