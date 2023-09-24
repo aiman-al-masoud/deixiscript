@@ -98,11 +98,8 @@ def test15():
 # %% negation with tell tests
 def test16():
     kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tellKb()
-
-    #TODO: broken!
     kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tellKb(kb1)
 
-    # kb2 = the('cat').does_not('have')._(the('mouse')).as_('food').tellKb(kb1)
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
