@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import cast
 from expbuilder import does, e, _, every, the
-from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which, copyAst
+from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from normalized import decompressed, isImplicitish, removeImplicit
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
@@ -20,10 +20,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             r = __makeExplicit(ast, kb)
             return e(r.head).run(r.kb)
         case Idiom(v):
-            from matchAst import matchAst
-            d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
-            r = e(d).run(kb)
-            return r
+            d = __makeAdLitteram(v, kb)
+            return e(d).run(kb)
         case str(x) | int(x)| float(x):
             return Result(x, kb.updateDD(kb.dd.update(x)))
         case tuple(xs):
@@ -81,6 +79,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
 
+        case Idiom(v):
+            d = __makeAdLitteram(v, kb)
+            return e(d).tell(kb)
         case SimpleSentence() if isImplicitish(ast):
             r = __makeExplicit(ast, kb)
             return e(r.head).tell(r.kb)
@@ -142,3 +143,8 @@ def __makeExplicit(ast:SimpleSentence, kb:KnowledgeBase):
     x1 = removeImplicit(ast, kb)
     x2 = decompressed(x1.head)
     return Result(x2, x1.kb)
+
+def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
+    from matchAst import matchAst
+    d = next((d.definition for d in kb.adcs if matchAst(d.definendum, ast, kb)), ast)
+    return d
