@@ -109,8 +109,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             action = __simpleSentenceToAction(ast)
             new = e(action).get(kb)
             r1 = e(action).tell(kb)
-            subbed = frozenset({subst(r1.head, new, x) for x in r1.addition})
-            if new: return Result(new, kb, cast(WorldModel, subbed)) # TODO: bad cast
+            delta = frozenset({subst(r1.head, new, x) for x in r1.addition})
+            if new: return Result(new, kb, cast(WorldModel, delta)) # TODO: bad cast
             return r1
         case AnalyticDerivation():
             return Result(ast, kb + ast)
