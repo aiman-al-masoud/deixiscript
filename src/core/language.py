@@ -48,14 +48,11 @@ class Idiom(): # overrideme, non-literal
 class SimpleSentence:
     verb:'Ast'
     subject:'Ast'
-    negation:bool=False
-    command:bool=False
     object:'Ast'=False
     as_:'Ast'=False
     to:'Ast'=False
     on:'Ast'=False
     # TODO: use None instead
-    # TODO: remove negation and command, it's something that the parser can handle
 
     def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
         x1 = [(k,v) for k,v in self.__dict__.items()]
