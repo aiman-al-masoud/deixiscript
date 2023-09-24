@@ -1,9 +1,7 @@
 from dataclasses import dataclass
-from functools import partial
-from typing import Callable, Generic, TypeVar, cast, overload
+from typing import Callable, Generic, TypeVar, overload
 from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from KnowledgeBase import KnowledgeBase
-from subst import subst
 
 
 _=''    
@@ -76,7 +74,7 @@ class ExpBuilder(Generic[T]):
         return len(r) if isinstance(r, tuple) else 1
     
     def tell(self, kb=KnowledgeBase.empty):
-        return new(self).run(kb)
+        return new(self.e).run(kb)
 
     def tellKb(self, kb=KnowledgeBase.empty):
         return self.tell(kb).kb

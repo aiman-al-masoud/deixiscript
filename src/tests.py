@@ -1,8 +1,8 @@
 from typing import cast
 from expbuilder import does, e, every, it_is_false_that, new, the, _
-from language import  BinExp, Implicit, SimpleSentence
+from language import Implicit
 from matchAst import matchAst, sortByGenerality
-from normalized import decompressed, expandNegations, normalized
+from normalized import decompressed
 from subst import subst
 from findAsts import findAsts
 from KnowledgeBase import KnowledgeBase
@@ -31,10 +31,10 @@ def test3():
     assert x == y
 
 # %% expand negation tests
-def test4():
-    x = expandNegations(e('buruf').does_not('have')._('food').e)
-    y = it_is_false_that(e('buruf').does('have')._('food').e).e
-    assert x == y
+# def test4():
+#     x = expandNegations(e('buruf').does_not('have')._('food').e)
+#     y = it_is_false_that(e('buruf').does('have')._('food').e).e
+#     assert x == y
 
 # circular import tests (eval <-> expbuilder) 
 def test5():
@@ -98,6 +98,10 @@ def test15():
 # %% negation with tell tests
 def test16():
     kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tellKb()
+
+    #TODO: broken!
+    # kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tellKb(kb1)
+
     kb2 = the('cat').does_not('have')._(the('mouse')).as_('food').tellKb(kb1)
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
@@ -164,14 +168,14 @@ def test25():
     assert maybe == correct
 
 # %% normalization tests
-def test20():
-    kb = the('cat').tellKb()
-    n = normalized(every('cat').does('jump').e, kb).head
-    # PROBLEM: cat concept also included in expansion!
-    assert isinstance(n, BinExp)
-    assert isinstance(n.left, SimpleSentence)
-    assert isinstance(n.right, SimpleSentence)
-    assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
+# def test20():
+#     kb = the('cat').tellKb()
+#     n = normalized(every('cat').does('jump').e, kb).head
+#     # PROBLEM: cat concept also included in expansion!
+#     assert isinstance(n, BinExp)
+#     assert isinstance(n.left, SimpleSentence)
+#     assert isinstance(n.right, SimpleSentence)
+#     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
 
 # def test26(): # with analytic derivation clause
 #     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()

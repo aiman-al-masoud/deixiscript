@@ -1,22 +1,42 @@
 from functools import reduce
 from typing import cast
-from expbuilder import does, e, _, every, new, the
-from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
-from normalized import normalized
+from expbuilder import does, e, _, every, the
+from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which, copyAst
+from normalized import decompressed, isImplicitish, removeImplicit
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
 
 
 def run(ast:Ast, kb:KnowledgeBase)->Result:
-
+    
+    # TODO: check for triggered effects in synthetic derivation clauses
 
     match ast:
-        case Command(SimpleSentence()) | SimpleSentence(): # TODO: maybe nested Command/SimpleSentence??? what about negation and idiom
-            n = normalized(ast, kb)
 
-            return __ask(n.head, n.kb)
+        case SimpleSentence(command=True):
+            x = copyAst(ast, 'command', False)
+            return run(Command(x), kb)
+
+        case SimpleSentence()|Command(SimpleSentence())|Idiom(SimpleSentence()) if isImplicitish(ast):
+            x1 = removeImplicit(ast, kb)
+            x2 = decompressed(x1.head)
+            return run(x2, x1.kb)
+        
+        case Command(SimpleSentence(negation=True)):
+            v = copyAst(ast.value, 'negation', False)
+            x = Command(Negation(v))
+            return run(x, kb)
+
+        case SimpleSentence(negation=True):
+            x = copyAst(ast, 'negation', False)
+            return run(Negation(x), kb)
+        
+        case Command(v):
+            return __tell(v, kb)
+
         case _:
             return __ask(ast,kb)
+
 
 
 def __ask(ast:Ast, kb:KnowledgeBase)->Result:
@@ -36,12 +56,8 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
-            # print(x3)
-            # print(subst(_, 'MOUSE', w))
-
             x4 = x3[0] if len(x3)==1 else x3
             return e(x4).run(kb)
-
         case Numerality(h, c, o):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
@@ -49,8 +65,6 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
             x4 = x3[:c]
             x5 = x4[0] if len(x4)==1 else x4
             return e(x5).run(kb)
-
-
         case Negation(v):
             r1 = e(v).run(kb)
             return Result(not r1.head, r1.kb)
@@ -76,14 +90,14 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
             action = __simpleSentenceToAction(ast)
             return e(action).run(kb)
         case Idiom(v):
-            # TODO: removeImplicit? Or put it somewhere else because it is also needed elsewhere!
+            # TODO: removeImplicit! Maybe needed also here?
             # TODO: subst is needed for cardinality preservation problem!
+            # TODO: stipulate that Idiom cannot contain Command
+            # TODO: Command(Idiom()) where?!
             from matchAst import matchAst
             d = next((d.definition for d in kb.adcs if matchAst(d.definendum, v, kb)), v)
-            r = e(new(d) if isinstance(v, Command) else d).run(kb)
+            r = e(d).run(kb)
             return r
-        case Command(v):
-            return __tell(v, kb)
         case _:
             raise Exception('ask', ast)
 
@@ -111,7 +125,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence('have', s, object=o, negation=False, command=False, as_=a):
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
-        case SimpleSentence():
+        case SimpleSentence(negation=False):
             action = __simpleSentenceToAction(ast)
             new = e(action).get(kb)
             r1 = e(action).tell(kb)
@@ -134,8 +148,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
             return Result(True, r2.kb, r1.addition | r2.addition)
-        case Command(v):
-            return e(v).tell(kb)
+        # case Command(v):
+        #     return e(v).tell(kb)
         case _:
             raise Exception('tell', ast)
 

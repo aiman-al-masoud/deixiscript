@@ -6,13 +6,6 @@ from functools import partial, reduce
 from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 
-def normalized(ast:Ast, kb:KnowledgeBase)->Result:
-    x1 = expandNegations(ast)# maybe do it in ask/run??
-    x2 = expandCommands(x1)# maybe do it in ask/run??
-    x3 = removeImplicit(x2, kb)
-    x4 = decompressed(x3.head)
-    return Result(x4, x3.kb)
-    # TODO: check for triggered effects in synthetic derivation clauses
 
 def removeImplicit(ast:Ast, kb:KnowledgeBase):
 
@@ -44,8 +37,6 @@ def isNounPhrasishConn(ast:Ast):
 
 findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
-isNegVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.negation)
-isCommandVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.command)
 
 def decompressed(ast:Ast)->Ast:
 
@@ -71,11 +62,21 @@ def opposite(x:Ast)->str:
     if x not in ['and', 'or']: raise Exception('')
     return 'and' if x == 'or' else 'or'
 
-expandNegations \
-    = partial(subst, isNegVerbSen, lambda x: Negation(copyAst(x, 'negation', False)))
+# isNegVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.negation)
+# isCommandVerbSen = lambda x:isinstance(x, SimpleSentence) and bool(x.command)
 
-expandCommands \
-      = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
+# def normalized(ast:Ast, kb:KnowledgeBase)->Result:
+#     x1 = ast#expandNegations(ast)# maybe do it in ask/run??
+#     x2 = x1#expandCommands(x1)# maybe do it in ask/run??
+#     x3 = removeImplicit(x2, kb)
+#     x4 = decompressed(x3.head)
+#     return Result(x4, x3.kb)
+
+# expandNegations \
+#     = partial(subst, isNegVerbSen, lambda x: Negation(copyAst(x, 'negation', False)))
+
+# expandCommands \
+#       = partial(subst, isCommandVerbSen, lambda x: Command(copyAst(x, 'command', False)))
 
 
 # def definitionOf(kb:KnowledgeBase, ast:Ast)->Result:
@@ -92,3 +93,4 @@ expandCommands \
 
 #     if defs: return definitionOf(kb1, defs[0])
 #     return Result(ast, kb1)
+

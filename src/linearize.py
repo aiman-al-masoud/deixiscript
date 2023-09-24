@@ -13,7 +13,7 @@ def linearize(ast:Ast)->str:
             return '[ '+y1+' ]'
         case Noun(x):
             return 'the '+linearize(x)
-        case SimpleSentence(v, s, o, n):
+        case SimpleSentence(v, subject=s, object=o, negation=n):
             complements = [k + ' ' + linearize(v) for k,v in ast.complements]
             complementsStr = reduce(lambda a,b:a+' '+b, complements, '')
             verb = ' does '+(' not ' if n else '')  +linearize(v)
