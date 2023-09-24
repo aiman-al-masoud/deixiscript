@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 @dataclass(frozen=True)
 class Noun:
@@ -75,7 +75,4 @@ NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
 Derivation = AnalyticDerivation | SyntheticDerivation
 Ast = NounPhrasish | SimpleSentence | Derivation
-
-def copyAst(ast:Ast, key:str, val:Ast):
-    return ast.__class__(**{**ast.__dict__, key:val})
 
