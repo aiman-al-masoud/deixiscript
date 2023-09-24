@@ -55,7 +55,7 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(Idiom(self.e))
 
     def run(self, kb=KnowledgeBase.empty):
-        from run import ask
+        from ask import ask
         return ask(self.e, kb)
 
     def get(self, kb=KnowledgeBase.empty):
