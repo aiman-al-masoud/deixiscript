@@ -103,7 +103,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
-            delta = {(s, o, a)}
+            delta = frozenset({(s, o, a)})
             return Result(True, kb.addWm(delta), delta)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)

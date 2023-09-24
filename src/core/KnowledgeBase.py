@@ -1,11 +1,11 @@
-from dataclasses import dataclass, field
-from typing import Dict, Set, Tuple
+from dataclasses import dataclass
+from typing import Dict, FrozenSet, Tuple
 from language import AnalyticDerivation, Ast
 
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:'WorldModel'
-    adcs:Set[AnalyticDerivation]
+    adcs:FrozenSet[AnalyticDerivation]
     dd:'DeicticDict'
 
     def updateDD(self, dd:'DeicticDict')->'KnowledgeBase':
@@ -21,7 +21,7 @@ class KnowledgeBase:
         from matchAst import sortByGenerality
         dcs = self.adcs | {dc}
         sortedDcs = sortByGenerality(self, dcs)
-        setDcs = set(sortedDcs)
+        setDcs = frozenset(sortedDcs)
         return KnowledgeBase(self.wm, setDcs, self.dd)
     
     def rmDef(self, dc:AnalyticDerivation)->'KnowledgeBase':
@@ -30,10 +30,10 @@ class KnowledgeBase:
     @classmethod
     @property
     def empty(cls): 
-        return cls(set(), set(), DeicticDict({}))
+        return cls(frozenset(), frozenset(), DeicticDict({}))
 
 WmSentence = Tuple[Ast, Ast, Ast]
-WorldModel = Set[WmSentence]
+WorldModel = FrozenSet[WmSentence]
 
 @dataclass(frozen=True)
 class DeicticDict:
@@ -50,7 +50,7 @@ class DeicticDict:
 class Result:
     head:Ast
     kb:KnowledgeBase
-    addition:WorldModel = field(default_factory=lambda:set())
+    addition:WorldModel = frozenset()
     # eliminations:WorldModel
     # warning:str
     # prev:'Result|None' # like writer pattern
