@@ -62,11 +62,10 @@ class SimpleSentence:
 
     @property 
     def complements(self): # TODO:only used in linearize
-        return self.filterOut(['verb', 'subject', 'object', 'negation', 'command'])
+        return self.filterOut(['verb', 'subject', 'object'])
  
     @property
-    def args(self):
-        return self.filterOut(['negation', 'command'])
+    def args(self): return self.filterOut([])
     
 
 Explicit = str | float | int | bool | tuple
