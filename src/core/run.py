@@ -17,7 +17,7 @@ def run(ast:Ast, kb:KnowledgeBase)->Result:
             x = copyAst(ast, 'command', False)
             return run(Command(x), kb)
 
-        case SimpleSentence()|Command(SimpleSentence())|Idiom(SimpleSentence()) if isImplicitish(ast):
+        case SimpleSentence()|Command(SimpleSentence())|Idiom(SimpleSentence())|Negation(SimpleSentence()) if isImplicitish(ast):
             x1 = removeImplicit(ast, kb)
             x2 = decompressed(x1.head)
             return run(x2, x1.kb)
