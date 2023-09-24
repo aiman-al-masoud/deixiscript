@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, List, Tuple
 
 @dataclass(frozen=True)
 class Noun:
@@ -23,23 +23,6 @@ class BinExp:
     right:'Ast'
 
 @dataclass(frozen=True)
-class SimpleSentence:
-    verb:'Ast'
-    subject:'Ast'
-    object:'Ast'
-    negation:'Ast'
-    command:'Ast'
-    as_:'Ast'
-    to:'Ast'
-    on:'Ast'
-
-    @property
-    def complements(self)->Dict[str, 'Ast']:
-        out = ['verb', 'subject', 'object', 'negation', 'command']
-        d = {k:v for k,v in self.__dict__.items() if k not in out}
-        return d
-
-@dataclass(frozen=True)
 class Negation:
     value:'Ast'
 
@@ -56,13 +39,39 @@ class SyntheticDerivation:
 @dataclass(frozen=True)
 class Command:
     value:'Ast'
-
-# what about idiom-containing idioms in case of evaluating a multi step derivation?
-@dataclass(frozen=True)
+    
+@dataclass(frozen=True) # what about idiom-containing idioms in case of evaluating a multi step derivation?
 class Idiom(): # overrideme, non-literal
     value:'Ast'
 
-Explicit = str | float | int | bool  | tuple
+@dataclass(frozen=True)
+class SimpleSentence:
+    verb:'Ast'
+    subject:'Ast'
+    negation:bool=False
+    command:bool=False
+    object:'Ast'=False
+    as_:'Ast'=False
+    to:'Ast'=False
+    on:'Ast'=False
+    # TODO: use None instead
+
+    def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
+        x1 = [(k,v) for k,v in self.__dict__.items()]
+        x2 = [(k,v) for k,v in x1 if k not in out]
+        x3 = [(k,v) for k,v in x2 if v]
+        return x3
+
+    @property 
+    def complements(self): # TODO:only used in linearize
+        return self.filterOut(['verb', 'subject', 'object', 'negation', 'command'])
+ 
+    @property
+    def args(self):
+        return self.filterOut(['negation', 'command'])
+    
+
+Explicit = str | float | int | bool | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
@@ -71,3 +80,4 @@ Ast = NounPhrasish | SimpleSentence | Derivation
 
 def copyAst(ast:Ast, key:str, val:Ast):
     return ast.__class__(**{**ast.__dict__, key:val})
+

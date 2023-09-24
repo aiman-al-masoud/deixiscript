@@ -9,9 +9,11 @@ from KnowledgeBase import KnowledgeBase, Result, WorldModel
 
 def run(ast:Ast, kb:KnowledgeBase)->Result:
 
+
     match ast:
         case Command(SimpleSentence()) | SimpleSentence(): # TODO: maybe nested Command/SimpleSentence??? what about negation and idiom
             n = normalized(ast, kb)
+
             return __ask(n.head, n.kb)
         case _:
             return __ask(ast,kb)
@@ -31,18 +33,24 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
             cands3 = cands2[0] if len(cands2)==1 else cands2 
             return e(cands3).run(kb)
         case Which(h, w):
-            cands1 = e(h).get(kb)
-            cands2 = cands1 if isinstance(cands1, tuple) else (cands1,)
-            cands3 = tuple(x for x in cands2 if e(subst(_, x, w)).get(kb))
-            cands4 = cands3[0] if len(cands3)==1 else cands3
-            return e(cands4).run(kb)
+            x1 = e(h).get(kb)
+            x2 = x1 if isinstance(x1, tuple) else (x1,)
+            x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
+            # print(x3)
+            # print(subst(_, 'MOUSE', w))
+
+            x4 = x3[0] if len(x3)==1 else x3
+            return e(x4).run(kb)
+
         case Numerality(h, c, o):
-            cands1 = e(h).get(kb)
-            cands2 = cands1 if isinstance(cands1, tuple) else (cands1,)
-            cands3 = tuple(sorted(cands2, key=lambda x:kb.dd[x]))
-            cands4 = cands3[:c]
-            cands5 = cands4[0] if len(cands4)==1 else cands4
-            return e(cands5).run(kb)
+            x1 = e(h).get(kb)
+            x2 = x1 if isinstance(x1, tuple) else (x1,)
+            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x]))
+            x4 = x3[:c]
+            x5 = x4[0] if len(x4)==1 else x4
+            return e(x5).run(kb)
+
+
         case Negation(v):
             r1 = e(v).run(kb)
             return Result(not r1.head, r1.kb)
@@ -58,12 +66,12 @@ def __ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(l==r, kb)
         case BinExp('+', l, r):
             raise Exception('')
-        case SimpleSentence('be', s, o, False):
+        case SimpleSentence('be', s, object=o, negation=False, command=False):
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
-        case SimpleSentence('have', s, o, False, False, a):
-            head = (s,o,a) in kb.wm
-            return Result(head, kb)
+        case SimpleSentence('have', s, object=o, negation=False, command=False, as_=a):
+            ok = (s,o,a) in kb.wm
+            return Result(ok, kb)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             return e(action).run(kb)
@@ -88,9 +96,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(x).run(kb1)
         case Noun(h):
             n = every(h).count(kb)
-            old = f'{h}#{n}'
-            r1 = e(old).does('be')._(h).tell(kb) # if there is an individual cat -> there is also the concept of a cat, concepts are "eternal"
-            return Result(old, r1.kb, r1.addition)
+            new = f'{h}#{n}'
+            r1 = e(new).does('be')._(h).tell(kb)
+            return Result(new, r1.kb, r1.addition)
         case Which(h, w):
             r1 = e(h).tell(kb)
             ww = subst(_, r1.head, w)
@@ -98,17 +106,17 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
             raise Exception('')
-        case SimpleSentence('be', s, o, False):
+        case SimpleSentence('be', s, object=o, negation=False):
             return e(s).does('have')._(o).as_('super').tell(kb)
-        case SimpleSentence('have', s, o, False, False, a):
+        case SimpleSentence('have', s, object=o, negation=False, command=False, as_=a):
             delta = {(s, o, a)}
             return Result(True, kb.addWm(delta), delta)
-        case SimpleSentence(v, s, o, False, False):
+        case SimpleSentence():
             action = __simpleSentenceToAction(ast)
-            old = e(action).get(kb)
+            new = e(action).get(kb)
             r1 = e(action).tell(kb)
-            subbed = {subst(r1.head, old, x) for x in r1.addition}
-            if old: return Result(old, kb, cast(WorldModel, subbed))
+            subbed = {subst(r1.head, new, x) for x in r1.addition}
+            if new: return Result(new, kb, cast(WorldModel, subbed))
             return r1
         case AnalyticDerivation():
             return Result(ast, kb.addDef(ast))
@@ -133,8 +141,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
 
 def __simpleSentenceToAction(ast:SimpleSentence):
-    x1 = {**ast.complements, 'subject':ast.subject, 'object':ast.object, 'verb':ast.verb}
-    x2 = [does('have')._(v).as_(k) for k,v in x1.items() if v]
+    x1 = ast.args
+    x2 = [does('have')._(v).as_(k) for k,v in x1]
     x3 = reduce(lambda a,b:a.and_(b), x2)
     x4 = the('action').which(x3).e
     return x4

@@ -7,8 +7,8 @@ from subst import  subst
 from KnowledgeBase import KnowledgeBase, Result
 
 def normalized(ast:Ast, kb:KnowledgeBase)->Result:
-    x1 = expandNegations(ast)
-    x2 = expandCommands(x1)
+    x1 = expandNegations(ast)# maybe do it in ask/run??
+    x2 = expandCommands(x1)# maybe do it in ask/run??
     x3 = removeImplicit(x2, kb)
     x4 = decompressed(x3.head)
     return Result(x4, x3.kb)

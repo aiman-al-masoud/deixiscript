@@ -14,9 +14,9 @@ def linearize(ast:Ast)->str:
         case Noun(x):
             return 'the '+linearize(x)
         case SimpleSentence(v, s, o, n):
-            complements = [k + ' ' + linearize(v) for k,v in ast.complements.items() if v]
+            complements = [k + ' ' + linearize(v) for k,v in ast.complements]
             complementsStr = reduce(lambda a,b:a+' '+b, complements, '')
-            verb = ' does '+(' not ' if n else '')  +linearize(v) 
+            verb = ' does '+(' not ' if n else '')  +linearize(v)
             return linearize(s) + verb + ' ' +linearize(o) + complementsStr
         case BinExp(op, l, r):
             return '( '+ linearize(l) +' ' + linearize(op) + ' '+linearize(r) +' )'
@@ -26,7 +26,7 @@ def linearize(ast:Ast)->str:
             return linearize(a) + ' when ' + linearize(b)
         case Which(h, w):
             return linearize(h) + ' which ' + linearize(w)
-        case Command(v):# TODO!!!
+        case Command(v):
             return '(' + linearize(v) +')' + '!'
         case _:
             raise Exception(ast)

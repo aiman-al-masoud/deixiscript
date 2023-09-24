@@ -32,7 +32,7 @@ class ExpBuilder(Generic[T]):
         return self.binop('+', x)
 
     def verbSen(self, verb:'Ast|ExpBuilder', negation:bool):
-        return ExpBuilder(SimpleSentence(makeAst(verb), self.e, _, negation, False, _, _, _))
+        return ExpBuilder(SimpleSentence(makeAst(verb), self.e, negation=negation))
 
     def does(self, verb:'Ast|ExpBuilder'):        
         return self.verbSen(verb, False)
@@ -43,8 +43,10 @@ class ExpBuilder(Generic[T]):
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
 
+        #TODO: copyAst dedup
         v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)})
         return ExpBuilder(v)
+        
 
     def _(self, object:'Ast|ExpBuilder'): return self.complement('object', object)
     def as_(self, as_:'Ast|ExpBuilder'): return self.complement('as_', as_)
@@ -66,7 +68,8 @@ class ExpBuilder(Generic[T]):
         return run(self.e, kb)
 
     def get(self, kb=KnowledgeBase.empty):
-        return e(removeCommands(self.e)).run(kb).head
+        return e(self.e).run(kb).head
+        # return e(removeCommands(self.e)).run(kb).head
     
     def count(self, kb=KnowledgeBase.empty):
         r = self.get(kb)
@@ -115,15 +118,15 @@ def the(card:int|str)->Callable[[str], ExpBuilder]|ExpBuilder:
 
     match card:
         case int(x):
-            return lambda s:ExpBuilder(Numerality(Noun(s), x, -1))
+            return lambda s:ExpBuilder(Numerality(Noun(s), x, -1)) # WRONG: NUMERALITY SHOULD WRAP ALL OTHER NOUNPHRASES!!!!! 
         case str(x):
             return ExpBuilder(Noun(x))
 
-def removeCommands(x:Ast):
-    p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
-    y = p(x)
-    z = p(y)
-    return z
+# def removeCommands(x:Ast):
+#     p = partial(subst, lambda x:isinstance(x, Command), lambda x: cast(Command, x).value)
+#     y = p(x)
+#     z = p(y)
+#     return z
 
 # .s in expbuilder to pluralize   the('cat').s
 # the(1).th('cat') or the(1).st('cat')  
