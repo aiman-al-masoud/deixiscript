@@ -25,7 +25,9 @@ def test4():
 
 def test5():
     m1 = match([L('x'), V('y', int|float)], ['capra', 'ciao', 1.0])
-    assert m1 and m1['x'] == ['capra', 'ciao'] and m1['y'] == 1.0
+    assert m1 
+    assert m1['x'] == ['capra', 'ciao'] 
+    assert m1['y'] == 1.0
 
 def test6():
     assert subst({'x':{'y':'z'}}, {'z':1}) == {'x':{'y':1}}
