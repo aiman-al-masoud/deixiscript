@@ -49,6 +49,6 @@ def isPredicate(x:object)->TypeGuard[Predicate]:
     return not isclass(x) and not get_origin(x)==Literal
 
 def isSingle(x:MetaAst):
-    if isinstance(x, Variable): return x.number==1
+    if isinstance(x, Variable): return x.maxCard==1
     return True
     

@@ -7,7 +7,7 @@ class Variable:
     name:str
     type:'MetaAst'=object
     default:'MetaAst|None'=None
-    number:int=sys.maxsize
+    maxCard:int=sys.maxsize
 
 def V(name:str, type:'MetaAst'=object, default:'MetaAst|None'=None):
     return Variable(name, type, default, 1)
