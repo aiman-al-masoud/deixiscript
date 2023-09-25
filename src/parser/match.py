@@ -1,7 +1,7 @@
 from functools import reduce
-from typing import List, Literal, Type, TypeGuard, cast, get_args, get_origin
+from typing import Callable, List, Literal, Type, TypeGuard, cast, get_args, get_origin
 from inspect import isclass
-from metalang import Derivation, Lit, Map, MetaAst, Predicate, Pattern, Variable
+from metalang import Derivation, Lit, Map, MetaAst, Pattern, Variable
 
 def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
 
@@ -44,7 +44,7 @@ def reduceMatchList(ms:List[Map|None]):
     r = reduce(lambda a,b: {**a, **b}, mss)
     return r
 
-def isPredicate(x:object)->TypeGuard[Predicate]:
+def isPredicate(x:object)->TypeGuard[Callable]:
     if not callable(x): return False
     return not isclass(x) and not get_origin(x)==Literal
 
