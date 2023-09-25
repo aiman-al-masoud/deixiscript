@@ -23,7 +23,7 @@ Predicate = Callable[[List['MetaAst']], object]
 V = Var
 L = MultiVar
 D = Derivation
-MetaAst = Var | Lit | Type | Predicate
+MetaAst = Var | MultiVar | Lit | Type | Predicate
 
 
 Pattern = List[MetaAst]
