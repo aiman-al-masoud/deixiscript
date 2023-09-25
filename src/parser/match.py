@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import List, Literal, Type, TypeGuard, cast, get_args, get_origin
 from inspect import isclass
-from metalang import Lit, Map, Predicate, Pattern, Var, MultiVar
+from metalang import Lit, Map, Predicate, Pattern, SingleVar, MultiVar
 
 def match(pat:Pattern, toks:List[Lit])->Map|None:
 
@@ -22,7 +22,7 @@ def match(pat:Pattern, toks:List[Lit])->Map|None:
             if match([ty], toks) is not None: return {n:toks}
             if d is not None: return {n:[d]}
             return None
-        case [Var(n, t)]:
+        case [SingleVar(n, t)]:
             if len(toks) >1: return None
             if match([t], toks[:1]) is None: return None
             return {n:toks[0]} 

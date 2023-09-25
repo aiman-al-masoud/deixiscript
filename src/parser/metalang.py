@@ -3,7 +3,7 @@ from typing import Callable, Dict, List, Type
 
 
 @dataclass(frozen=True)
-class Var:
+class SingleVar:
     name:str
     type:'MetaAst'=object
 
@@ -19,12 +19,11 @@ class Derivation:
     definition:object
 
 Lit = str | int | float
-Predicate = Callable[[List['MetaAst']], object]
-V = Var
+V = SingleVar
 L = MultiVar
 D = Derivation
-MetaAst = Var | MultiVar | Lit | Type | Predicate
-
-
+Variable = SingleVar | MultiVar
+Predicate = Callable[[List['MetaAst']], object]
+MetaAst = Variable | Lit | Type | Predicate
 Pattern = List[MetaAst]
 Map = Dict[str, object]
