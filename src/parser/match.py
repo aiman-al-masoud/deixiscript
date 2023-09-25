@@ -6,7 +6,7 @@ from metalang import Lit, Map, Predicate, Pattern, Var, MultiVar
 def match(pat:Pattern, toks:List[Lit])->Map|None:
 
     match pat:
-        case [mu, p, *ps] if isinstance(mu, MultiVar) and not isinstance(p, MultiVar):
+        case [mu, p, *ps] if isMultiVar(mu) and not isMultiVar(p):
             ms = [match([p], [t]) for t in toks]
             c = next((i for i, m in enumerate(ms) if m is not None), None)
             lm = match([mu], toks[:c]) if c is not None else None
@@ -45,6 +45,9 @@ def reduceMatchList(ms:List[Map|None]):
     r = reduce(lambda a,b: {**a, **b}, mss)
     return r
 
-def isPredicate(p:object)->TypeGuard[Predicate]:
-    if not callable(p): return False
-    return not isclass(p)   and not get_origin(p)==Literal
+def isPredicate(x:object)->TypeGuard[Predicate]:
+    if not callable(x): return False
+    return not isclass(x)   and not get_origin(x)==Literal
+
+def isMultiVar(x:object)->TypeGuard[MultiVar]:
+    return isinstance(x, MultiVar)
