@@ -60,6 +60,7 @@ An outline of the topics:
 - [Related work]()
   - [Pegasus]()
   - [Machines Like Us]()
+  - [Advice Taker]()
   - [ALVIN]()
   - [Programming by Voice Efficiency in the Reactive and Imperative Paradigm]()
   - [Natural language programming: Styles, strategies, and contrasts]()
