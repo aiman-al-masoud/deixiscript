@@ -3,12 +3,10 @@ from parse import parse
 from metalang import L,V,D
 
 
-binop=Literal['and', 'or']
-
 ds = [
     D([V('x')], 'x'),
     D([L('h'), 'which', L('w')],{'head':'h', 'which':'w'}),
-    D([L('l'), V('o', binop), L('r')],{'op':'o', 'left':'l', 'right':'r'}),
+    D([L('l'), V('o', Literal['and', 'or']), L('r')],{'op':'o', 'left':'l', 'right':'r'}),
     D([L('s', default=''), 'does', V('v'), L('o', default=''),],{'subject':'s', 'verb':'v', 'object':'o' }),
     D(['(', L('x'), ')'], 'x')
 ]
