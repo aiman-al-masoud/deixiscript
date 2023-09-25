@@ -9,9 +9,10 @@ def match(pat:Pattern, toks:List[Lit])->Map|None:
         case [mu, p, *ps] if isMultiVar(mu) and not isMultiVar(p):
             ms = [match([p], [t]) for t in toks]
             c = next((i for i, m in enumerate(ms) if m is not None), None)
-            lm = match([mu], toks[:c]) if c is not None else None
-            cm = ms[c] if c is not None else None
-            rm = match(ps, toks[c+1:]) if c is not None else None
+            if c is None: return None
+            lm = match([mu], toks[:c])
+            cm = ms[c]
+            rm = match(ps, toks[c+1:])
             return reduceMatchList([cm, lm, rm])
         case [p, *ps] if ps:
             m1 = match([p], toks[:1])
@@ -47,7 +48,7 @@ def reduceMatchList(ms:List[Map|None]):
 
 def isPredicate(x:object)->TypeGuard[Predicate]:
     if not callable(x): return False
-    return not isclass(x)   and not get_origin(x)==Literal
+    return not isclass(x) and not get_origin(x)==Literal
 
 def isMultiVar(x:object)->TypeGuard[MultiVar]:
     return isinstance(x, MultiVar)
