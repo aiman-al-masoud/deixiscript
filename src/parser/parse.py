@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Type, TypeVar
 from match import Map, match
 from metalang import Derivation
 
@@ -7,7 +7,7 @@ def parse(ds:List[Derivation], toks:object):
 
     match toks:
         case list(xs):
-            r1 = [match(d.pat, xs) for d in ds]
+            r1 = [match(d.pat, xs, ds) for d in ds]
             r2 = zip(r1, ds)
             r3 = next((subst(d.definition, m) for m,d in r2 if m is not None), None)
             if r3 is None: return toks

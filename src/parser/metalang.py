@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Type
+from typing import Callable, Dict, Generic, List, Type, TypeVar
 
 
 @dataclass(frozen=True)
@@ -23,7 +23,7 @@ V = SingleVar
 L = MultiVar
 D = Derivation
 Variable = SingleVar | MultiVar
-Predicate = Callable[[List['MetaAst']], object]
+Predicate = Callable[[object], object]
 MetaAst = Variable | Lit | Type | Predicate
 Pattern = List[MetaAst]
 Map = Dict[str, object]

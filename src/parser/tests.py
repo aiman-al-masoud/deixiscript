@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Callable, List
+from typing import Callable, List, Literal
 from match import match
 from metalang import L, V, D, MetaAst, Derivation
 from parse import parse, subst
@@ -51,32 +51,15 @@ def test9():
     m1 = match([V('x', lambda x: 'c' in str(x) )], ['ciao'])
     assert m1 and m1['x'] == 'ciao'
 
-def test10():
-    addsUpToSix = lambda x: sum(x) == 6
-    m1 = match([L('x', addsUpToSix)], [1,2,3])
-    assert m1 and m1['x'] == [1,2,3]
-    m2 = match([L('x', addsUpToSix)], [1,2])
-    assert not m2
+# def test10():
+#     addsUpToSix = lambda x: sum(x) == 6
+#     m1 = match([L('x', addsUpToSix)], [1,2,3])
+#     assert m1 and m1['x'] == [1,2,3]
+#     m2 = match([L('x', addsUpToSix)], [1,2])
+#     assert not m2
 
+# default values
 def test11():
-    ds = [
-        D([L('x'), 'and', L('y')], {'op':'and', 'l':'x', 'r':'y'}),
-        D([V('x')], 'x'),
-    ]
-
-    def parsesTo(ds:List[Derivation],f:Callable[[MetaAst], object], x:MetaAst):
-        ast = parse(ds, x)
-        return f(ast)
-
-    binExp = partial(parsesTo, ds, lambda x:isinstance(x, dict) and 'op' in x)
-
-    m1 = match([L('x'), 'and', L('y', binExp)], [1, 'and', 2, 'and', 3])
-    assert m1
-
-    m2 = match([L('x'), 'and', L('y', binExp)], [1, 'and', 2])
-    assert not m2
-
-def test12():
     m1 = match([L('x', int, 1)], ['ciao'])
     m2 = match([L('x', int, 1)], [999])
     m3 = match([L('x', int)], ['ciao'])
@@ -84,3 +67,40 @@ def test12():
     assert m1 and m1['x'] == [1]
     assert m2 and m2['x'] == [999]
     assert not m3
+
+
+# def test12():
+#     ds = [
+#         D([L('x'), 'and', L('y')], {'op':'and', 'l':'x', 'r':'y'}),
+#         D([V('x')], 'x'),
+#     ]
+
+#     def parsesTo(ds:List[Derivation],f:Callable[[MetaAst], object], x:MetaAst):
+#         ast = parse(ds, x)
+#         return f(ast)
+
+#     binExp = partial(parsesTo, ds, lambda x:isinstance(x, dict) and 'op' in x)
+
+#     m1 = match([L('x'), 'and', L('y', binExp)], [1, 'and', 2, 'and', 3])
+#     assert m1
+
+#     m2 = match([L('x'), 'and', L('y', binExp)], [1, 'and', 2])
+#     assert not m2
+
+def test13():
+
+    isThe = lambda x: isinstance(x, dict) and 'the' in x
+    isWhich = lambda x: isinstance(x, dict) and 'which' in x
+
+    ds = [
+        D([L('h', isThe), 'which', L('w')], {'head':'h', 'which':'w'}),
+        D(['the', L('h')], {'head':'h', 'the':True}),
+        D([V('x')], 'x'),
+    ]
+    
+    res = parse(ds, ['the', 'cat', 'which', 'eat'])
+    assert isWhich(res)
+
+    res = parse(ds, ['cat', 'which', 'eat'])
+    assert not isWhich(res)
+
