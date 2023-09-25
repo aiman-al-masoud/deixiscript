@@ -30,6 +30,7 @@ An outline of the topics:
   - [all grammars leak]()
   - [analytic vs synthetic grammar?]()
   - [dependency vs constituency parsing?]()
+  - [parser architecture]()
 - [Choosing the Constituents]()
   - [noun-phrases]()
   - [relative clauses & gapping]()
