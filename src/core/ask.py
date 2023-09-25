@@ -6,11 +6,11 @@ from normalized import decompressed, isImplicitish, removeImplicit
 from subst import subst
 from KnowledgeBase import KnowledgeBase, Result, WorldModel
 
-# Idiom
-# TODO: removeImplicit! Maybe needed also here?
-# TODO: subst is needed for cardinality preservation problem!
-# TODO: stipulate that Idiom cannot contain Command
-# TODO: Command(Idiom()) where?!
+# TODO: Idiom: removeImplicit! Maybe needed also here?
+# TODO: Idiom: subst is needed for cardinality preservation problem!
+# TODO: Idiom: stipulate that Idiom cannot contain Command
+# TODO: Idiom: Command(Idiom()) where?!
+# TODO: SyntheticDerivation: evaluate the effects
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
