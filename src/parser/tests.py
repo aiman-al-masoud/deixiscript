@@ -1,7 +1,5 @@
-from functools import partial
-from typing import Callable, List, Literal
 from match import match
-from metalang import L, V, D, MetaAst, Derivation
+from metalang import L, V, D
 from parse import parse, subst
 
 def test1():
