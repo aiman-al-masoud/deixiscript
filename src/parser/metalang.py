@@ -1,17 +1,16 @@
 from dataclasses import dataclass
-from typing import Callable, Dict, Generic, List, Type, TypeVar
-
-
-@dataclass(frozen=True)
-class SingleVar:
-    name:str
-    type:'MetaAst'=object
+from typing import Callable, Dict, List, Type
+import sys
 
 @dataclass(frozen=True)
-class MultiVar:
+class Variable:
     name:str
     type:'MetaAst'=object
     default:'MetaAst|None'=None
+    number:int=sys.maxsize
+
+def V(name:str, type:'MetaAst'=object, default:'MetaAst|None'=None):
+    return Variable(name, type, default, 1)
 
 @dataclass(frozen=True)
 class Derivation:
@@ -19,10 +18,8 @@ class Derivation:
     definition:object
 
 Lit = str | int | float
-V = SingleVar
-L = MultiVar
+L = Variable
 D = Derivation
-Variable = SingleVar | MultiVar
 Predicate = Callable[[object], object]
 MetaAst = Variable | Lit | Type | Predicate
 Pattern = List[MetaAst]

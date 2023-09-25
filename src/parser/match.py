@@ -1,12 +1,12 @@
 from functools import reduce
 from typing import List, Literal, Type, TypeGuard, cast, get_args, get_origin
 from inspect import isclass
-from metalang import Derivation, Lit, Map, Predicate, Pattern, SingleVar, MultiVar
+from metalang import Derivation, Lit, Map, MetaAst, Predicate, Pattern, Variable
 
 def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
 
     match pat:
-        case [mu, p, *ps] if isMultiVar(mu) and not isMultiVar(p):
+        case [mu, p, *ps] if not isSingle(mu) and isSingle(p):
             ms = [match([p], [t], ds) for t in toks]
             c = next((i for i, m in enumerate(ms) if m is not None), None)
             if c is None: return None
@@ -18,13 +18,10 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
             m1 = match([p], toks[:1], ds)
             m2 = match(ps, toks[1:], ds)
             return reduceMatchList([m1, m2])
-        case [MultiVar(n, ty, d)]:
-            if match([ty], toks, ds) is not None: return {n:toks}
+        case [Variable(n, t, d, num)]:
+            if len(toks) > num: return None
+            if match([t], toks[:num], ds) is not None: return {n: toks[:num] if num!=1 else toks[0]}
             if d is not None: return {n:[d]}
-        case [SingleVar(n, t)]:
-            if len(toks) >1: return None
-            if match([t], toks[:1], ds) is None: return None
-            return {n:toks[0]}
         case [str(x) | int(x) | float(x)]:
             return {} if toks[0]==x else None
         case [p] if isPredicate(p):
@@ -51,5 +48,7 @@ def isPredicate(x:object)->TypeGuard[Predicate]:
     if not callable(x): return False
     return not isclass(x) and not get_origin(x)==Literal
 
-def isMultiVar(x:object)->TypeGuard[MultiVar]:
-    return isinstance(x, MultiVar)
+def isSingle(x:MetaAst):
+    if isinstance(x, Variable): return x.number==1
+    return True
+    
