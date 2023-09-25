@@ -1,5 +1,5 @@
-from functools import reduce
 from typing import Callable, List, Literal, Type, TypeGuard, cast, get_args, get_origin
+from functools import reduce
 from inspect import isclass
 from metalang import Derivation, Lit, Map, MetaAst, Pattern, Variable
 
@@ -20,8 +20,11 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
             return reduceMatchList([m1, m2])
         case [Variable(n, t, d, num)]:
             if len(toks) > num: return None
-            if match([t], toks[:num], ds) is not None: return {n: toks[:num] if num!=1 else toks[0]}
-            if d is not None: return {n:[d]}
+            m1 = match([t], toks[:num], ds) is not None
+            if not m1 and d is None: return None
+            seq = toks if m1 else [d]
+            value = seq[:num] if num!=1 else seq[0]
+            return {n : value}
         case [str(x) | int(x) | float(x)]:
             return {} if toks[0]==x else None
         case [p] if isPredicate(p):
