@@ -15,7 +15,7 @@ An outline of the topics:
   - [FP](./programming-paradigms/3-functional-programming.md)
   - [LP](./programming-paradigms/4-logic-programming.md)
   - [some more exotic paradigms]()
-  - [the end of programming]()
+  - [the end of programming](./programming-paradigms/6-the-end-of-programming.md)
 - [Naturalistic Programming]()
   - [natural vs formal languages]()
   - [deixis (indirect references)]()
