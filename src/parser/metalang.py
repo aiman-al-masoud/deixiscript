@@ -27,4 +27,4 @@ MetaAst = Var | MultiVar | Lit | Type | Predicate
 
 
 Pattern = List[MetaAst]
-Map = Dict[str, Any]
+Map = Dict[str, object]
