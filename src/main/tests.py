@@ -11,7 +11,7 @@ ds = [
     D(['(', L('x', isAst), ')'], 'x'),
     D([V('x')], 'x'),
     D([L('h', isNounPhrasish), 'which', L('w', isAst)],e('h').which('w').e),
-    D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')), # TODO: wrong because and/or also do support full sentences
+    D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')), # TODO: make also alternative derivation with both left and right NOT nounphrasish
     D([L('s', default=''), 'does', V('v'), L('o', default=False),], e('s').does('v')._('o').e),
 ]
 
