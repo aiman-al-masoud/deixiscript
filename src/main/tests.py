@@ -12,7 +12,7 @@ ds = [
     D([V('x')], 'x'),
     D([L('h', isNounPhrasish), 'which', L('w', isAst)],e('h').which('w').e),
     D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')), # TODO: make also alternative derivation with both left and right NOT nounphrasish
-    D([L('s', default=''), 'does', V('v'), L('o', default=False),], e('s').does('v')._('o').e),
+    D([L('s', type=isNounPhrasish, default=''), 'does', V('v'), L('o', type=isNounPhrasish, default=False),], e('s').does('v')._('o').e),
 ]
 
 # ------------------TESTS-------------------
@@ -38,8 +38,9 @@ def test_g5():
     assert x == e('cat').which(does('run')).e
 
 # def test_g6():
-#     x = parse(ds, ['cat', 'which', 'does', 'be', 'red', 'does', 'eat','mouse'])
+#     x = parse(ds, ['cat', 'which', 'does', 'be', 'red', 'does', 'eat', 'mouse'])
 #     # WRONG!
+#     print(x)
 
 def test_g7():
   x = parse(ds, ['cat', 'and', 'dog', 'does', 'run'])

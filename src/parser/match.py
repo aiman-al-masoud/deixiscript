@@ -28,6 +28,7 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
         case [str(x) | int(x) | float(x)]:
             return {} if toks[0]==x else None
         case [p] if isPredicate(p):
+            if not toks: return None
             from parser.parse import parse
             subast = parse(ds, toks)
             return {} if p(subast) else None
