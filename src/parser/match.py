@@ -1,7 +1,7 @@
 from typing import Callable, List, Literal, Type, TypeGuard, cast, get_args, get_origin
 from functools import reduce
 from inspect import isclass
-from metalang import Derivation, Lit, Map, MetaAst, Pattern, Variable
+from parser.metalang import Derivation, Lit, Map, MetaAst, Pattern, Variable
 
 def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
 
@@ -28,7 +28,7 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
         case [str(x) | int(x) | float(x)]:
             return {} if toks[0]==x else None
         case [p] if isPredicate(p):
-            from parse import parse
+            from parser.parse import parse
             subast = parse(ds, toks)
             return {} if p(subast) else None
         case [t] if get_origin(t)==Literal:

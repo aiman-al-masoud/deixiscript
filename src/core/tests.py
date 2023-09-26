@@ -1,17 +1,11 @@
-from expbuilder import does, e, every, it_is_false_that, new, the, _
-from language import Implicit
-from matchAst import matchAst, sortByGenerality
-from normalized import decompressed
-from subst import subst
-from findAsts import findAsts
-from KnowledgeBase import KnowledgeBase
+from core.expbuilder import does, e, every, it_is_false_that, new, the, _
+from core.matchAst import matchAst, sortByGenerality
+from core.normalized import decompressed
+from core.subst import subst
+from core.findAsts import findAsts
+from core.KnowledgeBase import KnowledgeBase
+from core.language import Implicit
 
-# 
-# clear; pytest-3 tests.py
-# pytest-3 tests.py -k test12   # filter out a test
-# pytest-3 tests.py -s   # show all print messages
-# pytest-3 tests.py -v   # verbose test results
-# 
 
 # %% subst tests
 def test1():

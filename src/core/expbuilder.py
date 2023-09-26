@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, overload
-from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
-from KnowledgeBase import KnowledgeBase
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
+from core.KnowledgeBase import KnowledgeBase
 
 
 _=''    
@@ -55,7 +55,7 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(Idiom(self.e))
 
     def run(self, kb=KnowledgeBase()):
-        from ask import ask
+        from core.ask import ask
         return ask(self.e, kb)
 
     def get(self, kb=KnowledgeBase()):
@@ -73,7 +73,7 @@ class ExpBuilder(Generic[T]):
     
     @property
     def lin(self):
-        from linearize import linearize
+        from core.linearize import linearize
         return linearize(self.e)
 
 

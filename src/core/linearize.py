@@ -1,5 +1,5 @@
 from functools import reduce
-from language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, SimpleSentence, Which
 
 def linearize(ast:Ast)->str:
 

@@ -1,10 +1,10 @@
 from functools import reduce
 from typing import cast
-from expbuilder import does, e, _, every, the
-from language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
-from normalized import decompressed, isImplicitish, removeImplicit
-from subst import subst
-from KnowledgeBase import KnowledgeBase, Result, WorldModel
+from core.expbuilder import does, e, _, every, the
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
+from core.normalized import decompressed, isImplicitish, removeImplicit
+from core.subst import subst
+from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
 
 # TODO: Idiom: removeImplicit! Maybe needed also here?
 # TODO: Idiom: subst is needed for cardinality preservation problem!
@@ -145,6 +145,6 @@ def __makeExplicit(ast:SimpleSentence, kb:KnowledgeBase):
     return Result(x2, x1.kb)
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
-    from matchAst import matchAst
+    from core.matchAst import matchAst
     d = next((d.definition for d in kb.adcs if matchAst(d.definendum, ast, kb)), ast)
     return d

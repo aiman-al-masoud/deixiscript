@@ -1,5 +1,5 @@
 from typing import Callable, Tuple
-from language import Ast, Explicit
+from core.language import Ast, Explicit
 
 def findAsts(ast:Ast, fn:Callable[[Ast],bool])->Tuple[Ast, ...]:
 

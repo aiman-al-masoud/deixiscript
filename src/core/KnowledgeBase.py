@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict, FrozenSet, Tuple
-from language import AnalyticDerivation, Ast
+from core.language import AnalyticDerivation, Ast
 
 
 WmSentence = Tuple[Ast, Ast, Ast]
@@ -23,14 +23,14 @@ class KnowledgeBase:
     adcs:FrozenSet[AnalyticDerivation]= frozenset()
     dd:DeicticDict= DeicticDict({})
 
-    def __add__(self, o:'WorldModel|DeicticDict|AnalyticDerivation'):
+    def __add__(self, o:WorldModel|DeicticDict|AnalyticDerivation):
         match o:
             case frozenset():
                 return KnowledgeBase(self.wm | o, self.adcs, self.dd)
             case DeicticDict():
                 return KnowledgeBase(self.wm, self.adcs, o)
             case AnalyticDerivation():
-                from matchAst import sortByGenerality
+                from core.matchAst import sortByGenerality
                 dcs = self.adcs | {o}
                 sortedDcs = sortByGenerality(self, dcs)
                 setDcs = frozenset(sortedDcs)

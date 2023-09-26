@@ -1,9 +1,9 @@
-from expbuilder import e
-from findAsts import findAsts
-from language import Ast, BinExp, Explicit, Implicit, Negation, NounPhrase, NounPhrasish
 from functools import reduce
-from subst import  subst
-from KnowledgeBase import KnowledgeBase, Result
+from core.expbuilder import e
+from core.findAsts import findAsts
+from core.language import Ast, BinExp, Explicit, Implicit, Negation, NounPhrase, NounPhrasish
+from core.subst import  subst
+from core.KnowledgeBase import KnowledgeBase, Result
 
 
 def removeImplicit(ast:Ast, kb:KnowledgeBase):

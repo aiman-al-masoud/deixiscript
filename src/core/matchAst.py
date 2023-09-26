@@ -1,8 +1,8 @@
 from functools import cmp_to_key, partial
 from typing import Iterable, Literal, TypeVar
-from expbuilder import e, it_is_false_that
-from language import AnalyticDerivation, Ast
-from KnowledgeBase import KnowledgeBase
+from core.expbuilder import e, it_is_false_that
+from core.language import AnalyticDerivation, Ast
+from core.KnowledgeBase import KnowledgeBase
 
 T = TypeVar('T', bound=Ast)
 

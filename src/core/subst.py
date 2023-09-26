@@ -1,5 +1,5 @@
 from typing import Callable
-from language import Ast, Explicit
+from core.language import Ast, Explicit
 
 def subst(
     old:Callable[[Ast], bool]|Ast, 

@@ -1,6 +1,6 @@
 from typing import List, Type, TypeVar
-from match import Map, match
-from metalang import Derivation
+from parser.match import Map, match
+from parser.metalang import Derivation
 
 
 def parse(ds:List[Derivation], toks:object):

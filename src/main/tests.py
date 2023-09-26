@@ -1,6 +1,6 @@
 from typing import Literal
-from parse import parse
-from metalang import L,V,D
+from parser.parse import parse
+from parser.metalang import L,V,D
 
 
 ds = [

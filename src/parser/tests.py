@@ -1,6 +1,6 @@
-from match import match
-from metalang import L, V, D
-from parse import parse, subst
+from parser.match import match
+from parser.metalang import L, V, D
+from parser.parse import parse, subst
 
 def test1():
     m1 = match([L('x'), 'capra'], ['1', '2', 'capra'])
