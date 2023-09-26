@@ -14,7 +14,7 @@ from core.language import BinExp
 ds = [
     D([V('x')], 'x'),
     D([L('h'), 'which', L('w')],e('h').which('w').e),
-    D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')),
+    D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')), # TODO: wrong because and/or also do support full sentences
     D([L('s', default=''), 'does', V('v'), L('o', default=False),], e('s').does('v')._('o').e),
     D(['(', L('x'), ')'], 'x')
 ]
