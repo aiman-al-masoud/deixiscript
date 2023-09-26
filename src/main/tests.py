@@ -1,14 +1,11 @@
 from typing import Literal
-from core.normalized import isNounPhrasish
+from core.normalized import isNounPhrasish, isAst
 from parser.parse import parse
 from parser.metalang import L,V,D
 from core.expbuilder import does, e
-from core.language import BinExp, Ast
-
+from core.language import BinExp
 
 # TODO: implicit and idiomatic by default
-
-isAst = lambda x: isinstance(x, Ast)
 
 ds = [
     D(['(', L('x', isAst), ')'], 'x'),

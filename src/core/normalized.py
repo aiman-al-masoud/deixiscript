@@ -34,6 +34,9 @@ def isNounPhrasish(ast:Ast):
 def isNounPhrasishConn(ast:Ast):
     return isNounPhrasish(ast) and isinstance(ast, BinExp) and ast.op in ['and', 'or']
 
+def isAst(x:object):
+    return isinstance(x, Ast)
+
 findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
 
