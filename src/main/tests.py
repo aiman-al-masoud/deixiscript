@@ -3,20 +3,19 @@ from core.normalized import isNounPhrasish
 from parser.parse import parse
 from parser.metalang import L,V,D
 from core.expbuilder import does, e
-from core.language import BinExp
-# from core.normalized import isNounPhrasish
-
-
+from core.language import BinExp, Ast
 
 
 # TODO: implicit and idiomatic by default
 
+isAst = lambda x: isinstance(x, Ast)
+
 ds = [
+    D(['(', L('x', isAst), ')'], 'x'),
     D([V('x')], 'x'),
-    D([L('h'), 'which', L('w')],e('h').which('w').e),
+    D([L('h', isNounPhrasish), 'which', L('w', isAst)],e('h').which('w').e),
     D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')), # TODO: wrong because and/or also do support full sentences
     D([L('s', default=''), 'does', V('v'), L('o', default=False),], e('s').does('v')._('o').e),
-    D(['(', L('x'), ')'], 'x')
 ]
 
 # ------------------TESTS-------------------
@@ -53,6 +52,6 @@ def test_g8():
    x = parse(ds, ['(', 1, ')'])
    assert x == 1
 
-# def test_g9():
-#    x = parse(ds, ['(', 'cat', 'which', 'does', 'run', ')'])
-#    # WRONG!
+def test_g9():
+   x = parse(ds, ['(', 'cat', 'which', 'does', 'run', ')'])
+   assert x == e('cat').which(does('run')).e
