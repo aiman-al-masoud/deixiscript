@@ -1,12 +1,14 @@
 from typing import Literal
 from parser.parse import parse
 from parser.metalang import L,V,D
+from core.expbuilder import e
+from core.language import BinExp
 
 
 ds = [
     D([V('x')], 'x'),
     D([L('h'), 'which', L('w')],{'head':'h', 'which':'w'}),
-    D([L('l'), V('o', Literal['and', 'or']), L('r')],{'op':'o', 'left':'l', 'right':'r'}),
+    D([L('l'), V('op', Literal['and', 'or']), L('r')], BinExp('op', 'l', 'r')),
     D([L('s', default=''), 'does', V('v'), L('o', default=''),],{'subject':'s', 'verb':'v', 'object':'o' }),
     D(['(', L('x'), ')'], 'x')
 ]
@@ -15,7 +17,7 @@ ds = [
 
 def test_g1():
     x = parse(ds, [1, 'or', 2, 'and', 3])
-    assert x == {'op' : 'or', 'left':1, 'right': {'op':'and', 'left':2, 'right':3} }
+    assert x == e(1).or_(e(2).and_(3)).e
 
 def test_g2():
     x = parse(ds, ['cat', 'does', 'run'])

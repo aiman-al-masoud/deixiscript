@@ -15,8 +15,13 @@ def parse(ds:List[Derivation], toks:object):
             return r4
         case str(x)|int(x)|float(x):
             return x
-        case dict(d): # TODO: any object
+        case dict(d): 
             return {k:parse(ds, v) for k,v in d.items()}
+        case object() if toks and hasattr(toks, '__dict__'):
+            x1 = vars(toks)
+            x2 = parse(ds, x1)
+            x3 = toks.__class__(**x2)
+            return x3
         case _:
             raise Exception('parse', toks)
 
@@ -26,5 +31,10 @@ def subst(ast:object, map:Map):
             return map.get(x, x)
         case dict(d):
             return {k:subst(v, map) for k,v in d.items()}
+        case object() if ast and hasattr(ast, '__dict__'):
+            x1 = vars(ast)
+            x2 = subst(x1, map)
+            x3 = ast.__class__(**x2)
+            return x3
         case _:
             return ast
