@@ -2,25 +2,8 @@
 
 ## Notes on Philosophy & Method
 
-- At the most basic level there is nothing but: entities, is-a-relations and
-  has-as-relations. This is the "interface" through which Deixiscript
-  communicates with the outer world, including JS, which only uderstands has-as
-  properties (not is-a ones because JS doesn't have multiple inheritance).
-
-- The user, instead, communicates with Deixiscript through well formed formulas,
-  which include a subset of grammatical english sentences.
-
-- Implicit references work as if any entity got the current timestamp whenever
-  it was mentioned. When function ask() is called from findAll() the deictic
-  dict is NOT updated, because the results from ask() are ignored.
-
 - Pronouns are defined through derivation clauses that have a constant (entity)
   as their "conseq" part and an implicit reference as their "where" part.
-
-- There are 3 basic and one 1 semi-basic verbs (EQUALS,IS-A,HAS-AS,BE), EQUALS
-  cannot be overriden, all the others can, BE defaults to EQUALS in the most
-  general case. All other verbs need to be prefixed with a helper/auxiliary
-  (do/does) to let the (current) parser know they're being used as verbs.
 
 - If the new derivation-clause-based parser will be adopted, the core language
   will preferably be purely analytic (one morpheme at most per space-delimited
