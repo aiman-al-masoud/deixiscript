@@ -267,4 +267,4 @@ def test_c35():
     assert the('mouse').which(the('cat').does('eat')._(_)).get(kb2) == 'mouse#2'
 
     # OLD----------------
-    # the(1)( the('mouse').which(e('cat#1').does('eat')._(_)) )
+    # the(1)(the('mouse').which(e('cat#1').does('eat')._(_)))

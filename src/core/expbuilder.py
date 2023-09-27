@@ -1,6 +1,7 @@
+import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, Which
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -81,9 +82,6 @@ def e(x:Ast|ExpBuilder):
     '''explicit'''
     return ExpBuilder(makeAst(x))
 
-def every(x:Ast):
-    return ExpBuilder(Noun(x))
-
 def does(v:Ast):
     return e(_).does(v)
 
@@ -97,18 +95,24 @@ def new(x:Ast|ExpBuilder):
     return ExpBuilder(Command(makeAst(x)))
 
 @overload
-def the(card:int)->Callable[[str], ExpBuilder]:...
+def the(x:int)->Callable[[Ast], ExpBuilder]:...
 @overload
-def the(card:str)->ExpBuilder:...
-def the(card:int|str)->Callable[[str], ExpBuilder]|ExpBuilder:
+def the(x:Ast)->ExpBuilder[Numerality]:...
+def the(x:Ast=sys.maxsize)->object:
 
-    match card:
-        case int(x):
-            return lambda s:ExpBuilder(Numerality(Noun(s), x, -1)) # WRONG: NUMERALITY SHOULD WRAP ALL OTHER NOUNPHRASES!!!!! 
-        case str(x):
-            return ExpBuilder(Noun(x))
+    match x:
+        case int():
+            return lambda y:e(Numerality(makeImplicit(y), x, -1))
+        case object():
+            return e(Numerality(makeImplicit(x), sys.maxsize, -1))
+        case _:
+            raise Exception('the', x)
 
+def makeImplicit(ast:Ast):
+    from core.normalized import isImplicitish, isNounPhrasish
+    assert isNounPhrasish(ast)
+    return ast if isImplicitish(ast) else Noun(ast)
 
-# .s in expbuilder to pluralize   the('cat').s
-# the(1).th('cat') or the(1).st('cat')  
+def every(x:Ast):
+    return the(sys.maxsize)(x)
 
