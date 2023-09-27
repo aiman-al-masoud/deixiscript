@@ -171,19 +171,19 @@ def test25():
 #     assert isinstance(n.right, SimpleSentence)
 #     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
 
-# def test26(): # with analytic derivation clause
-#     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
-#     x = normalized(new(new(the('man')).does('ride').on(new(the('horse')))).e, kb1).head
-#     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
-#     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
-
-def test27(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
+def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
     kb1 = the('it').when(the(1)('thing')).tellKb()
     kb2 = the('capra').tellKb(kb1)
     r = the('it').idiom.run(kb2)
     assert 'capra#1' == r.head
     # print(r.head)
     # assert isinstance(r.head, tuple)
+
+# def test27(): # with analytic derivation clause
+#     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
+#     x = normalized(new(new(the('man')).does('ride').on(new(the('horse')))).e, kb1).head
+#     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
+#     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
 
 # %% numerality tests
 def test28():
