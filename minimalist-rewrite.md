@@ -1,3 +1,6 @@
+Use brython to package the interpreter for the web
+https://brython.info/static_tutorial/en/index.html
+
 everything the user says will be assumed to be Implicit and Idiomatic, but explicit ids and ad-litteram sentences need to be considered at a certain point during the execution in the interpreter.
 
 if there is an individual cat -> there is also the concept of a cat, concepts are "eternal", no need to create concepts in tell
