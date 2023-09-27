@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.KnowledgeBase import KnowledgeBase
 
 
