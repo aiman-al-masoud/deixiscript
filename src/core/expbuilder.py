@@ -104,6 +104,7 @@ def the(x:Ast=sys.maxsize)->object:
         case int():
             return lambda y:e(Numerality(makeImplicit(y), x, -1))
         case object():
+            # return e(Numerality(makeImplicit(x), 1, -1))
             return e(Numerality(makeImplicit(x), sys.maxsize, -1))
         case _:
             raise Exception('the', x)
@@ -113,6 +114,5 @@ def makeImplicit(ast:Ast):
     assert isNounPhrasish(ast)
     return ast if isImplicitish(ast) else Noun(ast)
 
-def every(x:Ast):
+def every(x:Ast): # or any
     return the(sys.maxsize)(x)
-

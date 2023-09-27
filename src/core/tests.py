@@ -161,7 +161,7 @@ def test25():
     maybe = sortByGenerality(KnowledgeBase(), wrong)
     assert maybe == correct
 
-# %% normalization tests
+# %% ~normalization tests~  IDIOM TESTS
 # def test20():
 #     kb = the('cat').tellKb()
 #     n = normalized(every('cat').does('jump').e, kb).head
@@ -177,13 +177,13 @@ def test25():
 #     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
 #     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
 
-def test27(): # TODO: numerality for "it", and super,thing don't need to be DD-incremented
-    kb1 = the('they').when(the('thing')).tellKb()
+def test27(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
+    kb1 = the('it').when(the(1)('thing')).tellKb()
     kb2 = the('capra').tellKb(kb1)
-
-    r = the('they').idiom.run(kb2)
-    assert isinstance(r.head, tuple)
-    assert 'capra#1' in set(r.head)
+    r = the('it').idiom.run(kb2)
+    assert 'capra#1' == r.head
+    # print(r.head)
+    # assert isinstance(r.head, tuple)
 
 # %% numerality tests
 def test28():
@@ -191,7 +191,7 @@ def test28():
     kb2 = the('capra').tellKb(kb1)
     kb3 = the('capra').tellKb(kb2)
 
-    multiple = the('capra').get(kb3)
+    multiple = every('capra').get(kb3)
     single   = the(1)('capra').get(kb3)
 
     assert isinstance(multiple, tuple)
@@ -248,10 +248,11 @@ def test34():
     kb3 = the('mouse').tellKb(kb2)
 
     spec = e('cat#2').does('eat')._('mouse#2').e
-    gen = the('cat').does('eat')._(the('mouse')).e
+    gen = every('cat').does('eat')._(every('mouse')).e  # or the
 
     assert matchAst(gen, spec, kb3)
     assert not matchAst(spec, gen, kb3)
+
 
 # logic and deictic dict test
 def test_c35():

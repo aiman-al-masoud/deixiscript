@@ -1,10 +1,11 @@
 from functools import reduce
+import sys
 from typing import cast
-from core.expbuilder import does, e, _, every, the
+from core.expbuilder import does, e, _, every
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, removeImplicit
 from core.subst import subst
-from core.KnowledgeBase import DeicticDict, KnowledgeBase, Result, WorldModel
+from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
 
 # TODO: Idiom: removeImplicit! Maybe needed also here?
 # TODO: Idiom: subst is needed for cardinality preservation problem!
@@ -100,11 +101,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r2 = e(ww).tell(kb + r1.addition)
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
-
             # TODO!
-            return e(h).tell(kb)
-            # raise Exception('')
-
+            return e(h).tell(kb) # raise Exception('')
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
@@ -131,7 +129,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(v).tell(kb)
             kb1 = kb - r1.addition + r1.kb.dd
             return Result(True, kb1)
-        case BinExp('and'|'or', l, r): # TODO tell or like and?
+        case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
             return Result(True, r2.kb, r1.addition | r2.addition)
@@ -143,7 +141,7 @@ def __simpleSentenceToAction(ast:SimpleSentence):
     x1 = ast.args
     x2 = [does('have')._(v).as_(k) for k,v in x1]
     x3 = reduce(lambda a,b:a.and_(b), x2)
-    x4 = the('action').which(x3).e
+    x4 = every('action').which(x3).e
     return x4
 
 def __makeExplicit(ast:SimpleSentence, kb:KnowledgeBase):
