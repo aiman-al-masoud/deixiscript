@@ -101,14 +101,5 @@
 
 ## Limitations (Out of Scope Problems)
 
-- context sentitivity is incomplete
-  - the cat eats the kibble piece
-  - it jumps it resolves to "the kibble piece"
 - no cataphora.
-- no ambiguous sentence recognition and multi-tree parse, but possiblility to
-  "disambiguate" (really: change default parse order) using parentheses.
-- past tense
-  - list of world models = history
-  - "anachronistic semantics": set of derivation clauses is unique
-  - search all of history in case of unspecified time
-  - alter all of history in case of unspecified time
+

@@ -1,0 +1,5 @@
+- past tense
+  - list of world models = history
+  - "anachronistic semantics": set of derivation clauses is unique
+  - search all of history in case of unspecified time
+  - alter all of history in case of unspecified time
