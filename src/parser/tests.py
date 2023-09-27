@@ -1,6 +1,7 @@
 from parser.match import match
 from parser.metalang import L, V, D
 from parser.parse import parse, subst
+from parser.tokenize import tokenize
 
 def test1():
     m1 = match([L('x'), 'capra'], ['1', '2', 'capra'])
@@ -49,13 +50,6 @@ def test9():
     m1 = match([V('x', lambda x: 'c' in str(x) )], ['ciao'])
     assert m1 and m1['x'] == 'ciao'
 
-# def test10():
-#     addsUpToSix = lambda x: sum(x) == 6
-#     m1 = match([L('x', addsUpToSix)], [1,2,3])
-#     assert m1 and m1['x'] == [1,2,3]
-#     m2 = match([L('x', addsUpToSix)], [1,2])
-#     assert not m2
-
 # default values
 def test_p11():
     m1 = match([L('x', int, 1)], ['ciao'])
@@ -67,25 +61,6 @@ def test_p11():
     assert m2 and m2['x'] == [999]
     assert not m3
     assert m4 and m4['x'] == [1]
-
-
-# def test12():
-#     ds = [
-#         D([L('x'), 'and', L('y')], {'op':'and', 'l':'x', 'r':'y'}),
-#         D([V('x')], 'x'),
-#     ]
-
-#     def parsesTo(ds:List[Derivation],f:Callable[[MetaAst], object], x:MetaAst):
-#         ast = parse(ds, x)
-#         return f(ast)
-
-#     binExp = partial(parsesTo, ds, lambda x:isinstance(x, dict) and 'op' in x)
-
-#     m1 = match([L('x'), 'and', L('y', binExp)], [1, 'and', 2, 'and', 3])
-#     assert m1
-
-#     m2 = match([L('x'), 'and', L('y', binExp)], [1, 'and', 2])
-#     assert not m2
 
 def test13():
 
@@ -104,3 +79,9 @@ def test13():
     res = parse(ds, ['cat', 'which', 'eat'])
     assert not isWhich(res)
 
+# tokenize
+def test_p14():
+    source = '"hello world" is a (string) and also " hello Buruf " 1 2 false true 300'
+    ok = ['hello world', 'is', 'a', '(', 'string', ')', 'and', 'also', ' hello Buruf ', 1.0, 2.0, 'false', 'true', 300.0]
+    maybe = tokenize(source)
+    assert ok == maybe
