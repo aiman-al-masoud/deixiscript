@@ -5,6 +5,8 @@ from parser.parse import parse
 from parser.metalang import L,V,D
 
 # TODO: implicit and idiomatic by default
+# TODO: add numerality
+# TODO: derivation clauses
 
 ds = [
     D(['(', L('x', isAst), ')'], 'x'),
