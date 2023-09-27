@@ -177,11 +177,13 @@ def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be
     r = the('it').idiom.run(kb2)
     assert 'capra#1' == r.head
 
-# def test27(): # with analytic derivation clause
+# def test27():
 #     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
-#     x = normalized(new(new(the('man')).does('ride').on(new(the('horse')))).e, kb1).head
+#     kb2 = the('man').tellKb(kb1)
+#     kb3 = the('horse').tellKb(kb2)
+#     kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tellKb(kb3)
+#     print(kb4.wm) # TODO: too many actions!
 #     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
-#     assert findAsts(x, lambda x:x == e('man#1').does('sit').on('horse#1').e) # partial check
 
 # %% numerality tests
 def test28():
