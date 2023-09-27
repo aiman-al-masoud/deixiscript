@@ -4,7 +4,7 @@ from core.expbuilder import does, e, _, every, the
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, removeImplicit
 from core.subst import subst
-from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
+from core.KnowledgeBase import DeicticDict, KnowledgeBase, Result, WorldModel
 
 # TODO: Idiom: removeImplicit! Maybe needed also here?
 # TODO: Idiom: subst is needed for cardinality preservation problem!
@@ -41,7 +41,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Numerality(h, c, o):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x]))
+            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=True))
             x4 = x3[:c]
             x5 = x4[0] if len(x4)==1 else x4
             return e(x5).run(kb)
@@ -91,7 +91,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case Noun(h):
             n = every(h).count(kb)
             new = f'{h}#{n}'
-            r1 = e(new).does('be')._(h).tell(kb)            
+            kb1 = kb + kb.dd.update(new)
+            r1 = e(new).does('be')._(h).tell(kb1) 
             return Result(new, r1.kb, r1.addition)
         case Which(h, w):
             r1 = e(h).tell(kb)
@@ -103,8 +104,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
-            delta = frozenset({(s, o, a)})
-            return Result(True, kb + delta, delta)
+            s = (s, o, a)
+            delta = frozenset({s})
+            kb1  = kb + delta
+            return Result(True, kb1, delta)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             new = e(action).get(kb)

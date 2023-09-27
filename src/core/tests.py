@@ -253,13 +253,18 @@ def test34():
     assert matchAst(gen, spec, kb3)
     assert not matchAst(spec, gen, kb3)
 
-def test35():
+# logic and deictic dict test
+def test_c35():
 
     kb1 = the('mouse').tellKb()
     kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb(kb1)
 
+    assert the(1)('cat').get(kb2) == 'cat#1'
+    assert the(1)('mouse').get(kb2) == 'mouse#2'
     assert e('cat#1').does('eat')._('mouse#2').get(kb2)
+    assert the('cat').does('eat')._(the('mouse')).get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
-    assert the('mouse').which(e('cat#1').does('eat')._(_)).get(kb2) == 'mouse#2'
+    assert the('mouse').which(the('cat').does('eat')._(_)).get(kb2) == 'mouse#2'
 
+    # OLD----------------
     # the(1)( the('mouse').which(e('cat#1').does('eat')._(_)) )
