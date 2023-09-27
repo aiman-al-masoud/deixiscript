@@ -7,15 +7,11 @@ from core.language import BinExp
 
 # TODO: implicit and idiomatic by default
 
-# TODO: NOT defaults!!!! they break match, instead, have an optional flag
-# which keeps the parse even if it's None, None is ok!!
-
 ds = [
     D(['(', L('x', isAst), ')'], 'x'),
     D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], BinExp('op', 'l', 'r')), # TODO: make also alternative derivation with both left and right NOT nounphrasish
     D([L('h', isNounPhrasish), 'which', L('w', isAst)],e('h').which('w').e),
-    # D([L('s', type=isNounPhrasish), 'does', V('v'), L('o', type=isNounPhrasish),], e('s').does('v')._('o').e),
-    D([L('s', type=isNounPhrasish, default=''), 'does', V('v'), L('o', type=isNounPhrasish, default=False),], e('s').does('v')._('o').e), # TODO: BAD
+    D([L('s', type=isNounPhrasish, default=''), 'does', V('v'), L('o', type=isNounPhrasish, default=False),], e('s').does('v')._('o').e),
     D([V('x')], 'x'),
 ]
 
@@ -41,10 +37,10 @@ def test_g5():
     x = parse(ds, ['cat', 'which', 'does', 'run'])
     assert x == e('cat').which(does('run')).e
 
-# def test_g6():
-#     x = parse(ds, ['cat', 'which', 'does', 'be', 'red', 'does', 'eat', 'mouse'])
-#     # WRONG!
-#     print(x)
+def test_g6():
+    # x = parse(ds, ['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run' ])
+    x = parse(ds, ['cat', 'which', 'does', 'exist',  'does', 'run' ])
+    assert x == e('cat').which(does('exist')).does('run').e
 
 def test_g7():
   x = parse(ds, ['cat', 'and', 'dog', 'does', 'run'])
@@ -58,6 +54,3 @@ def test_g9():
    x = parse(ds, ['(', 'cat', 'which', 'does', 'run', ')'])
    assert x == e('cat').which(does('run')).e
 
-# TODO!
-# def test_g10():
-#     x = parse(ds, ['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run' ])

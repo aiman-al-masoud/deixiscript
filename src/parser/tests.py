@@ -57,14 +57,16 @@ def test9():
 #     assert not m2
 
 # default values
-def test11():
+def test_p11():
     m1 = match([L('x', int, 1)], ['ciao'])
     m2 = match([L('x', int, 1)], [999])
     m3 = match([L('x', int)], ['ciao'])
+    m4 = match([L('x', int, 1)], [])
     
-    assert m1 and m1['x'] == [1]
+    assert not m1
     assert m2 and m2['x'] == [999]
     assert not m3
+    assert m4 and m4['x'] == [1]
 
 
 # def test12():

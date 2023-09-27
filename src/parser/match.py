@@ -1,38 +1,27 @@
-from typing import Callable, List, Literal, Type, TypeGuard, cast, get_args, get_origin
+from typing import Callable, List, Literal, Sequence, Type, TypeGuard, cast, get_args, get_origin
 from functools import reduce
 from inspect import isclass
 from parser.metalang import Derivation, Lit, Map, MetaAst, Pattern, Variable
 
 def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
 
-    # test  = ['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run']
-
     match pat:
         case [mu, p, *ps] if not isSingle(mu) and isSingle(p):
 
-            # def f(i:int, t:Lit):
-            #     c = match([p], [t], ds)
-            #     if c is None: return None
-            #     do the lm and rm checks right in here
-            #     l = toks[:i]
-            #     r = toks[i+1:]
-            #     lm = match([mu], l, ds)
-            #     if test==toks and 'does' in str(pat): print('t=', t, 'l=', l, 'r=', r, 'lm=', lm)
-            #     # if l is None: return None
-            #     # r = match(ps, toks[i+1:], ds)
-            #     # if r is None: return None 
-            #     return c
+            def check(i:int, t:Lit):
+                C = match([p], [t], ds)
+                if C is None: return None
+                L = match([mu], toks[:i], ds)
+                if L is None: return None
+                R = match(ps, toks[i+1:], ds)
+                if R is None: return None
+                return (C, L, R)
 
-            ms = [match([p], [t], ds) for i, t in enumerate(toks)]
+            ms = [check(i, t) for i, t in enumerate(toks)]
+            m = next((m for m in ms if m is not None), None)
+            if m is None: return None
 
-            C = next((i for i, m in enumerate(ms) if m is not None), None)
-
-            if C is None: return None            
-
-            lm = match([mu], toks[:C], ds)
-            cm = ms[C]
-            rm = match(ps, toks[C+1:], ds)
-            return reduceMatchList([cm, lm, rm])
+            return reduceMatchList(m)
 
         case [p, *ps] if ps:
             m1 = match([p], toks[:1], ds)
@@ -42,6 +31,7 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
             if len(toks) > num: return None
             m1 = match([t], toks[:num], ds) is not None
             if not m1 and d is None: return None
+            if not m1 and toks[:num]: return None # defaults apply only if there are NO tokens, not if there are tokens but they're WRONG!
             seq = toks if m1 else [d]
             value = seq[:num] if num!=1 else seq[0]
             return {n : value}
@@ -62,7 +52,7 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
         case _:
             raise Exception('')
 
-def reduceMatchList(ms:List[Map|None]):
+def reduceMatchList(ms:Sequence[Map|None]):
     mss = [m for m in ms if m is not None]
     if len(mss) != len(ms): return None
     r = reduce(lambda a,b: {**a, **b}, mss)
