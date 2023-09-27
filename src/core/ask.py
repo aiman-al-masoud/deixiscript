@@ -1,5 +1,4 @@
 from functools import reduce
-import sys
 from typing import cast
 from core.expbuilder import does, e, _, every
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
