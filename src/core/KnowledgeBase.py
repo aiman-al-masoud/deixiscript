@@ -30,7 +30,7 @@ class KnowledgeBase:
             case DeicticDict():
                 return KnowledgeBase(self.wm, self.adcs, o)
             case AnalyticDerivation():
-                from core.matchAst import sortByGenerality
+                from core.isMatch import sortByGenerality
                 dcs = self.adcs | {o}
                 sortedDcs = sortByGenerality(self, dcs)
                 setDcs = frozenset(sortedDcs)

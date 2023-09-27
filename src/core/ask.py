@@ -145,6 +145,6 @@ def __makeExplicit(ast:Ast, kb:KnowledgeBase):
     return Result(x2, x1.kb)
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
-    from core.matchAst import isMatch
+    from core.isMatch import isMatch
     d = next((d.definition for d in kb.adcs if isMatch(d.definendum, ast, kb)), ast)    
     return d
