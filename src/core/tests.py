@@ -101,7 +101,7 @@ def test16():
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
 # %% matchAst tests
-def test17():
+def test_c17():
     genr = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
     assert matchAst(genr, spec)
