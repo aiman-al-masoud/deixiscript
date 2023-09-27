@@ -10,15 +10,6 @@
 - The user, instead, communicates with Deixiscript through well formed formulas,
   which include a subset of grammatical english sentences.
 
-- Assignments are completely replaced by anaphora (implicit references), also in
-  theme-rheme phrase style split in two sentences, also useful for intermediate
-  numerical computations.
-
-- Implicit References + Derivation Clauses can also be used to replace
-  if-statements, because one big function with lots of ifs can be expressed as
-  lots of small derivation clauses with naturalistic type (implicit reference)
-  arguments declared on the fly.
-
 - Implicit references work as if any entity got the current timestamp whenever
   it was mentioned. When function ask() is called from findAll() the deictic
   dict is NOT updated, because the results from ask() are ignored.
@@ -31,22 +22,11 @@
   general case. All other verbs need to be prefixed with a helper/auxiliary
   (do/does) to let the (current) parser know they're being used as verbs.
 
-- Verbs aren't functions, verbs are procedures. Noun-phrases (including implicit
-  references) are expressions, and thus are much more akin to functions.
-
 - If the new derivation-clause-based parser will be adopted, the core language
   will preferably be purely analytic (one morpheme at most per space-delimited
   word), because the lexer will (mainly) just split strings by whitespaces.
   Future synthetic/agglutinative extensions are possible, by complicating the
   lexer.
-
-- [Communication with the outer world](./src/io/README.md)
-
-- Functions tell() and ask() do NOT have ANY side effects (like most other
-  functions). tell() and ask() both return a brand new knowledge base object,
-  because even ask() may produce updated versions of the deictic dictionary and
-  add newly computed numbers to the world model. Pure functions and immutable
-  data structs whenever possible.
 
 ## Solved Problems
 

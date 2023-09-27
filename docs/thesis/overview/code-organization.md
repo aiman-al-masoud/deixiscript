@@ -8,4 +8,16 @@ The core components of the interpreter will require no dependecies besides Pytho
 
 The code will be available under GPLv3 for inspection and future research.
 
-What follows is an overview of modules. TODO.
+- Functions tell() and ask() do NOT have ANY side effects (like most other
+  functions). tell() and ask() both return a brand new knowledge base object,
+  because even ask() may produce updated versions of the deictic dictionary and
+  add newly computed numbers to the world model. Pure functions and immutable
+  data structs whenever possible.
+
+What follows is an overview of packages and modules. TODO.
+
+- core
+- parser
+- main
+
+
