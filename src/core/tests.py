@@ -176,8 +176,6 @@ def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be
     kb2 = the('capra').tellKb(kb1)
     r = the('it').idiom.run(kb2)
     assert 'capra#1' == r.head
-    # print(r.head)
-    # assert isinstance(r.head, tuple)
 
 # def test27(): # with analytic derivation clause
 #     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
