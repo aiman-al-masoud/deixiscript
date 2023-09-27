@@ -83,7 +83,11 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r = __makeExplicit(ast, kb)
             return e(r.head).tell(r.kb)
         case Idiom(v):
+            # print(v, kb.dd)
             d = __makeAdLitteram(v, kb)
+            
+            # print(d)
+
             return e(d).tell(kb)
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
@@ -150,5 +154,5 @@ def __makeExplicit(ast:Ast, kb:KnowledgeBase):
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     from core.matchAst import matchAst
-    d = next((d.definition for d in kb.adcs if matchAst(d.definendum, ast, kb)), ast)
+    d = next((d.definition for d in kb.adcs if matchAst(d.definendum, ast, kb)), ast)    
     return d

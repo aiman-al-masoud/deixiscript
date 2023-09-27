@@ -161,7 +161,31 @@ def test25():
     maybe = sortByGenerality(KnowledgeBase(), wrong)
     assert maybe == correct
 
-# %% ~normalization tests~  IDIOM TESTS
+# %% idiom tests
+
+def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
+    kb1 = the('it').when(the(1)('thing')).tellKb()
+    kb2 = the('capra').tellKb(kb1)
+    r = the('it').idiom.run(kb2)
+    assert 'capra#1' == r.head
+
+def test27():
+    # TODO: maybe rule: use SINGULAR when declaring derivations! 
+    kb1 = the(1)('man').does('ride').on(the(1)('horse')).when(the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))).tellKb()
+    kb2 = the('man').tellKb(kb1)
+    kb3 = the('horse').tellKb(kb2)
+    kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tellKb(kb3)
+    assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
+    
+    # kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
+    # kb4 = e('man#1').does('ride').on('horse#1').idiom.tellKb(kb3)
+    # print(kb4.wm)
+    # print(x)
+    # the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))
+    # kb4 = every('man').does('ride').on('horse#1').idiom.tellKb(kb3)
+    # print(kb4.wm) # TODO: too many actions!
+    # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
+
 # def test20():
 #     kb = the('cat').tellKb()
 #     n = normalized(every('cat').does('jump').e, kb).head
@@ -170,20 +194,6 @@ def test25():
 #     assert isinstance(n.left, SimpleSentence)
 #     assert isinstance(n.right, SimpleSentence)
 #     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
-
-def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
-    kb1 = the('it').when(the(1)('thing')).tellKb()
-    kb2 = the('capra').tellKb(kb1)
-    r = the('it').idiom.run(kb2)
-    assert 'capra#1' == r.head
-
-# def test27():
-#     kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
-#     kb2 = the('man').tellKb(kb1)
-#     kb3 = the('horse').tellKb(kb2)
-#     kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tellKb(kb3)
-#     print(kb4.wm) # TODO: too many actions!
-#     # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
 
 # %% numerality tests
 def test28():

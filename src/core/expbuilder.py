@@ -2,7 +2,7 @@ import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, overload
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
-from core.KnowledgeBase import KnowledgeBase
+from core.KnowledgeBase import KnowledgeBase, Result
 
 
 _=''    
@@ -66,7 +66,7 @@ class ExpBuilder(Generic[T]):
         r = self.get(kb)
         return len(r) if isinstance(r, tuple) else 1
     
-    def tell(self, kb=KnowledgeBase()):
+    def tell(self, kb=KnowledgeBase())->Result:
         return new(self.e).run(kb)
 
     def tellKb(self, kb=KnowledgeBase()):
