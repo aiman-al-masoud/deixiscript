@@ -6,10 +6,6 @@ from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, re
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
 
-# TODO: Idiom: removeImplicit! Maybe needed also here?
-# TODO: Idiom: subst is needed for cardinality preservation problem!
-# TODO: Idiom: stipulate that Idiom cannot contain Command
-# TODO: Idiom: Command(Idiom()) where?!
 # TODO: SyntheticDerivation: evaluate the effects
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
@@ -83,11 +79,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r = __makeExplicit(ast, kb)
             return e(r.head).tell(r.kb)
         case Idiom(v):
-            # print(v, kb.dd)
             d = __makeAdLitteram(v, kb)
-            
-            # print(d)
-
             return e(d).tell(kb)
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
