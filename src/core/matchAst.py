@@ -17,18 +17,13 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
         case AnalyticDerivation(d1, _), AnalyticDerivation(d2, _):
             return compareByGenerality(kb, d1, d2)
         case _:
-            m1 = matchAst(ast1, ast2, kb)
-            m2 = matchAst(ast2, ast1, kb)
+            m1 = isMatch(ast1, ast2, kb)
+            m2 = isMatch(ast2, ast1, kb)
 
             if m1 == m2: return 0
             return 1 if m1 else -1
 
-#
-# Two expressions are synonymous in a context kb, when
-# their truth values co-vary in kb. 
-# The truth value of a noun phrase is the existence of a referent.
-#
-def matchAst(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
+def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
 
     if generic == specific: return True
 

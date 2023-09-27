@@ -1,5 +1,5 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the, _
-from core.matchAst import matchAst, sortByGenerality
+from core.matchAst import isMatch, sortByGenerality
 from core.normalized import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
@@ -104,18 +104,18 @@ def test16():
 def test_c17():
     genr = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
-    assert matchAst(genr, spec)
-    assert not matchAst(spec, genr)
+    assert isMatch(genr, spec)
+    assert not isMatch(spec, genr)
 
 def test18():
     genr = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
-    assert matchAst(genr, spec)
-    assert not matchAst(spec, genr)
+    assert isMatch(genr, spec)
+    assert not isMatch(spec, genr)
 
 def test19():
-    assert matchAst('it', 'it')
-    assert not matchAst('it', 'buruf')
+    assert isMatch('it', 'it')
+    assert not isMatch('it', 'buruf')
 
 # %% sort nounphrases by generality tests
 def test22():
@@ -221,7 +221,7 @@ def test30():
     kb1 = the('man').tellKb()
     kb2 = the('horse').tellKb(kb1)
 
-    assert matchAst(general.e, specific.e, kb2)
+    assert isMatch(general.e, specific.e, kb2)
 
 # multiple additions with and  
 def test31():
@@ -260,8 +260,8 @@ def test34():
     spec = e('cat#2').does('eat')._('mouse#2').e
     gen = every('cat').does('eat')._(every('mouse')).e  # or the
 
-    assert matchAst(gen, spec, kb3)
-    assert not matchAst(spec, gen, kb3)
+    assert isMatch(gen, spec, kb3)
+    assert not isMatch(spec, gen, kb3)
 
 
 # logic and deictic dict test
