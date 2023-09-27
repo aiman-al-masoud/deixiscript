@@ -79,7 +79,6 @@ class ExpBuilder(Generic[T]):
 
 
 def e(x:Ast|ExpBuilder):
-    '''explicit'''
     return ExpBuilder(makeAst(x))
 
 def does(v:Ast):
