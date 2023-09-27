@@ -81,7 +81,7 @@ def test13():
 
 # tokenize
 def test_p14():
-    source = '"hello world" is a (string) and also " hello Buruf " 1 2 false true 300'
-    ok = ['hello world', 'is', 'a', '(', 'string', ')', 'and', 'also', ' hello Buruf ', 1.0, 2.0, 'false', 'true', 300.0]
+    source = '"hello world" is a (string) and also " hello Buruf " 1 2 false true 300 1=1'
+    ok = ['hello world', 'is', 'a', '(', 'string', ')', 'and', 'also', ' hello Buruf ', 1.0, 2.0, 'false', 'true', 300.0, 1.0, '=', 1.0]
     maybe = tokenize(source)
     assert ok == maybe
