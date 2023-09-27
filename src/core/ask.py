@@ -2,7 +2,7 @@ from functools import reduce
 from typing import cast
 from core.expbuilder import does, e, _, every
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
-from core.normalized import decompressed, isImplicitish, removeImplicit
+from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
 
@@ -16,7 +16,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
 
-        case SimpleSentence() if isImplicitish(ast):
+        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
             r = __makeExplicit(ast, kb)
             return e(r.head).run(r.kb)
         case Idiom(v):
@@ -79,12 +79,12 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
 
+        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
+            r = __makeExplicit(ast, kb)
+            return e(r.head).tell(r.kb)
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).tell(kb)
-        case SimpleSentence() if isImplicitish(ast):
-            r = __makeExplicit(ast, kb)
-            return e(r.head).tell(r.kb)
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
             return e(x).run(kb1)
@@ -143,7 +143,7 @@ def __simpleSentenceToAction(ast:SimpleSentence):
     x4 = every('action').which(x3).e
     return x4
 
-def __makeExplicit(ast:SimpleSentence, kb:KnowledgeBase):
+def __makeExplicit(ast:Ast, kb:KnowledgeBase):
     x1 = removeImplicit(ast, kb)
     x2 = decompressed(x1.head)
     return Result(x2, x1.kb)

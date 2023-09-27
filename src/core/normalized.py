@@ -1,7 +1,7 @@
 from functools import reduce
 from core.expbuilder import e
 from core.findAsts import findAsts
-from core.language import Ast, BinExp, Explicit, Implicit, Negation, NounPhrase, NounPhrasish
+from core.language import Ast, BinExp, Derivation, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence
 from core.subst import  subst
 from core.KnowledgeBase import KnowledgeBase, Result
 
@@ -36,6 +36,12 @@ def isNounPhrasishConn(ast:Ast):
 
 def isAst(x:object):
     return isinstance(x, Ast)
+
+def isSimpleSentenceish(ast:Ast):
+    if isinstance(ast, SimpleSentence): return True
+    if isinstance(ast, Derivation): return False
+    if isinstance(ast, Explicit): return False
+    return all([isSimpleSentenceish(x) for x in ast.__dict__.values()])
 
 findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
