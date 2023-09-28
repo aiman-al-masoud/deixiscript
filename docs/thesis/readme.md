@@ -38,7 +38,7 @@ An outline of the topics:
   - [metaphysics](./world-representation/metaphysics.md)
   - [the interpreter](./world-representation/metaphysics.md)
   - [adapting predicate logic to support deixis and compression](./world-representation/metaphysics.md)  
-  - [handling I/O]()
+  - [handling I/O](./world-representation/metaphysics.md)
   - [event driven programming]()
 - [Future work]()
   - [ambiguous sentence recognition](./future-work/ambiguous-grammar.md)
