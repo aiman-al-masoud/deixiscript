@@ -6,7 +6,6 @@ from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, re
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
 
-# TODO: SyntheticDerivation: evaluate the effects
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
@@ -66,6 +65,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
         case Command(v):
+            # TODO: SyntheticDerivation: evaluate the effects
             return __tell(v, kb)
         case _:
             raise Exception('ask', ast)
