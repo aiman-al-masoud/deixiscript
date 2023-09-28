@@ -176,24 +176,7 @@ def test27():
     kb3 = the('horse').tellKb(kb2)
     kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tellKb(kb3)
     assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
-    
-    # kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tellKb()
-    # kb4 = e('man#1').does('ride').on('horse#1').idiom.tellKb(kb3)
-    # print(kb4.wm)
-    # print(x)
-    # the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))
-    # kb4 = every('man').does('ride').on('horse#1').idiom.tellKb(kb3)
-    # print(kb4.wm) # TODO: too many actions!
-    # TODO problem: how does derivation know that sentence was called with singular? Re-consider subst at every step?
-
-# def test20():
-#     kb = the('cat').tellKb()
-#     n = normalized(every('cat').does('jump').e, kb).head
-#     # PROBLEM: cat concept also included in expansion!
-#     assert isinstance(n, BinExp)
-#     assert isinstance(n.left, SimpleSentence)
-#     assert isinstance(n.right, SimpleSentence)
-#     assert len(findAsts(n, lambda x: isinstance(x, str) and 'cat' in x)) == 2
+    # TODO: test every('horse')
 
 # %% numerality tests
 def test28():
