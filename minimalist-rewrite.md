@@ -1,34 +1,9 @@
 Use brython to package the interpreter for the web
 https://brython.info/static_tutorial/en/index.html
 
-everything the user says will be assumed to be Implicit and Idiomatic, but explicit ids and ad-litteram sentences need to be considered at a certain point during the execution in the interpreter.
-
-if there is an individual cat -> there is also the concept of a cat, concepts are "eternal", no need to create concepts in tell
-
 Some and Every as values of cardinality in Numerality? Do NOT just assume that tuple means 'AND'?
+
 Default connective when using implicit is 'OR'? Because that will match more stuff more easily. Eg: "man ride horse" -> concept of man rides concept of horse, or individual man rides etc...
-
-
-Can evaluate be called recursively as long as you still have a separate "normalize" function that produces an AST in normalized form that can be called before actually executing an AST at the "top-top level of the program"? Would benefit matchAst()
-
-convert any Ast (except for derivation clauses) to world model stuff?
-A specific function just to do that, so as to simplify the implementation of Command(Negate), and to avoid having to manage additions/eliminations. The tell() function has already basically almost the same purpose.
-
-- verb sentence may be the only kind of AST that may need decompression, but it is not the only overridable AST (nouns for pronouns, other nounphrases for "funcs')
-
-# CONVERTING AN AST TO BASE FORM / NORMALIZATION / BASIC SUBSET
-- check for a match with analytic derivation clauses
-- if there is a match, execute the definition, else go on
-- expand negations, & other stuff that doesn't require KB
-- resolve each INP (implicit noun phrase) into a list of constants
-- substitute INPs with lists of constants by decompressing
-- produce a new knowledge base (update deictic dict, add new created new entities)
-
-what about a function specifically meant only to ask/tell NounPhrases?
-
-when you actually get to execute the final real defintition, at that point you should resolve all noun phrases to explicit references, and you should not have any implicit reference left. So maybe no need for evaluate() recursive call? maybe? what about math-expression?
-
-Temporarily ignore: defaults, number restriction, mutex concepts, parser, equation solver, noun-phrase complements, adjectives
 
 All "argument passing" (derivation clauses) through deictic dictionary, not match and subst.
 
@@ -37,8 +12,12 @@ Normalized:
 - everything is decompressed
 - verb sentences don't cotain negations or commands
 
---------------------------------
-
 maybe "conceptual" and "individual" modes that can be triggered with some conventional command for testing.
 
 Random AST generator for fuzz testing?
+
+- test semantic/idiomatic match()
+
+## Problems
+
+- less than greater than as vague commands (tell)

@@ -38,6 +38,9 @@ https://www.geeksforgeeks.org/constituency-parsing-and-dependency-parsing/
 
 We will therefore propose a simplified grammar that is an (almost: yes, it leaks a little) correct subset of English. It is rigid enough to be specified in a few production rules, but flexible enough to support implicit references and syntactic compression.
 
+
+Deep grammar vs shallow grammar?
+
 We will begin by saying that the core of the language is actually not defined as EBNF (Extended Backus Naur Form) production rules or anything of the like, but rather as a set of pure AST (Abstract Syntax Tree) types, represented as Python dataclasses: this has the advantage of not tying the core of the language to any specific "linearization", "frontend" or "dialect", but rather to leave that as open ended as possible.
 
 [language](../../../src/core/language.py)
@@ -51,6 +54,13 @@ A noun phrase can be "implicit" or "explicit"...
 - [relative clauses & gapping]()
 - [simple sentences]()
 - [compound and complex sentences]()
+
+implicit references may be ambiguous from the point of view of creating a new thing, or erroring out if you don't find an old one. "A mouse which has the/a house as location". The solution is to wrap a nounphrase in a Command wrapper.
+
+
+everything the user says will be assumed to be Implicit and Idiomatic, but explicit ids and ad-litteram sentences need to be considered at a certain point during the execution in the interpreter.
+
+
 
 ## Drawing a parallel with programming language structures
 
