@@ -14,43 +14,43 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
         case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
             r = __makeExplicit(ast, kb)
-            return e(r.head).run(r.kb)
+            return e(r.head).ask(r.kb)
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
-            return e(d).run(kb)
+            return e(d).ask(kb)
         case str(x) | int(x)| float(x):
             return Result(x, kb + kb.dd.update(x))
         case tuple(xs):
-            kb1 = reduce(lambda a,b: e(b).run(a).kb , xs, kb)
+            kb1 = reduce(lambda a,b: e(b).ask(a).kb , xs, kb)
             return Result(xs, kb1)
         case Noun(h):
             cands1 = {x for s in kb.wm for x in s} | {h}
             cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
             cands3 = cands2[0] if len(cands2)==1 else cands2 
-            return e(cands3).run(kb)
+            return e(cands3).ask(kb)
         case Which(h, w):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
             x4 = x3[0] if len(x3)==1 else x3
-            return e(x4).run(kb)
+            return e(x4).ask(kb)
         case Numerality(h, c, o):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=True))
             x4 = x3[:c]
             x5 = x4[0] if len(x4)==1 else x4
-            return e(x5).run(kb)
+            return e(x5).ask(kb)
         case Negation(v):
-            r1 = e(v).run(kb)
+            r1 = e(v).ask(kb)
             return Result(not r1.head, r1.kb)
         case BinExp('and', l, r):
-            r1 = e(l).run(kb)
-            r2 = e(r).run(r1.kb)
+            r1 = e(l).ask(kb)
+            r2 = e(r).ask(r1.kb)
             return Result(r1.head and r2.head, r2.kb)
         case BinExp('or', l, r):
-            r1 = e(l).run(kb)
-            r2 = e(r).run(r1.kb)
+            r1 = e(l).ask(kb)
+            r2 = e(r).ask(r1.kb)
             return Result(r1.head or r2.head, r2.kb)
         case BinExp('=', l, r):
             return Result(l==r, kb)
@@ -64,7 +64,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(ok, kb)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
-            return e(action).run(kb)
+            return e(action).ask(kb)
         case Command(v):
             return __tell(v, kb)
         case _:
@@ -83,7 +83,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(d).tell(kb)
         case int(x) | float(x) | str(x):
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
-            return e(x).run(kb1)
+            return e(x).ask(kb1)
         case Noun(h):
             n = every(h).count(kb)
             new = f'{h}#{n}'

@@ -55,19 +55,19 @@ class ExpBuilder(Generic[T]):
     def idiom(self):
         return ExpBuilder(Idiom(self.e))
 
-    def run(self, kb=KnowledgeBase()):
+    def ask(self, kb=KnowledgeBase()):
         from core.ask import ask
         return ask(self.e, kb)
 
     def get(self, kb=KnowledgeBase()):
-        return e(self.e).run(kb).head
+        return e(self.e).ask(kb).head
     
     def count(self, kb=KnowledgeBase()):
         r = self.get(kb)
         return len(r) if isinstance(r, tuple) else 1
     
     def tell(self, kb=KnowledgeBase())->Result:
-        return new(self.e).run(kb)
+        return new(self.e).ask(kb)
 
     def tellKb(self, kb=KnowledgeBase()):
         return self.tell(kb).kb

@@ -166,7 +166,7 @@ def test25():
 def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
     kb1 = the('it').when(the(1)('thing')).tellKb()
     kb2 = the('capra').tellKb(kb1)
-    r = the('it').idiom.run(kb2)
+    r = the('it').idiom.ask(kb2)
     assert 'capra#1' == r.head
 
 def test27():
