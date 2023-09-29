@@ -14,8 +14,7 @@ def removeImplicit(ast:Ast, kb:KnowledgeBase):
 
     implicits = findAsts(ast, isImplicitNounPhrase)
     # TODO: sort implicits to avoid sub-ast in super-ast subst problem
-    sortedImplicitis = implicits
-    r = reduce(red, sortedImplicitis, Result(ast, kb))
+    r = reduce(red, implicits, Result(ast, kb))
     return r
 
 def isImplicitNounPhrase(ast:Ast):
