@@ -1,5 +1,5 @@
 from typing import Literal
-from core.normalized import isNounPhrasish, isAst
+from core.normalized import isNounPhrasish as isNp, isAst
 from core.expbuilder import does, e
 from parser.parse import parse
 from parser.metalang import L,V,D
@@ -8,12 +8,15 @@ from parser.metalang import L,V,D
 # TODO: add numerality
 # TODO: derivation clauses
 
+# [M|'l'/isNp,V|'op'/L['and','or'],L|'r'/isNp] >> e('l').binop('op', 'r').e &\
+# [M|'l'/isNp,V|'op'/L['and','or'],L|'r'/isNp] >> e('l').binop('op', 'r').e
+
 ds = [
-    D(['(', L('x', isAst), ')'], 'x'),
-    D([L('l', isNounPhrasish), V('op', Literal['and', 'or']), L('r', isNounPhrasish)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
-    D([L('h', isNounPhrasish), 'which', L('w', isAst)],e('h').which('w').e),
-    D([L('s', type=isNounPhrasish, default=''), 'does', V('v'), L('o', type=isNounPhrasish, default=False),], e('s').does('v')._('o').e),
-    D([V('x')], 'x'),
+D(['(', L('x', isAst), ')'], 'x'),
+D([L('l', isNp), V('op', Literal['and', 'or']), L('r', isNp)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
+D([L('h', isNp), 'which', L('w', isAst)],e('h').which('w').e),
+D([L('s', type=isNp, default=''), 'does', V('v'), L('o', type=isNp, default=False),], e('s').does('v')._('o').e),
+D([V('x')], 'x'),
 ]
 
 # ------------------TESTS-------------------
