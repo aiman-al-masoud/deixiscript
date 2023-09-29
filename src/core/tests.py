@@ -124,17 +124,14 @@ def test_c20():
     assert isMatch(general, spec3)
     assert not isMatch(general, spec4)
 
-
 def test_c21():
     kb1 = the('stallion').does('be')._('horse').tellKb()
     general = the(1)('man').does('ride').on(the(1)('horse')).e
-    spec1 =  the(1)('man').does('ride').on(the('stallion')).e
-    spec2 =  the(1)('man').does('ride').on(the('lama')).e
-
+    spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
     assert isMatch(general, spec1, kb1)
+    # print(isMatch(spec1, general, kb1)) #TODO: wrong!    
+    spec2 =  the(1)('man').does('ride').on(the('lama')).e
     assert not isMatch(general, spec2, kb1)
-    # print(isMatch(spec1, general, kb1)) # wrong!
-
 
 # %% sort nounphrases by generality tests
 def test22():

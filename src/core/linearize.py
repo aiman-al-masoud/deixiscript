@@ -1,5 +1,5 @@
 from functools import reduce
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, Which
 
 def linearize(ast:Ast)->str:
 
@@ -12,12 +12,12 @@ def linearize(ast:Ast)->str:
             y1 = reduce(lambda a, b: a+b+',', y0, '').strip(',')
             return '[ '+y1+' ]'
         case Noun(x):
-            return 'the '+linearize(x)
+            return linearize(x)
         case SimpleSentence(verb=v, subject=s, object=o):
             complements = [k + ' ' + linearize(v) for k,v in ast.complements]
             complementsStr = reduce(lambda a,b: a+' '+b, complements, '')
             verb = ' does '+linearize(v)
-            return linearize(s) + verb + ' ' +linearize(o) + complementsStr
+            return linearize(s) + verb + ' ' + (linearize(o) if o else '') + complementsStr
         case BinExp(op, l, r):
             return '( '+ linearize(l) +' ' + linearize(op) + ' '+linearize(r) +' )'
         case Negation(v):
@@ -27,6 +27,8 @@ def linearize(ast:Ast)->str:
         case Which(h, w):
             return linearize(h) + ' which ' + linearize(w)
         case Command(v):
-            return '(' + linearize(v) +')' + '!'
+            return '!' + linearize(v) + '!'
+        case Numerality(h, c, o):
+            return linearize(c) +' '+ linearize(h)
         case _:
             raise Exception(ast)
