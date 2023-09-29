@@ -33,8 +33,8 @@ class AnalyticDerivation:
 
 @dataclass(frozen=True)
 class SyntheticDerivation:
-    effect:'Ast'
     cause:'Ast'
+    effect:'Ast'
 
 @dataclass(frozen=True)
 class Command:
