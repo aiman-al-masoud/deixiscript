@@ -21,5 +21,5 @@ Map = Dict[str, object] # or Lit as key?
 M = Variable
 D = Derivation
 
-def S(name:str, type:'MetaAst'=object, default:'MetaAst|None'=None): # rename to S()
+def S(name:str, type:'MetaAst'=object, default:'MetaAst|None'=None):
     return Variable(name, type, default, 1)
