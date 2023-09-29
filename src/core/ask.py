@@ -148,3 +148,7 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
     d = next((d.definition for d in kb.adcs if isMatch(d.definendum, ast, kb)), ast)    
     return d
+
+# def __find_effects(ast:Ast, kb:KnowledgeBase):
+#     from core.isMatch import isMatch
+    
