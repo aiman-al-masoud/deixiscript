@@ -23,12 +23,6 @@ def test3():
     y = ('cat','cat')
     assert x == y
 
-# %% expand negation tests
-# def test4():
-#     x = expandNegations(e('buruf').does_not('have')._('food').e)
-#     y = it_is_false_that(e('buruf').does('have')._('food').e).e
-#     assert x == y
-
 # circular import tests (eval <-> expbuilder) 
 def test5():
     x = e(1).get()
@@ -163,14 +157,13 @@ def test25():
 
 # %% idiom tests
 
-def test26(): # TODO: ???? numerality for "it", and super,thing don't need to be DD-incremented
+def test26():
     kb1 = the('it').when(the(1)('thing')).tellKb()
     kb2 = the('capra').tellKb(kb1)
     r = the('it').idiom.ask(kb2)
     assert 'capra#1' == r.head
 
 def test27():
-    # TODO: maybe rule: use SINGULAR when declaring derivations! 
     kb1 = the(1)('man').does('ride').on(the(1)('horse')).when(the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))).tellKb()
     kb2 = the('man').tellKb(kb1)
     kb3 = the('horse').tellKb(kb2)
