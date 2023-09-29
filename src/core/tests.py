@@ -111,6 +111,28 @@ def test19():
     assert isMatch('it', 'it')
     assert not isMatch('it', 'buruf')
 
+def test_c20():
+
+    general = the(1)('man').does('ride').on(the(1)('horse')).e
+    spec1 =  the(1)('man').does('ride').on(every('horse')).e
+    spec2 =  every('man').does('ride').on(the('horse')).e
+    spec3 =  every('man').does('ride').on(every('horse')).e
+    spec4 =  the('man').does('ride').on(the(0)('horse')).e
+
+    assert isMatch(general, spec1)
+    assert isMatch(general, spec2)
+    assert isMatch(general, spec3)
+    assert not isMatch(general, spec4)
+
+
+def test_c21():
+    kb1 = the('stallion').does('be')._('horse').tellKb()
+    general = the(1)('man').does('ride').on(the(1)('horse')).e
+    spec1 =  the(1)('man').does('ride').on(the('stallion')).e
+    assert isMatch(general, spec1, kb1)
+    # print(isMatch(spec1, general, kb1)) # wrong!
+
+
 # %% sort nounphrases by generality tests
 def test22():
     correct = [  # ascending generality
@@ -169,7 +191,7 @@ def test27():
     kb3 = the('horse').tellKb(kb2)
     kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tellKb(kb3)
     assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
-    # TODO: test every('horse')
+    assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
 # %% numerality tests
 def test28():

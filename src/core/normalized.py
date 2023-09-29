@@ -52,7 +52,8 @@ def decompressed(ast:Ast)->Ast:
 
     if tups:
         tup = tups[0]
-        assert isinstance(tup, tuple) 
+        assert isinstance(tup, tuple)
+        if not tup: return tuple()
         and_phrase = reduce(lambda a,b: e(a).or_(b), tup).e
         subbed = subst(tup, and_phrase, ast)
         return decompressed(subbed)
