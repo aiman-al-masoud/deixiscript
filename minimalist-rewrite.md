@@ -12,7 +12,7 @@ Normalized:
 - everything is decompressed
 - verb sentences don't cotain negations or commands
 
-maybe "conceptual" and "individual" modes that can be triggered with some conventional command for testing.
+maybe "conceptual" and "individual" modes/contexts that can be triggered with some conventional command for testing.
 
 Random AST generator for fuzz testing?
 
