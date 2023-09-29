@@ -21,3 +21,6 @@ Random AST generator for fuzz testing?
 ## Problems
 
 - less than greater than as vague commands (tell)
+
+
+- derivations should "eschew commands"
