@@ -12,6 +12,9 @@ if TRUE and FALSE accordingly, then "specific" is really specific and "generic" 
 
 allow for "idiomatic" speech
 
+general rule: use SINGULAR when declaring derivations! 
+
+
 # Synthetic Derivations
 
 # Pronouns
