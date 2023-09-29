@@ -266,7 +266,7 @@ def test34():
 def test_c35():
 
     kb1 = the('mouse').tellKb()
-    kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb(kb1)
+    kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb(kb1) # also works with verb wrapped in implicit
 
     assert the(1)('cat').get(kb2) == 'cat#1'
     assert the(1)('mouse').get(kb2) == 'mouse#2'
