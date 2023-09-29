@@ -20,7 +20,7 @@ class DeicticDict:
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:WorldModel= frozenset()
-    adcs:FrozenSet[AnalyticDerivation]= frozenset()
+    adcs:Tuple[AnalyticDerivation,...]= tuple()
     dd:DeicticDict= DeicticDict({})
 
     def __add__(self, o:WorldModel|DeicticDict|AnalyticDerivation):
@@ -31,10 +31,9 @@ class KnowledgeBase:
                 return KnowledgeBase(self.wm, self.adcs, o)
             case AnalyticDerivation():
                 from core.isMatch import sortByGenerality
-                dcs = self.adcs | {o}
-                sortedDcs = sortByGenerality(self, dcs)
-                setDcs = frozenset(sortedDcs)
-                return KnowledgeBase(self.wm, setDcs, self.dd)
+                dcs = (*self.adcs, o)
+                sortedDcs = tuple(sortByGenerality(self, dcs))
+                return KnowledgeBase(self.wm, sortedDcs, self.dd)
 
     def __sub__(self, o:'WorldModel|AnalyticDerivation'):
         match o:
