@@ -16,9 +16,14 @@ from parser.metalang import M,S,D
 
 ds = [
 D(['(', M('x', isAst), ')'], 'x'),
+D([M('x', isAst), '!'], e('x').new.e),
+D([M('x', isAst), '?'], 'x'),
 D([M('l', isNp), S('op', L['and', 'or']), M('r', isNp)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
 D([M('s', isNp, ''), 'does', S('v'), M('o', isNp, False),], e('s').does('v')._('o').e),
+
+
+
 D([S('x')], 'x'),
 ]
 
@@ -62,3 +67,11 @@ def test_g9():
    x = parse(ds, ['(', 'cat', 'which', 'does', 'run', ')'])
    assert x == e('cat').which(does('run')).e
 
+def test_g10():
+    x = parse(ds, ['cat', 'does', 'eat', 'mouse', '!'])
+    assert x == e('cat').does('eat')._('mouse').new.e
+
+def test_g11():
+    x = parse(ds, ['cat', 'does', 'eat', 'mouse', '?'])
+    y = parse(ds, ['cat', 'does', 'eat', 'mouse'])
+    assert x == y
