@@ -44,5 +44,8 @@ ADVANTAGES OF NOT TREATING CONCEPTS LIKE INDIVIDUALS??
 	
 	because spec has the effect of man concept rides on stallion (which is a horse) concept
 
-
+- maybe: no entity can exist unless it is at least somewhat distinct from another already exisiting entity, and ID is not enough for the distinction
+	Benefits
+	- remove Negation(NounPhrase) special case 
+	- remove Command(SimpleSentence) special case
 
