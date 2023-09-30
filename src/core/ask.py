@@ -129,7 +129,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if not (set(s) & set(x2))}            
             x4 = frozenset(x3)
-            return Result(True, KnowledgeBase(x4, kb.ads, kb.sds, kb.dd))
+            return Result(True, KnowledgeBase(x4, kb.ds, kb.dd))
         case Negation(v):
             r1 = e(v).tell(kb)
             kb1 = kb - r1.addition + r1.kb.dd

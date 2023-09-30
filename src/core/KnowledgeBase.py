@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict, FrozenSet, Tuple
-from core.language import AnalyticDerivation, Ast, SyntheticDerivation
+from core.language import Derivation, Ast, SyntheticDerivation, AnalyticDerivation
 
 
 WmSentence = Tuple[Ast, Ast, Ast]
@@ -20,33 +20,36 @@ class DeicticDict:
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:WorldModel = frozenset()
-    ads:Tuple[AnalyticDerivation,...] = tuple() # maybe common adcs/sdcs sequence
-    sds:Tuple[SyntheticDerivation,...] = tuple()
+    ds:Tuple[Derivation, ...]=tuple()
     dd:DeicticDict = DeicticDict({})
 
-    def __add__(self, o:WorldModel|DeicticDict|AnalyticDerivation|SyntheticDerivation):
+    def __add__(self, o:WorldModel|DeicticDict|Derivation):
         match o:
             case frozenset():
-                return KnowledgeBase(self.wm | o, self.ads, self.sds, self.dd)
+                return KnowledgeBase(self.wm | o, self.ds, self.dd)
             case DeicticDict():
-                return KnowledgeBase(self.wm, self.ads, self.sds, o)
-            case AnalyticDerivation():
+                return KnowledgeBase(self.wm, self.ds, o)
+            case Derivation():
                 from core.isMatch import sortByGenerality
-                dcs = (*self.ads, o)
-                sortedDcs = tuple(sortByGenerality(self, dcs))
-                return KnowledgeBase(self.wm, sortedDcs, self.sds, self.dd)
-            case SyntheticDerivation():
-                from core.isMatch import sortByGenerality
-                dcs = (*self.sds, o)
-                sortedDcs = tuple(sortByGenerality(self, dcs))
-                return KnowledgeBase(self.wm, self.ads, sortedDcs, self.dd)
+                ds = (*self.ds, o)
+                sortedDs = tuple(sortByGenerality(self, ds))
+                return KnowledgeBase(self.wm, sortedDs, self.dd)
 
     def __sub__(self, o:'WorldModel|AnalyticDerivation'):
         match o:
             case frozenset():
-                return KnowledgeBase(self.wm - o, self.ads, self.sds, self.dd)
+                return KnowledgeBase(self.wm - o, self.ds, self.dd)
             case AnalyticDerivation():
                 raise Exception()
+        
+    @property
+    def ads(self): 
+        return tuple(x for x in self.ds if isinstance(x, AnalyticDerivation))
+    
+    @property
+    def sds(self): 
+        return tuple(x for x in self.ds if isinstance(x, SyntheticDerivation))
+
 
 @dataclass(frozen=True)
 class Result:

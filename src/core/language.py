@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Tuple, Union
+
 
 @dataclass(frozen=True)
 class Noun:
@@ -27,12 +28,16 @@ class Negation:
     value:'Ast'
 
 @dataclass(frozen=True)
-class AnalyticDerivation:
+class Derivation:
+    pass
+
+@dataclass(frozen=True)
+class AnalyticDerivation(Derivation):
     definendum:'Ast'
     definition:'Ast'
 
 @dataclass(frozen=True)
-class SyntheticDerivation:
+class SyntheticDerivation(Derivation):
     cause:'Ast'
     effect:'Ast'
 
@@ -66,12 +71,10 @@ class SimpleSentence:
  
     @property
     def args(self): return self.filterOut([])
-    
 
 Explicit = str | float | int | bool | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
-Derivation = AnalyticDerivation | SyntheticDerivation
+# Derivation = AnalyticDerivation | SyntheticDerivation
 Ast = NounPhrasish | SimpleSentence | Derivation
-
