@@ -4,7 +4,7 @@ from core.normalized import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
 from core.KnowledgeBase import KnowledgeBase
-from core.language import Domino, Implicit
+from core.language import Implicit
 
 
 # %% subst tests
