@@ -7,7 +7,7 @@ from parser.metalang import M,S,D
 # TODO: implicit, idiomatic and domino by default
 # TODO: add numerality
 # TODO: derivation clauses
-# TODO: questions vs statements
+# TODO: questions vs statements: for now with ? vs !, default is question
 # TODO: complements
 
 # p[m|'l'/isNp, v|'op'/L['and','or'], m|'r'/isNp] >> e('l').binop('op', 'r').e
