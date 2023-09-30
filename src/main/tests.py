@@ -21,9 +21,6 @@ D([M('x', isAst), '?'], 'x'),
 D([M('l', isNp), S('op', L['and', 'or']), M('r', isNp)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
 D([M('s', isNp, ''), 'does', S('v'), M('o', isNp, False),], e('s').does('v')._('o').e),
-
-
-
 D([S('x')], 'x'),
 ]
 
