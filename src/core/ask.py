@@ -65,8 +65,9 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
         case Command(v):
-            #TODO: complete
             r1 = __tell(v, kb)
+            return r1
+            #TODO: fix max recursion!
             effects = __findEffects(v, kb)
             cs = tuple(Command(x) for x in effects)
             r2 = e(cs).ask(r1.kb)
@@ -157,5 +158,5 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
 def __findEffects(ast:Ast, kb:KnowledgeBase):
     # TODO: when cause is removed, effect should also vanish
     from core.isMatch import isMatch
-    es = tuple(d.effect for d in kb.sds if isMatch(d.cause, ast))
+    es = tuple(d.effect for d in kb.sds if isMatch(d.cause, ast, kb))
     return es

@@ -285,7 +285,25 @@ def test_c36():
     kb0 = the('button').tellKb()
     assert isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('be')._('down').e , kb0)
 
+    assert isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('have')._('down').as_('super').e , kb0)
+
+
 # def test_c37():
     # kb0 = the('button').tellKb()
     # isMatch(the(1)('button').e, e('button#1').e , kb0) 
     # TODO: problem, specific id still get 
+
+def test_c38():
+    # assert isMatch(the(1)('button').does('be')._('down').e, the(1)('button').does('be')._('down').e)
+
+    kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tellKb()
+    kb1 = the('button').tellKb(kb0)
+    assert ('button#1', 'button', 'super') in kb1.wm
+
+    # print('-'*20)
+
+    kb2 = the(1)('button').does('be')._('down').tellKb(kb1)
+
+
+    # print(kb2.wm)
+

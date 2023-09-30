@@ -1,5 +1,5 @@
 from functools import reduce
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 
 def linearize(ast:Ast)->str:
 
@@ -30,5 +30,7 @@ def linearize(ast:Ast)->str:
             return '!' + linearize(v) + '!'
         case Numerality(h, c, o):
             return linearize(c) +' '+ linearize(h)
+        case SyntheticDerivation(c, e):
+            return linearize(e) + ' after ' + linearize(c)
         case _:
-            raise Exception(ast)
+            raise Exception('linearize', ast)
