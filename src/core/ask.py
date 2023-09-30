@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import cast
 from core.expbuilder import does, e, _, every
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, NounPhrase, Numerality, SyntheticDerivation, SimpleSentence, Which
+from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, NounPhrase, Numerality, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
