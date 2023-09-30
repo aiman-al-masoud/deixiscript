@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import cast
 from core.expbuilder import does, e, _, every
-from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, NounPhrase, Numerality, SimpleSentence, Which
+from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, NounPhrase, Numerality, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
@@ -67,13 +67,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Command(v):
             r1 = __tell(v, kb)
             return r1
-            # TODO: fix max recursion!
-            # TODO: when cause is removed, effect should also vanish
-            from core.isMatch import isMatch
-            effects = (d.effect for d in kb.sds if isMatch(d.cause, ast, kb))
-            cs = tuple(Command(x) for x in effects)
-            r2 = e(cs).ask(r1.kb)
-            return Result(r1.head, r2.kb, r1.addition)
         case _:
             raise Exception('ask', ast)
 
@@ -136,6 +129,13 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
             return Result(True, r2.kb, r1.addition | r2.addition)
+        case Domino(v):
+            # TODO: when cause is removed, effect should also vanish
+            from core.isMatch import isMatch
+            r1 = e(v).tell(kb)
+            effects = tuple(Command(Domino(d.effect)) for d in kb.sds if isMatch(d.cause, v, kb))
+            r2 = e(effects).ask(r1.kb)
+            return Result(True, r2.kb, r1.addition|r2.addition)
         case _:
             raise Exception('tell', ast)
 
@@ -156,9 +156,3 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
     d = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
     return d
-
-# def __findEffects(ast:Ast, kb:KnowledgeBase):
-#     # TODO: when cause is removed, effect should also vanish
-#     from core.isMatch import isMatch
-#     es = tuple(d.effect for d in kb.sds if isMatch(d.cause, ast, kb))
-#     return es

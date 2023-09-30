@@ -44,6 +44,10 @@ class SyntheticDerivation(Derivation):
 @dataclass(frozen=True)
 class Command:
     value:'Ast'
+
+@dataclass(frozen=True)
+class Domino:
+    value:'Ast'
     
 @dataclass(frozen=True) # what about idiom-containing idioms in case of evaluating a multi step derivation?
 class Idiom(): # overrideme, non-literal
@@ -75,5 +79,5 @@ class SimpleSentence:
 Explicit = str | float | int | bool | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
+NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom | Domino
 Ast = NounPhrasish | SimpleSentence | Derivation

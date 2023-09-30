@@ -4,7 +4,7 @@ from core.normalized import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
 from core.KnowledgeBase import KnowledgeBase
-from core.language import Implicit
+from core.language import Domino, Implicit
 
 
 # %% subst tests
@@ -294,16 +294,9 @@ def test_c36():
     # TODO: problem, specific id still get 
 
 def test_c38():
-    # assert isMatch(the(1)('button').does('be')._('down').e, the(1)('button').does('be')._('down').e)
-
     kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tellKb()
     kb1 = the('button').tellKb(kb0)
-    assert ('button#1', 'button', 'super') in kb1.wm
-
-    # print('-'*20)
-
-    kb2 = the(1)('button').does('be')._('down').tellKb(kb1)
-
-
-    # print(kb2.wm)
-
+    kb2 = the('button').tellKb(kb1)
+    kb3 = e(Domino(the(1)('button').does('be')._('down').e)).tellKb(kb2)
+    assert the('button').does('be')._('red').get(kb3)
+    assert not e('button#1').does('be')._('red').get(kb3)
