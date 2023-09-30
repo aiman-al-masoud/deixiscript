@@ -9,33 +9,29 @@ from core.language import Implicit
 
 # %% subst tests
 def test1():
-    x = subst('capra', 'cat', e('capra').does('eat').e)
-    y = e('cat').does('eat').e
-    assert x == y
+    x = subst('capra', 'cat', e('capra').does('jump').e)
+    assert x == e('cat').does('jump').e
 
 def test2():
     x = subst('capra', 'cat', e('capra').and_('cavallo').and_('capra').e)
-    y = e('cat').and_('cavallo').and_('cat').e
-    assert x == y
+    assert x == e('cat').and_('cavallo').and_('cat').e
 
 def test3():
     x = subst('capra', 'cat', ('capra', 'capra'))
-    y = ('cat','cat')
-    assert x == y
+    assert x == ('cat','cat')
 
-# circular import tests (eval <-> expbuilder) 
+# %% getting a constant test
 def test5():
-    x = e(1).get()
-    assert x == 1
+    assert e(1).get() == 1
 
 # %% findAsts tests
 def test6():
-    x = e('capra').and_(3).and_(1).and_('gatto').e
-    assert findAsts(x, lambda x:isinstance(x, int)) == (3, 1)
+    ast = e('capra').and_(3).and_(1).and_('gatto').e
+    assert findAsts(ast, lambda x:isinstance(x, int)) == (3, 1)
 
 def test7():
-    x = the('cat').does('jump').and_(the('dog').does('run')).e
-    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
+    ast = the('cat').does('jump').and_(the('dog').does('run')).e
+    assert findAsts(ast, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
 
 def test8():
     x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
@@ -45,7 +41,7 @@ def test8():
 def test9():
     x = decompressed(e('capra').and_('cavallo').does('jump').e)
     y = e('capra').does('jump').and_(e('cavallo').does('jump')).e
-    assert x==y
+    assert x == y
 
 def test10():
     x = decompressed(e('capra').and_('cavallo').and_('gatto').does('jump').e)
@@ -58,18 +54,17 @@ def test11(): #  with demorgan's rule I
     y = it_is_false_that(e(2).equals(1)).or_(it_is_false_that(e(3).equals(1))).e
     assert d == y
 
-# %% tell (create) new entities tests 
+# %% nounphrases expressions as constructors with tell()
 def test12():
     x = the('cat').tell()
     y = the('cat').tell(x.kb)
     z = the('cat').tell(y.kb)
+    allCats = every('cat').get(z.kb)
 
-    w = every('cat').get(z.kb)
-    
-    assert isinstance(w, tuple)
-    assert set(w) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
+    assert isinstance(allCats, tuple)
+    assert set(allCats) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
 
-def test13(): # create from which (relative clause)
+def test13(): # with which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tellKb()
     assert ('cat#1', 'fish', 'food') in kb1.wm
 
@@ -78,7 +73,7 @@ def test21():
     assert (1, 'int', 'super') in kb.wm
     assert 1 in kb.dd
 
-# %% negation ask tests 
+# %% negation with ask tests 
 def test15():
     q = e('capra#1').does('have')._(1).as_('age')
     qn = it_is_false_that(q)
@@ -112,6 +107,7 @@ def test19():
     assert not isMatch('it', 'buruf')
 
 def test_c20():
+    # TODO: maybe a little wrong?
 
     general = the(1)('man').does('ride').on(the(1)('horse')).e
     spec1 =  the(1)('man').does('ride').on(every('horse')).e
@@ -178,7 +174,6 @@ def test25():
     assert maybe == correct
 
 # %% idiom tests
-
 def test26():
     kb1 = the('it').when(the(1)('thing')).tellKb()
     kb2 = the('capra').tellKb(kb1)
@@ -278,9 +273,7 @@ def test_c35():
     # OLD----------------
     # the(1)(the('mouse').which(e('cat#1').does('eat')._(_)))
 
-
-
-
+# TODO
 def test_c36():
     # %% cause-effects with synthetic derivations
     # kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tellKb()
