@@ -290,5 +290,5 @@ def test_c36():
     # print(kb0.wm)
     # print(isMatch(the('button').e, 'button#1', kb0))
     kb0 = the('button').tellKb()
-    print(isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('be')._('down').e , kb0))
+    assert isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('be')._('down').e , kb0)
 
