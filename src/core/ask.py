@@ -129,7 +129,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if not (set(s) & set(x2))}            
             x4 = frozenset(x3)
-            return Result(True, KnowledgeBase(x4, kb.adcs, kb.sdcs, kb.dd))
+            return Result(True, KnowledgeBase(x4, kb.ads, kb.sds, kb.dd))
         case Negation(v):
             r1 = e(v).tell(kb)
             kb1 = kb - r1.addition + r1.kb.dd
@@ -156,11 +156,11 @@ def __makeExplicit(ast:Ast, kb:KnowledgeBase):
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    d = next((d.definition for d in kb.adcs if isMatch(d.definendum, ast, kb)), ast)    
+    d = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
     return d
 
 def __findEffects(ast:Ast, kb:KnowledgeBase):
     # TODO: when cause is removed, effect should also vanish
     from core.isMatch import isMatch
-    es = tuple(d.effect for d in kb.sdcs if isMatch(d.cause, ast))
+    es = tuple(d.effect for d in kb.sds if isMatch(d.cause, ast))
     return es
