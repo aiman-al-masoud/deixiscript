@@ -76,5 +76,4 @@ Explicit = str | float | int | bool | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
-# Derivation = AnalyticDerivation | SyntheticDerivation
 Ast = NounPhrasish | SimpleSentence | Derivation
