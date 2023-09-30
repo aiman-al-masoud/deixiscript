@@ -35,5 +35,11 @@ def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
     #TODO: problem, if specific is id, get will work no matter what withoutGen contains! :-(, maybe need to distinguish concepts from individuals
     specWithoutGen = e(specific).get(withoutGen.kb) 
 
+    # print('specific=', specific)
+    # print(withSpec.kb.wm)
+    # print('generic=', generic)
+    # print('withoutGen=', withoutGen.kb.wm)
+    # print('specWithoutGen=', specWithoutGen)
+
     return genWithSpec and not specWithoutGen
 

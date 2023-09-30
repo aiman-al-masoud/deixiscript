@@ -129,7 +129,7 @@ def test_c21():
     general = the(1)('man').does('ride').on(the(1)('horse')).e
     spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
     assert isMatch(general, spec1, kb1)
-    # print(isMatch(spec1, general, kb1)) #TODO: wrong!    
+    # assert not isMatch(spec1, general, kb1) #TODO: wrong result!    
     spec2 =  the(1)('man').does('ride').on(the('lama')).e
     assert not isMatch(general, spec2, kb1)
 
