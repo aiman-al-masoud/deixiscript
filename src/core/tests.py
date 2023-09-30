@@ -292,3 +292,7 @@ def test_c36():
     kb0 = the('button').tellKb()
     assert isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('be')._('down').e , kb0)
 
+# def test_c37():
+    # kb0 = the('button').tellKb()
+    # isMatch(the(1)('button').e, e('button#1').e , kb0) 
+    # TODO: problem, specific id still get 

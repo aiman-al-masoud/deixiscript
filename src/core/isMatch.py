@@ -27,19 +27,13 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 
 def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
 
-    # print(generic)
-    # print(specific)
-
     if generic == specific: return True
 
-    with1 = e(specific).tell(kb)
-    with2 = e(generic).get(with1.kb)
+    withSpec = e(specific).tell(kb)
+    genWithSpec = e(generic).get(withSpec.kb)
+    withoutGen = it_is_false_that(generic).tell(kb)
+    #TODO: problem, if specific is id, get will work nontheless! :-(, maybe need to distinguish concepts from individuals
+    specWithoutGen = e(specific).get(withoutGen.kb) 
 
-    without1 = it_is_false_that(generic).tell(kb)
-    
-    # print('generic=', generic)
-    # print('without1=', without1.kb.wm)
+    return genWithSpec and not specWithoutGen
 
-    without2 = e(specific).get(without1.kb)
-
-    return not without2 and with2 

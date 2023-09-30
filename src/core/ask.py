@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import cast
 from core.expbuilder import does, e, _, every
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SyntheticDerivation, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, NounPhrase, Numerality, SyntheticDerivation, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
@@ -125,6 +125,13 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             raise Exception('')
         case Negation(SyntheticDerivation()):
             raise Exception('')
+        
+        case Negation(v) if isinstance(v, NounPhrase):
+            x1 = e(v).get(kb)
+            x2 = x1 if isinstance(x1, tuple) else (x1,)
+            x3 = {s for s in kb.wm if not (set(s) & set(x2))}            
+            x4 = frozenset(x3)
+            return Result(True, KnowledgeBase(x4, kb.adcs, kb.sdcs, kb.dd))
         case Negation(v):
             r1 = e(v).tell(kb)
             kb1 = kb - r1.addition + r1.kb.dd
