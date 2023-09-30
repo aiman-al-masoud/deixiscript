@@ -6,9 +6,9 @@ from parser.metalang import M,S,D
 
 # TODO: implicit, idiomatic and domino by default
 # TODO: add numerality
-# TODO: derivation clauses
-# TODO: questions vs statements: for now with ? vs !, default is question
 # TODO: complements
+# derivation clauses: done
+# questions vs statements: for now with ? vs !, default is question
 
 # p[m|'l'/isNp, v|'op'/L['and','or'], m|'r'/isNp] >> e('l').binop('op', 'r').e
 # p[m|'s'/isNp//'', 'does', s|'v', m|'o'/isNp//False] >> e('s').does('v')._('o').e
@@ -21,6 +21,8 @@ D([M('x', isAst), '?'], 'x'),
 D([M('l', isNp), S('op', L['and', 'or']), M('r', isNp)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
 D([M('s', isNp, ''), 'does', S('v'), M('o', isNp, False),], e('s').does('v')._('o').e),
+D([M('e', isAst), 'after', M('c', isAst)], e('e').after('c').e),
+D([M('d1', isAst), 'when', M('d2', isAst)], e('d1').when('d2').e),
 D([S('x')], 'x'),
 ]
 
@@ -72,3 +74,11 @@ def test_g11():
     x = parse(ds, ['cat', 'does', 'eat', 'mouse', '?'])
     y = parse(ds, ['cat', 'does', 'eat', 'mouse'])
     assert x == y
+
+def test_g12():
+    x = parse(ds, ['button', 'does', 'be', 'red', 'after', 'button', 'does', 'be', 'down'])
+    assert x == e('button').does('be')._('red').after(e('button').does('be')._('down')).e
+
+def test_g13():
+    x = parse(ds, ['it', 'when', 'thing'])
+    assert x == e('it').when('thing').e
