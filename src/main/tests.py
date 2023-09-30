@@ -4,7 +4,7 @@ from core.expbuilder import does, e
 from parser.parse import parse
 from parser.metalang import M,S,D
 
-# TODO: implicit and idiomatic by default
+# TODO: implicit, idiomatic and domino by default
 # TODO: add numerality
 # TODO: derivation clauses
 

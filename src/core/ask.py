@@ -133,7 +133,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             # TODO: when cause is removed, effect should also vanish
             from core.isMatch import isMatch
             r1 = e(v).tell(kb)
-            effects = tuple(Command(Domino(d.effect)) for d in kb.sds if isMatch(d.cause, v, kb))
+            effects = tuple(e(d.effect).domino.new.e for d in kb.sds if isMatch(d.cause, v, kb))
             r2 = e(effects).ask(r1.kb)
             return Result(True, r2.kb, r1.addition|r2.addition)
         case _:
@@ -153,6 +153,7 @@ def __makeExplicit(ast:Ast, kb:KnowledgeBase):
     return Result(x2, x1.kb)
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
+    # TODO: recursive idiomatic derivations?
     from core.isMatch import isMatch
     d = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
     return d

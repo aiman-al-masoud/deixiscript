@@ -49,8 +49,8 @@ class Command:
 class Domino:
     value:'Ast'
     
-@dataclass(frozen=True) # what about idiom-containing idioms in case of evaluating a multi step derivation?
-class Idiom(): # overrideme, non-literal
+@dataclass(frozen=True)
+class Idiom():
     value:'Ast'
 
 @dataclass(frozen=True)

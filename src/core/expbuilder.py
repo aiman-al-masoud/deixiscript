@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 from core.KnowledgeBase import KnowledgeBase, Result
 
 
@@ -18,17 +18,10 @@ class ExpBuilder(Generic[T]):
     def binop(self, op:Ast, right:'Ast|ExpBuilder'):
         return ExpBuilder(BinExp(op, self.e, makeAst(right)))
 
-    def equals(self, x:'Ast|ExpBuilder'):
-        return self.binop('=', x)
-
-    def and_(self, x:'Ast|ExpBuilder'):
-        return self.binop('and', x)
-    
-    def or_(self, x:'Ast|ExpBuilder'):
-        return self.binop('or', x)
-    
-    def plus(self, x:'ExpBuilder'):
-        return self.binop('+', x)
+    def equals(self, x:'Ast|ExpBuilder'):return self.binop('=', x)
+    def and_(self, x:'Ast|ExpBuilder'): return self.binop('and', x)
+    def or_(self, x:'Ast|ExpBuilder'): return self.binop('or', x)
+    def plus(self, x:'ExpBuilder'): return self.binop('+', x)
 
     def does(self, verb:'Ast|ExpBuilder'):        
         return ExpBuilder(SimpleSentence(makeAst(verb), self.e))
@@ -51,10 +44,15 @@ class ExpBuilder(Generic[T]):
 
     def after(self, cause:'Ast|ExpBuilder'):
         return ExpBuilder(SyntheticDerivation(makeAst(cause), self.e))
+
+    @property
+    def new(self): return ExpBuilder(Command(self.e))
+
+    @property
+    def idiom(self): return ExpBuilder(Idiom(self.e))
     
     @property
-    def idiom(self):
-        return ExpBuilder(Idiom(self.e))
+    def domino(self): return ExpBuilder(Domino(self.e))
 
     def ask(self, kb=KnowledgeBase()):
         from core.ask import ask
@@ -92,7 +90,7 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
     return x if isinstance(x, Ast) else x.e
 
 def new(x:Ast|ExpBuilder):
-    return ExpBuilder(Command(makeAst(x)))
+    return e(x).new
 
 @overload
 def the(x:int)->Callable[[Ast], ExpBuilder]:...

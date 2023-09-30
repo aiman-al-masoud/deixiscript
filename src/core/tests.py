@@ -293,10 +293,11 @@ def test_c36():
     # isMatch(the(1)('button').e, e('button#1').e , kb0) 
     # TODO: problem, specific id still get 
 
+# %% cause and effect
 def test_c38():
     kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tellKb()
     kb1 = the('button').tellKb(kb0)
     kb2 = the('button').tellKb(kb1)
-    kb3 = e(Domino(the(1)('button').does('be')._('down').e)).tellKb(kb2)
+    kb3 = the(1)('button').does('be')._('down').domino.tellKb(kb2)
     assert the('button').does('be')._('red').get(kb3)
     assert not e('button#1').does('be')._('red').get(kb3)
