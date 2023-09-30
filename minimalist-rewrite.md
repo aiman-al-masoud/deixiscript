@@ -31,7 +31,7 @@ Random AST generator for fuzz testing?
 
 ADVANTAGES OF NOT TREATING CONCEPTS LIKE INDIVIDUALS??
 
-- isMatch() problem: an id should't exist if it's not in the WM, whereas concept should always exist. But this may provoke other problems??
+- isMatch() problem: an id should't exist if it's not in the WM, whereas concept should always exist. Problem isMatch(the('cat').e, 'cat#1', kb1) But this may provoke other problems??
 
 - stallion/horse isMatch() problem:
 	checking for isMatch() with:
