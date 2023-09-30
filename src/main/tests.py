@@ -7,6 +7,7 @@ from parser.metalang import M,S,D
 # TODO: implicit, idiomatic and domino by default
 # TODO: add numerality
 # TODO: derivation clauses
+# TODO: questions vs statements
 
 # p[m|'l'/isNp, v|'op'/L['and','or'], m|'r'/isNp] >> e('l').binop('op', 'r').e
 # p[m|'s'/isNp//'', 'does', s|'v', m|'o'/isNp//False] >> e('s').does('v')._('o').e
