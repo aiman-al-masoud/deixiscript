@@ -45,9 +45,10 @@ def test_g5():
     assert x == e('cat').which(does('run')).e
 
 def test_g6():
-    # x = parse(ds, ['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run' ])
-    x = parse(ds, ['cat', 'which', 'does', 'exist',  'does', 'run' ])
-    assert x == e('cat').which(does('exist')).does('run').e
+    x1 = parse(ds, ['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run' ])
+    x2 = parse(ds, ['cat', 'which', 'does', 'exist',  'does', 'run' ])
+    assert x1 == x2
+    assert x1 == e('cat').which(does('exist')).does('run').e
 
 def test_g7():
   x = parse(ds, ['cat', 'and', 'dog', 'does', 'run'])
