@@ -31,16 +31,16 @@ Random AST generator for fuzz testing?
 
 ADVANTAGES OF NOT TREATING CONCEPTS LIKE INDIVIDUALS??
 
-- an id doesn't exist if it's not in the WM, whereas concept should always exist
-	but this may provoke other problems??
+- isMatch() problem: an id should't exist if it's not in the WM, whereas concept should always exist. But this may provoke other problems??
 
-- stallion/horse problem:
+- stallion/horse isMatch() problem:
 	checking for isMatch() with:
 	
 	gen=the man rides the stallion
 	spec=the man rides the horse
 	kb=stallion is a horse
-	should be false but it is true
+
+	should yield false but instead it yields true
 	
 	because spec has the effect of man concept rides on stallion (which is a horse) concept
 
