@@ -119,12 +119,12 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(ast, kb + ast)
         case Negation(Derivation()):
             raise Exception('')
-        case Negation(v) if isinstance(v, NounPhrase):
+        case Negation(v) if isinstance(v, NounPhrase): # TODO: test
             x1 = e(v).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = {s for s in kb.wm if not (set(s) & set(x2))}            
+            x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
-            return Result(True, KnowledgeBase(x4, kb.ds, kb.dd))
+            return Result(True, kb - x4)
         case Negation(v):
             r1 = e(v).tell(kb)
             kb1 = kb - r1.addition + r1.kb.dd
