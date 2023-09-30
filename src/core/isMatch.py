@@ -32,7 +32,7 @@ def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
     withSpec = e(specific).tell(kb)
     genWithSpec = e(generic).get(withSpec.kb)
     withoutGen = it_is_false_that(generic).tell(kb)
-    #TODO: problem, if specific is id, get will work nontheless! :-(, maybe need to distinguish concepts from individuals
+    #TODO: problem, if specific is id, get will work no matter what withoutGen contains! :-(, maybe need to distinguish concepts from individuals
     specWithoutGen = e(specific).get(withoutGen.kb) 
 
     return genWithSpec and not specWithoutGen
