@@ -101,8 +101,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             r2 = e(ww).tell(kb + r1.addition)
             return Result(r1.head, r2.kb, r1.addition | r2.addition)
         case Numerality(h, c, o):
-            # TODO!
-            return e(h).tell(kb) # raise Exception('')
+            return e(h).tell(kb) # TODO: multi-create
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
@@ -125,7 +124,6 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             raise Exception('')
         case Negation(SyntheticDerivation()):
             raise Exception('')
-        
         case Negation(v) if isinstance(v, NounPhrase):
             x1 = e(v).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
