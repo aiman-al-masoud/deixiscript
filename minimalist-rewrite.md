@@ -24,3 +24,25 @@ Random AST generator for fuzz testing?
 
 
 - derivations should "eschew commands"
+
+
+----------------------
+
+
+ADVANTAGES OF NOT TREATING CONCEPTS LIKE INDIVIDUALS??
+
+- an id doesn't exist if it's not in the WM, whereas concept should always exist
+	but this may provoke other problems??
+
+- stallion/horse problem:
+	checking for isMatch() with:
+	
+	gen=the man rides the stallion
+	spec=the man rides the horse
+	kb=stallion is a horse
+	should be false but it is true
+	
+	because spec has the effect of man concept rides on stallion (which is a horse) concept
+
+
+
