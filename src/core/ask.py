@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import cast
 from core.expbuilder import does, e, _, every
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, NounPhrase, Numerality, SyntheticDerivation, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, NounPhrase, Numerality, SyntheticDerivation, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
@@ -65,13 +65,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
         case Command(v):
-
+            #TODO: complete
             r1 = __tell(v, kb)
             effects = __findEffects(v, kb)
             cs = tuple(Command(x) for x in effects)
             r2 = e(cs).ask(r1.kb)
             return Result(r1.head, r2.kb, r1.addition)
-
         case _:
             raise Exception('ask', ast)
 
@@ -116,13 +115,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             delta = frozenset({subst(r1.head, new, x) for x in r1.addition})
             if new: return Result(new, kb, cast(WorldModel, delta)) # TODO: bad cast
             return r1
-        case AnalyticDerivation():
+        case Derivation():
             return Result(ast, kb + ast)
-        case SyntheticDerivation():
-            return Result(ast, kb + ast)
-        case Negation(AnalyticDerivation()):
-            raise Exception('')
-        case Negation(SyntheticDerivation()):
+        case Negation(Derivation()):
             raise Exception('')
         case Negation(v) if isinstance(v, NounPhrase):
             x1 = e(v).get(kb)
