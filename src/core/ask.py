@@ -67,8 +67,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Command(v):
             r1 = __tell(v, kb)
             return r1
-            #TODO: fix max recursion!
-            effects = __findEffects(v, kb)
+            # TODO: fix max recursion!
+            # TODO: when cause is removed, effect should also vanish
+            from core.isMatch import isMatch
+            effects = (d.effect for d in kb.sds if isMatch(d.cause, ast, kb))
             cs = tuple(Command(x) for x in effects)
             r2 = e(cs).ask(r1.kb)
             return Result(r1.head, r2.kb, r1.addition)
@@ -155,8 +157,8 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     d = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
     return d
 
-def __findEffects(ast:Ast, kb:KnowledgeBase):
-    # TODO: when cause is removed, effect should also vanish
-    from core.isMatch import isMatch
-    es = tuple(d.effect for d in kb.sds if isMatch(d.cause, ast, kb))
-    return es
+# def __findEffects(ast:Ast, kb:KnowledgeBase):
+#     # TODO: when cause is removed, effect should also vanish
+#     from core.isMatch import isMatch
+#     es = tuple(d.effect for d in kb.sds if isMatch(d.cause, ast, kb))
+#     return es
