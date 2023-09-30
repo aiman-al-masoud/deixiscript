@@ -19,36 +19,35 @@ class DeicticDict:
 
 @dataclass(frozen=True)
 class KnowledgeBase:
-    wm:WorldModel = frozenset()
-    ds:Tuple[Derivation, ...]=tuple()
-    dd:DeicticDict = DeicticDict({})
+    wm:WorldModel             =frozenset()
+    ds:Tuple[Derivation, ...] =tuple()
+    dd:DeicticDict            =DeicticDict({})
 
     def __add__(self, o:WorldModel|DeicticDict|Derivation):
         match o:
-            case frozenset():
+            case frozenset(): 
                 return KnowledgeBase(self.wm | o, self.ds, self.dd)
-            case DeicticDict():
+            case DeicticDict(): 
                 return KnowledgeBase(self.wm, self.ds, o)
             case Derivation():
                 from core.isMatch import sortByGenerality
-                ds = (*self.ds, o)
-                sortedDs = tuple(sortByGenerality(self, ds))
-                return KnowledgeBase(self.wm, sortedDs, self.dd)
+                ds = sortByGenerality(self, [*self.ds, o])
+                return KnowledgeBase(self.wm, ds, self.dd)
 
-    def __sub__(self, o:'WorldModel|AnalyticDerivation'):
+    def __sub__(self, o:WorldModel|Derivation):
         match o:
             case frozenset():
                 return KnowledgeBase(self.wm - o, self.ds, self.dd)
-            case AnalyticDerivation():
+            case Derivation():
                 raise Exception()
         
     @property
     def ads(self): 
-        return tuple(x for x in self.ds if isinstance(x, AnalyticDerivation))
+        return (x for x in self.ds if isinstance(x, AnalyticDerivation))
     
     @property
     def sds(self): 
-        return tuple(x for x in self.ds if isinstance(x, SyntheticDerivation))
+        return (x for x in self.ds if isinstance(x, SyntheticDerivation))
 
 
 @dataclass(frozen=True)

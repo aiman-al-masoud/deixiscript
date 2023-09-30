@@ -131,11 +131,11 @@ def test_c21():
 
 # %% sort nounphrases by generality tests
 def test22():
-    correct = [  # ascending generality
+    correct = (  # ascending generality
         the('cat').which(does('be')._('red').and_(does('be')._('black'))).e,
         the('cat').which(does('be')._('red')).e,
         the('cat').e,
-    ]
+    )
     wrong = [correct[2], correct[0], correct[1]]
     maybe = sortByGenerality(KnowledgeBase(), correct)
     assert correct != wrong
@@ -152,23 +152,23 @@ def test23():
 
 # %% sort simple-sentences by generality tests
 def test24():
-    correct = [
+    correct = (
         the('son').does('give')._(the('present')).to(the('mother')).on(the('birthday')).e,
         the('son').does('give')._(the('present')).to(the('mother')).e,
         the('son').does('give')._(the('present')).e,
         the('son').does('give').e,
-    ]
+    )
     wrong = [correct[1], correct[3], correct[0], correct[2]]
     maybe = sortByGenerality(KnowledgeBase(), wrong)
     assert maybe == correct
 
 # %% sort analytic derivation clauses by generality tests
 def test25():
-    correct = [
+    correct = (
         the('capra').does('run').on(the('hill')).to(the('food')).when(2).e,
         the('capra').does('run').on(the('hill')).when(2).e,
         the('capra').does('run').when(1).e,
-    ]
+    )
     wrong = [correct[2], correct[0], correct[1]]
     maybe = sortByGenerality(KnowledgeBase(), wrong)
     assert maybe == correct

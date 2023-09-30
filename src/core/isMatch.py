@@ -8,8 +8,9 @@ T = TypeVar('T', bound=Ast)
 
 def sortByGenerality(kb:KnowledgeBase, asts:Iterable[T]):
     cmp = partial(compareByGenerality, kb)
-    res = sorted(asts, key=cmp_to_key(cmp))
-    return res
+    x1 = sorted(asts, key=cmp_to_key(cmp))
+    x2 = tuple(x1)
+    return x2
 
 def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 
