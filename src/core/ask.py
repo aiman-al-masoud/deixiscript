@@ -19,8 +19,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return e(d).ask(kb)
         case str(x) | int(x)| float(x):
             return Result(x, kb + kb.dd.update(x))
-        case tuple(xs):
-            kb1 = reduce(lambda a,b: e(b).ask(a).kb , xs, kb)
+        case tuple(xs): # TODO: also in tell 
+            kb1 = reduce(lambda a,b: e(b).ask(a).kb, xs, kb)
             return Result(xs, kb1)
         case Noun(h):
             cands1 = {x for s in kb.wm for x in s} | {h}
@@ -65,8 +65,13 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
         case Command(v):
-            # TODO: SyntheticDerivation: evaluate the effects
-            return __tell(v, kb)
+
+            r1 = __tell(v, kb)
+            effects = __findEffects(v, kb)
+            cs = tuple(Command(x) for x in effects)
+            r2 = e(cs).ask(r1.kb)
+            return Result(r1.head, r2.kb, r1.addition)
+
         case _:
             raise Exception('ask', ast)
 
@@ -115,7 +120,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case AnalyticDerivation():
             return Result(ast, kb + ast)
         case SyntheticDerivation():
-            raise Exception('')
+            return Result(ast, kb + ast)
         case Negation(AnalyticDerivation()):
             raise Exception('')
         case Negation(SyntheticDerivation()):
@@ -149,6 +154,8 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     d = next((d.definition for d in kb.adcs if isMatch(d.definendum, ast, kb)), ast)    
     return d
 
-# def __find_effects(ast:Ast, kb:KnowledgeBase):
-#     from core.isMatch import isMatch
-    
+def __findEffects(ast:Ast, kb:KnowledgeBase):
+    # TODO: when cause is removed, effect should also vanish
+    from core.isMatch import isMatch
+    es = tuple(d.effect for d in kb.sdcs if isMatch(d.cause, ast))
+    return es

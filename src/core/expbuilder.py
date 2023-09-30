@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 from core.KnowledgeBase import KnowledgeBase, Result
 
 
@@ -35,9 +35,7 @@ class ExpBuilder(Generic[T]):
 
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
-
-        #TODO: copyAst dedup
-        v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)})
+        v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)}) #TODO: dedup?
         return ExpBuilder(v)
 
     def _(self, object:'Ast|ExpBuilder'): return self.complement('object', object)
@@ -50,6 +48,9 @@ class ExpBuilder(Generic[T]):
 
     def when(self, definition:'Ast|ExpBuilder'):
         return ExpBuilder(AnalyticDerivation(self.e, makeAst(definition)))
+
+    def after(self, cause:'Ast|ExpBuilder'):
+        return ExpBuilder(SyntheticDerivation(makeAst(cause), self.e))
     
     @property
     def idiom(self):

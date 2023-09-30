@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict, FrozenSet, Tuple
-from core.language import AnalyticDerivation, Ast
+from core.language import AnalyticDerivation, Ast, SyntheticDerivation
 
 
 WmSentence = Tuple[Ast, Ast, Ast]
@@ -19,26 +19,32 @@ class DeicticDict:
 
 @dataclass(frozen=True)
 class KnowledgeBase:
-    wm:WorldModel= frozenset()
-    adcs:Tuple[AnalyticDerivation,...]= tuple()
-    dd:DeicticDict= DeicticDict({})
+    wm:WorldModel = frozenset()
+    adcs:Tuple[AnalyticDerivation,...] = tuple() # maybe common adcs/sdcs sequence
+    sdcs:Tuple[SyntheticDerivation,...] = tuple()
+    dd:DeicticDict = DeicticDict({})
 
-    def __add__(self, o:WorldModel|DeicticDict|AnalyticDerivation):
+    def __add__(self, o:WorldModel|DeicticDict|AnalyticDerivation|SyntheticDerivation):
         match o:
             case frozenset():
-                return KnowledgeBase(self.wm | o, self.adcs, self.dd)
+                return KnowledgeBase(self.wm | o, self.adcs, self.sdcs, self.dd)
             case DeicticDict():
-                return KnowledgeBase(self.wm, self.adcs, o)
+                return KnowledgeBase(self.wm, self.adcs, self.sdcs, o)
             case AnalyticDerivation():
                 from core.isMatch import sortByGenerality
                 dcs = (*self.adcs, o)
                 sortedDcs = tuple(sortByGenerality(self, dcs))
-                return KnowledgeBase(self.wm, sortedDcs, self.dd)
+                return KnowledgeBase(self.wm, sortedDcs, self.sdcs, self.dd)
+            case SyntheticDerivation():
+                from core.isMatch import sortByGenerality
+                dcs = (*self.sdcs, o)
+                sortedDcs = tuple(sortByGenerality(self, dcs))
+                return KnowledgeBase(self.wm, self.adcs, sortedDcs, self.dd)
 
     def __sub__(self, o:'WorldModel|AnalyticDerivation'):
         match o:
             case frozenset():
-                return KnowledgeBase(self.wm - o, self.adcs, self.dd)
+                return KnowledgeBase(self.wm - o, self.adcs, self.sdcs, self.dd)
             case AnalyticDerivation():
                 raise Exception()
 

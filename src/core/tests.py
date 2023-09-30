@@ -210,7 +210,7 @@ def test29():
     assert e(1).equals(2).or_(e(3).equals(3)).get()
     assert not e(1).equals(2).or_(e(3).equals(2)).get()
 
-# matching a general implicit sentence to a specific explicit sentence
+# %% matching a general implicit sentence to a specific explicit sentence
 def test30():
    
     specific = e('man#1').does('ride').on('horse#1') # specific
@@ -221,7 +221,7 @@ def test30():
 
     assert isMatch(general.e, specific.e, kb2)
 
-# multiple additions with and  
+# %% multiple additions with and  
 def test31():
     
     r = e('cat#1').does('have')._('mouse#1').as_('food') \
@@ -231,7 +231,7 @@ def test31():
 
     assert len(r.addition) == 3
     
-# negate tell simple sentence
+# %% negate tell simple sentence
 def test32():
     kb1 = the('man').tellKb()
     kb2 = the('horse').tellKb(kb1)
@@ -242,14 +242,14 @@ def test32():
     assert s.get(kb3)
     assert not s.get(kb4)
 
-# multiple executions of the same simple sentences are idempotent
+# %% multiple executions of the same simple sentences are idempotent
 def test33():
     r1 = e('man#1').does('ride').on('horse#1').tell()
     r2 = e('man#1').does('ride').on('horse#1').tell(r1.kb)
     assert r1.kb.wm == r2.kb.wm
     assert r1.addition == r2.addition
 
-# matchAst with other similar "noise" specific sentences in KB
+# %% matchAst with other similar "noise" specific sentences in KB
 def test34():
     kb1 = new(the('cat')).does('eat')._(new(the('mouse'))).tellKb()
     kb2 = the('cat').tellKb(kb1)
@@ -262,7 +262,7 @@ def test34():
     assert not isMatch(spec, gen, kb3)
 
 
-# logic and deictic dict test
+# %% logic and deictic dict test
 def test_c35():
 
     kb1 = the('mouse').tellKb()
@@ -277,3 +277,18 @@ def test_c35():
 
     # OLD----------------
     # the(1)(the('mouse').which(e('cat#1').does('eat')._(_)))
+
+
+
+
+def test_c36():
+    # %% cause-effects with synthetic derivations
+    # kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tellKb()
+    # kb1 = the('button').tellKb(kb0)
+    # kb5 = the('button').tellKb(kb1)
+    # kb6 = e('button#1').does('be')._('down').tellKb(kb5)
+    # print(kb0.wm)
+    # print(isMatch(the('button').e, 'button#1', kb0))
+    kb0 = the('button').tellKb()
+    print(isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('be')._('down').e , kb0))
+

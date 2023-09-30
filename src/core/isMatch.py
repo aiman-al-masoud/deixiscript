@@ -1,7 +1,7 @@
 from functools import cmp_to_key, partial
 from typing import Iterable, Literal, TypeVar
 from core.expbuilder import e, it_is_false_that
-from core.language import AnalyticDerivation, Ast
+from core.language import AnalyticDerivation, Ast, SyntheticDerivation
 from core.KnowledgeBase import KnowledgeBase
 
 T = TypeVar('T', bound=Ast)
@@ -16,6 +16,8 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
     match ast1, ast2:
         case AnalyticDerivation(d1, _), AnalyticDerivation(d2, _):
             return compareByGenerality(kb, d1, d2)
+        case SyntheticDerivation(c1, _), SyntheticDerivation(c2, _):
+            return compareByGenerality(kb, c1, c2)
         case _:
             m1 = isMatch(ast1, ast2, kb)
             m2 = isMatch(ast2, ast1, kb)
@@ -25,12 +27,19 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->Literal[-1,0,1]:
 
 def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
 
+    # print(generic)
+    # print(specific)
+
     if generic == specific: return True
 
     with1 = e(specific).tell(kb)
     with2 = e(generic).get(with1.kb)
 
     without1 = it_is_false_that(generic).tell(kb)
+    
+    # print('generic=', generic)
+    # print('without1=', without1.kb.wm)
+
     without2 = e(specific).get(without1.kb)
 
     return not without2 and with2 
