@@ -8,6 +8,7 @@ from parser.metalang import M,S,D
 # TODO: add numerality
 # TODO: derivation clauses
 # TODO: questions vs statements
+# TODO: complements
 
 # p[m|'l'/isNp, v|'op'/L['and','or'], m|'r'/isNp] >> e('l').binop('op', 'r').e
 # p[m|'s'/isNp//'', 'does', s|'v', m|'o'/isNp//False] >> e('s').does('v')._('o').e
