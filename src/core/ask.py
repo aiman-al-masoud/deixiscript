@@ -74,10 +74,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
-
-        # case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
-        #     r = __makeExplicit(ast, kb)
-        #     return e(r.head).tell(r.kb)
+        
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).tell(kb)
