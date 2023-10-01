@@ -86,10 +86,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(x).ask(kb1)
         case Noun(h):
             n = every(h).count(kb)
-            old = f'{h}#{n}'
-            kb1 = kb + kb.dd.update(old)
-            r1 = e(old).does('be')._(h).tell(kb1) 
-            return Result(old, r1.kb, r1.addition)
+            new = f'{h}#{n}'
+            kb1 = kb + kb.dd.update(new)
+            r1 = e(new).does('be')._(h).tell(kb1) 
+            return Result(new, r1.kb, r1.addition)
         case Which(h, w):
             r1 = e(h).tell(kb)
             ww = subst(_, r1.head, w)
