@@ -1,12 +1,13 @@
 from typing import Literal as L
 from core.normalized import isNounPhrasish as isNp, isAst
-from core.expbuilder import does, e
+from core.expbuilder import does, e, it_is_false_that, the
 from parser.parse import parse
 from parser.metalang import M,S,D
 
 # TODO: implicit, idiomatic and domino by default
 # TODO: add numerality
 # TODO: complements
+# negation
 # derivation clauses: done
 # questions vs statements: for now with ? vs !, default is question
 
@@ -16,13 +17,17 @@ from parser.metalang import M,S,D
 
 ds = [
 D(['(', M('x', isAst), ')'], 'x'),
-D([M('x', isAst), '!'], e('x').new.e),
+D([M('x', isAst), '!'], e('x').domino.new.e),
 D([M('x', isAst), '?'], 'x'),
+
+# also dot in L
 D([M('l', isNp), S('op', L['and', 'or']), M('r', isNp)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
-D([M('s', isNp, ''), 'does', S('v'), M('o', isNp, False),], e('s').does('v')._('o').e),
+D([M('s', isNp, ''), 'does', 'not', S('v'), M('o', isNp, False)], it_is_false_that(e('s').does('v')._('o')).e),
+D([M('s', isNp, ''), 'does', S('v'), M('o', isNp, False)], e('s').does('v')._('o').e),
 D([M('e', isAst), 'after', M('c', isAst)], e('e').after('c').e),
 D([M('d1', isAst), 'when', M('d2', isAst)], e('d1').when('d2').e),
+D([S('x', str)], the('x').e),
 D([S('x')], 'x'),
 ]
 
@@ -34,29 +39,29 @@ def test_g1():
 
 def test_g2():
     x = parse(ds, ['cat', 'does', 'run'])
-    assert x == e('cat').does('run').e
+    assert x == the('cat').does('run').e
 
 def test_g3():
     x = parse(ds, ['does', 'run'])
-    assert x == does('run').e
+    assert x == the('').does('run').e # UGLY
     
 def test_g4():
     x = parse(ds, ['cat', 'does', 'eat','mouse'])
-    assert x == e('cat').does('eat')._('mouse').e
+    assert x == the('cat').does('eat')._(the('mouse')).e
 
 def test_g5():
     x = parse(ds, ['cat', 'which', 'does', 'run'])
-    assert x == e('cat').which(does('run')).e
+    assert x == the('cat').which(the('').does('run')).e # UGLY
 
 def test_g6():
     x1 = parse(ds, ['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run' ])
     x2 = parse(ds, ['cat', 'which', 'does', 'exist',  'does', 'run' ])
     assert x1 == x2
-    assert x1 == e('cat').which(does('exist')).does('run').e
+    assert x1 == the('cat').which(the('').does('exist')).does('run').e # UGLY
 
 def test_g7():
   x = parse(ds, ['cat', 'and', 'dog', 'does', 'run'])
-  assert x == e('cat').and_('dog').does('run').e
+  assert x == the('cat').and_(the('dog')).does('run').e
 
 def test_g8():
    x = parse(ds, ['(', 1, ')'])
@@ -64,11 +69,11 @@ def test_g8():
 
 def test_g9():
    x = parse(ds, ['(', 'cat', 'which', 'does', 'run', ')'])
-   assert x == e('cat').which(does('run')).e
+   assert x == the('cat').which(the('').does('run')).e  #UGLY
 
 def test_g10():
     x = parse(ds, ['cat', 'does', 'eat', 'mouse', '!'])
-    assert x == e('cat').does('eat')._('mouse').new.e
+    assert x == the('cat').does('eat')._(the('mouse')).domino.new.e
 
 def test_g11():
     x = parse(ds, ['cat', 'does', 'eat', 'mouse', '?'])
@@ -77,8 +82,13 @@ def test_g11():
 
 def test_g12():
     x = parse(ds, ['button', 'does', 'be', 'red', 'after', 'button', 'does', 'be', 'down'])
-    assert x == e('button').does('be')._('red').after(e('button').does('be')._('down')).e
+    assert x == the('button').does('be')._(the('red')).after(the('button').does('be')._(the('down'))).e
 
 def test_g13():
     x = parse(ds, ['it', 'when', 'thing'])
-    assert x == e('it').when('thing').e
+    assert x == the('it').when(the('thing')).e
+
+def test_g14():
+    x = parse(ds, ['capra', 'does', 'not', 'jump'])
+    assert x == it_is_false_that(the('capra').does('jump')).e
+
