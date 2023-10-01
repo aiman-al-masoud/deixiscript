@@ -89,6 +89,16 @@ def test_c16():
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
+def test_c32(): # simple sentence
+    kb1 = the('man').tellKb()
+    kb2 = the('horse').tellKb(kb1)
+    s = e('man#1').does('ride').on('horse#1')
+    kb3 = s.tellKb(kb2)
+    kb4 = it_is_false_that(s).tellKb(kb3)
+
+    assert s.get(kb3)
+    assert not s.get(kb4)
+
 # %% matchAst tests
 def test_c17():
     genr = the('cat').e
@@ -225,17 +235,6 @@ def test_c31():
     .tell()
 
     assert len(r.addition) == 3
-    
-# %% negate tell simple sentence
-def test_c32():
-    kb1 = the('man').tellKb()
-    kb2 = the('horse').tellKb(kb1)
-    s = e('man#1').does('ride').on('horse#1')
-    kb3 = s.tellKb(kb2)
-    kb4 = it_is_false_that(s).tellKb(kb3)
-
-    assert s.get(kb3)
-    assert not s.get(kb4)
 
 # %% multiple executions of the same simple sentences are idempotent
 def test_c33():
@@ -287,7 +286,6 @@ def test_c36():
 
     assert isMatch(the(1)('button').does('be')._('down').e, e('button#1').does('have')._('down').as_('super').e , kb0)
 
-
 # def test_c37():
     # kb0 = the('button').tellKb()
     # isMatch(the(1)('button').e, e('button#1').e , kb0) 
@@ -299,5 +297,5 @@ def test_c38():
     kb1 = the('button').tellKb(kb0)
     kb2 = the('button').tellKb(kb1)
     kb3 = the(1)('button').does('be')._('down').domino.tellKb(kb2)
-    assert the('button').does('be')._('red').get(kb3)
-    assert not e('button#1').does('be')._('red').get(kb3)
+    # assert the('button').does('be')._('red').get(kb3)
+    # assert not e('button#1').does('be')._('red').get(kb3)

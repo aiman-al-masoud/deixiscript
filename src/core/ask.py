@@ -59,8 +59,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
-            ok = (s,o,a) in kb.wm
-            return Result(ok, kb)
+            s = (s,o,a)
+            ok = s in kb.wm
+            return Result(s if ok else False, kb)
+            # return Result(ok, kb)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
@@ -103,7 +105,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             s = (s, o, a)
             delta = frozenset({s})
             kb1  = kb + delta
+            # return Result(True, kb1, delta)
             return Result(True, kb1, delta)
+
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             old = e(action).get(kb)
@@ -115,16 +119,16 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(ast, kb + ast)
         case Negation(Derivation()):
             raise Exception()
-        case Negation(v) if isinstance(v, NounPhrase): # TODO: test
+        case Negation(v):
             x1 = e(v).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
             return Result(True, kb - x4)
-        case Negation(v):
-            r1 = e(v).tell(kb)
-            kb1 = kb - r1.addition + r1.kb.dd
-            return Result(True, kb1)
+        # case Negation(v):
+        #     r1 = e(v).tell(kb)
+        #     kb1 = kb - r1.addition + r1.kb.dd
+        #     return Result(Tre, kb1)
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
@@ -133,7 +137,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             # TODO: when cause is removed, effect should also vanish
             from core.isMatch import isMatch
             r1 = e(v).tell(kb)
-            effects = tuple(e(d.effect).domino.new.e for d in kb.sds if isMatch(d.cause, v, kb))
+            # effects = tuple(e(d.effect).domino.new.e for d in kb.sds if isMatch(d.cause, v, kb))
+            effects = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, v, kb))
             r2 = e(effects).ask(r1.kb)
             return Result(True, r2.kb, r1.addition|r2.addition)
         case _:
