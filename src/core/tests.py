@@ -226,22 +226,11 @@ def test_c30():
 
     assert isMatch(general.e, specific.e, kb2)
 
-# %% multiple additions with and  
-def test_c31():
-    
-    r = e('cat#1').does('have')._('mouse#1').as_('food') \
-    .and_(e('cat#2').does('have')._('mouse#2').as_('food')) \
-    .and_(e('cat#3').does('have')._('mouse#3').as_('food')) \
-    .tell()
-
-    assert len(r.addition) == 3
-
 # %% multiple executions of the same simple sentences are idempotent
 def test_c33():
     r1 = e('man#1').does('ride').on('horse#1').tell()
     r2 = e('man#1').does('ride').on('horse#1').tell(r1.kb)
     assert r1.kb.wm == r2.kb.wm
-    assert r1.addition == r2.addition
 
 # %% matchAst with other similar "noise" specific sentences in KB
 def test_c34():
@@ -297,5 +286,5 @@ def test_c38():
     kb1 = the('button').tellKb(kb0)
     kb2 = the('button').tellKb(kb1)
     kb3 = the(1)('button').does('be')._('down').domino.tellKb(kb2)
-    # assert the('button').does('be')._('red').get(kb3)
-    # assert not e('button#1').does('be')._('red').get(kb3)
+    assert the('button').does('be')._('red').get(kb3)
+    assert not e('button#1').does('be')._('red').get(kb3)

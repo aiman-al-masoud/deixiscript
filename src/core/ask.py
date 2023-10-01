@@ -1,10 +1,9 @@
 from functools import reduce
-from typing import cast
 from core.expbuilder import does, e, _, every
-from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, NounPhrase, Numerality, SimpleSentence, Which
+from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
-from core.KnowledgeBase import KnowledgeBase, Result, WorldModel
+from core.KnowledgeBase import KnowledgeBase, Result
 
 
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
@@ -62,7 +61,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             s = (s,o,a)
             ok = s in kb.wm
             return Result(s if ok else False, kb)
-            # return Result(ok, kb)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
@@ -91,12 +89,12 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             new = f'{h}#{n}'
             kb1 = kb + kb.dd.update(new)
             r1 = e(new).does('be')._(h).tell(kb1) 
-            return Result(new, r1.kb, r1.addition)
+            return Result(new, r1.kb)
         case Which(h, w):
             r1 = e(h).tell(kb)
             ww = subst(_, r1.head, w)
-            r2 = e(ww).tell(kb + r1.addition)
-            return Result(r1.head, r2.kb, r1.addition | r2.addition)
+            r2 = e(ww).tell(r1.kb)
+            return Result(r1.head, r2.kb)
         case Numerality(h, c, o):
             return e(h).tell(kb) # TODO: multi-create
         case SimpleSentence(verb='be', subject=s, object=o):
@@ -105,15 +103,12 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             s = (s, o, a)
             delta = frozenset({s})
             kb1  = kb + delta
-            # return Result(True, kb1, delta)
-            return Result(True, kb1, delta)
-
+            return Result(True, kb1)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             old = e(action).get(kb)
             r1 = e(action).tell(kb)
-            delta = frozenset({subst(r1.head, old, x) for x in r1.addition})
-            if old: return Result(old, kb, cast(WorldModel, delta)) # TODO: ugly cast
+            if old: return Result(old, kb)
             return r1
         case Derivation():
             return Result(ast, kb + ast)
@@ -125,14 +120,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
             return Result(True, kb - x4)
-        # case Negation(v):
-        #     r1 = e(v).tell(kb)
-        #     kb1 = kb - r1.addition + r1.kb.dd
-        #     return Result(Tre, kb1)
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1.kb)
-            return Result(True, r2.kb, r1.addition | r2.addition)
+            return Result(True, r2.kb)
         case Domino(v):
             # TODO: when cause is removed, effect should also vanish
             from core.isMatch import isMatch
@@ -140,7 +131,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             # effects = tuple(e(d.effect).domino.new.e for d in kb.sds if isMatch(d.cause, v, kb))
             effects = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, v, kb))
             r2 = e(effects).ask(r1.kb)
-            return Result(True, r2.kb, r1.addition|r2.addition)
+            return Result(True, r2.kb)
         case _:
             raise Exception('tell', ast)
 

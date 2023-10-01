@@ -54,7 +54,5 @@ class KnowledgeBase:
 class Result:
     head:Ast
     kb:KnowledgeBase
-    addition:WorldModel = frozenset() # TODO: remove! no more need for negation!
-    # eliminations:WorldModel
     # warning:str
     # prev:'Result|None' # like writer pattern
