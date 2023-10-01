@@ -7,6 +7,7 @@ from parser.metalang import M,S,D
 # TODO: implicit, idiomatic and domino by default
 # TODO: add numerality
 # TODO: complements
+# TODO: dot and sentence separation
 # negation
 # derivation clauses: done
 # questions vs statements: for now with ? vs !, default is question
