@@ -53,7 +53,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('=', l, r):
             return Result(l==r, kb)
         case BinExp('+', l, r):
-            raise Exception('')
+            raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
             head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
             return Result(head, kb)
