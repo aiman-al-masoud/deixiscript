@@ -20,7 +20,6 @@ D(['(', M('x', isAst), ')'], 'x'),
 D([M('x', isAst), '!'], e('x').domino.new.e),
 D([M('x', isAst), '?'], 'x'),
 
-# also dot in L
 D([M('l', isNp), S('op', L['and', 'or']), M('r', isNp)], e('l').binop('op', 'r').e), # TODO: make also alternative derivation with both left and right NOT nounphrasish
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
 D([M('s', isNp, ''), 'does', 'not', S('v'), M('o', isNp, False)], it_is_false_that(e('s').does('v')._('o')).e),
