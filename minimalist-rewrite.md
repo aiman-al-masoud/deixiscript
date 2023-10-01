@@ -51,3 +51,5 @@ ADVANTAGES OF NOT TREATING CONCEPTS LIKE INDIVIDUALS??
 
 
 if you remove concepts from default search return, isMatch() needs "recursive Command" interpretation 
+
+Remove Result#head in favor of using deicitc dict to get head? Remove Result in favor of only KnowledgeBase?
