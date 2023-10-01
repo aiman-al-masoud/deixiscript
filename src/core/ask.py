@@ -74,7 +74,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
-        
+
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).tell(kb)
@@ -97,8 +97,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
-            s = (s, o, a)
-            delta = frozenset({s})
+            delta = frozenset({(s, o, a)})
             kb1  = kb + delta
             return Result(True, kb1)
         case SimpleSentence():
