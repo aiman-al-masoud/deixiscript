@@ -86,10 +86,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return e(x).ask(kb1)
         case Noun(h):
             n = every(h).count(kb)
-            new = f'{h}#{n}'
-            kb1 = kb + kb.dd.update(new)
-            r1 = e(new).does('be')._(h).tell(kb1) 
-            return Result(new, r1.kb, r1.addition)
+            old = f'{h}#{n}'
+            kb1 = kb + kb.dd.update(old)
+            r1 = e(old).does('be')._(h).tell(kb1) 
+            return Result(old, r1.kb, r1.addition)
         case Which(h, w):
             r1 = e(h).tell(kb)
             ww = subst(_, r1.head, w)
@@ -106,10 +106,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(True, kb1, delta)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
-            new = e(action).get(kb)
+            old = e(action).get(kb)
             r1 = e(action).tell(kb)
-            delta = frozenset({subst(r1.head, new, x) for x in r1.addition})
-            if new: return Result(new, kb, cast(WorldModel, delta)) # TODO: ugly cast
+            delta = frozenset({subst(r1.head, old, x) for x in r1.addition})
+            if old: return Result(old, kb, cast(WorldModel, delta)) # TODO: ugly cast
             return r1
         case Derivation():
             return Result(ast, kb + ast)
