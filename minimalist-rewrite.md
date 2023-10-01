@@ -49,3 +49,5 @@ ADVANTAGES OF NOT TREATING CONCEPTS LIKE INDIVIDUALS??
 	- remove Negation(NounPhrase) special case 
 	- remove Command(SimpleSentence) special case
 
+
+if you remove concepts from default search return, isMatch() needs "recursive Command" interpretation 
