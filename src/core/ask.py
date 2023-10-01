@@ -106,10 +106,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(True, kb1)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
-            old = e(action).get(kb)
-            r1 = e(action).tell(kb)
-            if old: return Result(old, kb)
-            return r1
+            old = e(action).ask(kb)
+            if old.head: return old
+            return e(action).tell(kb)
         case Derivation():
             return Result(ast, kb + ast)
         case Negation(Derivation()):
