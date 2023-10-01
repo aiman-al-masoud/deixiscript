@@ -19,7 +19,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return e(d).ask(kb)
         case str(x) | int(x)| float(x):
             return Result(x, kb + kb.dd.update(x))
-        case tuple(xs): # TODO: also in tell 
+        case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a).kb, xs, kb)
             return Result(xs, kb1)
         case Noun(h):
@@ -75,9 +75,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
 
-        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
-            r = __makeExplicit(ast, kb)
-            return e(r.head).tell(r.kb)
+        # case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
+        #     r = __makeExplicit(ast, kb)
+        #     return e(r.head).tell(r.kb)
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).tell(kb)
@@ -109,12 +109,12 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             new = e(action).get(kb)
             r1 = e(action).tell(kb)
             delta = frozenset({subst(r1.head, new, x) for x in r1.addition})
-            if new: return Result(new, kb, cast(WorldModel, delta)) # TODO: bad cast
+            if new: return Result(new, kb, cast(WorldModel, delta)) # TODO: ugly cast
             return r1
         case Derivation():
             return Result(ast, kb + ast)
         case Negation(Derivation()):
-            raise Exception('')
+            raise Exception()
         case Negation(v) if isinstance(v, NounPhrase): # TODO: test
             x1 = e(v).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
