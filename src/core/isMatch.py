@@ -1,8 +1,9 @@
 from functools import cmp_to_key, partial
 from typing import Iterable, TypeVar
 from core.expbuilder import e, it_is_false_that
-from core.language import AnalyticDerivation, Ast, SyntheticDerivation
+from core.language import AnalyticDerivation, Ast, Command, NounPhrase, SimpleSentence, SyntheticDerivation
 from core.KnowledgeBase import KnowledgeBase
+
 
 T = TypeVar('T', bound=Ast)
 
@@ -25,13 +26,26 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
 
 def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
 
-    if generic == specific: return True
-
-    withSpec = e(specific).tell(kb)
+    # if generic == specific: return True #
+    #TODO: problem, if specific is id, get will work no matter what withoutGen contains! :-(, maybe need to distinguish concepts from individuals
+    
+    withSpec = e(recCommand(specific)).tell(kb)
     genWithSpec = e(generic).get(withSpec.kb)
     withoutGen = it_is_false_that(generic).tell(kb)
-    #TODO: problem, if specific is id, get will work no matter what withoutGen contains! :-(, maybe need to distinguish concepts from individuals
     specWithoutGen = e(specific).get(withoutGen.kb) 
-
     r = bool(genWithSpec) and not bool(specWithoutGen)
     return r
+
+def recCommand(ast:Ast)->Ast:
+    from core.normalized import isImplicitish
+    from core.subst import subst
+    from functools import partial
+
+    match ast:
+        case Command(v):
+            return Command(recCommand(v))    
+        case SimpleSentence(v, s, o, a, t, on):
+            return SimpleSentence(v, recCommand(s), recCommand(o), recCommand(a), recCommand(t), recCommand(on))
+        case _:
+            wrap = partial(subst, lambda x: isinstance(x, NounPhrase) and isImplicitish(x), lambda x:Command(x))
+            return wrap(ast)

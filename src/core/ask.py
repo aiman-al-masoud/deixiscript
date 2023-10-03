@@ -10,19 +10,20 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
 
-        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):
+        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):            
             r = __makeExplicit(ast, kb)
             return e(r.head).ask(r.kb)
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).ask(kb)
         case str(x) | int(x)| float(x):
+            if not any({x in s for s in kb.wm}): return Result(False, kb) # TODO #1
             return Result(x, kb + kb.dd.update(x))
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a).kb, xs, kb)
             return Result(xs, kb1)
         case Noun(h):
-            cands1 = {x for s in kb.wm for x in s} | {h}
+            cands1 = {x for s in kb.wm for x in s} | {h} # TODO #1
             cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
             cands3 = cands2[0] if len(cands2)==1 else cands2 
             return e(cands3).ask(kb)
@@ -55,7 +56,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('+', l, r):
             raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
-            head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)
+            head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)             
+            # or every('thing').which(e(s).does('be')._(_).and_(does('be')._(o))).get(kb)
             return Result(head, kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             s = (s,o,a)
@@ -127,6 +129,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             effects = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, v, kb))
             r2 = e(effects).ask(r1.kb)
             return Result(True, r2.kb)
+        case Command(v):
+            return e(v).tell(kb)
         case _:
             raise Exception('tell', ast)
 
