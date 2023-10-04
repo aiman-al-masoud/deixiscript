@@ -137,15 +137,14 @@ def test_c40():
     assert isMatch(gen, spec)
     assert not isMatch(spec, gen)
 
-# def test_c21():
-#     # kb1 = the('stallion').does('be')._('horse').tellKb()
-#     kb1 = e('stallion').does('be')._('horse').tellKb()
-#     general = the(1)('man').does('ride').on(the(1)('horse')).e
-#     spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
-#     # assert isMatch(general, spec1, kb1) # TODO: problem: no transitive BE!
-#     # assert not isMatch(spec1, general, kb1)  
-#     # spec2 =  the(1)('man').does('ride').on(the('lama')).e
-#     # assert not isMatch(general, spec2, kb1)
+def test_c21(): # with subconcepts
+    kb1 = e('stallion').does('be')._('horse').tellKb()
+    general = the(1)('man').does('ride').on(the(1)('horse')).e
+    spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
+    spec2 =  the(1)('man').does('ride').on(the('lama')).e
+    assert isMatch(general, spec1, kb1)
+    assert not isMatch(spec1, general, kb1)
+    assert not isMatch(general, spec2, kb1)
 
 # %% sort nounphrases by generality tests
 def test_c22():

@@ -45,10 +45,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             return Result(not r1.head, r1.kb)
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
+            if not r1.head: return r1
             r2 = e(r).ask(r1.kb)
             return Result(r1.head and r2.head, r2.kb)
         case BinExp('or', l, r):
             r1 = e(l).ask(kb)
+            if r1.head: return r1
             r2 = e(r).ask(r1.kb)
             return Result(r1.head or r2.head, r2.kb)
         case BinExp('=', l, r):
@@ -56,9 +58,16 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case BinExp('+', l, r):
             raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
-            head = o=='thing' or s==o or e(s).does('have')._(o).as_('super').get(kb)             
-            # or every('thing').which(e(s).does('be')._(_).and_(does('be')._(o))).get(kb)
-            return Result(head, kb)
+            if o == 'thing': return Result(True, kb)
+            if s == o: return Result(True, kb)
+            if e(s).does('have')._(o).as_('super').get(kb): return Result(True, kb)
+            # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb): return Result(True, kb)
+
+            x1 = {x[0] for x in kb.wm if x[2]=='super' and x[1]==o}
+            x2 = {x[1] for x in kb.wm if x[2]=='super' and x[0]==s}
+            x3 = x1 & x2
+            if x3: return Result(True, kb)
+            return Result(False, kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             s = (s,o,a)
             ok = s in kb.wm
