@@ -51,7 +51,7 @@ class Domino:
     value:'Ast'
     
 @dataclass(frozen=True)
-class Idiom():
+class Idiom:
     value:'Ast'
 
 @dataclass(frozen=True)
