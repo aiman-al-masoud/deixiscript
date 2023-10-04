@@ -4,8 +4,9 @@ from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negat
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase, Result
+from functools import cache # or lru_cache
 
-
+@cache
 def ask(ast:Ast, kb:KnowledgeBase)->Result:
 
     match ast:
@@ -60,7 +61,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case SimpleSentence(verb='be', subject=s, object=o):
             if o == 'thing': return Result(True, kb)
             if s == o: return Result(True, kb)
-            if e(s).does('have')._(o).as_('super').get(kb): return Result(True, kb)
+            if e(s).does('have')._(o).as_('super').get(kb): return Result(True, kb)            
             # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb): return Result(True, kb)
 
             x1 = {x[0] for x in kb.wm if x[2]=='super' and x[1]==o}

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, FrozenSet, Tuple
+from typing import FrozenSet, Tuple
 from core.language import Derivation, Ast, SyntheticDerivation, AnalyticDerivation
 
 
@@ -8,20 +8,25 @@ WorldModel = FrozenSet[WmSentence]
 
 @dataclass(frozen=True)
 class DeicticDict:
-    d:Dict[Ast, int]
+    fs:FrozenSet[Tuple[Ast, int]]=frozenset()
 
     def update(self, ast:Ast)->'DeicticDict':
-        latest = max([*self.d.values(), 0]) + 1
-        return DeicticDict({ **self.d, ast:latest})
+        vals = [v for _,v in self.fs]
+        latest = max([*vals, 0]) + 1
+
+        x1={(k,v) for k,v in self.fs if k!=ast}
+        x2={*x1,(ast,latest)}
+        return DeicticDict(frozenset(x2))
 
     def __getitem__(self, key: Ast)->int:
-        return self.d.get(key, 0)
+        return next((v for k,v in self.fs if k==key),0)
+
 
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:WorldModel             =frozenset()
     ds:Tuple[Derivation, ...] =tuple()
-    dd:DeicticDict            =DeicticDict({})
+    dd:DeicticDict            =DeicticDict()
 
     def __add__(self, o:WorldModel|DeicticDict|Derivation):
         match o:
