@@ -62,7 +62,9 @@ def test_c12():
     allCats = every('cat').get(z.kb)
 
     assert isinstance(allCats, tuple)
-    assert set(allCats) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
+    # assert set(allCats) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
+    assert set(allCats) == {'cat#1', 'cat#2', 'cat#3'}
+
 
 def test_c13(): # with which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tellKb()

@@ -17,14 +17,14 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).ask(kb)
-        case str(x) | int(x)| float(x):
+        case str(x) | int(x) | float(x):
             if not any({x in s for s in kb.wm}): return Result(False, kb) # TODO #1
             return Result(x, kb + kb.dd.update(x))
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a).kb, xs, kb)
             return Result(xs, kb1)
         case Noun(h):
-            cands1 = {x for s in kb.wm for x in s} | {h} # TODO #1
+            cands1 = {x for s in kb.wm for x in s} #| {h} # TODO #1
             cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
             cands3 = cands2[0] if len(cands2)==1 else cands2 
             return e(cands3).ask(kb)
@@ -60,7 +60,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
             if o == 'thing': return Result(True, kb)
-            if s == o: return Result(True, kb)
+            # if s == o: return Result(True, kb)
             if e(s).does('have')._(o).as_('super').get(kb): return Result(True, kb)            
             # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb): return Result(True, kb)
 
@@ -94,15 +94,15 @@ def __tell(ast:Ast, kb:KnowledgeBase)->Result:
             kb1 = e(x).does('be')._(type(x).__name__).tellKb(kb)
             return e(x).ask(kb1)
         case Noun(h):
-            n = every(h).count(kb)
+            n = every(h).count(kb)+1
             new = f'{h}#{n}'
             kb1 = kb + kb.dd.update(new)
             r1 = e(new).does('be')._(h).tell(kb1) 
             return Result(new, r1.kb)
         case Which(h, w):
             r1 = e(h).tell(kb)
-            ww = subst(_, r1.head, w)
-            r2 = e(ww).tell(r1.kb)
+            which = subst(_, r1.head, w)
+            r2 = e(which).tell(r1.kb)
             return Result(r1.head, r2.kb)
         case Numerality(h, c, o):
             return e(h).tell(kb) # TODO: multi-create
