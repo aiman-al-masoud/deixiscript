@@ -8,19 +8,17 @@ WorldModel = FrozenSet[WmSentence]
 
 @dataclass(frozen=True)
 class DeicticDict:
-    fs:FrozenSet[Tuple[Ast, int]]=frozenset()
+    tup:Tuple[Ast, ...]=tuple()
 
     def update(self, ast:Ast)->'DeicticDict':
-        vals = [v for _,v in self.fs]
-        latest = max([*vals, 0]) + 1
-
-        x1={(k,v) for k,v in self.fs if k!=ast}
-        x2={*x1,(ast,latest)}
-        return DeicticDict(frozenset(x2))
+        return DeicticDict((*(x for x in self.tup if x!=ast), ast))
 
     def __getitem__(self, key: Ast)->int:
-        return next((v for k,v in self.fs if k==key),0)
+        return next((v for v,k in enumerate(self.tup, start=1) if k==key), 0)
 
+    @property
+    def latest(self)->Ast:
+        return self.tup[-1] if self.tup else False
 
 @dataclass(frozen=True)
 class KnowledgeBase:
@@ -45,7 +43,6 @@ class KnowledgeBase:
                 return KnowledgeBase(self.wm - o, self.ds, self.dd)
             case Derivation():
                 raise Exception()
-        
     @property
     def ads(self): 
         return (x for x in self.ds if isinstance(x, AnalyticDerivation))
@@ -53,6 +50,10 @@ class KnowledgeBase:
     @property
     def sds(self): 
         return (x for x in self.ds if isinstance(x, SyntheticDerivation))
+
+    @property
+    def head(self)->'Ast':
+        return self.dd.latest
 
 
 @dataclass(frozen=True)

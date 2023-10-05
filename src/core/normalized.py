@@ -6,14 +6,13 @@ from core.subst import  subst
 from core.KnowledgeBase import KnowledgeBase, Result
 
 
-def removeImplicit(ast:Ast, kb:KnowledgeBase):
+def removeImplicit(ast:Ast, kb:KnowledgeBase): # TODO: remove usage of Result
 
     def red(a:Result, b:Ast):
         r1 = e(b).ask(a.kb)
         
-        if not r1.head: return Result(False, r1.kb) # if even just one is missing, all wrong!
-
-        return Result(subst(b, r1.head, a.head), r1.kb)
+        if not r1.head: return Result(False, r1) # if even just one is missing, all wrong!
+        return Result(subst(b, r1.head, a.head), r1)
 
     implicits = findAsts(ast, isImplicitNounPhrase)
     # TODO: sort implicits to avoid sub-ast in super-ast subst problem
