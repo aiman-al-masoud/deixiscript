@@ -100,14 +100,12 @@ def the(x:Ast=sys.maxsize)->object:
 
     match x:
         case 'first' | 'last':
-            return lambda y: lambda z: e(Numerality(makeImplicit(z), y, True if x=='last' else False))
+            return lambda y: lambda z: e(Numerality(makeImplicit(z), y, x))
         case int():
-            return lambda y:e(Numerality(makeImplicit(y), x, True))
+            return the('last')(x)
         case object():
-            return e(Numerality(makeImplicit(x), 1, True))
-            # return e(Numerality(makeImplicit(x), sys.maxsize, True))
-        case _:
-            raise Exception('the', x)
+            return the('last')(1)(x)
+            # return the('last')(sys.maxsize)(x)
 
 def makeImplicit(ast:Ast):
     from core.removeImplicit import isImplicitish, isNounPhrasish

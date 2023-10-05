@@ -295,7 +295,7 @@ def test_c39():
     kb1 = the(1)('cat').tell(kb0)
 
     x1 = the(1)('cat').get(kb1)
-    x2 = the('first')(1)('cat').get(kb1)
+    x2 = the('first')(1)('cat').get(kb1) # 1 first -> card should wrap around everything
     x3 = the('last')(1)('cat').get(kb1)
     assert x1 == 'cat#2'
     assert x1 == x3

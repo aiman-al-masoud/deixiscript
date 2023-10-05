@@ -37,7 +37,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case Numerality(h, card, ord):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=bool(ord)))
+            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=ord=='last'))
             x4 = x3[:card]
             x5 = x4[0] if len(x4)==1 else x4
             return e(x5).ask(kb)
