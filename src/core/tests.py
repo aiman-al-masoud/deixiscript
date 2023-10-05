@@ -62,7 +62,6 @@ def test_c12():
     allCats = every('cat').get(z.kb)
 
     assert isinstance(allCats, tuple)
-    # assert set(allCats) == {'cat', 'cat#1', 'cat#2', 'cat#3'}
     assert set(allCats) == {'cat#1', 'cat#2', 'cat#3'}
 
 
