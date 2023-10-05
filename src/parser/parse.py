@@ -1,4 +1,4 @@
-from typing import List, Type, TypeVar
+from typing import List
 from parser.match import Map, match
 from parser.metalang import Derivation
 
