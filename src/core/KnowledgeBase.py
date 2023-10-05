@@ -26,12 +26,13 @@ class KnowledgeBase:
     ds:Tuple[Derivation, ...] =tuple()
     dd:DeicticDict            =DeicticDict()
 
-    def __add__(self, o:WorldModel|DeicticDict|Derivation):
+    def __lshift__(self, o:Ast)->'KnowledgeBase':
+        return KnowledgeBase(self.wm, self.ds, self.dd.update(o))
+
+    def __add__(self, o:WorldModel|Derivation):
         match o:
             case frozenset(): 
                 return KnowledgeBase(self.wm | o, self.ds, self.dd)
-            case DeicticDict(): 
-                return KnowledgeBase(self.wm, self.ds, o)
             case Derivation():
                 from core.isMatch import sortByGenerality
                 ds = sortByGenerality(self, [*self.ds, o])
@@ -43,6 +44,7 @@ class KnowledgeBase:
                 return KnowledgeBase(self.wm - o, self.ds, self.dd)
             case Derivation():
                 raise Exception()
+                
     @property
     def ads(self): 
         return (x for x in self.ds if isinstance(x, AnalyticDerivation))
@@ -54,8 +56,7 @@ class KnowledgeBase:
     @property
     def head(self)->'Ast':
         return self.dd.latest
-
-
+    
 @dataclass(frozen=True)
 class Result:
     head:Ast

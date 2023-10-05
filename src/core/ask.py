@@ -18,11 +18,11 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             d = __makeAdLitteram(v, kb)
             return e(d).ask(kb)
         case str(x) | int(x) | float(x):
-            if not any({x in s for s in kb.wm}): return kb + kb.dd.update(False)
-            return kb + kb.dd.update(x)
+            if not any({x in s for s in kb.wm}): return kb << False
+            return kb << x
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
-            return kb1 + kb1.dd.update(xs)
+            return kb1 << xs
         case Noun(h):
             x1 = {x for s in kb.wm for x in s}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
@@ -43,7 +43,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return e(x5).ask(kb)
         case Negation(v):
             r1 = e(v).ask(kb)
-            return r1 + r1.dd.update(not r1.head)
+            return r1 << (not r1.head)
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
             if not r1.head: return r1
@@ -55,25 +55,22 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             r2 = e(r).ask(r1)
             return r2
         case BinExp('=', l, r):
-            return kb + kb.dd.update(l==r)
+            return kb << (l==r)
         case BinExp('+', l, r):
             raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
-            if o == 'thing': return kb + kb.dd.update(True)
-            if e(s).does('have')._(o).as_('super').get(kb): return kb + kb.dd.update(True)
-            
-            # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb): return Result(True, kb)
-
+            if o == 'thing': return kb << True
+            if e(s).does('have')._(o).as_('super').get(kb): return kb << True
+            # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb):true
             x1 = {x[0] for x in kb.wm if x[2]=='super' and x[1]==o}
             x2 = {x[1] for x in kb.wm if x[2]=='super' and x[0]==s}
             x3 = x1 & x2
-            if x3: return kb + kb.dd.update(True)
-            
-            return kb + kb.dd.update(False)
+            if x3: return kb << True
+            return kb << False
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             s = (s,o,a)
             ok = s in kb.wm
-            return kb + kb.dd.update(s if ok else False)
+            return kb << (s if ok else False)
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             return e(action).ask(kb)
@@ -97,14 +94,14 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case Noun(h):
             n = every(h).count(kb)+1
             new = f'{h}#{n}'
-            kb1 = kb + kb.dd.update(new)
+            kb1 = kb << new
             r1 = e(new).does('be')._(h).tell(kb1) 
-            return r1 + r1.dd.update(new)
+            return r1 << new
         case Which(h, w):
             r1 = e(h).tell(kb)
             which = subst(_, r1.head, w)
             r2 = e(which).tell(r1)
-            return r2 + r2.dd.update(r1.head)
+            return r2 << r1.head
         case Numerality(h, c, o):
             return e(h).tell(kb) # TODO: multi-create
         case SimpleSentence(verb='be', subject=s, object=o):
@@ -112,7 +109,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             delta = frozenset({(s, o, a)})
             kb1  = kb + delta
-            return kb1 #+ kb1.dd.update(True) # maybe no need for True
+            return kb1
         case SimpleSentence():
             action = __simpleSentenceToAction(ast)
             old = e(action).ask(kb)
@@ -127,11 +124,11 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
-            return (kb - x4) + kb.dd.update(True) #TODO maybe no need for True
+            return (kb - x4) << True
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
-            return r2 #+ r2.dd.update(True) #TODO maybe no need for True
+            return r2
         case Domino(v):
             # TODO: when cause is removed, effect should also vanish
             from core.isMatch import isMatch
@@ -139,7 +136,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             # effects = tuple(e(d.effect).domino.new.e for d in kb.sds if isMatch(d.cause, v, kb))
             effects = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, v, kb))
             r2 = e(effects).ask(r1)
-            return r2 #+ r2.dd.update(True) #TODO maybe no need for True
+            return r2
         case Command(v):
             return e(v).tell(kb)
         case _:
