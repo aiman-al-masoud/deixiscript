@@ -34,11 +34,11 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
             x4 = x3[0] if len(x3)==1 else x3
             return e(x4).ask(kb)
-        case Numerality(h, c, o):
+        case Numerality(h, card, ord):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=True))
-            x4 = x3[:c]
+            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=bool(ord)))
+            x4 = x3[:card]
             x5 = x4[0] if len(x4)==1 else x4
             return e(x5).ask(kb)
         case Negation(v):

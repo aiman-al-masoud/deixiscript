@@ -1,6 +1,6 @@
 import sys
 from dataclasses import dataclass
-from typing import Callable, Generic, TypeVar, overload
+from typing import Callable, Generic, Literal, TypeVar, overload
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 from core.KnowledgeBase import KnowledgeBase
 
@@ -89,6 +89,9 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
 def new(x:Ast|ExpBuilder):
     return e(x).new
 
+
+@overload
+def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], ExpBuilder]]:...
 @overload
 def the(x:int)->Callable[[Ast], ExpBuilder]:...
 @overload
@@ -96,11 +99,13 @@ def the(x:Ast)->ExpBuilder[Numerality]:...
 def the(x:Ast=sys.maxsize)->object:
 
     match x:
+        case 'first' | 'last':
+            return lambda y: lambda z: e(Numerality(makeImplicit(z), y, True if x=='last' else False))
         case int():
-            return lambda y:e(Numerality(makeImplicit(y), x, -1))
+            return lambda y:e(Numerality(makeImplicit(y), x, True))
         case object():
-            # return e(Numerality(makeImplicit(x), 1, -1))
-            return e(Numerality(makeImplicit(x), sys.maxsize, -1))
+            return e(Numerality(makeImplicit(x), 1, True))
+            # return e(Numerality(makeImplicit(x), sys.maxsize, True))
         case _:
             raise Exception('the', x)
 
@@ -111,3 +116,4 @@ def makeImplicit(ast:Ast):
 
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)
+

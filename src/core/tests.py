@@ -289,3 +289,14 @@ def test_c38():
     assert the('button').does('be')._('red').get(kb3)
     assert not e('button#1').does('be')._('red').get(kb3)
 
+# %% ordinality (first/last) test
+def test_c39():
+    kb0 = the(1)('cat').tell()
+    kb1 = the(1)('cat').tell(kb0)
+
+    x1 = the(1)('cat').get(kb1)
+    x2 = the('first')(1)('cat').get(kb1)
+    x3 = the('last')(1)('cat').get(kb1)
+    assert x1 == 'cat#2'
+    assert x1 == x3
+    assert x2 == 'cat#1'
