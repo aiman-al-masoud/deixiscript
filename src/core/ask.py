@@ -48,12 +48,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             r1 = e(l).ask(kb)
             if not r1.head: return r1
             r2 = e(r).ask(r1.kb)
-            return Result(r1.head and r2.head, r2.kb)
+            return r2
         case BinExp('or', l, r):
             r1 = e(l).ask(kb)
             if r1.head: return r1
             r2 = e(r).ask(r1.kb)
-            return Result(r1.head or r2.head, r2.kb)
+            return r2
         case BinExp('=', l, r):
             return Result(l==r, kb)
         case BinExp('+', l, r):
