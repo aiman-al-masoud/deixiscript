@@ -83,7 +83,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case _:
             raise Exception('ask', ast)
 
-
+@cache
 def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
     match ast:
@@ -145,7 +145,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case _:
             raise Exception('tell', ast)
 
-
+@cache
 def __simpleSentenceToAction(ast:SimpleSentence):
     x1 = ast.args
     x2 = [does('have')._(v).as_(k) for k,v in x1]
