@@ -105,7 +105,7 @@ def the(x:Ast=sys.maxsize)->object:
             raise Exception('the', x)
 
 def makeImplicit(ast:Ast):
-    from core.normalized import isImplicitish, isNounPhrasish
+    from core.removeImplicit import isImplicitish, isNounPhrasish
     assert isNounPhrasish(ast)
     return ast if isImplicitish(ast) else Noun(ast)
 

@@ -35,7 +35,7 @@ def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
     return r
 
 def recCommand(ast:Ast)->Ast:
-    from core.normalized import isImplicitish
+    from core.removeImplicit import isImplicitish
     from core.subst import subst
     from functools import partial
 

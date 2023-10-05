@@ -1,5 +1,5 @@
 from typing import Literal as L
-from core.normalized import isNounPhrasish as isNp, isAst
+from core.removeImplicit import isNounPhrasish as isNp, isAst
 from core.expbuilder import e, it_is_false_that, the
 from parser.parse import parse
 from parser.metalang import M,S,D

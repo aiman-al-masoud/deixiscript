@@ -1,7 +1,7 @@
 from functools import reduce
 from core.expbuilder import does, e, _, every
 from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
-from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
+from core.removeImplicit import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
 from functools import cache # or lru_cache
