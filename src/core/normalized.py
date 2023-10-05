@@ -3,20 +3,19 @@ from core.expbuilder import e
 from core.findAsts import findAsts
 from core.language import Ast, BinExp, Derivation, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence
 from core.subst import  subst
-from core.KnowledgeBase import KnowledgeBase, Result
+from core.KnowledgeBase import KnowledgeBase
 
 
-def removeImplicit(ast:Ast, kb:KnowledgeBase): # TODO: remove usage of Result
+def removeImplicit(ast:Ast, kb:KnowledgeBase):
 
-    def red(a:Result, b:Ast):
-        r1 = e(b).ask(a.kb)
-        
-        if not r1.head: return Result(False, r1) # if even just one is missing, all wrong!
-        return Result(subst(b, r1.head, a.head), r1)
+    def red(a:KnowledgeBase, b:Ast):
+        r1 = e(b).ask(a)
+        if not r1.head: return r1 << False # if even just one is missing, all wrong!
+        return r1 << subst(b, r1.head, a.head)
 
     implicits = findAsts(ast, isImplicitNounPhrase)
     # TODO: sort implicits to avoid sub-ast in super-ast subst problem
-    r = reduce(red, implicits, Result(ast, kb))
+    r = reduce(red, implicits, kb << ast)
     return r
 
 def isImplicitNounPhrase(ast:Ast):

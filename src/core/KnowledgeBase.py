@@ -44,7 +44,7 @@ class KnowledgeBase:
                 return KnowledgeBase(self.wm - o, self.ds, self.dd)
             case Derivation():
                 raise Exception()
-                
+
     @property
     def ads(self): 
         return (x for x in self.ds if isinstance(x, AnalyticDerivation))
@@ -57,9 +57,3 @@ class KnowledgeBase:
     def head(self)->'Ast':
         return self.dd.latest
     
-@dataclass(frozen=True)
-class Result:
-    head:Ast
-    kb:KnowledgeBase
-    # warning:str
-    # prev:'Result|None' # like writer pattern

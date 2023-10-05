@@ -3,7 +3,7 @@ from core.expbuilder import does, e, _, every
 from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.normalized import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
-from core.KnowledgeBase import KnowledgeBase, Result
+from core.KnowledgeBase import KnowledgeBase
 from functools import cache # or lru_cache
 
 @cache
@@ -13,7 +13,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
         case object() if isImplicitish(ast) and isSimpleSentenceish(ast):            
             r = __makeExplicit(ast, kb)
-            return e(r.head).ask(r.kb)
+            return e(r.head).ask(r)
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).ask(kb)
@@ -153,7 +153,7 @@ def __simpleSentenceToAction(ast:SimpleSentence):
 def __makeExplicit(ast:Ast, kb:KnowledgeBase):
     x1 = removeImplicit(ast, kb)
     x2 = decompressed(x1.head)
-    return Result(x2, x1.kb)
+    return x1 << x2
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     # TODO: recursive idiomatic derivations?
