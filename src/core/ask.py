@@ -24,10 +24,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->Result:
             kb1 = reduce(lambda a,b: e(b).ask(a).kb, xs, kb)
             return Result(xs, kb1)
         case Noun(h):
-            cands1 = {x for s in kb.wm for x in s} #| {h} # TODO #1
-            cands2 = tuple(x for x in cands1 if e(x).does('be')._(h).get(kb))
-            cands3 = cands2[0] if len(cands2)==1 else cands2 
-            return e(cands3).ask(kb)
+            x1 = {x for s in kb.wm for x in s}
+            x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
+            x3 = x2[0] if len(x2)==1 else x2 
+            return e(x3).ask(kb)
         case Which(h, w):
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
