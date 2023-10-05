@@ -12,6 +12,6 @@ def subst(
 
     if isinstance(ast, tuple): return tuple(subst(old,new,v) for v in ast)
     if isinstance(ast, Explicit): return ast
-    d = {k: subst(old,new,v) for k, v in ast.__dict__.items()}
+    d = {k: subst(old,new,v) for k, v in vars(ast).items()}
     return ast.__class__(**d)
 
