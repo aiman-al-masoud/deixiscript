@@ -7,8 +7,8 @@ def subst(
     ast:Ast,
 ):
 
-    if  old==ast if isinstance(old, Ast) else old(ast): 
-        return new if isinstance(new, Ast) else new(ast)
+    if old(ast) if callable(old) else old==ast:
+        return new(ast) if callable(new) else new
 
     if isinstance(ast, tuple): return tuple(subst(old,new,v) for v in ast)
     if isinstance(ast, Explicit): return ast
