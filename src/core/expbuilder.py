@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Domino, Explicit, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -67,6 +67,9 @@ class ExpBuilder(Generic[T]):
     
     def tell(self, kb=KnowledgeBase()):
         return new(self.e).ask(kb)
+    
+    def rTell(self, kb=KnowledgeBase()):
+        return e(cmd(self.e)).tell(kb)
             
     @property
     def lin(self):
@@ -115,3 +118,9 @@ def makeImplicit(ast:Ast):
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)
 
+def cmd(ast:Ast)->Ast:
+    if isinstance(ast, Explicit): return ast
+    if isinstance(ast, Implicit): return Command(ast)
+    x1 = vars(ast).items()
+    x2 = {k : cmd(v) for k,v in x1}
+    return Command(ast.__class__(**x2))

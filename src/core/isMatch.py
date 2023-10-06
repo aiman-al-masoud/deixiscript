@@ -1,7 +1,7 @@
 from functools import cmp_to_key, partial
 from typing import Iterable, TypeVar
 from core.expbuilder import e, it_is_false_that
-from core.language import AnalyticDerivation, Ast, Command, NounPhrase, SimpleSentence, SyntheticDerivation
+from core.language import AnalyticDerivation, Ast, SyntheticDerivation
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -26,24 +26,10 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
 
 def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
     
-    withSpec = e(recCommand(specific)).tell(kb)
+    withSpec = e(specific).rTell(kb)
     genWithSpec = e(generic).get(withSpec)
     withoutGen = it_is_false_that(generic).tell(kb)
     specWithoutGen = e(specific).get(withoutGen)
 
     r = bool(genWithSpec) and not bool(specWithoutGen)
     return r
-
-def recCommand(ast:Ast)->Ast:
-    from core.removeImplicit import isImplicitish
-    from core.subst import subst
-    from functools import partial
-
-    match ast:
-        case Command(v):
-            return Command(recCommand(v))    
-        case SimpleSentence(v, s, o, a, t, on):
-            return SimpleSentence(v, recCommand(s), recCommand(o), recCommand(a), recCommand(t), recCommand(on))
-        case _:
-            wrap = partial(subst, lambda x: isinstance(x, NounPhrase) and isImplicitish(x), lambda x:Command(x))
-            return wrap(ast)
