@@ -124,7 +124,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
-            return (kb - x4) << True
+            return kb - x4      #) << True
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
