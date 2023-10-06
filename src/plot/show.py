@@ -1,5 +1,7 @@
 import sys
 import os
+
+from core.language import Ast
 path = os.path.split(os.path.split(__file__)[0])[0]
 sys.path.append(path)
 from core.KnowledgeBase import WorldModel
@@ -16,6 +18,9 @@ def graphvizied(wm:WorldModel):
     x2=reduce(lambda a,b:a+b+'\n', x1, '')
     x3=f'digraph G{{\n{x2}}}'
     return x3
+
+def ast_to_graphviz(ast:Ast):
+    raise Exception()
 
 def test_c41():
     kb0 = the('horse').tell()
