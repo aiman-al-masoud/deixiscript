@@ -18,7 +18,6 @@ def graphvizied(wm:WorldModel):
     return x3
 
 def test_c41():
-    # rename action -to-> event
     kb0 = the('horse').tell()
     kb1 = the('man').tell(kb0)
     kb2 = the('man').does('ride').on(the('horse')).tell(kb1)

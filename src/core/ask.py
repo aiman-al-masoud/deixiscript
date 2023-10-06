@@ -72,8 +72,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             ok = s in kb.wm
             return kb << (s if ok else False)
         case SimpleSentence():
-            action = __simpleSentenceToAction(ast)
-            return e(action).ask(kb)
+            event = __simpleSentenceToEvent(ast)
+            return e(event).ask(kb)
         case Command(v):
             r1 = __tell(v, kb)
             return r1
@@ -111,10 +111,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             kb1  = kb + delta
             return kb1
         case SimpleSentence():
-            action = __simpleSentenceToAction(ast)
-            old = e(action).ask(kb)
+            event = __simpleSentenceToEvent(ast)
+            old = e(event).ask(kb)
             if old.head: return old
-            return e(action).tell(kb)
+            return e(event).tell(kb)
         case Derivation():
             return kb + ast
         case Negation(Derivation()):
@@ -143,11 +143,11 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             raise Exception('tell', ast)
 
 @cache
-def __simpleSentenceToAction(ast:SimpleSentence):
+def __simpleSentenceToEvent(ast:SimpleSentence):
     x1 = ast.args
     x2 = [does('have')._(v).as_(k) for k,v in x1]
     x3 = reduce(lambda a,b:a.and_(b), x2)
-    x4 = every('action').which(x3).e
+    x4 = every('event').which(x3).e
     return x4
 
 def __makeExplicit(ast:Ast, kb:KnowledgeBase):
