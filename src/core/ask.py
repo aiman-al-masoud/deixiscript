@@ -1,10 +1,9 @@
-from functools import reduce
+from functools import reduce, cache # or lru_cache
 from core.expbuilder import does, e, _, every
 from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.removeImplicit import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
-from functools import cache # or lru_cache
 
 @cache
 def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
