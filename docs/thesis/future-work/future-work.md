@@ -16,6 +16,7 @@ Perhaps as function hooks reaching out to the lexer from a higher level?
   - search all of history in case of unspecified time
   - alter all of history in case of unspecified time
 
+Alternative idea to "list of world models = history" => events can have associated times.
 
 # Context Sensitivity
 
