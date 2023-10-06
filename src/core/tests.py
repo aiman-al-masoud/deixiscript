@@ -3,7 +3,7 @@ from core.isMatch import isMatch, sortByGenerality
 from core.removeImplicit import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
-from core.KnowledgeBase import KnowledgeBase
+from core.KnowledgeBase import KnowledgeBase, WorldModel
 from core.language import Implicit
 
 
@@ -300,3 +300,4 @@ def test_c39():
     assert x1 == 'cat#2'
     assert x1 == x3
     assert x2 == 'cat#1'
+
