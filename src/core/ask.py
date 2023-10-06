@@ -24,7 +24,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
         case Noun(h):
-            x1 = {x for s in kb.wm for x in s}
+            x1 = {x for s in kb.wm for x in s if '#' in str(x)} # '#' -> avoid concepts (for now)
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
             x3 = x2[0] if len(x2)==1 else x2 
             return e(x3).ask(kb)
