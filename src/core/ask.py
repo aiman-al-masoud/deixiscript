@@ -61,8 +61,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case SimpleSentence(verb='be', subject=s, object=o):
             if isConcept(s) and o=='concept': return kb << True
             if isConcept(s) and s==o: return kb << True
-
-
             if o == 'thing': return kb << True
             if e(s).does('have')._(o).as_('super').get(kb): return kb << True
             # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb):true
