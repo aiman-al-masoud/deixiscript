@@ -1,4 +1,4 @@
-from core.expbuilder import does, e, every, it_is_false_that, new, the, _
+from core.expbuilder import does, e, every, i, it_is_false_that, new, the, _
 from core.isMatch import isMatch, sortByGenerality
 from core.removeImplicit import decompressed
 from core.subst import subst
@@ -301,3 +301,14 @@ def test_c39():
     assert x1 == x3
     assert x2 == 'cat#1'
 
+# %% referring to concepts
+def test_c42():
+    kb0 = the(1)('cat').tell()
+    kb1 = the(1)('dog').tell(kb0)
+
+    allConcepts = every('concept').get(kb1)
+    assert isinstance(allConcepts, tuple)
+    assert set(allConcepts) == {'cat', 'dog', 'super'} 
+
+    catConcept = the( i('concept').which(does('be')._('cat')).e ).get(kb1)
+    assert catConcept == 'cat'

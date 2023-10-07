@@ -1,7 +1,7 @@
 from functools import reduce, cache # or lru_cache
 from core.expbuilder import does, e, _, every
 from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
-from core.removeImplicit import decompressed, isImplicitish, isSimpleSentenceish, removeImplicit
+from core.removeImplicit import decompressed, isConcept, isImplicitish, isIndividual, isSimpleSentenceish, removeImplicit
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
 
@@ -23,7 +23,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
         case Noun(h):
-            x1 = {x for s in kb.wm for x in s if '#' in str(x)} # '#' -> avoid concepts (for now)
+            x0 = {x for s in kb.wm for x in s}
+            x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
             x3 = x2[0] if len(x2)==1 else x2 
             return e(x3).ask(kb)
@@ -58,6 +59,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case BinExp('+', l, r):
             raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
+            if isConcept(s) and o=='concept': return kb << True
+            if isConcept(s) and s==o: return kb << True
+
+
             if o == 'thing': return kb << True
             if e(s).does('have')._(o).as_('super').get(kb): return kb << True
             # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb):true

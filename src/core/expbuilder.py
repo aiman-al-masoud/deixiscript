@@ -92,7 +92,6 @@ def makeAst(x:Ast|ExpBuilder)->Ast:
 def new(x:Ast|ExpBuilder):
     return e(x).new
 
-
 @overload
 def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], ExpBuilder]]:...
 @overload
@@ -107,13 +106,15 @@ def the(x:Ast=sys.maxsize)->object:
         case int():
             return the('last')(x)
         case object():
-            return the('last')(1)(x)
-            # return the('last')(sys.maxsize)(x)
+            return the('last')(1)(x) # 1 or sys.maxsize
 
 def makeImplicit(ast:Ast):
     from core.removeImplicit import isImplicitish, isNounPhrasish
     assert isNounPhrasish(ast)
     return ast if isImplicitish(ast) else Noun(ast)
+
+def i(x:Ast|ExpBuilder):
+    return ExpBuilder(Noun(makeAst(x)))
 
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)

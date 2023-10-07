@@ -72,3 +72,9 @@ def decompressed(ast:Ast)->Ast:
 def opposite(x:Ast)->str:
     if x not in ['and', 'or']: raise Exception('')
     return 'and' if x == 'or' else 'or'
+
+def isConcept(x:Ast):
+    return isinstance(x, str) and '#' not in x
+
+def isIndividual(x:Ast):
+    return isinstance(x, str) and not isConcept(x)
