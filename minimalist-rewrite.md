@@ -1,3 +1,11 @@
+
+Get rid of Noun, Domino and Idiom with "Just":
+
+ask:
+	case Just(v): return just(v)
+
+
+
 Convention where concepts are stored in the WM, but they're names don't include any pound signs, whereas every individual-id does.
 
 Use brython to package the interpreter for the web
