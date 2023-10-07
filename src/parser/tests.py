@@ -85,3 +85,7 @@ def test_p14():
     ok = ['hello world', 'is', 'a', '(', 'string', ')', 'and', 'also', ' hello Buruf ', 1.0, 2.0, 'false', 'true', 300.0, 1.0, '=', 1.0]
     maybe = tokenize(source)
     assert ok == maybe
+
+# TODO: tests
+# D([M('l', isX)], 'l'),
+# D([M('l')], 'l'),

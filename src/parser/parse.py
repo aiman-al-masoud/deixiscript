@@ -11,6 +11,7 @@ def parse(ds:List[Derivation], toks:object):
             r2 = zip(r1, ds)
             r3 = next((subst(d.definition, m) for m,d in r2 if m is not None), None)
             if r3 is None: return toks
+            if r3 == toks: return toks
             r4 = parse(ds, r3)
             return r4
         case str(x)|int(x)|float(x):
