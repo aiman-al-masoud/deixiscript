@@ -6,7 +6,7 @@ ask:
 
 
 
-Convention where concepts are stored in the WM, but they're names don't include any pound signs, whereas every individual-id does.
+Convention where concepts are stored in the WM, but their names don't include any pound signs, whereas every individual-id does.
 
 Use brython to package the interpreter for the web
 https://brython.info/static_tutorial/en/index.html
