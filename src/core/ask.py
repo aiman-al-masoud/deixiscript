@@ -91,7 +91,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
             return e(d).tell(kb)
-        case int(x) | float(x) | str(x):
+        case str(x) | int(x) | float(x):
             kb1 = e(x).does('be')._(type(x).__name__).tell(kb)
             return e(x).ask(kb1)
         case Noun(h):
