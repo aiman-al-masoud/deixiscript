@@ -1,7 +1,8 @@
-from functools import reduce, cache # or lru_cache
+from functools import reduce, cache
+from core.findAsts import findAsts
 from core.expbuilder import does, e, _, every
 from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
-from core.removeImplicit import decompressed, isConcept, isImplicitish, isIndividual, isSimpleSentenceish, removeImplicit
+from core.removeImplicit import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
 
@@ -152,13 +153,22 @@ def __simpleSentenceToEvent(ast:SimpleSentence):
     x4 = every('event').which(x3).e
     return x4
 
-def __makeExplicit(ast:Ast, kb:KnowledgeBase):
-    x1 = removeImplicit(ast, kb)
-    x2 = decompressed(x1.head)
-    return x1 << x2
-
+@cache
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     # TODO: recursive idiomatic derivations?
     from core.isMatch import isMatch
     x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
     return x1
+
+@cache
+def __makeExplicit(ast:Ast, kb:KnowledgeBase):
+
+    def red(a:KnowledgeBase, b:Ast):
+        r1 = e(b).ask(a)
+        if not r1.head: return r1 << False # if even just one is missing, all wrong!
+        return r1 << subst(b, r1.head, a.head)
+
+    implicits = findAsts(ast, isImplicitNounPhrase)
+    # TODO: sort implicits to avoid sub-ast in super-ast subst problem
+    r = reduce(red, implicits, kb << ast)
+    return r << decompressed(r.head)
