@@ -8,50 +8,50 @@ from core.language import Implicit
 
 
 # %% subst tests
-def test_c1():
+def test_c001():
     x = subst('capra', 'cat', e('capra').does('jump').e)
     assert x == e('cat').does('jump').e
 
-def test_c2():
+def test_c002():
     x = subst('capra', 'cat', e('capra').and_('cavallo').and_('capra').e)
     assert x == e('cat').and_('cavallo').and_('cat').e
 
-def test_c3():
+def test_c003():
     x = subst('capra', 'cat', ('capra', 'capra'))
     assert x == ('cat','cat')
 
 # %% findAsts tests
-def test_c6():
+def test_c006():
     ast = e('capra').and_(3).and_(1).and_('gatto').e
     assert findAsts(ast, lambda x:isinstance(x, int)) == (3, 1)
 
-def test_c7():
+def test_c007():
     ast = the('cat').does('jump').and_(the('dog').does('run')).e
     assert findAsts(ast, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
 
-def test_c8():
+def test_c008():
     x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').which(does('jump')).e, the('cat').e)
 
 # %% decompress tests
-def test_c9():
+def test_c009():
     x = decompressed(e('capra').and_('cavallo').does('jump').e)
     y = e('capra').does('jump').and_(e('cavallo').does('jump')).e
     assert x == y
 
-def test_c10():
+def test_c010():
     x = decompressed(e('capra').and_('cavallo').and_('gatto').does('jump').e)
     y = e('capra').does('jump').and_(e('cavallo').does('jump')).and_(e('gatto').does('jump')).e
     assert x == y
 
-def test_c11(): #  with demorgan's rule I
+def test_c011(): #  with demorgan's rule I
     x = it_is_false_that(e(2).and_(3).equals(1)).e
     d = decompressed(x)
     y = it_is_false_that(e(2).equals(1)).or_(it_is_false_that(e(3).equals(1))).e
     assert d == y
 
 # %% nounphrases expressions as constructors with tell()
-def test_c12():
+def test_c012():
     x1 = the('cat').tell()
     x2 = the('cat').tell(x1)
     x3 = the('cat').tell(x2)
@@ -60,17 +60,17 @@ def test_c12():
     assert isinstance(allCats, tuple)
     assert set(allCats) == {'cat#1', 'cat#2', 'cat#3'}
 
-def test_c13(): # which (relative clause)
+def test_c013(): # which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tell()
     assert ('cat#1', 'fish', 'food') in kb1.wm
 
-def test_c14():
+def test_c014():
     x1 = e(1).tell() # new constant
     assert (1, 'int', 'super') in x1.wm
     assert 1 in x1.dd
 
 # %% negation with ask tests 
-def test_c15():
+def test_c015():
     q = e('capra#1').does('have')._(1).as_('age')
     notQ = it_is_false_that(q)
     kb1 = q.tell()
@@ -78,14 +78,14 @@ def test_c15():
     assert not notQ.get(kb1)
 
 # %% negation with tell tests
-def test_c16():
+def test_c016():
     kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tell()
     kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tell(kb1)
 
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
-def test_c32(): # simple sentence
+def test_c032(): # simple sentence
     q = e('man#1').does('ride').on('horse#1')
     kb1 = the('man').tell()
     kb2 = the('horse').tell(kb1)
@@ -96,27 +96,27 @@ def test_c32(): # simple sentence
     assert not q.get(kb4)
 
 # %% matchAst tests
-def test_c17():
+def test_c017():
     assert isMatch('it', 'it')
     assert not isMatch('it', 'buruf')
 
-def test_c18():
+def test_c018():
     gen  = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
     assert isMatch(gen, spec)
     assert not isMatch(spec, gen)
 
-def test_c19():
+def test_c019():
     gen  = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
     assert isMatch(gen, spec)
     assert not isMatch(spec, gen)
 
-def test_c20():
-    gen     =  the(1)('man').does('ride').on(the(1)('horse')).e
-    spec1   =  the(1)('man').does('ride').on(every('horse')).e
-    spec2   =  every('man').does('ride').on(the('horse')).e
-    spec3   =  every('man').does('ride').on(every('horse')).e
+def test_c020():
+    gen   = the(1)('man').does('ride').on(the(1)('horse')).e
+    spec1 = the(1)('man').does('ride').on(every('horse')).e
+    spec2 = every('man').does('ride').on(the('horse')).e
+    spec3 = every('man').does('ride').on(every('horse')).e
 
     # TODO: maybe a little wrong?
     assert isMatch(gen, spec1)
@@ -124,13 +124,13 @@ def test_c20():
     assert isMatch(gen, spec3)
     ##### spec4 =  the('man').does('ride').on(the(0)('horse')).e # assert isMatch(spec1, general) # assert not isMatch(general, spec4)
 
-def test_c40():
+def test_c040():
     gen = the('son').does('give')._(the('present')).to(the('mother')).e
     spec =the('son').does('give')._(the('present')).to(the('mother')).on(the('birthday')).e
     assert isMatch(gen, spec)
     assert not isMatch(spec, gen)
 
-def test_c21(): # with subconcepts
+def test_c021(): # with subconcepts
     kb1 = e('stallion').does('be')._('horse').tell()
     gen = the(1)('man').does('ride').on(the(1)('horse')).e
     spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
@@ -139,14 +139,14 @@ def test_c21(): # with subconcepts
     assert not isMatch(spec1, gen, kb1)
     assert not isMatch(gen, spec2, kb1)
 
-def test_c36():
+def test_c036():
     kb1 = the('button').tell()
     x1  = the(1)('button').does('be')._('down').e
     assert isMatch(x1, e('button#1').does('be')._('down').e , kb1)
     assert isMatch(x1, e('button#1').does('have')._('down').as_('super').e , kb1)
 
 # %% sort nounphrases by generality tests
-def test_c22():
+def test_c022():
     correct = (  # ascending generality
         the('cat').which(does('be')._('red').and_(does('be')._('black'))).e,
         the('cat').which(does('be')._('red')).e,
@@ -158,7 +158,7 @@ def test_c22():
     assert maybe == correct
 
 # %% simple-sentence understanding yes-no questions
-def test_c23():
+def test_c023():
     kb1 = e('cat#1').does('run').to('fish#1').tell()
     assert e('cat#1').does('run').to('fish#1').get(kb1)
     assert e('cat#1').does('run').get(kb1)
@@ -166,7 +166,7 @@ def test_c23():
     assert not e('cat#1').does('run').to('hill#1').get(kb1)
 
 # %% sort simple-sentences by generality tests
-def test_c24():
+def test_c024():
     
     correct = (
         the('son').does('give')._(the('present')).to(the('mother')).on(the('birthday')).e,
@@ -179,7 +179,7 @@ def test_c24():
     assert maybe == correct
 
 # %% sort analytic derivation clauses by generality tests
-def test_c25():
+def test_c025():
     correct = (
         the('capra').does('run').on(the('hill')).to(the('food')).when(2).e,
         the('capra').does('run').on(the('hill')).when(2).e,
@@ -190,13 +190,13 @@ def test_c25():
     assert maybe == correct
 
 # %% idiom tests
-def test_c26():
+def test_c026():
     kb1 = the('it').when(the(1)('thing')).tell()
     kb2 = the('capra').tell(kb1)
     kb3 = the('it').idiom.ask(kb2)
     assert 'capra#1' == kb3.head
 
-def test_c27():
+def test_c027():
     kb1 = the(1)('man').does('ride').on(the(1)('horse')).when(the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))).tell()
     kb2 = the('man').tell(kb1)
     kb3 = the('horse').tell(kb2)
@@ -205,7 +205,7 @@ def test_c27():
     assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
 # %% numerality tests
-def test_c28():
+def test_c028():
     kb1 = the('capra').tell()
     kb2 = the('capra').tell(kb1)
     kb3 = the('capra').tell(kb2)
@@ -216,12 +216,12 @@ def test_c28():
     assert isinstance(single, str)
 
 # %% or-operator ask test
-def test_c29():
+def test_c029():
     assert e(1).equals(2).or_(e(3).equals(3)).get()
     assert not e(1).equals(2).or_(e(3).equals(2)).get()
 
 # %% matching a general implicit sentence to a specific explicit sentence
-def test_c30():
+def test_c030():
     gen = the('man').does('ride').on(the('horse'))
     spec = e('man#1').does('ride').on('horse#1')
     kb1 = the('man').tell()
@@ -230,13 +230,13 @@ def test_c30():
     assert isMatch(gen.e, spec.e, kb2)
 
 # %% multiple executions of the same simple sentences are idempotent
-def test_c33():
+def test_c033():
     x1 = e('man#1').does('ride').on('horse#1').tell()
     x2 = e('man#1').does('ride').on('horse#1').tell(x1)
     assert x1.wm == x2.wm
 
 # %% matchAst with other similar "noise" specific sentences in KB
-def test_c34():
+def test_c034():
     kb1 = new(the('cat')).does('eat')._(new(the('mouse'))).tell()
     kb2 = the('cat').tell(kb1)
     kb3 = the('mouse').tell(kb2)
@@ -246,9 +246,8 @@ def test_c34():
     assert isMatch(gen, spec, kb3)
     assert not isMatch(spec, gen, kb3)
 
-
 # %% logic and deictic dict test
-def test_c35():
+def test_c035():
 
     kb1 = the('mouse').tell()
     kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tell(kb1) # also works with verb wrapped in implicit
@@ -262,7 +261,7 @@ def test_c35():
     assert the(the('mouse').which(e('cat#1').does('eat')._(_)).e).get(kb2)=='mouse#2'
 
 # %% cause and effect w/ synthetic derivation
-def test_c38():
+def test_c038():
     kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tell()
     kb1 = the('button').tell(kb0)
     kb2 = the('button').tell(kb1)
@@ -271,7 +270,7 @@ def test_c38():
     assert not e('button#1').does('be')._('red').get(kb3)
 
 # %% ordinality (first/last) test
-def test_c39():
+def test_c039():
     kb0 = the(1)('cat').tell()
     kb1 = the(1)('cat').tell(kb0)
 
@@ -283,7 +282,7 @@ def test_c39():
     assert x2 == 'cat#1'
 
 # %% referring to concepts
-def test_c42():
+def test_c042():
     kb0 = the(1)('cat').tell()
     kb1 = the(1)('dog').tell(kb0)
 
