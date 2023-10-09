@@ -160,5 +160,5 @@ def __makeExplicit(ast:Ast, kb:KnowledgeBase):
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     # TODO: recursive idiomatic derivations?
     from core.isMatch import isMatch
-    d = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
-    return d
+    x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)    
+    return x1
