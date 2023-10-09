@@ -35,14 +35,14 @@ def test_c008():
 
 # %% decompress tests
 def test_c009():
-    x = decompressed(e('capra').and_('cavallo').does('jump').e)
-    y = e('capra').does('jump').and_(e('cavallo').does('jump')).e
-    assert x == y
+    x1 = decompressed(e('capra').and_('cavallo').does('jump').e)
+    x2 = e('capra').does('jump').and_(e('cavallo').does('jump')).e
+    assert x1 == x2
 
 def test_c010():
-    x = decompressed(e('capra').and_('cavallo').and_('gatto').does('jump').e)
-    y = e('capra').does('jump').and_(e('cavallo').does('jump')).and_(e('gatto').does('jump')).e
-    assert x == y
+    x1 = decompressed(e('capra').and_('cavallo').and_('gatto').does('jump').e)
+    x2 = e('capra').does('jump').and_(e('cavallo').does('jump')).and_(e('gatto').does('jump')).e
+    assert x1 == x2
 
 def test_c011(): #  with demorgan's rule I
     x = it_is_false_that(e(2).and_(3).equals(1)).e
