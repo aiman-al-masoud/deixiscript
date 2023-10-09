@@ -1,9 +1,8 @@
 import sys
 import os
-
-from core.language import Ast
 path = os.path.split(os.path.split(__file__)[0])[0]
 sys.path.append(path)
+from core.language import Ast
 from core.KnowledgeBase import WorldModel
 from core.expbuilder import the
 
