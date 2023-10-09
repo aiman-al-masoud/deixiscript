@@ -166,7 +166,6 @@ def __makeExplicit(ast:Ast, kb:KnowledgeBase):
         if not r1.head: return r1 << False # if even just one is missing, all wrong!
         return r1 << subst(b, r1.head, a.head)
 
-    implicits = findAsts(ast, isImplicitNounPhrase)
-    # TODO: sort implicits to avoid sub-ast in super-ast subst problem
+    implicits = findAsts(ast, isImplicitNounPhrase) # TODO: sort implicits to avoid sub-ast in super-ast subst problem
     r = reduce(red, implicits, kb << ast)
     return r << decompressed(r.head)
