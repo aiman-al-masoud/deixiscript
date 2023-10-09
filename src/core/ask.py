@@ -2,7 +2,7 @@ from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, _, every
 from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
-from core.removeImplicit import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isSimpleSentenceish
+from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
 

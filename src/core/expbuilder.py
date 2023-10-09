@@ -109,7 +109,7 @@ def the(x:Ast=sys.maxsize)->object:
             return the('last')(1)(x) # 1 or sys.maxsize
 
 def makeImplicit(ast:Ast):
-    from core.removeImplicit import isImplicitish, isNounPhrasish
+    from core.decompressed import isImplicitish, isNounPhrasish
     assert isNounPhrasish(ast)
     return ast if isImplicitish(ast) else Noun(ast)
 
