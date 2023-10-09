@@ -49,8 +49,6 @@ class ExpBuilder(Generic[T]):
     def new(self): 
         if isinstance(self.e, Idiom): return ExpBuilder(Idiom(Command(self.e.value)))
         return ExpBuilder(Command(self.e))
-        # return ExpBuilder(Command(self.e))
-
 
     @property
     def idiom(self): return ExpBuilder(Idiom(self.e))
