@@ -18,8 +18,8 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             d = __makeAdLitteram(v, kb)
             return e(d).ask(kb)
         case str(x) | int(x) | float(x):
-            if not any({x in s for s in kb.wm}): return kb << False
-            return kb << x
+            exists = any({x in s for s in kb.wm})
+            return kb << (x if exists else False)
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
