@@ -43,7 +43,7 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(AnalyticDerivation(self.e, Idiom(makeAst(definition))))
 
     def after(self, cause:'Ast|ExpBuilder'):
-        return ExpBuilder(SyntheticDerivation(makeAst(cause), self.e))
+        return ExpBuilder(SyntheticDerivation(makeAst(cause), Domino(self.e)))
 
     @property
     def new(self): 

@@ -136,7 +136,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             # TODO: when cause is removed, effect should also vanish
             from core.isMatch import isMatch
             x1 = e(v).tell(kb)
-            x2 = tuple(e(d.effect).domino.new.e for d in kb.sds if isMatch(d.cause, v, kb))
+            x2 = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, v, kb))
             x3 = e(x2).ask(x1)
             return x3
         case Command(v):
