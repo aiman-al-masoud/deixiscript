@@ -205,10 +205,10 @@ def test_c027():
     assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
 def test_c043():
-    kb1 = the(1)('dog').when(the(1)('hund').idiom).tell()
-    kb2 = the(1)('hund').when(the(1)('cane').idiom).tell(kb1)
+    kb1 = the(1)('dog').when(the(1)('hund')).tell()
+    kb2 = the(1)('hund').when(the(1)('cane')).tell(kb1)
     kb3 = the('cane').tell(kb2)
-    x = the('dog').idiom.get(kb3)
+    x   = the('dog').idiom.get(kb3)
     assert x == 'cane#1'
 
 # %% numerality tests

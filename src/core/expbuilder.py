@@ -40,14 +40,13 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(Which(self.e, makeAst(which)))
 
     def when(self, definition:'Ast|ExpBuilder'):
-        return ExpBuilder(AnalyticDerivation(self.e, makeAst(definition)))
+        return ExpBuilder(AnalyticDerivation(self.e, Idiom(makeAst(definition))))
 
     def after(self, cause:'Ast|ExpBuilder'):
         return ExpBuilder(SyntheticDerivation(makeAst(cause), self.e))
 
     @property
     def new(self): 
-        if isinstance(self.e, Idiom): return ExpBuilder(Idiom(Command(self.e.value)))
         return ExpBuilder(Command(self.e))
 
     @property

@@ -87,7 +87,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
     match ast:
-        
+
+        case Idiom(v):
+            d = __makeAdLitteram(v, kb)
+            return e(d).tell(kb)
         case str(x) | int(x) | float(x):
             kb1 = e(x).does('be')._(type(x).__name__).tell(kb)
             return e(x).ask(kb1)
@@ -124,7 +127,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
-            return kb - x4      #) << True
+            return kb - x4
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
@@ -149,14 +152,11 @@ def __simpleSentenceToEvent(ast:SimpleSentence):
     x4 = every('event').which(x3).e
     return x4
 
-@cache
+# @cache
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
-    # TODO: recursive idiomatic derivations?
     from core.isMatch import isMatch
-    x0 = ast.value if isinstance(ast, Command) else ast
-    x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, x0, kb)), x0)
-    x2 = Command(x1) if isinstance(ast, Command) else x1
-    return x2
+    x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)
+    return x1
 
 @cache
 def __makeExplicit(ast:Ast, kb:KnowledgeBase):
