@@ -1,6 +1,6 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
-from core.expbuilder import does, e, _, every
+from core.expbuilder import does, e, _, every, it_is_false_that
 from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isSimpleSentenceish
 from core.subst import subst
@@ -155,9 +155,12 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
 
 def __makeEffects(cause:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    # TODO: when cause vanishes effects follow suit
     x1 = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, cause, kb))
+    # TODO: when cause vanishes effects follow suit
+    # x2 = tuple(it_is_false_that(d.effect).new.e for d in kb.sds if isMatch(it_is_false_that(d.cause).e, cause, kb))
+    # return (*x1, *x2)
     return x1
+
 
 @cache
 def __makeExplicit(ast:Ast, kb:KnowledgeBase):

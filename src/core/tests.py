@@ -285,6 +285,15 @@ def test_c044():
     assert ('event#3','break','verb') in kb5.wm
     assert ('event#3','domino#1','subject') in kb5.wm
 
+# def test_c045(): # TODO: cause vanish, effect vanish
+#     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()
+#     kb2 = the('capra').tell(kb1)
+#     kb3 = the('capra').does('eat').idiom.tell(kb2)    
+#     kb4 = it_is_false_that(the('capra').does('eat')).idiom.tell(kb3)
+
+#     assert the('capra').does('sing').get(kb3)
+#     assert not the('capra').does('sing').get(kb4)
+
 # %% ordinality (first/last) test
 def test_c039():
     kb0 = the(1)('cat').tell()
