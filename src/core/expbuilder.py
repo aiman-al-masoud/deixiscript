@@ -46,8 +46,7 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(SyntheticDerivation(makeAst(cause), Idiom(self.e)))
 
     @property
-    def new(self): 
-        return ExpBuilder(Command(self.e))
+    def new(self): return ExpBuilder(Command(self.e))
 
     @property
     def idiom(self): return ExpBuilder(Idiom(self.e))
@@ -73,6 +72,11 @@ class ExpBuilder(Generic[T]):
     def lin(self):
         from core.linearize import linearize
         return linearize(self.e)
+
+    @property
+    def p(self):
+        from core.prepare import prepare
+        return ExpBuilder(prepare(self.e))
 
 
 def e(x:Ast|ExpBuilder):

@@ -324,3 +324,17 @@ def test_c042():
 
     catConcept = the( i('concept').which(does('be')._('cat')).e ).get(kb1)
     assert catConcept == 'cat'
+
+
+# %% prepare AST tests
+def test_c047():
+    x1 = e('capra').does('eat').p.e
+    y1 = the('capra').idiom.does('eat').idiom.e
+    assert x1 == y1
+
+    x2 = e('it').p.e
+    y2 = the('it').idiom.e
+    assert x2 == y2
+
+
+    
