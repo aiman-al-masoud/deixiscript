@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Tuple
 
-# Concept() # TODO
-
 @dataclass(frozen=True)
 class Noun:
     head:'Ast'
