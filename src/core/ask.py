@@ -123,6 +123,8 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return e(event).tell(kb)
         case Derivation():
             return kb + ast
+        case Negation(Negation(v)):
+            return e(v).tell(kb)
         case Negation(Derivation()):
             raise Exception()
         case Negation(v):

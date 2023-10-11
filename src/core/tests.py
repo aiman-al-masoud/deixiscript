@@ -95,8 +95,12 @@ def test_c032(): # simple sentence
     assert q.get(kb3)
     assert not q.get(kb4)
 
-# def test_c046():# TODO double negations
-#     pass
+def test_c046():# double negations
+    x1 = the('capra').tell()
+    x2 = it_is_false_that(it_is_false_that(the('capra').does('run'))).tell(x1)
+    # x2 = it_is_false_that(it_is_false_that(it_is_false_that(the('capra').does('run')))).tell(x1)
+    assert ('event#1', 'run', 'verb') in x2.wm
+    assert ('event#1', 'capra#1', 'subject')  in x2.wm
 
 # %% matchAst tests
 def test_c017():
