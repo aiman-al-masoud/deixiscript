@@ -3,7 +3,7 @@ import re
 
 def tokenize(source:str):
 
-    punctuation = ['(', ')', '=']
+    punctuation = ['(', ')', '=', '?', '!']
     escaped = [re.escape(s) for s in punctuation]
     capture = reduce(lambda a,b: f"{a}|{b}", escaped)
 

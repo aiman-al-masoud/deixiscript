@@ -97,3 +97,11 @@ def test_g14():
 def test_g15():
     x = parse(ds, ['cat', 'does', 'eat', 'and', 'dog', 'does', 'drink'])
     assert x == the('cat').does('eat').and_(the('dog').does('drink')).e
+
+
+# from parser.tokenize import tokenize
+# while True:
+#     x1 = input()
+#     x2 = tokenize(x1)
+#     x3 = parse(ds, x2)
+#     print(x3)
