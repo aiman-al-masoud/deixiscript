@@ -4,7 +4,7 @@ from core.expbuilder import e, it_is_false_that, the
 from parser.parse import parse
 from parser.metalang import M,S,D
 
-# TODO: implicit, idiomatic and domino by default
+# TODO: implicit and idiomatic by default
 # TODO: add numerality
 # TODO: complements
 # TODO: dot and sentence separation
@@ -18,7 +18,7 @@ from parser.metalang import M,S,D
 
 ds = [
 D(['(', M('x', isAst), ')'], 'x'),
-D([M('x', isAst), '!'], e('x').domino.new.e),
+D([M('x', isAst), '!'], e('x').new.e),
 D([M('x', isAst), '?'], 'x'),
 
 D([M('l', isSm), S('op', L['and', 'or']), M('r', isSm)], e('l').binop('op', 'r').e),
@@ -75,7 +75,7 @@ def test_g9():
 
 def test_g10():
     x = parse(ds, ['cat', 'does', 'eat', 'mouse', '!'])
-    assert x == the('cat').does('eat')._(the('mouse')).domino.new.e
+    assert x == the('cat').does('eat')._(the('mouse')).new.e
 
 def test_g11():
     x = parse(ds, ['cat', 'does', 'eat', 'mouse', '?'])

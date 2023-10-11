@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, _, every
-from core.language import Ast, BinExp, Command, Derivation, Domino, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
+from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -89,8 +89,11 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
     match ast:
 
         case Idiom(v):
-            d = __makeAdLitteram(v, kb)
-            return e(d).tell(kb)
+            x1 = __makeAdLitteram(v, kb)
+            x2 = e(x1).tell(kb)
+            x3 = __makeEffects(x1, kb)   # TODO: why not kb=x2?
+            x4 = e(x3).ask(x2)
+            return x4
         case str(x) | int(x) | float(x):
             kb1 = e(x).does('be')._(type(x).__name__).tell(kb)
             return e(x).ask(kb1)
@@ -132,13 +135,6 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
             return r2
-        case Domino(v):
-            # TODO: when cause is removed, effect should also vanish
-            from core.isMatch import isMatch
-            x1 = e(v).tell(kb)
-            x2 = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, v, kb))
-            x3 = e(x2).ask(x1)
-            return x3
         case Command(v):
             return e(v).tell(kb)
         case _:
@@ -152,10 +148,15 @@ def __simpleSentenceToEvent(ast:SimpleSentence):
     x4 = every('event').which(x3).e
     return x4
 
-# @cache
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
     x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)
+    return x1
+
+def __makeEffects(cause:Ast, kb:KnowledgeBase):
+    from core.isMatch import isMatch
+    # TODO: when cause vanishes effects follow suit
+    x1 = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, cause, kb))
     return x1
 
 @cache

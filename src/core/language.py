@@ -45,10 +45,6 @@ class Command:
     value:'Ast'
 
 @dataclass(frozen=True)
-class Domino:
-    value:'Ast'
-    
-@dataclass(frozen=True)
 class Idiom:
     value:'Ast'
 
@@ -78,5 +74,5 @@ class SimpleSentence:
 Explicit = str | float | int | bool | tuple
 Implicit = Noun | Which | Numerality
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom | Domino
+NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
 Ast = NounPhrasish | SimpleSentence | Derivation
