@@ -11,7 +11,7 @@ def prepare(ast:Ast)->Ast:
 def __step1(ast:Ast)->Ast:
     match ast:
         case str(x):
-            return the(x).e
+            return the(x).e if x else x
         case int(x)|float(x)|bool(x):
             return x
         case Noun():
