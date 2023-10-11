@@ -95,6 +95,9 @@ def test_c032(): # simple sentence
     assert q.get(kb3)
     assert not q.get(kb4)
 
+# def test_c046():# TODO double negations
+#     pass
+
 # %% matchAst tests
 def test_c017():
     assert isMatch('it', 'it')
