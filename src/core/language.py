@@ -56,7 +56,6 @@ class SimpleSentence:
     as_:'Ast'=False
     to:'Ast'=False
     on:'Ast'=False
-    # TODO: use None instead
 
     def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
         x1 = [(k,v) for k,v in self.__dict__.items()]
