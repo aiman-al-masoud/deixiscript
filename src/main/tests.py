@@ -12,21 +12,21 @@ from parser.metalang import M,S,D
 # derivation clauses: done
 # questions vs statements: for now with ? vs !, default is question
 
-# p[m|'l'/isNp, v|'op'/L['and','or'], m|'r'/isNp] >> e('l').binop('op', 'r').e
-# p[m|'s'/isNp//'', 'does', s|'v', m|'o'/isNp//False] >> e('s').does('v')._('o').e
-# p['(', m|'x'/isAst, ')'] >> 'x'
+ssp    = [M('s', isNp, ''), 'does', S('v'), M('o', isNp, False)]
+ss     = e('s').does('v')._('o')
+binops = L['and', 'or']
 
 ds = [
 D(['(', M('x', isAst), ')'], 'x'),
 D([M('x', isAst), '!'], e('x').new.e),
 D([M('x', isAst), '?'], 'x'),
-D([M('l', isSm), S('op', L['and', 'or']), M('r', isSm)], e('l').binop('op', 'r').e),
-D([M('l', isNp), S('op', L['and', 'or']), M('r', isNp)], e('l').binop('op', 'r').e),
+D([M('l', isSm), S('op', binops), M('r', isSm)], e('l').binop('op', 'r').e),
+D([M('l', isNp), S('op', binops), M('r', isNp)], e('l').binop('op', 'r').e),
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
-D([M('s', isNp, ''), 'does', 'not', S('v'), M('o', isNp, False)], it_is_false_that(e('s').does('v')._('o')).e),
-D([M('s', isNp, ''), 'does', S('v'), M('o', isNp, False)], e('s').does('v')._('o').e),
+D([*ssp[:2], 'not', *ssp[2:]], it_is_false_that(ss).e),
+D(ssp , ss.e),
 D([M('e', isAst), 'after', M('c', isAst)], e('e').after('c').e),
-D([M('d1', isAst), 'when', M('d2', isAst)], e('d1').when('d2').e),
+D([M('x', isAst), 'when',  M('y', isAst)], e('x').when('y').e),
 D([S('x')], 'x'),
 ]
 
