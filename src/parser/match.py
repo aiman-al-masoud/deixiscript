@@ -36,6 +36,7 @@ def match(pat:Pattern, toks:List[Lit], ds:List[Derivation]=[])->Map|None:
             value = seq[:num] if num!=1 else seq[0]
             return {n : value}
         case [str(x) | int(x) | float(x)]:
+            if not toks: return None
             return {} if toks[0]==x else None
         case [p] if isPredicate(p):
             if not toks: return None
