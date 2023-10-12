@@ -1,6 +1,6 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
-from core.expbuilder import does, e, _, every, it_is_false_that
+from core.expbuilder import does, e, every
 from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isSimpleSentenceish
 from core.subst import subst
@@ -30,6 +30,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x3 = x2[0] if len(x2)==1 else x2 
             return e(x3).ask(kb)
         case Which(h, w):
+            from core.expbuilder import _
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
@@ -104,6 +105,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             r1 = e(new).does('be')._(h).tell(kb1) 
             return r1 << new
         case Which(h, w):
+            from core.expbuilder import _
             r1 = e(h).tell(kb)
             which = subst(_, r1.head, w)
             r2 = e(which).tell(r1)
