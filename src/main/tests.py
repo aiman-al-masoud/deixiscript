@@ -25,7 +25,7 @@ D([M('l', isNp), S('op', binops), M('r', isNp)], e('l').binop('op', 'r').e),
 D([M('h', isNp), 'which', M('w', isAst)], e('h').which('w').e),
 D([*ssp[:2], 'not', *ssp[2:]], it_is_false_that(ss).e),
 D(ssp , ss.e),
-D([M('e', isAst), 'after', M('c', isAst)], e('e').after('c').e),
+D([M('x', isAst), 'after', M('y', isAst)], e('x').after('y').e),
 D([M('x', isAst), 'when',  M('y', isAst)], e('x').when('y').e),
 D([S('x')], 'x'),
 ]
