@@ -50,9 +50,9 @@ class Idiom:
 
 @dataclass(frozen=True)
 class SimpleSentence:
-    verb:'Ast'
-    subject:'Ast'
-    object:'Ast'=False
+    verb:'Ast'=''
+    subject:'Ast'=''
+    object:'Ast'=''
     as_:'Ast'=False
     to:'Ast'=False
     on:'Ast'=False

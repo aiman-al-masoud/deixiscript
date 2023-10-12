@@ -1,6 +1,6 @@
 from typing import Literal as L
 from core.decompressed import isNounPhrasish as isNp, isAst, isSimpleSentenceish as isSm
-from core.expbuilder import does, e, it_is_false_that
+from core.expbuilder import does, e, it_is_false_that, _
 from parser.parse import parse
 from parser.metalang import M,S,D
 
@@ -12,7 +12,7 @@ from parser.metalang import M,S,D
 # derivation clauses: done
 # questions vs statements: for now with ? vs !, default is question
 
-ssp    = [M('s', isNp, ''), 'does', S('v'), M('o', isNp, False)]
+ssp    = [M('s', isNp, _), 'does', S('v'), M('o', isNp, _)]
 ss     = e('s').does('v')._('o')
 binops = L['and', 'or']
 
@@ -95,6 +95,9 @@ def test_g015():
     x = parse(ds, ['cat', 'does', 'eat', 'and', 'dog', 'does', 'drink'])
     assert x == e('cat').does('eat').and_(e('dog').does('drink')).e
 
+# def test_g016():
+    # x = parse(ds, ['cat', 'does'])
+    # assert x == e('cat').does(_).e
 
 # from parser.tokenize import tokenize
 # while True:
