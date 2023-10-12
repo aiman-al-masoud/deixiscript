@@ -1,6 +1,5 @@
-from core.expbuilder import e, the
+from core.expbuilder import the
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
-from core.subst import subst
 
 
 def prepare(ast:Ast)->Ast:
@@ -11,7 +10,7 @@ def prepare(ast:Ast)->Ast:
 def __step1(ast:Ast)->Ast:
     match ast:
         case str(x):
-            return the(x).e if x else x
+            return the('last')(1)(x).e if x else x
         case int(x)|float(x)|bool(x):
             return x
         case Noun():
@@ -19,7 +18,7 @@ def __step1(ast:Ast)->Ast:
         case Which(h,w):
             return Which(prepare(h), prepare(w))
         case Numerality(h, c, o):
-            return Numerality(prepare(h), prepare(c), prepare(o))
+            return Numerality(prepare(h), c, o)
         case SimpleSentence():
             x1={k: prepare(v) if k!='verb' else v for k,v in ast.args}
             x2=SimpleSentence(**x1)
@@ -38,14 +37,10 @@ def __step1(ast:Ast)->Ast:
             raise Exception()
 
 def __step2(ast:Ast)->Ast:
-    return ast if isinstance(ast, Idiom) else Idiom(ast)
-
-
-# x = prepare(e('capra').does('eat')._('grass').e)
-# print(x)
-# y = prepare('it')
-# print(y)
-
-# x = e('capra').does('eat').p
-# print(x)
-
+    match ast:
+        case Command(v):
+            return Command(Idiom(v))
+        case Idiom():
+            return ast
+        case _:
+            return Idiom(ast)
