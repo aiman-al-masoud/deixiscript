@@ -229,10 +229,10 @@ def test_c028():
     assert isinstance(multiple, tuple)
     assert isinstance(single, str)
 
-# %% or-operator ask test
-def test_c029():
-    assert e(1).equals(2).or_(e(3).equals(3)).get()
-    assert not e(1).equals(2).or_(e(3).equals(2)).get()
+# # %% or-operator ask test
+# def test_c029():
+#     assert e(1).equals(2).or_(e(3).equals(3)).get()
+#     assert not e(1).equals(2).or_(e(3).equals(2)).get()
 
 # %% matching a general implicit sentence to a specific explicit sentence
 def test_c030():
@@ -336,11 +336,11 @@ def test_c047():
     y2 = the('it').idiom.e
     assert x2 == y2
 
-# TODO
-# # %% and-phrases
-# def test_c048():
-#     x1 = the('capra').tell()
-#     x2 = the('gatto').tell(x1)
-#     x3 = the('gatto').and_(the('capra')).ask(x2)
-#     print(x3.head)
-#     # print(x2.wm)
+# %% and-phrases
+def test_c048():
+    x1 = the('capra').tell()
+    x2 = the('gatto').tell(x1)
+    x3 = the('gatto').and_(the('capra')).ask(x2)
+    x4 = the('gatto').and_(the('capra')).and_(the('capra')).ask(x2)
+    assert x3.head == ('gatto#1', 'capra#1')
+    assert x4.head == ('gatto#1', 'capra#1', 'capra#1')

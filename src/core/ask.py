@@ -46,6 +46,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case Negation(v):
             r1 = e(v).ask(kb)
             return r1 << (not r1.head)
+        case BinExp('and'|'or', l, r) if isNounPhrasish(ast):
+            l1 = e(l).ask(kb).head
+            r1 = e(r).ask(kb).head
+            l2 = l1 if isinstance(l1, tuple) else (l1,)
+            r2 = r1 if isinstance(r1, tuple) else (r1,)
+            return kb << (*l2, *r2) # TODO: tuple is always or, wrong!
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
             if not r1.head: return r1
