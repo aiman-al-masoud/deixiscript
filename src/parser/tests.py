@@ -1,91 +1,90 @@
-from parser.match import match
-from parser.metalang import M, S, D
-from parser.parse import parse, subst
+from core.expbuilder import e, does, it_is_false_that
+from parser.parse import parse
 from parser.tokenize import tokenize
 
-def test1():
-    m1 = match([M('x'), 'capra'], ['1', '2', 'capra'])
-    assert m1 and m1['x'] == ['1', '2']
+def test_g001():
+    x = parse([1, 'or', 2, 'and', 3])
+    assert x == e(1).or_(e(2).and_(3)).e
 
-def test2():
-    m2 = match([M('x'), 'capra', M('y')], ['1', '2', 'capra', '4'])
-    assert m2 and m2['x'] == ['1', '2'] and m2['y'] == ['4']
+def test_g002():
+    x = parse(['cat', 'does', 'run'])
+    assert x == e('cat').does('run').e
 
-def test3():
-    m1 = match([int, str], [1, 'ciao'])
-    m2 = match([int, str], [1, 1])
-
-    assert m1 is not None
-    assert m2 is None
-
-def test4():
-    m1 = match([M('x'), S('y', int)], ['capra', 'ciao', 1])
-    assert m1 and m1['x'] == ['capra', 'ciao'] and m1['y'] == 1
-
-def test5():
-    m1 = match([M('x'), S('y', int|float)], ['capra', 'ciao', 1.0])
-    assert m1 
-    assert m1['x'] == ['capra', 'ciao'] 
-    assert m1['y'] == 1.0
-
-def test6():
-    assert subst({'x':{'y':'z'}}, {'z':1}) == {'x':{'y':1}}
-
-def test7():
-    ds = [
-        D([M('x'), 'and', M('y')], {'op':'and', 'l':'x', 'r':'y'}),
-        D([S('x')], 'x'),
-    ]
-    ast = parse(ds, [1, 'and', 2, 'and', 3])
-    assert ast == {'op':'and', 'l':1, 'r':{'op':'and', 'l':2, 'r':3}}
-
-
-def test8():
-    m1 = match([M('x', int)], [1,2,3])
-    m2 = match([M('x', str)], [1,2,3])
-    assert m1 and m1['x'] == [1,2,3]
-    assert not m2
-
-def test9():
-    m1 = match([S('x', lambda x: 'c' in str(x) )], ['ciao'])
-    assert m1 and m1['x'] == 'ciao'
-
-# default values
-def test_p11():
-    m1 = match([M('x', int, 1)], ['ciao'])
-    m2 = match([M('x', int, 1)], [999])
-    m3 = match([M('x', int)], ['ciao'])
-    m4 = match([M('x', int, 1)], [])
+def test_g003():
+    x = parse(['does', 'run'])
+    assert x == does('run').e
     
-    assert not m1
-    assert m2 and m2['x'] == [999]
-    assert not m3
-    assert m4 and m4['x'] == [1]
+def test_g004():
+    x = parse(['cat', 'does', 'eat', 'mouse'])
+    assert x == e('cat').does('eat')._('mouse').e
 
-def test13():
+def test_g005():
+    x = parse(['cat', 'which', 'does', 'run'])
+    assert x == e('cat').which(does('run')).e
 
-    isThe = lambda x: isinstance(x, dict) and 'the' in x
-    isWhich = lambda x: isinstance(x, dict) and 'which' in x
+# TODO
+# def test_g006():
+#     # x1 = par(['(', 'cat', 'which', 'does', 'exist', ')', 'does', 'run' ])
+#     x2 = par(['cat', 'which', 'does', 'exist',  'does', 'run' ])
+#     print(x2)
+#     # assert x1 == x2
+#     # assert x1 == e('cat').which(does('exist')).does('run').e
 
-    ds = [
-        D([M('h', isThe), 'which', M('w')], {'head':'h', 'which':'w'}),
-        D(['the', M('h')], {'head':'h', 'the':True}),
-        D([S('x')], 'x'),
-    ]
-    
-    res = parse(ds, ['the', 'cat', 'which', 'eat'])
-    assert isWhich(res)
+def test_g007():
+  x = parse(['cat', 'and', 'dog', 'does', 'run'])
+  assert x == e('cat').and_('dog').does('run').e
 
-    res = parse(ds, ['cat', 'which', 'eat'])
-    assert not isWhich(res)
+def test_g008():
+   x = parse(['(', 1, ')'])
+   assert x == 1
+
+def test_g009():
+   x = parse(['(', 'cat', 'which', 'does', 'run', ')'])
+   assert x == e('cat').which(does('run')).e
+
+def test_g010():
+    x = parse(['cat', 'does', 'eat', 'mouse', '!'])
+    assert x == e('cat').does('eat')._('mouse').new.e
+
+def test_g011():
+    x = parse(['cat', 'does', 'eat', 'mouse', '?'])
+    y = parse(['cat', 'does', 'eat', 'mouse'])
+    assert x == y
+
+def test_g012():
+    x = parse(['button', 'does', 'be', 'red', 'after', 'button', 'does', 'be', 'down'])
+    assert x == e('button').does('be')._('red').after(e('button').does('be')._('down')).e
+
+def test_g013():
+    x = parse(['it', 'when', 'thing'])
+    assert x == e('it').when('thing').e
+
+def test_g014():
+    x = parse( ['capra', 'does', 'not', 'jump'])
+    assert x == it_is_false_that(e('capra').does('jump')).e
+
+# TODO
+# def test_g015():
+#     x = par(['cat', 'does', 'eat', 'and', 'dog', 'does', 'drink'])
+#     assert x == e('cat').does('eat').and_(e('dog').does('drink')).e
+
+#TODO
+# def test_g016():
+#     from core.expbuilder import _
+#     x = par(['cat', 'does'])
+#     assert x == e('cat').does(_).e
+
+def test_g017():
+    x = parse(['cat', 'does', 'run', 'to', 'food'])
+    assert x == e('cat').does('run').to('food').e
 
 # tokenize
-def test_p14():
-    source = '"hello world" is a (string) and also " hello Buruf " 1 2 false true 300 1=1'
-    ok = ['hello world', 'is', 'a', '(', 'string', ')', 'and', 'also', ' hello Buruf ', 1.0, 2.0, 'false', 'true', 300.0, 1.0, '=', 1.0]
+def test_g018():
+    source = '"hello world" is a (string) and also " hello Buruf " 1 2 false true 300 1=1 ciao?'
+    ok = ['hello world', 'is', 'a', '(', 'string', ')', 'and', 'also', ' hello Buruf ', 1.0, 2.0, 'false', 'true', 300.0, 1.0, '=', 1.0, 'ciao', '?']
     maybe = tokenize(source)
     assert ok == maybe
 
-# TODO: tests
-# D([M('l', isX)], 'l'),
-# D([M('l')], 'l'),
+def test_g019():
+    x = parse(['cat', 'does', 'eat', '(', 'mouse', 'which','does', 'run', ')'])
+    assert x == e('cat').does('eat')._(e('mouse').which(does('run'))).e

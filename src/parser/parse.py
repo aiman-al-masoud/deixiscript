@@ -1,41 +1,66 @@
-from typing import List
-from parser.match import Map, match
-from parser.metalang import Derivation
+from functools import reduce
+from typing import List, Set
+from core.expbuilder import e
+from core.language import BinExp, Command, Negation, SimpleSentence, Which
 
+preps  = {'to', 'on', 'as'}
+binops = {'and', 'or'}
 
-def parse(ds:List[Derivation], toks:object):
+def parse(toks:List[str|int|float]):
 
     match toks:
-        case list(xs):
-            r1 = [match(d.pat, xs, ds) for d in ds]
-            r2 = zip(r1, ds)
-            r3 = next((subst(d.definition, m) for m,d in r2 if m is not None), None)
-            if r3 is None: return toks
-            if r3 == toks: return toks
-            r4 = parse(ds, r3)
-            return r4
-        case str(x)|int(x)|float(x):
-            return x
-        case dict(d): 
-            return {k:parse(ds, v) for k,v in d.items()}
-        case object() if toks and hasattr(toks, '__dict__'):
-            x1 = vars(toks)
-            x2 = parse(ds, x1)
-            x3 = toks.__class__(**x2)
-            return x3
-        case _:
-            raise Exception('parse', toks)
 
-def subst(ast:object, map:Map):
-    match ast:
-        case str(x):
-            return map.get(x, x)
-        case dict(d):
-            return {k:subst(v, map) for k,v in d.items()}
-        case object() if ast and hasattr(ast, '__dict__'):
-            x1 = vars(ast)
-            x2 = subst(x1, map)
-            x3 = ast.__class__(**x2)
-            return x3
+        case ['(', *xs, ')']:
+            return parse(xs)
+        case _ if ps:=splitBy(toks, {'when'}):
+            return e(parse(ps[0])).when(parse(ps[2])).e
+        case _ if ps:=splitBy(toks, {'after'}):
+            return e(parse(ps[0])).after(parse(ps[2])).e
+        case [*xs, '!']:
+            return Command(parse(xs))
+        case [*xs, '?']:
+            return parse(xs)
+        case _ if ps:=splitBy(toks, {'which'}):
+            return Which(parse(ps[0]), parse(ps[2]))
+        case _ if ps:=splitBy(toks, {'does'}):
+            subject     = parse(ps[0])
+            negation    = toks[ps[1][1]+1]=='not'
+            verb        = toks[ps[1][1]+2] if negation else toks[ps[1][1]+1]
+            rest        = toks[toks.index(verb)+1:]
+            endObject   = next((i for i, x in enumerate(rest) if x in preps), len(toks))
+            object      = parse(rest[:endObject]) if rest else ''            
+            complements = parComplements(rest[endObject:])
+            sentence    = SimpleSentence(**{'verb':verb, 'subject':subject, 'object':object, **complements})
+            result      = Negation(sentence) if negation else sentence 
+            return result
+        case _ if ps:=splitBy(toks, binops):
+            return BinExp(ps[1][0], parse(ps[0]), parse(ps[2]))
+        case [x]:
+            return x
+        case []:
+            return ''
         case _:
-            return ast
+            raise Exception(toks)
+
+def splitBy(toks:List[str|int|float], seps:Set[str]):
+    i = next((i for i,x in enumerate(toks) if x in seps), None)
+    if i is None: return None
+    left  = toks[:i]
+    right = toks[i+1:]
+    if not isMatching(left) or not isMatching(right): return None
+    return left, (toks[i], i), right
+
+def parComplements(toks:List[str|int|float]):
+    x1 = [i for i,x in enumerate(toks) if x in preps]
+    x2 = [toks[i: x1[i+1] if len(x1)>i+1 else None] for i in x1]
+    x3 = [parComplement(x) for x in x2]
+    x4 = reduce(lambda a,b: {**a, **b}, x3, {})
+    return x4
+
+def parComplement(toks:List[str|int|float]):
+    if toks[0] not in preps: return {}
+    thing = parse(toks[1:]) if toks else {toks[0]: ''}
+    return {toks[0]: thing}
+
+def isMatching(toks:List[str|int|float]):
+    return toks.count('(') == toks.count(')')
