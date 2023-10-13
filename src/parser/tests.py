@@ -56,8 +56,8 @@ def test_g012():
     assert x == e('button').does('be')._('red').after(e('button').does('be')._('down')).e
 
 def test_g013():
-    x = parse(['it', 'when', 'thing'])
-    assert x == e('it').when('thing').e
+    x = parse(['it', 'when', 'thing', '!'])
+    assert x == e('it').when('thing').new.e
 
 def test_g014():
     x = parse( ['capra', 'does', 'not', 'jump'])

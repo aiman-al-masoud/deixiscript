@@ -14,14 +14,14 @@ def parse(toks:List[str|int|float]):
 
         case ['(', *xs, ')']:
             return parse(xs)
-        case _ if ps:=splitBy(toks, {'when'}):
-            return e(parse(ps[0])).when(parse(ps[2])).e
-        case _ if ps:=splitBy(toks, {'after'}):
-            return e(parse(ps[0])).after(parse(ps[2])).e
         case [*xs, '!']:
             return Command(parse(xs))
         case [*xs, '?']:
             return parse(xs)
+        case _ if ps:=splitBy(toks, {'when'}):
+            return e(parse(ps[0])).when(parse(ps[2])).e
+        case _ if ps:=splitBy(toks, {'after'}):
+            return e(parse(ps[0])).after(parse(ps[2])).e
         case _ if ps:=splitBy(toks, relativizers):
             return Which(parse(ps[0]), parse(ps[2]))
         case _ if ps:=splitBy(toks, verb_markers):

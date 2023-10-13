@@ -350,4 +350,4 @@ def test_c049():
     x1 = the('capra').p.tell()
     # problem: 'quiet' resolves to entity, it shouldn't 
     x2 = the('capra').does('be')._('quiet').p.tell(x1)
-    print(x2.wm)
+    # print(x2.wm)

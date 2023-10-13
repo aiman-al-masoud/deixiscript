@@ -13,7 +13,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
         case object() if isImplicitish(ast) and isSimpleSentenceish(ast):            
             r = __makeExplicit(ast, kb)
-            print('ciao!', r.head)
             return e(r.head).ask(r)
         case Idiom(v):
             d = __makeAdLitteram(v, kb)
