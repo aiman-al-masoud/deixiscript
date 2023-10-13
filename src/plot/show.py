@@ -1,3 +1,4 @@
+from core.KnowledgeBase import KnowledgeBase
 from core.language import Ast
 from core.KnowledgeBase import WorldModel
 
@@ -6,15 +7,16 @@ def show(wm:WorldModel):
     source = graphvizied(wm)
     Source(source, filename='tmp.gv', format='png').view()
 
-def save_png(wm:WorldModel):
+def save_png(kb:KnowledgeBase):
     from graphviz import Source
-    source = graphvizied(wm)
+    source = graphvizied(kb.wm, kb.head if isinstance(kb.head, tuple) else (kb.head,))
     Source(source, filename='tmp.gv', format='png').render()
 
-def graphvizied(wm:WorldModel):
+def graphvizied(wm:WorldModel, head=tuple()):
     from functools import reduce
+    x0=[f'"{x}" [fillcolor=red,style=filled];' for x in head]
     x1=[f'"{s[0]}" -> "{s[1]}" [ label="{s[2]}" ];' for s in wm]
-    x2=reduce(lambda a,b:a+b+'\n', x1, '')
+    x2=reduce(lambda a,b:a+b+'\n', [*x0, *x1], '')
     x3=f'digraph G{{\n{x2}}}'
     return x3
 

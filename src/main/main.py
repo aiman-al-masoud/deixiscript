@@ -10,6 +10,8 @@ while True:
     x1 = input()
     x2 = tokenize(x1)
     x3 = parse(x2)
-    kb = e(x3).p.ask(kb)
-    save_png(kb.wm)
-    # print(kb.wm)
+    x4 = e(x3).p
+    # print(x4)
+    kb = e(x4).ask(kb)
+    # print(kb)
+    save_png(kb)
