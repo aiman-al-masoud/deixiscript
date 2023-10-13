@@ -325,6 +325,15 @@ def test_c042():
     catConcept = the( i('concept').which(does('be')._('cat')).e ).get(kb1)
     assert catConcept == 'cat'
 
+# %% and-phrases
+def test_c048():
+    x1 = the('capra').tell()
+    x2 = the('gatto').tell(x1)
+    x3 = the('gatto').and_(the('capra')).ask(x2)
+    x4 = the('gatto').and_(the('capra')).and_(the('capra')).ask(x2)
+    assert x3.head == ('gatto#1', 'capra#1')
+    assert x4.head == ('gatto#1', 'capra#1', 'capra#1')
+
 
 # %% prepare AST tests
 def test_c047():
@@ -336,11 +345,9 @@ def test_c047():
     y2 = the('it').idiom.e
     assert x2 == y2
 
-# %% and-phrases
-def test_c048():
-    x1 = the('capra').tell()
-    x2 = the('gatto').tell(x1)
-    x3 = the('gatto').and_(the('capra')).ask(x2)
-    x4 = the('gatto').and_(the('capra')).and_(the('capra')).ask(x2)
-    assert x3.head == ('gatto#1', 'capra#1')
-    assert x4.head == ('gatto#1', 'capra#1', 'capra#1')
+# TODO
+def test_c049():
+    x1 = the('capra').p.tell()
+    # problem: 'quiet' resolves to entity 
+    x2 = the('capra').does('be')._('quiet').p.tell(x1)
+    print(x2.wm)

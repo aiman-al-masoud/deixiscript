@@ -25,7 +25,7 @@ def __step1(ast:Ast)->Ast:
             x2=SimpleSentence(**x1)
             return Idiom(x2)
         case Command(v):
-            return Command(Idiom(prepare(v)))
+            return Command(prepare(v))
         case BinExp(op, l, r):
             return BinExp(op,prepare(l),prepare(r))
         case Negation(v):
