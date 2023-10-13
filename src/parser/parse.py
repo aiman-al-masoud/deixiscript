@@ -5,6 +5,8 @@ from core.language import BinExp, Command, Negation, SimpleSentence, Which
 
 preps  = {'to', 'on', 'as'}
 binops = {'and', 'or'}
+verb_markers = {'does'}
+relativizers = {'which'}
 
 def parse(toks:List[str|int|float]):
 
@@ -20,9 +22,9 @@ def parse(toks:List[str|int|float]):
             return Command(parse(xs))
         case [*xs, '?']:
             return parse(xs)
-        case _ if ps:=splitBy(toks, {'which'}):
+        case _ if ps:=splitBy(toks, relativizers):
             return Which(parse(ps[0]), parse(ps[2]))
-        case _ if ps:=splitBy(toks, {'does'}):
+        case _ if ps:=splitBy(toks, verb_markers):
             subject     = parse(ps[0])
             negation    = toks[ps[1][1]+1]=='not'
             verb        = toks[ps[1][1]+2] if negation else toks[ps[1][1]+1]
