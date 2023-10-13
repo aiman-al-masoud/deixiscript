@@ -34,7 +34,7 @@ def parse(toks:List[str|int|float]):
             rest        = toks[toks.index(verb)+1:]
             endObject   = next((i for i, x in enumerate(rest) if x in preps), len(toks))
             object      = parse(rest[:endObject]) if rest else ''            
-            complements = parComplements(rest[endObject:])
+            complements = parseComplements(rest[endObject:])
             sentence    = SimpleSentence(**{'verb':verb, 'subject':subject, 'object':object, **complements})
             result      = Negation(sentence) if negation else sentence 
             return result
@@ -55,14 +55,14 @@ def splitBy(toks:List[str|int|float], seps:Set[str]):
     if not isMatching(left) or not isMatching(right): return None
     return left, (toks[i], i), right
 
-def parComplements(toks:List[str|int|float]):
+def parseComplements(toks:List[str|int|float]):
     x1 = [i for i,x in enumerate(toks) if x in preps]
     x2 = [toks[i: x1[i+1] if len(x1)>i+1 else None] for i in x1]
-    x3 = [parComplement(x) for x in x2]
+    x3 = [parseComplement(x) for x in x2]
     x4 = reduce(lambda a,b: {**a, **b}, x3, {})
     return x4
 
-def parComplement(toks:List[str|int|float]):
+def parseComplement(toks:List[str|int|float]):
     if toks[0] not in preps: return {}
     thing = parse(toks[1:]) if toks else {toks[0]: ''}
     return {toks[0]: thing}
