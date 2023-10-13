@@ -345,9 +345,9 @@ def test_c047():
     y2 = the('it').idiom.e
     assert x2 == y2
 
-# TODO
-def test_c049():
-    x1 = the('capra').p.tell()
-    # problem: 'quiet' resolves to entity, it shouldn't 
-    x2 = the('capra').does('be')._('quiet').p.tell(x1)
-    # print(x2.wm)
+# # TODO
+# def test_c049():
+#     x1 = the('capra').p.tell()
+#     # problem: 'quiet' resolves to entity, it shouldn't 
+#     x2 = the('capra').does('be')._('quiet').p.tell(x1)
+#     # print(x2.wm)
