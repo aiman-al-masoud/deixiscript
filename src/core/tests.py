@@ -336,5 +336,11 @@ def test_c047():
     y2 = the('it').idiom.e
     assert x2 == y2
 
-
-    
+# TODO
+# # %% and-phrases
+# def test_c048():
+#     x1 = the('capra').tell()
+#     x2 = the('gatto').tell(x1)
+#     x3 = the('gatto').and_(the('capra')).ask(x2)
+#     print(x3.head)
+#     # print(x2.wm)
