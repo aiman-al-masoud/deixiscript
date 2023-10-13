@@ -67,7 +67,7 @@ class SimpleSentence:
     def args(self): return self.filterOut([])
 
 Explicit = str | float | int | bool | tuple
-Implicit = Noun | Which #| Numerality
+Implicit = Noun | Which
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
 Ast = NounPhrasish | SimpleSentence | Derivation
