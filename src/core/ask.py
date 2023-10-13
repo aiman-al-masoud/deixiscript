@@ -47,11 +47,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             r1 = e(v).ask(kb)
             return r1 << (not r1.head)
         case BinExp('and'|'or', l, r) if isNounPhrasish(ast):
-            l1 = e(l).ask(kb).head
-            r1 = e(r).ask(kb).head
-            l2 = l1 if isinstance(l1, tuple) else (l1,)
-            r2 = r1 if isinstance(r1, tuple) else (r1,)
-            return kb << (*l2, *r2) # TODO: tuple is always or, wrong!
+            l1 = e(l).get(kb)
+            l2 = e(r).get(kb)
+            x  = e(l1).binop(ast.op, l2).e
+            return kb << x
         case BinExp('and', l, r):
             r1 = e(l).ask(kb)
             if not r1.head: return r1
@@ -92,7 +91,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
 @cache
 def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
-
 
     match ast:
 
@@ -171,7 +169,6 @@ def __makeEffects(cause:Ast, kb:KnowledgeBase):
     # x2 = tuple(it_is_false_that(d.effect).new.e for d in kb.sds if isMatch(it_is_false_that(d.cause).e, cause, kb))
     # return (*x1, *x2)
     return x1
-
 
 @cache
 def __makeExplicit(ast:Ast, kb:KnowledgeBase):

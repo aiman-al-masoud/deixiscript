@@ -331,9 +331,8 @@ def test_c048():
     x2 = the('gatto').tell(x1)
     x3 = the('gatto').and_(the('capra')).ask(x2)
     x4 = the('gatto').and_(the('capra')).and_(the('capra')).ask(x2)
-    assert x3.head == ('gatto#1', 'capra#1')
-    assert x4.head == ('gatto#1', 'capra#1', 'capra#1')
-
+    assert x3.head == e('gatto#1').and_('capra#1').e
+    assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
 
 # %% prepare AST tests
 def test_c047():

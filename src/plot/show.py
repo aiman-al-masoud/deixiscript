@@ -9,6 +9,7 @@ def show(wm:WorldModel):
 
 def save_png(kb:KnowledgeBase):
     from graphviz import Source
+    # TODO: and, or, besides tuple support
     source = graphvizied(kb.wm, kb.head if isinstance(kb.head, tuple) else (kb.head,))
     Source(source, filename='tmp.gv', format='png').render()
 
