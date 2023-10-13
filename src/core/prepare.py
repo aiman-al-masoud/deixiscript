@@ -1,6 +1,7 @@
 from core.expbuilder import e, the
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 
+#TODO: move into new parse()
 def prepare(ast:Ast)->Ast:
     match ast:
         case str(x):
