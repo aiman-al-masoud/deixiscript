@@ -1,7 +1,6 @@
 from core.expbuilder import e, the
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Negation, Noun, SimpleSentence, SyntheticDerivation, Which
 
-#TODO: maybe move numerality info into Noun AST-type
 #TODO: move into new parse() and expbuilder
 def prepare(ast:Ast)->Ast:
     match ast:
@@ -13,8 +12,6 @@ def prepare(ast:Ast)->Ast:
             return e(ast).idiom.e
         case Which(h,w):
             return Idiom(Which(prepare(h), prepare(w)))
-        case Numerality(h, c, o):
-            return Idiom(Numerality(prepare(h), c, o))
         case SimpleSentence():
             x1={k: prepare(v) if k!='verb' else v for k,v in ast.args}
             x2=SimpleSentence(**x1)

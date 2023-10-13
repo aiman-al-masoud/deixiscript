@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, SimpleSentence, SyntheticDerivation, Which
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -78,7 +78,6 @@ class ExpBuilder(Generic[T]):
         from core.prepare import prepare
         return ExpBuilder(prepare(self.e))
 
-
 def e(x:Ast|ExpBuilder):
     return ExpBuilder(makeAst(x))
 
@@ -99,12 +98,12 @@ def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], ExpBuilder]
 @overload
 def the(x:int)->Callable[[Ast], ExpBuilder]:...
 @overload
-def the(x:Ast)->ExpBuilder[Numerality]:...
+def the(x:Ast)->ExpBuilder[Noun]:...
 def the(x:Ast=sys.maxsize)->object:
 
     match x:
         case 'first' | 'last':
-            return lambda y: lambda z: e(Numerality(makeImplicit(z), y, x))
+            return lambda y: lambda z: e(Noun(z, y, x))
         case int():
             return the('last')(x)
         case object():
@@ -114,9 +113,6 @@ def makeImplicit(ast:Ast):
     from core.decompressed import isImplicitish, isNounPhrasish
     assert isNounPhrasish(ast)
     return ast if isImplicitish(ast) else Noun(ast)
-
-def i(x:Ast|ExpBuilder):
-    return ExpBuilder(Noun(makeAst(x)))
 
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)

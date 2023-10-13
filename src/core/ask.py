@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, Numerality, SimpleSentence, Which
+from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, SimpleSentence, Which
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -15,37 +15,34 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             r = __makeExplicit(ast, kb)
             return e(r.head).ask(r)
         case Idiom(v):
-            d = __makeAdLitteram(v, kb)
-            return e(d).ask(kb)
+            x1 = __makeAdLitteram(v, kb)
+            return e(x1).ask(kb)
         case str(x) | int(x) | float(x):
             exists = any({x in s for s in kb.wm})
             return kb << (x if exists else False)
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
-        case Noun(h):
+        case Noun(h, card, ord):
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
-            x3 = x2[0] if len(x2)==1 else x2 
-            return e(x3).ask(kb)
+            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=ord=='last'))
+            x4 = x3[:card]
+            x5 = x4[0] if len(x4)==1 else x4
+            x6 = e(x5).ask(kb)
+            return x6
         case Which(h, w):
             from core.expbuilder import _
             x1 = e(h).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
             x4 = x3[0] if len(x3)==1 else x3
-            return e(x4).ask(kb)
-        case Numerality(h, card, ord):
-            x1 = e(h).get(kb)
-            x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=ord=='last'))
-            x4 = x3[:card]
-            x5 = x4[0] if len(x4)==1 else x4
-            return e(x5).ask(kb)
+            x5 = e(x4).ask(kb)
+            return x5
         case Negation(v):
-            r1 = e(v).ask(kb)
-            return r1 << (not r1.head)
+            x1 = e(v).ask(kb)
+            return x1 << (not x1.head)
         case BinExp('and'|'or', l, r) if isNounPhrasish(ast):
             l1 = e(l).get(kb)
             l2 = e(r).get(kb)
@@ -115,17 +112,15 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             which = subst(_, r1.head, w)
             r2 = e(which).tell(r1)
             return r2 << r1.head
-        case Numerality(h, c, o):
-            return e(h).tell(kb) # TODO: multi-create
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             delta = frozenset({(s, o, a)})
-            kb1  = kb + delta
+            kb1   = kb + delta
             return kb1
         case SimpleSentence():
             event = __simpleSentenceToEvent(ast)
-            old = e(event).ask(kb)
+            old   = e(event).ask(kb)
             if old.head: return old
             return e(event).tell(kb)
         case Derivation():

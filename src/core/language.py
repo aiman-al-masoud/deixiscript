@@ -4,17 +4,13 @@ from typing import List, Tuple
 @dataclass(frozen=True)
 class Noun:
     head:'Ast'
+    card:'Ast' =1
+    ord:'Ast'  ='last'
 
 @dataclass(frozen=True)
 class Which:
     head:'Ast'
     which:'Ast'
-
-@dataclass(frozen=True)
-class Numerality:
-    head:'Ast'
-    card:'Ast'
-    ord:'Ast'
 
 @dataclass(frozen=True)
 class BinExp:
@@ -71,7 +67,7 @@ class SimpleSentence:
     def args(self): return self.filterOut([])
 
 Explicit = str | float | int | bool | tuple
-Implicit = Noun | Which | Numerality
+Implicit = Noun | Which #| Numerality
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
 Ast = NounPhrasish | SimpleSentence | Derivation
