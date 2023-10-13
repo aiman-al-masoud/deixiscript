@@ -1,14 +1,7 @@
 from core.expbuilder import e, the
 from core.language import AnalyticDerivation, Ast, BinExp, Command, Idiom, Implicit, Negation, Noun, Numerality, SimpleSentence, SyntheticDerivation, Which
 
-
 def prepare(ast:Ast)->Ast:
-    # x1 = __step1(ast)
-    # x2 = __step2(x1)
-    # return x2
-    return __step1(ast)
-
-def __step1(ast:Ast)->Ast:
     match ast:
         case str(x):
             return the('last')(1)(x).idiom.e if x else x
@@ -36,12 +29,3 @@ def __step1(ast:Ast)->Ast:
             return Idiom(prepare(v))
         case _:
             raise Exception()
-
-# def __step2(ast:Ast)->Ast:
-#     match ast:
-#         case Command(v):
-#             return Command(Idiom(v))
-#         case Idiom():
-#             return ast
-#         case _:
-#             return Idiom(ast)
