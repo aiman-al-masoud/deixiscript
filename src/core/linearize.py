@@ -1,5 +1,5 @@
 from functools import reduce
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, SimpleSentence, SyntheticDerivation, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Negation, Noun, SimpleSentence, SyntheticDerivation
 
 def linearize(ast:Ast)->str:
 
@@ -24,8 +24,8 @@ def linearize(ast:Ast)->str:
             return 'it is false that (' + linearize(v) + ')'
         case AnalyticDerivation(a, b):
             return linearize(a) + ' when ' + linearize(b)
-        case Which(h, w):
-            return linearize(h) + ' which ' + linearize(w)
+        # case Which(h, w):
+        #     return linearize(h) + ' which ' + linearize(w)
         case Command(v):
             return '!' + linearize(v) + '!'
         case SyntheticDerivation(c, e):

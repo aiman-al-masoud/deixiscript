@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, SimpleSentence, SyntheticDerivation, Which
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, SimpleSentence, SyntheticDerivation
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -37,7 +37,10 @@ class ExpBuilder(Generic[T]):
     def on(self, on:'Ast|ExpBuilder'): return self.complement('on', on)
 
     def which(self, which:'Ast|ExpBuilder'):
-        return ExpBuilder(Which(self.e, makeAst(which)))
+        assert isinstance(self.e, Noun)
+        return ExpBuilder(Noun(**{**vars(self.e), 'which':makeAst(which)}))
+        # return ExpBuilder(self.e)
+        # return ExpBuilder(Which(self.e, makeAst(which)))
 
     def when(self, definition:'Ast|ExpBuilder'):
         return ExpBuilder(AnalyticDerivation(self.e, Idiom(makeAst(definition))))
@@ -73,10 +76,10 @@ class ExpBuilder(Generic[T]):
         from core.linearize import linearize
         return linearize(self.e)
 
-    @property
-    def p(self):
-        from core.prepare import prepare
-        return ExpBuilder(prepare(self.e))
+    # @property
+    # def p(self):
+    #     from core.prepare import prepare
+    #     return ExpBuilder(prepare(self.e))
 
 def e(x:Ast|ExpBuilder):
     return ExpBuilder(makeAst(x))

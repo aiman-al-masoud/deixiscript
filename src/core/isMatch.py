@@ -25,6 +25,8 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
             return m1 - m2
 
 def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
+
+    if generic == specific: return True
     
     withSpec = e(specific).rTell(kb)
     genWithSpec = e(generic).get(withSpec)

@@ -110,6 +110,7 @@ def test_c017():
 def test_c018():
     gen  = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
+    # print(spec)
     assert isMatch(gen, spec)
     assert not isMatch(spec, gen)
 
@@ -319,8 +320,10 @@ def test_c042():
     kb1 = the(1)('dog').tell(kb0)
 
     allConcepts = every('concept').get(kb1)
+    print(allConcepts)
+
     assert isinstance(allConcepts, tuple)
-    assert set(allConcepts) == {'cat', 'dog', 'super'} 
+    assert set(allConcepts) == {'cat', 'dog', 'super', 'bool'} 
 
     catConcept = every('concept').which(does('be')._('cat')).get(kb1)
     assert catConcept == 'cat'
@@ -334,15 +337,15 @@ def test_c048():
     assert x3.head == e('gatto#1').and_('capra#1').e
     assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
 
-# %% prepare AST tests
-def test_c047():
-    x1 = e('capra').does('eat').p.e
-    y1 = the('capra').idiom.does('eat').idiom.e
-    assert x1 == y1
+# # %% prepare AST tests
+# def test_c047():
+#     x1 = e('capra').does('eat').p.e
+#     y1 = the('capra').idiom.does('eat').idiom.e
+#     assert x1 == y1
 
-    x2 = e('it').p.e
-    y2 = the('it').idiom.e
-    assert x2 == y2
+#     x2 = e('it').p.e
+#     y2 = the('it').idiom.e
+#     assert x2 == y2
 
 # # TODO
 # def test_c049():

@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, SimpleSentence, Which
+from core.language import Ast, BinExp, Command, Derivation, Idiom, Negation, Noun, SimpleSentence
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -18,28 +18,42 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x1 = __makeAdLitteram(v, kb)
             return e(x1).ask(kb)
         case str(x) | int(x) | float(x):
-            exists = any({x in s for s in kb.wm})
-            return kb << (x if exists else False)
+            # exists = any({x in s for s in kb.wm})
+            # return kb << (x if exists else False)
+            return kb << x
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
-        case Noun(h, card, ord):
+        case Noun(head=h, card=card, ord=ord, which=w):
+            from core.expbuilder import _
+
+
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
-            x3 = tuple(sorted(x2, key=lambda x:kb.dd[x], reverse=ord=='last'))
+
+            # if ast==Noun(head='cat', card=1, ord='last', which=True): print(x2)
+            
+            x22 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
+
+            # print(e(True).get())
+
+            # if ast==Noun(head='cat', card=1, ord='last', which=True): print(x22)
+
+
+            x3 = tuple(sorted(x22, key=lambda x:kb.dd[x], reverse=ord=='last'))
             x4 = x3[:card]
             x5 = x4[0] if len(x4)==1 else x4
             x6 = e(x5).ask(kb)
             return x6
-        case Which(h, w):
-            from core.expbuilder import _
-            x1 = e(h).get(kb)
-            x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
-            x4 = x3[0] if len(x3)==1 else x3
-            x5 = e(x4).ask(kb)
-            return x5
+        # case Which(h, w):
+        #     from core.expbuilder import _
+        #     x1 = e(h).get(kb)
+        #     x2 = x1 if isinstance(x1, tuple) else (x1,)
+        #     x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
+        #     x4 = x3[0] if len(x3)==1 else x3
+        #     x5 = e(x4).ask(kb)
+        #     return x5
         case Negation(v):
             x1 = e(v).ask(kb)
             return x1 << (not x1.head)
@@ -100,18 +114,23 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case str(x) | int(x) | float(x):
             kb1 = e(x).does('be')._(type(x).__name__).tell(kb)
             return e(x).ask(kb1)
-        case Noun(h):
+
+        case Noun(head=h, which=w):
+            from core.expbuilder import _
             n = every(h).count(kb)+1
             new = f'{h}#{n}'
             kb1 = kb << new
             r1 = e(new).does('be')._(h).tell(kb1) 
-            return r1 << new
-        case Which(h, w):
-            from core.expbuilder import _
-            r1 = e(h).tell(kb)
             which = subst(_, r1.head, w)
             r2 = e(which).tell(r1)
-            return r2 << r1.head
+            return r2 << new
+            # return r1 << new
+        # case Which(h, w):
+        #     from core.expbuilder import _
+        #     r1 = e(h).tell(kb)
+        #     which = subst(_, r1.head, w)
+        #     r2 = e(which).tell(r1)
+        #     return r2 << r1.head
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
