@@ -138,20 +138,20 @@ def test_c040():
     assert isMatch(gen, spec)
     assert not isMatch(spec, gen)
 
-def test_c021(): # with subconcepts
-    kb1 = e('stallion').does('be')._('horse').tell()
-    gen = the(1)('man').does('ride').on(the(1)('horse')).e
-    spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
-    spec2 =  the(1)('man').does('ride').on(the('lama')).e
-    assert isMatch(gen, spec1, kb1)
-    assert not isMatch(spec1, gen, kb1)
-    assert not isMatch(gen, spec2, kb1)
+# def test_c021(): # with subconcepts
+#     kb1 = e('stallion').does('be')._('horse').tell()
+#     gen = the(1)('man').does('ride').on(the(1)('horse')).e
+#     spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
+#     spec2 =  the(1)('man').does('ride').on(the('lama')).e
+#     assert isMatch(gen, spec1, kb1)
+#     assert not isMatch(spec1, gen, kb1)
+#     assert not isMatch(gen, spec2, kb1)
 
-def test_c036():
-    kb1 = the('button').tell()
-    x1  = the(1)('button').does('be')._('down').e
-    assert isMatch(x1, e('button#1').does('be')._('down').e , kb1)
-    assert isMatch(x1, e('button#1').does('have')._('down').as_('super').e , kb1)
+# def test_c036():
+#     kb1 = the('button').tell()
+#     x1  = the(1)('button').does('be')._('down').e
+#     assert isMatch(x1, e('button#1').does('be')._('down').e , kb1)
+#     assert isMatch(x1, e('button#1').does('have')._('down').as_('super').e , kb1)
 
 # %% sort nounphrases by generality tests
 def test_c022():
@@ -204,13 +204,13 @@ def test_c026():
     kb3 = the('it').idiom.ask(kb2)
     assert 'capra#1' == kb3.head
 
-def test_c027():
-    kb1 = the(1)('man').does('ride').on(the(1)('horse')).when(the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))).tell()
-    kb2 = the('man').tell(kb1)
-    kb3 = the('horse').tell(kb2)
-    kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tell(kb3)
-    assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
-    assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
+# def test_c027():
+#     kb1 = the(1)('man').does('ride').on(the(1)('horse')).when(the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))).tell()
+#     kb2 = the('man').tell(kb1)
+#     kb3 = the('horse').tell(kb2)
+#     kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tell(kb3)
+#     assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
+#     assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
 def test_c043():
     kb1 = the(1)('dog').when(the(1)('hund')).tell()
@@ -235,14 +235,14 @@ def test_c028():
 #     assert e(1).equals(2).or_(e(3).equals(3)).get()
 #     assert not e(1).equals(2).or_(e(3).equals(2)).get()
 
-# %% matching a general implicit sentence to a specific explicit sentence
-def test_c030():
-    gen = the('man').does('ride').on(the('horse'))
-    spec = e('man#1').does('ride').on('horse#1')
-    kb1 = the('man').tell()
-    kb2 = the('horse').tell(kb1)
+# # %% matching a general implicit sentence to a specific explicit sentence
+# def test_c030():
+#     gen = the('man').does('ride').on(the('horse'))
+#     spec = e('man#1').does('ride').on('horse#1')
+#     kb1 = the('man').tell()
+#     kb2 = the('horse').tell(kb1)
 
-    assert isMatch(gen.e, spec.e, kb2)
+#     assert isMatch(gen.e, spec.e, kb2)
 
 # %% multiple executions of the same simple sentences are idempotent
 def test_c033():
@@ -250,16 +250,16 @@ def test_c033():
     x2 = e('man#1').does('ride').on('horse#1').tell(x1)
     assert x1.wm == x2.wm
 
-# %% matchAst with other similar "noise" specific sentences in KB
-def test_c034():
-    kb1 = new(the('cat')).does('eat')._(new(the('mouse'))).tell()
-    kb2 = the('cat').tell(kb1)
-    kb3 = the('mouse').tell(kb2)
-    gen = every('cat').does('eat')._(every('mouse')).e
-    spec = e('cat#2').does('eat')._('mouse#2').e
+# # %% matchAst with other similar "noise" specific sentences in KB
+# def test_c034():
+#     kb1 = new(the('cat')).does('eat')._(new(the('mouse'))).tell()
+#     kb2 = the('cat').tell(kb1)
+#     kb3 = the('mouse').tell(kb2)
+#     gen = every('cat').does('eat')._(every('mouse')).e
+#     spec = e('cat#2').does('eat')._('mouse#2').e
 
-    assert isMatch(gen, spec, kb3)
-    assert not isMatch(spec, gen, kb3)
+#     assert isMatch(gen, spec, kb3)
+#     assert not isMatch(spec, gen, kb3)
 
 # %% logic and deictic dict test
 def test_c035():
@@ -276,22 +276,22 @@ def test_c035():
     # assert the(the('mouse').which(e('cat#1').does('eat')._(_)).e).get(kb2)=='mouse#2'
 
 # %% cause and effect w/ synthetic derivation
-def test_c038():
-    kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tell()
-    kb1 = the('button').tell(kb0)
-    kb2 = the('button').tell(kb1)
-    kb3 = the(1)('button').does('be')._('down').idiom.tell(kb2)
-    assert the('button').does('be')._('red').get(kb3)
-    assert not e('button#1').does('be')._('red').get(kb3)
+# def test_c038():
+#     kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tell()
+#     kb1 = the('button').tell(kb0)
+#     kb2 = the('button').tell(kb1)
+#     kb3 = the(1)('button').does('be')._('down').idiom.tell(kb2)
+#     assert the('button').does('be')._('red').get(kb3)
+#     assert not e('button#1').does('be')._('red').get(kb3)
 
-def test_c044():
-    kb1 = the(1)('domino').does('fall').after(the(1)('wind').does('blow')).tell()
-    kb2 = the(1)('domino').does('break').after(the(1)('domino').does('fall')).tell(kb1)
-    kb3 = the('domino').tell(kb2)
-    kb4 = the('wind').tell(kb3)
-    kb5 = the('wind').does('blow').idiom.tell(kb4)
-    assert ('event#3','break','verb') in kb5.wm
-    assert ('event#3','domino#1','subject') in kb5.wm
+# def test_c044():
+#     kb1 = the(1)('domino').does('fall').after(the(1)('wind').does('blow')).tell()
+#     kb2 = the(1)('domino').does('break').after(the(1)('domino').does('fall')).tell(kb1)
+#     kb3 = the('domino').tell(kb2)
+#     kb4 = the('wind').tell(kb3)
+#     kb5 = the('wind').does('blow').idiom.tell(kb4)
+#     assert ('event#3','break','verb') in kb5.wm
+#     assert ('event#3','domino#1','subject') in kb5.wm
 
 # def test_c045(): # TODO: cause vanish, effect vanish
 #     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()

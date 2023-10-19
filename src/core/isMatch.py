@@ -1,7 +1,6 @@
 from functools import cmp_to_key, partial
 from typing import Iterable, TypeVar
-from core.expbuilder import e, it_is_false_that
-from core.language import AnalyticDerivation, Ast, SyntheticDerivation
+from core.language import AnalyticDerivation, Ast, BinExp, Noun, SimpleSentence, SyntheticDerivation
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -24,14 +23,48 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
             m1, m2 = isMatch(ast1, ast2, kb), isMatch(ast2, ast1, kb)
             return m1 - m2
 
-def isMatch(generic:Ast, specific:Ast, kb:KnowledgeBase=KnowledgeBase()):
+def isMatch(sup:Ast, sub:Ast, kb:KnowledgeBase=KnowledgeBase())->bool:
 
-    if generic == specific: return True
-    
-    withSpec = e(specific).rTell(kb)
-    genWithSpec = e(generic).get(withSpec)
-    withoutGen = it_is_false_that(generic).tell(kb)
-    specWithoutGen = e(specific).get(withoutGen)
+    match sup, sub:
+        case str()|int()|float(), str()|int()|float():
+            return sub==sup
+        case Noun(), Noun():
+            
+            # if sup.card > sub.card: return False
+            return isMatch(sup.head, sub.head) and isMatch(sup.which, sub.which)
 
-    r = bool(genWithSpec) and not bool(specWithoutGen)
-    return r
+        case SimpleSentence(), SimpleSentence():
+
+            if sup.verb != sub.verb: return False
+            
+            return isMatch(sup.subject, sub.subject)                   and\
+                   (not sup.object or isMatch(sup.object, sub.object)) and\
+                   (not sup.as_    or isMatch(sup.as_, sub.as_))       and\
+                   (not sup.to     or isMatch(sup.to, sub.to))         and\
+                   (not sup.on     or isMatch(sup.on, sub.on))
+
+        case SimpleSentence(), BinExp(op='and'):          
+            return isMatch(sup, sub.left) or isMatch(sup, sub.right)
+
+        case SimpleSentence(), BinExp(op='or'):
+            raise Exception()
+
+        case BinExp(op='and'), SimpleSentence():
+            return isMatch(sup.left, sub) and isMatch(sup.right, sub)
+
+        case BinExp(op='or'), SimpleSentence():
+            return isMatch(sup.left, sub) or isMatch(sup.right, sub)
+
+        case BinExp(op='and'|'or'), BinExp(op='and'|'or'):
+
+            return isMatch(sup.left,  sub.left) and\
+            isMatch(sup.right, sub.right)       and\
+            isMatch(sup.left,  sub.right)       and\
+            isMatch(sup.right, sub.left)
+
+        case True, _:
+            return True
+
+        case _:
+            return False
+            # raise Exception(sup, sub)
