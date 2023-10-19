@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Idiom, Implicit, SimpleSentence, SyntheticDerivation, copy
+from core.language import Def, Ast, BinExp, Idiom, Implicit, SimpleSentence, Law, copy
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -43,10 +43,10 @@ class ExpBuilder(Generic[T]):
         # return ExpBuilder(Which(self.e, makeAst(which)))
 
     def when(self, definition:'Ast|ExpBuilder'):
-        return ExpBuilder(AnalyticDerivation(definendum=self.e, definition=Idiom(makeAst(definition))))
+        return ExpBuilder(Def(definendum=self.e, definition=Idiom(makeAst(definition))))
 
     def after(self, cause:'Ast|ExpBuilder'):
-        return ExpBuilder(SyntheticDerivation(  cause=makeAst(cause), effect=Idiom(self.e)))
+        return ExpBuilder(Law(  cause=makeAst(cause), effect=Idiom(self.e)))
 
     @property
     def new(self): 

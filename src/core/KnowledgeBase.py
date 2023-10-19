@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import FrozenSet, Tuple
-from core.language import Derivation, Ast, SyntheticDerivation, AnalyticDerivation
+from core.language import Derivation, Ast, Law, Def
 
 
 WmSentence = Tuple[Ast, Ast, Ast]
@@ -47,11 +47,11 @@ class KnowledgeBase:
 
     @property
     def ads(self): 
-        return (x for x in self.ds if isinstance(x, AnalyticDerivation))
+        return (x for x in self.ds if isinstance(x, Def))
     
     @property
     def sds(self): 
-        return (x for x in self.ds if isinstance(x, SyntheticDerivation))
+        return (x for x in self.ds if isinstance(x, Law))
 
     @property
     def head(self)->'Ast':

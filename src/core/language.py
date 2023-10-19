@@ -28,14 +28,14 @@ class Derivation:
     cmd:bool=False
 
 @dataclass(frozen=True)
-class AnalyticDerivation(Derivation):
+class Def(Derivation):
     definendum:'Ast'=False
     definition:'Ast'=False
     negation:bool=False
     cmd:bool=False
 
 @dataclass(frozen=True)
-class SyntheticDerivation(Derivation):
+class Law(Derivation):
     cause:'Ast'=False
     effect:'Ast'=False
     negation:bool=False

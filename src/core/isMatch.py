@@ -1,6 +1,6 @@
 from functools import cmp_to_key
 from typing import Iterable, TypeVar
-from core.language import AnalyticDerivation, Ast, BinExp, Implicit, SimpleSentence, SyntheticDerivation
+from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
 
 
 T = TypeVar('T', bound=Ast)
@@ -55,9 +55,9 @@ def isMatch(sup:Ast, sub:Ast)->bool:
         case True, _:
             return True
 
-        case AnalyticDerivation(definendum=d1, definition=_), AnalyticDerivation(definendum=d2, definition=_):
+        case Def(definendum=d1, definition=_), Def(definendum=d2, definition=_):
             return isMatch(d1, d2)
-        case SyntheticDerivation(cause=c1, effect=_), SyntheticDerivation(cause=c2, effect=_):
+        case Law(cause=c1, effect=_), Law(cause=c2, effect=_):
             return isMatch(c1, c2)
 
         case _:
