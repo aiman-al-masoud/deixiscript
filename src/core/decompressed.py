@@ -12,7 +12,6 @@ def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
     if isinstance(ast, Implicit): return True
     r1=any([isImplicitish(x) for x in subasts(ast).values()])
-    # print('ciao!',r1, ast)
     return r1
 
 def isNounPhrasish(ast:Ast):
@@ -52,7 +51,7 @@ def decompressed(ast:Ast)->Ast:
     conn = conns[0]
     assert isinstance(conn, BinExp)
 
-    op = opposite(conn.op) if ast.negation else conn.op # pyright: ignore   #if isinstance(ast, Negation) else conn.op
+    op = opposite(conn.op) if ast.negation else conn.op # pyright: ignore
     left = decompressed(subst(conn,conn.left,ast))
     right = decompressed(subst(conn,conn.right,ast))
 

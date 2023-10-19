@@ -64,11 +64,6 @@ def test_c013(): # which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tell()
     assert ('cat#1', 'fish', 'food') in kb1.wm
 
-# def test_c014():
-#     x1 = e(1).tell() # new constant
-#     assert (1, 'int', 'super') in x1.wm
-#     assert 1 in x1.dd
-
 # %% negation with ask tests 
 def test_c015():
     q = e('capra#1').does('have')._(1).as_('age')

@@ -60,10 +60,6 @@ class SimpleSentence:
         x3 = [(k,v) for k,v in x2 if v]
         return x3
 
-    # @property 
-    # def complements(self): # TODO:only used in linearize
-    #     return self.filterOut(['verb', 'subject', 'object', 'negation'])
- 
     @property
     def args(self): return self.filterOut([])
 

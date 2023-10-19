@@ -94,7 +94,6 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x1 = __makeAdLitteram(v, kb)
             x2 = e(x1).tell(kb)
             x3 = __makeEffects(x1, kb)   # TODO: why not kb=x2?
-            # print('ciao!', len(list(kb.laws)))
             x4 = e(x3).ask(x2)
             return x4
 
@@ -154,11 +153,8 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
 
 def __makeEffects(cause:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    # print('ciao!', cause,'\n', list(kb.laws)[0].cause, '\n')
     x1 = tuple(e(d.effect).new.e for d in kb.laws if isMatch(d.cause, cause))
     # TODO: when cause vanishes effects follow suit
-    # x2 = tuple(it_is_false_that(d.effect).new.e for d in kb.sds if isMatch(it_is_false_that(d.cause).e, cause, kb))
-    # return (*x1, *x2)
     return x1
 
 @cache

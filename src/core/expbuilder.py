@@ -39,8 +39,6 @@ class ExpBuilder(Generic[T]):
     def which(self, which:'Ast|ExpBuilder'):
         assert isinstance(self.e, Implicit)
         return ExpBuilder(Implicit(**{**vars(self.e), 'which':makeAst(which)}))
-        # return ExpBuilder(self.e)
-        # return ExpBuilder(Which(self.e, makeAst(which)))
 
     def when(self, definition:'Ast|ExpBuilder'):
         return ExpBuilder(Def(definendum=self.e, definition=Idiom(makeAst(definition))))
@@ -70,19 +68,6 @@ class ExpBuilder(Generic[T]):
     
     def tell(self, kb=KnowledgeBase()):
         return new(self.e).ask(kb)
-    
-    # def rTell(self, kb=KnowledgeBase()):
-    #     return e(cmd(self.e)).tell(kb)
-            
-    # @property
-    # def lin(self):
-    #     from core.linearize import linearize
-    #     return linearize(self.e)
-
-    # @property
-    # def p(self):
-    #     from core.prepare import prepare
-    #     return ExpBuilder(prepare(self.e))
 
 def e(x:Ast|ExpBuilder):
     return ExpBuilder(makeAst(x))
@@ -122,10 +107,3 @@ def makeImplicit(ast:Ast):
 
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)
-
-# def cmd(ast:Ast)->Ast:
-#     if isinstance(ast, Explicit): return ast
-#     if isinstance(ast, Implicit): return Command(ast)
-#     x1 = vars(ast).items()
-#     x2 = {k : cmd(v) for k,v in x1}
-#     return Command(ast.__class__(**x2))
