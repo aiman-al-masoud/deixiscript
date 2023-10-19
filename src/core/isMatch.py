@@ -15,9 +15,9 @@ def sortByGenerality(kb:KnowledgeBase, asts:Iterable[T]):
 def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
 
     match ast1, ast2:
-        case AnalyticDerivation(d1, _), AnalyticDerivation(d2, _):
+        case AnalyticDerivation(definendum=d1, definition=_), AnalyticDerivation(definendum=d2, definition=_):
             return compareByGenerality(kb, d1, d2)
-        case SyntheticDerivation(c1, _), SyntheticDerivation(c2, _):
+        case SyntheticDerivation(cause=c1, effect=_), SyntheticDerivation(cause=c2, effect=_):
             return compareByGenerality(kb, c1, c2)
         case _:
             m1, m2 = isMatch(ast1, ast2, kb), isMatch(ast2, ast1, kb)

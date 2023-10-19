@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Command, Derivation, Idiom, Noun, SimpleSentence, copy
+from core.language import Ast, BinExp, Derivation, Idiom, Noun, SimpleSentence, copy
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -18,14 +18,20 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case Idiom(v):
             x1 = __makeAdLitteram(v, kb)
             return e(x1).ask(kb)
+
+
         case str(x) | int(x) | float(x):
             # exists = any({x in s for s in kb.wm})
             # return kb << (x if exists else False)
             return kb << x
+
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
 
+        case _ if ast.cmd:
+            return __tell(copy(ast, cmd=False), kb)
+            
         case _ if ast.negation:
             # x1 = e(v).ask(kb)
             # return x1 << (not x1.head)
@@ -80,9 +86,9 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case SimpleSentence():
             event = __simpleSentenceToEvent(ast)
             return e(event).ask(kb)
-        case Command(v):
-            r1 = __tell(v, kb)
-            return r1
+        # case Command(v):
+        #     r1 = __tell(v, kb)
+        #     return r1
         case _:
             raise Exception('ask', ast)
 
@@ -144,8 +150,9 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
             return r2
-        case Command(v):
-            return e(v).tell(kb)
+        # case Command(v):
+            # return e(v).tell(kb)
+        
         case _:
             raise Exception('tell', ast)
 

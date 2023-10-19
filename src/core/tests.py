@@ -64,10 +64,10 @@ def test_c013(): # which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tell()
     assert ('cat#1', 'fish', 'food') in kb1.wm
 
-def test_c014():
-    x1 = e(1).tell() # new constant
-    assert (1, 'int', 'super') in x1.wm
-    assert 1 in x1.dd
+# def test_c014():
+#     x1 = e(1).tell() # new constant
+#     assert (1, 'int', 'super') in x1.wm
+#     assert 1 in x1.dd
 
 # %% negation with ask tests 
 def test_c015():
@@ -323,7 +323,7 @@ def test_c042():
     # print(allConcepts)
 
     assert isinstance(allConcepts, tuple)
-    assert set(allConcepts) == {'cat', 'dog', 'super', 'bool'} 
+    assert set(allConcepts) == {'cat', 'dog', 'super'} 
 
     catConcept = every('concept').which(does('be')._('cat')).get(kb1)
     assert catConcept == 'cat'

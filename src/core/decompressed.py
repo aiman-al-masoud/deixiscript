@@ -27,7 +27,7 @@ def isAst(x:object):
     return isinstance(x, Ast)
 
 def subasts(ast:Ast):
-    return {k:v for k,v in vars(ast).items() if k not in {'negation'}}
+    return {k:v for k,v in vars(ast).items() if k not in {'negation', 'cmd'}}
 
 def isSimpleSentenceish(ast:Ast):
     if isinstance(ast, SimpleSentence): return True

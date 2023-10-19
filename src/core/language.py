@@ -9,6 +9,7 @@ class Noun:
     ord:'Ast'  ='last'
     which:'Ast'=True
     negation:bool=False
+    cmd:bool=False
 
 @dataclass(frozen=True)
 class BinExp:
@@ -17,38 +18,40 @@ class BinExp:
     right:'Ast'
 
     negation:bool=False
+    cmd:bool=False
 
-
-# @dataclass(frozen=True)
-# class Negation:
-#     value:'Ast'
 
 @dataclass(frozen=True)
 class Derivation:
     pass
+    negation:bool=False
+    cmd:bool=False
 
 @dataclass(frozen=True)
 class AnalyticDerivation(Derivation):
-    definendum:'Ast'
-    definition:'Ast'
+    definendum:'Ast'=False
+    definition:'Ast'=False
     negation:bool=False
+    cmd:bool=False
 
 
 @dataclass(frozen=True)
 class SyntheticDerivation(Derivation):
-    cause:'Ast'
-    effect:'Ast'
+    cause:'Ast'=False
+    effect:'Ast'=False
     negation:bool=False
+    cmd:bool=False
 
-@dataclass(frozen=True)
-class Command:
-    value:'Ast'
-    negation:bool=False
+# @dataclass(frozen=True)
+# class Command:
+#     value:'Ast'
+#     negation:bool=False
 
 @dataclass(frozen=True)
 class Idiom:
     value:'Ast'
     negation:bool=False
+    cmd:bool=False
 
 @dataclass(frozen=True)
 class SimpleSentence:
@@ -59,6 +62,7 @@ class SimpleSentence:
     to:'Ast'=False
     on:'Ast'=False
     negation:bool=False
+    cmd:bool=False
 
 
     def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
@@ -79,9 +83,8 @@ class SimpleSentence:
 Explicit = str | float | int | bool | tuple
 Implicit = Noun
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp | Command | Idiom # | Negation
+NounPhrasish = NounPhrase | BinExp |  Idiom # | Negation # Command |
 Ast = NounPhrasish | SimpleSentence | Derivation
-
 
 
 def copy(ast:Ast, **kwargs:Ast): # TUPLE!
