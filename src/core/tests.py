@@ -275,14 +275,15 @@ def test_c035():
     assert the('mouse').which(the('cat').does('eat')._(_)).get(kb2) == 'mouse#2'
     # assert the(the('mouse').which(e('cat#1').does('eat')._(_)).e).get(kb2)=='mouse#2'
 
-# %% cause and effect w/ synthetic derivation
+# # %% cause and effect w/ synthetic derivation
 # def test_c038():
-#     kb0 = the(1)('button').does('be')._('red').after(the(1)('button').does('be')._('down')).tell()
+#     kb0 = the('button').does('be')._('red').after(the('button').does('be')._('down')).tell()
 #     kb1 = the('button').tell(kb0)
 #     kb2 = the('button').tell(kb1)
-#     kb3 = the(1)('button').does('be')._('down').idiom.tell(kb2)
-#     assert the('button').does('be')._('red').get(kb3)
-#     assert not e('button#1').does('be')._('red').get(kb3)
+#     kb3 = the('button').does('be')._('down').idiom.tell(kb2)
+#     # print(kb3.wm)
+#     # assert the('button').does('be')._('red').get(kb3)
+#     # assert not e('button#1').does('be')._('red').get(kb3)
 
 # def test_c044():
 #     kb1 = the(1)('domino').does('fall').after(the(1)('wind').does('blow')).tell()

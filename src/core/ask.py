@@ -11,30 +11,28 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
     
 
     match ast:
-
-        case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
-            r = __makeExplicit(ast, kb)
-            return e(r.head).ask(r)
+            
         case Idiom(v):
             x1 = __makeAdLitteram(v, kb)
             return e(x1).ask(kb)
 
-
         case str(x) | int(x) | float(x):
-            # exists = any({x in s for s in kb.wm})
-            # return kb << (x if exists else False)
             return kb << x
+
 
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
 
+        case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
+            r = __makeExplicit(ast, kb)
+            return e(r.head).ask(r)
+
         case _ if ast.cmd:
             return __tell(copy(ast, cmd=False), kb)
-            
+
+
         case _ if ast.negation:
-            # x1 = e(v).ask(kb)
-            # return x1 << (not x1.head)
             x1=e(copy(ast, negation=False)).ask(kb)
             return x1 << (not x1.head)
 
@@ -105,6 +103,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x1 = __makeAdLitteram(v, kb)
             x2 = e(x1).tell(kb)
             x3 = __makeEffects(x1, kb)   # TODO: why not kb=x2?
+            # print('ciao!', len(list(kb.laws)))
             x4 = e(x3).ask(x2)
             return x4
 
@@ -171,6 +170,7 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
 
 def __makeEffects(cause:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
+    print('ciao!', cause,'\n', list(kb.laws)[0].cause, '\n')
     x1 = tuple(e(d.effect).new.e for d in kb.laws if isMatch(d.cause, cause))
     # TODO: when cause vanishes effects follow suit
     # x2 = tuple(it_is_false_that(d.effect).new.e for d in kb.sds if isMatch(it_is_false_that(d.cause).e, cause, kb))
