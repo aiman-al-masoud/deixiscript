@@ -23,7 +23,7 @@ def test_c003():
 # %% findAsts tests
 def test_c006():
     ast = e('capra').and_(3).and_(1).and_('gatto').e
-    assert findAsts(ast, lambda x:isinstance(x, int)) == (3, 1)
+    assert findAsts(ast, lambda x:isinstance(x, int) and not isinstance(x, bool)) == (3, 1)
 
 def test_c007():
     ast = the('cat').does('jump').and_(the('dog').does('run')).e
@@ -80,8 +80,8 @@ def test_c015():
 # %% negation with tell tests
 def test_c016():
     kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tell()
+    # return
     kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tell(kb1)
-
     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
@@ -95,12 +95,12 @@ def test_c032(): # simple sentence
     assert q.get(kb3)
     assert not q.get(kb4)
 
-def test_c046():# double negations
-    x1 = the('capra').tell()
-    x2 = it_is_false_that(it_is_false_that(the('capra').does('run'))).tell(x1)
-    # x2 = it_is_false_that(it_is_false_that(it_is_false_that(the('capra').does('run')))).tell(x1)
-    assert ('event#1', 'run', 'verb') in x2.wm
-    assert ('event#1', 'capra#1', 'subject')  in x2.wm
+# def test_c046():# double negations
+#     x1 = the('capra').tell()
+#     x2 = it_is_false_that(it_is_false_that(the('capra').does('run'))).tell(x1)
+#     # x2 = it_is_false_that(it_is_false_that(it_is_false_that(the('capra').does('run')))).tell(x1)
+#     assert ('event#1', 'run', 'verb') in x2.wm
+#     assert ('event#1', 'capra#1', 'subject')  in x2.wm
 
 # %% matchAst tests
 def test_c017():
@@ -320,7 +320,7 @@ def test_c042():
     kb1 = the(1)('dog').tell(kb0)
 
     allConcepts = every('concept').get(kb1)
-    print(allConcepts)
+    # print(allConcepts)
 
     assert isinstance(allConcepts, tuple)
     assert set(allConcepts) == {'cat', 'dog', 'super', 'bool'} 

@@ -1,7 +1,7 @@
 from functools import reduce
 from core.expbuilder import e
 from core.findAsts import findAsts
-from core.language import Ast, BinExp, Derivation, Explicit, Implicit, Negation, NounPhrase, NounPhrasish, SimpleSentence
+from core.language import Ast, BinExp, Derivation, Explicit, Implicit, NounPhrase, NounPhrasish, SimpleSentence
 from core.subst import  subst
 
 
@@ -11,12 +11,14 @@ def isImplicitNounPhrase(ast:Ast):
 def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
     if isinstance(ast, Implicit): return True
-    return any([isImplicitish(x) for x in ast.__dict__.values()])
+    r1=any([isImplicitish(x) for x in subasts(ast).values()])
+    # print('ciao!',r1, ast)
+    return r1
 
 def isNounPhrasish(ast:Ast):
     if not isinstance(ast, NounPhrasish): return False
     if isinstance(ast, NounPhrase): return True
-    return all([isNounPhrasish(x) for x in ast.__dict__.values()])
+    return all([isNounPhrasish(x) for x in subasts(ast).values()])
 
 def isNounPhrasishConn(ast:Ast):
     return isNounPhrasish(ast) and isinstance(ast, BinExp) and ast.op in ['and', 'or']
@@ -24,11 +26,14 @@ def isNounPhrasishConn(ast:Ast):
 def isAst(x:object):
     return isinstance(x, Ast)
 
+def subasts(ast:Ast):
+    return {k:v for k,v in vars(ast).items() if k not in {'negation'}}
+
 def isSimpleSentenceish(ast:Ast):
     if isinstance(ast, SimpleSentence): return True
     if isinstance(ast, Derivation): return False
     if isinstance(ast, Explicit): return False
-    return all([isSimpleSentenceish(x) for x in ast.__dict__.values()])
+    return all([isSimpleSentenceish(x) for x in subasts(ast).values()])
 
 findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
@@ -50,7 +55,7 @@ def decompressed(ast:Ast)->Ast:
     conn = conns[0]
     assert isinstance(conn, BinExp)
 
-    op = opposite(conn.op) if isinstance(ast, Negation) else conn.op
+    op = opposite(conn.op) if ast.negation else conn.op # pyright: ignore   #if isinstance(ast, Negation) else conn.op
     left = decompressed(subst(conn,conn.left,ast))
     right = decompressed(subst(conn,conn.right,ast))
 

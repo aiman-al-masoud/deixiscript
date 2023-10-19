@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Negation, Noun, SimpleSentence, SyntheticDerivation
+from core.language import AnalyticDerivation, Ast, BinExp, Command, Explicit, Idiom, Implicit, Noun, SimpleSentence, SyntheticDerivation, copy
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -68,13 +68,13 @@ class ExpBuilder(Generic[T]):
     def tell(self, kb=KnowledgeBase()):
         return new(self.e).ask(kb)
     
-    def rTell(self, kb=KnowledgeBase()):
-        return e(cmd(self.e)).tell(kb)
+    # def rTell(self, kb=KnowledgeBase()):
+    #     return e(cmd(self.e)).tell(kb)
             
-    @property
-    def lin(self):
-        from core.linearize import linearize
-        return linearize(self.e)
+    # @property
+    # def lin(self):
+    #     from core.linearize import linearize
+    #     return linearize(self.e)
 
     # @property
     # def p(self):
@@ -88,7 +88,8 @@ def does(v:Ast):
     return e(_).does(v)
 
 def it_is_false_that(x:Ast|ExpBuilder):
-    return ExpBuilder(Negation(makeAst(x)))
+    # return ExpBuilder(Negation(makeAst(x)))
+    return ExpBuilder(copy(makeAst(x), negation=True))
 
 def makeAst(x:Ast|ExpBuilder)->Ast:
     return x if isinstance(x, Ast) else x.e
@@ -120,9 +121,9 @@ def makeImplicit(ast:Ast):
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)
 
-def cmd(ast:Ast)->Ast:
-    if isinstance(ast, Explicit): return ast
-    if isinstance(ast, Implicit): return Command(ast)
-    x1 = vars(ast).items()
-    x2 = {k : cmd(v) for k,v in x1}
-    return Command(ast.__class__(**x2))
+# def cmd(ast:Ast)->Ast:
+#     if isinstance(ast, Explicit): return ast
+#     if isinstance(ast, Implicit): return Command(ast)
+#     x1 = vars(ast).items()
+#     x2 = {k : cmd(v) for k,v in x1}
+#     return Command(ast.__class__(**x2))
