@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Derivation, Idiom, Noun, SimpleSentence, copy
+from core.language import Ast, BinExp, Derivation, Idiom, Implicit, SimpleSentence, copy
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -38,7 +38,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x1=e(copy(ast, negation=False)).ask(kb)
             return x1 << (not x1.head)
 
-        case Noun(head=h, card=card, ord=ord, which=w):
+        case Implicit(head=h, card=card, ord=ord, which=w):
             from core.expbuilder import _
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
@@ -116,7 +116,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x4 = frozenset(x3)
             return kb - x4
 
-        case Noun(head=h, which=w):
+        case Implicit(head=h, which=w):
             from core.expbuilder import _
             n = every(h).count(kb)+1
             new = f'{h}#{n}'

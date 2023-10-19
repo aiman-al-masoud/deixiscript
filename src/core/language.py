@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 
 @dataclass(frozen=True)
-class Noun:
+class Implicit:
     head:'Ast'
     card:'Ast' =1
     ord:'Ast'  ='last'
@@ -34,18 +34,12 @@ class AnalyticDerivation(Derivation):
     negation:bool=False
     cmd:bool=False
 
-
 @dataclass(frozen=True)
 class SyntheticDerivation(Derivation):
     cause:'Ast'=False
     effect:'Ast'=False
     negation:bool=False
     cmd:bool=False
-
-# @dataclass(frozen=True)
-# class Command:
-#     value:'Ast'
-#     negation:bool=False
 
 @dataclass(frozen=True)
 class Idiom:
@@ -81,9 +75,8 @@ class SimpleSentence:
     def args(self): return self.filterOut([])
 
 Explicit = str | float | int | bool | tuple
-Implicit = Noun
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp |  Idiom # | Negation # Command |
+NounPhrasish = NounPhrase | BinExp | Idiom
 Ast = NounPhrasish | SimpleSentence | Derivation
 
 

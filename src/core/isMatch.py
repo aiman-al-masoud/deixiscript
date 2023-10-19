@@ -1,6 +1,6 @@
 from functools import cmp_to_key, partial
 from typing import Iterable, TypeVar
-from core.language import AnalyticDerivation, Ast, BinExp, Noun, SimpleSentence, SyntheticDerivation
+from core.language import AnalyticDerivation, Ast, BinExp, Implicit, SimpleSentence, SyntheticDerivation
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -28,7 +28,7 @@ def isMatch(sup:Ast, sub:Ast, kb:KnowledgeBase=KnowledgeBase())->bool:
     match sup, sub:
         case str()|int()|float(), str()|int()|float():
             return sub==sup
-        case Noun(), Noun():
+        case Implicit(), Implicit():
             
             # if sup.card > sub.card: return False
             return isMatch(sup.head, sub.head) and isMatch(sup.which, sub.which)

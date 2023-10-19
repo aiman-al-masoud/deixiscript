@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import AnalyticDerivation, Ast, BinExp, Idiom, Noun, SimpleSentence, SyntheticDerivation, copy
+from core.language import AnalyticDerivation, Ast, BinExp, Idiom, Implicit, SimpleSentence, SyntheticDerivation, copy
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -37,8 +37,8 @@ class ExpBuilder(Generic[T]):
     def on(self, on:'Ast|ExpBuilder'): return self.complement('on', on)
 
     def which(self, which:'Ast|ExpBuilder'):
-        assert isinstance(self.e, Noun)
-        return ExpBuilder(Noun(**{**vars(self.e), 'which':makeAst(which)}))
+        assert isinstance(self.e, Implicit)
+        return ExpBuilder(Implicit(**{**vars(self.e), 'which':makeAst(which)}))
         # return ExpBuilder(self.e)
         # return ExpBuilder(Which(self.e, makeAst(which)))
 
@@ -104,12 +104,12 @@ def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], ExpBuilder]
 @overload
 def the(x:int)->Callable[[Ast], ExpBuilder]:...
 @overload
-def the(x:Ast)->ExpBuilder[Noun]:...
+def the(x:Ast)->ExpBuilder[Implicit]:...
 def the(x:Ast=sys.maxsize)->object:
 
     match x:
         case 'first' | 'last':
-            return lambda y: lambda z: e(Noun(z, y, x))
+            return lambda y: lambda z: e(Implicit(z, y, x))
         case int():
             return the('last')(x)
         case object():
@@ -118,7 +118,7 @@ def the(x:Ast=sys.maxsize)->object:
 def makeImplicit(ast:Ast):
     from core.decompressed import isImplicitish, isNounPhrasish
     assert isNounPhrasish(ast)
-    return ast if isImplicitish(ast) else Noun(ast)
+    return ast if isImplicitish(ast) else Implicit(ast)
 
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)
