@@ -26,21 +26,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return kb1 << xs
         case Noun(head=h, card=card, ord=ord, which=w):
             from core.expbuilder import _
-
-
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
-
-            # if ast==Noun(head='cat', card=1, ord='last', which=True): print(x2)
-            
             x22 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
-
-            # print(e(True).get())
-
-            # if ast==Noun(head='cat', card=1, ord='last', which=True): print(x22)
-
-
             x3 = tuple(sorted(x22, key=lambda x:kb.dd[x], reverse=ord=='last'))
             x4 = x3[:card]
             x5 = x4[0] if len(x4)==1 else x4
