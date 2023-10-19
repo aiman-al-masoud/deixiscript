@@ -166,12 +166,12 @@ def __simpleSentenceToEvent(ast:SimpleSentence):
 
 def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, ast, kb)), ast)
+    x1 = next((d.definition for d in kb.ads if isMatch(d.definendum, ast)), ast)
     return x1
 
 def __makeEffects(cause:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    x1 = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, cause, kb))
+    x1 = tuple(e(d.effect).new.e for d in kb.sds if isMatch(d.cause, cause))
     # TODO: when cause vanishes effects follow suit
     # x2 = tuple(it_is_false_that(d.effect).new.e for d in kb.sds if isMatch(it_is_false_that(d.cause).e, cause, kb))
     # return (*x1, *x2)

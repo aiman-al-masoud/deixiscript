@@ -20,10 +20,10 @@ def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
         case SyntheticDerivation(cause=c1, effect=_), SyntheticDerivation(cause=c2, effect=_):
             return compareByGenerality(kb, c1, c2)
         case _:
-            m1, m2 = isMatch(ast1, ast2, kb), isMatch(ast2, ast1, kb)
+            m1, m2 = isMatch(ast1, ast2), isMatch(ast2, ast1)
             return m1 - m2
 
-def isMatch(sup:Ast, sub:Ast, kb:KnowledgeBase=KnowledgeBase())->bool:
+def isMatch(sup:Ast, sub:Ast)->bool:
 
     match sup, sub:
         case str()|int()|float(), str()|int()|float():
