@@ -46,11 +46,11 @@ class KnowledgeBase:
                 raise Exception()
 
     @property
-    def ads(self): 
+    def defs(self): 
         return (x for x in self.ds if isinstance(x, Def))
     
     @property
-    def sds(self): 
+    def laws(self): 
         return (x for x in self.ds if isinstance(x, Law))
 
     @property
