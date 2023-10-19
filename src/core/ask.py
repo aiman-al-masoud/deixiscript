@@ -19,18 +19,16 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case str(x) | int(x) | float(x):
             return kb << x
 
-
         case tuple(xs):
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
 
-        case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
-            r = __makeExplicit(ast, kb)
-            return e(r.head).ask(r)
-
         case _ if ast.cmd:
             return __tell(copy(ast, cmd=False), kb)
 
+        case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
+            r = __makeExplicit(ast, kb)
+            return e(r.head).ask(r)
 
         case _ if ast.negation:
             x1=e(copy(ast, negation=False)).ask(kb)
@@ -84,9 +82,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case SimpleSentence():
             event = __simpleSentenceToEvent(ast)
             return e(event).ask(kb)
-        # case Command(v):
-        #     r1 = __tell(v, kb)
-        #     return r1
         case _:
             raise Exception('ask', ast)
 
@@ -94,11 +89,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
     match ast:
-        
-        # case str(x) | int(x) | float(x):
-        #     kb1 = e(x).does('be')._(type(x).__name__).tell(kb)
-        #     return e(x).ask(kb1)
-        
+
         case Idiom(v):
             x1 = __makeAdLitteram(v, kb)
             x2 = e(x1).tell(kb)
@@ -107,8 +98,11 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x4 = e(x3).ask(x2)
             return x4
 
+        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):  # semiduplicate
+            r = __makeExplicit(ast, kb)
+            return e(r.head).tell(r)
+
         case ast if ast.negation:
-            # print('ciao!')
             x1 = e( copy(ast, negation=False) ).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
@@ -124,17 +118,10 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             which = subst(_, r1.head, w)
             r2 = e(which).tell(r1)
             return r2 << new
-            # return r1 << new
-        # case Which(h, w):
-        #     from core.expbuilder import _
-        #     r1 = e(h).tell(kb)
-        #     which = subst(_, r1.head, w)
-        #     r2 = e(which).tell(r1)
-        #     return r2 << r1.head
+
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
-
             delta = frozenset({(s, o, a)})
             kb1   = kb + delta
             return kb1
@@ -148,10 +135,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
-            return r2
-        # case Command(v):
-            # return e(v).tell(kb)
-        
+            return r2        
         case _:
             raise Exception('tell', ast)
 
