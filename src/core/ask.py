@@ -11,10 +11,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
     
 
     match ast:
-            
-        case Idiom(v):
-            x1 = __makeAdLitteram(v, kb)
-            return e(x1).ask(kb)
 
         case str(x) | int(x) | float(x):
             return kb << x
@@ -25,6 +21,10 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
         case _ if ast.cmd:
             return __tell(copy(ast, cmd=False), kb)
+            
+        case Idiom(v):
+            x1 = __makeAdLitteram(v, kb)
+            return e(x1).ask(kb)
 
         case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
             r = __makeExplicit(ast, kb)
@@ -154,7 +154,7 @@ def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
 
 def __makeEffects(cause:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    print('ciao!', cause,'\n', list(kb.laws)[0].cause, '\n')
+    # print('ciao!', cause,'\n', list(kb.laws)[0].cause, '\n')
     x1 = tuple(e(d.effect).new.e for d in kb.laws if isMatch(d.cause, cause))
     # TODO: when cause vanishes effects follow suit
     # x2 = tuple(it_is_false_that(d.effect).new.e for d in kb.sds if isMatch(it_is_false_that(d.cause).e, cause, kb))
