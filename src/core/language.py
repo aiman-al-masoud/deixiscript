@@ -60,7 +60,7 @@ class SimpleSentence:
 
 
     def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
-        from core.decompressed import subasts
+        from core.language import subasts
  
         x1 = [(k,v) for k,v in subasts(self).items()]
         x2 = [(k,v) for k,v in x1 if k not in out]
@@ -83,3 +83,6 @@ Ast = NounPhrasish | SimpleSentence | Derivation
 def copy(ast:Ast, **kwargs:Ast): # TUPLE!
     if isinstance(ast, Explicit): return ast
     return ast.__class__(**{**vars(ast), **kwargs})
+
+def subasts(ast:Ast):
+    return {k:v for k,v in vars(ast).items() if k not in {'negation', 'cmd'}}

@@ -1,7 +1,7 @@
 from functools import reduce
 from core.expbuilder import e
 from core.findAsts import findAsts
-from core.language import Ast, BinExp, Derivation, Explicit, Implicit, NounPhrase, NounPhrasish, SimpleSentence
+from core.language import Ast, BinExp, Derivation, Explicit, Implicit, NounPhrase, NounPhrasish, SimpleSentence, subasts
 from core.subst import  subst
 
 
@@ -26,8 +26,6 @@ def isNounPhrasishConn(ast:Ast):
 def isAst(x:object):
     return isinstance(x, Ast)
 
-def subasts(ast:Ast):
-    return {k:v for k,v in vars(ast).items() if k not in {'negation', 'cmd'}}
 
 def isSimpleSentenceish(ast:Ast):
     if isinstance(ast, SimpleSentence): return True
