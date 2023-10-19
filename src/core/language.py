@@ -20,24 +20,17 @@ class BinExp:
     negation:bool=False
     cmd:bool=False
 
-
 @dataclass(frozen=True)
-class Derivation:
-    pass
+class Def:
+    definendum:'Ast'
+    definition:'Ast'
     negation:bool=False
     cmd:bool=False
 
 @dataclass(frozen=True)
-class Def(Derivation):
-    definendum:'Ast'=False
-    definition:'Ast'=False
-    negation:bool=False
-    cmd:bool=False
-
-@dataclass(frozen=True)
-class Law(Derivation):
-    cause:'Ast'=False
-    effect:'Ast'=False
+class Law:
+    cause:'Ast'
+    effect:'Ast'
     negation:bool=False
     cmd:bool=False
 
@@ -77,7 +70,7 @@ class SimpleSentence:
 Explicit = str | float | int | bool | tuple
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Idiom
-Ast = NounPhrasish | SimpleSentence | Derivation
+Ast = NounPhrasish | SimpleSentence | Def | Law
 
 
 def copy(ast:Ast, **kwargs:Ast): # TUPLE!

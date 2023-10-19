@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Derivation, Idiom, Implicit, SimpleSentence, copy
+from core.language import Ast, BinExp, Def, Idiom, Implicit, Law, SimpleSentence, copy
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -144,7 +144,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             old   = e(event).ask(kb)
             if old.head: return old
             return e(event).tell(kb)
-        case Derivation():
+        case Def() | Law():
             return kb + ast      
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)

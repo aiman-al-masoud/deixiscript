@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import FrozenSet, Tuple
-from core.language import Derivation, Ast, Law, Def
+from core.language import Ast, Law, Def
 
 
 WmSentence = Tuple[Ast, Ast, Ast]
@@ -23,26 +23,26 @@ class DeicticDict:
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:WorldModel             =frozenset()
-    ds:Tuple[Derivation, ...] =tuple()
+    ds:Tuple[Def|Law, ...] =tuple()
     dd:DeicticDict            =DeicticDict()
 
     def __lshift__(self, o:Ast)->'KnowledgeBase':
         return KnowledgeBase(self.wm, self.ds, self.dd.update(o))
 
-    def __add__(self, o:WorldModel|Derivation):
+    def __add__(self, o:WorldModel|Def|Law):
         match o:
             case frozenset(): 
                 return KnowledgeBase(self.wm | o, self.ds, self.dd)
-            case Derivation():
+            case Def()|Law():
                 from core.isMatch import sortByGenerality
                 ds = sortByGenerality([*self.ds, o])
                 return KnowledgeBase(self.wm, ds, self.dd)
 
-    def __sub__(self, o:WorldModel|Derivation):
+    def __sub__(self, o:WorldModel|Def|Law):
         match o:
             case frozenset():
                 return KnowledgeBase(self.wm - o, self.ds, self.dd)
-            case Derivation():
+            case Def()|Law():
                 raise Exception()
 
     @property
