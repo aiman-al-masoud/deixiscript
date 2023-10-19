@@ -161,7 +161,7 @@ def test_c022():
         the('cat').e,
     )
     wrong = [correct[2], correct[0], correct[1]]
-    maybe = sortByGenerality(KnowledgeBase(), correct)
+    maybe = sortByGenerality(correct)
     assert correct != wrong
     assert maybe == correct
 
@@ -183,7 +183,7 @@ def test_c024():
         the('son').does('give').e,
     )
     wrong = [correct[1], correct[3], correct[0], correct[2]]
-    maybe = sortByGenerality(KnowledgeBase(), wrong)
+    maybe = sortByGenerality(wrong)
     assert maybe == correct
 
 # %% sort analytic derivation clauses by generality tests
@@ -194,7 +194,7 @@ def test_c025():
         the('capra').does('run').when(1).e,
     )
     wrong = [correct[2], correct[0], correct[1]]
-    maybe = sortByGenerality(KnowledgeBase(), wrong)
+    maybe = sortByGenerality(wrong)
     assert maybe == correct
 
 # %% idiom tests

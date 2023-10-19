@@ -35,7 +35,7 @@ class KnowledgeBase:
                 return KnowledgeBase(self.wm | o, self.ds, self.dd)
             case Derivation():
                 from core.isMatch import sortByGenerality
-                ds = sortByGenerality(self, [*self.ds, o])
+                ds = sortByGenerality([*self.ds, o])
                 return KnowledgeBase(self.wm, ds, self.dd)
 
     def __sub__(self, o:WorldModel|Derivation):

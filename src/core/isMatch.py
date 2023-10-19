@@ -1,27 +1,17 @@
-from functools import cmp_to_key, partial
+from functools import cmp_to_key
 from typing import Iterable, TypeVar
 from core.language import AnalyticDerivation, Ast, BinExp, Implicit, SimpleSentence, SyntheticDerivation
-from core.KnowledgeBase import KnowledgeBase
 
 
 T = TypeVar('T', bound=Ast)
 
-def sortByGenerality(kb:KnowledgeBase, asts:Iterable[T]):
-    cmp = partial(compareByGenerality, kb)
-    x1 = sorted(asts, key=cmp_to_key(cmp))
+def sortByGenerality(asts:Iterable[T]):
+    x1 = sorted(asts, key=cmp_to_key(compareByGenerality))
     x2 = tuple(x1)
     return x2
 
-def compareByGenerality(kb:KnowledgeBase, ast1:Ast, ast2:Ast)->int:
-
-    match ast1, ast2:
-        case AnalyticDerivation(definendum=d1, definition=_), AnalyticDerivation(definendum=d2, definition=_):
-            return compareByGenerality(kb, d1, d2)
-        case SyntheticDerivation(cause=c1, effect=_), SyntheticDerivation(cause=c2, effect=_):
-            return compareByGenerality(kb, c1, c2)
-        case _:
-            m1, m2 = isMatch(ast1, ast2), isMatch(ast2, ast1)
-            return m1 - m2
+def compareByGenerality(ast1:Ast, ast2:Ast)->int:
+    return isMatch(ast1, ast2) - isMatch(ast2, ast1)
 
 def isMatch(sup:Ast, sub:Ast)->bool:
 
@@ -64,6 +54,11 @@ def isMatch(sup:Ast, sub:Ast)->bool:
 
         case True, _:
             return True
+
+        case AnalyticDerivation(definendum=d1, definition=_), AnalyticDerivation(definendum=d2, definition=_):
+            return isMatch(d1, d2)
+        case SyntheticDerivation(cause=c1, effect=_), SyntheticDerivation(cause=c2, effect=_):
+            return isMatch(c1, c2)
 
         case _:
             return False
