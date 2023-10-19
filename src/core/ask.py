@@ -43,17 +43,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x5 = x4[0] if len(x4)==1 else x4
             x6 = e(x5).ask(kb)
             return x6
-        # case Which(h, w):
-        #     from core.expbuilder import _
-        #     x1 = e(h).get(kb)
-        #     x2 = x1 if isinstance(x1, tuple) else (x1,)
-        #     x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
-        #     x4 = x3[0] if len(x3)==1 else x3
-        #     x5 = e(x4).ask(kb)
-        #     return x5
-        # case Negation(v):
- 
-
         case BinExp('and'|'or', l, r) if isNounPhrasish(ast):
             l1 = e(l).get(kb)
             l2 = e(r).get(kb)
@@ -150,13 +139,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             if old.head: return old
             return e(event).tell(kb)
         case Derivation():
-            return kb + ast
-        # case Negation(Negation(v)):
-        #     return e(v).tell(kb)
-        # case Negation(Derivation()):
-        #     raise Exception()
-        # case Negation(v):
-      
+            return kb + ast      
         case BinExp('and'|'or', l, r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)

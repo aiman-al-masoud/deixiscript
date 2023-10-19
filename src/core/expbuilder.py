@@ -88,7 +88,6 @@ def does(v:Ast):
     return e(_).does(v)
 
 def it_is_false_that(x:Ast|ExpBuilder):
-    # return ExpBuilder(Negation(makeAst(x)))
     return ExpBuilder(copy(makeAst(x), negation=True))
 
 def makeAst(x:Ast|ExpBuilder)->Ast:
