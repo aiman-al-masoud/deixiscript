@@ -8,11 +8,6 @@ class Noun:
     ord:'Ast'  ='last'
     which:'Ast'=True
 
-# @dataclass(frozen=True)
-# class Which:
-#     head:'Ast'
-#     which:'Ast'
-
 @dataclass(frozen=True)
 class BinExp:
     op:'Ast'
@@ -68,7 +63,7 @@ class SimpleSentence:
     def args(self): return self.filterOut([])
 
 Explicit = str | float | int | bool | tuple
-Implicit = Noun #| Which
+Implicit = Noun
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp | Command | Negation | Idiom
 Ast = NounPhrasish | SimpleSentence | Derivation
