@@ -45,17 +45,11 @@ class SimpleSentence:
     negation:bool=False
     cmd:bool=False
 
-
-    def filterOut(self, out:List[str])->List[Tuple[str, 'Ast']]:
-        from core.language import subasts
- 
-        x1 = [(k,v) for k,v in subasts(self).items()]
-        x2 = [(k,v) for k,v in x1 if k not in out]
-        x3 = [(k,v) for k,v in x2 if v]
-        return x3
-
     @property
-    def args(self): return self.filterOut([])
+    def args(self)->List[Tuple[str, 'Ast']]:
+        x1 = [(k,v) for k,v in subasts(self).items()]
+        x2 = [(k,v) for k,v in x1 if v]
+        return x2
 
 Explicit = str | float | int | bool | tuple
 NounPhrase = Explicit | Implicit
