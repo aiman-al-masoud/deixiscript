@@ -1,0 +1,68 @@
+- On the Positive Effect of Reactive Programming on Software Comprehension: An Empirical Study
+- Programming by Voice Efficiency in the Reactive and Imperative Paradigm Miriam Lagergren, Max Soneryd
+- Attempto Controlled English (ACE) Language Manual
+- Attempto Controlled English Meets the Challenges of Knowledge Representation, Reasoning, Interoperability and User Interfaces
+- The Advice Taker 2.0
+- programs with common sense John McCarthy
+- A Logic for Natural Language WILLIAM C. PURDY
+- Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly
+- A Model for Naturalistic Programming with Implementation (Pulido)
+- Analytic and synthetic: Typological change in varieties of European languages
+- A Survey of Naturalistic Programming Technologies (Pulido)
+- Cognitive Aspects of Object-Oriented Programming
+- Beyond AOP: Toward Naturalistic Programming
+- A Controlled Language for Knowledge Formulation on the Semantic Web Doug Skuce (Cleartalk)
+- Natural language programming: Styles, strategies, and contrasts by L. A. Miller
+- Compositionality Stanford Encyclopedia of Philosophy
+- Conceptual Modeling and Artificial Intelligence: Mutual Benefits from Complementary Worlds Dominik Bork
+- Conceptual Modelling and Artificial Intelligence Peter Fettke1,2
+- On Deep Computational Formalization of Natural Language
+- Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
+- Dependency Parsing for Spoken Dialog Systems
+- Natural mapping between voice commands and APIs Matúš Sulír* and Jaroslav Porubän
+- On the foolishness of "natural language programming". Esdeger Dijkstra
+- Program Synthesis using Natural Language Aditya Desai et al
+- An Empirical Approach for the Evaluation of Voice User Interfaces Valéria Farinazzo et al
+- EPISTEMOLOGICAL PROBLEMS OF ARTIFICIAL INTELLIGENCE John McCarthy
+- Evolution of Naturalistic Programming: A Need Lizbeth A. Hernández-González et al
+- Fantechi ambiguities
+- Formal Models of Language: Formal versus Natural Language Paula Buttery
+- Growing a Language Guy L. Steele Jr.
+- Metafor: Visualizing Stories as Code Hugo Liu Henry Lieberman
+- LEARNING SYMBOLIC RULES FOR R EASONING IN QUASI NATURAL LANGUAGE Kaiyu Yang
+- Learning to Transform Natural to Formal Languages Rohit J. Kate et al
+- Machines Like Us Levesque and Brachmann
+- Naturalistic Types Roman Knöll Vaidas Gasiunas Mira Mezini
+- NaturalJava: A Natural Language Interface for Programming in Java David Price et al
+- NLP (Natural Language Processing) for NLP (Natural Language Programming) Rada Mihalcea1 , Hugo Liu2 , and Henry Lieberman
+- An approach to natural language semantics in logic programming  PATRICK SAINT-DIZIER
+- On our best behaviour Hector J. Levesque
+- Plain English Programming The Osmosian Order of Plain English Programmers
+- Pegasus – First Steps Toward a Naturalistic Programming Language Roman Knöll Mira Mezini
+- A Survey and Classification of Controlled Natural Languages Tobias Kuhn∗
+- SOME PHILOSOPHICAL PROBLEMS FROM THE STANDPOINT OF ARTIFICIAL INTELLIGENCE John McCarthy and Patrick J. Hayes
+- Programmatic Semantics for Natural Language Interfaces Hugo Liu Henry Lieberman
+- Programming by Voice, VocalProgramming Stephen C. Arnold et al
+- Runtime Semantics of Use Case Stories Michał Śmiałek, Norbert Jarz˛ebowski, Wiktor Nowakowski
+- The End of Programming Matt Welsh
+- The Heuristic Reasoning Manifesto Praveen K. Paritosh
+- The Roots of Lisp (Paul Graham)
+- Toward a New Science of Common Sense Ronald J. Brachman,1 Hector J. Levesque2
+- Toward a Programmatic Semantics of Natural Language Hugo Liu and Henry Lieberman
+- What Is ChatGPT Doing and Why Does It Work? Stephen Wolfram
+- !!! Literate programming, Donald Knuth
+- !!! Discourse representation theory
+- !!! Information Flow
+- !!! First Order Logic
+- !!! Gapping (Linguistics)
+- !!! Hyperonymy
+- !!! Inference engine
+- !!! Reactive Programming
+- !!! Reconciliation – React
+- !!! Synthetic vs Analytic knowledge (Philosophy)
+- !!! Semantic gap
+- !!! Symbolic vs Subsymbolic
+- !!! Topic and Comment
+- !!! Nominal vs Structural Type Systems
+- !!! Unification
+- !!! Voice User Interfaces
