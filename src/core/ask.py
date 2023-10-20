@@ -28,7 +28,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case _ if (x1:=define(ast, kb))!=ast:
             return e(x1).ask(kb)
 
-        case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
+        case _ if isImplicitish(ast) and isSimpleSentenceish(ast): 
             r = __makeExplicit(ast, kb)
             return e(r.head).ask(r)
 
@@ -102,7 +102,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x2 = e(x1).tell(kb)
             return x2
 
-        case object() if isImplicitish(ast) and isSimpleSentenceish(ast):  # semiduplicate
+        case _ if isImplicitish(ast) and isSimpleSentenceish(ast):  # semiduplicate
             r = __makeExplicit(ast, kb)
             return e(r.head).tell(r)
 
