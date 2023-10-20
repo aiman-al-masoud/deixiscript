@@ -18,14 +18,14 @@ def ask(ast:Ast, kb:KB)->KB:
             kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
             return kb1 << xs
 
+        case _ if (x1:=define(ast, kb))!=ast:
+            return e(copy(x1, cmd=ast.cmd)).ask(kb)
+
         case _ if ast.cmd:
             x1 = __tell(copy(ast, cmd=False), kb)
             x2 = conseq(ast, kb)   # TODO: why not kb=x2?
             x3 = __tell(x2, x1)
             return x3
-
-        case _ if (x1:=define(ast, kb))!=ast:
-            return e(x1).ask(kb)
 
         case _ if ast.negation:
             x1=e(copy(ast, negation=False)).ask(kb)
@@ -92,9 +92,9 @@ def __tell(ast:Ast, kb:KB)->KB:
         case tuple(xs):
             return reduce(lambda a,b : e(b).tell(a), xs, kb)
 
-        case _ if (x1:=define(ast, kb))!=ast:
-            x2 = e(x1).tell(kb)
-            return x2
+        # case _ if (x1:=define(ast, kb))!=ast:
+        #     x2 = e(x1).tell(kb)
+        #     return x2
 
         case ast if ast.negation: # TODO: have-sentence negation special case
             x1 = e( copy(ast, negation=False) ).get(kb)
