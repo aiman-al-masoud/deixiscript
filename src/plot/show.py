@@ -1,13 +1,12 @@
-from core.KnowledgeBase import KnowledgeBase
 from core.language import Ast
-from core.KnowledgeBase import WorldModel
+from core.KB import KB, WorldModel
 
 def show(wm:WorldModel):
     from graphviz import Source
     source = graphvizied(wm)
     Source(source, filename='tmp.gv', format='png').view()
 
-def save_png(kb:KnowledgeBase):
+def save_png(kb:KB):
     from graphviz import Source
     # TODO: and, or, besides tuple support
     source = graphvizied(kb.wm, kb.head if isinstance(kb.head, tuple) else (kb.head,))

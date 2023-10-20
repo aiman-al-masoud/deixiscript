@@ -4,10 +4,10 @@ from core.expbuilder import does, e, every
 from core.language import GAP, Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
-from core.KnowledgeBase import KnowledgeBase
+from core.KB import KB
 
 # @cache
-def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
+def ask(ast:Ast, kb:KB)->KB:
     
 
     match ast:
@@ -88,7 +88,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             raise Exception('ask', ast)
 
 # @cache
-def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
+def __tell(ast:Ast, kb:KB)->KB:
 
     match ast:
 
@@ -143,21 +143,21 @@ def makeEvent(ast:SimpleSentence):
     x4 = every('event').which(x3).e
     return x4
 
-def define(ast:Ast, kb:KnowledgeBase):
+def define(ast:Ast, kb:KB):
     from core.isMatch import isMatch
     x1 = next((d.definition for d in kb.defs if isMatch(d.definendum, ast)), ast)
     return x1
 
-def conseq(cause:Ast, kb:KnowledgeBase):
+def conseq(cause:Ast, kb:KB):
     from core.isMatch import isMatch
     x1 = tuple(d.effect for d in kb.laws if isMatch(d.cause, cause))
     # TODO: when cause vanishes effects follow suit
     return x1
 
 # @cache
-def __makeExplicit(ast:Ast, kb:KnowledgeBase):
+def __makeExplicit(ast:Ast, kb:KB):
 
-    def red(a:KnowledgeBase, b:Ast):
+    def red(a:KB, b:Ast):
         r1 = e(b).ask(a)
         if not r1.head: return r1 << False # if even just one is missing, all wrong!
         return r1 << subst(b, r1.head, a.head)

@@ -2,7 +2,7 @@ import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
 from core.language import GAP, Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy
-from core.KnowledgeBase import KnowledgeBase
+from core.KB import KB
 
 
 T=TypeVar('T', bound='Ast')
@@ -47,18 +47,18 @@ class EB(Generic[T]):
         x1=copy(self.e, cmd=True)
         return EB(x1)
 
-    def ask(self, kb=KnowledgeBase()):
+    def ask(self, kb=KB()):
         from core.ask import ask
         return ask(self.e, kb)
 
-    def get(self, kb=KnowledgeBase()):
+    def get(self, kb=KB()):
         return e(self.e).ask(kb).head
     
-    def count(self, kb=KnowledgeBase()):
+    def count(self, kb=KB()):
         r = self.get(kb)
         return len(r) if isinstance(r, tuple) else 1
     
-    def tell(self, kb=KnowledgeBase()):
+    def tell(self, kb=KB()):
         return new(self.e).ask(kb)
 
 def e(x:Ast|EB):
