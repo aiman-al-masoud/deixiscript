@@ -1,10 +1,4 @@
-
-Get rid of Noun, Domino and Idiom with "Just":
-
-ask:
-	case Just(v): return just(v)
-
-
+expand noun, context dependent operation, expand to which, then you can match syntactically without need for context.
 
 Convention where concepts are stored in the WM, but their names don't include any pound signs, whereas every individual-id does.
 
