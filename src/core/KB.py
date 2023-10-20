@@ -11,36 +11,29 @@ WorldModel = FrozenSet[WmSentence]
 @dataclass(frozen=True)
 class KB:
     wm:WorldModel             =frozenset()
-    ds:Tuple[Def|Law, ...]    =tuple()
+    defs:Tuple[Def, ...]      =tuple()
+    laws:Tuple[Law, ...]      =tuple()
     dd:DeicticDict            =DeicticDict()
 
     def __lshift__(self, o:Ast)->'KB':
-        return KB(self.wm, self.ds, self.dd.update(o))
+        return KB(self.wm, self.defs, self.laws, self.dd.update(o))
 
     def __add__(self, o:WorldModel|Def|Law):
         match o:
             case frozenset(): 
-                return KB(self.wm | o, self.ds, self.dd)
-            case Def()|Law():
-                ds = sortByGenerality([*self.ds, o])
-                return KB(self.wm, ds, self.dd)
+                return KB(self.wm | o, self.defs, self.laws, self.dd)
+            case Def():
+                return KB(self.wm, sortByGenerality([*self.defs, o]), self.laws, self.dd)
+            case Law():
+                return KB(self.wm, self.defs, sortByGenerality([*self.laws, o]), self.dd)
 
     def __sub__(self, o:WorldModel|Def|Law):
         match o:
             case frozenset():
-                return KB(self.wm - o, self.ds, self.dd)
+                return KB(self.wm - o, self.defs, self.laws, self.dd)
             case Def()|Law():
                 raise Exception()
 
     @property
-    def defs(self): 
-        return (x for x in self.ds if isinstance(x, Def))
-    
-    @property
-    def laws(self): 
-        return (x for x in self.ds if isinstance(x, Law))
-
-    @property
     def head(self)->'Ast':
         return self.dd.latest
-    
