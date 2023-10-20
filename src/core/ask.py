@@ -33,7 +33,6 @@ def ask(ast:Ast, kb:KB)->KB:
 
         case Implicit(head=h, card=card, ord=ord, which=w):
             x0 = {x for s in kb.wm for x in s} 
-            # x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x1 = {x for x in x0 if isIndividual(x)}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
             x3 = tuple(x for x in x2 if e(subst(GAP, x, w)).get(kb))
@@ -42,7 +41,6 @@ def ask(ast:Ast, kb:KB)->KB:
             x6 = x5[0] if len(x5)==1 else x5
             x7 = e(x6).ask(kb)
             return x7
-
 
         case BinExp(op='and'|'or', left=l, right=r) if isNounPhrasish(ast):
             l1 = e(l).get(kb)
@@ -61,17 +59,9 @@ def ask(ast:Ast, kb:KB)->KB:
             return r2
         
         case SimpleSentence(verb='be', subject=s, object=o):
-            # if isConcept(s) and o=='concept': return kb << True
-            # if isConcept(s) and s==o: return kb << True
             if o == 'thing': return kb << True
-            if e(s).does('have')._(o).as_('super').get(kb): return kb << True
-            # if  every('thing').which(e(s).does('have')._(_).as_('super').and_(does('have')._(o).as_('super'))).get(kb):true
-            # x1 = {x[0] for x in kb.wm if x[2]=='super' and x[1]==o}
-            # x2 = {x[1] for x in kb.wm if x[2]=='super' and x[0]==s}
-            # x3 = x1 & x2
-            # if x3: return kb << True
-            return kb << False
-
+            return e(s).does('have')._(o).as_('super').ask(kb)
+        
         case SimpleSentence() if ast.verb!='have':
             event = makeEvent(ast)
             return e(event).ask(kb)
@@ -88,7 +78,6 @@ def ask(ast:Ast, kb:KB)->KB:
         case _:
             raise Exception('ask', ast)
 
-# @cache
 def __tell(ast:Ast, kb:KB)->KB:
 
     match ast:
@@ -176,12 +165,3 @@ def makeExplicit(ast:SimpleSentence, kb:KB):
     x4=copy(ast, subject=x1.head, object=x2.head, as_=x3.head) # subject=x1.head or ast.subject ...
     x5=decompressed(x4)
     return x3 << x5
-
-    # def red(a:KB, b:Ast):
-    #     r1 = e(b).ask(a)
-    #     if not r1.head: return r1 << False # if even just one is missing, all wrong!
-    #     return r1 << subst(b, r1.head, a.head)
-
-    # implicits = findAsts(ast, isImplicitNounPhrase) # TODO: sort implicits to avoid sub-ast in super-ast subst problem
-    # r = reduce(red, implicits, kb << ast)
-    # return r << decompressed(r.head)
