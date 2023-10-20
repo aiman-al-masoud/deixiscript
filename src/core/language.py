@@ -36,8 +36,8 @@ class Law:
 
 @dataclass(frozen=True)
 class SimpleSentence:
-    verb:'Ast'=''
-    subject:'Ast'=''
+    verb:'Ast'
+    subject:'Ast'=False
     object:'Ast'=False
     as_:'Ast'=False
     to:'Ast'=False
