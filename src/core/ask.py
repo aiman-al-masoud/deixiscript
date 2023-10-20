@@ -2,7 +2,7 @@ from functools import reduce
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
 from core.language import GAP, Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
-from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
+from core.decompressed import decompressed, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KB import KB
 
