@@ -1,0 +1,42 @@
+?ast: nounphrase | sentence | parens | command | question
+?sentence: simplesentence | compound | analyticderivation | syntheticderivation
+?nounphrase: noun | relative
+?parens: "(" ast ")"
+?question: ast "?"
+command: ast "!"
+
+syntheticderivation: effect "after" cause
+effect: ast
+cause: ast
+
+analyticderivation: definendum "when" definition
+definendum: ast
+definition: ast
+
+compound: left conj right
+left: ast
+right: ast
+conj: CONJ
+
+simplesentence: subject? verb object? complement* //TODO:negation
+subject: nounphrase
+verb: "does" NAME
+object: nounphrase
+?complement: preposition nounphrase?
+preposition: PREPOSITION
+
+relative: nounphrase "which" which
+which: sentence
+
+noun: "the"? ord? card? head
+head: NAME
+card: NUMBER
+ord: ORDINAL
+
+PREPOSITION: "to" | "on" | "from"
+CONJ: "and" | "or"
+NAME: /[a-z]+/
+NUMBER: /[0-9]+/
+ORDINAL: "first" | "last"
+%import common.WS
+%ignore WS
