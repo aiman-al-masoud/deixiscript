@@ -25,11 +25,11 @@ def isNounPhrasishConn(ast:Ast):
 # def isAst(x:object):
 #     return isinstance(x, Ast)
 
-def isSimpleSentenceish(ast:Ast):
-    if isinstance(ast, SimpleSentence): return True
-    if isinstance(ast, Def|Law): return False
-    if isinstance(ast, Explicit): return False
-    return all([isSimpleSentenceish(x) for x in subasts(ast).values()])
+# def isSimpleSentenceish(ast:Ast):
+#     if isinstance(ast, SimpleSentence): return True
+#     if isinstance(ast, Def|Law): return False
+#     if isinstance(ast, Explicit): return False
+#     return all([isSimpleSentenceish(x) for x in subasts(ast).values()])
 
 findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))

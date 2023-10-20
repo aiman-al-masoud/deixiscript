@@ -1,7 +1,7 @@
 from functools import reduce
 from core.expbuilder import does, e, every
 from core.language import GAP, Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
-from core.decompressed import decompressed, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
+from core.decompressed import decompressed, isImplicitish, isIndividual, isNounPhrasish
 from core.subst import subst
 from core.KB import KB
 
@@ -76,8 +76,8 @@ def ask(ast:Ast, kb:KB)->KB:
             event = makeEvent(ast)
             return e(event).ask(kb)
         
-        case _ if isImplicitish(ast) and isSimpleSentenceish(ast): 
-            r = __makeExplicit(ast, kb)
+        case SimpleSentence(verb='have') if isImplicitish(ast):
+            r = makeExplicit(ast, kb)
             return e(r.head).ask(r)
             
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
@@ -135,8 +135,8 @@ def __tell(ast:Ast, kb:KB)->KB:
             if old.head: return old
             return e(event).tell(kb)
         
-        case _ if isImplicitish(ast) and isSimpleSentenceish(ast):  # semiduplicate
-            r = __makeExplicit(ast, kb)
+        case SimpleSentence(verb='have') if isImplicitish(ast):  # semiduplicate
+            r = makeExplicit(ast, kb)
             return e(r.head).tell(r)
 
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
@@ -166,10 +166,9 @@ def conseq(cause:Ast, kb:KB):
     return x1
 
 # @cache
-def __makeExplicit(ast:Ast, kb:KB):
+def makeExplicit(ast:SimpleSentence, kb:KB):
 
-    # only really receives SimpleSentence(verb='have')
-    assert isinstance(ast, SimpleSentence) and ast.verb=='have'
+    assert ast.verb=='have'
 
     x1=e(ast.subject).ask(kb)
     x2=e(ast.object).ask(x1)
