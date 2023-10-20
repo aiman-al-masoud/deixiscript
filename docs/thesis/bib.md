@@ -17,6 +17,7 @@
 ### A Model for Naturalistic Programming with Implementation (Pulido)
 ### Natural language programming: Styles, strategies, and contrasts by L. A. Miller 1980s
 ### A Survey and Classification of Controlled Natural Languages Tobias Kuhn (PENS ranking)
+### A Survey of Naturalistic Programming Technologies (Pulido)
 
 
 ### On the Positive Effect of Reactive Programming on Software Comprehension: An Empirical Study
@@ -25,7 +26,6 @@
 ### Attempto Controlled English Meets the Challenges of Knowledge Representation, Reasoning, Interoperability and User Interfaces
 ### The Advice Taker 2.0
 ### A Logic for Natural Language WILLIAM C. PURDY
-### A Survey of Naturalistic Programming Technologies (Pulido)
 ### Cognitive Aspects of Object-Oriented Programming
 ### A Controlled Language for Knowledge Formulation on the Semantic Web Doug Skuce (Cleartalk)
 ### Compositionality Stanford Encyclopedia of Philosophy (Philosophy)
@@ -66,3 +66,4 @@
 ### Reconciliation – React https://legacy.reactjs.org/docs/reconciliation.html
 ### Discourse representation Theory Stanford (Philosophy) https://plato.stanford.edu/entries/discourse-representation-theory/
 ### Hyperonymy https://dictionary.cambridge.org/dictionary/english/hypernym
+### Lark (parsing library) https://lark-parser.readthedocs.io/en/stable/
