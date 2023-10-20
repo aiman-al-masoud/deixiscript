@@ -3,7 +3,6 @@ from core.isMatch import isMatch, sortByGenerality
 from core.decompressed import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
-from core.KnowledgeBase import KnowledgeBase
 from core.language import Implicit, GAP
 
 
