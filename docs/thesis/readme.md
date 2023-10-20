@@ -1,9 +1,9 @@
 # Deixiscript: an attempt at a lightweight naturalistic voice programming language
 
-- Introduction
+- [Introduction](./0-intro.md)
 	- intro
 	- goals
-- Voice interfaces
+- [Voice interfaces](./1-voice-interfaces.md)
 	- Advantages of speech
 		- faster input than typing
 		- prevention of eye strain and repetitive strain injury
@@ -15,7 +15,7 @@
 		- why natural speech
 	- examples
 		- ALVIN
-- Linguistics
+- [Linguistics](./2-linguistics.md)
 	- all grammars leak
 	- analytic vs synthetic grammar
 	- gapping
@@ -29,16 +29,16 @@
 	- parsing
 		- formalisms & tools (EBNF, Lark, Grammatical Framework)
 		- dependency vs constituency
-- Philosophy
+- [Philosophy](./3-philosophy.md)
 	- metaphysics
 	- synthetic/analytic distinction
 	- compositionality
-- Predicate Logic
+- [Predicate Logic](./4-predicate-logic.md)
 	- predicate/first order logic
 	- unification
 	- advice taker
 	- machines like us
-- Programming languages
+- [Programming languages](./5-programming-languages.md)
 	- what is a programming language
 		- turing completeness
 	- main paradigms
@@ -59,7 +59,7 @@
 	- the end of programming
 		- the end of programming
 		- prompt engineering
-- Naturalistic programming
+- [Naturalistic programming](./6-naturalistic-programming.md)
 	- rationale
 	- naturalistic vs formalistic
 	- programmatic semantics
@@ -69,7 +69,7 @@
 		- SN
 		- HAL 9000 (Osmosian Order of Plain English Programmers)
 		- Metafor
-- Deixiscript
+- [Deixiscript](./7-deixiscript.md)
 	- code organization
 		- python
 		- functional style
