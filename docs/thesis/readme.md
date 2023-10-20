@@ -1,4 +1,4 @@
-# Deixiscript: attempt at a lightweight naturalistic voice programming language
+# Deixiscript: an attempt at a lightweight naturalistic voice programming language
 
 - Introduction
 	- intro
@@ -33,8 +33,8 @@
 	- metaphysics
 	- synthetic/analytic distinction
 	- compositionality
-- First order logic
-	- first order logic
+- Predicate Logic
+	- predicate/first order logic
 	- unification
 	- advice taker
 	- machines like us

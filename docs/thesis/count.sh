@@ -1,0 +1,1 @@
+git ls-files | grep md | xargs cat | wc -l
