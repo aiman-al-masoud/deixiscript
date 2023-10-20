@@ -170,13 +170,20 @@ def conseq(cause:Ast, kb:KB):
 def __makeExplicit(ast:Ast, kb:KB):
 
     # only really receives SimpleSentence(verb='have')
-    # assert isinstance(ast, SimpleSentence) and ast.verb=='have'
+    assert isinstance(ast, SimpleSentence) and ast.verb=='have'
 
-    def red(a:KB, b:Ast):
-        r1 = e(b).ask(a)
-        if not r1.head: return r1 << False # if even just one is missing, all wrong!
-        return r1 << subst(b, r1.head, a.head)
+    x1=e(ast.subject).ask(kb)
+    x2=e(ast.object).ask(x1)
+    x3=e(ast.as_).ask(x2)
+    x4=copy(ast, subject=x1.head, object=x2.head, as_=x3.head)
+    x5=decompressed(x4)
+    return x3 << x5
 
-    implicits = findAsts(ast, isImplicitNounPhrase) # TODO: sort implicits to avoid sub-ast in super-ast subst problem
-    r = reduce(red, implicits, kb << ast)
-    return r << decompressed(r.head)
+    # def red(a:KB, b:Ast):
+    #     r1 = e(b).ask(a)
+    #     if not r1.head: return r1 << False # if even just one is missing, all wrong!
+    #     return r1 << subst(b, r1.head, a.head)
+
+    # implicits = findAsts(ast, isImplicitNounPhrase) # TODO: sort implicits to avoid sub-ast in super-ast subst problem
+    # r = reduce(red, implicits, kb << ast)
+    # return r << decompressed(r.head)
