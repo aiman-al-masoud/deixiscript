@@ -174,7 +174,7 @@ def __makeExplicit(ast:Ast, kb:KB):
     x1=e(ast.subject).ask(kb)
     x2=e(ast.object).ask(x1)
     x3=e(ast.as_).ask(x2)
-    x4=copy(ast, subject=x1.head, object=x2.head, as_=x3.head)
+    x4=copy(ast, subject=x1.head, object=x2.head, as_=x3.head) # subject=x1.head or ast.subject ...
     x5=decompressed(x4)
     return x3 << x5
 
