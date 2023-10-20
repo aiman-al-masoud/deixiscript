@@ -37,7 +37,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return x1 << (not x1.head)
 
         case Implicit(head=h, card=card, ord=ord, which=w):
-            # from core.expbuilder import _
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
@@ -47,6 +46,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x6 = x5[0] if len(x5)==1 else x5
             x7 = e(x6).ask(kb)
             return x7
+
         case BinExp(op='and'|'or', left=l, right=r) if isNounPhrasish(ast):
             l1 = e(l).get(kb)
             l2 = e(r).get(kb)
@@ -62,6 +62,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             if r1.head: return r1
             r2 = e(r).ask(r1)
             return r2
+
         case SimpleSentence(verb='be', subject=s, object=o):
             if isConcept(s) and o=='concept': return kb << True
             if isConcept(s) and s==o: return kb << True
@@ -73,13 +74,16 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x3 = x1 & x2
             if x3: return kb << True
             return kb << False
+            
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
             s = (s,o,a)
             ok = s in kb.wm
             return kb << (s if ok else False)
+
         case SimpleSentence():
             event = makeEvent(ast)
             return e(event).ask(kb)
+            
         case _:
             raise Exception('ask', ast)
 
