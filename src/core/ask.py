@@ -1,4 +1,4 @@
-from functools import reduce, cache
+from functools import reduce
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
 from core.language import GAP, Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
@@ -6,7 +6,7 @@ from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isI
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
 
-@cache
+# @cache
 def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
     
 
@@ -83,7 +83,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case _:
             raise Exception('ask', ast)
 
-@cache
+# @cache
 def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
     match ast:
@@ -150,7 +150,7 @@ def conseq(cause:Ast, kb:KnowledgeBase):
     # TODO: when cause vanishes effects follow suit
     return x1
 
-@cache
+# @cache
 def __makeExplicit(ast:Ast, kb:KnowledgeBase):
 
     def red(a:KnowledgeBase, b:Ast):
