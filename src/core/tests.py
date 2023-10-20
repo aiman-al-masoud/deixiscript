@@ -348,3 +348,16 @@ def test_c048():
 #     # problem: 'quiet' resolves to entity, it shouldn't 
 #     x2 = the('capra').does('be')._('quiet').p.tell(x1)
 #     # print(x2.wm)
+
+
+# # TODO: to be fixed with isMatch()->map on define
+# def test_c50():
+#     x1 = the('capra').which(does('run')).tell()
+#     x2 = the('capra').tell(x1)
+
+#     # print(the('capra').which(does('run')).get(x2))
+#     # print(x2.wm)
+#     x3 = the('capra').does('jump').when(the('capra').does('hop')).tell(x2)
+#     # x4 = the('capra').does('jump').tell(x3)
+#     x4 = the('capra').which(does('run')).does('jump').tell(x3) # WRONG! should be capra#1
+#     # print(x4.wm)
