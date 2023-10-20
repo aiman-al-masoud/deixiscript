@@ -47,12 +47,12 @@ class SimpleSentence:
 
     @property
     def args(self)->Sequence[Tuple[str, 'Ast']]:
-        x1 = [(k,v) for k,v in subasts(self).items()]
+        x1 = [(k,v) for k,v in vars(self).items() if k not in {'negation', 'cmd'}]
         x2 = [(k,v) for k,v in x1 if v]
         return x2
 
-Explicit = str | float | int | bool | tuple
-NounPhrase = Explicit | Implicit
+Explicit = str | float | int | bool
+NounPhrase = Explicit | Implicit | tuple
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
 
@@ -63,5 +63,5 @@ def copy(ast:Ast, **kwargs:Ast): # TUPLE!
     if isinstance(ast, Explicit): return ast
     return ast.__class__(**{**vars(ast), **kwargs})
 
-def subasts(ast:Ast):
-    return {k:v for k,v in vars(ast).items() if k not in {'negation', 'cmd'}}
+# def subasts(ast:Ast):
+#     return {k:v for k,v in vars(ast).items() if k not in {'negation', 'cmd'}}

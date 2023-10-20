@@ -1,20 +1,20 @@
 from functools import reduce
 from core.expbuilder import e
 from core.findAsts import findAsts
-from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhrasish, subasts
+from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhrasish
 from core.subst import  subst
 
 
 def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
     if isinstance(ast, Implicit): return True
-    r1=any([isImplicitish(x) for x in subasts(ast).values()])
+    r1=any([isImplicitish(x) for x in vars(ast).values()])
     return r1
 
 def isNounPhrasish(ast:Ast):
     if not isinstance(ast, NounPhrasish): return False
     if isinstance(ast, NounPhrase): return True
-    return all([isNounPhrasish(x) for x in subasts(ast).values()])
+    return all([isNounPhrasish(x) for x in vars(ast).values()])
 
 def isNounPhrasishConn(ast:Ast):
     return isNounPhrasish(ast) and isinstance(ast, BinExp) and ast.op in ['and', 'or']
