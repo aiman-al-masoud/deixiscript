@@ -35,6 +35,7 @@ def isMatch(sup:Ast, sub:Ast)->bool:
 
         case BinExp(op='and'|'or'), BinExp(op='and'|'or'):
 
+            # wrong (and)
             return isMatch(sup.left,  sub.left) and\
             isMatch(sup.right, sub.right)       and\
             isMatch(sup.left,  sub.right)       and\
