@@ -67,7 +67,7 @@
 	- examples
 		- Pegasus
 		- SN
-		- HAL 9000 (Osmosian Order of Plain English Programmers)
+		- CAL-3040 (Osmosian Order of Plain English Programmers)
 		- Metafor
 - [Deixiscript](./7-deixiscript.md)
 	- code organization
