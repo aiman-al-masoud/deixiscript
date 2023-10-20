@@ -38,7 +38,7 @@ class Law:
 class SimpleSentence:
     verb:'Ast'=''
     subject:'Ast'=''
-    object:'Ast'=''
+    object:'Ast'=False
     as_:'Ast'=False
     to:'Ast'=False
     on:'Ast'=False
