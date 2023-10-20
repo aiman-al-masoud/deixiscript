@@ -1,59 +1,98 @@
-# Deixiscript
+# Deixiscript: attempt at a lightweight naturalistic voice programming language
 
-An outline of the topics:
-
-- [Overview]()
-  - [goals](./overview/goals.md)
-  - [code organization](./overview/code-organization.md)
-- [Programming by Speech]()
-  - [advantages of speech](./programming-by-speech/pros-and-cons.md#advantages-of-speech)
-  - [disadvantages of speech](./programming-by-speech/pros-and-cons.md#disadvantages-of-speech)
-  - [should it imitate _natural_ speech?](./programming-by-speech/why-natural-speech.md)
-- [Overview of main programming paradigms]()
-  - [procedural](./programming-paradigms/1-procedural.md)
-  - [OOP](./programming-paradigms/2-object-oriented.md)
-  - [FP](./programming-paradigms/3-functional-programming.md)
-  - [LP](./programming-paradigms/4-logic-programming.md)
-  - [some more exotic paradigms]()
-  - [the end of programming](./programming-paradigms/6-the-end-of-programming.md)
-- [Naturalistic Programming]()
-  - [natural vs formal languages](./naturalistic-programming/natural-vs-formal.md)
-  - [deixis (indirect references)](./naturalistic-programming/natural-vs-formal.md)
-  - [syntactic/semantic compression](./naturalistic-programming/natural-vs-formal.md)
-  - [formalist vs non-formalist approach](./naturalistic-programming/natural-vs-formal.md)
-- [Designing a Grammar]()
-  - [all grammars leak](./designing-a-grammar/grammar.md#all-grammars-leak)
-  - [analytic vs synthetic grammar](./designing-a-grammar/grammar.md)
-  - [dependency vs constituency parsing](./designing-a-grammar/grammar.md)
-  - [constituents](./designing-a-grammar/grammar.md)
-  - [parser architecture](./designing-a-grammar/grammar.md)
-- [Higher level abstractions]()
-  - [matching sentences by synonymy](./higher-level-abstractions/matching-by-synonymy.md)
-  - [analytic (a priori) derivations]()
-  - [synthetic (a posteriori) derivations]()
-  - [sorting by generality]()
-  - [implementing pronouns]()
-  - [implementing sentence/phrase overloading]()
-- [Representing the World]()
-  - [metaphysics](./world-representation/metaphysics.md)
-  - [the interpreter](./world-representation/metaphysics.md)
-  - [adapting predicate logic to support deixis and compression](./world-representation/metaphysics.md)  
-  - [handling I/O](./world-representation/metaphysics.md)
-  - [event driven programming]()
-- [Future work]()
-  - [ambiguous sentence recognition](./future-work/ambiguous-grammar.md)
-  - [better context sensitivity through deixis](./future-work/future-work.md#context-sensitivity)
-  - [tenses (past, future)](./future-work/future-work.md#past-tense)
-  - [other frontends/"deixi dialects"](./future-work/future-work.md#support-for-synthetic-and-agglutinative-grammars)
-  - [compile to code]()
-  - [naturalistic style]()
-  - [about the license]()
-- [Related work]()
-  - [Pegasus]()
-  - [Machines Like Us]()
-  - [Advice Taker]()
-  - [ALVIN]()
-  - [Programming by Voice Efficiency in the Reactive and Imperative Paradigm]()
-  - [Natural language programming: Styles, strategies, and contrasts]()
-  - [Osmosian]()
-  - [SN]()
+- Introduction
+	- intro
+	- goals
+- Voice interfaces
+	- Advantages of speech
+		- faster input than typing
+		- prevention of eye strain and repetitive strain injury
+	- Disadvantages of speech
+		- Privacy concerns & public spaces
+		- Discoverability
+		- Transcription
+	- Natural speech
+		- why natural speech
+	- examples
+		- ALVIN
+- Linguistics
+	- all grammars leak
+	- analytic vs synthetic grammar
+	- gapping
+	- constituents
+	- AST vs CST
+	- natural vs synthetic languages
+		- deixis
+		- compression
+		- ambiguities
+		- style
+	- parsing
+		- formalisms & tools (EBNF, Lark, Grammatical Framework)
+		- dependency vs constituency
+- Philosophy
+	- metaphysics
+	- synthetic/analytic distinction
+	- compositionality
+- First order logic
+	- first order logic
+	- unification
+	- advice taker
+	- machines like us
+- Programming languages
+	- what is a programming language
+		- turing completeness
+	- main paradigms
+		- Procedural
+		- OOP
+		- FP
+		- LP
+	- other paradigms
+		- AOP
+		- Reactive Programming
+		- Event Driven Programming
+		- more...
+	- some notable languages
+		- Lisp
+		- C
+		- Smalltalk
+		- Haskell
+	- the end of programming
+		- the end of programming
+		- prompt engineering
+- Naturalistic programming
+	- rationale
+	- naturalistic vs formalistic
+	- programmatic semantics
+	- user psychology
+	- examples
+		- Pegasus
+		- SN
+		- HAL 9000 (Osmosian Order of Plain English Programmers)
+		- Metafor
+- Deixiscript
+	- code organization
+		- python
+		- functional style
+		- dependencies
+		- main modules
+	- grammar specification
+		- AST
+		- EBNF
+	- higher level abstractions
+		- sytactic matching
+		- definitions and laws (analytic vs synthetic, compositionality)
+		- sorting by generality
+		- implementing pronouns
+	- world representation
+		- knowlegde graph
+		- handling I/O
+		- event driven programming
+	- some code examples
+		- examples...
+	- future work
+		- about license
+		- ambiguous sentence recognition
+		- better context sensitivity through deixis	
+		- tenses (past, future)
+		- other frontends/"deixi dialects"
+		- compile to code
