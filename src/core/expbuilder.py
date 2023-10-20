@@ -21,7 +21,7 @@ class EB(Generic[T]):
     def plus(self, x:'EB'): return self.binop('+', x)
 
     def does(self, verb:'Ast|EB'):        
-        return EB(SimpleSentence(makeAst(verb), self.e))
+        return EB(SimpleSentence(verb=makeAst(verb), subject=self.e))
 
     def complement(self, name:str, thing:'Ast|EB'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
