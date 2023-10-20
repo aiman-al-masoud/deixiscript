@@ -35,12 +35,6 @@ class Law:
     cmd:bool=False
 
 @dataclass(frozen=True)
-class Idiom:
-    value:'Ast'
-    negation:bool=False
-    cmd:bool=False
-
-@dataclass(frozen=True)
 class SimpleSentence:
     verb:'Ast'=''
     subject:'Ast'=''
@@ -65,7 +59,7 @@ class SimpleSentence:
 
 Explicit = str | float | int | bool | tuple
 NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp | Idiom
+NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
 
 

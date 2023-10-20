@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import Def, Ast, BinExp, Idiom, Implicit, SimpleSentence, Law, copy
+from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy
 from core.KnowledgeBase import KnowledgeBase
 
 
@@ -41,19 +41,15 @@ class ExpBuilder(Generic[T]):
         return ExpBuilder(Implicit(**{**vars(self.e), 'which':makeAst(which)}))
 
     def when(self, definition:'Ast|ExpBuilder'):
-        return ExpBuilder(Def(definendum=self.e, definition=Idiom(makeAst(definition))))
+        return ExpBuilder(Def(definendum=self.e, definition=makeAst(definition)))
 
     def after(self, cause:'Ast|ExpBuilder'):
-        return ExpBuilder(Law(  cause=makeAst(cause), effect=Idiom(self.e)))
+        return ExpBuilder(Law(  cause=makeAst(cause), effect=self.e))
 
     @property
     def new(self): 
         x1=copy(self.e, cmd=True)
         return ExpBuilder(x1)
-        # return ExpBuilder(Command(self.e))
-
-    @property
-    def idiom(self): return ExpBuilder(Idiom(self.e))
 
     def ask(self, kb=KnowledgeBase()):
         from core.ask import ask

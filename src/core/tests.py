@@ -195,7 +195,7 @@ def test_c025():
 def test_c026():
     kb1 = the('it').when(the(1)('thing')).tell()
     kb2 = the('capra').tell(kb1)
-    kb3 = the('it').idiom.ask(kb2)
+    kb3 = the('it').ask(kb2)
     assert 'capra#1' == kb3.head
 
 # def test_c027():
@@ -210,7 +210,7 @@ def test_c043():
     kb1 = the(1)('dog').when(the(1)('hund')).tell()
     kb2 = the(1)('hund').when(the(1)('cane')).tell(kb1)
     kb3 = the('cane').tell(kb2)
-    x   = the('dog').idiom.get(kb3)
+    x   = the('dog').get(kb3)
     assert x == 'cane#1'
 
 # %% numerality tests
@@ -274,7 +274,7 @@ def test_c038():
     kb0 = the('button').does('be')._('red').after(the('button').does('be')._('down')).tell()
     kb1 = the('button').tell(kb0)
     kb2 = the('button').tell(kb1)
-    kb3 = the('button').does('be')._('down').idiom.tell(kb2)
+    kb3 = the('button').does('be')._('down').tell(kb2)
     assert the('button').does('be')._('red').get(kb3)
     assert not e('button#1').does('be')._('red').get(kb3)
 

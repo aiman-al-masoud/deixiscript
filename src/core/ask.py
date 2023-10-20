@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Def, Idiom, Implicit, Law, SimpleSentence, copy
+from core.language import Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -12,7 +12,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
     match ast:
 
-        case str(x) | int(x) | float(x):
+        case str(x) | int(x) | float(x) | bool(x):
             return kb << x
 
         case tuple(xs):
@@ -20,10 +20,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return kb1 << xs
 
         case _ if ast.cmd:
-            return __tell(copy(ast, cmd=False), kb)
-            
-        case Idiom(v):
-            x1 = __makeAdLitteram(v, kb)
+            x1 = __tell(copy(ast, cmd=False), kb)
+            x2 = conseq(ast, kb)   # TODO: why not kb=x2?
+            x3 = __tell(x2, x1)
+            return x3
+
+        case _ if (x1:=define(ast, kb))!=ast:
             return e(x1).ask(kb)
 
         case object() if isImplicitish(ast) and isSimpleSentenceish(ast): 
@@ -80,7 +82,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             ok = s in kb.wm
             return kb << (s if ok else False)
         case SimpleSentence():
-            event = __simpleSentenceToEvent(ast)
+            event = makeEvent(ast)
             return e(event).ask(kb)
         case _:
             raise Exception('ask', ast)
@@ -90,12 +92,15 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
     match ast:
 
-        case Idiom(v):
-            x1 = __makeAdLitteram(v, kb)
+        case int()|float()|str()|bool():
+            return kb << ast
+
+        case tuple(xs):
+            return reduce(lambda a,b : e(b).tell(a), xs, kb)
+
+        case _ if (x1:=define(ast, kb))!=ast:
             x2 = e(x1).tell(kb)
-            x3 = __makeEffects(x1, kb)   # TODO: why not kb=x2?
-            x4 = e(x3).ask(x2)
-            return x4
+            return x2
 
         case object() if isImplicitish(ast) and isSimpleSentenceish(ast):  # semiduplicate
             r = __makeExplicit(ast, kb)
@@ -125,7 +130,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             kb1   = kb + delta
             return kb1
         case SimpleSentence():
-            event = __simpleSentenceToEvent(ast)
+            event = makeEvent(ast)
             old   = e(event).ask(kb)
             if old.head: return old
             return e(event).tell(kb)
@@ -138,22 +143,21 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
         case _:
             raise Exception('tell', ast)
 
-@cache
-def __simpleSentenceToEvent(ast:SimpleSentence):
+def makeEvent(ast:SimpleSentence):
     x1 = ast.args
     x2 = [does('have')._(v).as_(k) for k,v in x1]
     x3 = reduce(lambda a,b:a.and_(b), x2)
     x4 = every('event').which(x3).e
     return x4
 
-def __makeAdLitteram(ast:Ast, kb:KnowledgeBase):
+def define(ast:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
     x1 = next((d.definition for d in kb.defs if isMatch(d.definendum, ast)), ast)
     return x1
 
-def __makeEffects(cause:Ast, kb:KnowledgeBase):
+def conseq(cause:Ast, kb:KnowledgeBase):
     from core.isMatch import isMatch
-    x1 = tuple(e(d.effect).new.e for d in kb.laws if isMatch(d.cause, cause))
+    x1 = tuple(d.effect for d in kb.laws if isMatch(d.cause, cause))
     # TODO: when cause vanishes effects follow suit
     return x1
 
