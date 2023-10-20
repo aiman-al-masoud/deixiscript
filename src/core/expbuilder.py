@@ -16,7 +16,7 @@ class ExpBuilder(Generic[T]):
     e:T
 
     def binop(self, op:Ast, right:'Ast|ExpBuilder'):
-        return ExpBuilder(BinExp(op, self.e, makeAst(right)))
+        return ExpBuilder(BinExp(op=op, left=self.e, right=makeAst(right)))
 
     def equals(self, x:'Ast|ExpBuilder'):return self.binop('=', x)
     def and_(self, x:'Ast|ExpBuilder'): return self.binop('and', x)
