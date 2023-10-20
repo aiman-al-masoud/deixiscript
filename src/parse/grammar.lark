@@ -18,12 +18,14 @@ left: ast
 right: ast
 conj: CONJ
 
-simplesentence: subject? verb object? complement* //TODO:negation
+simplesentence: subject? "does" negation? verb object? complement* //TODO:negation
 subject: nounphrase
-verb: "does" NAME
+verb: NAME
 object: nounphrase
 ?complement: preposition nounphrase?
 preposition: PREPOSITION
+negation: "not"
+
 
 relative: nounphrase "which" which
 which: sentence
