@@ -88,8 +88,10 @@ def __tell(ast:Ast, kb:KB)->KB:
 
         case int()|float()|str()|bool():
             return kb << ast
+        
         case tuple(xs):
             return reduce(lambda a,b : e(b).tell(a), xs, kb)
+
         case _ if (x1:=define(ast, kb))!=ast:
             x2 = e(x1).tell(kb)
             return x2
