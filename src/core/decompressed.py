@@ -5,8 +5,8 @@ from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhras
 from core.subst import  subst
 
 
-def isImplicitNounPhrase(ast:Ast):
-    return isImplicitish(ast) and isNounPhrasish(ast)
+# def isImplicitNounPhrase(ast:Ast):
+#     return isImplicitish(ast) and isNounPhrasish(ast)
 
 def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
@@ -22,8 +22,8 @@ def isNounPhrasish(ast:Ast):
 def isNounPhrasishConn(ast:Ast):
     return isNounPhrasish(ast) and isinstance(ast, BinExp) and ast.op in ['and', 'or']
 
-def isAst(x:object):
-    return isinstance(x, Ast)
+# def isAst(x:object):
+#     return isinstance(x, Ast)
 
 def isSimpleSentenceish(ast:Ast):
     if isinstance(ast, SimpleSentence): return True
