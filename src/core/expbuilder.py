@@ -5,7 +5,7 @@ from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy
 from core.KnowledgeBase import KnowledgeBase
 
 
-_=''    
+_='__GAP__'    
 '''linguistic gap denoting the empty noun-phrase'''
 
 T=TypeVar('T', bound='Ast')
