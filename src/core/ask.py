@@ -47,12 +47,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x6 = x5[0] if len(x5)==1 else x5
             x7 = e(x6).ask(kb)
             return x7
-        case BinExp('and'|'or', l, r) if isNounPhrasish(ast):
+        case BinExp(op='and'|'or', left=l, right=r) if isNounPhrasish(ast):
             l1 = e(l).get(kb)
             l2 = e(r).get(kb)
             x  = e(l1).binop(ast.op, l2).e
             return kb << x
-        case BinExp('and', l, r):
+        case BinExp(op='and', left=l, right=r):
             r1 = e(l).ask(kb)
             if not r1.head: return r1
             r2 = e(r).ask(r1)
