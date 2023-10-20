@@ -18,7 +18,6 @@ class EB(Generic[T]):
     def equals(self, x:'Ast|EB'):return self.binop('=', x)
     def and_(self, x:'Ast|EB'): return self.binop('and', x)
     def or_(self, x:'Ast|EB'): return self.binop('or', x)
-    def plus(self, x:'EB'): return self.binop('+', x)
 
     def does(self, verb:'Ast|EB'):        
         return EB(SimpleSentence(verb=makeAst(verb), subject=self.e))
