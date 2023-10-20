@@ -41,12 +41,12 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
-            x22 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
-            x3 = tuple(sorted(x22, key=lambda x:kb.dd[x], reverse=ord=='last'))
-            x4 = x3[:card]
-            x5 = x4[0] if len(x4)==1 else x4
-            x6 = e(x5).ask(kb)
-            return x6
+            x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
+            x4 = tuple(sorted(x3, key=lambda x:kb.dd[x], reverse=ord=='last'))
+            x5 = x4[:card]
+            x6 = x5[0] if len(x5)==1 else x5
+            x7 = e(x6).ask(kb)
+            return x7
         case BinExp('and'|'or', l, r) if isNounPhrasish(ast):
             l1 = e(l).get(kb)
             l2 = e(r).get(kb)
