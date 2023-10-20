@@ -62,10 +62,6 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             if r1.head: return r1
             r2 = e(r).ask(r1)
             return r2
-        # case BinExp('=', l, r):
-        #     return kb << (l==r)
-        # case BinExp('+', l, r):
-        #     raise Exception()
         case SimpleSentence(verb='be', subject=s, object=o):
             if isConcept(s) and o=='concept': return kb << True
             if isConcept(s) and s==o: return kb << True
