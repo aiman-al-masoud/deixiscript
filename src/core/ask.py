@@ -57,7 +57,7 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             if not r1.head: return r1
             r2 = e(r).ask(r1)
             return r2
-        case BinExp('or', l, r):
+        case BinExp(op='or', left=l, right=r):
             r1 = e(l).ask(kb)
             if r1.head: return r1
             r2 = e(r).ask(r1)
