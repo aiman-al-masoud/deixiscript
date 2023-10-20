@@ -13,6 +13,7 @@ class KB:
     defs:Tuple[Def, ...]      =tuple()
     laws:Tuple[Law, ...]      =tuple()
     dd:DeicticDict            =DeicticDict()
+    # conceptMode:bool          =False
 
     def copy(self, **kwargs):
         return KB(**{**self.__dict__, **kwargs})
