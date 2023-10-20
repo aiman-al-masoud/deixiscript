@@ -55,9 +55,9 @@ def isMatch(sup:Ast, sub:Ast)->bool:
         case True, _:
             return True
 
-        case Def(definendum=d1, definition=_), Def(definendum=d2, definition=_):
+        case Def(definendum=d1), Def(definendum=d2):
             return isMatch(d1, d2)
-        case Law(cause=c1, effect=_), Law(cause=c2, effect=_):
+        case Law(cause=c1), Law(cause=c2):
             return isMatch(c1, c2)
 
         case _:
