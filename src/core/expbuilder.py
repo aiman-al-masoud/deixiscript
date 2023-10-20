@@ -1,12 +1,9 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy
+from core.language import GAP, Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy
 from core.KnowledgeBase import KnowledgeBase
 
-
-_='__GAP__'    
-'''linguistic gap denoting the empty noun-phrase'''
 
 T=TypeVar('T', bound='Ast')
 
@@ -69,7 +66,7 @@ def e(x:Ast|ExpBuilder):
     return ExpBuilder(makeAst(x))
 
 def does(v:Ast):
-    return e(_).does(v)
+    return e(GAP).does(v)
 
 def it_is_false_that(x:Ast|ExpBuilder):
     return ExpBuilder(copy(makeAst(x), negation=True))

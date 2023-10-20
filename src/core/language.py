@@ -56,6 +56,8 @@ NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
 
+GAP='__GAP__' 
+'''linguistic gap denoting the empty noun-phrase'''
 
 def copy(ast:Ast, **kwargs:Ast): # TUPLE!
     if isinstance(ast, Explicit): return ast

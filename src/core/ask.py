@@ -1,7 +1,7 @@
 from functools import reduce, cache
 from core.findAsts import findAsts
 from core.expbuilder import does, e, every
-from core.language import Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
+from core.language import GAP, Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
 from core.decompressed import decompressed, isConcept, isImplicitNounPhrase, isImplicitish, isIndividual, isNounPhrasish, isSimpleSentenceish
 from core.subst import subst
 from core.KnowledgeBase import KnowledgeBase
@@ -37,11 +37,11 @@ def ask(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return x1 << (not x1.head)
 
         case Implicit(head=h, card=card, ord=ord, which=w):
-            from core.expbuilder import _
+            # from core.expbuilder import _
             x0 = {x for s in kb.wm for x in s}
             x1 = {x for x in x0 if isIndividual(x) or h=='concept'}
             x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
-            x3 = tuple(x for x in x2 if e(subst(_, x, w)).get(kb))
+            x3 = tuple(x for x in x2 if e(subst(GAP, x, w)).get(kb))
             x4 = tuple(sorted(x3, key=lambda x:kb.dd[x], reverse=ord=='last'))
             x5 = x4[:card]
             x6 = x5[0] if len(x5)==1 else x5
@@ -105,12 +105,11 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             x4 = frozenset(x3)
             return kb - x4
         case Implicit(head=h, which=w):
-            from core.expbuilder import _
             n = every(h).count(kb)+1
             new = f'{h}#{n}'
             kb1 = kb << new
             r1 = e(new).does('be')._(h).tell(kb1) 
-            which = subst(_, r1.head, w)
+            which = subst(GAP, r1.head, w)
             r2 = e(which).tell(r1)
             return r2 << new
         case SimpleSentence(verb='be', subject=s, object=o):

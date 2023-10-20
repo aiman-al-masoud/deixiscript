@@ -1,10 +1,10 @@
-from core.expbuilder import does, e, every, it_is_false_that, new, the, _
+from core.expbuilder import does, e, every, it_is_false_that, new, the
 from core.isMatch import isMatch, sortByGenerality
 from core.decompressed import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
 from core.KnowledgeBase import KnowledgeBase
-from core.language import Implicit
+from core.language import Implicit, GAP
 
 
 # %% subst tests
@@ -266,7 +266,7 @@ def test_c035():
     assert e('cat#1').does('eat')._('mouse#2').get(kb2)
     assert the('cat').does('eat')._(the('mouse')).get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
-    assert the('mouse').which(the('cat').does('eat')._(_)).get(kb2) == 'mouse#2'
+    assert the('mouse').which(the('cat').does('eat')._(GAP)).get(kb2) == 'mouse#2'
     # assert the(the('mouse').which(e('cat#1').does('eat')._(_)).e).get(kb2)=='mouse#2'
 
 # %% cause and effect w/ synthetic derivation
