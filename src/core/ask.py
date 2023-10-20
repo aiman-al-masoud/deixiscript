@@ -105,7 +105,7 @@ def __tell(ast:Ast, kb:KB)->KB:
             x2 = e(x1).tell(kb)
             return x2
 
-        case ast if ast.negation: # TODO: have sentence negation special case
+        case ast if ast.negation: # TODO: have-sentence negation special case
             x1 = e( copy(ast, negation=False) ).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
