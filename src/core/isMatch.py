@@ -1,6 +1,6 @@
 from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
 
-
+# TODO: return map
 def isMatch(sup:Ast, sub:Ast)->bool:
 
     match sup, sub:
