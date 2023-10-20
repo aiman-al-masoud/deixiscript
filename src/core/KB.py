@@ -15,25 +15,28 @@ class KB:
     laws:Tuple[Law, ...]      =tuple()
     dd:DeicticDict            =DeicticDict()
 
-    def __lshift__(self, o:Ast)->'KB':
-        return KB(self.wm, self.defs, self.laws, self.dd.update(o))
+    def copy(self, **kwargs):
+        return KB(**{**self.__dict__, **kwargs})
+
+    def __lshift__(self, o:Ast):
+        return self.copy(dd=self.dd.update(o))
 
     def __add__(self, o:WorldModel|Def|Law):
         match o:
             case frozenset(): 
-                return KB(self.wm | o, self.defs, self.laws, self.dd)
+                return self.copy(wm=self.wm | o)
             case Def():
-                return KB(self.wm, sortByGenerality([*self.defs, o]), self.laws, self.dd)
+                return self.copy(defs=sortByGenerality([*self.defs, o]))
             case Law():
-                return KB(self.wm, self.defs, sortByGenerality([*self.laws, o]), self.dd)
+                return self.copy(laws=sortByGenerality([*self.laws, o]))
 
     def __sub__(self, o:WorldModel|Def|Law):
         match o:
             case frozenset():
-                return KB(self.wm - o, self.defs, self.laws, self.dd)
+                return self.copy(wm=self.wm - o)
             case Def()|Law():
                 raise Exception()
 
     @property
-    def head(self)->'Ast':
+    def head(self):
         return self.dd.latest
