@@ -28,7 +28,7 @@ class ExpBuilder(Generic[T]):
 
     def complement(self, name:str, thing:'Ast|ExpBuilder'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
-        v = SimpleSentence(**{**self.e.__dict__, name : makeAst(thing)}) #TODO: dedup?
+        v = copy(self.e, **{name:makeAst(thing)})
         return ExpBuilder(v)
 
     def _(self, object:'Ast|ExpBuilder'): return self.complement('object', object)
