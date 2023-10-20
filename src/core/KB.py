@@ -5,8 +5,7 @@ from core.language import Ast, Law, Def
 from core.sortByGenerality import sortByGenerality
 
 
-WmSentence = Tuple[Ast, Ast, Ast]
-WorldModel = FrozenSet[WmSentence]
+WorldModel = FrozenSet[Tuple[Ast, Ast, Ast]]
 
 @dataclass(frozen=True)
 class KB:
