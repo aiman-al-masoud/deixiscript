@@ -90,25 +90,20 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
 
         case int()|float()|str()|bool():
             return kb << ast
-
         case tuple(xs):
             return reduce(lambda a,b : e(b).tell(a), xs, kb)
-
         case _ if (x1:=define(ast, kb))!=ast:
             x2 = e(x1).tell(kb)
             return x2
-
         case _ if isImplicitish(ast) and isSimpleSentenceish(ast):  # semiduplicate
             r = __makeExplicit(ast, kb)
             return e(r.head).tell(r)
-
         case ast if ast.negation:
             x1 = e( copy(ast, negation=False) ).get(kb)
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
             return kb - x4
-
         case Implicit(head=h, which=w):
             from core.expbuilder import _
             n = every(h).count(kb)+1
@@ -118,7 +113,6 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             which = subst(_, r1.head, w)
             r2 = e(which).tell(r1)
             return r2 << new
-
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
