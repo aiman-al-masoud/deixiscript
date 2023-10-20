@@ -42,8 +42,8 @@ def decompressed(ast:Ast)->Ast:
         tup = tups[0]
         assert isinstance(tup, tuple)
         if not tup: return tuple()
-        and_phrase = reduce(lambda a,b: e(a).or_(b), tup).e
-        subbed = subst(tup, and_phrase, ast)
+        orPhrase = reduce(lambda a,b: e(a).or_(b), tup).e
+        subbed = subst(tup, orPhrase, ast)
         return decompressed(subbed)
     
     conns = findNounPhrasishConjs(ast)
