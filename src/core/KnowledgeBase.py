@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import FrozenSet, Tuple
 from core.language import Ast, Law, Def
+from core.sortByGenerality import sortByGenerality
 
 
 WmSentence = Tuple[Ast, Ast, Ast]
@@ -23,7 +24,7 @@ class DeicticDict:
 @dataclass(frozen=True)
 class KnowledgeBase:
     wm:WorldModel             =frozenset()
-    ds:Tuple[Def|Law, ...] =tuple()
+    ds:Tuple[Def|Law, ...]    =tuple()
     dd:DeicticDict            =DeicticDict()
 
     def __lshift__(self, o:Ast)->'KnowledgeBase':
@@ -34,7 +35,6 @@ class KnowledgeBase:
             case frozenset(): 
                 return KnowledgeBase(self.wm | o, self.ds, self.dd)
             case Def()|Law():
-                from core.isMatch import sortByGenerality
                 ds = sortByGenerality([*self.ds, o])
                 return KnowledgeBase(self.wm, ds, self.dd)
 

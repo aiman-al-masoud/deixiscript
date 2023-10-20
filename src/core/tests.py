@@ -1,5 +1,6 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the
-from core.isMatch import isMatch, sortByGenerality
+from core.isMatch import isMatch
+from core.sortByGenerality import sortByGenerality
 from core.decompressed import decompressed
 from core.subst import subst
 from core.findAsts import findAsts
