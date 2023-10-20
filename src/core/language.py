@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Sequence, Tuple
 
 
 @dataclass(frozen=True)
@@ -46,7 +46,7 @@ class SimpleSentence:
     cmd:bool=False
 
     @property
-    def args(self)->List[Tuple[str, 'Ast']]:
+    def args(self)->Sequence[Tuple[str, 'Ast']]:
         x1 = [(k,v) for k,v in subasts(self).items()]
         x2 = [(k,v) for k,v in x1 if v]
         return x2
