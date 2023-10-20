@@ -8,7 +8,6 @@
 ### Programmatic Semantics for Natural Language Interfaces Hugo Liu Henry Lieberman
 ### Toward a Programmatic Semantics of Natural Language Hugo Liu and Henry Lieberman
 ### The End of Programming Matt Welsh
-### The Roots of Lisp (Paul Graham)
 ### Functional Programming Simplified, Alvin Alexander https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
 ### Analytic and synthetic: Typological change in varieties of European languages
 ### On the foolishness of "natural language programming". Edsger Dijkstra
@@ -18,6 +17,8 @@
 ### Natural language programming: Styles, strategies, and contrasts by L. A. Miller 1980s
 ### A Survey and Classification of Controlled Natural Languages Tobias Kuhn (PENS ranking)
 ### A Survey of Naturalistic Programming Technologies (Pulido)
+### The Roots of Lisp (Paul Graham)
+### On the Evolution of Programming Languages K. R. Chowdhary, Professor
 
 
 ### On the Positive Effect of Reactive Programming on Software Comprehension: An Empirical Study
