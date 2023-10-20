@@ -132,7 +132,7 @@ def __tell(ast:Ast, kb:KnowledgeBase)->KnowledgeBase:
             return e(event).tell(kb)
         case Def() | Law():
             return kb + ast      
-        case BinExp('and'|'or', l, r):
+        case BinExp(op='and'|'or', left=l, right=r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
             return r2        
