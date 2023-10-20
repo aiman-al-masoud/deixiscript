@@ -5,7 +5,7 @@ from typing import Sequence, Tuple
 @dataclass(frozen=True)
 class Implicit:
     head:'Ast'
-    card:'Ast' =1
+    card:int =1
     ord:'Ast'  ='last'
     which:'Ast'=True
     negation:bool=False

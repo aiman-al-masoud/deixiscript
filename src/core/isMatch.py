@@ -8,7 +8,7 @@ def isMatch(sup:Ast, sub:Ast)->bool:
             return sub==sup
         case Implicit(), Implicit():
             
-            # if sup.card > sub.card: return False
+            if sup.card > sub.card: return False
             return isMatch(sup.head, sub.head) and isMatch(sup.which, sub.which)
 
         case SimpleSentence(), SimpleSentence():
