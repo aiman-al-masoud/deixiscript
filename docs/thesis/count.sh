@@ -1,1 +1,1 @@
-git ls-files | grep md | xargs cat | wc -l
+git ls-files | grep "[0-9].*\.md" | xargs cat | wc
