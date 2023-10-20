@@ -1,17 +1,18 @@
-from typing import Callable
 from core.language import Ast, Explicit
 
 def subst(
-    old:Callable[[Ast], bool]|Ast, 
-    new:Callable[[Ast], Ast]|Ast, 
+    old:Ast,
+    new:Ast,
     ast:Ast,
 ):
 
-    if old(ast) if callable(old) else old==ast:
-        return new(ast) if callable(new) else new
-
-    if isinstance(ast, tuple): return tuple(subst(old,new,v) for v in ast)
-    if isinstance(ast, Explicit): return ast
-    d = {k: subst(old,new,v) for k, v in vars(ast).items()}
-    return ast.__class__(**d)
-
+    match ast:
+        case _ if ast==old:
+            return new
+        case tuple():
+            return tuple(subst(old,new,v) for v in ast)
+        case _ if isinstance(ast, Explicit):
+            return ast
+        case _:
+            d = {k: subst(old,new,v) for k, v in vars(ast).items()}
+            return ast.__class__(**d)
