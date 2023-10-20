@@ -155,7 +155,7 @@ def makeEvent(ast:SimpleSentence):
     return x4
 
 def define(ast:Ast, kb:KB):
-    from core.isMatch import isMatch # maybe match->map then subst
+    from core.isMatch import isMatch # maybe match->map then subst, else need to resolve args first and create new KB
     x1 = next((d.definition for d in kb.defs if isMatch(d.definendum, ast)), ast)
     return x1
 
