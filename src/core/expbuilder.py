@@ -8,45 +8,45 @@ from core.KnowledgeBase import KnowledgeBase
 T=TypeVar('T', bound='Ast')
 
 @dataclass(frozen=True)
-class ExpBuilder(Generic[T]):
+class EB(Generic[T]):
 
     e:T
 
-    def binop(self, op:Ast, right:'Ast|ExpBuilder'):
-        return ExpBuilder(BinExp(op=op, left=self.e, right=makeAst(right)))
+    def binop(self, op:Ast, right:'Ast|EB'):
+        return EB(BinExp(op=op, left=self.e, right=makeAst(right)))
 
-    def equals(self, x:'Ast|ExpBuilder'):return self.binop('=', x)
-    def and_(self, x:'Ast|ExpBuilder'): return self.binop('and', x)
-    def or_(self, x:'Ast|ExpBuilder'): return self.binop('or', x)
-    def plus(self, x:'ExpBuilder'): return self.binop('+', x)
+    def equals(self, x:'Ast|EB'):return self.binop('=', x)
+    def and_(self, x:'Ast|EB'): return self.binop('and', x)
+    def or_(self, x:'Ast|EB'): return self.binop('or', x)
+    def plus(self, x:'EB'): return self.binop('+', x)
 
-    def does(self, verb:'Ast|ExpBuilder'):        
-        return ExpBuilder(SimpleSentence(makeAst(verb), self.e))
+    def does(self, verb:'Ast|EB'):        
+        return EB(SimpleSentence(makeAst(verb), self.e))
 
-    def complement(self, name:str, thing:'Ast|ExpBuilder'):
+    def complement(self, name:str, thing:'Ast|EB'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
         v = copy(self.e, **{name:makeAst(thing)})
-        return ExpBuilder(v)
+        return EB(v)
 
-    def _(self, object:'Ast|ExpBuilder'): return self.complement('object', object)
-    def as_(self, as_:'Ast|ExpBuilder'): return self.complement('as_', as_)
-    def to(self, to:'Ast|ExpBuilder'): return self.complement('to', to)
-    def on(self, on:'Ast|ExpBuilder'): return self.complement('on', on)
+    def _(self, object:'Ast|EB'): return self.complement('object', object)
+    def as_(self, as_:'Ast|EB'): return self.complement('as_', as_)
+    def to(self, to:'Ast|EB'): return self.complement('to', to)
+    def on(self, on:'Ast|EB'): return self.complement('on', on)
 
-    def which(self, which:'Ast|ExpBuilder'):
+    def which(self, which:'Ast|EB'):
         assert isinstance(self.e, Implicit)
-        return ExpBuilder(Implicit(**{**vars(self.e), 'which':makeAst(which)}))
+        return EB(Implicit(**{**vars(self.e), 'which':makeAst(which)}))
 
-    def when(self, definition:'Ast|ExpBuilder'):
-        return ExpBuilder(Def(definendum=self.e, definition=makeAst(definition)))
+    def when(self, definition:'Ast|EB'):
+        return EB(Def(definendum=self.e, definition=makeAst(definition)))
 
-    def after(self, cause:'Ast|ExpBuilder'):
-        return ExpBuilder(Law(  cause=makeAst(cause), effect=self.e))
+    def after(self, cause:'Ast|EB'):
+        return EB(Law(  cause=makeAst(cause), effect=self.e))
 
     @property
     def new(self): 
         x1=copy(self.e, cmd=True)
-        return ExpBuilder(x1)
+        return EB(x1)
 
     def ask(self, kb=KnowledgeBase()):
         from core.ask import ask
@@ -62,27 +62,27 @@ class ExpBuilder(Generic[T]):
     def tell(self, kb=KnowledgeBase()):
         return new(self.e).ask(kb)
 
-def e(x:Ast|ExpBuilder):
-    return ExpBuilder(makeAst(x))
+def e(x:Ast|EB):
+    return EB(makeAst(x))
 
 def does(v:Ast):
     return e(GAP).does(v)
 
-def it_is_false_that(x:Ast|ExpBuilder):
-    return ExpBuilder(copy(makeAst(x), negation=True))
+def it_is_false_that(x:Ast|EB):
+    return EB(copy(makeAst(x), negation=True))
 
-def makeAst(x:Ast|ExpBuilder)->Ast:
+def makeAst(x:Ast|EB)->Ast:
     return x if isinstance(x, Ast) else x.e
 
-def new(x:Ast|ExpBuilder):
+def new(x:Ast|EB):
     return e(x).new
 
 @overload
-def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], ExpBuilder]]:...
+def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], EB]]:...
 @overload
-def the(x:int)->Callable[[Ast], ExpBuilder]:...
+def the(x:int)->Callable[[Ast], EB]:...
 @overload
-def the(x:Ast)->ExpBuilder[Implicit]:...
+def the(x:Ast)->EB[Implicit]:...
 def the(x:Ast=sys.maxsize)->object:
 
     match x:
