@@ -1,7 +1,7 @@
 from functools import reduce
 from core.expbuilder import does, e, every
 from core.language import GAP, Ast, BinExp, Def, Implicit, Law, SimpleSentence, copy
-from core.decompressed import decompress, isImplicitish, isIndividual, isNounPhrasish
+from core.decompress import decompress, isImplicitish, isIndividual, isNounPhrasish
 from core.subst import subst
 from core.KB import KB
 

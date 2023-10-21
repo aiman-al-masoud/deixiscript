@@ -1,7 +1,7 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the
 from core.isMatch import isMatch
 from core.sortByGenerality import sortByGenerality
-from core.decompressed import decompress
+from core.decompress import decompress
 from core.subst import subst
 from core.findAsts import findAsts
 from core.language import Implicit, GAP
