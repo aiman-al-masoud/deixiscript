@@ -135,7 +135,7 @@ def __tell(ast:Ast, kb:KB)->KB:
             raise Exception('tell', ast)
 
 def makeEvent(ast:SimpleSentence):
-    x1 = ast.args
+    x1 = ast.args.items()
     x2 = [does('have')._(v).as_(k) for k,v in x1]
     x3 = reduce(lambda a,b:a.and_(b), x2)
     x4 = every('event').which(x3).e

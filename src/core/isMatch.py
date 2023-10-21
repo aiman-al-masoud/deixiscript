@@ -12,12 +12,11 @@ def isMatch(sub:Ast, sup:Ast)->bool:
             return isMatch(sub.head, sup.head) and isMatch(sub.which, sup.which)
 
         case SimpleSentence(), SimpleSentence():
-            if sup.verb != sub.verb: return False
-            return isMatch(sub.subject, sup.subject)                   and\
-                   (not sup.object or isMatch(sub.object, sup.object)) and\
-                   (not sup.as_    or isMatch(sub.as_, sup.as_))       and\
-                   (not sup.to     or isMatch(sub.to, sup.to))         and\
-                   (not sup.on     or isMatch(sub.on, sup.on))
+            sub_keys=sub.args.keys()
+            sup_keys=sup.args.keys()
+            com_keys=sub_keys&sup_keys
+            if com_keys!=sup_keys: return False
+            return all([isMatch(sub.args[k], sup.args[k]) for k in com_keys])
 
         case BinExp(op='and'), SimpleSentence():                
             return isMatch(sub.left, sup) or isMatch(sub.right, sup)

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Sequence, Tuple, TypeVar
+from typing import Dict, Sequence, Tuple, TypeVar
 
 
 @dataclass(frozen=True)
@@ -46,10 +46,11 @@ class SimpleSentence:
     cmd:bool=False
 
     @property
-    def args(self)->Sequence[Tuple[str, 'Ast']]:
-        x1 = [(k,v) for k,v in vars(self).items() if k not in {'negation', 'cmd'}]
-        x2 = [(k,v) for k,v in x1 if v]
-        return x2
+    def args(self)->Dict[str, 'Ast']:
+        x1 = [(k,v) for k,v in vars(self).items() if v] # non-falsy
+        x2 = [(k,v) for k,v in x1 if k not in {'negation', 'cmd'}]
+        x3 = dict(x2)
+        return x3
 
 Explicit = str | float | int | bool
 NounPhrase = Explicit | Implicit | tuple
