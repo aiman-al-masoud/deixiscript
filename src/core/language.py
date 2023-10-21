@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Sequence, Tuple
+from typing import Sequence, Tuple, TypeVar
 
 
 @dataclass(frozen=True)
@@ -59,9 +59,8 @@ Ast = NounPhrasish | SimpleSentence | Def | Law
 GAP='__GAP__' 
 '''linguistic gap denoting the empty noun-phrase'''
 
-def copy(ast:Ast, **kwargs:Ast): # TUPLE!
+# T = TypeVar('T', bound='Ast')
+def copy(ast:'Ast', **kwargs:Ast)->'Ast': # TUPLE!
     if isinstance(ast, Explicit): return ast
     return ast.__class__(**{**vars(ast), **kwargs})
-
-# def subasts(ast:Ast):
-#     return {k:v for k,v in vars(ast).items() if k not in {'negation', 'cmd'}}
+# x = copy(Implicit('sd'))

@@ -13,18 +13,18 @@ class EB(Generic[T]):
     e:T
 
     def binop(self, op:Ast, right:'Ast|EB'):
-        return EB(BinExp(op=op, left=self.e, right=makeAst(right)))
+        return EB(BinExp(op=op, left=self.e, right=e(right).e))
 
     def equals(self, x:'Ast|EB'):return self.binop('=', x)
     def and_(self, x:'Ast|EB'): return self.binop('and', x)
     def or_(self, x:'Ast|EB'): return self.binop('or', x)
 
     def does(self, verb:'Ast|EB'):        
-        return EB(SimpleSentence(verb=makeAst(verb), subject=self.e))
+        return EB(SimpleSentence(verb=e(verb).e, subject=self.e))
 
     def complement(self, name:str, thing:'Ast|EB'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
-        v = copy(self.e, **{name:makeAst(thing)})
+        v = copy(self.e, **{name:e(thing).e})
         return EB(v)
 
     def _(self, object:'Ast|EB'): return self.complement('object', object)
@@ -32,15 +32,15 @@ class EB(Generic[T]):
     def to(self, to:'Ast|EB'): return self.complement('to', to)
     def on(self, on:'Ast|EB'): return self.complement('on', on)
 
-    def which(self, which:'Ast|EB'):
+    def which(self, which:'Ast|EB')->'EB[Implicit]':
         assert isinstance(self.e, Implicit)
-        return EB(Implicit(**{**vars(self.e), 'which':makeAst(which)}))
+        return EB(copy(self.e, which=e(which).e))
 
     def when(self, definition:'Ast|EB'):
-        return EB(Def(definendum=self.e, definition=makeAst(definition)))
+        return EB(Def(definendum=self.e, definition=e(definition).e))
 
     def after(self, cause:'Ast|EB'):
-        return EB(Law(  cause=makeAst(cause), effect=self.e))
+        return EB(Law(  cause=e(cause).e, effect=self.e))
 
     @property
     def new(self): 
@@ -62,16 +62,13 @@ class EB(Generic[T]):
         return new(self.e).ask(kb)
 
 def e(x:Ast|EB):
-    return EB(makeAst(x))
+    return EB(x if isinstance(x, Ast) else x.e)
 
 def does(v:Ast):
     return e(GAP).does(v)
 
 def it_is_false_that(x:Ast|EB):
-    return EB(copy(makeAst(x), negation=True))
-
-def makeAst(x:Ast|EB)->Ast:
-    return x if isinstance(x, Ast) else x.e
+    return EB(copy(e(x).e, negation=True))
 
 def new(x:Ast|EB):
     return e(x).new
