@@ -1,7 +1,7 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the
 from core.isMatch import isMatch
 from core.sortByGenerality import sortByGenerality
-from core.decompressed import decompressed
+from core.decompressed import decompress
 from core.subst import subst
 from core.findAsts import findAsts
 from core.language import Implicit, GAP
@@ -35,18 +35,18 @@ def test_c008():
 
 # %% decompress tests
 def test_c009():
-    x1 = decompressed(e('capra').and_('cavallo').does('jump').e)
+    x1 = decompress(e('capra').and_('cavallo').does('jump').e)
     x2 = e('capra').does('jump').and_(e('cavallo').does('jump')).e
     assert x1 == x2
 
 def test_c010():
-    x1 = decompressed(e('capra').and_('cavallo').and_('gatto').does('jump').e)
+    x1 = decompress(e('capra').and_('cavallo').and_('gatto').does('jump').e)
     x2 = e('capra').does('jump').and_(e('cavallo').does('jump')).and_(e('gatto').does('jump')).e
     assert x1 == x2
 
 def test_c011(): #  with demorgan's rule I
     x = it_is_false_that(e(2).and_(3).equals(1)).e
-    d = decompressed(x)
+    d = decompress(x)
     y = it_is_false_that(e(2).equals(1)).or_(it_is_false_that(e(3).equals(1))).e
     assert d == y
 

@@ -22,7 +22,7 @@ def isNounPhrasishConn(ast:Ast):
 findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
 findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
 
-def decompressed(ast:Ast)->Ast:
+def decompress(ast:Ast)->Ast:
 
     tups = findTuples(ast)
 
@@ -32,7 +32,7 @@ def decompressed(ast:Ast)->Ast:
         if not tup: return tuple()
         orPhrase = reduce(lambda a,b: e(a).or_(b), tup).e
         subbed = subst(tup, orPhrase, ast)
-        return decompressed(subbed)
+        return decompress(subbed)
     
     conns = findNounPhrasishConjs(ast)
     if not conns: return ast
@@ -40,8 +40,8 @@ def decompressed(ast:Ast)->Ast:
     assert isinstance(conn, BinExp)
 
     op = opposite(conn.op) if ast.negation else conn.op # pyright: ignore
-    left = decompressed(subst(conn,conn.left,ast))
-    right = decompressed(subst(conn,conn.right,ast))
+    left = decompress(subst(conn,conn.left,ast))
+    right = decompress(subst(conn,conn.right,ast))
 
     return BinExp(op, left, right)
 
