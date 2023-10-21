@@ -43,7 +43,7 @@ def decompress(ast:Ast)->Ast:
     left = decompress(subst(conn,conn.left,ast))
     right = decompress(subst(conn,conn.right,ast))
 
-    return BinExp(op, left, right)
+    return BinExp(op=op, left=left, right=right)
 
 def opposite(x:Ast)->str:
     if x not in ['and', 'or']: raise Exception('')
