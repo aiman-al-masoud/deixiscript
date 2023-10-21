@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, Sequence, Tuple, TypeVar
+from typing import Dict
 
 
 @dataclass(frozen=True)
