@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, TypeVar
 
 
 @dataclass(frozen=True)
@@ -60,8 +60,7 @@ Ast = NounPhrasish | SimpleSentence | Def | Law
 GAP='__GAP__' 
 '''linguistic gap denoting the empty noun-phrase'''
 
-# T = TypeVar('T', bound='Ast')
-def copy(ast:'Ast', **kwargs:Ast)->'Ast': # TUPLE!
+T = TypeVar('T', bound='Ast')
+def copy(ast:T, **kwargs:Ast)->T: # TUPLE!
     if isinstance(ast, Explicit): return ast
     return ast.__class__(**{**vars(ast), **kwargs})
-# x = copy(Implicit('sd'))
