@@ -92,10 +92,5 @@ def the(x:Ast=sys.maxsize)->object:
         case object():
             return the('last')(1)(x) # 1 or sys.maxsize
 
-# def makeImplicit(ast:Ast):
-#     from core.decompressed import isImplicitish, isNounPhrasish
-#     assert isNounPhrasish(ast)
-#     return ast if isImplicitish(ast) else Implicit(ast)
-
 def every(x:Ast): # or any
     return the(sys.maxsize)(x)
