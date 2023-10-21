@@ -43,10 +43,9 @@ def ask(ast:Ast, kb:KB)->KB:
             return x7
 
         case BinExp(op='and'|'or', left=l, right=r) if isNounPhrasish(ast):
-            l1 = e(l).get(kb)
-            l2 = e(r).get(kb)
-            x  = e(l1).binop(ast.op, l2).e
-            return kb << x
+            left = e(l).get(kb)
+            right = e(r).get(kb)
+            return kb << copy(ast,left=left, right=right)
         case BinExp(op='and', left=l, right=r):
             r1 = e(l).ask(kb)
             if not r1.head: return r1
@@ -78,16 +77,12 @@ def ask(ast:Ast, kb:KB)->KB:
         case _:
             raise Exception('ask', ast)
 
-def __tell(ast:Ast, kb:KB)->KB:
+def __tell(ast:Implicit|BinExp|SimpleSentence|Def|Law|tuple, kb:KB)->KB:
 
     match ast:
-
                   
         case Def() | Law():
-            return kb + ast      
-
-        case int()|float()|str()|bool():
-            return kb << ast
+            return kb + ast
         
         case tuple(xs):
             return reduce(lambda a,b : e(b).tell(a), xs, kb)
@@ -111,7 +106,7 @@ def __tell(ast:Ast, kb:KB)->KB:
         case BinExp(op='and'|'or', left=l, right=r):
             r1 = e(l).tell(kb)
             r2 = e(r).tell(r1)
-            return r2   
+            return r2
 
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
