@@ -34,11 +34,11 @@ def ask(ast:Ast, kb:KB)->KB:
         case Implicit(head=h, card=card, ord=ord, which=w):
             x0 = {x for s in kb.wm for x in s} 
             x1 = {x for x in x0 if isIndividual(x)}
-            x2 = tuple(x for x in x1 if e(x).does('be')._(h).get(kb))
-            x3 = tuple(x for x in x2 if e(subst(GAP, x, w)).get(kb))
-            x4 = tuple(sorted(x3, key=lambda x:kb.dd[x], reverse=ord=='last'))
+            x2 = [x for x in x1 if e(x).does('be')._(h).get(kb)]
+            x3 = [x for x in x2 if e(subst(GAP, x, w)).get(kb)]
+            x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=ord=='last')
             x5 = x4[:card]
-            x6 = x5[0] if len(x5)==1 else x5
+            x6 = x5[0] if len(x5)==1 else tuple(x5)
             x7 = e(x6).ask(kb)
             return x7
 
