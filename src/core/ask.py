@@ -147,12 +147,12 @@ def makeEvent(ast:SimpleSentence):
 
 def define(ast:Ast, kb:KB):
     from core.isMatch import isMatch # maybe match->map then subst, else need to resolve args first and create new KB
-    x1 = next((d.definition for d in kb.defs if isMatch(d.definendum, ast)), ast)
+    x1 = next((d.definition for d in kb.defs if isMatch(ast, d.definendum)), ast)
     return x1
 
-def conseq(cause:Ast, kb:KB):
+def conseq(ast:Ast, kb:KB):
     from core.isMatch import isMatch
-    x1 = tuple(d.effect for d in kb.laws if isMatch(d.cause, cause))
+    x1 = tuple(d.effect for d in kb.laws if isMatch(ast, d.cause))
     # TODO: when cause vanishes effects follow suit
     return x1
 

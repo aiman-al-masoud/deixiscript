@@ -99,20 +99,20 @@ def test_c032(): # simple sentence
 # %% matchAst tests
 def test_c017():
     assert isMatch('it', 'it')
-    assert not isMatch('it', 'buruf')
+    assert not isMatch('buruf', 'it')
 
 def test_c018():
     gen  = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
     # print(spec)
-    assert isMatch(gen, spec)
-    assert not isMatch(spec, gen)
+    assert isMatch(spec, gen)
+    assert not isMatch(gen, spec)
 
 def test_c019():
     gen  = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
-    assert isMatch(gen, spec)
-    assert not isMatch(spec, gen)
+    assert isMatch(spec, gen)
+    assert not isMatch(gen, spec)
 
 def test_c020():
     gen   = the(1)('man').does('ride').on(the(1)('horse')).e
@@ -121,16 +121,16 @@ def test_c020():
     spec3 = every('man').does('ride').on(every('horse')).e
 
     # TODO: maybe a little wrong?
-    assert isMatch(gen, spec1)
-    assert isMatch(gen, spec2)
-    assert isMatch(gen, spec3)
+    assert isMatch(spec1, gen)
+    assert isMatch(spec2, gen)
+    assert isMatch(spec3, gen)
     ##### spec4 =  the('man').does('ride').on(the(0)('horse')).e # assert isMatch(spec1, general) # assert not isMatch(general, spec4)
 
 def test_c040():
     gen = the('son').does('give')._(the('present')).to(the('mother')).e
     spec =the('son').does('give')._(the('present')).to(the('mother')).on(the('birthday')).e
-    assert isMatch(gen, spec)
-    assert not isMatch(spec, gen)
+    assert isMatch(spec, gen)
+    assert not isMatch(gen, spec)
 
 # def test_c021(): # with subconcepts
 #     kb1 = e('stallion').does('be')._('horse').tell()
