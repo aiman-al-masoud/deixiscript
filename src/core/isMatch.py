@@ -3,7 +3,7 @@ from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
 # TODO: return map
 def isMatch(sup:Ast, sub:Ast)->bool:
 
-    match sup, sub:
+    match sub, sup:
         case str()|int()|float(), str()|int()|float():
             return sub==sup
         case Implicit(), Implicit():
@@ -21,33 +21,33 @@ def isMatch(sup:Ast, sub:Ast)->bool:
                    (not sup.to     or isMatch(sup.to, sub.to))         and\
                    (not sup.on     or isMatch(sup.on, sub.on))
 
-        case SimpleSentence(), BinExp(op='and'):          
+        case BinExp(op='and'), SimpleSentence():                
             return isMatch(sup, sub.left) or isMatch(sup, sub.right)
 
-        case SimpleSentence(), BinExp(op='or'):
+        case BinExp(op='or'), SimpleSentence():
             raise Exception()
 
-        case BinExp(op='and'), SimpleSentence():
+        case SimpleSentence(), BinExp(op='and'):
             return isMatch(sup.left, sub) and isMatch(sup.right, sub)
 
-        case BinExp(op='or'), SimpleSentence():
+        case SimpleSentence(), BinExp(op='or'):
             return isMatch(sup.left, sub) or isMatch(sup.right, sub)
 
-        case BinExp(op='and'|'or'), BinExp(op='and'|'or'):
+        # case BinExp(op='and'|'or'), BinExp(op='and'|'or'):
 
-            # wrong (and)
-            return isMatch(sup.left,  sub.left) and\
-            isMatch(sup.right, sub.right)       and\
-            isMatch(sup.left,  sub.right)       and\
-            isMatch(sup.right, sub.left)
+        #     # wrong (and)
+        #     return isMatch(sup.left,  sub.left) and\
+        #     isMatch(sup.right, sub.right)       and\
+        #     isMatch(sup.left,  sub.right)       and\
+        #     isMatch(sup.right, sub.left)
 
 
         case Def(definendum=d1), Def(definendum=d2):
-            return isMatch(d1, d2)
+            return isMatch(d2, d1)
         case Law(cause=c1), Law(cause=c2):
-            return isMatch(c1, c2)
-        case True, _:
+            return isMatch(c2, c1)
+        case _, True:
             return True
         case _:
             return False
-            # raise Exception(sup, sub)
+            # raise Exception(sub, sup)
