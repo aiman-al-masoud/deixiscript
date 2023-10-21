@@ -21,11 +21,11 @@ def isMatch(sub:Ast, sup:Ast)->bool:
         case BinExp(op='and'), SimpleSentence():                
             return isMatch(sub.left, sup) or isMatch(sub.right, sup)
 
-        case BinExp(op='or'), SimpleSentence():
-            raise Exception()
-
         case SimpleSentence(), BinExp(op='and'):
             return isMatch(sub, sup.left) and isMatch(sub, sup.right)
+
+        case BinExp(op='or'), SimpleSentence():
+            raise Exception()
 
         case SimpleSentence(), BinExp(op='or'):
             return isMatch(sub, sup.left) or isMatch(sub, sup.right)
