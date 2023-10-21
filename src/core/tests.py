@@ -4,7 +4,7 @@ from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.subst import subst
 from core.findAsts import findAsts
-from core.language import Implicit, GAP
+from core.language import BinExp, Implicit, GAP, unroll
 
 
 # %% subst tests
@@ -15,10 +15,6 @@ def test_c001():
 def test_c002():
     x = subst('capra', 'cat', e('capra').and_('cavallo').and_('capra').e)
     assert x == e('cat').and_('cavallo').and_('cat').e
-
-def test_c003():
-    x = subst('capra', 'cat', ('capra', 'capra'))
-    assert x == ('cat','cat')
 
 # %% findAsts tests
 def test_c006():
@@ -57,8 +53,8 @@ def test_c012():
     x3 = the('cat').tell(x2)
     allCats = every('cat').get(x3)
 
-    assert isinstance(allCats, tuple)
-    assert set(allCats) == {'cat#1', 'cat#2', 'cat#3'}
+    assert isinstance(allCats, BinExp)
+    assert unroll(allCats) == ['cat#3', 'cat#2', 'cat#1']
 
 def test_c013(): # which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tell()
@@ -89,13 +85,6 @@ def test_c032(): # simple sentence
     assert q.get(kb3)
     assert not q.get(kb4)
 
-# def test_c046():# double negations
-#     x1 = the('capra').tell()
-#     x2 = it_is_false_that(it_is_false_that(the('capra').does('run'))).tell(x1)
-#     # x2 = it_is_false_that(it_is_false_that(it_is_false_that(the('capra').does('run')))).tell(x1)
-#     assert ('event#1', 'run', 'verb') in x2.wm
-#     assert ('event#1', 'capra#1', 'subject')  in x2.wm
-
 # %% matchAst tests
 def test_c017():
     assert isMatch('it', 'it')
@@ -115,8 +104,8 @@ def test_c019():
     assert not isMatch(gen, spec)
 
 def test_c020():
-    gen   = the(1)('man').does('ride').on(the(1)('horse')).e
-    spec1 = the(1)('man').does('ride').on(every('horse')).e
+    gen   = the('man').does('ride').on(the('horse')).e
+    spec1 = the('man').does('ride').on(every('horse')).e
     spec2 = every('man').does('ride').on(the('horse')).e
     spec3 = every('man').does('ride').on(every('horse')).e
 
@@ -221,7 +210,8 @@ def test_c028():
     multiple = every('capra').get(kb3)
     single   = the(1)('capra').get(kb3)
 
-    assert isinstance(multiple, tuple)
+    assert isinstance(multiple, BinExp)
+    assert unroll(multiple) == ['capra#3', 'capra#2', 'capra#1']
     assert isinstance(single, str)
 
 # # %% or-operator ask test

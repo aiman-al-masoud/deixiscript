@@ -1,9 +1,29 @@
-from functools import reduce
-from core.expbuilder import e
 from core.findAsts import findAsts
 from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhrasish
 from core.subst import  subst
 
+
+def decompress(ast:Ast)->Ast:
+
+    if isinstance(ast, Explicit): return ast
+    
+    conns = findNounPhrasishConjs(ast)
+    if not conns: return ast
+    conn = conns[0]
+    assert isinstance(conn, BinExp)
+
+    op = opposite(conn.op) if ast.negation else conn.op
+    left = decompress(subst(conn,conn.left,ast))
+    right = decompress(subst(conn,conn.right,ast))
+
+    return BinExp(op=op, left=left, right=right, cmd=ast.cmd)
+
+def opposite(x:Ast)->str:
+    if x not in ['and', 'or']: raise Exception('')
+    return 'and' if x == 'or' else 'or'
+
+def isIndividual(x:Ast):
+    return isinstance(x, str) and '#' in x
 
 def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
@@ -19,35 +39,6 @@ def isNounPhrasish(ast:Ast):
 def isNounPhrasishConn(ast:Ast):
     return isNounPhrasish(ast) and isinstance(ast, BinExp) and ast.op in ['and', 'or']
 
-findNounPhrasishConjs= lambda x: findAsts(x, isNounPhrasishConn)
-findTuples = lambda x: findAsts(x, lambda x: isinstance(x, tuple))
-
-def decompress(ast:Ast)->Ast:
-
-    tups = findTuples(ast)
-
-    if tups:
-        tup = tups[0]
-        assert isinstance(tup, tuple)
-        if not tup: return tuple()
-        orPhrase = reduce(lambda a,b: e(a).or_(b), tup).e
-        subbed = subst(tup, orPhrase, ast)
-        return decompress(subbed)
+def findNounPhrasishConjs(x:Ast):
+    return findAsts(x, isNounPhrasishConn)
     
-    conns = findNounPhrasishConjs(ast)
-    if not conns: return ast
-    conn = conns[0]
-    assert isinstance(conn, BinExp)
-
-    op = opposite(conn.op) if ast.negation else conn.op # pyright: ignore
-    left = decompress(subst(conn,conn.left,ast))
-    right = decompress(subst(conn,conn.right,ast))
-
-    return BinExp(op=op, left=left, right=right, cmd=ast.cmd) # pyright: ignore
-
-def opposite(x:Ast)->str:
-    if x not in ['and', 'or']: raise Exception('')
-    return 'and' if x == 'or' else 'or'
-
-def isIndividual(x:Ast):
-    return isinstance(x, str) and '#' in x

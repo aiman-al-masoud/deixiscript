@@ -5,14 +5,10 @@ def subst(
     new:Ast,
     ast:Ast,
 ):
-
-    match ast:
-        case _ if ast==old:
-            return new
-        case tuple():
-            return tuple(subst(old,new,v) for v in ast)
-        case _ if isinstance(ast, Explicit):
-            return ast
-        case _:
-            d = {k: subst(old,new,v) for k, v in vars(ast).items()}
-            return ast.__class__(**d)
+    if ast==old: 
+        return new
+    elif isinstance(ast, Explicit): 
+        return ast
+    else:
+        d = {k: subst(old,new,v) for k, v in vars(ast).items()}
+        return ast.__class__(**d)

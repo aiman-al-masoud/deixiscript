@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, TypeVar
+from typing import Dict, Sequence, TypeVar
 
 
 @dataclass(frozen=True)
@@ -10,6 +10,7 @@ class Implicit:
     which:'Ast'=True
     negation:bool=False
     cmd:bool=False
+    # concept:bool=False
 
 @dataclass(frozen=True)
 class BinExp:
@@ -53,7 +54,7 @@ class SimpleSentence:
         return x3
 
 Explicit = str | float | int | bool
-NounPhrase = Explicit | Implicit | tuple
+NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
 
@@ -61,6 +62,11 @@ GAP='__GAP__'
 '''linguistic gap denoting the empty noun-phrase'''
 
 T = TypeVar('T', bound='Ast')
-def copy(ast:T, **kwargs:Ast)->T: # TUPLE!
+def copy(ast:T, **kwargs:Ast)->T:
     if isinstance(ast, Explicit): return ast
     return ast.__class__(**{**vars(ast), **kwargs})
+
+def unroll(ast:BinExp)->Sequence[Ast]:
+    x1= unroll(ast.left) if isinstance(ast.left, BinExp) else [ast.left]
+    x2= unroll(ast.right) if isinstance(ast.right, BinExp) else [ast.right]
+    return [*x1, *x2]

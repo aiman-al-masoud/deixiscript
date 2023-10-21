@@ -5,7 +5,7 @@ from core.decompress import decompress, isImplicitish, isIndividual, isNounPhras
 from core.subst import subst
 from core.KB import KB
 
-# @cache
+
 def ask(ast:Ast, kb:KB)->KB:
     
 
@@ -14,18 +14,17 @@ def ask(ast:Ast, kb:KB)->KB:
         case str(x) | int(x) | float(x) | bool(x):
             return kb << x
 
-        case tuple(xs):
-            kb1 = reduce(lambda a,b: e(b).ask(a), xs, kb)
-            return kb1 << xs
-
         case _ if (x1:=define(ast, kb))!=ast:
             return e(copy(x1, cmd=ast.cmd)).ask(kb)
 
         case _ if ast.cmd:
             x1 = __tell(copy(ast, cmd=False), kb)
             x2 = conseq(ast, kb)   # TODO: why not kb=x2?
-            x3 = __tell(x2, x1)
-            return x3
+            if not x2: return x1
+            x3=[e(x) for x in x2]
+            x4=reduce(lambda a,b:a.and_(b), x3).e
+            x5=e(x4).tell(x1)
+            return x5
 
         case _ if ast.negation:
             x1=e(copy(ast, negation=False)).ask(kb)
@@ -38,9 +37,10 @@ def ask(ast:Ast, kb:KB)->KB:
             x3 = [x for x in x2 if e(subst(GAP, x, w)).get(kb)]
             x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=ord=='last')
             x5 = x4[:card]
-            x6 = x5[0] if len(x5)==1 else tuple(x5)
-            x7 = e(x6).ask(kb)
-            return x7
+            if not x5: return kb << False
+            x6 = [e(x) for x in x5]
+            x7 = reduce(lambda a,b: a.or_(b), x6).e
+            return kb << x7
 
         case BinExp(op='and'|'or', left=l, right=r) if isNounPhrasish(ast):
             left = e(l).get(kb)
@@ -70,29 +70,32 @@ def ask(ast:Ast, kb:KB)->KB:
             return e(r.head).ask(r)
             
         case SimpleSentence(verb='have', subject=s, object=o, as_=a):
-            s = (s,o,a)
-            ok = s in kb.wm
-            return kb << (s if ok else False)
+            x = (s,o,a)
+            ok = x in kb.wm
+            return kb << (x if ok else False) # TODO!
 
         case _:
             raise Exception('ask', ast)
 
-def __tell(ast:Implicit|BinExp|SimpleSentence|Def|Law|tuple, kb:KB)->KB:
+def __tell(ast:Implicit|BinExp|SimpleSentence|Def|Law, kb:KB)->KB:
 
     match ast:
-                  
-        case Def() | Law():
-            return kb + ast
         
-        case tuple(xs):
-            return reduce(lambda a,b : e(b).tell(a), xs, kb)
-
         case ast if ast.negation: # TODO: have-sentence negation special case
-            x1 = e( copy(ast, negation=False) ).get(kb)
+            x1 = e(copy(ast, negation=False)).get(kb)
+            # TODO unroll
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
             x4 = frozenset(x3)
             return kb - x4
+
+        case Def() | Law():
+            return kb + ast
+
+        case BinExp(op='and'|'or', left=l, right=r):
+            r1 = e(l).tell(kb)
+            r2 = e(r).tell(r1)
+            return r2
 
         case Implicit(head=h, which=w):
             n = every(h).count(kb)+1
@@ -103,11 +106,6 @@ def __tell(ast:Implicit|BinExp|SimpleSentence|Def|Law|tuple, kb:KB)->KB:
             r2 = e(which).tell(r1)
             return r2 << new
 
-        case BinExp(op='and'|'or', left=l, right=r):
-            r1 = e(l).tell(kb)
-            r2 = e(r).tell(r1)
-            return r2
-
         case SimpleSentence(verb='be', subject=s, object=o):
             return e(s).does('have')._(o).as_('super').tell(kb)
 
@@ -116,7 +114,7 @@ def __tell(ast:Implicit|BinExp|SimpleSentence|Def|Law|tuple, kb:KB)->KB:
             old   = e(event).ask(kb)
             if old.head: return old
             return e(event).tell(kb)
-        
+
         case SimpleSentence(verb='have') if isImplicitish(ast):  # semiduplicate
             r = makeExplicit(ast, kb)
             return e(r.head).tell(r)
@@ -149,7 +147,6 @@ def conseq(ast:Ast, kb:KB):
     # TODO: when cause vanishes effects follow suit
     return x1
 
-# @cache
 def makeExplicit(ast:SimpleSentence, kb:KB):
 
     assert ast.verb=='have'

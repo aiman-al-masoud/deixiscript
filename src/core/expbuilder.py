@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import GAP, Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy
+from core.language import GAP, Def, Ast, BinExp, Implicit, SimpleSentence, Law, copy, unroll
 from core.KB import KB
 
 
@@ -56,7 +56,9 @@ class EB(Generic[T]):
     
     def count(self, kb=KB()):
         r = self.get(kb)
-        return len(r) if isinstance(r, tuple) else 1
+        if r==False: return 0
+        if isinstance(r, BinExp): return len(unroll(r))
+        return 1
     
     def tell(self, kb=KB()):
         return new(self.e).ask(kb)
@@ -91,3 +93,5 @@ def the(x:Ast=sys.maxsize)->object:
             return the('last')(x)
         case object():
             return the('last')(1)(x) # 1 or sys.maxsize
+
+
