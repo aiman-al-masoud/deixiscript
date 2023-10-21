@@ -73,6 +73,9 @@ def it_is_false_that(x:Ast|EB):
 def new(x:Ast|EB):
     return e(x).new
 
+def every(x:Ast): # or any
+    return the(sys.maxsize)(x)
+
 @overload
 def the(x:Literal['first', 'last'])->Callable[[Ast], Callable[[Ast], EB]]:...
 @overload
@@ -88,6 +91,3 @@ def the(x:Ast=sys.maxsize)->object:
             return the('last')(x)
         case object():
             return the('last')(1)(x) # 1 or sys.maxsize
-
-def every(x:Ast): # or any
-    return the(sys.maxsize)(x)
