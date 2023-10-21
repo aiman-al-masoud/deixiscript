@@ -41,14 +41,13 @@ def isMatch(sup:Ast, sub:Ast)->bool:
             isMatch(sup.left,  sub.right)       and\
             isMatch(sup.right, sub.left)
 
-        case True, _:
-            return True
 
         case Def(definendum=d1), Def(definendum=d2):
             return isMatch(d1, d2)
         case Law(cause=c1), Law(cause=c2):
             return isMatch(c1, c2)
-
+        case True, _:
+            return True
         case _:
             return False
             # raise Exception(sup, sub)
