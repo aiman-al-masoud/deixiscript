@@ -1,5 +1,5 @@
 from core.findAsts import findAsts
-from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhrasish
+from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhrasish, Str
 from core.subst import  subst
 
 
@@ -18,9 +18,10 @@ def decompress(ast:Ast)->Ast:
 
     return BinExp(op=op, left=left, right=right, cmd=ast.cmd)
 
-def opposite(x:Ast)->str:
-    if x not in ['and', 'or']: raise Exception('')
-    return 'and' if x == 'or' else 'or'
+def opposite(x:Str):
+    if x == 'and': return Str('or')
+    if x == 'or': return Str('and')
+    raise Exception('')
 
 def isIndividual(x:Ast):
     return isinstance(x, str) and '#' in x

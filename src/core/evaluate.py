@@ -3,7 +3,7 @@ from typing import Optional
 from core.KB import KB
 from core.decompress import decompress, isImplicitish, isIndividual, isNounPhrasish
 from core.expbuilder import does, e, every
-from core.language import GAP, Ast, BinExp, Composite, Def, Explicit, Implicit, Law, SimpleSentence, copy
+from core.language import GAP, Ast, BinExp, Composite, Def, Explicit, Implicit, Int, Law, SimpleSentence, Str, copy
 from core.subst import subst, substDict
 
 
@@ -30,8 +30,8 @@ def tell(ast:Composite, kb:KB)->KB:
 def ask(ast:Composite, kb:KB)->KB:
 
     if ast.negation:
-        x1=e(copy(ast, negation=False)).ask(kb)
-        return x1 << (not x1.head)
+        x1=e(copy(ast, negation=Int(False))).ask(kb)
+        return x1 << (Int(not x1.head))
     
     return askPositive(ast, kb)
 
@@ -41,32 +41,32 @@ def askPositive(ast:Composite, kb:KB)->KB:
         return askImplicit(ast, kb)
 
     match ast:
-        case BinExp(op='and'|'or') if isNounPhrasish(ast):
+        case BinExp(op=Str('and'|'or')) if isNounPhrasish(ast):
             left = e(ast.left).get(kb)
             right = e(ast.right).get(kb)
             return kb << copy(ast,left=left, right=right)
-        case BinExp(op='and'):
+        case BinExp(op=Str('and')):
             r1 = e(ast.left).ask(kb)
             if not r1.head: return r1
             r2 = e(ast.right).ask(r1)
             return r2
-        case BinExp(op='or'):
+        case BinExp(op=Str('or')):
             r1 = e(ast.left).ask(kb)
             if r1.head: return r1
             r2 = e(ast.right).ask(r1)
             return r2
-        case SimpleSentence(verb='be'):
-            if ast.object == 'thing': return kb << True
+        case SimpleSentence(verb=Str('be')):
+            if ast.object == 'thing': return kb << Int(True)
             return e(ast.subject).does('have')._(ast.object).as_('super').ask(kb)
         case SimpleSentence() if ast.verb!='have':
             event = makeEvent(ast)
             return e(event).ask(kb)
-        case SimpleSentence(verb='have') if isImplicitish(ast):
+        case SimpleSentence(verb=Str('have')) if isImplicitish(ast):
             x1 = makeExplicit(ast, kb)
             return e(x1.head).ask(x1)
-        case SimpleSentence(verb='have'):
+        case SimpleSentence(verb=Str('have')):
             x=(ast.subject,ast.object,ast.as_)
-            return kb << (x in kb.wm)
+            return kb << Int(x in kb.wm)
         case Def():
             raise Exception()
         case Law():
@@ -92,18 +92,18 @@ def askIndividual(ast:Implicit, kb:KB)->KB:
     x3 = [x for x in x2 if e(subst(GAP, x, ast.which)).get(kb)]
     x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=ast.ord=='last')
     x5 = x4[:ast.card]
-    if not x5: return kb << False
+    if not x5: return kb << Int(False)
     x6 = [e(x) for x in x5]
     x7 = reduce(lambda a,b: a.or_(b), x6).e
     return kb << x7
 
 def tellNegative(ast:Composite, kb:KB)->KB:
     match ast:
-        case SimpleSentence(verb='have'):
+        case SimpleSentence(verb=Str('have')):
             raise Exception()
         case _: 
             # TODO: wrong
-            x1 = e(copy(ast, negation=False)).get(kb)
+            x1 = e(copy(ast, negation=Int(False))).get(kb)
             # TODO unroll
             x2 = x1 if isinstance(x1, tuple) else (x1,)
             x3 = {s for s in kb.wm if set(s) & set(x2)}
@@ -116,21 +116,21 @@ def tellPositive(ast:Composite, kb:KB)->KB:
         return tellImplicit(ast, kb)
     
     match ast:
-        case BinExp(op='and'|'or'):
+        case BinExp(op=Str('and'|'or')):
             r1 = e(ast.left).tell(kb)
             r2 = e(ast.right).tell(r1)
             return r2
-        case SimpleSentence(verb='be'):
+        case SimpleSentence(verb=Str('be')):
             return e(ast.subject).does('have')._(ast.object).as_('super').tell(kb)
         case SimpleSentence() if ast.verb!='have':
             event = makeEvent(ast)
             old   = e(event).ask(kb)
             if old.head: return old
             return e(event).tell(kb)
-        case SimpleSentence(verb='have') if isImplicitish(ast):
+        case SimpleSentence(verb=Str('have')) if isImplicitish(ast):
             x1 = makeExplicit(ast, kb)            
             return e(x1.head).tell(x1)
-        case SimpleSentence(verb='have'):
+        case SimpleSentence(verb=Str('have')):
             x = (ast.subject, ast.object, ast.as_)
             delta = frozenset({x})
             kb1   = kb + delta
@@ -153,11 +153,11 @@ def tellConcept(ast:Implicit, kb:KB)->KB:
 def tellIndividual(ast:Implicit, kb:KB)->KB:
     n = every(ast.head).count(kb)+1
     new = f'{ast.head}#{n}'
-    kb1 = kb << new
+    kb1 = kb << Str(new)
     r1 = e(new).does('be')._(ast.head).tell(kb1) 
     which = subst(GAP, r1.head, ast.which)
     r2 = e(which).tell(r1)
-    return r2 << new
+    return r2 << Str(new)
 
 def define(ast:Composite, kb:KB)->Composite:
 

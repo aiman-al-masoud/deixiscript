@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Tuple
 
-from core.language import Ast
+from core.language import Ast, Int
 
 @dataclass(frozen=True)
 class DeicticDict:
@@ -15,4 +15,4 @@ class DeicticDict:
 
     @property
     def latest(self)->Ast:
-        return self.tup[-1] if self.tup else False
+        return self.tup[-1] if self.tup else Int(False)

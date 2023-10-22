@@ -2,48 +2,57 @@ from dataclasses import dataclass
 from typing import Dict, Sequence, TypeVar
 
 
+class Explicit():
+    __slots__=()
+
+class Str(str, Explicit):
+    pass
+
+class Int(int, Explicit):
+    pass
+
 @dataclass(frozen=True)
 class Implicit:
-    head:'Ast'
-    card:int =1
-    ord:'Ast'  ='last'
-    which:'Ast'=True
-    negation:bool=False
-    cmd:bool=False
-    concept:bool=False
+    head:Str
+    card:Int =Int(1)
+    ord:'Ast'  =Str('last')
+    which:'Ast'=Int(True)
+    negation:Int=Int(False)
+    cmd:Int=Int(False)
+    concept:Int=Int(False)
 
 @dataclass(frozen=True)
 class BinExp:
-    op:'Ast'
+    op:Str
     left:'Ast'
     right:'Ast'
-    negation:bool=False # ??
-    cmd:bool=False
+    negation:'Ast'=Int(False) # ??
+    cmd:'Ast'=Int(False)
 
 @dataclass(frozen=True)
 class Def:
     definendum:'Ast'
     definition:'Ast'
-    negation:bool=False
-    cmd:bool=False
+    negation:Int=Int(False)
+    cmd:Int=Int(False)
 
 @dataclass(frozen=True)
 class Law:
     cause:'Ast'
     effect:'Ast'
-    negation:bool=False
-    cmd:bool=False
+    negation:Int=Int(False)
+    cmd:Int=Int(False)
 
 @dataclass(frozen=True)
 class SimpleSentence:
     verb:'Ast'
-    subject:'Ast'=False
-    object:'Ast'=False
-    as_:'Ast'=False
-    to:'Ast'=False
-    on:'Ast'=False
-    negation:bool=False
-    cmd:bool=False
+    subject:'Ast'=Int(False)
+    object:'Ast'=Int(False)
+    as_:'Ast'=Int(False)
+    to:'Ast'=Int(False)
+    on:'Ast'=Int(False)
+    negation:Int=Int(False)
+    cmd:Int=Int(False)
 
     @property
     def args(self)->Dict[str, 'Ast']:
@@ -52,14 +61,14 @@ class SimpleSentence:
         x3 = dict(x2)
         return x3
 
-Explicit = str | int
+# Explicit = Str | Int
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
 Composite = Implicit | BinExp | SimpleSentence | Def | Law
 
 
-GAP='__GAP__' 
+GAP=Str('__GAP__') 
 '''linguistic gap denoting the empty noun-phrase'''
 
 T = TypeVar('T', bound='Ast')

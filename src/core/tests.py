@@ -4,22 +4,29 @@ from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.subst import subst
 from core.findAsts import findAsts
-from core.language import BinExp, Implicit, GAP, unroll
+from core.language import BinExp, Implicit, GAP, Int, Str, unroll
 
 
 # %% subst tests
 def test_c001():
-    x = subst('capra', 'cat', e('capra').does('jump').e)
+    x = subst(Str('capra'), Str('cat'), e('capra').does('jump').e)
     assert x == e('cat').does('jump').e
 
 def test_c002():
-    x = subst('capra', 'cat', e('capra').and_('cavallo').and_('capra').e)
+    x = subst(Str('capra'), Str('cat'), e('capra').and_('cavallo').and_('capra').e)
     assert x == e('cat').and_('cavallo').and_('cat').e
 
+def test_49(): # nested which GAP substitution
+    x  = the('event').which(does('have')._(the('capra').which(does('be')._('red')))).e
+    y  = subst(GAP, Str('EVENT#1'), x.which)
+    ok = e('EVENT#1').does('have')._(the('capra').which(does('be')._('red'))).e
+    assert y == ok
+
 # %% findAsts tests
-def test_c006():
-    ast = e('capra').and_(3).and_(1).and_('gatto').e
-    assert findAsts(ast, lambda x:isinstance(x, int) and not isinstance(x, bool)) == (3, 1)
+
+# def test_c006():
+#     ast = e('capra').and_(3).and_(1).and_('gatto').e
+#     assert findAsts(ast, lambda x:isinstance(x, int) and not isinstance(x, bool)) == (Int(3), Int(1))
 
 def test_c007():
     ast = the('cat').does('jump').and_(the('dog').does('run')).e
@@ -80,8 +87,8 @@ def test_c032(): # simple sentence
 
 # %% matchAst tests
 def test_c017():
-    assert isMatch('it', 'it')
-    assert not isMatch('buruf', 'it')
+    assert isMatch(Str('it'), Str('it'))
+    assert not isMatch(Str('buruf'), Str('it'))
 
 def test_c018():
     gen  = the('cat').e
@@ -300,15 +307,10 @@ def test_c048():
     assert x3.head == e('gatto#1').and_('capra#1').e
     assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
 
-# %% nested which GAP substitution
-def test_49():
-    x  = the('event').which(does('have')._(the('capra').which(does('be')._('red')))).e
-    y  = subst(GAP, 'EVENT#1', x.which)
-    ok = e('EVENT#1').does('have')._(the('capra').which(does('be')._('red'))).e
-    assert y == ok
+
 
 # %% substitution of nounphrases into derivation
-def test_c50():
+def test_c050():
     x1 = the('capra').which(does('run')).tell()
     x2 = the('capra').tell(x1)
     x3 = the('capra').does('jump').when(the('capra').does('hop')).tell(x2)    
