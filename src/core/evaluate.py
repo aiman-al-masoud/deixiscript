@@ -13,17 +13,9 @@ def evaluate(ast:Ast, kb:KB)->KB:
     defined=define(ast, kb)
 
     if ast.cmd:
-        return tell(defined, kb)
+        return defined.tell(kb)
     else:
         return defined.ask(kb)
-
-def tell(ast:Composite, kb:KB)->KB:
-
-    x1 = ast.tell(kb)
-    x2 = conseq(ast, kb)
-    if not x2: return x1
-    x3 = e(x2).tell(x1)
-    return x3
 
 def define(ast:Composite, kb:KB)->Composite:
 

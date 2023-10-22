@@ -18,7 +18,7 @@ class Implicit:
 
     def eval(self, kb:'KB')->'KB':
         raise Exception()
-
+        
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isIndividual
         from core.subst import subst
@@ -74,7 +74,14 @@ class Implicit:
         return kb - x4
 
     def tell(self, kb:'KB')->'KB':
-        return self.tellNegative(kb) if self.negation else self.tellPositive(kb)
+        from core.expbuilder import e
+        from core.evaluate import conseq
+
+        x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
+        x2=conseq(self, kb)
+        if not x2: return x1
+        x3 = e(x2).tell(x1)
+        return x3
 
     def ask(self, kb:'KB')->'KB':
         return self.askNegated(kb) if self.negation else self.askPositive(kb)
