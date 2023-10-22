@@ -61,7 +61,6 @@ class SimpleSentence:
         x3 = dict(x2)
         return x3
 
-# Explicit = Str | Int
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
