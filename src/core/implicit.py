@@ -53,17 +53,6 @@ class Implicit(Composite):
         r2 = e(which).tell(r1)
         return r2 << Str(new)
 
-    def tellNegative(self, kb:'KB')->'KB':
-        from core.expbuilder import e
-        # from core.language import copy
-        # TODO: wrong
-        x1 = e(self.copy(negation=Int(False))).get(kb)
-        # TODO unroll
-        x2 = x1 if isinstance(x1, tuple) else (x1,)
-        x3 = {s for s in kb.wm if set(s) & set(x2)}
-        x4 = frozenset(x3)
-        return kb - x4
-
     def tell(self, kb:'KB')->'KB':
         from core.expbuilder import e
         from core.evaluate import conseq

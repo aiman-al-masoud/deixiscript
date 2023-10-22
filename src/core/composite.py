@@ -38,3 +38,13 @@ class Composite(Ast):
         from core.expbuilder import e
         x1=e(self.copy(negation=Int(False))).ask(kb)
         return x1 << (Int(not x1.head))
+
+    def tellNegative(self, kb:'KB')->'KB':
+        from core.expbuilder import e
+        # TODO: wrong
+        x1 = e(self.copy( negation=Int(False))).get(kb)
+        # TODO unroll
+        x2 = x1 if isinstance(x1, tuple) else (x1,)
+        x3 = {s for s in kb.wm if set(s) & set(x2)}
+        x4 = frozenset(x3)
+        return kb - x4

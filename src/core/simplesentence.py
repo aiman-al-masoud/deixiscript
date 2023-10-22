@@ -70,21 +70,6 @@ class SimpleSentence(Composite):
         
         raise Exception()
 
-    def tellNegative(self, kb:'KB')->'KB':
-        from core.expbuilder import e
-        # from core.language import copy
-
-        match self:
-            case SimpleSentence(verb=Str('have')):
-                raise Exception()
-            case _: 
-                # TODO: wrong
-                x1 = e(self.copy(negation=Int(False))).get(kb)
-                # TODO unroll
-                x2 = x1 if isinstance(x1, tuple) else (x1,)
-                x3 = {s for s in kb.wm if set(s) & set(x2)}
-                x4 = frozenset(x3)
-                return kb - x4
 
     def tell(self, kb:'KB')->'KB':
         from core.expbuilder import e
@@ -113,7 +98,6 @@ def makeEvent(ast:SimpleSentence):
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     from core.expbuilder import e
     from core.decompress import decompress
-    # from core.language import copy
 
     assert ast.verb=='have'
 
