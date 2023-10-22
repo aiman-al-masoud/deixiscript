@@ -291,21 +291,6 @@ def test_c039():
     assert x1 == x3
     assert x2 == 'cat#1'
 
-# TODO
-# # %% referring to concepts
-# def test_c042():
-#     kb0 = the(1)('cat').tell()
-#     kb1 = the(1)('dog').tell(kb0)
-
-#     allConcepts = every('concept').get(kb1)
-#     # print(allConcepts)
-
-#     assert isinstance(allConcepts, tuple)
-#     assert set(allConcepts) == {'cat', 'dog', 'super'} 
-
-#     catConcept = every('concept').which(does('be')._('cat')).get(kb1)
-#     assert catConcept == 'cat'
-
 # %% and-phrases
 def test_c048():
     x1 = the('capra').tell()
@@ -315,13 +300,20 @@ def test_c048():
     assert x3.head == e('gatto#1').and_('capra#1').e
     assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
 
-# TODO: GAP substitution in which needs fixing
-# # # TODO: to be fixed with isMatch()->map on define
-# def test_c50():
-#     x1 = the('capra').which(does('run')).tell()
-#     x2 = the('capra').tell(x1)
-#     x3 = the('capra').does('jump').when(the('capra').does('hop')).tell(x2)    
-#     x4 = the('capra').which(does('run')).does('jump').tell(x3) # WRONG! should be capra#1
+# %% nested which GAP substitution
+def test_49():
+    x  = the('event').which(does('have')._(the('capra').which(does('be')._('red')))).e
+    y  = subst(GAP, 'EVENT#1', x.which)
+    ok = e('EVENT#1').does('have')._(the('capra').which(does('be')._('red'))).e
+    assert y == ok
+
+# %% substitution of nounphrases into derivation
+def test_c50():
+    x1 = the('capra').which(does('run')).tell()
+    x2 = the('capra').tell(x1)
+    x3 = the('capra').does('jump').when(the('capra').does('hop')).tell(x2)    
+    x4 = the('capra').which(does('run')).does('jump').tell(x3)
+    assert e('capra#1').does('hop').get(x4)
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
 # def test_51():
@@ -344,3 +336,18 @@ def test_c048():
 #     # problem: 'quiet' resolves to entity, it shouldn't 
 #     x2 = the('capra').does('be')._('quiet').p.tell(x1)
 #     # print(x2.wm)
+
+# TODO
+# # %% referring to concepts
+# def test_c042():
+#     kb0 = the(1)('cat').tell()
+#     kb1 = the(1)('dog').tell(kb0)
+
+#     allConcepts = every('concept').get(kb1)
+#     # print(allConcepts)
+
+#     assert isinstance(allConcepts, tuple)
+#     assert set(allConcepts) == {'cat', 'dog', 'super'} 
+
+#     catConcept = every('concept').which(does('be')._('cat')).get(kb1)
+#     assert catConcept == 'cat'
