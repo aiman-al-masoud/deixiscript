@@ -4,7 +4,7 @@ from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
 def isMatch(sub:Ast, sup:Ast)->bool:
 
     match sub, sup:
-        case str()|int()|float(), str()|int()|float():
+        case str()|int()|float()|bool(), str()|int()|float()|bool():
             return sub==sup
 
         case Implicit(), Implicit():
