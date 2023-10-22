@@ -19,7 +19,7 @@ class Law:
     def askPositive(self, kb:'KB')->'KB':
         raise Exception()
     
-    def tell(self, kb:'KB')->'KB':
+    def tellPositive(self, kb:'KB')->'KB':
         return kb + self
 
     def askNegated(self, kb:'KB')->'KB':
@@ -38,3 +38,10 @@ class Law:
         x3 = {s for s in kb.wm if set(s) & set(x2)}
         x4 = frozenset(x3)
         return kb - x4
+
+    def tell(self, kb:'KB')->'KB':
+        return self.tellNegative(kb) if self.negation else self.tellPositive(kb)
+
+    def ask(self, kb:'KB')->'KB':
+        return self.askNegated(kb) if self.negation else self.askPositive(kb)
+    

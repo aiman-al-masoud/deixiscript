@@ -15,22 +15,15 @@ def evaluate(ast:Ast, kb:KB)->KB:
     if ast.cmd:
         return tell(defined, kb)
     else:
-        return ask(defined, kb)
+        return defined.ask(kb)
 
 def tell(ast:Composite, kb:KB)->KB:
 
-    x1 = ast.tellNegative(kb) if ast.negation else ast.tell(kb)
+    x1 = ast.tell(kb)
     x2 = conseq(ast, kb)
     if not x2: return x1
     x3 = e(x2).tell(x1)
     return x3
-
-def ask(ast:Composite, kb:KB)->KB:
-
-    if ast.negation:
-        return ast.askNegated(kb)
-    
-    return ast.askPositive(kb)
 
 def define(ast:Composite, kb:KB)->Composite:
 

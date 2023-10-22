@@ -40,7 +40,7 @@ class Implicit:
         x7 = reduce(lambda a,b: a.or_(b), x6).e
         return kb << x7
     
-    def tell(self, kb:'KB')->'KB':
+    def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import every, e
         from core.subst import subst
         from core.language import GAP
@@ -72,3 +72,10 @@ class Implicit:
         x3 = {s for s in kb.wm if set(s) & set(x2)}
         x4 = frozenset(x3)
         return kb - x4
+
+    def tell(self, kb:'KB')->'KB':
+        return self.tellNegative(kb) if self.negation else self.tellPositive(kb)
+
+    def ask(self, kb:'KB')->'KB':
+        return self.askNegated(kb) if self.negation else self.askPositive(kb)
+    
