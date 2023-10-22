@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from core.explicit import Int
+from core.explicit import Int, Str
 from typing import TYPE_CHECKING, Dict
 if TYPE_CHECKING:
     from core.language import Ast
@@ -26,7 +26,7 @@ class SimpleSentence:
     def eval(self, kb:'KB')->'KB':
         raise Exception()
 
-    def ask(self, kb:'KB')->'KB':
+    def askPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
         from core.explicit import Str
         from core.decompress import isImplicitish
@@ -77,6 +77,23 @@ class SimpleSentence:
         from core.expbuilder import e
         x1=e(copy(self, negation=Int(False))).ask(kb)
         return x1 << (Int(not x1.head))
+
+    def tellNegative(self, kb:'KB')->'KB':
+        from core.expbuilder import e
+        from core.language import copy
+
+        match self:
+            case SimpleSentence(verb=Str('have')):
+                raise Exception()
+            case _: 
+                # TODO: wrong
+                x1 = e(copy(self, negation=Int(False))).get(kb)
+                # TODO unroll
+                x2 = x1 if isinstance(x1, tuple) else (x1,)
+                x3 = {s for s in kb.wm if set(s) & set(x2)}
+                x4 = frozenset(x3)
+                return kb - x4
+
 
 def makeEvent(ast:SimpleSentence):
     from core.expbuilder import does, every

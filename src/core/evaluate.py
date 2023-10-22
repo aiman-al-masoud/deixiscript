@@ -2,9 +2,8 @@ from functools import reduce
 from typing import Optional
 from core.KB import KB
 from core.expbuilder import e
-from core.language import Ast, Composite, Explicit, SimpleSentence, Str, copy
+from core.language import Ast, Composite, Explicit
 from core.subst import substDict
-from core.explicit import Int
 
 def evaluate(ast:Ast, kb:KB)->KB:
 
@@ -20,7 +19,7 @@ def evaluate(ast:Ast, kb:KB)->KB:
 
 def tell(ast:Composite, kb:KB)->KB:
 
-    x1 = tellNegative(ast, kb) if ast.negation else ast.tell(kb)
+    x1 = ast.tellNegative(kb) if ast.negation else ast.tell(kb)
     x2 = conseq(ast, kb)
     if not x2: return x1
     x3 = e(x2).tell(x1)
@@ -31,21 +30,7 @@ def ask(ast:Composite, kb:KB)->KB:
     if ast.negation:
         return ast.askNegated(kb)
     
-    return ast.ask(kb)
-
-def tellNegative(ast:Composite, kb:KB)->KB:
-    match ast:
-        case SimpleSentence(verb=Str('have')):
-            raise Exception()
-        case _: 
-            # TODO: wrong
-            x1 = e(copy(ast, negation=Int(False))).get(kb)
-            # TODO unroll
-            x2 = x1 if isinstance(x1, tuple) else (x1,)
-            x3 = {s for s in kb.wm if set(s) & set(x2)}
-            x4 = frozenset(x3)
-            return kb - x4
-
+    return ast.askPositive(kb)
 
 def define(ast:Composite, kb:KB)->Composite:
 
