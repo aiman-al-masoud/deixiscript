@@ -15,12 +15,10 @@ class BinExp(Composite):
     right:'Ast'=Int(False)
     negation:'Ast'=Int(False) # ??
     cmd:'Ast'=Int(False)
-
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isNounPhrasish
         from core.expbuilder import e
-        # from core.language import copy
 
         match self:
 
@@ -42,12 +40,10 @@ class BinExp(Composite):
         raise Exception()
     
     def tellPositive(self, kb:'KB')->'KB':
-        # raise Exception()
         from core.expbuilder import e
         r1 = e(self.left).tell(kb)
         r2 = e(self.right).tell(r1)
         return r2
-
 
     def unroll(self)->Sequence['Ast']:
         x1 = self.left.unroll()
