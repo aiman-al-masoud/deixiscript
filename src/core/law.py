@@ -20,4 +20,5 @@ class Law:
         raise Exception()
     
     def tell(self, kb:'KB')->'KB':
-        raise Exception()
+        return kb + self
+

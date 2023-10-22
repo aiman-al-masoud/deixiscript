@@ -27,7 +27,73 @@ class SimpleSentence:
         raise Exception()
 
     def ask(self, kb:'KB')->'KB':
+        from core.expbuilder import e
+        from core.explicit import Str
+        from core.decompress import isImplicitish
+        
+        match self:
+            case SimpleSentence(verb=Str('be')):
+                if self.object == 'thing': return kb << Int(True)
+                return e(self.subject).does('have')._(self.object).as_('super').ask(kb)
+            case SimpleSentence() if self.verb!='have':
+                event = makeEvent(self)
+                return e(event).ask(kb)
+            case SimpleSentence(verb=Str('have')) if isImplicitish(self):
+                x1 = makeExplicit(self, kb)
+                return e(x1.head).ask(x1)
+            case SimpleSentence(verb=Str('have')):
+                x=(self.subject,self.object,self.as_)
+                return kb << Int(x in kb.wm)
         raise Exception()
+        
     
     def tell(self, kb:'KB')->'KB':
+        from core.expbuilder import e
+        from core.explicit import Str
+        from core.decompress import isImplicitish
+
+        match self:
+        
+            case SimpleSentence(verb=Str('be')):
+                return e(self.subject).does('have')._(self.object).as_('super').tell(kb)
+            case SimpleSentence() if self.verb!='have':
+                event = makeEvent(self)
+                old   = e(event).ask(kb)
+                if old.head: return old
+                return e(event).tell(kb)
+            case SimpleSentence(verb=Str('have')) if isImplicitish(self):
+                x1 = makeExplicit(self, kb)            
+                return e(x1.head).tell(x1)
+            case SimpleSentence(verb=Str('have')):
+                x = (self.subject, self.object, self.as_)
+                delta = frozenset({x})
+                kb1   = kb + delta
+                return kb1
+        
         raise Exception()
+
+
+def makeEvent(ast:SimpleSentence):
+    from core.expbuilder import does, every
+    from functools import reduce
+
+    x1 = ast.args.items()
+    x2 = [does('have')._(v).as_(k) for k,v in x1]
+    x3 = reduce(lambda a,b:a.and_(b), x2)
+    x4 = every('event').which(x3).e
+    return x4
+
+def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
+    from core.expbuilder import e
+    from core.decompress import decompress
+    from core.language import copy
+
+    assert ast.verb=='have'
+
+    x1=e(ast.subject).ask(kb)
+    x2=e(ast.object).ask(x1)
+    x3=e(ast.as_).ask(x2)
+
+    x4=copy(ast, subject=x1.head, object=x2.head, as_=x3.head) # subject=x1.head or ast.subject ...
+    x5=decompress(x4)
+    return x3 << x5

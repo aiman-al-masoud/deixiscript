@@ -20,8 +20,40 @@ class Implicit:
         raise Exception()
 
     def ask(self, kb:'KB')->'KB':
-        raise Exception()
+        from core.decompress import isIndividual
+        from core.subst import subst
+        from core.language import GAP
+        from functools import reduce
+        from core.expbuilder import e
+
+        if self.concept:
+            raise Exception()
+
+        x0 = {x for s in kb.wm for x in s}
+        x1 = [x for x in x0 if isIndividual(x)]
+        x2 = [x for x in x1 if e(x).does('be')._(self.head).get(kb)]
+        x3 = [x for x in x2 if e(subst(GAP, x, self.which)).get(kb)]
+        x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=self.ord=='last')
+        x5 = x4[:self.card]
+        if not x5: return kb << Int(False)
+        x6 = [e(x) for x in x5]
+        x7 = reduce(lambda a,b: a.or_(b), x6).e
+        return kb << x7
     
     def tell(self, kb:'KB')->'KB':
-        raise Exception()
+        # raise Exception()
+        from core.expbuilder import every, e
+        from core.subst import subst
+        from core.language import GAP
+
+        if self.concept:
+            raise Exception()
+
+        n = every(self.head).count(kb)+1
+        new = f'{self.head}#{n}'
+        kb1 = kb << Str(new)
+        r1 = e(new).does('be')._(self.head).tell(kb1) 
+        which = subst(GAP, r1.head, self.which)
+        r2 = e(which).tell(r1)
+        return r2 << Str(new)
 
