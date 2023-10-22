@@ -3,7 +3,6 @@ from core.explicit import Int
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from core.language import Ast
     from core.KB import KB 
 
 @dataclass(frozen=True)
