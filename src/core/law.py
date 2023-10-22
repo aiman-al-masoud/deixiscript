@@ -15,3 +15,9 @@ class Law:
 
     def eval(self, kb:'KB')->'KB':
         raise Exception()
+
+    def ask(self, kb:'KB')->'KB':
+        raise Exception()
+    
+    def tell(self, kb:'KB')->'KB':
+        raise Exception()
