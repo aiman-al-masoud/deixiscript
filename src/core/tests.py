@@ -315,13 +315,6 @@ def test_c048():
     assert x3.head == e('gatto#1').and_('capra#1').e
     assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
 
-# # TODO
-# def test_c049():
-#     x1 = the('capra').p.tell()
-#     # problem: 'quiet' resolves to entity, it shouldn't 
-#     x2 = the('capra').does('be')._('quiet').p.tell(x1)
-#     # print(x2.wm)
-
 # TODO: GAP substitution in which needs fixing
 # # # TODO: to be fixed with isMatch()->map on define
 # def test_c50():
@@ -344,3 +337,10 @@ def test_c048():
 #     kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tell(kb1)
 #     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
 #     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
+
+# # TODO
+# def test_c049():
+#     x1 = the('capra').p.tell()
+#     # problem: 'quiet' resolves to entity, it shouldn't 
+#     x2 = the('capra').does('be')._('quiet').p.tell(x1)
+#     # print(x2.wm)
