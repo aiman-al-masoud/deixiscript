@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from core.composite import Composite
 from core.explicit import Int, Str
 from typing import TYPE_CHECKING, Dict
 if TYPE_CHECKING:
@@ -6,8 +7,8 @@ if TYPE_CHECKING:
     from core.KB import KB 
 
 @dataclass(frozen=True)
-class SimpleSentence:
-    verb:'Ast'
+class SimpleSentence(Composite):
+    verb:'Ast'=Str('')
     subject:'Ast'=Int(False)
     object:'Ast'=Int(False)
     as_:'Ast'=Int(False)
@@ -22,16 +23,6 @@ class SimpleSentence:
         x2 = [(k,v) for k,v in x1 if k not in {'negation', 'cmd'}]
         x3 = dict(x2)
         return x3
-
-    def eval(self, kb:'KB')->'KB':
-
-        from core.evaluate import define
-        defined = define(self, kb)
-        
-        if self.cmd:
-            return defined.tell(kb)
-        else:
-            return defined.ask(kb)
 
     def askPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e

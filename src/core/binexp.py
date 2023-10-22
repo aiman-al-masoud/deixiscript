@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from core.composite import Composite
 from core.explicit import Int, Str
 from typing import TYPE_CHECKING
 
@@ -8,24 +9,13 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True)
-class BinExp:
-    op:Str
-    left:'Ast'
-    right:'Ast'
+class BinExp(Composite):
+    op:Str=Str('')
+    left:'Ast'=Int(False)
+    right:'Ast'=Int(False)
     negation:'Ast'=Int(False) # ??
     cmd:'Ast'=Int(False)
-
-
-    def eval(self, kb:'KB')->'KB':
-
-        from core.evaluate import define
-        defined = define(self, kb)
-        
-        if self.cmd:
-            return defined.tell(kb)
-        else:
-            return defined.ask(kb)
-
+    
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isNounPhrasish

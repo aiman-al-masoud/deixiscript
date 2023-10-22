@@ -1,6 +1,7 @@
 from typing import Sequence, TypeVar
 from core.Def import Def
 from core.binexp import BinExp
+from core.composite import Composite
 from core.explicit import Explicit, Str
 from core.implicit import Implicit
 from core.law import Law
@@ -9,8 +10,8 @@ from core.simplesentence import SimpleSentence
 
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
-Ast = NounPhrasish | SimpleSentence | Def | Law
-Composite = Implicit | BinExp | SimpleSentence | Def | Law
+Ast = NounPhrasish | Composite
+# Composite = Implicit | BinExp | SimpleSentence | Def | Law
 
 
 GAP=Str('_')

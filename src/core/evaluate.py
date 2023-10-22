@@ -2,8 +2,8 @@ from functools import reduce
 from typing import Optional
 from core.KB import KB
 from core.expbuilder import e
-from core.language import Composite
 from core.subst import substDict
+from core.composite import Composite
 
 def define(ast:Composite, kb:KB)->Composite:
 

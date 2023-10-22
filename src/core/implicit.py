@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from core.composite import Composite
 from core.explicit import Int, Str
 from typing import TYPE_CHECKING
 if TYPE_CHECKING: 
@@ -7,25 +8,14 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True)
-class Implicit:
-    head:Str
+class Implicit(Composite):
+    head:Str=Str('')
     card:Int =Int(1)
     ord:'Ast'  =Str('last')
     which:'Ast'=Int(True)
     negation:Int=Int(False)
     cmd:Int=Int(False)
     concept:Int=Int(False)
-
-
-    def eval(self, kb:'KB')->'KB':
-
-        from core.evaluate import define
-        defined = define(self, kb)
-        
-        if self.cmd:
-            return defined.tell(kb)
-        else:
-            return defined.ask(kb)
 
         
     def askPositive(self, kb:'KB')->'KB':
