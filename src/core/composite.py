@@ -22,9 +22,19 @@ class Composite(Ast):
             return defined.ask(kb)
 
     def tell(self, kb:'KB')->'KB':
-        raise Exception()
+        from core.expbuilder import e
+        from core.evaluate import conseq
+
+        x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
+        x2=conseq(self, kb)
+        if not x2: return x1
+        x3 = e(x2).tell(x1)
+        return x3
 
     def ask(self, kb:'KB')->'KB':
+        raise Exception()
+
+    def tellPositive(self, kb:'KB')->'KB':
         raise Exception()
 
     T = TypeVar('T', bound='Ast')
@@ -42,7 +52,7 @@ class Composite(Ast):
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
         # TODO: wrong
-        x1 = e(self.copy( negation=Int(False))).get(kb)
+        x1 = e(self.copy(negation=Int(False))).get(kb)
         # TODO unroll
         x2 = x1 if isinstance(x1, tuple) else (x1,)
         x3 = {s for s in kb.wm if set(s) & set(x2)}
