@@ -16,8 +16,17 @@ class Implicit:
     cmd:Int=Int(False)
     concept:Int=Int(False)
 
+
     def eval(self, kb:'KB')->'KB':
-        raise Exception()
+
+        from core.evaluate import define
+        defined = define(self, kb)
+        
+        if self.cmd:
+            return defined.tell(kb)
+        else:
+            return defined.ask(kb)
+
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isIndividual

@@ -49,8 +49,9 @@ class EB(Generic[T]):
         return EB(x1)
 
     def ask(self, kb=KB()):
-        from core.evaluate import evaluate
-        return evaluate(self.e, kb)
+        # from core.evaluate import evaluate
+        # return evaluate(self.e, kb)
+        return self.e.eval(kb)
 
     def get(self, kb=KB()):
         return e(self.e).ask(kb).head

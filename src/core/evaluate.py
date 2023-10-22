@@ -2,20 +2,8 @@ from functools import reduce
 from typing import Optional
 from core.KB import KB
 from core.expbuilder import e
-from core.language import Ast, Composite, Explicit
+from core.language import Composite
 from core.subst import substDict
-
-def evaluate(ast:Ast, kb:KB)->KB:
-
-    if isinstance(ast, Explicit):
-        return ast.eval(kb)
-
-    defined=define(ast, kb)
-
-    if ast.cmd:
-        return defined.tell(kb)
-    else:
-        return defined.ask(kb)
 
 def define(ast:Composite, kb:KB)->Composite:
 

@@ -12,8 +12,17 @@ class Def:
     negation:Int=Int(False)
     cmd:Int=Int(False)
 
+
     def eval(self, kb:'KB')->'KB':
-        raise Exception()
+
+        from core.evaluate import define
+        defined = define(self, kb)
+        
+        if self.cmd:
+            return defined.tell(kb)
+        else:
+            return defined.ask(kb)
+
     
     def askPositive(self, kb:'KB')->'KB':
         raise Exception()
