@@ -10,15 +10,14 @@ class Implicit:
     which:'Ast'=True
     negation:bool=False
     cmd:bool=False
-    # concept:bool=False
+    concept:bool=False
 
 @dataclass(frozen=True)
 class BinExp:
     op:'Ast'
     left:'Ast'
     right:'Ast'
-
-    negation:bool=False
+    negation:bool=False # ??
     cmd:bool=False
 
 @dataclass(frozen=True)
@@ -57,6 +56,8 @@ Explicit = str | float | int | bool
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | SimpleSentence | Def | Law
+Composite = Implicit | BinExp | SimpleSentence | Def | Law
+
 
 GAP='__GAP__' 
 '''linguistic gap denoting the empty noun-phrase'''
