@@ -3,7 +3,7 @@ from core.binexp import BinExp
 from core.composite import Composite
 from core.explicit import Explicit, Str
 from core.implicit import Implicit
-from core.law import Law
+# from core.law import Law
 
 
 NounPhrase = Explicit | Implicit
