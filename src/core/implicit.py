@@ -53,12 +53,6 @@ class Implicit(Composite):
         r2 = e(which).tell(r1)
         return r2 << Str(new)
 
-    def askNegated(self, kb:'KB')->'KB':
-        # from core.language import copy
-        from core.expbuilder import e
-        x1=e(self.copy( negation=Int(False))).ask(kb)
-        return x1 << (Int(not x1.head))
-
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
         # from core.language import copy

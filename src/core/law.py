@@ -21,15 +21,8 @@ class Law(Composite):
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self
 
-    def askNegated(self, kb:'KB')->'KB':
-        # from core.language import copy
-        from core.expbuilder import e
-        x1=e(self.copy( negation=Int(False))).ask(kb)
-        return x1 << (Int(not x1.head))
-
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        # from core.language import copy
         # TODO: wrong
         x1 = e(self.copy( negation=Int(False))).get(kb)
         # TODO unroll

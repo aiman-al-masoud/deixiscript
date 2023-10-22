@@ -69,12 +69,6 @@ class SimpleSentence(Composite):
                 return kb1
         
         raise Exception()
-    
-    def askNegated(self, kb:'KB')->'KB':
-        # from core.language import copy
-        from core.expbuilder import e
-        x1=e(self.copy(negation=Int(False))).ask(kb)
-        return x1 << (Int(not x1.head))
 
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
