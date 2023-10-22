@@ -1,5 +1,4 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the
-from core.isMatch import isMatch
 from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.subst import subst
@@ -89,21 +88,21 @@ def test_c032(): # simple sentence
 
 # %% matchAst tests
 def test_c017():
-    assert isMatch(Str('it'), Str('it'))
-    assert not isMatch(Str('buruf'), Str('it'))
+    assert Str('it').isMatch(Str('it'))
+    assert not Str('it').isMatch(Str('buruf'))
 
 def test_c018():
     gen  = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
     # print(spec)
-    assert isMatch(spec, gen)
-    assert not isMatch(gen, spec)
+    assert gen.isMatch(spec)
+    assert not spec.isMatch(gen)
 
 def test_c019():
     gen  = e('cat#1').does('have')._('mouse#1').e
     spec = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
-    assert isMatch(spec, gen)
-    assert not isMatch(gen, spec)
+    assert gen.isMatch(spec)
+    assert not spec.isMatch(gen)
 
 def test_c020():
     gen   = the('man').does('ride').on(the('horse')).e
@@ -112,16 +111,16 @@ def test_c020():
     spec3 = every('man').does('ride').on(every('horse')).e
 
     # TODO: maybe a little wrong?
-    assert isMatch(spec1, gen)
-    assert isMatch(spec2, gen)
-    assert isMatch(spec3, gen)
+    assert gen.isMatch(spec1)
+    assert gen.isMatch(spec2)
+    assert gen.isMatch(spec3)
     ##### spec4 =  the('man').does('ride').on(the(0)('horse')).e # assert isMatch(spec1, general) # assert not isMatch(general, spec4)
 
 def test_c040():
     gen = the('son').does('give')._(the('present')).to(the('mother')).e
     spec =the('son').does('give')._(the('present')).to(the('mother')).on(the('birthday')).e
-    assert isMatch(spec, gen)
-    assert not isMatch(gen, spec)
+    assert gen.isMatch(spec)
+    assert not spec.isMatch(gen)
 
 # def test_c021(): # with subconcepts
 #     kb1 = e('stallion').does('be')._('horse').tell()

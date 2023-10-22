@@ -7,10 +7,9 @@ from core.composite import Composite
 
 def define(ast:Composite, kb:KB)->Composite:
 
-    from core.isMatch import isMatch
-
     for d in kb.defs:
-        m = isMatch(ast, d.definendum)
+        m = d.definendum.isMatch(ast)
+
         if m: 
             x1=substDict(m, d.definition)
             assert isinstance(x1, Composite)
@@ -21,8 +20,7 @@ def define(ast:Composite, kb:KB)->Composite:
 def conseq(ast:Composite, kb:KB)->Optional[Composite]:
     # TODO: when cause vanishes effects follow suit
     # TODO: match/map/subst
-    from core.isMatch import isMatch
-    x1 = tuple(d.effect for d in kb.laws if isMatch(ast, d.cause))
+    x1 = tuple(d.effect for d in kb.laws if d.cause.isMatch(ast))
     if not x1: return None
     x2 = [e(x) for x in x1]
     x3 = reduce(lambda a,b: a.and_(b), x2).e
