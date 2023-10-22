@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from core.explicit import Int
 from typing import TYPE_CHECKING, Sequence, TypeVar
+from core.language import Ast
 
 if TYPE_CHECKING:
     from core.KB import KB 
-    from core.language import Ast
 
 @dataclass(frozen=True)
-class Composite:
+class Composite(Ast):
     negation:Int=Int(False)
     cmd:Int=Int(False)
 

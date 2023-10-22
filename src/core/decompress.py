@@ -1,3 +1,4 @@
+from core.composite import Composite
 from core.findAsts import findAsts
 from core.language import Ast
 from core.subst import  subst
@@ -11,7 +12,7 @@ NounPhrasish = NounPhrase | BinExp
 
 def decompress(ast:Ast)->Ast:
 
-    if isinstance(ast, Explicit): return ast
+    if not isinstance(ast, Composite): return ast
     
     conns = findNounPhrasishConjs(ast)
     if not conns: return ast

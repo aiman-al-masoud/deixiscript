@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING, Sequence
+from core.language import Ast
 
 if TYPE_CHECKING:
     from core.KB import KB
-    from core.language import Ast
 
-class Explicit():
+class Explicit(Ast):
     __slots__=()
 
     def eval(self, kb:'KB')->'KB':
