@@ -1,3 +1,8 @@
+
+- match is purely structural, no access to KB, doesn't call execute.
+- Asts need to be "broken down/contextualized" before using match.
+- expand nouns using which (context dependent), match nouns syntactically (context independent).
+
 be sentences may sometimes not take individuals in the "object" position
 
 expand noun, context dependent operation, expand to which, then you can match syntactically without need for context.
