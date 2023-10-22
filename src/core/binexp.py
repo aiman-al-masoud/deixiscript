@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from core.composite import Composite
 from core.explicit import Int, Str
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 
 if TYPE_CHECKING:
     from core.language import Ast
@@ -77,4 +77,9 @@ class BinExp(Composite):
 
     def ask(self, kb:'KB')->'KB':
         return self.askNegated(kb) if self.negation else self.askPositive(kb)
-    
+
+        
+    def unroll(self)->Sequence['Ast']:
+        x1 = self.left.unroll()
+        x2 = self.right.unroll() 
+        return [*x1, *x2]

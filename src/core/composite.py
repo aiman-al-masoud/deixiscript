@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from core.explicit import Int
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Sequence, TypeVar
 
 if TYPE_CHECKING:
     from core.KB import KB 
@@ -30,3 +30,6 @@ class Composite:
     T = TypeVar('T', bound='Ast')
     def copy(self:T, **kwargs:'Ast')->T:
         return self.__class__(**{**vars(self), **kwargs})
+
+    def unroll(self)->Sequence['Ast']:
+        return [self]

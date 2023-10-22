@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import GAP, Ast, unroll
+from core.language import GAP, Ast
 from core.simplesentence import SimpleSentence
 from core.binexp import BinExp
 from core.Def import Def
@@ -65,7 +65,7 @@ class EB(Generic[T]):
     def count(self, kb=KB()):
         r = self.get(kb)
         if r==False: return 0
-        if isinstance(r, BinExp): return len(unroll(r))
+        if isinstance(r, BinExp): return len(r.unroll())
         return 1
     
     def tell(self, kb=KB()):

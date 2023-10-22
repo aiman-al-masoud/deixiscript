@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Sequence
 
 if TYPE_CHECKING:
     from core.KB import KB
@@ -18,7 +18,9 @@ class Explicit():
 
     def copy(self, **kwargs:'Ast'):
         return self
-        # return self.__class__(**{**vars(self), **kwargs})
+
+    def unroll(self)->Sequence['Ast']:
+        return [self]
 
 class Str(str, Explicit):
     pass

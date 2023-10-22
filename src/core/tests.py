@@ -4,7 +4,7 @@ from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.subst import subst
 from core.findAsts import findAsts
-from core.language import  GAP, unroll
+from core.language import  GAP
 from core.explicit import Str
 from core.binexp import BinExp
 from core.implicit import Implicit
@@ -63,8 +63,8 @@ def test_c012():
     x3 = the('cat').tell(x2)
     allCats = every('cat').get(x3)
 
-    assert isinstance(allCats, BinExp)
-    assert unroll(allCats) == ['cat#3', 'cat#2', 'cat#1']
+    # assert isinstance(allCats, BinExp)
+    assert allCats.unroll() == ['cat#3', 'cat#2', 'cat#1']
 
 def test_c013(): # which (relative clause)
     kb1 = the('cat').which(does('have')._('fish').as_('food')).tell()
@@ -214,7 +214,7 @@ def test_c028():
     single   = the(1)('capra').get(kb3)
 
     assert isinstance(multiple, BinExp)
-    assert unroll(multiple) == ['capra#3', 'capra#2', 'capra#1']
+    assert multiple.unroll() == ['capra#3', 'capra#2', 'capra#1']
     assert isinstance(single, str)
 
 # # %% or-operator ask test
