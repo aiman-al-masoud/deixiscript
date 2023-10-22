@@ -1,12 +1,12 @@
 from functools import reduce
 from typing import Dict, Optional
-from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
+from core.language import Def, Ast, BinExp, Explicit, Implicit, SimpleSentence, Law
 
 
 def isMatch(sub:Ast, sup:Ast)->Optional[Dict[Ast, Ast]]:
 
     match sub, sup:
-        case str()|int()|bool(), str()|int()|bool():
+        case _, _ if isinstance(sub, Explicit) and isinstance(sup, Explicit):
             return {sup:sub} if sub==sup else None
 
         case Implicit(), Implicit():
