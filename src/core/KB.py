@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import FrozenSet, Tuple
 from core.DeicticDict import DeicticDict
-from core.language import Ast, Law, Def
+from core.language import Ast, Law
 from core.sortByGenerality import sortByGenerality
+from core.Def import Def
 
 
 WorldModel = FrozenSet[Tuple['Ast', 'Ast', 'Ast']]

@@ -1,5 +1,4 @@
 from typing import Sequence, TypeVar
-from core.Def import Def
 from core.binexp import BinExp
 from core.composite import Composite
 from core.explicit import Explicit, Str
