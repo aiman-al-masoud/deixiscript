@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Dict, Optional, Sequence
 from core.language import Ast
 
 if TYPE_CHECKING:
@@ -16,6 +16,9 @@ class Explicit(Ast):
     def unroll(self)->Sequence['Ast']:
         return [self]
 
+    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+        return {self:sub} if sub==self else None
+
 class Str(str, Explicit):
     
     @classmethod
@@ -25,4 +28,7 @@ class Str(str, Explicit):
         return Str('_')
 
 class Int(int, Explicit):
-    pass
+
+    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+        if self == True: return {self:sub}
+        return super().isMatch(sub)

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from core.composite import Composite
 from core.explicit import Int, Str
-from typing import TYPE_CHECKING, Sequence
+from typing import TYPE_CHECKING, Dict, Optional, Sequence
 
 if TYPE_CHECKING:
     from core.language import Ast
@@ -49,3 +49,15 @@ class BinExp(Composite):
         x1 = self.left.unroll()
         x2 = self.right.unroll() 
         return [*x1, *x2]
+
+    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+
+        from core.isMatch import everyone, someone
+
+        match self:
+            case BinExp(op='and'):
+                return everyone(self.left.isMatch(sub), self.right.isMatch(sub))
+
+            case BinExp(op='or'):
+                # return someone(isMatch(sub, sup.left), isMatch(sub, sup.right))
+                return someone(self.left.isMatch(sub), self.right.isMatch(sub))

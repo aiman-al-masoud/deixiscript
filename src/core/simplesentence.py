@@ -1,7 +1,8 @@
 from dataclasses import dataclass
+from core.binexp import BinExp
 from core.composite import Composite
 from core.explicit import Int, Str
-from typing import TYPE_CHECKING, Dict
+from typing import TYPE_CHECKING, Dict, Optional
 if TYPE_CHECKING:
     from core.language import Ast
     from core.KB import KB 
@@ -70,6 +71,24 @@ class SimpleSentence(Composite):
                 return kb1
         
         raise Exception()
+
+        
+    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+        from core.isMatch import everyone, someone
+
+        match sub:
+            case SimpleSentence():
+                sub_keys=sub.args.keys()
+                sup_keys=self.args.keys()
+                com_keys=sub_keys&sup_keys
+                if com_keys!=sup_keys: return None
+                return everyone(*[  self.args[k].isMatch(sub.args[k]) for k in com_keys ])
+                # return everyone(*[isMatch(sub.args[k], sup.args[k]) for k in com_keys])
+            case BinExp(op='and'):
+                # return someone(isMatch(sub.left, sup), isMatch(sub.right, sup))           
+                return someone( self.isMatch(sub.left), self.isMatch(sub.right)  )
+            case BinExp(op='or'):
+                raise Exception()
 
 
 def makeEvent(ast:SimpleSentence):
