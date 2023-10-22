@@ -52,7 +52,3 @@ class Implicit(Composite):
         which = subst(Str.GAP, r1.head, self.which)
         r2 = e(which).tell(r1)
         return r2 << Str(new)
-
-    def ask(self, kb:'KB')->'KB':
-        return self.askNegated(kb) if self.negation else self.askPositive(kb)
-    

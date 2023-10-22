@@ -70,9 +70,6 @@ class SimpleSentence(Composite):
         
         raise Exception()
 
-    def ask(self, kb:'KB')->'KB':
-        return self.askNegated(kb) if self.negation else self.askPositive(kb)
-
 
 def makeEvent(ast:SimpleSentence):
     from core.expbuilder import does, every

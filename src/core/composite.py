@@ -32,6 +32,9 @@ class Composite(Ast):
         return x3
 
     def ask(self, kb:'KB')->'KB':
+        return self.askNegated(kb) if self.negation else self.askPositive(kb)
+
+    def askPositive(self, kb:'KB')->'KB':
         raise Exception()
 
     def tellPositive(self, kb:'KB')->'KB':

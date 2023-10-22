@@ -49,10 +49,6 @@ class BinExp(Composite):
         return r2
 
 
-    def ask(self, kb:'KB')->'KB':
-        return self.askNegated(kb) if self.negation else self.askPositive(kb)
-
-        
     def unroll(self)->Sequence['Ast']:
         x1 = self.left.unroll()
         x2 = self.right.unroll() 

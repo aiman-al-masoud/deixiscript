@@ -20,7 +20,3 @@ class Law(Composite):
     
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self
-
-    def ask(self, kb:'KB')->'KB':
-        return self.askNegated(kb) if self.negation else self.askPositive(kb)
-    
