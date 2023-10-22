@@ -4,7 +4,7 @@ from core.KB import KB
 from core.decompress import decompress, isImplicitish, isIndividual, isNounPhrasish
 from core.expbuilder import does, e, every
 from core.language import GAP, Ast, BinExp, Composite, Def, Explicit, Implicit, Law, SimpleSentence, copy
-from core.subst import subst
+from core.subst import subst, substDict
 
 
 def evaluate(ast:Ast, kb:KB)->KB:
@@ -85,10 +85,19 @@ def askConcept(ast:Implicit, kb:KB)->KB:
     raise Exception('askConcept', ast)
 
 def askIndividual(ast:Implicit, kb:KB)->KB:
+
     x0 = {x for s in kb.wm for x in s}
     x1 = [x for x in x0 if isIndividual(x)]
     x2 = [x for x in x1 if e(x).does('be')._(ast.head).get(kb)]
+    
+    # TODO: PROBLEM! GAP is substituted also in sub-whichs, leading to bugs
+    # if ast.head == 'event' and ast.which!=True :print(x2)
+    # print('-------------')
+    # if ast.head == 'capra' and ast.which!=True :print(x2, ast.which)
+
     x3 = [x for x in x2 if e(subst(GAP, x, ast.which)).get(kb)]
+
+
     x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=ast.ord=='last')
     x5 = x4[:ast.card]
     if not x5: return kb << False
@@ -159,16 +168,21 @@ def tellIndividual(ast:Implicit, kb:KB)->KB:
     return r2 << new
 
 def define(ast:Composite, kb:KB)->Composite:
-    # TODO: maybe match->map then subst, else need to resolve args first and create new KB
-    from core.isMatch import isMatch 
-    x1 = next((d.definition for d in kb.defs if isMatch(ast, d.definendum)), None)
-    if not x1: return ast
-    assert isinstance(x1, Composite)
-    return define(x1, kb)
+
+    from core.isMatch import isMatch
+
+    for d in kb.defs:
+        m = isMatch(ast, d.definendum)
+        if m: 
+            x1=substDict(m, d.definition)
+            assert isinstance(x1, Composite)
+            return define(x1, kb)
+
+    return ast
 
 def conseq(ast:Composite, kb:KB)->Optional[Composite]:
     # TODO: when cause vanishes effects follow suit
-    # TODO: maybe match->map then subst, else need to resolve args first and create new KB
+    # TODO: match/map/subst
     from core.isMatch import isMatch
     x1 = tuple(d.effect for d in kb.laws if isMatch(ast, d.cause))
     if not x1: return None

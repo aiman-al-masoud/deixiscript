@@ -1,34 +1,37 @@
+from functools import reduce
+from typing import Dict, Optional
 from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
 
-# TODO: return map
-def isMatch(sub:Ast, sup:Ast)->bool:
+
+def isMatch(sub:Ast, sup:Ast)->Optional[Dict[Ast, Ast]]:
 
     match sub, sup:
         case str()|int()|float()|bool(), str()|int()|float()|bool():
-            return sub==sup
+            return {sup:sub} if sub==sup else None
 
         case Implicit(), Implicit():
             # if sup.card > sub.card: return False
-            return isMatch(sub.head, sup.head) and isMatch(sub.which, sup.which)
+            ok = everyone(isMatch(sub.head, sup.head), isMatch(sub.which, sup.which))
+            return {sup:sub} if ok else None
 
         case SimpleSentence(), SimpleSentence():
             sub_keys=sub.args.keys()
             sup_keys=sup.args.keys()
             com_keys=sub_keys&sup_keys
-            if com_keys!=sup_keys: return False
-            return all([isMatch(sub.args[k], sup.args[k]) for k in com_keys])
+            if com_keys!=sup_keys: return None
+            return everyone(*[isMatch(sub.args[k], sup.args[k]) for k in com_keys])
 
-        case BinExp(op='and'), SimpleSentence():                
-            return isMatch(sub.left, sup) or isMatch(sub.right, sup)
+        case BinExp(op='and'), SimpleSentence():
+            return someone(isMatch(sub.left, sup), isMatch(sub.right, sup))           
 
         case SimpleSentence(), BinExp(op='and'):
-            return isMatch(sub, sup.left) and isMatch(sub, sup.right)
+            return everyone(isMatch(sub, sup.left), isMatch(sub, sup.right))
 
         case BinExp(op='or'), SimpleSentence():
             raise Exception()
 
         case SimpleSentence(), BinExp(op='or'):
-            return isMatch(sub, sup.left) or isMatch(sub, sup.right)
+            return someone(isMatch(sub, sup.left), isMatch(sub, sup.right))
 
         case BinExp(op='and'|'or'), BinExp(op='and'|'or'):
             raise Exception()
@@ -40,8 +43,17 @@ def isMatch(sub:Ast, sup:Ast)->bool:
             return isMatch(c1, c2)
 
         case _, True:
-            return True
+            return {True:sub}
 
         case _:
-            return False
-            # raise Exception(sub, sup)
+            return None
+
+def someone(*maps:Dict[Ast, Ast]|None)->Optional[Dict[Ast, Ast]]:
+    okMaps=[m for m in maps if m]
+    if not okMaps: return None
+    return okMaps[0]
+
+def everyone(*maps:Dict[Ast, Ast]|None)->Optional[Dict[Ast, Ast]]:
+    okMaps = [m for m in maps if m]
+    if len(okMaps)!=len(maps): return None
+    return reduce(lambda a,b: {**a, **b}, okMaps)

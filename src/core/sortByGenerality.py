@@ -12,4 +12,4 @@ def sortByGenerality(asts:Iterable[T]):
     return x2
 
 def compareByGenerality(ast1:Ast, ast2:Ast)->int:
-    return isMatch(ast2, ast1) - isMatch(ast1, ast2)
+    return bool(isMatch(ast2, ast1)) - bool(isMatch(ast1, ast2))
