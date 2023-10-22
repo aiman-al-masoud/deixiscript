@@ -41,7 +41,6 @@ class Implicit:
         return kb << x7
     
     def tell(self, kb:'KB')->'KB':
-        # raise Exception()
         from core.expbuilder import every, e
         from core.subst import subst
         from core.language import GAP
@@ -56,4 +55,3 @@ class Implicit:
         which = subst(GAP, r1.head, self.which)
         r2 = e(which).tell(r1)
         return r2 << Str(new)
-
