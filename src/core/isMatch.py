@@ -6,7 +6,7 @@ from core.language import Def, Ast, BinExp, Implicit, SimpleSentence, Law
 def isMatch(sub:Ast, sup:Ast)->Optional[Dict[Ast, Ast]]:
 
     match sub, sup:
-        case str()|int()|float()|bool(), str()|int()|float()|bool():
+        case str()|int()|bool(), str()|int()|bool():
             return {sup:sub} if sub==sup else None
 
         case Implicit(), Implicit():
