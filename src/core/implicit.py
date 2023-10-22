@@ -55,3 +55,9 @@ class Implicit:
         which = subst(GAP, r1.head, self.which)
         r2 = e(which).tell(r1)
         return r2 << Str(new)
+
+    def askNegated(self, kb:'KB')->'KB':
+        from core.language import copy
+        from core.expbuilder import e
+        x1=e(copy(self, negation=Int(False))).ask(kb)
+        return x1 << (Int(not x1.head))

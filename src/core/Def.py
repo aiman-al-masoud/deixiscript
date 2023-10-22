@@ -21,3 +21,8 @@ class Def:
     def tell(self, kb:'KB')->'KB':
         return kb + self
 
+    def askNegated(self, kb:'KB')->'KB':
+        from core.language import copy
+        from core.expbuilder import e
+        x1=e(copy(self, negation=Int(False))).ask(kb)
+        return x1 << (Int(not x1.head))

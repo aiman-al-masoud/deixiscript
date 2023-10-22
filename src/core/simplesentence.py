@@ -71,7 +71,12 @@ class SimpleSentence:
                 return kb1
         
         raise Exception()
-
+    
+    def askNegated(self, kb:'KB')->'KB':
+        from core.language import copy
+        from core.expbuilder import e
+        x1=e(copy(self, negation=Int(False))).ask(kb)
+        return x1 << (Int(not x1.head))
 
 def makeEvent(ast:SimpleSentence):
     from core.expbuilder import does, every

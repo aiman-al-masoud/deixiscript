@@ -29,8 +29,7 @@ def tell(ast:Composite, kb:KB)->KB:
 def ask(ast:Composite, kb:KB)->KB:
 
     if ast.negation:
-        x1=e(copy(ast, negation=Int(False))).ask(kb)
-        return x1 << (Int(not x1.head))
+        return ast.askNegated(kb)
     
     return ast.ask(kb)
 

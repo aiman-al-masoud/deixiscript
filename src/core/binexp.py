@@ -48,3 +48,9 @@ class BinExp:
         r1 = e(self.left).tell(kb)
         r2 = e(self.right).tell(r1)
         return r2
+
+    def askNegated(self, kb:'KB')->'KB':
+        from core.language import copy
+        from core.expbuilder import e
+        x1=e(copy(self, negation=Int(False))).ask(kb)
+        return x1 << (Int(not x1.head))
