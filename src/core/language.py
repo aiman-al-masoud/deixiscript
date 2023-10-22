@@ -5,7 +5,6 @@ from core.composite import Composite
 from core.explicit import Explicit, Str
 from core.implicit import Implicit
 from core.law import Law
-from core.simplesentence import SimpleSentence
 
 
 NounPhrase = Explicit | Implicit
