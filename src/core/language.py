@@ -8,8 +8,6 @@ from core.implicit import Implicit
 NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 Ast = NounPhrasish | Composite
-# Composite = Implicit | BinExp | SimpleSentence | Def | Law
-
 
 GAP=Str('_')
 '''linguistic gap denoting the empty noun-phrase'''
