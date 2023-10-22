@@ -27,7 +27,6 @@ class Composite:
     def ask(self, kb:'KB')->'KB':
         raise Exception()
 
-    # T = TypeVar('T', bound='Ast')
-    # def copy(self, **kwargs:'Ast')->T:
-    def copy(self, **kwargs:'Ast'):
+    T = TypeVar('T', bound='Ast')
+    def copy(self:T, **kwargs:'Ast')->T:
         return self.__class__(**{**vars(self), **kwargs})
