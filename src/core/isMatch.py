@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import Dict, Optional
-from core.language import Def, Ast, BinExp, Explicit, Implicit, Int, SimpleSentence, Law, Str
-
+from core.language import Def, Ast, BinExp, Explicit, Implicit, SimpleSentence, Law, Str
+from core.explicit import Int
 
 def isMatch(sub:Ast, sup:Ast)->Optional[Dict[Ast, Ast]]:
 

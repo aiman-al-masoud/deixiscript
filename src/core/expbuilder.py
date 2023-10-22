@@ -1,8 +1,9 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import GAP, Def, Ast, BinExp, Implicit, Int, SimpleSentence, Law, Str, copy, unroll
+from core.language import GAP, Def, Ast, BinExp, Implicit, SimpleSentence, Law, Str, copy, unroll
 from core.KB import KB
+from core.explicit import Int
 
 
 T=TypeVar('T', bound='Ast')

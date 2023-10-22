@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import Tuple
 
-from core.language import Ast, Int
+from core.language import Ast
+from core.explicit import Int
 
 @dataclass(frozen=True)
 class DeicticDict:

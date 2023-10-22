@@ -3,9 +3,9 @@ from typing import Optional
 from core.KB import KB
 from core.decompress import decompress, isImplicitish, isIndividual, isNounPhrasish
 from core.expbuilder import does, e, every
-from core.language import GAP, Ast, BinExp, Composite, Def, Explicit, Implicit, Int, Law, SimpleSentence, Str, copy
+from core.language import GAP, Ast, BinExp, Composite, Def, Explicit, Implicit, Law, SimpleSentence, Str, copy
 from core.subst import subst, substDict
-
+from core.explicit import Int
 
 def evaluate(ast:Ast, kb:KB)->KB:
 
