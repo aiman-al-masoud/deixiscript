@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import GAP, Ast
+from core.language import Ast
 from core.simplesentence import SimpleSentence
 from core.binexp import BinExp
 from core.Def import Def
@@ -83,7 +83,7 @@ def e(x:Ast|EB|str|int):
     raise Exception()
 
 def does(v:str):
-    return e(GAP).does(Str(v))
+    return e(Str.GAP).does(Str(v))
 
 def it_is_false_that(x:Ast|EB):
     return EB(e(x).e.copy( negation=Int(True)))

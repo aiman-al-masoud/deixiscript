@@ -23,7 +23,12 @@ class Explicit():
         return [self]
 
 class Str(str, Explicit):
-    pass
+    
+    @classmethod
+    @property
+    def GAP(cls):
+        '''linguistic gap denoting the empty noun-phrase'''
+        return Str('_')
 
 class Int(int, Explicit):
     pass

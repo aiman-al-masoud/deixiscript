@@ -4,7 +4,6 @@ from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.subst import subst
 from core.findAsts import findAsts
-from core.language import  GAP
 from core.explicit import Str
 from core.binexp import BinExp
 from core.implicit import Implicit
@@ -21,7 +20,7 @@ def test_c002():
 
 def test_49(): # nested which GAP substitution
     x  = the('event').which(does('have')._(the('capra').which(does('be')._('red')))).e
-    y  = subst(GAP, Str('EVENT#1'), x.which)
+    y  = subst(Str.GAP, Str('EVENT#1'), x.which)
     ok = e('EVENT#1').does('have')._(the('capra').which(does('be')._('red'))).e
     assert y == ok
 
@@ -259,7 +258,7 @@ def test_c035():
     assert e('cat#1').does('eat')._('mouse#2').get(kb2)
     assert the('cat').does('eat')._(the('mouse')).get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
-    assert the('mouse').which(the('cat').does('eat')._(GAP)).get(kb2) == 'mouse#2'
+    assert the('mouse').which(the('cat').does('eat')._(Str.GAP)).get(kb2) == 'mouse#2'
     # assert the(the('mouse').which(e('cat#1').does('eat')._(_)).e).get(kb2)=='mouse#2'
 
 # %% cause and effect w/ synthetic derivation
