@@ -32,7 +32,7 @@ class Composite(Ast):
         return x3
 
     def ask(self, kb:'KB')->'KB':
-        return self.askNegated(kb) if self.negation else self.askPositive(kb)
+        return self.askNegative(kb) if self.negation else self.askPositive(kb)
 
     def askPositive(self, kb:'KB')->'KB':
         raise Exception()
@@ -47,7 +47,7 @@ class Composite(Ast):
     def unroll(self)->Sequence['Ast']:
         return [self]
 
-    def askNegated(self, kb:'KB')->'KB':
+    def askNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
         x1=e(self.copy(negation=Int(False))).ask(kb)
         return x1 << (Int(not x1.head))
