@@ -89,15 +89,7 @@ def askIndividual(ast:Implicit, kb:KB)->KB:
     x0 = {x for s in kb.wm for x in s}
     x1 = [x for x in x0 if isIndividual(x)]
     x2 = [x for x in x1 if e(x).does('be')._(ast.head).get(kb)]
-    
-    # TODO: PROBLEM! GAP is substituted also in sub-whichs, leading to bugs
-    # if ast.head == 'event' and ast.which!=True :print(x2)
-    # print('-------------')
-    # if ast.head == 'capra' and ast.which!=True :print(x2, ast.which)
-
     x3 = [x for x in x2 if e(subst(GAP, x, ast.which)).get(kb)]
-
-
     x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=ast.ord=='last')
     x5 = x4[:ast.card]
     if not x5: return kb << False
