@@ -13,9 +13,6 @@ class Def(Composite):
     negation:Int=Int(False)
     cmd:Int=Int(False)
     
-    def askPositive(self, kb:'KB')->'KB':
-        raise Exception()
-    
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self
 

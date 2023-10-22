@@ -42,6 +42,7 @@ class SimpleSentence(Composite):
             case SimpleSentence(verb=Str('have')):
                 x=(self.subject,self.object,self.as_)
                 return kb << Int(x in kb.wm)
+                
         raise Exception()
         
     
