@@ -15,19 +15,19 @@ class BinExp(Composite):
     right:'Ast'=Int(False)
     negation:'Ast'=Int(False) # ??
     cmd:'Ast'=Int(False)
-    
+
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isNounPhrasish
         from core.expbuilder import e
-        from core.language import copy
+        # from core.language import copy
 
         match self:
 
             case BinExp(op=Str('and'|'or')) if isNounPhrasish(self):
                 left = e(self.left).get(kb)
                 right = e(self.right).get(kb)
-                return kb << copy(self,left=left, right=right)
+                return kb << self.copy(left=left, right=right)
             case BinExp(op=Str('and')):
                 r1 = e(self.left).ask(kb)
                 if not r1.head: return r1
@@ -49,16 +49,16 @@ class BinExp(Composite):
         return r2
 
     def askNegated(self, kb:'KB')->'KB':
-        from core.language import copy
+        # from core.language import copy
         from core.expbuilder import e
-        x1=e(copy(self, negation=Int(False))).ask(kb)
+        x1=e(self.copy(negation=Int(False))).ask(kb)
         return x1 << (Int(not x1.head))
 
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.language import copy
+        # from core.language import copy
         # TODO: wrong
-        x1 = e(copy(self, negation=Int(False))).get(kb)
+        x1 = e(self.copy(negation=Int(False))).get(kb)
         # TODO unroll
         x2 = x1 if isinstance(x1, tuple) else (x1,)
         x3 = {s for s in kb.wm if set(s) & set(x2)}

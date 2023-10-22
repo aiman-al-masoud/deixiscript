@@ -71,21 +71,21 @@ class SimpleSentence(Composite):
         raise Exception()
     
     def askNegated(self, kb:'KB')->'KB':
-        from core.language import copy
+        # from core.language import copy
         from core.expbuilder import e
-        x1=e(copy(self, negation=Int(False))).ask(kb)
+        x1=e(self.copy(negation=Int(False))).ask(kb)
         return x1 << (Int(not x1.head))
 
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.language import copy
+        # from core.language import copy
 
         match self:
             case SimpleSentence(verb=Str('have')):
                 raise Exception()
             case _: 
                 # TODO: wrong
-                x1 = e(copy(self, negation=Int(False))).get(kb)
+                x1 = e(self.copy(negation=Int(False))).get(kb)
                 # TODO unroll
                 x2 = x1 if isinstance(x1, tuple) else (x1,)
                 x3 = {s for s in kb.wm if set(s) & set(x2)}
@@ -119,7 +119,7 @@ def makeEvent(ast:SimpleSentence):
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     from core.expbuilder import e
     from core.decompress import decompress
-    from core.language import copy
+    # from core.language import copy
 
     assert ast.verb=='have'
 
@@ -127,6 +127,6 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     x2=e(ast.object).ask(x1)
     x3=e(ast.as_).ask(x2)
 
-    x4=copy(ast, subject=x1.head, object=x2.head, as_=x3.head) # subject=x1.head or ast.subject ...
+    x4=ast.copy(subject=x1.head, object=x2.head, as_=x3.head)# subject=x1.head or ast.subject ...
     x5=decompress(x4)
     return x3 << x5

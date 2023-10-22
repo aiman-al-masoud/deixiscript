@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import GAP, Ast, copy, unroll
+from core.language import GAP, Ast, unroll
 from core.simplesentence import SimpleSentence
 from core.binexp import BinExp
 from core.Def import Def
@@ -33,7 +33,7 @@ class EB(Generic[T]):
 
     def complement(self, name:str, thing:'Ast|EB|str|int'):
         if not isinstance(self.e, SimpleSentence): raise Exception()
-        v = copy(self.e, **{name:e(thing).e})
+        v = self.e.copy(**{name:e(thing).e})
         return EB(v)
 
     def _(self, object:'Ast|EB|str|int'): return self.complement('object', object)
@@ -43,7 +43,7 @@ class EB(Generic[T]):
 
     def which(self, which:'Ast|EB')->'EB[Implicit]':
         assert isinstance(self.e, Implicit)
-        return EB(copy(self.e, which=e(which).e))
+        return EB(self.e.copy(which=e(which).e))
 
     def when(self, definition:'Ast|EB|int|str'):
         return EB(Def(definendum=self.e, definition=e(definition).e))
@@ -53,7 +53,7 @@ class EB(Generic[T]):
 
     @property
     def new(self):
-        x1=copy(self.e, cmd=Int(True))
+        x1=self.e.copy( cmd=Int(True))
         return EB(x1)
 
     def ask(self, kb=KB()):
@@ -86,7 +86,7 @@ def does(v:str):
     return e(GAP).does(Str(v))
 
 def it_is_false_that(x:Ast|EB):
-    return EB(copy(e(x).e, negation=Int(True)))
+    return EB(e(x).e.copy( negation=Int(True)))
 
 def new(x:Ast|EB):
     return e(x).new
