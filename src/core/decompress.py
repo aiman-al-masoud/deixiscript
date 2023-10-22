@@ -1,6 +1,9 @@
 from core.findAsts import findAsts
-from core.language import Ast, BinExp, Explicit, Implicit, NounPhrase, NounPhrasish, Str
+from core.language import Ast, NounPhrase, NounPhrasish
 from core.subst import  subst
+from core.binexp import BinExp
+from core.explicit import Explicit, Str
+from core.implicit import Implicit
 
 
 def decompress(ast:Ast)->Ast:

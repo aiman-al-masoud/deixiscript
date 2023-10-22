@@ -1,11 +1,13 @@
 import sys
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, TypeVar, overload
-from core.language import GAP, Ast, Implicit, Str, copy, unroll
+from core.language import GAP, Ast, copy, unroll
 from core.simplesentence import SimpleSentence
 from core.binexp import BinExp
 from core.Def import Def
 from core.law import Law
+from core.implicit import Implicit
+from core.explicit import Str
 
 
 from core.KB import KB

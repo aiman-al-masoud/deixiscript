@@ -4,7 +4,11 @@ from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.subst import subst
 from core.findAsts import findAsts
-from core.language import BinExp, Implicit, GAP, Str, unroll
+from core.language import  GAP, unroll
+from core.explicit import Str
+from core.binexp import BinExp
+from core.implicit import Implicit
+
 
 # %% subst tests
 def test_c001():

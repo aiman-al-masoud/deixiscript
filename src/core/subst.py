@@ -1,6 +1,8 @@
 from functools import reduce
 from typing import Dict
-from core.language import Ast, Explicit, Implicit
+from core.language import Ast
+from core.explicit import Explicit
+from core.implicit import Implicit
 
 def subst(
     old:Ast,
