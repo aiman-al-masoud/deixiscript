@@ -15,6 +15,7 @@ class KB:
     defs:Tuple['Def', ...]    =tuple()
     laws:Tuple['Law', ...]    =tuple()
     dd:DeicticDict            =DeicticDict()
+    concept:bool              =False
 
     def copy(self, **kwargs):
         return KB(**{**self.__dict__, **kwargs})

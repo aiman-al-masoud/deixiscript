@@ -24,7 +24,7 @@ class Implicit(Composite):
         from functools import reduce
         from core.expbuilder import e
 
-        if self.concept:
+        if kb.concept or self.concept:
             raise Exception()
 
         x0 = {x for s in kb.wm for x in s}
@@ -42,7 +42,7 @@ class Implicit(Composite):
         from core.expbuilder import every, e
         from core.subst import subst
 
-        if self.concept:
+        if kb.concept or self.concept:
             raise Exception()
 
         n = every(self.head).count(kb)+1
