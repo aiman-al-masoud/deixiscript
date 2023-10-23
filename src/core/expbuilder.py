@@ -8,8 +8,6 @@ from core.Def import Def
 from core.law import Law
 from core.implicit import Implicit
 from core.explicit import Str
-
-
 from core.KB import KB
 from core.explicit import Int
 
