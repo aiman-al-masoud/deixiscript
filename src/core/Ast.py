@@ -9,3 +9,7 @@ class Ast:
     def isMatch(self, sub:'Ast')->Optional[Dict['Ast', 'Ast']]: raise Exception()
     def subst(self, map:Dict['Ast', 'Ast'])->'Ast': raise Exception()
     def unroll(self)->Sequence['Ast']: raise Exception()
+    def define(self, kb:'KB')->'Ast': raise Exception()
+    def conseq(self, kb:'KB')->Optional['Ast']: raise Exception()
+    def ask(self, kb:'KB')->'KB': raise Exception()
+    def tell(self, kb:'KB')->'KB': raise Exception()

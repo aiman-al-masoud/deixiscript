@@ -13,20 +13,14 @@ class Composite(Ast):
 
     def eval(self, kb:'KB')->'KB':
 
-        from core.evaluate import define
-        defined = define(self, kb)
-        
-        if self.cmd:
-            return defined.tell(kb)
-        else:
-            return defined.ask(kb)
+        defined = self.define(kb)
+        return defined.tell(kb) if self.cmd else defined.ask(kb)
 
     def tell(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.evaluate import conseq
 
         x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
-        x2=conseq(self, kb)
+        x2=self.conseq(kb)
         if not x2: return x1
         x3 = e(x2).tell(x1)
         return x3
@@ -66,3 +60,26 @@ class Composite(Ast):
         if self in map: return map[self]
         d = {k: v.subst(map) for k,v in vars(self).items()}
         return self.__class__(**d)
+
+    def define(self, kb:'KB')->'Ast':
+
+        for d in kb.defs:
+            m = d.definendum.isMatch(self)
+
+            if m: 
+                x1=d.definition.subst(m)
+                return x1.define(kb)
+
+        return self
+    
+    def conseq(self, kb:'KB'):
+        # TODO: when cause vanishes effects follow suit
+        # TODO: match/map/subst
+        from core.expbuilder import e
+        from functools import reduce
+        x1 = tuple(d.effect for d in kb.laws if d.cause.isMatch(self))
+        if not x1: return None
+        x2 = [e(x) for x in x1]
+        x3 = reduce(lambda a,b: a.and_(b), x2).e
+        assert isinstance(x3, Composite)
+        return x3

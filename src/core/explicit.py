@@ -22,6 +22,9 @@ class Explicit(Ast):
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self in map: return map[self]
         return self
+    
+    def define(self, kb:'KB')->'Ast':
+        return self
 
 class Str(str, Explicit):
     
