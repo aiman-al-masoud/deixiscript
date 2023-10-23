@@ -83,9 +83,7 @@ class SimpleSentence(Composite):
                 com_keys=sub_keys&sup_keys
                 if com_keys!=sup_keys: return None
                 return everyone(*[  self.args[k].isMatch(sub.args[k]) for k in com_keys ])
-                # return everyone(*[isMatch(sub.args[k], sup.args[k]) for k in com_keys])
             case BinExp(op='and'):
-                # return someone(isMatch(sub.left, sup), isMatch(sub.right, sup))           
                 return someone( self.isMatch(sub.left), self.isMatch(sub.right)  )
             case BinExp(op='or'):
                 raise Exception()
