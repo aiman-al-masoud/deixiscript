@@ -1,16 +1,16 @@
+import os
 from lark import Lark
+from parse.transform import transform
 
-# grammar = open('./grammar.lark').read()
-# parser = Lark(grammar, start='ast') #  ambiguity='explicit'
-# x = parser.parse('capra which does be red does not jump')
-# # print(x.pretty())
-# # transform...
-
-grammar = open('./grammar2.lark').read()
+grammar_path=os.path.join(os.path.split(__file__)[0], 'grammar2.lark')
+grammar = open(grammar_path).read()
 parser = Lark(grammar, start='ast', ambiguity='explicit')
-x = parser.parse('the not cat')
+
+# x =parser.parse('the cat does be bad')
 # print(x.pretty())
-print(x)
-print(x.data)
-print(x.children)
-print(x.children[1])
+
+parser = Lark(grammar, start='ast', ambiguity='explicit')
+x = parser.parse('the cat which does run to x')
+# print(x.pretty())
+y = transform(x)
+print(y)
