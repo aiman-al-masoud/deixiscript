@@ -16,7 +16,6 @@ Edward Sapir, 19/20th century linguist famous for the Sapir–Whorf hypothesis o
 
 The analytic vs synthetic distinction has more than one linguistical definition because it relies on the fuzzy concept of "word". There are diachronic interpretations of what is means for a linguistical construct to be analytic or synthetic. A third category is agglutinating.
 
-
 The simple idea, using the "intuitive" idea of "word", is that an analytic grammar isolates morphemes (ie: basic units of meaning) into separate words, agglutinating grammar sticks them together without changing them, and a synthetic grammar sticks up multiple morphemes in the same word while also attributing multiple meanings to the same morpheme.
 
 Languages can be more or less synthetic/analytic. The more synthetic the language, the more complex its morphology (ie: word building rules) and the more flat its syntax (ie: word order).
