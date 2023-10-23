@@ -21,6 +21,10 @@
 
 [local](../attachments/natural-mapping-voice-commands-api.pdf)
 
+### Vosk speech recognition toolkit
+
+https://alphacephei.com/vosk/
+
 ------------
 
 
