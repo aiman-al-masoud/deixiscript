@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from core.explicit import Int
 from typing import TYPE_CHECKING, Dict, Sequence, TypeVar
-from core.language import Ast
+from core.Ast import Ast
 
 if TYPE_CHECKING:
     from core.KB import KB 

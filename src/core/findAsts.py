@@ -1,5 +1,5 @@
 from typing import Callable, Sequence
-from core.language import Ast
+from core.Ast import Ast
 from core.explicit import Explicit
 
 def findAsts(ast:Ast, fn:Callable[[Ast],bool])->Sequence[Ast]:

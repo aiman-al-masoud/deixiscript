@@ -1,6 +1,6 @@
 from core.composite import Composite
 from core.findAsts import findAsts
-from core.language import Ast
+from core.Ast import Ast
 from core.binexp import BinExp
 from core.explicit import Explicit, Str
 from core.implicit import Implicit

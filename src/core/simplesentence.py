@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from core.binexp import BinExp
 from core.composite import Composite
 from core.explicit import Int, Str
-from core.language import Ast
+from core.Ast import Ast
 
 if TYPE_CHECKING:
     from core.KB import KB 

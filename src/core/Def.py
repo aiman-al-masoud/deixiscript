@@ -2,8 +2,9 @@ from dataclasses import dataclass
 from core.composite import Composite
 from core.explicit import Int
 from typing import TYPE_CHECKING, Dict, Optional
+from core.Ast import Ast
+
 if TYPE_CHECKING: 
-    from core.language import Ast
     from core.KB import KB
 
 @dataclass(frozen=True)

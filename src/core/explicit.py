@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING, Dict, Optional, Sequence
-from core.language import Ast
+from core.Ast import Ast
 
 if TYPE_CHECKING:
     from core.KB import KB

@@ -1,6 +1,6 @@
 from functools import cmp_to_key
 from typing import Iterable, TypeVar
-from core.language import Ast
+from core.Ast import Ast
 
 
 T = TypeVar('T', bound=Ast)

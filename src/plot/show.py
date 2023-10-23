@@ -1,4 +1,4 @@
-from core.language import Ast
+from core.Ast import Ast
 from core.KB import KB, WorldModel
 
 def show(wm:WorldModel):

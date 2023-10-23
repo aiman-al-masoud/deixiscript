@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import FrozenSet, Tuple
 from core.DeicticDict import DeicticDict
-from core.language import Ast
+from core.Ast import Ast
 from core.sortByGenerality import sortByGenerality
 from core.Def import Def
 from core.law import Law

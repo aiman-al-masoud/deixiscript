@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Tuple
 
-from core.language import Ast
+from core.Ast import Ast
 from core.explicit import Int
 
 @dataclass(frozen=True)
