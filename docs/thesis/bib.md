@@ -3,7 +3,6 @@
 ### Naturalistic Types Roman Knöll Vaidas Gasiunas Mira Mezini
 ### Beyond AOP: Toward Naturalistic Programming
 ### Programs with Common Sense John McCarthy
-### Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly Michael Nichols, Qian Wang, Gopal Gupta
 ### Metafor: Visualizing Stories as Code Hugo Liu Henry Lieberman
 ### Programmatic Semantics for Natural Language Interfaces Hugo Liu Henry Lieberman
 ### Toward a Programmatic Semantics of Natural Language Hugo Liu and Henry Lieberman
@@ -19,10 +18,14 @@
 ### A Survey of Naturalistic Programming Technologies (Pulido)
 ### The Roots of Lisp (Paul Graham)
 ### On the Evolution of Programming Languages K. R. Chowdhary, Professor
+### Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly Michael Nichols, Qian Wang, Gopal Gupta
+### Programming by Voice Efficiency in the Reactive and Imperative Paradigm Miriam Lagergren, Max Soneryd
+### An Empirical Approach for the Evaluation of Voice User Interfaces Valéria Farinazzo et al
+### Natural mapping between voice commands and APIs Matúš Sulír* and Jaroslav Porubän
+### Programming by Voice, VocalProgramming Stephen C. Arnold et al
 
 
 ### On the Positive Effect of Reactive Programming on Software Comprehension: An Empirical Study
-### Programming by Voice Efficiency in the Reactive and Imperative Paradigm Miriam Lagergren, Max Soneryd
 ### Attempto Controlled English (ACE) Language Manual
 ### Attempto Controlled English Meets the Challenges of Knowledge Representation, Reasoning, Interoperability and User Interfaces
 ### The Advice Taker 2.0
@@ -35,12 +38,11 @@
 ### On Deep Computational Formalization of Natural Language
 ### Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
 ### Dependency Parsing for Spoken Dialog Systems
-### Natural mapping between voice commands and APIs Matúš Sulír* and Jaroslav Porubän
 ### Program Synthesis using Natural Language Aditya Desai et al
-### An Empirical Approach for the Evaluation of Voice User Interfaces Valéria Farinazzo et al
 ### EPISTEMOLOGICAL PROBLEMS OF ARTIFICIAL INTELLIGENCE John McCarthy
 ### Evolution of Naturalistic Programming: A Need Lizbeth A. Hernández-González et al
 ### Formal Models of Language: Formal versus Natural Language Paula Buttery
+[local](../attachments/Formal_vs_Natural%202020.pdf)
 ### Growing a Language Guy L. Steele Jr.
 ### LEARNING SYMBOLIC RULES FOR REASONING IN QUASI NATURAL LANGUAGE Kaiyu Yang
 ### Learning to Transform Natural to Formal Languages Rohit J. Kate et al
@@ -49,7 +51,6 @@
 ### On our best behaviour Hector J. Levesque
 ### Plain English Programming The Osmosian Order of Plain English Programmers
 ### SOME PHILOSOPHICAL PROBLEMS FROM THE STANDPOINT OF ARTIFICIAL INTELLIGENCE John McCarthy and Patrick J. Hayes
-### Programming by Voice, VocalProgramming Stephen C. Arnold et al
 ### Runtime Semantics of Use Case Stories Michał Śmiałek, Norbert Jarz˛ebowski, Wiktor Nowakowski
 ### The Heuristic Reasoning Manifesto Praveen K. Paritosh
 ### Toward a New Science of Common Sense Ronald J. Brachman, Hector J. Levesque
