@@ -26,16 +26,3 @@ class Explicit(Ast):
     def define(self, kb:'KB')->'Ast':
         return self
 
-class Str(str, Explicit):
-    
-    @classmethod
-    @property
-    def GAP(cls):
-        '''linguistic gap denoting the empty noun-phrase'''
-        return Str('_')
-
-class Int(int, Explicit):
-
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
-        if self == True: return {self:sub}
-        return super().isMatch(sub)

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from core.composite import Composite
-from core.explicit import Int, Str
 from typing import TYPE_CHECKING, Dict, Optional, Sequence
 from core.Ast import Ast
+from core.Str import Str
+from core.Int import Int
 
 if TYPE_CHECKING:
     from core.KB import KB

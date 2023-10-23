@@ -2,8 +2,9 @@ from typing import Callable, Sequence
 from core.composite import Composite
 from core.Ast import Ast
 from core.binexp import BinExp
-from core.explicit import Explicit, Str
+from core.Str import Str
 from core.implicit import Implicit
+from core.explicit import Explicit
 
 
 NounPhrase = Explicit | Implicit

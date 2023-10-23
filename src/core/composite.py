@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from core.explicit import Int
+from core.Int import Int
 from typing import TYPE_CHECKING, Dict, Sequence, TypeVar
 from core.Ast import Ast
 

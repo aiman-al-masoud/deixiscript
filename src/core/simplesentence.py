@@ -2,7 +2,8 @@ from typing import TYPE_CHECKING, Dict, Optional
 from dataclasses import dataclass
 from core.binexp import BinExp
 from core.composite import Composite
-from core.explicit import Int, Str
+from core.Int import Int
+from core.Str import Str
 from core.Ast import Ast
 
 if TYPE_CHECKING:
@@ -28,7 +29,6 @@ class SimpleSentence(Composite):
 
     def askPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.explicit import Str
         from core.decompress import isImplicitish
         
         match self:
@@ -50,7 +50,6 @@ class SimpleSentence(Composite):
     
     def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.explicit import Str
         from core.decompress import isImplicitish
 
         match self:
