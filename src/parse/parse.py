@@ -8,5 +8,5 @@ from lark import Lark
 
 grammar = open('./grammar2.lark').read()
 parser = Lark(grammar, start='ast', ambiguity='explicit')
-x = parser.parse('not cat does run')
+x = parser.parse('the not cat')
 print(x.pretty())
