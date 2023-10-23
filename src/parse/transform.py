@@ -1,57 +1,63 @@
-from lark import ParseTree, Token
-from core.expbuilder import does, e, the
-from core.Ast import Ast
+# from lark import ParseTree, Token, Tree
+# from core.expbuilder import does, e, the
+# from core.Ast import Ast
 
-def transform(st:ParseTree|Token)->Ast:
-
-    match st:
-
-        case Token():
-            return e(int(st) if st.isnumeric() else st).e
-
-        case _ if st.data=='noun':
-            # card
-            # ord
-            # negation
-            # cmd
-            # concept
-            head=transform(getChild(st, 'noun_head'))
-            return the('').e.copy(head=head)
-
-        case _ if st.data=='relative':
-            head=transform(getChild(st, 'relative_head'))
-            subo=transform(getChild(st, 'subordinate'))
-            return head.copy(which=subo)
-        
-        case _ if st.data=='simple_sentence':
-            # verb
-            # subject
-            # object
-            # as
-            # to
-            # on
-            # negation
-            # cmd
-            print(getChild(st, 'complement'))
-
-            verb=transform(getChild(st, 'verb'))
-            return does(str(verb)).e
-        
-        case _ if st.data=='compound_sentence':
-            # left
-            # right
-            # op
-            pass
-
-     # # raise Exception()
+# def transform(st:ParseTree|Token)->Ast:
 
 
-def getChild(st:ParseTree, name:str):
-    x1=list(st.find_data(name))
-    print(x1)
-    # x2=next(x1)
-    x2=x1[0]
-    x3=x2.children[0]
-    return x3
+#     match st:
+
+#         case Token():
+#             return e(int(st) if st.isnumeric() else st).e
+#         case Tree(data=Token('RULE','noun')):
+#             # print('NOUN!', xs)    
+#             print('CNOAUNDN!')
+#             pass
+#         case Tree(data=Token('RULE','relative')):
+#             pass
+#         case Tree(data=Token('RULE','simple_sentence')):
+#             pass
+#         case Tree(data=Token('RULE','compound_sentence')):
+#             pass
+#         # noun
+#             # head
+#             # card
+#             # ord
+#             # negation
+#             # cmd
+#         # relative
+#             # head
+#             # which
+#         # simple_sentence
+#             # verb
+#             # subject
+#             # object
+#             # as
+#             # to
+#             # on
+#             # negation
+#             # cmd
+#         # compound_sentence
+#             # left
+#             # right
+#             # op
 
 
+
+
+from typing import List
+from lark import Lark, Transformer, Tree
+
+from core.expbuilder import e
+
+class BurufTransformer(Transformer):
+
+    def NUMBER(self, tok):
+        return tok.update(value=int(tok))
+
+    def noun(self, children:List[Tree]):
+        print('children=', children)
+
+        return e(1)
+
+    
