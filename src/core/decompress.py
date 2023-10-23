@@ -1,7 +1,6 @@
 from core.composite import Composite
 from core.findAsts import findAsts
 from core.language import Ast
-from core.subst import  subst
 from core.binexp import BinExp
 from core.explicit import Explicit, Str
 from core.implicit import Implicit
@@ -20,8 +19,8 @@ def decompress(ast:Ast)->Ast:
     assert isinstance(conn, BinExp)
 
     op = opposite(conn.op) if ast.negation else conn.op
-    left = decompress(subst(conn,conn.left,ast))
-    right = decompress(subst(conn,conn.right,ast))
+    left = decompress(ast.subst({conn:conn.left}))
+    right = decompress(ast.subst({conn:conn.right}))
 
     return BinExp(op=op, left=left, right=right, cmd=ast.cmd)
 

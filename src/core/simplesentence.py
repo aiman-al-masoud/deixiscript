@@ -1,8 +1,8 @@
+from typing import TYPE_CHECKING, Dict, Optional
 from dataclasses import dataclass
 from core.binexp import BinExp
 from core.composite import Composite
 from core.explicit import Int, Str
-from typing import TYPE_CHECKING, Dict, Optional
 from core.language import Ast
 
 if TYPE_CHECKING:

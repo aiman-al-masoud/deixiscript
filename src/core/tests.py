@@ -1,7 +1,6 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the
 from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
-from core.subst import subst
 from core.findAsts import findAsts
 from core.explicit import Str
 from core.binexp import BinExp
@@ -10,16 +9,16 @@ from core.implicit import Implicit
 
 # %% subst tests
 def test_c001():
-    x = subst(Str('capra'), Str('cat'), e('capra').does('jump').e)
+    x = e('capra').does('jump').e.subst({Str('capra'):Str('cat')})
     assert x == e('cat').does('jump').e
 
 def test_c002():
-    x = subst(Str('capra'), Str('cat'), e('capra').and_('cavallo').and_('capra').e)
+    x = e('capra').and_('cavallo').and_('capra').e.subst({Str('capra'):Str('cat')})
     assert x == e('cat').and_('cavallo').and_('cat').e
 
 def test_49(): # nested which GAP substitution
     x  = the('event').which(does('have')._(the('capra').which(does('be')._('red')))).e
-    y  = subst(Str.GAP, Str('EVENT#1'), x.which)
+    y  = x.which.subst({Str.GAP: Str('EVENT#1')})
     ok = e('EVENT#1').does('have')._(the('capra').which(does('be')._('red'))).e
     assert y == ok
 
