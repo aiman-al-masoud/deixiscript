@@ -10,7 +10,7 @@ parser = Lark(grammar, start='ast', ambiguity='explicit')
 # print(x.pretty())
 
 parser = Lark(grammar, start='ast', ambiguity='explicit')
-x = parser.parse('the cat which does run to x')
+x = parser.parse('the cat which does run to x as y')
 # print(x.pretty())
 y = transform(x)
 print(y)
