@@ -64,5 +64,7 @@ class Implicit(Composite):
         if self.which!=True: return self
         return super().subst(map)
 
+    # TODO: askNegative returning everything that does not match this type
+
 def isIndividual(x:Ast):
     return isinstance(x, str) and '#' in x

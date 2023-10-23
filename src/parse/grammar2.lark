@@ -1,0 +1,51 @@
+// AST ---------------------------------------------------------
+?ast: noun_phrase | sentence | meta_command
+
+// META COMMANDS -----------------------------------------------
+meta_command: "meta" arg1 arg2
+arg1: ARG1
+arg2: ARG2
+
+// SENTENCE ----------------------------------------------------
+?sentence: simple_sentence | compound_sentence
+
+// COMPOUND (AND ALSO COMPLEX) SENTENCE ------------------------
+compound_sentence: left op right
+left: ast
+right: ast
+op: BINOP
+
+// SIMPLE-SENTENCE ----------------------------------------------
+?simple_sentence: command | question
+?question: question1 | question2
+question1: "does" subject "do" verb object? complement*
+question2: subject? "does" verb object? complement* "?"
+command: subject? "does" verb object? complement*
+subject: noun_phrase
+verb: NAME
+object: noun_phrase
+?complement: preposition noun_phrase?
+preposition: PREPOSITION
+
+// NOUN-PHRASE --------------------------------------------------
+?noun_phrase: noun | relative
+
+?relative: noun_phrase "which" subordinate
+subordinate: sentence
+
+?noun: ("the"|"an"|"a")? ord? card? negation? noun_head
+noun_head: NAME
+card: NUMBER
+ord: ORDINAL
+
+// TERMINALS ----------------------------------------------------
+negation: "not"
+NAME: /[a-z]+/ | "_"
+NUMBER: /[0-9]+/
+ORDINAL: "first" | "last"
+ARG1: "switch mode"
+ARG2: "concept" | "world"
+BINOP: "and" | "or" | "when" | "after"
+PREPOSITION: "to" | "as" | "from" | "on"
+%import common.WS
+%ignore WS
