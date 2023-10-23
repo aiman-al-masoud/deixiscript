@@ -75,7 +75,7 @@ class SimpleSentence(Composite):
 
         
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
-        from core.isMatch import everyone, someone
+        from core.isMatch import everyMap, someMap
 
         match sub:
             case SimpleSentence():
@@ -83,9 +83,9 @@ class SimpleSentence(Composite):
                 sup_keys=self.args.keys()
                 com_keys=sub_keys&sup_keys
                 if com_keys!=sup_keys: return None
-                return everyone(*[  self.args[k].isMatch(sub.args[k]) for k in com_keys ])
+                return everyMap(*[  self.args[k].isMatch(sub.args[k]) for k in com_keys ])
             case BinExp(op='and'):
-                return someone( self.isMatch(sub.left), self.isMatch(sub.right)  )
+                return someMap( self.isMatch(sub.left), self.isMatch(sub.right)  )
             case BinExp(op='or'):
                 raise Exception()
 

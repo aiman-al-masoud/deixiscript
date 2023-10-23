@@ -52,12 +52,12 @@ class BinExp(Composite):
 
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
 
-        from core.isMatch import everyone, someone
+        from core.isMatch import everyMap, someMap
 
         match self:
             case BinExp(op='and'):
-                return everyone(self.left.isMatch(sub), self.right.isMatch(sub))
+                return everyMap(self.left.isMatch(sub), self.right.isMatch(sub))
 
             case BinExp(op='or'):
                 # return someone(isMatch(sub, sup.left), isMatch(sub, sup.right))
-                return someone(self.left.isMatch(sub), self.right.isMatch(sub))
+                return someMap(self.left.isMatch(sub), self.right.isMatch(sub))
