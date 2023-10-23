@@ -1,5 +1,5 @@
+from typing import Callable, Sequence
 from core.composite import Composite
-from core.findAsts import findAsts
 from core.Ast import Ast
 from core.binexp import BinExp
 from core.explicit import Explicit, Str
@@ -29,9 +29,6 @@ def opposite(x:Str):
     if x == 'or': return Str('and')
     raise Exception('')
 
-def isIndividual(x:Ast):
-    return isinstance(x, str) and '#' in x
-
 def isImplicitish(ast:Ast):
     if isinstance(ast, Explicit): return False
     if isinstance(ast, Implicit): return True
@@ -49,3 +46,9 @@ def isNounPhrasishConn(ast:Ast):
 def findNounPhrasishConjs(x:Ast):
     return findAsts(x, isNounPhrasishConn)
     
+def findAsts(ast:Ast, fn:Callable[[Ast],bool])->Sequence[Ast]:
+
+    if fn(ast): return (ast,)
+    if isinstance(ast, Explicit): return tuple()
+
+    return tuple(y for x in vars(ast).values() for y in findAsts(x, fn))

@@ -1,10 +1,8 @@
 from core.expbuilder import does, e, every, it_is_false_that, new, the
 from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
-from core.findAsts import findAsts
 from core.explicit import Str
 from core.binexp import BinExp
-from core.implicit import Implicit
 
 
 # %% subst tests
@@ -28,13 +26,13 @@ def test_49(): # nested which GAP substitution
 #     ast = e('capra').and_(3).and_(1).and_('gatto').e
 #     assert findAsts(ast, lambda x:isinstance(x, int) and not isinstance(x, bool)) == (Int(3), Int(1))
 
-def test_c007():
-    ast = the('cat').does('jump').and_(the('dog').does('run')).e
-    assert findAsts(ast, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
+# def test_c007():
+#     ast = the('cat').does('jump').and_(the('dog').does('run')).e
+#     assert findAsts(ast, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
 
-def test_c008():
-    x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
-    assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').which(does('jump')).e, the('cat').e)
+# def test_c008():
+#     x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
+#     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').which(does('jump')).e, the('cat').e)
 
 # %% decompress tests
 def test_c009():

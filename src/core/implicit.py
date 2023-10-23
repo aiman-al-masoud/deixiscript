@@ -19,8 +19,6 @@ class Implicit(Composite):
     concept:Int   =Int(False)
         
     def askPositive(self, kb:'KB')->'KB':
-        from core.decompress import isIndividual
-        # from core.subst import subst
         from functools import reduce
         from core.expbuilder import e
 
@@ -64,3 +62,6 @@ class Implicit(Composite):
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self.which!=True: return self
         return super().subst(map)
+
+def isIndividual(x:Ast):
+    return isinstance(x, str) and '#' in x
