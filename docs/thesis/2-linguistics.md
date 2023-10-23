@@ -4,17 +4,18 @@ Edward Sapir, 19/20th century linguist famous for the Sapir–Whorf hypothesis o
 
 > Were a language ever completely "grammatical" it would be a perfect engine of 
 > conceptual expression. Unfortunately, or luckily, no language is tyrannically
-> consistent. All grammars leak.
+> consistent. All grammars leak [1](#1).
 
-https://en.wikiquote.org/wiki/Edward_Sapir
+<!-- https://en.wikiquote.org/wiki/Edward_Sapir -->
 
-This is to say that it is highly unlikely that we will ever come up with a grammar that perfectly describes all of the nuances of how a real natural language is actually used in day to day speech, especially not in this thesis, but compromises need to be made if we want to be able to run this naturalistic language on a machine in the manner of a more traditional programming language.
+[1](./bib.md#edward-sapir-language-1921)
+[2](./bib.md#analytic-and-synthetic-typological-change-in-varieties-of-european-languages)
+
 
 # Analytic vs Synthetic
 
 The analytic vs synthetic distinction has more than one linguistical definition because it relies on the fuzzy concept of "word". There are diachronic interpretations of what is means for a linguistical construct to be analytic or synthetic. A third category is agglutinating.
 
-[Diachronic Interpretation](../../attachments/analytic-and-synthetic-typological-change-in-varieties-of-european-languages.pdf)
 
 The simple idea, using the "intuitive" idea of "word", is that an analytic grammar isolates morphemes (ie: basic units of meaning) into separate words, agglutinating grammar sticks them together without changing them, and a synthetic grammar sticks up multiple morphemes in the same word while also attributing multiple meanings to the same morpheme.
 
