@@ -60,5 +60,4 @@ class BinExp(Composite):
                 return everyMap(self.left.isMatch(sub), self.right.isMatch(sub))
 
             case BinExp(op='or'):
-                # return someone(isMatch(sub, sup.left), isMatch(sub, sup.right))
                 return someMap(self.left.isMatch(sub), self.right.isMatch(sub))
