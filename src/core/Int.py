@@ -1,6 +1,6 @@
 
 from typing import Dict, Optional
-from core.explicit import Explicit
+from core.Explicit import Explicit
 from core.Ast import Ast
 
 class Int(int, Explicit):

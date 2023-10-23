@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Dict, Optional
 from dataclasses import dataclass
-from core.composite import Composite
+from core.Composite import Composite
 from core.Int import Int
 from core.Str import Str
 from core.Ast import Ast

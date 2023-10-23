@@ -1,10 +1,10 @@
 from typing import Callable, Sequence
-from core.composite import Composite
+from core.Composite import Composite
 from core.Ast import Ast
-from core.binexp import BinExp
+from core.BinExp import BinExp
 from core.Str import Str
-from core.implicit import Implicit
-from core.explicit import Explicit
+from core.Implicit import Implicit
+from core.Explicit import Explicit
 
 
 NounPhrase = Explicit | Implicit

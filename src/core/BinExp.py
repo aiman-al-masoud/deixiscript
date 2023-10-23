@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from core.composite import Composite
+from core.Composite import Composite
 from typing import TYPE_CHECKING, Dict, Optional, Sequence
 from core.Ast import Ast
 from core.Str import Str

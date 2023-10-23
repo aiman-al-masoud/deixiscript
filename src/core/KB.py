@@ -4,7 +4,7 @@ from core.DeicticDict import DeicticDict
 from core.Ast import Ast
 from core.sortByGenerality import sortByGenerality
 from core.Def import Def
-from core.law import Law
+from core.Law import Law
 
 
 WorldModel = FrozenSet[Tuple['Ast', 'Ast', 'Ast']]
