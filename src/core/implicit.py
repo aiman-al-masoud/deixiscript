@@ -60,3 +60,7 @@ class Implicit(Composite):
         # if sup.card > sub.card: return False
         ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
         return {self:sub} if ok else None
+    
+    def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
+        if self.which!=True: return self
+        return super().subst(map)

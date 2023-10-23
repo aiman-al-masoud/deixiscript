@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from core.explicit import Int
-from typing import TYPE_CHECKING, Sequence, TypeVar
+from typing import TYPE_CHECKING, Dict, Sequence, TypeVar
 from core.language import Ast
 
 if TYPE_CHECKING:
@@ -61,3 +61,8 @@ class Composite(Ast):
         x3 = {s for s in kb.wm if set(s) & set(x2)}
         x4 = frozenset(x3)
         return kb - x4
+    
+    def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
+        if self in map: return map[self]
+        d = {k: v.subst(map) for k,v in vars(self).items()}
+        return self.__class__(**d)

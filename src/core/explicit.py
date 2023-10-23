@@ -19,6 +19,10 @@ class Explicit(Ast):
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
         return {self:sub} if sub==self else None
 
+    def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
+        if self in map: return map[self]
+        return self
+
 class Str(str, Explicit):
     
     @classmethod
