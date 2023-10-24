@@ -27,18 +27,22 @@ https://alphacephei.com/vosk/
 
 ### Dependency Parsing for Spoken Dialog Systems
 
+[local](../attachments/dependency-parsing-spoken-dialogue.pdf)
 
 # LINGUISTICS & NLP
 
 ### Edward Sapir. Language (1921)
 ### Analytic and synthetic: Typological change in varieties of European languages
-### Gapping (Linguistics) https://www.jstor.org/stable/4177923
-### Topic and Comment Daniel B¨uring (UCLA) https://www.igntu.ac.in/eContent/IGNTU-eContent-845977415543-MA-Linguistics-2-HarjitSingh-IntroductiontoSemanticsandPragmatics-6.pdf
+### Gapping: A Functional Analysis
+https://www.jstor.org/stable/4177923
+### Topic and Comment Daniel B¨uring (UCLA) 
+https://www.igntu.ac.in/eContent/IGNTU-eContent-845977415543-MA-Linguistics-2-HarjitSingh-IntroductiontoSemanticsandPragmatics-6.pdf
 ### Hyperonymy https://dictionary.cambridge.org/dictionary/english/hypernym
 ### Language and Communication Problems in Formalization: A Natural Language Approach (Alessandro Fantechi et al)
 ### Formal Models of Language: Formal versus Natural Language Paula Buttery
 [local](../attachments/Formal_vs_Natural%202020.pdf)
-### Lark (parsing library) https://lark-parser.readthedocs.io/en/stable/
+### Lark (parsing library) 
+https://lark-parser.readthedocs.io/en/stable/
 ### NLP (Natural Language Processing) for NLP (Natural Language Programming) Rada Mihalcea1 , Hugo Liu2 , and Henry Lieberman
 ### Semantic gap https://www.techopedia.com/definition/21996/semantic-gap
 ### Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
@@ -97,11 +101,31 @@ https://alphacephei.com/vosk/
 
 
 # PHILOSOPHY
-### Synthetic/Analytic distinction (Philosophy) https://plato.stanford.edu/entries/analytic-synthetic/
+
+### Synthetic/Analytic distinction (Philosophy) 
+
+https://plato.stanford.edu/entries/analytic-synthetic/
+
+[local](../attachments/synthetic-analytic-distinction-philo-stanford.pdf)
+
 ### Compositionality Stanford Encyclopedia of Philosophy (Philosophy)
+
+https://plato.stanford.edu/entries/compositionality/
+
+[local](../attachments/compositionality-of-language.pdf)
+
 ### EPISTEMOLOGICAL PROBLEMS OF ARTIFICIAL INTELLIGENCE John McCarthy
-### Discourse representation Theory Stanford (Philosophy) https://plato.stanford.edu/entries/discourse-representation-theory/
+
+[local](../attachments/epistemological-problems-of-ai-mccarthy.pdf)
+
+### Discourse representation Theory Stanford (Philosophy) 
+https://plato.stanford.edu/entries/discourse-representation-theory/
+
+[local](../attachments/discourse-representation-theory.pdf)
+
 ### SOME PHILOSOPHICAL PROBLEMS FROM THE STANDPOINT OF ARTIFICIAL INTELLIGENCE John McCarthy and Patrick J. Hayes
+
+[local](../attachments/philosophical-problems-from-standpoint-of-ai-mccarthy.pdf)
 
 -------------------------------
 
