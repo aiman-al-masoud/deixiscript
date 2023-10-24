@@ -13,7 +13,7 @@ parser = Lark(grammar, start='ast', ambiguity='explicit')
 # print(x)
 
 parser = Lark(grammar, start='ast', ambiguity='explicit')
-x = parser.parse('1 cat does run')
+x = parser.parse('1 cat does run on floor')
 
 y = ToDict().transform(x)
 print(y)

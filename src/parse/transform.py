@@ -58,6 +58,9 @@ class ToDict(Transformer):
     def NAME(self, children):
         return str(children)
 
+    def PREPOSITION(self, children):
+        return str(children)
+
     def ord(self, children):
         return {'ord': children}
 
@@ -103,7 +106,8 @@ class ToDict(Transformer):
     def verb(self, children):
         return {'verb': children}
 
-    def simple_sentence(self, children):        
+    def simple_sentence(self, children):
+        print(children)
         return {'type':'simple_sentence', **reduce(lambda a,b: {**a, **b}, children)}
 
     def compound_sentence(self, children):
