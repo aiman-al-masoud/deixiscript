@@ -24,27 +24,26 @@ class BinExp(Composite):
         match self:
 
             case BinExp(op=Str('and'|'or')) if isNounPhrasish(self):
-                left = e(self.left).get(kb)
-                right = e(self.right).get(kb)
-                return kb << self.copy(left=left, right=right)
+                left = self.left.eval(kb)
+                right= self.right.eval(left)
+                return right << self.copy(left=left.head, right=right.head)
             case BinExp(op=Str('and')):
-                r1 = e(self.left).ask(kb)
+                r1 = self.left.ask(kb)
                 if not r1.head: return r1
-                r2 = e(self.right).ask(r1)
+                r2 = self.right.ask(r1)
                 return r2
             case BinExp(op=Str('or')):
-                r1 = e(self.left).ask(kb)
+                r1 = self.left.ask(kb)
                 if r1.head: return r1
-                r2 = e(self.right).ask(r1)
+                r2 = self.right.ask(r1)
                 return r2
 
         raise Exception()
     
     def tellPositive(self, kb:'KB')->'KB':
-        from core.expbuilder import e
-        r1 = e(self.left).tell(kb)
-        r2 = e(self.right).tell(r1 << kb.head)
-        return r2
+        x1 = self.left.tell(kb)
+        x2 = self.right.tell(x1 << kb.head)
+        return x2
 
     def unroll(self)->Sequence['Ast']:
         x1 = self.left.unroll()

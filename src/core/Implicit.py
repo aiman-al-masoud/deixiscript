@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Collection, Dict, Optional
 from dataclasses import dataclass
 from core.Composite import Composite
 from core.Int import Int
@@ -20,22 +20,15 @@ class Implicit(Composite):
     concept:Int   =Int(False)
         
     def askPositive(self, kb:'KB')->'KB':
-        from functools import reduce
         from core.expbuilder import e
 
         if kb.concept or self.concept:
             raise Exception()
 
-        x0 = {x for s in kb.wm for x in s}
-        x1 = [x for x in x0 if isIndividual(x)]
-        x2 = [x for x in x1 if e(x).does('be')._(self.head).get(kb)]
+        x0 = {x for s in kb.wm for x in s if isIndividual(x)}
+        x2 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)]
         x3 = [x for x in x2 if e(self.which.subst({Str.GAP:x})).get(kb)]
-        x4 = sorted(x3, key=lambda x:kb.dd[x], reverse=self.ord=='last')
-        x5 = x4[:self.card]
-        if not x5: return kb << Int(False)
-        x6 = [e(x) for x in x5]
-        x7 = reduce(lambda a,b: a.or_(b), x6).e
-        return kb << x7
+        return sortAndTrim(x3, kb, self.ord, self.card)
     
     def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import every, e
@@ -45,11 +38,10 @@ class Implicit(Composite):
 
         n = every(self.head).count(kb)+1
         new = f'{self.head}#{n}'
-        kb1 = kb << Str(new)
-        r1 = e(new).does('be')._(self.head).tell(kb1) 
-
-        which = self.which.subst({Str.GAP:r1.head})
-        r2 = e(which).tell(r1)
+        x1 = kb << Str(new)
+        x2 = e(new).does('be')._(self.head).tell(x1) 
+        which = self.which.subst({Str.GAP:x2.head})
+        r2 = e(which).tell(x2)
         return r2 << Str(new)
 
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
@@ -64,7 +56,24 @@ class Implicit(Composite):
         if self.which!=True: return self
         return super().subst(map)
 
-    # TODO: askNegative returning everything that does not match this type
+    def askNegative(self, kb: 'KB') -> 'KB':
+
+        x1=self.askPositive(kb)
+        x2=set(x1.head.unroll())
+        allIndividuals = {x for s in kb.wm for x in s if isIndividual(x)}
+        x3=allIndividuals-x2
+        return sortAndTrim(x3, kb, self.ord, self.card)
 
 def isIndividual(x:Ast):
     return isinstance(x, str) and '#' in x
+
+def sortAndTrim(things:Collection[Ast], kb:'KB', ord:Ast, card:Int):
+    from functools import reduce
+    from core.expbuilder import e
+    x4 = sorted(things, key=lambda x:kb.dd[x], reverse=ord=='last')
+    x5 = x4[:card]
+    if not x5: return kb << Int(False)
+    x6 = [e(x) for x in x5]
+    x7 = reduce(lambda a,b: a.or_(b), x6).e
+    x8=kb << x7
+    return x8

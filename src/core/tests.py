@@ -304,8 +304,6 @@ def test_c048():
     assert x3.head == e('gatto#1').and_('capra#1').e
     assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
 
-
-
 # %% substitution of nounphrases into derivation
 def test_c050():
     x1 = the('capra').which(does('run')).tell()
@@ -314,14 +312,13 @@ def test_c050():
     x4 = the('capra').which(does('run')).does('jump').tell(x3)
     assert e('capra#1').does('hop').get(x4)
 
-
-# TODO
-# # WRONG: event#1 gets in the way. Maybe you can fix it with "not event" negation type.
-# def test_c51():
-#     x1= the('cat').tell()
-#     x2= the('thing').does('run').tell(x1)
-#     # print(x1.wm)
-#     # print(x2.wm)
+# %% events get in the way. you can fix it with "not event" negation type.
+# or maybe "an event isn't a thing", or maybe different name or yadda yadda...
+def test_c51():
+    x1=the('cat').tell()
+    x2=the('it').when(it_is_false_that(the('event'))).tell(x1)
+    x3=the('it').does('run').tell(x2)
+    assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
