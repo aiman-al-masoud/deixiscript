@@ -97,7 +97,7 @@ Toward a Programmatic Semantics of Natural Language Hugo Liu and Henry Lieberman
 [local](../attachments/toward-programmatic-semantics-for-natlang.pdf)
 
 ##### NP7
-On the foolishness of "natural language programming". Edsger Dijkstra
+On the foolishness of "natural language programming". Edsger Dijkstra 1978
 
 [local](../attachments/dijkstra-foolishness-of-natlang-programming.pdf)
 
