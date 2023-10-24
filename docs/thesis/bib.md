@@ -66,41 +66,92 @@ https://lark-parser.readthedocs.io/en/stable/
 
 # NATURAL/ISTIC PROGRAMMING
 
-##### Pegasus – First Steps Toward a Naturalistic Programming Language Roman Knöll Mira Mezini
+##### NP1
+Pegasus – First Steps Toward a Naturalistic Programming Language Roman Knöll Mira Mezini
+
 [local](../attachments/pegasus-paper.pdf)
-##### Naturalistic Types Roman Knöll Vaidas Gasiunas Mira Mezini
+
+##### NP2
+Naturalistic Types Roman Knöll Vaidas Gasiunas Mira Mezini
+
 [local](../attachments/naturalistic-types.pdf)
-##### Beyond AOP: Toward Naturalistic Programming
+
+##### NP3
+Beyond AOP: Toward Naturalistic Programming
+
 [local](../attachments/beyond-aop-towards-naturalistic-programming.pdf)
-##### Metafor: Visualizing Stories as Code Hugo Liu Henry Lieberman
+
+##### NP4
+Metafor: Visualizing Stories as Code Hugo Liu Henry Lieberman
+
 [local](../attachments/Metafor-Visualizing-Stories.pdf)
-##### Programmatic Semantics for Natural Language Interfaces Hugo Liu Henry Lieberman
+
+##### NP5
+Programmatic Semantics for Natural Language Interfaces Hugo Liu Henry Lieberman
+
 [local](../attachments/programmatic-semantics.pdf)
-##### Toward a Programmatic Semantics of Natural Language Hugo Liu and Henry Lieberman
+
+##### NP6
+Toward a Programmatic Semantics of Natural Language Hugo Liu and Henry Lieberman
+
 [local](../attachments/toward-programmatic-semantics-for-natlang.pdf)
-##### On the foolishness of "natural language programming". Edsger Dijkstra
+
+##### NP7
+On the foolishness of "natural language programming". Edsger Dijkstra
+
 [local](../attachments/dijkstra-foolishness-of-natlang-programming.pdf)
-##### NaturalJava: A Natural Language Interface for Programming in Java David Price et al
+
+##### NP8 
+NaturalJava: A Natural Language Interface for Programming in Java David Price et al
+
 [local](../attachments/natural-java.pdf)
-##### A Survey and Classification of Controlled Natural Languages Tobias Kuhn (PENS ranking)
+##### NP9 
+A Survey and Classification of Controlled Natural Languages Tobias Kuhn (PENS ranking)
+
 [local](../attachments/pens-ranking-controlled-langskuhn2014cl.pdf)
-##### A Survey of Naturalistic Programming Technologies (Pulido)
+
+##### NP10 
+A Survey of Naturalistic Programming Technologies (Pulido)
+
 [local](../attachments/a-survey-of-naturalistic-programming-techniques.pdf)
-##### Natural language programming: Styles, strategies, and contrasts by L. A. Miller 1980s
+##### NP11 
+Natural language programming: Styles, strategies, and contrasts by L. A. Miller 1980s
+
 [local](../attachments/naturalistic-style-miller-1980s-paper.pdf)
-##### A Controlled Language for Knowledge Formulation on the Semantic Web Doug Skuce (Cleartalk)
+
+##### NP12 
+A Controlled Language for Knowledge Formulation on the Semantic Web Doug Skuce (Cleartalk)
+
 [local](../attachments/clear-talk-programming-language.pdf)
-##### Evolution of Naturalistic Programming: A Need Lizbeth A. Hernández-González et al
+
+##### NP13 
+Evolution of Naturalistic Programming: A Need Lizbeth A. Hernández-González et al
+
 [local](../attachments/evolution-of-naturalistic-programming-a-need.pdf)
-##### Plain English Programming The Osmosian Order of Plain English Programmers
+
+##### NP14 
+Plain English Programming The Osmosian Order of Plain English Programmers
+
 [local](../attachments/osmosian.pdf)
-##### Runtime Semantics of Use Case Stories Michał Śmiałek, Norbert Jarz˛ebowski, Wiktor Nowakowski
+
+##### NP15 
+Runtime Semantics of Use Case Stories Michał Śmiałek, Norbert Jarz˛ebowski, Wiktor Nowakowski
+
 [local](../attachments/Runtime_semantics_of_use_case_stories.pdf)
-##### A Model for Naturalistic Programming with Implementation (Pulido)
+
+##### NP16 
+A Model for Naturalistic Programming with Implementation (Pulido)
+
 [local](../attachments/A_Model_for_Naturalistic_Programming_with_Implemen.pdf)
-##### Attempto Controlled English (ACE) Language Manual
+
+##### NP17 
+Attempto Controlled English (ACE) Language Manual
+
 [local](../attachments/ace-manual.pdf)
-##### Attempto Controlled English Meets the Challenges of Knowledge Representation, Reasoning, Interoperability and User Interfaces
+
+##### NP18 
+Attempto Controlled English Meets the Challenges of Knowledge Representation, Reasoning, Interoperability and User Interfaces
+
 [local](../attachments/ace-meets-challenges-of-semantic-web.pdf)
 
 # PROGRAMMING
