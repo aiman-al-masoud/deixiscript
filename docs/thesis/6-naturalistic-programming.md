@@ -43,12 +43,12 @@ The need for better abstractions is also reflected in the criticism of software 
 
 ## Literate Programming
 
-Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
+Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX markup and typesetting system, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
 
 Knuth designed a language called "WEB"; apparently back when he chose this name for it, it was "one of the few three-letter words of English that hadn’t al-
 ready been applied to computers" [p11](./bib.md#p11).
 
-The language WEB combines a markup language with a traditional general purpose programming language (TEX and PASCAL in Knuth's original work); the idea is that a program is a web of components, and that it is best to describe the links between these components using a mix of natural language descriptions (using TEX) and formal notation (using PASCAL).
+The language WEB combines a markup language with a traditional general purpose programming language (TEX and PASCAL respectively, in Knuth's original work); the idea is that a program is a web of components, and that it is best to describe the links between these components using a mix of natural language descriptions (using TEX) and formal notation (using PASCAL).
 
 According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language. 
 
