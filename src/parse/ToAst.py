@@ -1,6 +1,5 @@
 from functools import reduce
 from lark import Transformer
-from core.Law import Law
 from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
@@ -95,7 +94,7 @@ class ToAst(Transformer):
             case 'when':
                 return e(d['left']).when(d['right']).e
             case 'after':
-                return Law(effect=d['left'], cause=d['right'])
+                return e(d['left']).after(d['right']).e
             case _:
-                return e(d['left']).binop(d['op'], d['right'])
+                return e(d['left']).binop(d['op'], d['right']).e
 
