@@ -25,31 +25,30 @@ Or, respectively: the level of independence from context (P), the amount of expr
 
 The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated and Naturalness and Expressiveness are positively correlated. This corresponds to our initial intuitions.
 
-There is a tradeoff, and this tradeoff is emblematic of problem. The push toward reasearch in naturalistic programming stems in part from the shortcomings of contemporary programming languages [np10](./bib.md#np10), [np3](./bib.md#np3), [np1](./bib.md#np1).
+There is a tradeoff, and this tradeoff is emblematic of a problem. The push toward reasearch in naturalistic programming stems in part from the shortcomings of contemporary programming languages [np10](./bib.md#np10), [np3](./bib.md#np3), [np1](./bib.md#np1).
 
-In these works, it is argued that the abstractions that power the current generation of programming languages, while powerful enough to support general purpose programming, are insufficient for tackling certain kinds of problems concisely.
+In these works, it is argued that the abstractions that power the current generation of programming languages, while powerful enough to support general purpose programming, are insufficient for tackling certain kinds of problems concisely, resulting in verbose, repetitive and suboptimally organized code.
 
-The example of Aspect Oriented Programming (AOP) is brought up to elucidate the point. AOP, it is argued, offers an elegant and powerful way to express cross-cutting concerns, which traditional Object Oriented Programming (OOP) languages lack. 
+The example of Aspect Oriented Programming (AOP) is brought up to elucidate the point. AOP, it is argued, offers an elegant and powerful way to express cross-cutting concerns, which traditional Object Oriented Programming (OOP) languages lack [np3](./bib.md#np3).
 
-An example is logging all of the calls to functions with such and such a name or signature. In a traditional OOP language you would have to insert a call to a logging function in every such function that you wished to track the activity of. In an AOP language this is a concern that can be handled by an Aspect, written as "separate chapters of the imaginary book that describes the application" [np1](./bib.md#np1).
+An example is logging all of the calls to functions with such and such a name or signature. In a traditional OOP language you would have to insert a call to a logging function in every such function that you wished to track the activity of. In an AOP language this is a concern that can be handled by an Aspect, written as "separate chapters of the imaginary book that describes the application" [np3](./bib.md#np3).
 
-It is further argued that this is a prelude of the evolution of naturalistic traits in programming languages, as the mechanism used by AOP is similar to how we would actually use natural language's referenatial capabilities to describe solutions to a problem.
+It is further argued that this is a prelude of the evolution of naturalistic traits in programming languages, as the mechanism used by AOP is similar to how we would actually use natural language's referenatial capabilities to describe solutions to a problem (splitting it into different "chapters").
 
-The need for better abstractions is also reflected in the criticism of design patterns as a poor languages's solution to more powerful abstractions [p1](./bib.md#p1), and in the practice of Literate Programming [p11](./bib.md#p11).
+The need for better abstractions is also reflected in the criticism of software design patterns as a poor language's solution to the lack of more powerful abstractions [p1](./bib.md#p1), and in the practice of Literate Programming [p11](./bib.md#p11).
 
-Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory, coined the term Literate Programming in 1984 to describe his new approach to writing programs.
+Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory, coined the term Literate Programming in 1984 to describe his original approach to writing programs.
 
 Knuth designed a language called "WEB"; apparently back when he chose this name for it, it was "one of the few three-letter words of English that hadn’t al-
 ready been applied to computers" [p11](./bib.md#p11).
 
-The language WEB combines a markup language with a traditional general purpose programming language (TEX and PASCAL in Knuth's original work); the idea is that a program is a web of components, and that it is best to describe the links between these components using a mix of natural language descriptions and formal notation.
+The language WEB combines a markup language with a traditional general purpose programming language (TEX and PASCAL in Knuth's original work); the idea is that a program is a web of components, and that it is best to describe the links between these components using a mix of natural language descriptions (using TEX) and formal notation (using PASCAL).
 
-The idea is that a program should make sense to a human being first and foremost, so
-the majority of it is composed of natural language, interspersed with (relatively little) definitions in a formal language. 
+According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language. 
 
 This is akin to how a typical math text book is organized, mirroring this observation: "The insight here is that a program should be written primarily in a natural language, with snippets of code in more appropriate syntax as (and only as) required" [pn19](./bib.md#np19).
 
-It is interesting to take a look at how people usually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which a seasoned programmer employs when translating his/her ideas into executable code  [np11](./bib.md#np11), [np1](./bib.md#np1).
+It is interesting to take a look at how people usually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which the same programmer employs when translating his/her ideas into executable code [np11](./bib.md#np11), [np1](./bib.md#np1).
 
 An early and oft-cited study in this respect is the one conducted by L. A. Miller in 1981 [np11](./bib.md#np11). A group of college students who were not familiar with computers were asked to provide solutions to six file manipulation problems, and their proposed solutions (in natural language) were evaluated for metrics such as preference of expression and contextual referencing.
 
@@ -64,6 +63,7 @@ This is often not the case in code, where such things as crucial steps buried wi
 The subjects also expected the computer to possess a pragmatic knowledge of the world and of their intentions, and to fill in the semantic gaps whenever needed. "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" [np7](./bib.md#np7) as Dijkstra would've put it.
 
 A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
+
 
 
 
