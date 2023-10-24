@@ -1,11 +1,5 @@
 // AST ---------------------------------------------------------
-?ast: noun_phrase | sentence //| meta_command
-
-// META COMMANDS -----------------------------------------------
-// maybe you can use a verb instead?
-// meta_command: "meta" arg1 arg2
-// arg1: ARG1
-// arg2: ARG2
+?ast: noun_phrase | sentence
 
 // SENTENCE ----------------------------------------------------
 ?sentence: simple_sentence | compound_sentence
