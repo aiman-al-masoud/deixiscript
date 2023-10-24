@@ -64,10 +64,18 @@ The subjects also expected the computer to possess a pragmatic knowledge of the 
 
 A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
 
+What do programming and story telling have in common? A lot, actually, according to a 2005 study that involved a system which automatically translated "stories" to scaffolding (or underspecified) code fragments in Python [np4](./bib.md#np4), [np5](./bib.md#np5).
 
+The transpiler, called Metafor, was integrated with a "with a large knowledge base of Common Sense Knowledge, Concept-Net (Liu and Singh, 2004), derived from Open Mind a corpus of 750,000 natural language statements of Common Sense knowledge contributed by 15,000 Web community volunteers" [np4](./bib.md#np4).
 
+A very interesting idea mentioned in this work is that ambiguity isn't always bad, on the contrary, it can be desirable under certain circumstances: as a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output code whenever it received an indication that the representation had to change, promoting attributes to sub-classes, for example [np4](./bib.md#np4). This also ties in well with the idea of "successive refinements" mentioned earlier.
 
-metafor and programmatic semantics
+The paper also touched upon the concept of "programmatic semantics", also expanded upon another work [np5](./bib.md#np5) by the same authors; which is the idea that natural language structures imply and can be mapped upon the more traditional programming structures from structuted programming and OOP: "A surprising amount of what we call programmatic semantics can be inferred from linguistic structure" [np4](./bib.md#np4).
+
+The authors propose, for instance, that a noun phrases may correspond to data structures, verbs to functions, and so on, and we propose a slight modification to these ideas in [Deixiscript](./7-deixiscript.md).
+
+The code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students (some with novice and some with intermediate programming skills), in trying to answer the question of whether they'd be likely to use it as a brainstorming tool rather than more traditional pen-and-paper methods [np4](./bib.md#np4).
+
 
 
 -------------
