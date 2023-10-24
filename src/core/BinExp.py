@@ -43,7 +43,7 @@ class BinExp(Composite):
     def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
         r1 = e(self.left).tell(kb)
-        r2 = e(self.right).tell(r1)
+        r2 = e(self.right).tell(r1 << kb.head)
         return r2
 
     def unroll(self)->Sequence['Ast']:

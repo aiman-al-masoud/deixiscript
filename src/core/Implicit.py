@@ -39,7 +39,6 @@ class Implicit(Composite):
     
     def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import every, e
-        # from core.subst import subst
 
         if kb.concept or self.concept:
             raise Exception()
@@ -48,6 +47,7 @@ class Implicit(Composite):
         new = f'{self.head}#{n}'
         kb1 = kb << Str(new)
         r1 = e(new).does('be')._(self.head).tell(kb1) 
+
         which = self.which.subst({Str.GAP:r1.head})
         r2 = e(which).tell(r1)
         return r2 << Str(new)

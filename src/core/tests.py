@@ -91,7 +91,6 @@ def test_c017():
 def test_c018():
     gen  = the('cat').e
     spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
-    # print(spec)
     assert gen.isMatch(spec)
     assert not spec.isMatch(gen)
 
@@ -314,6 +313,16 @@ def test_c050():
     x3 = the('capra').does('jump').when(the('capra').does('hop')).tell(x2)    
     x4 = the('capra').which(does('run')).does('jump').tell(x3)
     assert e('capra#1').does('hop').get(x4)
+
+
+# TODO
+# # WRONG: event#1 gets in the way. Maybe you can fix it with "not event" negation type.
+# def test_c51():
+#     x1= the('cat').tell()
+#     x2= the('thing').does('run').tell(x1)
+#     # print(x1.wm)
+#     # print(x2.wm)
+
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
 # def test_51():

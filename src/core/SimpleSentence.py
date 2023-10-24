@@ -60,9 +60,9 @@ class SimpleSentence(Composite):
                 return e(self.subject).does('have')._(self.object).as_('super').tell(kb)
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
-                old   = e(event).ask(kb)
+                old   = event.ask(kb)
                 if old.head: return old
-                return e(event).tell(kb)
+                return event.tell(kb)
             case SimpleSentence(verb=Str('have')) if isImplicitish(self):
                 x1 = makeExplicit(self, kb)            
                 return e(x1.head).tell(x1)

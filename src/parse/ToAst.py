@@ -92,9 +92,9 @@ class ToAst(Transformer):
 
         match d['op']:
             case 'when':
-                return e(d['left']).when(d['right']).e
+                return e(d['left']).when(d['right']).e.copy(cmd=Int(1))# TODO!
             case 'after':
-                return e(d['left']).after(d['right']).e
+                return e(d['left']).after(d['right']).e.copy(cmd=Int(1))# TODO!
             case _:
                 return e(d['left']).binop(d['op'], d['right']).e
 

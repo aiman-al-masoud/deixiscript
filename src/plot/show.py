@@ -1,18 +1,19 @@
+from typing import Sequence
 from core.Ast import Ast
 from core.KB import KB, WorldModel
 
+
 def show(wm:WorldModel):
-    from graphviz import Source
+    from graphviz import Source # pyright:ignore
     source = graphvizied(wm)
     Source(source, filename='tmp.gv', format='png').view()
 
 def save_png(kb:KB):
-    from graphviz import Source
-    # TODO: and, or, besides tuple support
-    source = graphvizied(kb.wm, kb.head if isinstance(kb.head, tuple) else (kb.head,))
+    from graphviz import Source # pyright:ignore
+    source = graphvizied(kb.wm, kb.head.unroll())
     Source(source, filename='tmp.gv', format='png').render()
 
-def graphvizied(wm:WorldModel, head=tuple()):
+def graphvizied(wm:WorldModel, head:Sequence[Ast]=[]):
     from functools import reduce
     x0=[f'"{x}" [fillcolor=red,style=filled];' for x in head]
     x1=[f'"{s[0]}" -> "{s[1]}" [ label="{s[2]}" ];' for s in wm]
