@@ -52,6 +52,8 @@ class SimpleSentence(Composite):
         from core.expbuilder import e
         from core.decompress import isImplicitish
 
+        # TODO: meta-command switch modes conceptual/world
+
         match self:
         
             case SimpleSentence(verb=Str('be')):
