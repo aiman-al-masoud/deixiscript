@@ -1,7 +1,6 @@
 from functools import reduce
 from lark import Transformer
 from core.Law import Law
-from core.BinExp import BinExp
 from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
@@ -50,7 +49,8 @@ class ToAst(Transformer):
         return {'which':children[0]}
 
     def noun(self, children):
-        return Implicit(**reduce(lambda a,b: {**a, **b}, children))
+        d=reduce(lambda a,b: {**a, **b}, children)
+        return Implicit(**d)
     
     def relative(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)
@@ -97,4 +97,5 @@ class ToAst(Transformer):
             case 'after':
                 return Law(effect=d['left'], cause=d['right'])
             case _:
-                return BinExp(**d)
+                return e(d['left']).binop(d['op'], d['right'])
+

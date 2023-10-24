@@ -11,6 +11,7 @@ NounPhrase = Explicit | Implicit
 NounPhrasish = NounPhrase | BinExp
 
 def decompress(ast:Ast)->Ast:
+    from core.expbuilder import e
 
     if not isinstance(ast, Composite): return ast
     
@@ -23,7 +24,7 @@ def decompress(ast:Ast)->Ast:
     left = decompress(ast.subst({conn:conn.left}))
     right = decompress(ast.subst({conn:conn.right}))
 
-    return BinExp(op=op, left=left, right=right, cmd=ast.cmd)
+    return e(left).binop(op, right).e.copy(cmd=ast.cmd)
 
 def opposite(x:Str):
     if x == 'and': return Str('or')
