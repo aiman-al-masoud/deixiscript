@@ -54,7 +54,7 @@ class ToDict(Transformer):
     
     def relative(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)
-        # add subject and object if absent??
+        # TODO add subject and object if absent??
         return d['head'].copy(which=d['which'].copy(cmd=Int(0)))
 
     def complement_head(self, children):
