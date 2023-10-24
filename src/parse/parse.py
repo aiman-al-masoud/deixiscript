@@ -1,12 +1,11 @@
 import os
 from lark import Lark
-
-from parse.transform import ToDict
+from parse.ToAst import ToAst
 # from parse.transform import toDict
 
-grammar_path=os.path.join(os.path.split(__file__)[0], 'grammar2.lark')
+grammar_path=os.path.join(os.path.split(__file__)[0], 'grammar.lark')
 grammar = open(grammar_path).read()
-parser = Lark(grammar, start='ast', ambiguity='explicit')
+# parser = Lark(grammar, start='ast', ambiguity='explicit')
 
 # x =parser.parse('the cat does be bad')
 # # print(x.pretty())
@@ -24,7 +23,7 @@ x = parser.parse('a new cat')
 x = parser.parse('a new cat which does eat')
 x = parser.parse('it when thing')
 
-y = ToDict().transform(x)
+y = ToAst().transform(x)
 print(y)
 
 # x = parser.parse('the 1 cat')

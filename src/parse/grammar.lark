@@ -1,45 +1,52 @@
-?ast: nounphrase | sentence | parens | command | question
-?sentence: simplesentence | compound | analyticderivation | syntheticderivation
-?nounphrase: noun | relative
-?parens: "(" ast ")"
-?question: ast "?"
-command: ast "!"
+// AST ---------------------------------------------------------
+?ast: noun_phrase | sentence
 
-syntheticderivation: effect "after" cause
-effect: ast
-cause: ast
+// SENTENCE ----------------------------------------------------
+?sentence: simple_sentence | compound_sentence
 
-analyticderivation: definendum "when" definition
-definendum: ast
-definition: ast
-
-compound: left conj right
+// COMPOUND (AND ALSO COMPLEX) SENTENCE ------------------------
+compound_sentence: left op right
 left: ast
 right: ast
-conj: CONJ
+op: BINOP
 
-// question syntax: does x y capra do verb ...
-simplesentence: subject? "does" negation? verb object? complement*
-subject: nounphrase
+// SIMPLE-SENTENCE ----------------------------------------------
+simple_sentence: _command | _question1 | _question2
+_question1: "does" subject "do" verb object? complement* "?"?
+_question2: subject? "does" verb object? complement* "?"
+_command: subject? cmd verb object? complement*
+cmd:DOES_CMD
+DOES_CMD: "does"
+subject: noun_phrase
 verb: NAME
-object: nounphrase
-?complement: preposition nounphrase?
+object: noun_phrase
+?complement: preposition complement_head?
+complement_head: noun_phrase
 preposition: PREPOSITION
-negation: "not"
 
+// NOUN-PHRASE --------------------------------------------------
+?noun_phrase: noun | relative
 
-relative: nounphrase "which" which
-which: sentence
+relative: relative_head "which" subordinate
+relative_head:noun_phrase
+subordinate: sentence
 
-noun: "the"? ord? card? head
-head: NAME
+noun: ("the"|"an"|"a")? ord? noun_cmd? card? negation? noun_head
+noun_head: NAME
 card: NUMBER
 ord: ORDINAL
+noun_cmd:"new"
 
-PREPOSITION: "to" | "on" | "from"
-CONJ: "and" | "or"
-NAME: /[a-z]+/
+// TERMINALS ----------------------------------------------------
+negation: "not"
+NAME: /[a-z]+/ | "_"
 NUMBER: /[0-9]+/
 ORDINAL: "first" | "last"
+ARG1: "switch mode"
+ARG2: "concept" | "world"
+BINOP: "and" | "or" | "when" | "after"
+PREPOSITION: "to" | "as" | "from" | "on"
 %import common.WS
 %ignore WS
+// TODO: does,do
+// parens?

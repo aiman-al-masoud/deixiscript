@@ -2,14 +2,13 @@ from functools import reduce
 from lark import Transformer
 from core.Law import Law
 from core.BinExp import BinExp
-from core.Def import Def
 from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
 from core.Str import Str
 from core.expbuilder import e
 
-class ToDict(Transformer):
+class ToAst(Transformer):
 
     def NUMBER(self, children):
         return Int(children)
@@ -95,7 +94,6 @@ class ToDict(Transformer):
         match d['op']:
             case 'when':
                 return e(d['left']).when(d['right']).e
-                # return Def(definendum=d['left'], definition=d['right'])
             case 'after':
                 return Law(effect=d['left'], cause=d['right'])
             case _:
