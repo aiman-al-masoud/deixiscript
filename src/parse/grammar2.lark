@@ -26,7 +26,8 @@ DOES_CMD: "does"
 subject: noun_phrase
 verb: NAME
 object: noun_phrase
-?complement: preposition noun_phrase?
+?complement: preposition complement_head?
+complement_head: noun_phrase
 preposition: PREPOSITION
 
 // NOUN-PHRASE --------------------------------------------------

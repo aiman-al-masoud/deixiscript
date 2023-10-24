@@ -1,63 +1,52 @@
-# from lark import ParseTree, Token, Tree
-# from core.expbuilder import does, e, the
-# from core.Ast import Ast
 
-# def transform(st:ParseTree|Token)->Ast:
+# from typing import List
+# from lark import Lark, Transformer, Tree
 
+# from core.expbuilder import e
 
-#     match st:
+# class BurufTransformer(Transformer):
 
-#         case Token():
-#             return e(int(st) if st.isnumeric() else st).e
-#         case Tree(data=Token('RULE','noun')):
-#             # print('NOUN!', xs)    
-#             print('CNOAUNDN!')
-#             pass
-#         case Tree(data=Token('RULE','relative')):
-#             pass
-#         case Tree(data=Token('RULE','simple_sentence')):
-#             pass
-#         case Tree(data=Token('RULE','compound_sentence')):
-#             pass
-#         # noun
-#             # head
-#             # card
-#             # ord
-#             # negation
-#             # cmd
-#         # relative
-#             # head
-#             # which
-#         # simple_sentence
-#             # verb
-#             # subject
-#             # object
-#             # as
-#             # to
-#             # on
-#             # negation
-#             # cmd
-#         # compound_sentence
-#             # left
-#             # right
-#             # op
+#     def NUMBER(self, tok):
+#         return tok.update(value=int(tok))
+
+#     def noun(self, children:List[Tree]):
+#         print('children=', children)
+
+#         return e(1)
+
+from functools import reduce
+from typing import List, Set
+from lark import Lark, Token, Transformer, Tree
+
+from core.expbuilder import every
 
 
+def toDict(st:Tree|Token|List[Tree], realtypes:Set[str]=set()):
+    match st:
+        case Token():
+            if st.isnumeric(): return int(st)
+            return str(st)
+        case Tree():
+            mytype=st.data.value
+            children=toDict(st.children, realtypes)
+            if mytype in realtypes: return {'type':mytype, **children}
+            return {mytype:children}
+        case [*xs]:
+            children= [toDict(x, realtypes) for x in xs]
+            if len(children)==1: return children[0]
+
+            big = {}
+
+            for c in children:
+                
+                if comm:=c.keys()&big:
+                    for k in comm: 
+                        big[k] = [big[k], c[k]]
+                    continue
+
+                big = {**big, **c}
+
+            return big
+            
 
 
-from typing import List
-from lark import Lark, Transformer, Tree
-
-from core.expbuilder import e
-
-class BurufTransformer(Transformer):
-
-    def NUMBER(self, tok):
-        return tok.update(value=int(tok))
-
-    def noun(self, children:List[Tree]):
-        print('children=', children)
-
-        return e(1)
-
-    
