@@ -1,6 +1,6 @@
-Natural/istic programming is a broad term that can be applied to all those attempts at using a more or less realistic subset of natural language to write code.
+Natural/istic programming is a broad term that can be applied to all those attempts (with varying degrees of sophistication) at using a more or less realistic subset of natural language to write code.
 
-The idea of instructing a computer in natural language (or something similar enough) has, long before the advent of Large Language Models, been a dream and sometimes a nightmare, for people in computer science.
+The idea of instructing a computer in natural language (or something similar enough to deserve that name) has, long before the advent of Large Language Models, been a dream and sometimes a nightmare, for people in computer science.
 
 # Motivation
 
@@ -12,7 +12,7 @@ Edsger Dijkstra (1930-2002), notable computer scientist, advocate of structured 
 
 Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming". Not only was "natural language programming" a difficult technical feat to accomplish indeed, but had it ever been accomplished, it would actually do more harm than good [np7](./bib.md#np7)
 
-He argued that simple, elegant and narrow formalisms were and still are the key to past and future progress in fields such as mathematics and computer science, and that natural language would only do harm due to its intrinsic ambiguousness and the ease with which it can produce nonsensical statements. 
+He argued that simple, elegant formalisms and narrow interfaces were and still are the key to past and future progress in fields such as mathematics and computer science, and that natural language would only do harm due to its intrinsic ambiguousness and the ease with which it can produce nonsensical statements. 
 
 It is also quite true that back in the day computers weren't nearly as widespread as in 2023, and people who were using them were more often than not experts trying to solve specialized problems rather than end-users seeking a more intuitive mode of interaction with their machines.
 
@@ -23,9 +23,9 @@ Within the PENS classification scheme, a set of widely different Controlled Natu
 
 Or, respectively: the level of independence from context (P), the amount of expressible propositions (E), the similarity to natural language (N) and the ease of (computer) implementation (S).
 
-The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated and Naturalness and Expressiveness are positively correlated. This corresponds to our initial intuitions. 
+The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated and Naturalness and Expressiveness are positively correlated. This corresponds to our initial intuitions.
 
-There is a tradeoff, and this tradeoff is emblematic of problem. The push toward reasearch in naturalistic programming stems in part from the shortcomings of contemporary programming languages [np10](./bib.md#np10), [np3](./bib.md#np3), [np1](./bib.md#np1). 
+There is a tradeoff, and this tradeoff is emblematic of problem. The push toward reasearch in naturalistic programming stems in part from the shortcomings of contemporary programming languages [np10](./bib.md#np10), [np3](./bib.md#np3), [np1](./bib.md#np1).
 
 In these works, it is argued that the abstractions that power the current generation of programming languages, while powerful enough to support general purpose programming, are insufficient for tackling certain kinds of problems concisely.
 
