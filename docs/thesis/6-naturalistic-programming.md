@@ -49,33 +49,28 @@ the majority of it is composed of natural language, interspersed with (relativel
 
 This is akin to how a typical math text book is organized, mirroring this observation: "The insight here is that a program should be written primarily in a natural language, with snippets of code in more appropriate syntax as (and only as) required" [pn19](./bib.md#np19).
 
+It is interesting to take a look at how people usually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which a seasoned programmer employs when translating his/her ideas into executable code  [np11](./bib.md#np11), [np1](./bib.md#np1).
+
+An early and oft-cited study in this respect is the one conducted by L. A. Miller in 1981 [np11](./bib.md#np11). A group of college students who were not familiar with computers were asked to provide solutions to six file manipulation problems, and their proposed solutions (in natural language) were evaluated for metrics such as preference of expression and contextual referencing.
+
+It was found that the students were prone to using contextual references such as pronouns and words like "the previous" and "the next", a phenomenon broadly known as Deixis, of which we speak in the chapter on linguistics. They would also do this rather than explicitly assigning variables.
+
+The students preferred to treat data structures in a cumulative way, using universal quantifiers rather than loops to express operations that had to be carried out on multiple instances of a data structure. They actually avoided using any of the traditional structured programming constructs (if-then-else, while, for...) or even unstructured programming constructs (goto statements).
+
+When describing an algorithm, the students tended to begin by the most general and crucial step of the procedure, to only then mention those special cases which required a different sort of treatment; further refining, or annotating, an initial general statement is an idea that is also brought up in [ai1](./bib.md#ai1) and seems to be an important trait of how humans naturally tend to describe things.
+
+This is often not the case in code, where such things as crucial steps buried within deeply nested ifs, and guard clauses and early returns to reduce the level of nesting and help ease the mental overload of such early checking for special cases are the order of the day.
+
+The subjects also expected the computer to possess a pragmatic knowledge of the world and of their intentions, and to fill in the semantic gaps whenever needed. "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" [np7](./bib.md#np7) as Dijkstra would've put it.
+
+A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
 
 
 
 
+miller study and metafor
 
 
-------------------------------
-
-
-
-* I problemi sono: stile, semantica e conoscenza pragmatica del mondo.
-
-* I soggetti preferivano gestire le strutture dati in maniera più astratta ("in massa") rispetto a gestirle con l'iterazione (ciclo for).
-
-* I soggetti si aspettavano che il computer capisse le implicazioni semantiche dei comandi che davano.
-
-* I soggetti facevano uso pesante di riferimenti contestuali.
-
-* I soggetti usavano un lessico abbastanza ristretto (vantaggio).
-
-* I soggetti non controllavano né il formato né la sintassi dei file.
-
-* I soggetti non facevano riferimento a strutture di controllo esplicite (if-then-else, goto, while, for ...), probabilmente sperando di attingere ad un'esperienza procedurale pragmatica del proprio "interlocutore".
-
-* I soggetti non assegnavano esplicitamente valori alle variabili, e non le dichiaravano, e usavano sinonimi.
-
-* I soggetti partivano dal passo più cruciale della procedura, per poi precisare quando NON farlo. Al contrario, nei linguaggi di programmazione si ricorre spesso alle guard clauses, o agli if annidati, e si mette il passo cruciale alla fine, o in mezzo.
 
 -------------
 

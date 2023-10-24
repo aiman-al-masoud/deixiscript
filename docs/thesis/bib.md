@@ -46,10 +46,13 @@ https://lark-parser.readthedocs.io/en/stable/
 ##### NLP (Natural Language Processing) for NLP (Natural Language Programming) Rada Mihalcea1 , Hugo Liu2 , and Henry Lieberman
 ##### Semantic gap https://www.techopedia.com/definition/21996/semantic-gap
 ##### Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
+##### Deixis
 
 
 # LOGIC & AI
-##### Machines Like Us Levesque and Brachmann
+##### AI1
+Machines Like Us Levesque and Brachmann
+[local](../attachments/machines-like-us.pdf)
 ##### Programs with Common Sense John McCarthy
 ##### The Advice Taker 2.0
 ##### A Logic for Natural Language WILLIAM C. PURDY
