@@ -92,7 +92,7 @@ There have also been more complete attemps at creating a natural language progra
 
 ### Pegasus
 
-The original implementation of Pegasus is sketched out in a 2006 paper [np1](./bib.md#np1) by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this [np20](./bib.md#np20).
+The original implementation of Pegasus is laid out in a 2006 paper [np1](./bib.md#np1) by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this [np20](./bib.md#np20).
 
 
 
