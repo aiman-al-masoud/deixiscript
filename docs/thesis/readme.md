@@ -60,7 +60,7 @@
 		- the end of programming
 		- prompt engineering
 - [Naturalistic programming](./6-naturalistic-programming.md)
-	- rationale
+	- motivation
 	- naturalistic vs formalistic
 	- programmatic semantics
 	- user psychology

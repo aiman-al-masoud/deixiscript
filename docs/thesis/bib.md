@@ -105,6 +105,7 @@ On the foolishness of "natural language programming". Edsger Dijkstra 1978
 NaturalJava: A Natural Language Interface for Programming in Java David Price et al
 
 [local](../attachments/natural-java.pdf)
+
 ##### NP9 
 A Survey and Classification of Controlled Natural Languages Tobias Kuhn (PENS ranking)
 
@@ -154,18 +155,45 @@ Attempto Controlled English Meets the Challenges of Knowledge Representation, Re
 
 [local](../attachments/ace-meets-challenges-of-semantic-web.pdf)
 
+##### NP19
+
+Osmosian Plain English Programming Website
+
+https://osmosianplainenglishprogramming.blog/
+
+
 # PROGRAMMING
-##### The End of Programming Matt Welsh
-##### Functional Programming Simplified, Alvin Alexander https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
-##### The Roots of Lisp (Paul Graham)
-##### On the Evolution of Programming Languages K. R. Chowdhary, Professor
-##### On the Positive Effect of Reactive Programming on Software Comprehension: An Empirical Study
-##### Nominal vs Structural Type Systems  https://www.typescriptlang.org/play/typescript/language-extensions/nominal-typing.ts.html
-##### Cognitive Aspects of Object-Oriented Programming
-##### Alan Kay on OOP https://www.purl.org/stefan_ram/pub/doc_kay_oop_en
-##### Growing a Language Guy L. Steele Jr.
-##### Literate programming, Donald Knuth http://www.literateprogramming.com/knuthweb.pdf
-##### Reconciliation – React https://legacy.reactjs.org/docs/reconciliation.html
+
+##### P1
+Revenge of the Nerds (Paul Graham)
+http://www.paulgraham.com/icad.html
+##### P2
+The End of Programming Matt Welsh
+##### P3
+Functional Programming Simplified, Alvin Alexander 
+https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
+##### P4 
+The Roots of Lisp (Paul Graham)
+##### P5 
+On the Evolution of Programming Languages K. R. Chowdhary, Professor
+##### P6 
+On the Positive Effect of Reactive Programming on Software Comprehension: An Empirical Study
+##### P7 
+Nominal vs Structural Type Systems  
+https://www.typescriptlang.org/play/typescript/language-extensions/nominal-typing.ts.html
+##### P8 
+Cognitive Aspects of Object-Oriented Programming
+##### P9 
+Alan Kay on OOP https://www.purl.org/stefan_ram/pub/doc_kay_oop_en
+##### P10 
+Growing a Language Guy L. Steele Jr.
+##### P11 
+Literate programming, Donald Knuth 
+http://www.literateprogramming.com/knuthweb.pdf
+[local](../attachments/literate-programming-donald-knuth.pdf)
+##### P12 
+Reconciliation – React 
+https://legacy.reactjs.org/docs/reconciliation.html
 
 
 # PHILOSOPHY
