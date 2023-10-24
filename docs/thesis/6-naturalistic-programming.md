@@ -1,8 +1,10 @@
+## Naturalistic Programming
+
 Natural/istic programming is a broad term that can be applied to all those attempts (with varying degrees of sophistication) at using a more or less realistic subset of natural language to write code.
 
 The idea of instructing a computer in natural language (or something similar enough to deserve that name) has, long before the advent of Large Language Models, been a dream and sometimes a nightmare, for people in computer science.
 
-# Motivation
+## Skepticism
 
 The advantages of programming in natural language haven't always been clear to everyone.
 
@@ -15,6 +17,8 @@ Dijkstra wrote a short piece in 1978 lambasting what he called "natural language
 He argued that simple, elegant formalisms and narrow interfaces were and still are the key to past and future progress in fields such as mathematics and computer science, and that natural language would only do harm due to its intrinsic ambiguousness and the ease with which it can produce nonsensical statements. 
 
 It is also quite true that back in the day computers weren't nearly as widespread as in 2023, and people who were using them were more often than not experts trying to solve specialized problems rather than end-users seeking a more intuitive mode of interaction with their machines.
+
+## Precision/Expressiveness Tradeoff
 
 <!-- fox and grapes -->
 But taking a step back, even from the point of view of implementation, a tradeoff exists between the naturalness and expressivity on the one side, and the ease of implementation and precision of a formal language on the other [np9](./bib.md#np9).
@@ -35,6 +39,8 @@ An example is logging all of the calls to functions with such and such a name or
 
 It is further argued that this is a prelude of the evolution of naturalistic traits in programming languages, as the mechanism used by AOP is similar to how we would actually use natural language's referenatial capabilities to describe solutions to a problem (splitting it into different "chapters").
 
+## Literate Programming
+
 The need for better abstractions is also reflected in the criticism of software design patterns as a poor language's solution to the lack of more powerful abstractions [p1](./bib.md#p1), and in the practice of Literate Programming [p11](./bib.md#p11).
 
 Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory, coined the term Literate Programming in 1984 to describe his original approach to writing programs.
@@ -47,6 +53,8 @@ The language WEB combines a markup language with a traditional general purpose p
 According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language. 
 
 This is akin to how a typical math text book is organized, mirroring this observation: "The insight here is that a program should be written primarily in a natural language, with snippets of code in more appropriate syntax as (and only as) required" [pn19](./bib.md#np19).
+
+## Natural Style
 
 It is interesting to take a look at how people usually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which the same programmer employs when translating his/her ideas into executable code [np11](./bib.md#np11), [np1](./bib.md#np1).
 
@@ -64,6 +72,8 @@ The subjects also expected the computer to possess a pragmatic knowledge of the 
 
 A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
 
+## Stories and Code
+
 What do programming and story telling have in common? A lot, actually, according to a 2005 study that involved a system which automatically translated "stories" to scaffolding (or underspecified) code fragments in Python [np4](./bib.md#np4), [np5](./bib.md#np5).
 
 The transpiler, called Metafor, was integrated with a "with a large knowledge base of Common Sense Knowledge, Concept-Net (Liu and Singh, 2004), derived from Open Mind a corpus of 750,000 natural language statements of Common Sense knowledge contributed by 15,000 Web community volunteers" [np4](./bib.md#np4).
@@ -76,18 +86,20 @@ The authors propose, for instance, that a noun phrases may correspond to data st
 
 The code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students (some with novice and some with intermediate programming skills), in trying to answer the question of whether they'd be likely to use it as a brainstorming tool rather than more traditional pen-and-paper methods [np4](./bib.md#np4).
 
+## General Purpose Systems
+
+There have also been more complete attemps at creating a natural language programming system, usable for general purpose programming. We will proceed to mention three of what we think may be the most important ones: Pegasus, CAL-4700 and SN.
+
+### Pegasus
+
+The original implementation of Pegasus is sketched out in a 2006 paper [np1](./bib.md#np1) by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this [np20](./bib.md#np20).
+
+
+
+
+
 
 
 -------------
 
-# Natural vs Formal
-
-- [Miller](../../attachments/naturalistic-style-miller-1980s-paper.pdf)
 - [Pulido](../../attachments/a-survey-of-naturalistic-programming-techniques.pdf)
-- [Fantechi](../../attachments/fantechi.pdf#121)
-- [PENS](../attachments/pens-ranking-controlled-langskuhn2014cl.pdf)
-- [formal lang wiki](https://en.wikipedia.org/wiki/Formal_language)
-
-<!-- A Survey of Naturalistic Programming Technologies -->
-<!-- Natural language programming: Styles, strategies, and contrasts -->
-<!-- Language and Communication Problems in Formalization: A Natural Language Approach -->

@@ -164,6 +164,12 @@ Osmosian Plain English Programming Website
 
 https://osmosianplainenglishprogramming.blog/
 
+##### NP20
+
+Pegasus Project Website
+
+http://www.pegasus-project.org/en/Welcome.html
+
 
 # PROGRAMMING
 
