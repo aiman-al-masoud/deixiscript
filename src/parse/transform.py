@@ -7,6 +7,7 @@ from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
 from core.Str import Str
+from core.expbuilder import e
 
 class ToDict(Transformer):
 
@@ -93,7 +94,8 @@ class ToDict(Transformer):
 
         match d['op']:
             case 'when':
-                return Def(definendum=d['left'], definition=d['right'])
+                return e(d['left']).when(d['right']).e
+                # return Def(definendum=d['left'], definition=d['right'])
             case 'after':
                 return Law(effect=d['left'], cause=d['right'])
             case _:
