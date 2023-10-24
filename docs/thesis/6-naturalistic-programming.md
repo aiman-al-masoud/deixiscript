@@ -39,11 +39,11 @@ An example is logging all of the calls to functions with such and such a name or
 
 It is further argued that this is a prelude of the evolution of naturalistic traits in programming languages, as the mechanism used by AOP is similar to how we would actually use natural language's referenatial capabilities to describe solutions to a problem (splitting it into different "chapters").
 
-## Literate Programming
-
 The need for better abstractions is also reflected in the criticism of software design patterns as a poor language's solution to the lack of more powerful abstractions [p1](./bib.md#p1), and in the practice of Literate Programming [p11](./bib.md#p11).
 
-Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory, coined the term Literate Programming in 1984 to describe his original approach to writing programs.
+## Literate Programming
+
+Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
 
 Knuth designed a language called "WEB"; apparently back when he chose this name for it, it was "one of the few three-letter words of English that hadn’t al-
 ready been applied to computers" [p11](./bib.md#p11).
