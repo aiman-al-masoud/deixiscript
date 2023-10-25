@@ -138,7 +138,7 @@ Another worthwhile case of a general purpose naturalistic programming language, 
 
 Some of the motivations behind this project, as explained by the authors, are related to the idea, also mentioned elsewhere[np1](./bib.md#np1), of eliminating the intermediate translation step from natural language thoughts and natural language pseudo-code into rigorous programming language constructs.
 
-Another motivation was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings, at least infants growing up, do) as to allow for flexibility in choice of expression and for a stable programming environment.
+Another motivation was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
 
 And finally, to determine whether low-level programs could conveniently be written in such a subset of the English language.
 
