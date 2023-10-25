@@ -142,7 +142,7 @@ Another motivating factor was to answer the question of whether natural language
 
 And finally, to determine whether low-level programs could conveniently be written in such a subset of the English language.
 
-The authors seem to have come to the conclusion that all of this is possible, using their system.
+The authors seem to have come to the conclusion that all of this is indeed possible, using their system.
 
 
 
