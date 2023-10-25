@@ -148,7 +148,25 @@ The authors seem to have come to the conclusion that all of this is indeed possi
 
 The authors draw a parallel between the "pictures" (we assume they're talking about mental images in human beings) and the "types" (programming language types), and between the skills that a young (or old) human being may acquire and the traditional routines of a programming language.
 
-Coding, they say, 
+Most of the code in most of the programs, they claim, represents simple enough logic that it is most convenient to express it in natural language. However, high-level (natural language) and low-level (programming language) code can and should coexist in certain scenarios; the authors use the metaphor of a math text-book to expound this idea: mathemathical formulas in formal notation, when convenient, interspersed in a text mostly made up of natural language, an idea that echoes the philosophy behind Literate Programming we discussed earlier [p11](./bib.md#p11).
+
+The CAL compiler is freely downloadable, together with the instructions manual in pdf, on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing [np19](./bib.md#np19).
+
+The 100 page manual gives a comprehensive overview of the language with plenty of examples. What's striking about this language is that, albeit naturalistic, it follows a markedly procedural paradigm, complete with variables, loops and routines.
+
+There are at least three kinds of routines in this language: procedures, deciders and functions. CAL procedures, just like classical procedures, are routines with side effects "that simply do something" without returning a value. Deciders and functions on the other hand can resolve to a value; the former being used to define when a condition is true (allowing the system to automatically infer when it is false), and the latter being used to derive a value from a passed parameter and can also be used with possessives (such as "the triangle's area") in a fashion reminiscent of getter methods or derived properties in OOP.
+
+It is also possible to define custom data types using natural language syntax to define the fields and the types thereof. Among the custom types that can be defined are "records" and "things" (a kind of dynamic structure). Units of measurments and the conversion between them are also supported. Based on a remark on a differ
+
+<!-- 
+seems to be nominal not structural
+https://wiki.osdev.org/Plain_English_Programming
+ -->
+
+The language also supports event driven programming, and has various I/O capabilities such as timers, audio output and even a 2D graphics system which can be used to draw and plot shapes.
+
+### SN
+
 
 
 
