@@ -167,10 +167,28 @@ The language also supports event driven programming, and has various I/O capabil
 
 ### SN
 
+<!-- 
+[x](./bib.md#np10)
+[x](./bib.md#np13)
+[x](./bib.md#np16)
+ -->
+
+A newer example of a full fledged naturalistic general purpose programming language is given by the SN language, or "Sicut Naturali" [np13](./bib.md#np13) ("Just as in nature" in Latin) discussed in a 2019 paper by Oscar Pulido-Prieto and Ulises Juárez-Martínez [np16](./bib.md#np16).
+
+The authors cite a distinction made by others between what is called the "formalist" versus the "naturalist" approach to programming languages based on natural language. The formalist approach focuses on correct execution, thus favoring an unambiguous grammars, while the naturalist approach tolerates ambiguous grammars and attempts to resolve the remaining ambiguities using techniques from artificial intelligence [np16](./bib.md#np16).
+
+The authors state that their approach is closer to the formalist camp, and in fact, while the philosophy and style of the language is new and differs significantly from a typical object oriented language, some of the syntax looks artificial as compared to the two previously surveyed works (Pegasus and CAL). It must be said though that some of the syntax does try to imitate English to a good extent.
+
+The authors begin by discussing what they believe are the basic elements that would allow a naturalistic system to function as a general purpose programming language, and come to the conclusion that: nouns, adjectives, verbs, circumstances, phrases, anaphors, explicit and static types and formalized syntax and rules (in accordance with the formalist approach) are the required building blocks for such a system.
+
+A SN Noun roughly corresponds to a class in OOP as it can inherit from another noun (only single inheritance is allowed) and can posses attributes. An Adjective on the other hand supports multiple inheritance, and can be applied to a Noun to specialize it. A verb is defined on either a Noun or an adjective, similar to how a method can be defined on a class or on a Scala trait.
+
+Circumstances are a special construct that can apply to either attributes or verbs, and it serves to specify the applicability (or unapplicability) of adjectives to Nouns, or the conditions and time of execution of a verb. For instance, one could specify that an Adjective mutually excludes another, or that a verb should be executed before or after another, for example to log the creation of all instances of a certain kind of Noun.
+
+Noun phrases, which can be a combination of Nouns, Adjectives and "with/as" clauses and support plurals, have a dual usage in SN: they can either be used as constructors to create new instances of a certain kind (with the "a/an" keyword) or to refer to already existing instances of such a kind (with the "the" keyword).
+
+The language also supports the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by saying things like: "repeat the next 2 instructions until i > 10." [np16](./bib.md#np16).
+
+The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
 
-
-
--------------
-
-- [Pulido](../../attachments/a-survey-of-naturalistic-programming-techniques.pdf)
