@@ -94,10 +94,39 @@ There have also been more complete attemps at creating a natural language progra
 
 The original implementation of Pegasus is laid out in a 2006 paper [np1](./bib.md#np1) by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this [np20](./bib.md#np20).
 
+According to the authors, the main features that distinguish natural language from programming languages are: implicit referecing, compression and context dependence.
 
+Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" are all words clearly exemplify this phenomenon. 
 
+Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "you pet the cat and the dog" understood as an abbreviation for "you pet the cat and you pet the dog". An example of semantic compression would be the in sentence "first go from left to right, then viceversa", where "viceversa", in this case, would mean: "from right to left".
 
+Context Dependence refers to the fact that, contra most programming languages, the same string in natural language can be reduced in different ways depending on the surrounding context, not only on the string itself. In the sentence: "the mouse runs, then it jumps, the cat kills it, then it jumps" there are two identical instances of the phrase "then it jumps": in the former the pronoun "it" refers to the mouse, in the latter the pronoun "it" refers to the cat.
 
+These three mechanisms, in the authors' opinion, all help in reducing the amount of redundancy in our spoken and written communication [np1](./bib.md#np1).
+
+The authors propose a distinction between what they call "Atomic" versus "Complex" ideas, the former stemming directly from human perception (such as "the smell of wood", or "the warmth of wood"), and the latter being a combination of the former (such as the very idea of "wood").
+
+They also recognize a third category of ideas they call "Composed", which "combine several Complex ideas for a short moment"[np1](./bib.md#np1), effectively corresponding with propositions, such as the meaning of the sentence: "the car drives on the street".
+
+The authors go ahead to describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
+
+<!-- The authors also mention a distinction they assert is a general trend in natural languages: nouns (entities), verbs (actions) and adjectives and adverbs (properties). -->
+
+The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory
+
+The Mind is what matches ideas to idea-patterns stored in Pegaus's long term semantic network. An idea-pattern is associated to an action, which is performed when the Mind determines that it matches an idea recevied as an input.
+
+The Short Term Memory is what enables Pegasus to contextually resolve pronouns such as "it", and other deictic words and phrases. It is implemented as a bounded queue, and purposefully limited to 8 memory cells (corresponding to eight recently mentioned entities), as the authors think this is optimal for human operation [np1](./bib.md#np1). 
+
+Lastly, the Long Term Memory stores Pegasus's semantic knowledge, for example is-a relationshipts between concepts.
+
+When an idea and its sub-ideas are fully resolved as an action, such a system can execute it directly as an interpreter would, or generate the equivalent code in the selected backend, the paper mentions Java as an example.
+
+An interesting and novel idea mentioned in the paper is that of a translatable programming language: Pegasus is designed to be language-independent at its core, this means that many different front-ends, corresponding to different concrete grammars, can be implemented for it. For instance, the paper mentions Pegasus's capability of reading both English and German, and even of freely translating between a language and the other.
+
+The paper mentions AppleScript as one of the other programming languages that were, for a period of time at least, multilingual; AppleScript's keywords were translated in multiple different languages. In any case, AppleScript took the popular approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
+
+### CAL-4700
 
 
 -------------
