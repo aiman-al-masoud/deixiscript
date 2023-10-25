@@ -1,4 +1,3 @@
-from core.Def import Def
 from core.KB import KB
 from parse.parse import Parser
 from plot.show import save_png
