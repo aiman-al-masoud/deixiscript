@@ -132,6 +132,8 @@ Drawbacks related to Pegasus, or at least that original implementation from 2006
 
 All in all, Pegasus is a general natural language purpose programming system, one can see examples of its usage on the official website [np20](./bib.md#np20), the product is, to our knowledge as of writing, not yet available to the public.
 
+<!-- MENTION OTHER PAPER ON NATURALISTIC TYPES! -->
+
 ### CAL
 
 Another worthwhile case of a general purpose naturalistic programming language, also originally from 2006, is that presented by the intrestingly called "Osmosian Order of Plain English Programmers" [np19](./bib.md#np19).
