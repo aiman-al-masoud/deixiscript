@@ -144,6 +144,11 @@ And finally, to determine whether low-level programs could conveniently be writt
 
 The authors seem to have come to the conclusion that all of this is indeed possible, using their system.
 
+The authors draw a parallel between the "pictures" (we assume they're talking about mental images in human beings) and the "types" (programming language types), and between the skills that a young (or old) human being may acquire and the traditional routines of a programming language.
+
+Coding, they say, 
+
+
 
 
 -------------
