@@ -185,10 +185,10 @@ def test_c026():
     assert 'capra#1' == kb3.head
 
 def test_c027():
-    kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tell()
+    kb1 = the('man').does('ride')._(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tell()
     kb2 = the('man').tell(kb1)
     kb3 = the('horse').tell(kb2)
-    kb4 = the('man').does('ride').on(the('horse')).tell(kb3)
+    kb4 = the('man').does('ride')._(the('horse')).tell(kb3)
     assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
     assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
