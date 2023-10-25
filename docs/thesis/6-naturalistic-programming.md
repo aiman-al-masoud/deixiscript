@@ -88,7 +88,7 @@ The code produced by the system was never really meant to be complete or executa
 
 ## General Purpose Systems
 
-There have also been more complete attemps at creating a natural language programming system, usable for general purpose programming. We will proceed to mention three of what we think may be the most important ones: Pegasus, CAL-4700 and SN.
+There have also been more complete attemps at creating a natural language programming system, usable for general purpose programming. We will proceed to mention three of what we think may be the most important ones: Pegasus, CAL and SN.
 
 ### Pegasus
 
@@ -126,7 +126,24 @@ An interesting and novel idea mentioned in the paper is that of a translatable p
 
 The paper mentions AppleScript as one of the other programming languages that were, for a period of time at least, multilingual; AppleScript's keywords were translated in multiple different languages. In any case, AppleScript took the popular approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
 
-### CAL-4700
+Some of the drawbacks discussed of the approach taken by Pegasus and of naturalistic programming in generale are related to: varying choice of expression, vagueness inherent in natural language specifications (cf. [l6](./bib.md#l6)), the convenience of formal notation over natural language descriptions in many cases (cf. [np7](./bib.md#np7)) and the limitation in expressivity imposed on the naturalistic language by the underlying programming language, at least when transpiling to it.
+
+Drawbacks related to Pegasus, or at least that original implementation from 2006, include performance issues related to some of the implementation choices, the problem of having to manage an extensive database due to the choice to support a language's full natural inflection and conjugation patterns, and the limited expressivity of the initial implementation of the Pegasus language itself.
+
+All in all, Pegasus is a general natural language purpose programming system, one can see examples of its usage on the official website [np20](./bib.md#np20), the product is, to our knowledge as of writing, not yet available to the public.
+
+### CAL
+
+Another worthwhile case of a general purpose naturalistic programming language, also originally from 2006, is that presented by the intrestingly called "Osmosian Order of Plain English Programmers" [np19](./bib.md#np19).
+
+Some of the motivations behind this project, as explained by the authors, are related to the idea, also mentioned elsewhere[np1](./bib.md#np1), of eliminating the intermediate translation step from natural language thoughts and natural language pseudo-code into rigorous programming language constructs.
+
+Another motivation was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings, at least infants growing up, do) as to allow for flexibility in choice of expression and for a stable programming environment.
+
+And finally, to determine whether low-level programs could conveniently be written in such a subset of the English language.
+
+The authors seem to have come to the conclusion that all of this is possible, using their system.
+
 
 
 -------------

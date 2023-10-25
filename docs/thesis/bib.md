@@ -31,23 +31,36 @@ https://alphacephei.com/vosk/
 
 # LINGUISTICS & NLP
 
-##### Edward Sapir. Language (1921)
-##### Analytic and synthetic: Typological change in varieties of European languages
-##### Gapping: A Functional Analysis
+##### L1
+Edward Sapir. Language (1921)
+##### L2
+Analytic and synthetic: Typological change in varieties of European languages
+##### L3 
+Gapping: A Functional Analysis
 https://www.jstor.org/stable/4177923
-##### Topic and Comment Daniel B¨uring (UCLA) 
+##### L4
+Topic and Comment Daniel B¨uring (UCLA) 
 https://www.igntu.ac.in/eContent/IGNTU-eContent-845977415543-MA-Linguistics-2-HarjitSingh-IntroductiontoSemanticsandPragmatics-6.pdf
-##### Hyperonymy https://dictionary.cambridge.org/dictionary/english/hypernym
-##### Language and Communication Problems in Formalization: A Natural Language Approach (Alessandro Fantechi et al)
-##### Formal Models of Language: Formal versus Natural Language Paula Buttery
+##### L5
+Hyperonymy 
+https://dictionary.cambridge.org/dictionary/english/hypernym
+##### L6
+Language and Communication Problems in Formalization: A Natural Language Approach (Alessandro Fantechi et al)
+##### L7
+Formal Models of Language: Formal versus Natural Language Paula Buttery
 [local](../attachments/Formal_vs_Natural%202020.pdf)
-##### Lark (parsing library) 
+##### L8
+Lark (parsing library) 
 https://lark-parser.readthedocs.io/en/stable/
-##### NLP (Natural Language Processing) for NLP (Natural Language Programming) Rada Mihalcea1 , Hugo Liu2 , and Henry Lieberman
-##### Semantic gap https://www.techopedia.com/definition/21996/semantic-gap
-##### Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
-##### Deixis
-
+##### L9
+NLP (Natural Language Processing) for NLP (Natural Language Programming) Rada Mihalcea1 , Hugo Liu2 , and Henry Lieberman
+##### L10
+Semantic gap https://www.techopedia.com/definition/21996/semantic-gap
+##### L11
+Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
+##### L12
+Deixis
+NO LINK!
 
 # LOGIC & AI
 ##### AI1
