@@ -312,6 +312,7 @@ def test_c050():
     x4 = the('capra').which(does('run')).does('jump').tell(x3)
     assert e('capra#1').does('hop').get(x4)
 
+# similar problem: new cat which does run
 # %% events get in the way. you can fix it with "not event" negation type.
 # or maybe "an event isn't a thing", or maybe different name or yadda yadda...
 def test_c51():
@@ -320,6 +321,12 @@ def test_c51():
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
+# TODO
+# # new cat which does run ---> doesn't work in repl!!!
+# def test_c52():
+#     x1=the('cat').which(does('run')).tell()
+#     assert ('event#1', 'cat#1', 'subject') in x1.wm
+#     print(x1.wm)
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
 # def test_51():
