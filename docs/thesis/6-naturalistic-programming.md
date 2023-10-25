@@ -43,9 +43,9 @@ The need for better abstractions is also reflected in the criticism of software 
 
 ## Literate Programming
 
-Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX markup and typesetting system, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
+Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX typesetting and markup system, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
 
-Knuth designed a language called "WEB"; apparently back when he chose this name for it, it was "one of the few three-letter words of English that hadn’t al-
+Knuth designed a language called "WEB"; apparently back when he chose this name for it, "web" was still "one of the few three-letter words of English that hadn’t al-
 ready been applied to computers" [p11](./bib.md#p11).
 
 The language WEB combines a markup language with a traditional general purpose programming language (TEX and PASCAL respectively, in Knuth's original work); the idea is that a program is a web of components, and that it is best to describe the links between these components using a mix of natural language descriptions (using TEX) and formal notation (using PASCAL).
@@ -68,7 +68,7 @@ When describing an algorithm, the students tended to begin by the most general a
 
 This is often not the case in code, where such things as crucial steps buried within deeply nested ifs, and guard clauses and early returns to reduce the level of nesting and help ease the mental overload of such early checking for special cases are the order of the day.
 
-The subjects also expected the computer to possess a pragmatic knowledge of the world and of their intentions, and to fill in the semantic gaps whenever needed. "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" [np7](./bib.md#np7) as Dijkstra would've put it.
+The subjects also expected the computer to possess some pragmatic knowledge of the world and of their intentions, and to fill in the semantic gaps whenever needed. "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" [np7](./bib.md#np7) as Dijkstra would've put it.
 
 A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
 
@@ -78,7 +78,7 @@ What do programming and story telling have in common? A lot, actually, according
 
 The transpiler, called Metafor, was integrated with a "with a large knowledge base of Common Sense Knowledge, Concept-Net (Liu and Singh, 2004), derived from Open Mind a corpus of 750,000 natural language statements of Common Sense knowledge contributed by 15,000 Web community volunteers" [np4](./bib.md#np4).
 
-A very interesting concept discussed in this work is that ambiguity isn't always bad, on the contrary, it can be desirable under certain circumstances: as a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the representation had to change, for instance, by promoting attributes to sub-classes [np4](./bib.md#np4). This also ties in well with the idea of "successive refinements" mentioned earlier.
+A very interesting concept discussed in this work is that ambiguity isn't always bad, on the contrary, it can be desirable under certain circumstances: as a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change, for instance, by automatically promoting attributes to sub-classes [np4](./bib.md#np4). This also ties in well with the idea of "successive refinements" mentioned earlier.
 
 The paper also touched upon the concept of "programmatic semantics", also expanded upon another work [np5](./bib.md#np5) by the same authors; which is the idea that natural language structures imply and can be mapped upon the more traditional programming structures from structuted programming and OOP: "A surprising amount of what we call programmatic semantics can be inferred from linguistic structure" [np4](./bib.md#np4).
 
@@ -88,7 +88,7 @@ The code produced by the system was never really meant to be complete or executa
 
 ## General Purpose Systems
 
-There have also been more complete attemps at creating a natural language programming system, usable for general purpose programming. We will proceed to mention three of what we think may be the most important ones: Pegasus, CAL and SN.
+Since then, there have been more complete attemps at creating a comprehensive natural language programming system, that was usable for general purpose programming. We will proceed to mention three of what we think may be the most important attempts: Pegasus, CAL and SN.
 
 ### Pegasus
 
@@ -138,7 +138,7 @@ Another worthwhile case of a general purpose naturalistic programming language, 
 
 Some of the motivations behind this project, as explained by the authors, are related to the idea, also mentioned elsewhere[np1](./bib.md#np1), of eliminating the intermediate translation step from natural language thoughts and natural language pseudo-code into rigorous programming language constructs.
 
-Another motivation was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
+Another motivating factor was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
 
 And finally, to determine whether low-level programs could conveniently be written in such a subset of the English language.
 
