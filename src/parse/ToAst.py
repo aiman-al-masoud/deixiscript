@@ -76,7 +76,9 @@ class ToAst(Transformer):
 
     def simple_sentence(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)
-        return SimpleSentence(**d)
+        x1=SimpleSentence(**d)
+        x2=x1.copy(subject= x1.subject if x1.subject else Str.GAP) # TODO
+        return x2
 
     def left(self, children):
         return {'left':children[0]}

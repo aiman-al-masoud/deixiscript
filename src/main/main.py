@@ -7,5 +7,6 @@ parser=Parser()
 
 while True:
     ast=parser.parse(input('> '))
+    # print(ast)
     kb=ast.eval(kb)
     save_png(kb)
