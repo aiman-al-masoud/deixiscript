@@ -322,6 +322,23 @@ def test_c51():
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
 # TODO
+# %% using definitions to do create /search for instances of specialized concepts
+def test_c53():
+    x1=the('stallion').when(every('horse').which(does('be')._('expensive'))).tell() 
+    x2=the('horse').which(does('be')._('expensive')).tell(x1)
+    x3=the('horse').tell(x2)
+    assert the('stallion').get(x3)=='horse#1'
+    x4=the('stallion').tell(x3)
+    # print(the('stallion').get(x4)) # TODO: every required  BAD!
+
+    # TODO recusive define? bottom up define?
+    # print('-------------------------')
+    # x1=the('stallion').does('run').e.define(x3)
+    # x2=the('horse').does('run').e.define(x5)
+    # print(x1)
+    # print(x2)
+
+# TODO
 # # new cat which does run ---> doesn't work in repl!!!
 # def test_c52():
 #     x1=the('cat').which(does('run')).tell()
