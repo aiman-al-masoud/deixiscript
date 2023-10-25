@@ -184,13 +184,13 @@ def test_c026():
     kb3 = the('it').ask(kb2)
     assert 'capra#1' == kb3.head
 
-# def test_c027():
-#     kb1 = the(1)('man').does('ride').on(the(1)('horse')).when(the(1)('man').does('sit').on(the(1)('horse')).and_(the(1)('horse').does('move'))).tell()
-#     kb2 = the('man').tell(kb1)
-#     kb3 = the('horse').tell(kb2)
-#     kb4 = the(1)('man').does('ride').on(the(1)('horse')).idiom.tell(kb3)
-#     assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
-#     assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
+def test_c027():
+    kb1 = the('man').does('ride').on(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tell()
+    kb2 = the('man').tell(kb1)
+    kb3 = the('horse').tell(kb2)
+    kb4 = the('man').does('ride').on(the('horse')).tell(kb3)
+    assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
+    assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
 def test_c043():
     kb1 = the('dog').when(the('hund')).tell()
