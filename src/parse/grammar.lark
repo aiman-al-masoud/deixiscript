@@ -1,8 +1,11 @@
 // AST ---------------------------------------------------------
-?ast: noun_phrase | sentence
+?ast: sentence | noun_phrase | _parens
+
+// parentheses
+_parens: "(" ast ")"
 
 // SENTENCE ----------------------------------------------------
-?sentence: simple_sentence | compound_sentence
+?sentence: compound_sentence | simple_sentence
 
 // COMPOUND (AND ALSO COMPLEX) SENTENCE ------------------------
 compound_sentence: left op right
@@ -25,7 +28,7 @@ complement_head: noun_phrase
 preposition: PREPOSITION
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase: noun | relative
+?noun_phrase: noun | relative | _parens
 
 relative: relative_head "which" subordinate
 relative_head:noun_phrase
