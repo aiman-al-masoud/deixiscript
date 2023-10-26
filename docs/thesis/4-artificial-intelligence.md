@@ -21,9 +21,9 @@ After learning how to manipulate those symbols and getting reasonably good at it
 
 Numerous objections and counter-objections to the argument have been rised since then [phil2](./bib.md#phil2), and there is still no general consensus on the conclusions and validity of the argument[phil2](./bib.md#phil2). It is nonetheless a powerful and intuitive case for the idea that what computers are doing when they "think" is fundamentally different from what humans do (or at least, what the writer of this paragraph in his subjective experience does).
 
-An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined and always keeping arguments such as the Searle's Chinese Room into mind), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test [ai15](./bib.md#ai15).
+An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined and always keeping in mind arguments such as Searle's Chinese Room), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test [ai15](./bib.md#ai15).
 
-There are a number of variations and alternatives to the Turing Test, such as the Feigenbaum Test (or subject matter expert Turing test), which eliminates the "casual" nature of the open-ended conversational Turing Test by stipulating that a computer demonstrate proficency in a specialized area of interest [ai15](./bib.md#ai15) by surpassing an expert of that field.
+There are a number of variations and alternatives to the Turing Test, such as the Feigenbaum Test (or subject matter expert Turing test), which eliminates the "casual" nature of the open-ended conversational Turing Test from the picture, by stipulating that a computer demonstrate proficency in a specialized area of interest [ai15](./bib.md#ai15) by surpassing an expert of that field.
 
 Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would [ai15](./bib.md#ai15).
 
@@ -33,8 +33,6 @@ Another alternative is Nicholas Negroponte's variation, where an AI should help 
 <!-- devised the Turing Machine, and later worked on cyphers during WW2 breaking the Enigma code -->
 
 expectations outpacing reality
-
-turing test is not a necessary condition for intelligence (young children)
 
 Type-A (brute force) vs Type-B (heuristics-based) chess programs, deep blue Type-A, in 1997 Deep Blue challenged and defeated the then world chess champion Gary Kasparov
 
