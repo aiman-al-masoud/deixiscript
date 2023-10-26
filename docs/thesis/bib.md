@@ -128,6 +128,13 @@ LEARNING SYMBOLIC RULES FOR REASONING IN QUASI NATURAL LANGUAGE Kaiyu Yang
 On our best behaviour Hector J. Levesque
 [local](../attachments/on-our-best-behavior-levesque.pdf)
 
+##### AI15
+The History of Artificial Intelligence
+https://courses.cs.washington.edu/courses/csep590/06au/projects/history-ai.pdf
+[local](../attachments/history-ai.pdf)
+
+
+
 # NATURAL/ISTIC PROGRAMMING
 
 ##### NP1
