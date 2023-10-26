@@ -76,7 +76,7 @@ class Composite(Ast):
         # TODO: match/map/subst
         from core.expbuilder import e
         from functools import reduce
-        x1 = tuple(d.effect for d in kb.laws if d.cause.isMatch(self))
+        x1 = [d.effect for d in kb.laws if d.cause.isMatch(self)]
         if not x1: return None
         x2 = [e(x) for x in x1]
         x3 = reduce(lambda a,b: a.and_(b), x2).e
