@@ -54,11 +54,11 @@ class EB(Generic[T]):
         x1=self.e.copy( cmd=Int(True))
         return EB(x1)
 
-    def ask(self, kb=KB()):
+    def eval(self, kb=KB()):
         return self.e.eval(kb)
 
     def get(self, kb=KB()):
-        return e(self.e).ask(kb).head
+        return e(self.e).eval(kb).head
     
     def count(self, kb=KB()):
         r = self.get(kb)
@@ -67,7 +67,7 @@ class EB(Generic[T]):
         return 1
     
     def tell(self, kb=KB()):
-        return new(self.e).ask(kb)
+        return new(self.e).eval(kb)
 
 def e(x:Ast|EB|str|int):
     if isinstance(x, Ast):

@@ -32,7 +32,7 @@ class SimpleSentence(Composite):
         match self:
             case SimpleSentence(verb=Str('be')):
                 if self.object == 'thing': return kb << Int(True)
-                return e(self.subject).does('have')._(self.object).as_('super').ask(kb)
+                return e(self.subject).does('have')._(self.object).as_('super').eval(kb)
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
                 return event.ask(kb)
