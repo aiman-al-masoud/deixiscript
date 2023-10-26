@@ -308,6 +308,9 @@ John Searle
 https://rintintin.colorado.edu/~vancecd/phil201/Searle.pdf
 [local](../attachments/chinese-room-john-searle.pdf)
 
+##### Ockham's razor
+...
+
 -------------------------------
 
 ##### On Deep Computational Formalization of Natural Language
