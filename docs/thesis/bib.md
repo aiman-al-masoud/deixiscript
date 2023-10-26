@@ -133,6 +133,9 @@ The History of Artificial Intelligence
 https://courses.cs.washington.edu/courses/csep590/06au/projects/history-ai.pdf
 [local](../attachments/history-ai.pdf)
 
+##### AI16
+The Turing Test for AI Is Far Beyond Obsolete
+https://www.popularmechanics.com/technology/robots/a43328241/turing-test-for-artificial-intelligence-is-obsolete/
 
 
 # NATURAL/ISTIC PROGRAMMING
@@ -299,6 +302,11 @@ https://plato.stanford.edu/entries/discourse-representation-theory/
 ##### SOME PHILOSOPHICAL PROBLEMS FROM THE STANDPOINT OF ARTIFICIAL INTELLIGENCE John McCarthy and Patrick J. Hayes
 
 [local](../attachments/philosophical-problems-from-standpoint-of-ai-mccarthy.pdf)
+
+##### The Chinese Room
+John Searle
+https://rintintin.colorado.edu/~vancecd/phil201/Searle.pdf
+[local](../attachments/chinese-room-john-searle.pdf)
 
 -------------------------------
 

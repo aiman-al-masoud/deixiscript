@@ -33,7 +33,7 @@
 	- metaphysics
 	- synthetic/analytic distinction
 	- compositionality
-- [Predicate Logic](./4-predicate-logic.md)
+- [Artificial Intelligence](./4-artificial-intelligence.md)
 	- predicate/first order logic
 	- unification
 	- advice taker
@@ -80,9 +80,10 @@
 		- EBNF
 	- higher level abstractions
 		- sytactic matching
-		- definitions and laws (analytic vs synthetic, compositionality)
+		- defs and laws (analytic vs synthetic, problem of compositionality)
 		- sorting by generality
 		- implementing pronouns
+		- implementing class hierarchies
 	- world representation
 		- knowlegde graph
 		- handling I/O
@@ -92,7 +93,7 @@
 	- future work
 		- about license
 		- ambiguous sentence recognition
-		- better context sensitivity through deixis	
+		- improved context sensitivity and deixis	
 		- tenses (past, future)
-		- other frontends/"deixi dialects"
+		- other frontends/"deixi-dialects"
 		- compile to code
