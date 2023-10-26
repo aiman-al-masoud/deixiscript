@@ -99,6 +99,18 @@ In other words, the system contains physical parts that we take to be symbols re
 
 The formalism most often employed to represent and process knowledge in these kinds of systems is that of First Order Logic (FOL), also known as Predicate Logic. 
 
+
+- propositional logic
+- higher order logics
+- description of FOL and examples
+- unification
+
+
+- common sense
+- advice taker
+- machines like us proposed system
+
+
 <!-- Predicate Logic is the generalization of Proposition Logic, the latter dealing -->
 
 
