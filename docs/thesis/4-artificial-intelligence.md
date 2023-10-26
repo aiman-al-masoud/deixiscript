@@ -113,6 +113,8 @@ There are two kinds of quantifiers: existential and universal. Existential quant
 
 Unification
 
+[FOL stanford](./bib.md#phil4)
+[unification](./bib.md#ai5)
 
 <!-- 
 While propositional logic is limited to connectives (conjunctions and disjunctions) and negations -->
