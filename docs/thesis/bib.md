@@ -33,8 +33,10 @@ https://alphacephei.com/vosk/
 
 ##### L1
 Edward Sapir. Language (1921)
+[local](../attachments/sapir-edward-language-an-introduction-to-the-study-of-speech.pdf)
 ##### L2
 Analytic and synthetic: Typological change in varieties of European languages
+[local](../attachments/analytic-and-synthetic-typological-change-in-varieties-of-european-languages.pdf)
 ##### L3 
 Gapping: A Functional Analysis
 https://www.jstor.org/stable/4177923
@@ -59,8 +61,11 @@ Semantic gap https://www.techopedia.com/definition/21996/semantic-gap
 ##### L11
 Dependency Parsing, Speech and Language Processing. Daniel Jurafsky & James H. Martin. 
 ##### L12
-Deixis
-NO LINK!
+Indexicality and Deixis, Geoffrey Nunberg
+
+Nunberg, Geoffrey. “Indexicality and Deixis.” Linguistics and Philosophy, vol. 16, no. 1, 1993, pp. 1–43. JSTOR, http://www.jstor.org/stable/25001498. Accessed 26 Oct. 2023.
+
+[local](../attachments/indexicality-and-deixis.pdf)
 
 # LOGIC & AI
 ##### AI1
