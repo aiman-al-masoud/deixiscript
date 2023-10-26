@@ -191,4 +191,6 @@ The language also supports the concept of "Naturalistic Iterators" and "Naturali
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
+## Naturalistic Types
 
+<!-- TODO -->
