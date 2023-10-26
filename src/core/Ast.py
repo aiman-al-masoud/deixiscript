@@ -12,4 +12,4 @@ class Ast:
     def define(self, kb:'KB')->'Ast': raise Exception()
     def conseq(self, kb:'KB')->Optional['Ast']: raise Exception()
     def ask(self, kb:'KB')->'KB': raise Exception()
-    def tell(self, kb:'KB')->'KB': raise Exception()
+    def tell(self, kb:'KB')->'KB': raise Exception(self)

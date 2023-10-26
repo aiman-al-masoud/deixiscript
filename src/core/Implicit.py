@@ -39,7 +39,7 @@ class Implicit(Composite):
         x1 = kb << Str(new)
         x2 = e(new).does('be')._(self.head).tell(x1) 
         which = self.which.subst({Str.GAP:x2.head})
-        r2 = e(which).tell(x2)
+        r2 = which.tell(x2)
         return r2 << Str(new)
 
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:

@@ -38,7 +38,7 @@ class SimpleSentence(Composite):
                 return event.ask(kb)
             case SimpleSentence(verb=Str('have')) if isImplicitish(self):
                 x1 = makeExplicit(self, kb)
-                return e(x1.head).ask(x1)
+                return x1.head.ask(x1)
             case SimpleSentence(verb=Str('have')):
                 x=(self.subject,self.object,self.as_)
                 return kb << Int(x in kb.wm)
