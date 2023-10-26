@@ -68,22 +68,52 @@ Nunberg, Geoffrey. “Indexicality and Deixis.” Linguistics and Philosophy, vo
 [local](../attachments/indexicality-and-deixis.pdf)
 
 # LOGIC & AI
+
 ##### AI1
 Machines Like Us Levesque and Brachmann
 [local](../attachments/machines-like-us.pdf)
+
 ##### Programs with Common Sense John McCarthy
+[local](../attachments/programs-with-common-sense.pdf)
+
 ##### The Advice Taker 2.0
+[local](../attachments/advice-taker-2-prolog.pdf)
+
 ##### A Logic for Natural Language WILLIAM C. PURDY
-##### Unification theory Franz Baader Wayne Snyder https://www.cs.bu.edu/fac/snyder/publications/UnifChapter.pdf
-##### Symbolic Vs Sub-symbolic AI Methods: Friends or Enemies? Eleni Ilkoua, Maria Koutraki https://ceur-ws.org/Vol-2699/paper06.pdf
+[local](../attachments/a-logic-for-natural-language-w-p.pdf)
+
+##### Unification theory Franz Baader Wayne Snyder 
+https://www.cs.bu.edu/fac/snyder/publications/UnifChapter.pdf
+[local](../attachments/unification-first-order-logic.pdf)
+
+##### Symbolic Vs Sub-symbolic AI Methods: Friends or Enemies? Eleni Ilkoua, Maria Koutraki 
+https://ceur-ws.org/Vol-2699/paper06.pdf
+[local](../attachments/symbolic-vs-subsymbolic-friends-or-enemies.pdf)
+
 ##### Toward a New Science of Common Sense Ronald J. Brachman, Hector J. Levesque
+[local](../attachments/toward-a-new-science-of-common-sense-levesque-brachman.pdf)
+
 ##### What Is ChatGPT Doing and Why Does It Work? Stephen Wolfram
+https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/
+[local](../attachments/What%20Is%20ChatGPT%20Doing%20…%20and%20Why%20Does%20It%20Work%20—Stephen%20Wolfram%20Writings.pdf)
+
 ##### The Heuristic Reasoning Manifesto Praveen K. Paritosh
-##### Prompt Engineering Guide https://www.promptingguide.ai/
+[local](../attachments/the-heuristic-reasoning-manifesto.pdf)
+
+##### Prompt Engineering Guide 
+https://www.promptingguide.ai/
+
 ##### Conceptual Modeling and Artificial Intelligence: Mutual Benefits from Complementary Worlds Dominik Bork
-##### Conceptual Modelling and Artificial Intelligence Peter Fettke1,2
+[local](../attachments/Conceptual_Modeling_and_Artificial_Intelligence_Mu.pdf)
+
+##### Conceptual Modelling and Artificial Intelligence Peter Fettke
+[local](../attachments/conceptual-modelling-and-artificial-intelligence-ai.pdf)
+
 ##### LEARNING SYMBOLIC RULES FOR REASONING IN QUASI NATURAL LANGUAGE Kaiyu Yang
+[local](../attachments/Learning_Symbolic_Rules_for_Reasoning_in_Quasi-Nat.pdf)
+
 ##### On our best behaviour Hector J. Levesque
+[local](../attachments/on-our-best-behavior-levesque.pdf)
 
 # NATURAL/ISTIC PROGRAMMING
 
