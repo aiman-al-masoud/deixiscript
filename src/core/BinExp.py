@@ -26,14 +26,14 @@ class BinExp(Composite):
                 right= self.right.eval(left)
                 return right << self.copy(left=left.head, right=right.head)
             case BinExp(op=Str('and')):
-                r1 = self.left.ask(kb)
+                r1 = self.left.eval(kb)
                 if not r1.head: return r1
-                r2 = self.right.ask(r1)
+                r2 = self.right.eval(r1)
                 return r2
             case BinExp(op=Str('or')):
-                r1 = self.left.ask(kb)
+                r1 = self.left.eval(kb)
                 if r1.head: return r1
-                r2 = self.right.ask(r1)
+                r2 = self.right.eval(r1)
                 return r2
 
         raise Exception()

@@ -100,14 +100,13 @@ def makeEvent(ast:SimpleSentence):
     return x4
 
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
-    from core.expbuilder import e
     from core.decompress import decompress
 
     assert ast.verb=='have'
 
-    x1=e(ast.subject).ask(kb)
-    x2=e(ast.object).ask(x1)
-    x3=e(ast.as_).ask(x2)
+    x1=ast.subject.eval(kb)
+    x2=ast.object.eval(x1)
+    x3=ast.as_.eval(x2)
 
     x4=ast.copy(subject=x1.head, object=x2.head, as_=x3.head)# subject=x1.head or ast.subject ...
     x5=decompress(x4)
