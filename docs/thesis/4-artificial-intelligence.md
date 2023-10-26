@@ -51,13 +51,13 @@ Sub-symbolic AI, while tracing its origins back to such early works as Frank Ros
 #### pros:
 - ability to reason and explain, with easily interpretable intermediate steps
 - rule modularity (rules are discrete and autonomous)
-- better suited for abstract problems with little data available (theorem proving)
+- better suited for abstract problems (theorem proving)
 #### cons:
 - not well suited to noisy datasets
-- hand-coded and hard-coded rules (usually)
+- (usually) relies on hand-coded and hard-coded rules
 - maintenance of rules is hard
 
-Typically associated to: Knowledge Bases, the Prolog Language and Expert Systems.
+Typically associated to: Knowledge Bases, Expert Systems, the Prolog Language.
 
 ### Sub-symbolic:
 
