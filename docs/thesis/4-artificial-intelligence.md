@@ -51,7 +51,7 @@ Sub-symbolic AI, while tracing its origins back to such early works as Frank Ros
 #### pros:
 - ability to reason and explain, with easily interpretable intermediate steps
 - rule modularity (rules are discrete and autonomous)
-- better suited for abstract problems with little data available
+- better suited for abstract problems with little data available (theorem proving)
 #### cons:
 - not well suited to noisy datasets
 - hand-coded and hard-coded rules (usually)
