@@ -9,9 +9,9 @@ Back in 1950 [ai18](./bib.md#ai18), Alan Turing (1912-1954), mathematician, comp
 
 <!-- Goedel -->
 
-In doing so, Turing introduced the concept of the Turing Test: a metric to tell if a computer could "think", according to the definition given by its author, involving a suspicious human judge who has to converse with two subjects: a human and a machine behind a curtain, and tell them apart from their usage of language alone. In what can be aptly described as an "imitation game", the goal of the machine is thus to deceive the human judge regarding its being a machine [ai15](./bib.md#ai15).
+In doing so, Turing introduced the concept of the Turing Test: a metric to tell if a computer could "think", according to the definition given by its author. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a curtain. The judge's goal is to tell them apart, from their usage of language alone. In what can be aptly described as an "imitation game", the goal of the machine is to deceive the human judge regarding its being a machine [ai15](./bib.md#ai15).
 
-It was recently reported (2022-23) that some Large Language Models (LLMs) such as Google’s LaMDA [ai16](./bib.md#ai16) and OpenAI's GPT [ai17](./bib.md#ai17) have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that [ai15](./bib.md#ai15). If this is all accurate, it means that we are living in the post-Turing Test era.
+It was recently reported (2022-23) that some Large Language Models (LLMs) such as Google’s LaMDA [ai16](./bib.md#ai16) and OpenAI's GPT [ai17](./bib.md#ai17) have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that [ai15](./bib.md#ai15). If this is all accurate, it means that we are now living in the post-Turing Test era.
 
 Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial topics to say the least in the philosophy of mind. Years before the advent of LLMs, in 1980, philosopher John Searle (1932-) first made public his famous Chinese Room Argument [phil1](./bib.md#phil1).
 
