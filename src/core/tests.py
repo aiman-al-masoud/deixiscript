@@ -20,20 +20,6 @@ def test_49(): # nested which GAP substitution
     ok = e('EVENT#1').does('have')._(the('capra').which(does('be')._('red'))).e
     assert y == ok
 
-# %% findAsts tests
-
-# def test_c006():
-#     ast = e('capra').and_(3).and_(1).and_('gatto').e
-#     assert findAsts(ast, lambda x:isinstance(x, int) and not isinstance(x, bool)) == (Int(3), Int(1))
-
-# def test_c007():
-#     ast = the('cat').does('jump').and_(the('dog').does('run')).e
-#     assert findAsts(ast, lambda x:isinstance(x, Implicit)) == (the('cat').e, the('dog').e)
-
-# def test_c008():
-#     x = the('cat').which(does('jump')).does('lick')._(the('cat')).e
-#     assert findAsts(x, lambda x:isinstance(x, Implicit)) == (the('cat').which(does('jump')).e, the('cat').e)
-
 # %% decompress tests
 def test_c009():
     x1 = decompress(e('capra').and_('cavallo').does('jump').e)
@@ -211,36 +197,11 @@ def test_c028():
     assert multiple.unroll() == ['capra#3', 'capra#2', 'capra#1']
     assert isinstance(single, str)
 
-# # %% or-operator ask test
-# def test_c029():
-#     assert e(1).equals(2).or_(e(3).equals(3)).get()
-#     assert not e(1).equals(2).or_(e(3).equals(2)).get()
-
-# # %% matching a general implicit sentence to a specific explicit sentence
-# def test_c030():
-#     gen = the('man').does('ride').on(the('horse'))
-#     spec = e('man#1').does('ride').on('horse#1')
-#     kb1 = the('man').tell()
-#     kb2 = the('horse').tell(kb1)
-
-#     assert isMatch(gen.e, spec.e, kb2)
-
 # %% multiple executions of the same simple sentences are idempotent
 def test_c033():
     x1 = e('man#1').does('ride').on('horse#1').tell()
     x2 = e('man#1').does('ride').on('horse#1').tell(x1)
     assert x1.wm == x2.wm
-
-# # %% matchAst with other similar "noise" specific sentences in KB
-# def test_c034():
-#     kb1 = new(the('cat')).does('eat')._(new(the('mouse'))).tell()
-#     kb2 = the('cat').tell(kb1)
-#     kb3 = the('mouse').tell(kb2)
-#     gen = every('cat').does('eat')._(every('mouse')).e
-#     spec = e('cat#2').does('eat')._('mouse#2').e
-
-#     assert isMatch(gen, spec, kb3)
-#     assert not isMatch(spec, gen, kb3)
 
 # %% logic and deictic dict test
 def test_c035():
