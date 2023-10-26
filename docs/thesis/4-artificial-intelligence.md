@@ -97,9 +97,31 @@ In other words, the system contains physical parts that we take to be symbols re
 
 ### First Order Logic
 
-The formalism most often employed to represent and process knowledge in these kinds of systems is that of First Order Logic (FOL), also known as Predicate Logic. 
+The formalism most often employed to represent and process knowledge in these kinds of systems is that of First Order Logic (FOL), also known as predicate logic.
+
+There are many kinds of logical calculi: some are "dialects" of first order logic, some are lower order (less general) and some are higher order (more general) than FOL.
+
+The name "predicate" stems from the fact that FOL identifies the "predicate" (essentially an n-ary function that evaluates to a truth value) as its basic building block, and hence operating at a finer level of granularity than Propositional (or Zeroth Order) logic.
+
+Propositional logic is closer to Aristotele's syllogistic logic, as it takes the full proposition (roughly corresponding to the meaning of a simple sentence in English) to be its atomic building block: hence making it difficult to formally express the concept of a verb or a noun, which are sub-elements of any typical English sentence.
+
+The grammar of FOL comprises Terms and Formulas. A Term is an atomic component, it can be a constant, a variable or an application of a predicate to a list of constants or variables. A predicate cannot be applied to another predicate, this is only possible in higher order logics such as second order logic. A Term may be regarded as a nullary function.
+
+Formulas can be simple or composite, a simple formula is the application of a predicate to a list of arguments (Terms), a composite formula is a conjunction, a disjunction, negation, an equality, an implication, or a quantification of a simple or of another composite formula(s).
+
+There are two kinds of quantifiers: existential and universal. Existential quantification is the assertion that an entity with such and such properties exists, universal quantification (which, again, can't occur over predicates in FOL, but can in higher order logics) is the assertion that a property applies to a certain kind of entities, not just one.
+
+Unification
 
 
+<!-- 
+While propositional logic is limited to connectives (conjunctions and disjunctions) and negations -->
+
+
+
+
+
+- different logical calculi
 - propositional logic
 - higher order logics
 - description of FOL and examples
