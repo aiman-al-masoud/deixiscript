@@ -11,8 +11,6 @@ if TYPE_CHECKING:
 class Def(Composite):
     definendum:'Ast'=Int(False)
     definition:'Ast'=Int(False)
-    negation:Int=Int(False)
-    cmd:Int=Int(False)
     
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self

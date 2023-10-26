@@ -15,8 +15,6 @@ class Implicit(Composite):
     card:Int      =Int(1)
     ord:'Ast'     =Str('last')
     which:'Ast'   =Int(True)
-    negation:Int  =Int(False)
-    cmd:Int       =Int(False)
     concept:Int   =Int(False)
         
     def askPositive(self, kb:'KB')->'KB':

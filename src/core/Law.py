@@ -12,8 +12,6 @@ if TYPE_CHECKING:
 class Law(Composite):
     cause:'Ast'=Int(False)
     effect:'Ast'=Int(False)
-    negation:Int=Int(False)
-    cmd:Int=Int(False)
 
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self

@@ -14,8 +14,6 @@ class BinExp(Composite):
     op:Str=Str('')
     left:'Ast'=Int(False)
     right:'Ast'=Int(False)
-    negation:'Ast'=Int(False) # ??
-    cmd:'Ast'=Int(False)
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isNounPhrasish

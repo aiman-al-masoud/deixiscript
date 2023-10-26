@@ -11,14 +11,12 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class SimpleSentence(Composite):
-    verb:'Ast'=Str('')
-    subject:'Ast'=Int(False)
-    object:'Ast'=Int(False)
-    as_:'Ast'=Int(False)
-    to:'Ast'=Int(False)
-    on:'Ast'=Int(False)
-    negation:Int=Int(False)
-    cmd:Int=Int(False)
+    verb:'Ast'    =Str('')
+    subject:'Ast' =Int(False)
+    object:'Ast'  =Int(False)
+    as_:'Ast'     =Int(False)
+    to:'Ast'      =Int(False)
+    on:'Ast'      =Int(False)
 
     @property
     def args(self)->Dict[str, 'Ast']:
