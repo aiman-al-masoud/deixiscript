@@ -81,6 +81,20 @@ A point that the two approaches have in common, in a sense, is that they can be 
 
 Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language[ai6](./bib.md#1ai6), [ai13](./bib.md#ai13).
 
+## Symbolic AI: a closer look
+
+<!-- sth myrs -->
+
+We will now take a closer look at some of the theory behind the more "classical" kind of AI. An interesting place to start from is the enunciation of the Knowledge Representation (KR) hypothesis by philosopher Brian Cantwell Smith, which states that:
+
+"Any mechanically embodied intelligent process will be comprised of
+structural ingredients that a) we as external observers naturally take to
+represent a propositional account of the knowledge that the overall
+process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering
+the behavior that manifests that knowledge" [ai1](./bib.md#ai1).
+
+
+
 
 
 
