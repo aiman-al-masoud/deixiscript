@@ -146,7 +146,4 @@ precise data, while the sub-symbolic ones are able to
 handle large and noisy datasets.
 
 
-
-Some researchers believe that one of the main bottlenecks of symbolic methods has been the manual creation of rules, and there exist some mixed approaches [ai6](./bib.md#1ai6), [ai13](./bib.md#ai13).
-
 come up w/
