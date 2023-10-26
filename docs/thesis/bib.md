@@ -137,6 +137,15 @@ https://courses.cs.washington.edu/courses/csep590/06au/projects/history-ai.pdf
 The Turing Test for AI Is Far Beyond Obsolete
 https://www.popularmechanics.com/technology/robots/a43328241/turing-test-for-artificial-intelligence-is-obsolete/
 
+##### AI17
+ChatGPT broke the Turing test — the race is on for new ways to assess AI
+https://www.nature.com/articles/d41586-023-02361-7
+
+##### AI18
+
+Computing Machinery and Intelligence, Alan Turing
+
+
 
 # NATURAL/ISTIC PROGRAMMING
 
@@ -254,6 +263,7 @@ Functional Programming Simplified, Alvin Alexander
 https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
 ##### P4 
 The Roots of Lisp (Paul Graham)
+[local](../attachments/the-roots-of-lisp-paul-graham.ps)
 ##### P5 
 On the Evolution of Programming Languages K. R. Chowdhary, Professor
 ##### P6 
@@ -277,6 +287,21 @@ https://legacy.reactjs.org/docs/reconciliation.html
 
 
 # PHILOSOPHY
+
+##### PHIL1
+The Chinese Room
+John Searle
+https://rintintin.colorado.edu/~vancecd/phil201/Searle.pdf
+[local](../attachments/chinese-room-john-searle.pdf)
+
+##### PHIL2
+The Chinese Room Argument, Stanford Encyclopedia of Philosophy
+
+##### PHIL3
+
+Philosophy of Mind
+Edward Feser
+
 
 ##### Synthetic/Analytic distinction (Philosophy) 
 
@@ -303,10 +328,6 @@ https://plato.stanford.edu/entries/discourse-representation-theory/
 
 [local](../attachments/philosophical-problems-from-standpoint-of-ai-mccarthy.pdf)
 
-##### The Chinese Room
-John Searle
-https://rintintin.colorado.edu/~vancecd/phil201/Searle.pdf
-[local](../attachments/chinese-room-john-searle.pdf)
 
 ##### Ockham's razor
 ...
