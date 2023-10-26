@@ -17,12 +17,12 @@ class Composite(Ast):
         return defined.tell(kb) if self.cmd else defined.ask(kb)
 
     def tell(self, kb:'KB')->'KB':
-        from core.expbuilder import e
 
         x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
         x2=self.conseq(kb)
         if not x2: return x1
-        x3 = e(x2).tell(x1)
+        x3=x2.tell(x1)
+
         return x3
 
     def ask(self, kb:'KB')->'KB':
@@ -42,8 +42,7 @@ class Composite(Ast):
         return [self]
 
     def askNegative(self, kb:'KB')->'KB':
-        from core.expbuilder import e
-        x1=e(self.copy(negation=Int(False))).ask(kb)
+        x1=self.copy(negation=Int(False)).ask(kb)
         return x1 << (Int(not x1.head))
 
     def tellNegative(self, kb:'KB')->'KB':
