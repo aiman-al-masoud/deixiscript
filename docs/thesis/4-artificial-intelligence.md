@@ -65,7 +65,7 @@ Typically associated to: Knowledge Bases, Expert Systems, the Prolog Language.
 - more robust against noisy/missing data
 - easy to scale up (can handle big data)
 - better for perceptual problems (which can be hard to desribe with explicit knowledge)
-- less human intervention in training
+- less human intervention required in training
 - good execution speed
 
 #### cons:
