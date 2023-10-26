@@ -66,11 +66,12 @@ Typically associated to: Knowledge Bases, the Prolog Language and Expert Systems
 - easy to scale up (can handle big data)
 - better for perceptual problems (which can be hard to desribe with explicit knowledge)
 - less human intervention
+- good execution speed
 
 #### cons:
 - lack interpretability
 - high dependence on training data
-- huge computation power and amounts of data for training
+- requires huge computation power and amounts of data for training
 
 Typically used for: prediction, clustering, pattern classification, recognition of speech and text.
 
