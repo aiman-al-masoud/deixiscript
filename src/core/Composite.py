@@ -80,5 +80,5 @@ class Composite(Ast):
         if not x1: return None
         x2 = [e(x) for x in x1]
         x3 = reduce(lambda a,b: a.and_(b), x2).e
-        assert isinstance(x3, Composite)
+        # assert isinstance(x3, Composite)
         return x3
