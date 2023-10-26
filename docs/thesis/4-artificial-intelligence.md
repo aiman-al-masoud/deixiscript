@@ -118,13 +118,6 @@ first emerged in the early 1950s
 
 symbolic logic rather than numerical computations, data-driven, explicit (and declarative) knowledge, human interpretable conclusions
 
-KR Hypothesis,  by Brian Cantwell Smith
-
-Any mechanically embodied intelligent process will be comprised of
-structural ingredients that a: we as external observers naturally take to
-represent a propositional account of the knowledge that the overall
-process exhibits, and b: independent of such external semantic attribution, play a formal but causal and essential role in engendering
-the behavior that manifests that knowledge
 
 [ai1](./bib.md#ai1)
 
