@@ -93,7 +93,7 @@ represent a propositional account of the knowledge that the overall
 process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering
 the behavior that manifests that knowledge" [ai1](./bib.md#ai1).
 
-
+In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
 
 
 
