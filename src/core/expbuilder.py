@@ -1,6 +1,6 @@
+import sys
 from typing import Callable, Generic, Literal, TypeVar, overload
 from dataclasses import dataclass
-import sys
 from core.Ast import Ast
 from core.SimpleSentence import SimpleSentence
 from core.BinExp import BinExp
