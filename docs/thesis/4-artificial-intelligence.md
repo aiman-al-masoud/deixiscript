@@ -95,6 +95,18 @@ the behavior that manifests that knowledge" [ai1](./bib.md#ai1).
 
 In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
 
+### First Order Logic
+
+The formalism most often employed to represent and process knowledge in these kinds of systems is that of First Order Logic (FOL), also known as Predicate Logic. 
+
+<!-- Predicate Logic is the generalization of Proposition Logic, the latter dealing -->
+
+
+
+
+<!-- Predicate Logic isn't the only kind of logic,  -->
+<!-- There are actually many dialects of  -->
+
 
 
 

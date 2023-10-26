@@ -302,6 +302,11 @@ The Chinese Room Argument, Stanford Encyclopedia of Philosophy
 Philosophy of Mind
 Edward Feser
 
+##### PHIL4
+The Emergence of First Order Logic, Stanford
+[local](../attachments/the-emergence-of-first-order-logic-stanford-philosophy.pdf)
+
+
 
 ##### Synthetic/Analytic distinction (Philosophy) 
 
@@ -331,6 +336,7 @@ https://plato.stanford.edu/entries/discourse-representation-theory/
 
 ##### Ockham's razor
 ...
+
 
 -------------------------------
 
