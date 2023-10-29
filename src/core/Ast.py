@@ -5,8 +5,8 @@ if TYPE_CHECKING:
 
 class Ast:
     def eval(self, kb:'KB')->'KB': raise Exception()
-    def ask(self, kb:'KB')->'KB': raise Exception()
-    def tell(self, kb:'KB')->'KB': raise Exception()
+    def ask(self, kb:'KB')->'KB': raise Exception() # maybe rm
+    def tell(self, kb:'KB')->'KB': raise Exception() # maybe rm
     def askNegative(self, kb:'KB')->'KB': raise Exception()
     def tellNegative(self, kb:'KB')->'KB': raise Exception()
     def askPositive(self, kb:'KB')->'KB': raise Exception()
