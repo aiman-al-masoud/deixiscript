@@ -10,10 +10,10 @@ class Explicit(Ast):
     def eval(self, kb:'KB')->'KB':
         return kb << self
 
-    def ask(self, kb: 'KB') -> 'KB':
+    def ask(self, kb: 'KB') -> 'KB': # rm
         return kb
         
-    def tell(self, kb: 'KB') -> 'KB':
+    def tell(self, kb: 'KB') -> 'KB': # rm
         return kb
 
     def copy(self, **kwargs:'Ast'):
