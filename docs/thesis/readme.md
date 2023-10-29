@@ -1,4 +1,4 @@
-# Deixiscript: an attempt at a lightweight naturalistic voice programming language
+# Deixiscript: toward a spoken naturalistic programming language
 
 - [Introduction](./0-intro.md)
 	- intro
