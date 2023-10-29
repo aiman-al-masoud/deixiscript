@@ -1,4 +1,4 @@
-# Deixiscript: toward a spoken naturalistic programming language
+# Deixiscript: toward a (simple) spoken naturalistic programming language
 
 - [Introduction](./0-intro.md)
 	- intro
