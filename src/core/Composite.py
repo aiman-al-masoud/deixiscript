@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Dict, Sequence, TypeVar
 from core.Ast import Ast
 
 if TYPE_CHECKING:
-    from core.KB import KB 
+    from core.KB import KB
 
 @dataclass(frozen=True)
 class Composite(Ast):
@@ -16,6 +16,9 @@ class Composite(Ast):
         defined = self.define(kb)
         return defined.tell(kb) if self.cmd else defined.ask(kb)
 
+    def ask(self, kb:'KB')->'KB':
+        return self.askNegative(kb) if self.negation else self.askPositive(kb)
+
     def tell(self, kb:'KB')->'KB':
 
         x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
@@ -24,9 +27,6 @@ class Composite(Ast):
         x3=x2.tell(x1)
 
         return x3
-
-    def ask(self, kb:'KB')->'KB':
-        return self.askNegative(kb) if self.negation else self.askPositive(kb)
 
     def askPositive(self, kb:'KB')->'KB':
         raise Exception()
