@@ -1,3 +1,5 @@
+# git ls-files | grep "[0-9].*\.tex" | xargs cat | wc
+
 NAME='0-book'
 clear
 rm *.aux *.pdf *.log *.blg *.bbl
