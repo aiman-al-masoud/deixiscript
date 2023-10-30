@@ -1,8 +1,8 @@
 # Voice Interfaces
 
-Programming by voice has received attention in the last years from both the commercial and the research sector, as an alternative to the de-facto golden standard approach of text-based programming [1](#1), [2](#2).
+Programming by voice has received attention in the last years from both the commercial and the research sector, as an alternative to the de-facto golden standard approach of text-based programming [v2](./bib.md#v2), [v4](./bib.md#v4).
 
-This has happened as a result of the increase in acquired disabilities realted to long periods of typing: Repetitive Stress Injury (RSI), which can lead to severe neck ache and back pain [1](#1), [2](#2).
+This has happened as a result of the increase in acquired disabilities realted to long periods of typing: Repetitive Stress Injury (RSI), which can lead to severe neck ache and back pain [v2](./bib.md#v2), [v4](./bib.md#v4).
 
 A Voice User Interface (VUI) is a Human-Computer Interface (HCI) that enables interaction with a computer through an auditive interface. It is usually a complement to the more popular Graphical User Interfaces (GUI), as it is most often seen in virtual assistants, automobile and home automation systems, etc...
 
@@ -12,30 +12,30 @@ There are quite a few hurdles on this path, some of them are general to the desi
 
 Some of the more general problems are:
 
-- the ephemeral nature of speech as compared to text [3](#3).
+- the ephemeral nature of speech as compared to text [v3](./bib.md#v3).
 - issues in discoverability; or making sure the user is aware of the options available to him/her at any point of using a voice enabled system.
-- issues in transcription: there is a tradeoff between the size of the available vocabulary and the precision with which the words are recognized [3](#3).
+- issues in transcription: there is a tradeoff between the size of the available vocabulary and the precision with which the words are recognized [v3](./bib.md#v3).
 - privacy and noise-related concerns (eg: at a crowded workplace), obviously.
 - etc...
 
 Some of the more specific, programming-related problems are:
 
-- recognizing keywords and abbreviations in code (at least in "traditional" code) that aren't contemplated by off-the-mill voice recognition software [2](#2).
-- dealing with multiple levels of nesting in programming language structures [2](#2).
+- recognizing keywords and abbreviations in code (at least in "traditional" code) that aren't contemplated by off-the-mill voice recognition software [v4](./bib.md#v4).
+- dealing with multiple levels of nesting in programming language structures [v4](./bib.md#v4).
 
 - etc...
 
 There have been multiple attempts at designing such systems, and the approaches that were taken have been diverse.
 
-One approach, detailed in [2](#2), involves the idea of a Syntax-directed voice editor. A Syntax-directed editor, as explained in [2](#2), takes advantage of the regularities of a formal language to provide automatic completion for common language constructs, saving the user time and typing. When applied to voice programming, the authors hypothesize that it can help reduce the mental toil of spelling out loud a potentially convoluted piece of programming syntax character by character. The Syntax-directed editor married to the voice recognition software produces a programming environment that is easy to reconfigure for many different programming languages.
+One approach, detailed in [v4](./bib.md#v4), involves the idea of a Syntax-directed voice editor. A Syntax-directed editor, as explained in [v4](./bib.md#v4), takes advantage of the regularities of a formal language to provide automatic completion for common language constructs, saving the user time and typing. When applied to voice programming, the authors hypothesize that it can help reduce the mental toil of spelling out loud a potentially convoluted piece of programming syntax character by character. The Syntax-directed editor married to the voice recognition software produces a programming environment that is easy to reconfigure for many different programming languages.
 
-A slightly different approach has been taken by [1](#1). The researchers here focused on the idea of applying the Reactive Paradigm (rather than the more traditional Imperative style) to voice programming, and comparing the efficiency of the two by preparing spoken versions of a set of programs in Java versus RxJava, a library that provides Reactive Extensions to the language.
+A slightly different approach has been taken by [v2](./bib.md#v2). The researchers here focused on the idea of applying the Reactive Paradigm (rather than the more traditional Imperative style) to voice programming, and comparing the efficiency of the two by preparing spoken versions of a set of programs in Java versus RxJava, a library that provides Reactive Extensions to the language.
 
-The Reactive Paradigm is oriented around data flow and the propagation of change. It deals with asynchronous data streams where the data is events and vice versa [1](#1).
+The Reactive Paradigm is oriented around data flow and the propagation of change. It deals with asynchronous data streams where the data is events and vice versa [v2](./bib.md#v2).
 
-The authors of the study found out that the Reactive style usually produces longer code in both characters, syllables, and words as compared to the Imperative style. However, owing to the higher expressiveness of Reactive constructs, those words themselves produced more effective work [1](#1). Moreover, those words contained a higher percentage of English-dictionary words, rather than word abbreviations: which are harder to pronounce and harder to be recognized by general purpose voice recognition software; this perhaps owing to the fact that Reactive programming makes less use of temporary variables and short variable names [1](#1).
+The authors of the study found out that the Reactive style usually produces longer code in both characters, syllables, and words as compared to the Imperative style. However, owing to the higher expressiveness of Reactive constructs, those words themselves produced more effective work [v2](./bib.md#v2). Moreover, those words contained a higher percentage of English-dictionary words, rather than word abbreviations: which are harder to pronounce and harder to be recognized by general purpose voice recognition software; this perhaps owing to the fact that Reactive programming makes less use of temporary variables and short variable names [v2](./bib.md#v2).
 
-A general overview of what it means, practically speaking, to design an effective VUI is given by [3](#3). As already hinted, a VUI is a specific instance of a HCI, and as such it is subject to such general considerations that can be made on the usability of any computer interface.
+A general overview of what it means, practically speaking, to design an effective VUI is given by [v3](./bib.md#v3). As already hinted, a VUI is a specific instance of a HCI, and as such it is subject to such general considerations that can be made on the usability of any computer interface.
 
 Some of the HCI general concerns discussed here, are:
 
@@ -59,14 +59,10 @@ Speech output, especially when enumerating avaiable options, can be slow and ted
 
 Another advantage of spoken systems is that speech is generally considered to be a faster input method than typing: most pepople can speak faster than they can type, at least when speking a natural language.
 
-###### [1](./bib.md#on-the-positive-effect-of-reactive-programming-on-software-comprehension-an-empirical-study)
 
-###### [2](./bib.md#programming-by-voice-vocalprogramming-stephen-c-arnold-et-al)
-
-###### [3](./bib.md#an-empirical-approach-for-the-evaluation-of-voice-user-interfaces-valéria-farinazzo-et-al)
-
-###### [4](./bib.md#voice-commanded-scripting-language-for-programming-navigation-strategies-on-the-fly-michael-nichols-qian-wang-gopal-gupta)
-
+<!-- TODO: cite ALVIN -->
+<!-- 
+TODO
 https://www.typingmaster.com/speech-speed-test/
 https://en.wikipedia.org/wiki/Speech_tempo
 https://typing-speed-test.aoeu.eu/
@@ -74,4 +70,5 @@ https://en.wikipedia.org/wiki/Words_per_minute
 https://en.wikipedia.org/wiki/Repetitive_strain_injury
 https://en.wikipedia.org/wiki/Eye_strain
 https://en.wikipedia.org/wiki/Voice_user_interface
-https://userguiding.com/blog/voice-user-interface/
+https://userguiding.com/blog/voice-user-interface/ 
+-->

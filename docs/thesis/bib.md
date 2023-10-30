@@ -1,31 +1,38 @@
 
-# VOICE 
+# VOICE
 
-##### Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly Michael Nichols, Qian Wang, Gopal Gupta
+##### V1
+Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly Michael Nichols, Qian Wang, Gopal Gupta
 
 [local](../attachments/alvin-voice-programming-language.pdf)
 
-##### Programming by Voice Efficiency in the Reactive and Imperative Paradigm Miriam Lagergren, Max Soneryd
+##### V2
+Programming by Voice Efficiency in the Reactive and Imperative Paradigm Miriam Lagergren, Max Soneryd
 
 [local](../attachments/voice-programming-efficiency-reactive-vs-imperative-paradigm.pdf)
 
-##### An Empirical Approach for the Evaluation of Voice User Interfaces Valéria Farinazzo et al
+##### V3
+An Empirical Approach for the Evaluation of Voice User Interfaces Valéria Farinazzo et al
 
 [local](../attachments/empirical-evaluation-of-voice-interfaces.pdf)
 
-##### Programming by Voice, VocalProgramming Stephen C. Arnold et al
+##### V4
+Programming by Voice, VocalProgramming Stephen C. Arnold et al
 
 [local](../attachments/Programming_by_voice_VocalProgramming.pdf)
 
-##### Natural mapping between voice commands and APIs Matúš Sulír* and Jaroslav Porubän
+##### V5
+Natural mapping between voice commands and APIs Matúš Sulír* and Jaroslav Porubän
 
 [local](../attachments/natural-mapping-voice-commands-api.pdf)
 
-##### Vosk speech recognition toolkit
+##### V6
+Vosk speech recognition toolkit
 
 https://alphacephei.com/vosk/
 
-##### Dependency Parsing for Spoken Dialog Systems
+##### V7
+Dependency Parsing for Spoken Dialog Systems
 
 [local](../attachments/dependency-parsing-spoken-dialogue.pdf)
 
