@@ -1,4 +1,4 @@
-
+<!-- 
 # VOICE
 
 ##### V1
@@ -350,4 +350,4 @@ https://plato.stanford.edu/entries/discourse-representation-theory/
 ##### On Deep Computational Formalization of Natural Language
 ##### Program Synthesis using Natural Language Aditya Desai et al
 ##### Learning to Transform Natural to Formal Languages Rohit J. Kate et al
-##### An approach to natural language semantics in logic programming  PATRICK SAINT-DIZIER
+##### An approach to natural language semantics in logic programming  PATRICK SAINT-DIZIER -->
