@@ -5,3 +5,8 @@ docs/attachments/
 **/__pycache__
 **/.pytest_cache/
 *.gv*
+*.aux
+*.log
+*.pdf
+*.blg
+*.bbl
