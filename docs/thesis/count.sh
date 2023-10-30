@@ -1,1 +1,0 @@
-git ls-files | grep "[0-9].*\.md" | xargs cat | wc
