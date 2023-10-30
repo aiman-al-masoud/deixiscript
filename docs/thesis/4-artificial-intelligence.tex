@@ -1,24 +1,24 @@
-# Artificial Intelligence
+\title{ Artificial Intelligence}
 
 Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" \cite{ilkou2020symbolic}, spanned over decades of research from its first inception in the last century, and occupied some of the most brilliant minds in history.
 
 It is an endeavor which involves knowledge of the most disparate of disciplines: logic, mathematics, computer science and philosophy. Unfortunately, it is impossible to cover all of its history in a work like this, therefore we will spend the next few pages painting it in very broad strokes and focusing mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
 
-## History of Term
+\title{ History of Term}
 
 The term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy (1927-2011), eminent computer scientist who is also known for having invented Lisp in 1958 \cite{lisproots}, which has evolved into a family of programming languages we discuss about in the section on programming languages, but the subject of "thinking machines" is older and can trace its origins years before that \cite{smith2006history}.
 
-## The Turing Test
+\title{ The Turing Test}
 
 Back in 1950 \cite{turing2009computing}, Alan Turing (1912-1954), mathematician, computer scientist, logician and cryptanalist set out on a very ambitious journey, which has influenced the practice of AI ever since, and that was the task of determining whether sentient behaviour was "provably computable" \cite{smith2006history}.
 
-<!-- Goedel -->
+% Goedel
 
 In doing so, Turing introduced the concept of the Turing Test: a metric to tell if a computer could "think", according to the definition given by its author. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a curtain. The judge's goal is to tell them apart, from their usage of language alone. In what can be aptly described as an "imitation game", the goal of the machine is to deceive the human judge regarding its being a machine \cite{smith2006history}.
 
 It was recently reported (2022-23) that some Large Language Models (LLMs) such as Google's LaMDA \cite{turingtestobsolete} and OpenAI's GPT \cite{gptbroketuring} have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that \cite{smith2006history}. If this is all accurate, it means that we are now living in the post-Turing Test era.
 
-## The Chinese Room Argument
+\title{ The Chinese Room Argument}
 
 Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial topics to say the least in the philosophy of mind. Years before the advent of LLMs, in 1980, philosopher John Searle (1932-) first made public his famous Chinese Room Argument \cite{searle1999chinese}.
 
@@ -28,7 +28,7 @@ After learning how to manipulate those symbols and getting reasonably good at it
 
 Numerous objections and counter-objections to the argument have been rised since then \cite{chineseroomstan}, and there is still no general consensus on the conclusions and validity of the argument \cite{chineseroomstan}. It is nonetheless a powerful and intuitive case for the idea that what computers are doing when they "think" is fundamentally different from what humans do (or at least, what the writer of this paragraph in his subjective experience does).
 
-## Alternatives to the Turing Test
+\title{ Alternatives to the Turing Test}
 
 An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined and always keeping in mind arguments such as Searle's Chinese Room), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test \cite{smith2006history}.
 
@@ -36,7 +36,7 @@ There are a number of variations and alternatives to the Turing Test, such as th
 
 Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would \cite{smith2006history}.
 
-## Symbolic vs Sub-symbolic AI
+\title{ Symbolic vs Sub-symbolic AI}
 
 An important methodological distinction in the discipline of AI is represented by the Symbolic vs Sub-Symbolic divide.
 
@@ -46,42 +46,42 @@ Symbolic AI or Good Old Fashioned AI (GOFAI) represents the older and more tradi
 
 Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's "perceptron", has been slower at achieving vast adoption, and is now enjoying a renewed period of popularity, with the advent and perfection of such techniques as Machine Learning (ML) and Deep Learning that harness the power of gargantuan Neural Networks.
 
-### Symbolic:
+\title{Symbolic}
 
-#### pros:
+\title{pros}:
 - ability to reason and explain, with easily interpretable intermediate steps
 - rule modularity (rules are discrete and autonomous)
 - better suited for abstract problems (eg: theorem proving)
-#### cons:
+\title{cons}:
 - not well suited to noisy datasets
 - (usually) relies on hand-coded and hard-coded rules
 - maintenance of rules is hard
 
 Typically associated to: Knowledge Bases, Expert Systems, the Prolog Language.
 
-### Sub-symbolic:
+\title{ Sub-symbolic}
 
-#### pros:
+\title{ pros}
 - more robust against noisy/missing data
 - easy to scale up (can handle big data)
 - better for perceptual problems (which can be hard to desribe with explicit knowledge)
 - less human intervention required in training
 - good execution speed
 
-#### cons:
+\title{ cons}
 - lack interpretability
 - high dependence on training data
 - requires huge computation power and amounts of data for training
 
 Typically used for: prediction, clustering, pattern classification, recognition of speech and text.
 
-### Points in common
+\title{ Points in common}
 
-A big idea that the two approaches share, in a sense, is that they can be both regarded as declarative programming paradigms. As we've discussed in the section dedicated to programming languages, a computer can be told _how_ to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
+A big idea that the two approaches share, in a sense, is that they can be both regarded as declarative programming paradigms. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
 
 Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language \cite{ilkou2020symbolic}, \cite{yang2021learning}.
 
-## Symbolic AI: a closer look
+\title{ Symbolic AI: a closer look}
 
 <!-- sth myrs -->
 
@@ -95,7 +95,7 @@ the behavior that manifests that knowledge" \cite{brachman2022machines}.
 
 In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
 
-### First Order Logic
+\title{ First Order Logic}
 
 The formalism most often employed to represent and process knowledge in these kinds of systems is that of First Order Logic (FOL), also known as predicate logic.
 
@@ -200,5 +200,4 @@ ods perform best when dealing with relatively small and
 precise data, while the sub-symbolic ones are able to
 handle large and noisy datasets.
 
-
-come up w/
+% come up w/

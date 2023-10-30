@@ -1,10 +1,10 @@
-## Naturalistic Programming
+\title{ Naturalistic Programming}
 
 Natural/istic programming is a broad term that can be applied to all those attempts (with varying degrees of sophistication) at using a more or less realistic subset of natural language to write code.
 
 The idea of instructing a computer in natural language (or something similar enough to deserve that name) has, long before the advent of Large Language Models, been a dream and sometimes a nightmare, for people in computer science.
 
-## Skepticism
+\title{ Skepticism}
 
 The advantages of programming in natural language haven't always been clear to everyone.
 
@@ -18,9 +18,9 @@ He argued that simple, elegant formalisms and narrow interfaces were and still a
 
 It is also quite true that back in the day computers weren't nearly as widespread as in 2023, and people who were using them were more often than not experts trying to solve specialized problems rather than end-users seeking a more intuitive mode of interaction with their machines.
 
-## Precision/Expressiveness Tradeoff
+\title{ Precision/Expressiveness Tradeoff}
 
-<!-- fox and grapes -->
+% fox and grapes 
 But taking a step back, even from the point of view of implementation, a tradeoff exists between the naturalness and expressivity on the one side, and the ease of implementation and precision of a formal language on the other \cite{kuhn2014survey}.
 
 Within the PENS classification scheme, a set of widely different Controlled Natural Languages (CNLs) based on English are classified by 4 metrics: Precision, Expressiveness, Naturalness and Simplicity.
@@ -41,7 +41,7 @@ It is further argued that this is a prelude of the evolution of naturalistic tra
 
 The need for better abstractions is also reflected in the criticism of software design patterns as a poor language's solution to the lack of more powerful abstractions \cite{revengenerds}, and in the practice of Literate Programming \cite{knuth1984literate}.
 
-## Literate Programming
+\title{ Literate Programming}
 
 Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX typesetting and markup system, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
 
@@ -54,7 +54,7 @@ According to this philosophy, the program should make sense to a human being fir
 
 This is akin to how a typical math text book is organized, mirroring this observation: "The insight here is that a program should be written primarily in a natural language, with snippets of code in more appropriate syntax as (and only as) required" \cite{osmosianblog}.
 
-## Natural Style
+\title{ Natural Style}
 
 It is interesting to take a look at how people usually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which the same programmer employs when translating his/her ideas into executable code  \cite{knoll2006pegasus, miller1981natural}.
 
@@ -72,7 +72,7 @@ The subjects also expected the computer to possess some pragmatic knowledge of t
 
 A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
 
-## Stories and Code
+\title{Stories and Code}
 
 What do programming and story telling have in common? A lot, actually, according to a 2005 study that involved a system which automatically translated "stories" to scaffolding (or underspecified) code fragments in Python \cite{liu2005metafor, liu2005programmatic}.
 
@@ -86,11 +86,11 @@ The authors propose, for instance, that a noun phrases may correspond to data st
 
 The code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students (some with novice and some with intermediate programming skills), in trying to answer the question of whether they'd be likely to use it as a brainstorming tool rather than more traditional pen-and-paper methods \cite{liu2005metafor}.
 
-## General Purpose Systems
+\title{General Purpose Systems}
 
 Since then, there have been more complete attemps at creating a comprehensive natural language programming system, that was usable for general purpose programming. We will proceed to mention three of what we think may be the most important attempts: Pegasus, CAL and SN.
 
-### Pegasus
+\title{Pegasus}
 
 The original implementation of Pegasus is laid out in a 2006 paper \cite{knoll2006pegasus} by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this \cite{pegasuswebsite}.
 
@@ -110,7 +110,7 @@ They also recognize a third category of ideas they call "Composed", which "combi
 
 The authors go ahead to describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
 
-<!-- The authors also mention a distinction they assert is a general trend in natural languages: nouns (entities), verbs (actions) and adjectives and adverbs (properties). -->
+% The authors also mention a distinction they assert is a general trend in natural languages: nouns (entities), verbs (actions) and adjectives and adverbs (properties).
 
 The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory
 
@@ -132,9 +132,9 @@ Drawbacks related to Pegasus, or at least that original implementation from 2006
 
 All in all, Pegasus is a general natural language purpose programming system, one can see examples of its usage on the official website \cite{pegasuswebsite}, the product is, to our knowledge as of writing, not yet available to the public.
 
-<!-- MENTION OTHER PAPER ON NATURALISTIC TYPES! -->
+% MENTION OTHER PAPER ON NATURALISTIC TYPES!
 
-### CAL
+\title{CAL}
 
 Another worthwhile case of a general purpose naturalistic programming language, also originally from 2006, is that presented by the intrestingly called "Osmosian Order of Plain English Programmers" \cite{osmosianblog}.
 
@@ -158,15 +158,11 @@ There are at least three kinds of routines in this language: procedures, decider
 
 It is also possible to define custom data types using natural language syntax to define the fields and the types thereof. Among the custom types that can be defined are "records" and "things" (a kind of dynamic structure). Units of measurments and the conversion between them are also supported. Based on a remark on a differ
 
-<!-- 
-seems to be nominal not structural
-https://wiki.osdev.org/Plain_English_Programming
- -->
+% seems to be nominal not structural https://wiki.osdev.org/Plain_English_Programming
 
 The language also supports event driven programming, and has various I/O capabilities such as timers, audio output and even a 2D graphics system which can be used to draw and plot shapes.
 
-### SN
-
+\title{SN}
 
 A newer example of a full fledged naturalistic general purpose programming language is given by the SN language, or "Sicut Naturali" \cite{hernandez2021evolution} ("Just as in nature" in Latin) discussed in a 2019 paper by Oscar Pulido-Prieto and Ulises Juárez-Martínez \cite{pulido2019model}.
 
@@ -182,10 +178,10 @@ Circumstances are a special construct that can apply to either attributes or ver
 
 Noun phrases, which can be a combination of Nouns, Adjectives and "with/as" clauses and support plurals, have a dual usage in SN: they can either be used as constructors to create new instances of a certain kind (with the "a/an" keyword) or to refer to already existing instances of such a kind (with the "the" keyword).
 
-The language also supports the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by saying things like: "repeat the next 2 instructions until i > 10." [np16](./bib.md#np16).
+The language also supports the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by saying things like: "repeat the next 2 instructions until i > 10." \cite{pulido2019model}.
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
-## Naturalistic Types
+\title{ Naturalistic Types}
 
-<!-- TODO -->
+% TODO

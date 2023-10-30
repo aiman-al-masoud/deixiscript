@@ -1,18 +1,17 @@
-# All Grammars Leak
+\title{ All Grammars Leak}
 
-Edward Sapir, 19/20th century linguist famous for the Sapir–Whorf hypothesis on linguistic relativity once wrote: 
+Edward Sapir, 19/20th century linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
 
 > Were a language ever completely "grammatical" it would be a perfect engine of 
 > conceptual expression. Unfortunately, or luckily, no language is tyrannically
-> consistent. All grammars leak [1](#1).
-
-<!-- https://en.wikiquote.org/wiki/Edward_Sapir -->
-
-[1](./bib.md#edward-sapir-language-1921)
-[2](./bib.md#analytic-and-synthetic-typological-change-in-varieties-of-european-languages)
+> consistent. All grammars leak \cite{sapir1921language}.
 
 
-# Analytic vs Synthetic
+% [1](./bib.md#edward-sapir-language-1921)
+% [2](./bib.md#analytic-and-synthetic-typological-change-in-varieties-of-european-languages)
+
+
+\title{Analytic vs Synthetic}
 
 The analytic vs synthetic distinction has more than one linguistical definition because it relies on the fuzzy concept of "word". There are diachronic interpretations of what is means for a linguistical construct to be analytic or synthetic. A third category is agglutinating.
 
@@ -30,8 +29,8 @@ An analytic grammar has clear implementational advantages over a synthetic one: 
 
 English is traditionally considered a synthetic language, although it tends towards the analytic side of synthetic spectrum. It is therefore easy enough to define a usable subset of English which is purely analytic.
 
-These guys say dependency parsing is better for rich morphology:
-[](../../attachments/dependency-parsing.pdf)
+% These guys say dependency parsing is better for rich morphology:
+% [](../../attachments/dependency-parsing.pdf)
 
 But these guys state the opposite!:
 https://www.geeksforgeeks.org/constituency-parsing-and-dependency-parsing/
@@ -49,11 +48,11 @@ The main distinction is made between noun phrases and sentences. There is also a
 
 A noun phrase can be "implicit" or "explicit"...
 
-- [Choosing the Constituents]()
-- [noun-phrases]()
-- [relative clauses & gapping]()
-- [simple sentences]()
-- [compound and complex sentences]()
+% - [Choosing the Constituents]()
+% - [noun-phrases]()
+% - [relative clauses & gapping]()
+% - [simple sentences]()
+% - [compound and complex sentences]()
 
 implicit references may be ambiguous from the point of view of creating a new thing, or erroring out if you don't find an old one. "A mouse which has the/a house as location". The solution is to wrap a nounphrase in a Command wrapper.
 
@@ -62,10 +61,10 @@ everything the user says will be assumed to be Implicit and Idiomatic, but expli
 
 
 
-## Drawing a parallel with programming language structures
+\title{ Drawing a parallel with programming language structures}
 
-[programmatic semantics](../../attachments/programmatic-semantics.pdf)
-[](../../attachments/a-survey-of-naturalistic-programming-techniques.pdf)
+% [programmatic semantics](../../attachments/programmatic-semantics.pdf)
+% [](../../attachments/a-survey-of-naturalistic-programming-techniques.pdf)
 
 But:
 - noun-phrases: expressions, constructors => point to things
@@ -90,82 +89,78 @@ But:
 Parsing is any process that transforms a sequence of symbols, which is a linear, monodimensional structure (such as a string of text or a snippet of speech), into a bidimensional, hierarchical structure, typically a parse tree or an Abstract Syntax Tree, "abstract" because it preserves less of the minute syntactical details. This is something that our brains do remarkably well, so much so that we're seldom conscious about it. It is quite different when it comes to implementing a similar process by hand in a programming language.
 
 
+% > From: Language and Communication Problems in Formalization: A Natural Language Approach (Alessandro Fantechi et al)
 
---------------
+% # Syntactic
 
+% They all mostly have to do with unclear associativity.
 
-> From: Language and Communication Problems in Formalization: A Natural Language Approach (Alessandro Fantechi et al)
+% ## Analytical Ambiguity
+% “software fault tolerance”, can be tolerance to software faults or fault tolerance achieved by
+% software.
 
-# Syntactic
-
-They all mostly have to do with unclear associativity.
-
-## Analytical Ambiguity
-“software fault tolerance”, can be tolerance to software faults or fault tolerance achieved by
-software.
-
-* (software fault) tolerance
-* software (fault tolerance)
+% * (software fault) tolerance
+% * software (fault tolerance)
 
 
-## Attachment Ambiguity
-“I go to visit a friend with a red car” means either that I go with the red car or that the friend I’m visiting has a red car.
+% ## Attachment Ambiguity
+% “I go to visit a friend with a red car” means either that I go with the red car or that the friend I’m visiting has a red car.
 
-* (I go to visit (a friend with a red car))
-* (I go to visit (a friend) (with a red car))
-
-
-## Coordinator Ambiguity
-“She likes red cars and bikes”, where it is not clear whether she likes all bikes or
-only red ones (two coordinators in a sentence)
-
-* She likes (red (cars and bikes))
-* She likes (red cars) and (bikes)
+% * (I go to visit (a friend with a red car))
+% * (I go to visit (a friend) (with a red car))
 
 
-# Anaphoric Ambiguity
+% ## Coordinator Ambiguity
+% “She likes red cars and bikes”, where it is not clear whether she likes all bikes or
+% only red ones (two coordinators in a sentence)
 
-Which antecedent does a noun phrase point to?
+% * She likes (red (cars and bikes))
+% * She likes (red cars) and (bikes)
 
-(+ Cataphoric and Deictic in general)
 
-# Vagueness
+% # Anaphoric Ambiguity
 
-Leads to loose interpretations, especially when quantities are involved. "many/few"... Temporal ambiguity is a special case.
+% Which antecedent does a noun phrase point to?
 
-# Comparatives and Superlatives
+% (+ Cataphoric and Deictic in general)
 
-Comparatives without a comparison term. Superlatives with an unclear context.
+% # Vagueness
 
-# Disjunctions
+% Leads to loose interpretations, especially when quantities are involved. "many/few"... Temporal ambiguity is a special case.
 
-Special case of coordinator ambiguity. In the case of a sentence with side-effects, which branch of the OR should run?
+% # Comparatives and Superlatives
 
-# Escape Clauses
+% Comparatives without a comparison term. Superlatives with an unclear context.
 
-“The system, if possible, updates the data every 2 h”. Makes a requirement weak, vague or unverifiable. 
+% # Disjunctions
 
-# Usage of a Weak Verb
+% Special case of coordinator ambiguity. In the case of a sentence with side-effects, which branch of the OR should run?
 
-"May" or "may not" ...
+% # Escape Clauses
 
-# Quantifiers
+% “The system, if possible, updates the data every 2 h”. Makes a requirement weak, vague or unverifiable. 
 
-“All pilots have a red car”
+% # Usage of a Weak Verb
 
-* "All" pilots in what context?
-* The same, shared, red car; or a different one each?
-* Does it describe the general concept of a "pilot", or every individual pilot? (Machines Like Us)
+% "May" or "may not" ...
 
-# Underspecification
+% # Quantifiers
 
-generic term that lacks a specifier.
+% “All pilots have a red car”
 
-“It shall be possible for the driver to store numbers in the radio”
+% * "All" pilots in what context?
+% * The same, shared, red car; or a different one each?
+% * Does it describe the general concept of a "pilot", or every individual pilot? (Machines Like Us)
 
-What numbers? Related to anaphora, because it could be resolved by context.
+% # Underspecification
 
-# Passive Voice
+% generic term that lacks a specifier.
 
-The doer of the action may be omitted.
+% “It shall be possible for the driver to store numbers in the radio”
+
+% What numbers? Related to anaphora, because it could be resolved by context.
+
+% # Passive Voice
+
+% The doer of the action may be omitted.
 
