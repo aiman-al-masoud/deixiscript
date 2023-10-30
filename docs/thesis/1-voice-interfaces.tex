@@ -1,6 +1,5 @@
 
-
-% # Voice Interfaces
+\title{Voice Interfaces}
 
 Programming by voice has received attention in the last years from both the commercial and the research sector, as an alternative to the de-facto golden standard approach of text-based programming \cite{lagergren2021programming}, 
 \cite{arnold2000programming}.
@@ -33,11 +32,11 @@ There have been multiple attempts at designing such systems, and the approaches 
 
 One approach, detailed in \cite{arnold2000programming}, involves the idea of a Syntax-directed voice editor. A Syntax-directed editor, as explained in \cite{arnold2000programming}, takes advantage of the regularities of a formal language to provide automatic completion for common language constructs, saving the user time and typing. When applied to voice programming, the authors hypothesize that it can help reduce the mental toil of spelling out loud a potentially convoluted piece of programming syntax character by character. The Syntax-directed editor married to the voice recognition software produces a programming environment that is easy to reconfigure for many different programming languages.
 
-A slightly different approach has been taken by [v2](./bib.md#v2). The researchers here focused on the idea of applying the Reactive Paradigm (rather than the more traditional Imperative style) to voice programming, and comparing the efficiency of the two by preparing spoken versions of a set of programs in Java versus RxJava, a library that provides Reactive Extensions to the language.
+A slightly different approach has been taken by \cite{lagergren2021programming}. The researchers here focused on the idea of applying the Reactive Paradigm (rather than the more traditional Imperative style) to voice programming, and comparing the efficiency of the two by preparing spoken versions of a set of programs in Java versus RxJava, a library that provides Reactive Extensions to the language.
 
-The Reactive Paradigm is oriented around data flow and the propagation of change. It deals with asynchronous data streams where the data is events and vice versa [v2](./bib.md#v2).
+The Reactive Paradigm is oriented around data flow and the propagation of change. It deals with asynchronous data streams where the data is events and vice versa \cite{lagergren2021programming}.
 
-The authors of the study found out that the Reactive style usually produces longer code in both characters, syllables, and words as compared to the Imperative style. However, owing to the higher expressiveness of Reactive constructs, those words themselves produced more effective work [v2](./bib.md#v2). Moreover, those words contained a higher percentage of English-dictionary words, rather than word abbreviations: which are harder to pronounce and harder to be recognized by general purpose voice recognition software; this perhaps owing to the fact that Reactive programming makes less use of temporary variables and short variable names [v2](./bib.md#v2).
+The authors of the study found out that the Reactive style usually produces longer code in both characters, syllables, and words as compared to the Imperative style. However, owing to the higher expressiveness of Reactive constructs, those words themselves produced more effective work \cite{lagergren2021programming}. Moreover, those words contained a higher percentage of English-dictionary words, rather than word abbreviations: which are harder to pronounce and harder to be recognized by general purpose voice recognition software; this perhaps owing to the fact that Reactive programming makes less use of temporary variables and short variable names \cite{lagergren2021programming}.
 
 A general overview of what it means, practically speaking, to design an effective VUI is given by \cite{farinazzo2010empirical}. As already hinted, a VUI is a specific instance of a HCI, and as such it is subject to such general considerations that can be made on the usability of any computer interface.
 
