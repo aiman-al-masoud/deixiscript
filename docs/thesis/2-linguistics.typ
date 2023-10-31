@@ -2,11 +2,9 @@
 
 == All Grammars Leak
 
-Edward Sapir, 19/20th century linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
+Edward Sapir (1884-1939) linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
 
-> Were a language ever completely "grammatical" it would be a perfect engine of 
-> conceptual expression. Unfortunately, or luckily, no language is tyrannically
-> consistent. All grammars leak @sapir1921language.
+Were a language ever completely "grammatical" it would be a perfect engine of  conceptual expression. Unfortunately, or luckily, no language is tyrannically consistent. All grammars leak @sapir1921language.
 
 // % [1](./bib.md#edward-sapir-language-1921)
 // % [2](./bib.md#analytic-and-synthetic-typological-change-in-varieties-of-european-languages)
