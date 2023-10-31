@@ -10,12 +10,6 @@ class Explicit(Ast):
     def eval(self, kb:'KB')->'KB':
         return kb << self
 
-    def ask(self, kb: 'KB') -> 'KB': # rm
-        return kb
-        
-    def tell(self, kb: 'KB') -> 'KB': # rm
-        return kb
-
     def copy(self, **kwargs:'Ast'):
         return self
 
@@ -28,7 +22,3 @@ class Explicit(Ast):
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self in map: return map[self]
         return self
-    
-    # def define(self, kb:'KB')->'Ast':
-    #     return self
-

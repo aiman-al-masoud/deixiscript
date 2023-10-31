@@ -35,10 +35,10 @@ class SimpleSentence(Composite):
                 return e(self.subject).does('have')._(self.object).as_('super').eval(kb)
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
-                return event.ask(kb)
+                return event.eval(kb) # ask
             case SimpleSentence(verb=Str('have')) if isImplicitish(self):
                 x1 = makeExplicit(self, kb)
-                return x1.head.ask(x1)
+                return x1.head.eval(x1) # ask
             case SimpleSentence(verb=Str('have')):
                 x=(self.subject,self.object,self.as_)
                 return kb << Int(x in kb.wm)
@@ -58,12 +58,12 @@ class SimpleSentence(Composite):
                 return e(self.subject).does('have')._(self.object).as_('super').tell(kb)
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
-                old   = event.ask(kb)
+                old   = event.eval(kb)
                 if old.head: return old
-                return event.tell(kb)
+                return event.copy(cmd=Int(1)).eval(kb)
             case SimpleSentence(verb=Str('have')) if isImplicitish(self):
                 x1 = makeExplicit(self, kb)            
-                return x1.head.tell(x1)
+                return x1.head.copy(cmd=Int(1)).eval(x1)
             case SimpleSentence(verb=Str('have')):
                 x = (self.subject, self.object, self.as_)
                 delta = frozenset({x})
@@ -82,9 +82,9 @@ class SimpleSentence(Composite):
                 sup_keys=self.args.keys()
                 com_keys=sub_keys&sup_keys
                 if com_keys!=sup_keys: return None
-                return everyMap(*[  self.args[k].isMatch(sub.args[k]) for k in com_keys ])
+                return everyMap(*[self.args[k].isMatch(sub.args[k]) for k in com_keys])
             case BinExp(op='and'):
-                return someMap( self.isMatch(sub.left), self.isMatch(sub.right)  )
+                return someMap(self.isMatch(sub.left), self.isMatch(sub.right))
             case BinExp(op='or'):
                 raise Exception()
 

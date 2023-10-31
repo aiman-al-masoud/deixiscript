@@ -31,13 +31,13 @@ def opposite(x:Str):
     if x == 'or': return Str('and')
     raise Exception('')
 
-def isImplicitish(ast:Ast):
+def isImplicitish(ast:Ast):# method
     if isinstance(ast, Explicit): return False
     if isinstance(ast, Implicit): return True
     r1=any([isImplicitish(x) for x in vars(ast).values()])
     return r1
 
-def isNounPhrasish(ast:Ast):
+def isNounPhrasish(ast:Ast):# method
     if not isinstance(ast, NounPhrasish): return False
     if isinstance(ast, NounPhrase): return True
     return all([isNounPhrasish(x) for x in vars(ast).values()])

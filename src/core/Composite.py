@@ -14,25 +14,23 @@ class Composite(Ast):
     def eval(self, kb:'KB')->'KB':
 
         defined = self.define(kb)
-        return defined.tell(kb) if self.cmd else defined.ask(kb)
+
+        if not isinstance(defined, Composite): return defined.eval(kb)
+
+        if self.cmd:
+            return defined.tell(kb)
+
+        return defined.ask(kb)
 
     def ask(self, kb:'KB')->'KB':
         return self.askNegative(kb) if self.negation else self.askPositive(kb)
 
     def tell(self, kb:'KB')->'KB':
-
         x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
         x2=self.conseq(kb)
         if not x2: return x1
-        x3=x2.tell(x1)
-
+        x3=x2.copy(cmd=Int(1)).eval(x1)
         return x3
-
-    def askPositive(self, kb:'KB')->'KB':
-        raise Exception()
-
-    def tellPositive(self, kb:'KB')->'KB':
-        raise Exception()
 
     T = TypeVar('T', bound='Ast')
     def copy(self:T, **kwargs:'Ast')->T:
@@ -42,7 +40,7 @@ class Composite(Ast):
         return [self]
 
     def askNegative(self, kb:'KB')->'KB':
-        x1=self.copy(negation=Int(False)).ask(kb)
+        x1=self.copy(negation=Int(False)).eval(kb)
         return x1 << (Int(not x1.head))
 
     def tellNegative(self, kb:'KB')->'KB':

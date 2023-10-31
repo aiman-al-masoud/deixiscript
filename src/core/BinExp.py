@@ -39,8 +39,8 @@ class BinExp(Composite):
         raise Exception()
     
     def tellPositive(self, kb:'KB')->'KB':
-        x1 = self.left.tell(kb)
-        x2 = self.right.tell(x1 << kb.head)
+        x1 = self.left.copy(cmd=Int(1)).eval(kb)
+        x2 = self.right.copy(cmd=Int(1)).eval(x1 << kb.head)
         return x2
 
     def unroll(self)->Sequence['Ast']:
