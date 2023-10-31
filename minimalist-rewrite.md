@@ -1,5 +1,8 @@
 Maybe distinction between head and modifiers in search?
 
+Implicit->Thing
+SimpleSentence->Proposition???
+
 - match is purely structural, no access to KB, doesn't call execute.
 - Asts need to be "broken down/contextualized" before using match.
 - expand nouns using which (context dependent), match nouns syntactically (context independent).
