@@ -1,4 +1,6 @@
-\title{Procedural Programming}
+= Programming Languages
+
+== Procedural Programming
 
 Procedural programming is a kind of Imperative programming, because it lets the programmer handle state and control flow explicitly.
 
@@ -14,12 +16,12 @@ Procedural programming typically conceives data (primitives, structs/records) an
 
 The natural language parallel of procedural programming is something like detailing the steps of a recipe.
 
-% https://survey.stackoverflow.co/2023/#technology
-% https://en.wikipedia.org/wiki/Procedural_programming
-% https://medium.com/codex/procedural-programming-was-procedural-programming-is-procedural-programming-will-be-a26131cb463f
+// % https://survey.stackoverflow.co/2023/#technology
+// % https://en.wikipedia.org/wiki/Procedural_programming
+// % https://medium.com/codex/procedural-programming-was-procedural-programming-is-procedural-programming-will-be-a26131cb463f
 
 
-\title{Object Oriented Programming}
+== Object Oriented Programming
 
 An extremely popular programming paradigm, supported to some degree by all of the most popular languages (2023), usually used in conjunction with [procedural programming](./1-procedural.md), and thus being often described as an imperative style of programming, though this need not be the case.
 
@@ -41,13 +43,13 @@ Another important concept of (though not exclusively of) OOP is polymorphism: th
 
 The natural language parallels of OOP are many and varied: the concept of agents or efficient causes (data+behavior), the idea of these agents interacting together to achieve a common goal (message passing), and the subdivision of the world into concepts and subconcepts (classes and inheritance).
 
-% https://www.merriam-webster.com/dictionary/agent
-% https://survey.stackoverflow.co/2023/#technology
-% https://en.wikipedia.org/wiki/Object-oriented_programming
-% https://medium.com/nerd-for-tech/the-four-pillars-of-object-oriented-programming-39efe4e87afc
+// % https://www.merriam-webster.com/dictionary/agent
+// % https://survey.stackoverflow.co/2023/#technology
+// % https://en.wikipedia.org/wiki/Object-oriented_programming
+// % https://medium.com/nerd-for-tech/the-four-pillars-of-object-oriented-programming-39efe4e87afc
 
 
-\title{Functional Programming}
+== Functional Programming
 
 While it is a tenet of OOP that state should be hidden behind objects, Functional Programming takes the more radical approach of abolishing state (aka: mutable state) altogether from most of the codebase, isolating it from the core logic.
 
@@ -65,20 +67,19 @@ In theory, FP and OOP are compatible to a large extent (cf. Scala) and it is pos
 
 Functional programming takes most of its ideas from lambda calculus, a field of pure mathematics.
 
-% https://en.wikipedia.org/wiki/Functional_programming
-% https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
+// % https://en.wikipedia.org/wiki/Functional_programming
+// % https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
 
-
-\title{Logic Programming}
+== Logic Programming
 
 Logic Programming is based on a different branch of mathematics: formal logic, mostly predicate logic, though a few higher order logic based languages exist.
 
 It is, not unlike FP, a declarative style of programming: logical implications are declared, usually in the form of a horn clause, and then are used to formally prove statements.
 
-% https://en.wikipedia.org/wiki/Logic_programming
+// % https://en.wikipedia.org/wiki/Logic_programming
 
 
-\title{The End of Programming}
+== The End of Programming
 
 Computer Scientist Matt Welsh has argued that traditional programming done by humans will become obsolete as a result of the advancement of AI systems that can be told what to do in natural language and come up with solutions for problems they were never explicitly taught how to deal with (zero-shot learning).
 
@@ -87,7 +88,7 @@ However, the proliferation of guides on how to best use modern LLMs and the birt
 Natural language thus seems to be the new frontier of programming, and a decent understanding of natural language, its style at describing problems, its advantages over traditional programming languages and its limitations will be crucial over the next decades, as LLMs grow more powerful and useful.
 
 
-% https://www.promptingguide.ai/
-% https://it.wikipedia.org/wiki/Matt_Welsh
-% https://cacm.acm.org/magazines/2023/1/267976-the-end-of-programming/fulltext
-% https://www.tcg.com/blog/on-the-wisdom-of-natural-language-programming/
+// % https://www.promptingguide.ai/
+// % https://it.wikipedia.org/wiki/Matt_Welsh
+// % https://cacm.acm.org/magazines/2023/1/267976-the-end-of-programming/fulltext
+// % https://www.tcg.com/blog/on-the-wisdom-of-natural-language-programming/

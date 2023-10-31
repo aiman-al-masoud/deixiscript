@@ -1,4 +1,6 @@
-\title{Code Organization}
+= Deixiscript
+
+== Code Organization
 
 The language of the code is Python (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker.
 
@@ -29,19 +31,19 @@ What follows is an overview of packages and modules. TODO.
 
 
 
-\title{Future Work}
+== Future Work
 
-\title{Ambiguous Grammars}
+=== Ambiguous Grammars
 
 - no ambiguous sentence recognition and multi-tree parse, but possiblility to
   "disambiguate" (really: change default parse order) using parentheses.
 
 
-\title{Support for Synthetic and Agglutinative Grammars}
+=== Support for Synthetic and Agglutinative Grammars
 
 Perhaps as function hooks reaching out to the lexer from a higher level?
 
-\title{Past Tense}
+=== Past Tense
 
 - past tense
   - list of world models = history
@@ -51,7 +53,7 @@ Perhaps as function hooks reaching out to the lexer from a higher level?
 
 Alternative idea to "list of world models = history" => events can have associated times.
 
-\title{Context Sensitivity}
+=== Context Sensitivity
 
 - context sentitivity is incomplete
   - the does eat the fish.
@@ -59,24 +61,23 @@ Alternative idea to "list of world models = history" => events can have associat
 
 But there is the potential to improve it: by managing the deictic dictionary, which could be "adjusted/biased" at any time to point to entities with specific qualities, maybe this could help to make the language more context sensitive. For example "it does jump" would increment the "timestamp" of jumping entities (based on the applicability of the verb "jump") causing the pronoun "it" to point to one of them (cats can jump, fish usually can't).
 
-\title{Cataphora and full Deixis?}
+=== Cataphora and full Deixis?
 
-
-\title{Maybe Implementable on time}
+=== Maybe Implementable on time
 
 Temporarily ignore: synthetic derivations, ordinals (first, second etc...), defaults (maybe as synthetic clauses, beware default creation loops), number restriction, mutex concepts, equation solver, noun-phrase complements, adjectives. You can use KB.dd for expression transformation history.
 
 
-\title{Metaphysics}
+// = Metaphysics
 
-- At the most basic level there is: the Graph, the derivations and the DD. The Graph is the "interface" through which Deixiscript communicates with the outer world, including JS, which only uderstands has-as properties.
+// - At the most basic level there is: the Graph, the derivations and the DD. The Graph is the "interface" through which Deixiscript communicates with the outer world, including JS, which only uderstands has-as properties.
 
-world model as the interface to the outer world
+// world model as the interface to the outer world
 
-\title{Deixis}
+// = Deixis
 
-- Implicit references work as if any entity got the current timestamp whenever
-  it was mentioned. When function ask() is called from findAll() the deictic
-  dict is NOT updated, because the results from ask() are ignored.
+// - Implicit references work as if any entity got the current timestamp whenever
+//   it was mentioned. When function ask() is called from findAll() the deictic
+//   dict is NOT updated, because the results from ask() are ignored.
 
-\title{Syntactic Compression}
+// = Syntactic Compression

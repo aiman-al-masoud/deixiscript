@@ -1,4 +1,4 @@
-Goals
+= Goals
 
 To show that is is possible to efficiently approximate some key features of natural language (implicit referencing and syntactic compression) with a formalized subset of it.
 
