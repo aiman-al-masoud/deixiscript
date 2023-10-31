@@ -4,6 +4,11 @@ Implicit->Thing
 SimpleSentence->Proposition???
 Explicit->Atom
 
+define:
+	- Implicit: just search for definition and apply first matching
+	- SimpleSentence: define sub-elements, make copy of SimpleSentence, define (like in Implicit) copy
+	
+
 - match is purely structural, no access to KB, doesn't call execute.
 - Asts need to be "broken down/contextualized" before using match.
 - expand nouns using which (context dependent), match nouns syntactically (context independent).
