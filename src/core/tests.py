@@ -2,7 +2,6 @@ from core.expbuilder import does, e, every, it_is_false_that, new, the
 from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.Str import Str
-from core.BinExp import BinExp
 
 
 # %% subst tests
