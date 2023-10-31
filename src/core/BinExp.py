@@ -17,7 +17,7 @@ class BinExp(Composite):
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isNounPhrasish
-        from core.expbuilder import e
+        # from core.expbuilder import e
 
         match self:
 
