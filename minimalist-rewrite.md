@@ -1,3 +1,4 @@
+Maybe distinction between head and modifiers in search?
 
 - match is purely structural, no access to KB, doesn't call execute.
 - Asts need to be "broken down/contextualized" before using match.
