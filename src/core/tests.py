@@ -146,7 +146,7 @@ def test_c025():
     maybe = sortByGenerality(wrong)
     assert maybe == correct
 
-# %% idiom tests
+# %% def (analytic derivation) tests
 def test_c026():
     kb1 = the('it').when(the(1)('thing')).tell()
     kb2 = the('capra').tell(kb1)
