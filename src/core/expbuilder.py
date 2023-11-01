@@ -1,5 +1,5 @@
 import sys
-from typing import Callable, Generic, Literal, TypeVar, overload
+from typing import Generic, TypeVar
 from dataclasses import dataclass
 from core.Ast import Ast
 from core.SimpleSentence import SimpleSentence
@@ -83,26 +83,11 @@ def does(v:str):
     return e(Str.GAP).does(Str(v))
 
 def every(x:str):
-    return the(sys.maxsize)(x)
+    return the(sys.maxsize, x)
 
-@overload
-def the(x:Literal['first', 'last'])->Callable[[str|int], Callable[[str], EB]]:...
-@overload
-def the(x:int)->Callable[[str], EB]:...
-@overload
-def the(x:str)->EB[Implicit]:...
-def the(x:str|int)->object:
+def the(*args:int|str):
+    ord  = next((x for x in args if x in {'first', 'last'}), 'last')
+    card = next((x for x in args if isinstance(x, int)), 1)
+    head = [x for x in args if isinstance(x, str) and x!=ord][0]
 
-    match x:
-        case 'first' | 'last':
-            def f1(y:int):
-                def f2(z:str):
-                    return e(Implicit(head=Str(z), card=Int(y), ord=Str(x)))
-                return f2
-            return f1
-        case int():
-            return the('last')(x)
-        case object():
-            return the('last')(1)(x) # 1 or sys.maxsize
-
-
+    return e(Implicit(head=Str(head), card=Int(card), ord=Str(ord)))

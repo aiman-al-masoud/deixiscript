@@ -147,7 +147,7 @@ def test_c025():
 
 # %% def (analytic derivation) tests
 def test_c026():
-    kb1 = the('it').when(the(1)('event').not_).tell()
+    kb1 = the('it').when(the(1, 'event').not_).tell()
     kb2 = the('capra').tell(kb1)
     kb3 = the('it').eval(kb2)
     assert 'capra#1' == kb3.it
@@ -173,7 +173,7 @@ def test_c028():
     kb2 = the('capra').tell(kb1)
     kb3 = the('capra').tell(kb2)
     multiple = every('capra').get(kb3)
-    single   = the(1)('capra').get(kb3)
+    single   = the(1, 'capra').get(kb3)
 
     assert multiple.unroll() == ['capra#3', 'capra#2', 'capra#1']
     assert single == 'capra#3'
@@ -190,8 +190,8 @@ def test_c035():
     kb1 = the('mouse').tell()
     kb2 = the('cat').new.does('eat')._(the('mouse').new).tell(kb1) # also works with verb wrapped in implicit
 
-    assert the(1)('cat').get(kb2) == 'cat#1'
-    assert the(1)('mouse').get(kb2) == 'mouse#2'
+    assert the(1,'cat').get(kb2) == 'cat#1'
+    assert the(1,'mouse').get(kb2) == 'mouse#2'
     assert e('cat#1').does('eat')._('mouse#2').get(kb2)
     assert the('cat').does('eat')._(the('mouse')).get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
@@ -217,12 +217,12 @@ def test_c044(): # w/ domino effect
 
 # %% ordinality (first/last) test
 def test_c039():
-    kb0 = the(1)('cat').tell()
-    kb1 = the(1)('cat').tell(kb0)
+    kb0 = the(1, 'cat').tell()
+    kb1 = the(1, 'cat').tell(kb0)
 
-    x1 = the(1)('cat').get(kb1)
-    x2 = the('first')(1)('cat').get(kb1) # 1 first -> card should wrap around everything
-    x3 = the('last')(1)('cat').get(kb1)
+    x1 = the(1, 'cat').get(kb1)
+    x2 = the('first', 1, 'cat').get(kb1) # 1 first -> card should wrap around everything
+    x3 = the('last', 1, 'cat').get(kb1)
     assert x1 == 'cat#2'
     assert x1 == x3
     assert x2 == 'cat#1'

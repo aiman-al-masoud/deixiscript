@@ -1,5 +1,5 @@
 from parse.parse import Parser
-from core.expbuilder import e, the, does
+from core.expbuilder import the, does
 
 parser = Parser()
 
@@ -7,7 +7,7 @@ def test_p002():
     assert parser.parse('the not cat') == the('cat').not_.e
 
 def test_p003():
-    assert parser.parse('the 2 cat') == the(2)('cat').e
+    assert parser.parse('the 2 cat') == the(2, 'cat').e
 
 def test_p004():
     assert parser.parse('the new cat') == the('cat').new.e
