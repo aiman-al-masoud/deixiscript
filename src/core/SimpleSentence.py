@@ -29,43 +29,30 @@ class SimpleSentence(Composite):
         return x3
 
     def askPositive(self, kb:'KB')->'KB':
-        from core.expbuilder import e
         
         match self:
-            case SimpleSentence(verb=Str('be')):
-                return e(self.subject).does('have')._(self.object).as_('super').eval(kb)
-            case SimpleSentence() if self.verb!='have':
-                event = makeEvent(self)
-                return event.eval(kb)
             case SimpleSentence(verb=Str('have')):
                 x1 = makeExplicit(self, kb)
                 if x1.it!=self: return x1.it.eval(x1)
                 x=(self.subject, self.object, self.as_)
                 return kb << Int(x in kb.wm)
-                
-        raise Exception
-        
+            case _:
+                return toHave(self).eval(kb)
     
     def tellPositive(self, kb:'KB')->'KB':
-        from core.expbuilder import e
 
         old = self.copy(cmd=Int(0)).eval(kb)
         if old.it: return old
 
         match self:
-            case SimpleSentence(verb=Str('be')):
-                return e(self.subject).does('have')._(self.object).as_('super').tell(kb)
-            case SimpleSentence() if self.verb!='have':
-                event = makeEvent(self)
-                return event.copy(cmd=Int(1)).eval(kb)
             case SimpleSentence(verb=Str('have')):
                 x1 = makeExplicit(self, kb)
-                if x1.it !=self: return x1.it.copy(cmd=Int(1)).eval(x1)
+                if x1.it!=self: return x1.it.copy(cmd=Int(1)).eval(x1)
                 x=(self.subject, self.object, self.as_)
                 return kb + frozenset({x})
+            case _:
+                return toHave(self).copy(cmd=Int(1)).eval(kb)
         
-        raise Exception
-
         
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.isMatch import everyMap, someMap
@@ -82,10 +69,12 @@ class SimpleSentence(Composite):
         
         return {}
 
-
-def makeEvent(ast:SimpleSentence):
-    from core.expbuilder import does, every
+def toHave(ast:SimpleSentence):
+    from core.expbuilder import does, every, e
     from functools import reduce
+
+    if ast.verb=='be':
+        return e(ast.subject).does('have')._(ast.object).as_('super').e
 
     x1 = ast.args.items()
     x2 = [does('have')._(v).as_(k) for k,v in x1]
