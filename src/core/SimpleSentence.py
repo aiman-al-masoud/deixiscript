@@ -33,7 +33,6 @@ class SimpleSentence(Composite):
         
         match self:
             case SimpleSentence(verb=Str('be')):
-                # if self.object == 'thing': return kb << Int(True)
                 return e(self.subject).does('have')._(self.object).as_('super').eval(kb)
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
@@ -50,10 +49,7 @@ class SimpleSentence(Composite):
     def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
 
-        # TODO: meta-command switch modes conceptual/world
-
         match self:
-        
             case SimpleSentence(verb=Str('be')):
                 return e(self.subject).does('have')._(self.object).as_('super').tell(kb)
             case SimpleSentence() if self.verb!='have':
