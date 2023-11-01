@@ -40,5 +40,5 @@ class KB:
                 raise Exception()
 
     @property
-    def head(self):
+    def it(self):
         return self.dd.latest

@@ -10,7 +10,7 @@ def show(wm:WorldModel):
 
 def save_png(kb:KB):
     from graphviz import Source # pyright:ignore
-    source = graphvizied(kb.wm, kb.head.unroll())
+    source = graphvizied(kb.wm, kb.it.unroll())
     Source(source, filename='tmp.gv', format='png').render()
 
 def graphvizied(wm:WorldModel, head:Sequence[Ast]=[]):

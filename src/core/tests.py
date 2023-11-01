@@ -150,7 +150,7 @@ def test_c026():
     kb1 = the('it').when(the(1)('thing')).tell()
     kb2 = the('capra').tell(kb1)
     kb3 = the('it').eval(kb2)
-    assert 'capra#1' == kb3.head
+    assert 'capra#1' == kb3.it
 
 def test_c027():
     kb1 = the('man').does('ride')._(the('horse')).when(the('man').does('sit').on(the('horse')).and_(the('horse').does('move'))).tell()
@@ -234,8 +234,8 @@ def test_c048():
     x2 = the('gatto').tell(x1)
     x3 = the('gatto').and_(the('capra')).eval(x2)
     x4 = the('gatto').and_(the('capra')).and_(the('capra')).eval(x2)
-    assert x3.head == e('gatto#1').and_('capra#1').e
-    assert x4.head == e('gatto#1').and_('capra#1').and_('capra#1').e
+    assert x3.it == e('gatto#1').and_('capra#1').e
+    assert x4.it == e('gatto#1').and_('capra#1').and_('capra#1').e
 
 # %% substitution of nounphrases into derivation
 def test_c050():

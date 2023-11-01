@@ -60,7 +60,7 @@ class EB(Generic[T]):
         return self.e.eval(kb)
 
     def get(self, kb=KB()):
-        return e(self.e).eval(kb).head
+        return e(self.e).eval(kb).it
     
     def count(self, kb=KB()):
         return len(self.get(kb).unroll())

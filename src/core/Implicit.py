@@ -38,7 +38,7 @@ class Implicit(Composite):
         new = f'{self.head}#{n}'
         x1 = kb << Str(new)
         x2 = e(new).does('be')._(self.head).tell(x1)  # ...also here
-        which = self.which.subst({Str.GAP:x2.head})
+        which = self.which.subst({Str.GAP:x2.it})
         r2 = which.copy(cmd=Int(1)).eval(x2)
         return r2 << Str(new)
 
@@ -57,7 +57,7 @@ class Implicit(Composite):
     def askNegative(self, kb: 'KB') -> 'KB':
 
         x1=self.askPositive(kb)
-        x2=set(x1.head.unroll())
+        x2=set(x1.it.unroll())
         allIndividuals = {x for s in kb.wm for x in s if isIndividual(x)}
         x3=allIndividuals-x2
         return sortAndTrim(x3, kb, self.ord, self.card)

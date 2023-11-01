@@ -41,7 +41,7 @@ class Composite(Ast):
 
     def askNegative(self, kb:'KB')->'KB':
         x1=self.copy(negation=Int(False)).eval(kb)
-        return x1 << (Int(not x1.head))
+        return x1 << (Int(not x1.it))
 
     def tellNegative(self, kb:'KB')->'KB':
         from core.expbuilder import e

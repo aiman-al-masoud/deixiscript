@@ -38,7 +38,7 @@ class SimpleSentence(Composite):
                 return event.eval(kb) # ask
             case SimpleSentence(verb=Str('have')) if isImplicitish(self):
                 x1 = makeExplicit(self, kb)
-                return x1.head.eval(x1) # ask
+                return x1.it.eval(x1) # ask
             case SimpleSentence(verb=Str('have')):
                 x=(self.subject,self.object,self.as_)
                 return kb << Int(x in kb.wm)
@@ -59,11 +59,11 @@ class SimpleSentence(Composite):
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
                 old   = event.eval(kb)
-                if old.head: return old
+                if old.it: return old
                 return event.copy(cmd=Int(1)).eval(kb)
             case SimpleSentence(verb=Str('have')) if isImplicitish(self):
                 x1 = makeExplicit(self, kb)            
-                return x1.head.copy(cmd=Int(1)).eval(x1)
+                return x1.it.copy(cmd=Int(1)).eval(x1)
             case SimpleSentence(verb=Str('have')):
                 x = (self.subject, self.object, self.as_)
                 delta = frozenset({x})
@@ -108,6 +108,6 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
 
-    x4=ast.copy(subject=x1.head, object=x2.head, as_=x3.head)# subject=x1.head or ast.subject ...
+    x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)# subject=x1.head or ast.subject ...
     x5=decompress(x4)
     return x3 << x5
