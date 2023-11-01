@@ -263,7 +263,7 @@ def test_c53():
     assert the('stallion').get(x3)=='horse#1'
     x4=the('stallion').tell(x3)
     # TODO: every required in when for every here  BAD! Specialized Implicit
-    # define overload to deal with cadinality/ordinality
+    # define overload to deal with cadinality/ordinality of returned definition
     # print(every('stallion').get(x4)) 
 
     # TODO recusive define? bottom up define?
