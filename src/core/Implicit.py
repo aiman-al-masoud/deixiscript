@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class Implicit(Composite):
-    head:Str      =Str('')
+    head:Str      =Str(False)
     card:Int      =Int(1)
     ord:'Ast'     =Str('last')
     which:'Ast'   =Int(True)
