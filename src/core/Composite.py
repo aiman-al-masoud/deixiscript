@@ -65,8 +65,11 @@ class Composite(Ast):
 
             if m: 
                 x1=d.definition.subst(m)
+                # TODO
+                # try: print(self.card, x1.card)
+                # except:pass
                 return x1.define(kb)
-
+            
         return self
     
     def conseq(self, kb:'KB'):
