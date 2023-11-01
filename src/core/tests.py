@@ -147,7 +147,7 @@ def test_c025():
 
 # %% def (analytic derivation) tests
 def test_c026():
-    kb1 = the('it').when(the(1)('thing')).tell()
+    kb1 = the('it').when(the(1)('event').not_).tell()
     kb2 = the('capra').tell(kb1)
     kb3 = the('it').eval(kb2)
     assert 'capra#1' == kb3.it
