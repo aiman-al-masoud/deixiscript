@@ -31,9 +31,9 @@ def test_c010():
     assert x1 == x2
 
 def test_c011(): #  with demorgan's rule I
-    x = it_is_false_that(e(2).and_(3).equals(1)).e
+    x = it_is_false_that(e(2).and_(3).does('be')._(1)).e
     d = decompress(x)
-    y = it_is_false_that(e(2).equals(1)).or_(it_is_false_that(e(3).equals(1))).e
+    y = it_is_false_that(e(2).does('be')._(1)).or_(it_is_false_that(e(3).does('be')._(1))).e
     assert d == y
 
 # %% nounphrases expressions as constructors with tell()

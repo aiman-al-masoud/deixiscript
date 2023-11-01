@@ -22,11 +22,10 @@ class EB(Generic[T]):
     def binop(self, op:str, right:'Ast|EB|str|int'):
         return EB(BinExp(op=Str(op), left=self.e, right=e(right).e))
 
-    def equals(self, x:'Ast|EB|str|int'):return self.binop('=', x)
     def and_(self, x:'Ast|EB|str|int'): return self.binop('and', x)
     def or_(self, x:'Ast|EB|str|int'): return self.binop('or', x)
 
-    def does(self, verb:'Ast|EB|str'):     
+    def does(self, verb:'Ast|EB|str'):
         return EB(SimpleSentence(verb=e(verb).e, subject=self.e))
 
     def complement(self, name:str, thing:'Ast|EB|str|int'):
