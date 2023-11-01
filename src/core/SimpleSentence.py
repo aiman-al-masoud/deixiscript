@@ -107,6 +107,7 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
 
     assert ast.verb=='have'
 
+    # the following ops may create new entities, return KB needed
     x1=ast.subject.eval(kb)
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
