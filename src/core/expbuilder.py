@@ -49,9 +49,12 @@ class EB(Generic[T]):
         return EB(Law(  cause=e(cause).e, effect=self.e))
 
     @property
+    def not_(self):
+        return EB(self.e.copy(negation=Int(True)))
+
+    @property
     def new(self):
-        x1=self.e.copy( cmd=Int(True))
-        return EB(x1)
+        return EB(self.e.copy(cmd=Int(True)))
 
     def eval(self, kb=KB()):
         return self.e.eval(kb)
@@ -66,13 +69,13 @@ class EB(Generic[T]):
         return 1
     
     def tell(self, kb=KB()):
-        return new(self.e).eval(kb)
+        return self.new.eval(kb)
 
 def e(x:Ast|EB|str|int):
-    if isinstance(x, Ast):
-        return EB(x)
-    elif isinstance(x, EB):
+    if isinstance(x, EB):
         return x
+    elif isinstance(x, Ast):
+        return EB(x)
     elif isinstance(x, str):
         return EB(Str(x))
     elif isinstance(x, int):
@@ -81,12 +84,6 @@ def e(x:Ast|EB|str|int):
 
 def does(v:str):
     return e(Str.GAP).does(Str(v))
-
-def it_is_false_that(x:Ast|EB):
-    return EB(e(x).e.copy( negation=Int(True)))
-
-def new(x:Ast|EB):
-    return e(x).new
 
 def every(x:str):
     return the(sys.maxsize)(x)

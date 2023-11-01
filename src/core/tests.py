@@ -1,4 +1,4 @@
-from core.expbuilder import does, e, every, it_is_false_that, new, the
+from core.expbuilder import does, e, every, the
 from core.sortByGenerality import sortByGenerality
 from core.decompress import decompress
 from core.Str import Str
@@ -31,9 +31,9 @@ def test_c010():
     assert x1 == x2
 
 def test_c011(): #  with demorgan's rule I
-    x = it_is_false_that(e(2).and_(3).does('be')._(1)).e
+    x = e(2).and_(3).does('be')._(1).not_.e
     d = decompress(x)
-    y = it_is_false_that(e(2).does('be')._(1)).or_(it_is_false_that(e(3).does('be')._(1))).e
+    y = e(2).does('be')._(1).not_.or_(e(3).does('be')._(1).not_).e
     assert d == y
 
 # %% nounphrases expressions as constructors with tell()
@@ -52,7 +52,7 @@ def test_c013(): # which (relative clause)
 # %% negation with ask tests 
 def test_c015():
     q = e('capra#1').does('have')._(1).as_('age')
-    notQ = it_is_false_that(q)
+    notQ = q.not_
     kb1 = q.tell()
     assert q.get(kb1)
     assert not notQ.get(kb1)
@@ -62,7 +62,7 @@ def test_c032(): # simple sentence
     kb1 = the('man').tell()
     kb2 = the('horse').tell(kb1)
     kb3 = q.tell(kb2)
-    kb4 = it_is_false_that(q).tell(kb3)
+    kb4 = q.not_.tell(kb3)
 
     assert q.get(kb3)
     assert not q.get(kb4)
@@ -188,7 +188,7 @@ def test_c033():
 def test_c035():
 
     kb1 = the('mouse').tell()
-    kb2 = new(the('cat')).does('eat')._(new(the('mouse'))).tell(kb1) # also works with verb wrapped in implicit
+    kb2 = the('cat').new.does('eat')._(the('mouse').new).tell(kb1) # also works with verb wrapped in implicit
 
     assert the(1)('cat').get(kb2) == 'cat#1'
     assert the(1)('mouse').get(kb2) == 'mouse#2'
@@ -250,7 +250,7 @@ def test_c050():
 # or maybe "an event isn't a thing", or maybe different name or yadda yadda...
 def test_c51():
     x1=the('cat').tell()
-    x2=the('it').when(it_is_false_that(the('event'))).tell(x1)
+    x2=the('it').when(the('event').not_).tell(x1)
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
