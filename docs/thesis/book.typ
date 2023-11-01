@@ -1,17 +1,22 @@
 #set heading(numbering: "1.")
+
 #set text(font:"Times New Roman", size:13pt)
+
 #set par(
     justify: true, 
     leading: 1.5em, 
     first-line-indent: 1em, 
     linebreaks: "simple",
 )
+
 #set page(
         paper: "a4",   
-        margin: (right:3cm, left:3cm, top:4.5cm, bottom:4.5cm), 
-        numbering: "1.", 
-        header: [], 
-        footer: [],
+        margin: 3cm, 
+        numbering: "1 / 1", 
+        number-align: right,
+        // header: [], 
+        // footer: [],
+        // margin: (right:3cm, left:3cm, top:4.5cm, bottom:4.5cm), 
 )
 
 #show heading.where(level:1): it => [
