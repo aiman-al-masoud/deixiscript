@@ -196,7 +196,6 @@ def test_c035():
     assert the('cat').does('eat')._(the('mouse')).get(kb2)
     assert not e('cat#1').does('eat')._('mouse#1').get(kb2)
     assert the('mouse').which(the('cat').does('eat')._(Str.GAP)).get(kb2) == 'mouse#2'
-    # assert the(the('mouse').which(e('cat#1').does('eat')._(_)).e).get(kb2)=='mouse#2'
 
 # %% cause and effect w/ synthetic derivation
 def test_c038():
@@ -207,7 +206,7 @@ def test_c038():
     assert the('button').does('be')._('red').get(kb3)
     assert not e('button#1').does('be')._('red').get(kb3)
 
-def test_c044():
+def test_c044(): # w/ domino effect
     kb1 = the('domino').does('fall').after(the('wind').does('blow')).tell()
     kb2 = the('domino').does('break').after(the('domino').does('fall')).tell(kb1)
     kb3 = the('domino').tell(kb2)
@@ -245,6 +244,7 @@ def test_c050():
     x4 = the('capra').which(does('run')).does('jump').tell(x3)
     assert e('capra#1').does('hop').get(x4)
 
+
 # similar problem: new cat which does run
 # %% events get in the way. you can fix it with "not event" negation type.
 # or maybe "an event isn't a thing", or maybe different name or yadda yadda...
@@ -273,6 +273,7 @@ def test_c53():
     # print(x1)
     # print(x2)
 
+
 # TODO: wrong, "red which is cat" should be wrong,
 # # foundamentally different relationship
 # def test_c54():
@@ -291,6 +292,9 @@ def test_c53():
 
 #     assert the('capra').does('sing').get(kb3)
 #     assert not the('capra').does('sing').get(kb4)
+
+# TODO
+# the color does be red     # not working in repl
 
 # TODO
 # # new cat which does run ---> doesn't work in repl!!!
