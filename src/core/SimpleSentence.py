@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Dict
 from dataclasses import dataclass
 from core.BinExp import BinExp
 from core.Composite import Composite

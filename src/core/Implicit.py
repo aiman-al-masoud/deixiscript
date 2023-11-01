@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Collection, Dict, Optional
+from typing import TYPE_CHECKING, Collection, Dict
 from dataclasses import dataclass
 from core.Composite import Composite
 from core.Int import Int

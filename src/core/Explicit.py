@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Dict, Optional, Sequence
+from typing import TYPE_CHECKING, Dict, Sequence
 from core.Ast import Ast
 
 if TYPE_CHECKING:

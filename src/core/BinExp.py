@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from core.Composite import Composite
-from typing import TYPE_CHECKING, Dict, Optional, Sequence
+from typing import TYPE_CHECKING, Dict, Sequence
 from core.Ast import Ast
 from core.Str import Str
 from core.Int import Int

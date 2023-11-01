@@ -1,5 +1,5 @@
 
-from typing import Dict, Optional, Sequence
+from typing import Dict, Sequence
 from core.Explicit import Explicit
 from core.Ast import Ast
 

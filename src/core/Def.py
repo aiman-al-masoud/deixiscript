@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from core.Composite import Composite
 from core.Int import Int
-from typing import TYPE_CHECKING, Dict, Optional
+from typing import TYPE_CHECKING, Dict
 from core.Ast import Ast
 
 if TYPE_CHECKING: 
