@@ -178,7 +178,7 @@ def test_c028():
     assert multiple.unroll() == ['capra#3', 'capra#2', 'capra#1']
     assert single == 'capra#3'
 
-# %% multiple executions of the same simple sentences are idempotent
+# %% multiple executions of the same simple sentence are idempotent
 def test_c033():
     x1 = e('man#1').does('ride').on('horse#1').tell()
     x2 = e('man#1').does('ride').on('horse#1').tell(x1)
