@@ -17,20 +17,19 @@ class BinExp(Composite):
         
     def askPositive(self, kb:'KB')->'KB':
         from core.decompress import isNounPhrasish
-        # from core.expbuilder import e
 
-        match self:
+        match self.op:
 
-            case BinExp(op=Str('and'|'or')) if isNounPhrasish(self):
+            case Str('and'|'or') if isNounPhrasish(self):
                 left = self.left.eval(kb)
                 right= self.right.eval(left)
                 return right << self.copy(left=left.it, right=right.it)
-            case BinExp(op=Str('and')):
+            case Str('and'):
                 r1 = self.left.eval(kb)
                 if not r1.it: return r1
                 r2 = self.right.eval(r1)
                 return r2
-            case BinExp(op=Str('or')):
+            case Str('or'):
                 r1 = self.left.eval(kb)
                 if r1.it: return r1
                 r2 = self.right.eval(r1)
@@ -52,9 +51,8 @@ class BinExp(Composite):
 
         from core.isMatch import everyMap, someMap
 
-        match self:
-            case BinExp(op='and'):
+        match self.op:
+            case 'and':
                 return everyMap(self.left.isMatch(sub), self.right.isMatch(sub))
-
-            case BinExp(op='or'):
+            case 'or':
                 return someMap(self.left.isMatch(sub), self.right.isMatch(sub))
