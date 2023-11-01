@@ -273,6 +273,15 @@ def test_c53():
     # print(x1)
     # print(x2)
 
+# TODO: wrong, "red which is cat" should be wrong,
+# # foundamentally different relationship
+# def test_c54():
+#     x1=the('cat').which(does('be')._('red')).tell()
+#     y1=the('cat').which(does('be')._('red')).get(x1)
+#     y2=the('red').which(does('be')._('cat')).get(x1)
+#     # print(y1, y2)
+#     # print(x1.wm)
+
 # TODO: cause vanish, effect vanish
 # def test_c045():
 #     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()
