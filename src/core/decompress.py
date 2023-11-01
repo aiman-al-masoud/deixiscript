@@ -26,4 +26,4 @@ def opposite(x:Str):
     
 def findThingishConns(ast:Ast)->Sequence[BinExp]:
     if ast.isThingish() and isinstance(ast, BinExp): return [ast]
-    return tuple(y for x in vars(ast).values() for y in findThingishConns(x))
+    return [y for x in vars(ast).values() for y in findThingishConns(x)]
