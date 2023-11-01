@@ -1,6 +1,6 @@
 from core.expbuilder import does, e, every, the
 from core.sortByGenerality import sortByGenerality
-from core.decompress import decompress
+from core.SimpleSentence import decompress
 from core.Str import Str
 
 
