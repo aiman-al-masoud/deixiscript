@@ -21,5 +21,5 @@ def graphvizied(wm:WorldModel, head:Sequence[Ast]=[]):
     x3=f'digraph G{{\n{x2}}}'
     return x3
 
-def ast_to_graphviz(ast:Ast):
-    raise Exception()
+# def ast_to_graphviz(ast:Ast):
+#     raise Exception

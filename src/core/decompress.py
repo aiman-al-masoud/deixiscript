@@ -29,7 +29,7 @@ def decompress(ast:Ast)->Ast:
 def opposite(x:Str):
     if x == 'and': return Str('or')
     if x == 'or': return Str('and')
-    raise Exception('')
+    raise Exception
 
 def isImplicitish(ast:Ast):# method
     if isinstance(ast, Explicit): return False

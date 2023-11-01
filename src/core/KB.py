@@ -37,7 +37,7 @@ class KB:
             case frozenset():
                 return self.copy(wm=self.wm - o)
             case Def()|Law():
-                raise Exception()
+                raise Exception
 
     @property
     def it(self):

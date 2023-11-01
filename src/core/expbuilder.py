@@ -29,7 +29,7 @@ class EB(Generic[T]):
         return EB(SimpleSentence(verb=e(verb).e, subject=self.e))
 
     def complement(self, name:str, thing:'Ast|EB|str|int'):
-        if not isinstance(self.e, SimpleSentence): raise Exception()
+        if not isinstance(self.e, SimpleSentence): raise Exception
         v = self.e.copy(**{name:e(thing).e})
         return EB(v)
 
@@ -77,7 +77,7 @@ def e(x:Ast|EB|str|int):
         return EB(Str(x))
     elif isinstance(x, int):
         return EB(Int(x))
-    raise Exception()
+    raise Exception
 
 def does(v:str):
     return e(Str.GAP).does(Str(v))

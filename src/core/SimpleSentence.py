@@ -43,7 +43,7 @@ class SimpleSentence(Composite):
                 x=(self.subject,self.object,self.as_)
                 return kb << Int(x in kb.wm)
                 
-        raise Exception()
+        raise Exception
         
     
     def tellPositive(self, kb:'KB')->'KB':
@@ -70,7 +70,7 @@ class SimpleSentence(Composite):
                 kb1   = kb + delta
                 return kb1
         
-        raise Exception()
+        raise Exception
 
         
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
@@ -86,7 +86,7 @@ class SimpleSentence(Composite):
             case BinExp(op='and'):
                 return someMap(self.isMatch(sub.left), self.isMatch(sub.right))
             case BinExp(op='or'):
-                raise Exception()
+                raise Exception
 
 
 def makeEvent(ast:SimpleSentence):

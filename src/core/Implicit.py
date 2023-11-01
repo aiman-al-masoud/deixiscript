@@ -21,7 +21,7 @@ class Implicit(Composite):
         from core.expbuilder import e
 
         if kb.concept or self.concept:
-            raise Exception()
+            raise Exception
 
         x0 = {x for s in kb.wm for x in s if isIndividual(x)}
         x2 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)]# maybe no need for complicated "be"? maybe Defs can handle complications and here just do (x,y,z) test?
@@ -32,7 +32,7 @@ class Implicit(Composite):
         from core.expbuilder import every, e
 
         if kb.concept or self.concept:
-            raise Exception()
+            raise Exception
 
         n = every(self.head).count(kb)+1
         new = f'{self.head}#{n}'

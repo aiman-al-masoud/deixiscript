@@ -35,7 +35,7 @@ class BinExp(Composite):
                 r2 = self.right.eval(r1)
                 return r2
 
-        raise Exception()
+        raise Exception
     
     def tellPositive(self, kb:'KB')->'KB':
         x1 = self.left.copy(cmd=Int(1)).eval(kb)
