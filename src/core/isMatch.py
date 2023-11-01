@@ -1,5 +1,5 @@
 from functools import reduce
-from typing import Dict, Optional
+from typing import Dict
 from core.Ast import Ast 
 
 def someMap(*maps:Dict[Ast, Ast])->Dict[Ast, Ast]:
