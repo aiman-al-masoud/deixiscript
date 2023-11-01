@@ -1,4 +1,5 @@
 Maybe distinction between head and modifiers in search?
+cat which is red != red which is cat
 
 Implicit->Thing
 SimpleSentence->Proposition???
