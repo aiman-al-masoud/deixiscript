@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class SimpleSentence(Composite):
-    verb:'Ast'    =Str('')
+    verb:'Ast'    =Int(False)
     subject:'Ast' =Int(False)
     object:'Ast'  =Int(False)
     as_:'Ast'     =Int(False)
