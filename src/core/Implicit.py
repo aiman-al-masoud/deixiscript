@@ -42,11 +42,11 @@ class Implicit(Composite):
         r2 = which.copy(cmd=Int(1)).eval(x2)
         return r2 << Str(new)
 
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.isMatch import everyMap
-        if not isinstance(sub, Implicit): return None        
+        if not isinstance(sub, Implicit): return {}      
         ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
-        return {self:sub} if ok else None
+        return {self:sub} if ok else {}
     
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self.which!=True: return self

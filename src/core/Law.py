@@ -16,8 +16,8 @@ class Law(Composite):
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self
 
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
-        if not isinstance(sub, Law): return None
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
+        if not isinstance(sub, Law): return {}
         return self.cause.isMatch(sub.cause)
 
     def isThingish(self) -> bool:

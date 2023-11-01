@@ -5,7 +5,7 @@ from parse.ToAst import ToAst
 
 class Parser():
     
-    def __init__(self) -> None:
+    def __init__(self):
         grammar_path=os.path.join(os.path.split(__file__)[0], 'grammar.lark')
         grammar = open(grammar_path).read()
         self.lark = Lark(grammar, start='ast')#, ambiguity='explicit')

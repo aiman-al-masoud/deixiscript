@@ -72,14 +72,13 @@ class Composite(Ast):
             
         return self
     
-    def conseq(self, kb:'KB'):
+    def conseq(self, kb:'KB')->'Ast':
         # TODO: when cause vanishes effects follow suit
         # TODO: match/map/subst
         from core.expbuilder import e
         from functools import reduce
         x1 = [d.effect for d in kb.laws if d.cause.isMatch(self)]
-        if not x1: return None
+        if not x1: return Int(0)
         x2 = [e(x) for x in x1]
         x3 = reduce(lambda a,b: a.and_(b), x2).e
-        # assert isinstance(x3, Composite)
         return x3

@@ -46,7 +46,7 @@ class BinExp(Composite):
         x2 = self.right.unroll() 
         return [*x1, *x2]
 
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
 
         from core.isMatch import everyMap, someMap
 
@@ -55,6 +55,8 @@ class BinExp(Composite):
                 return everyMap(self.left.isMatch(sub), self.right.isMatch(sub))
             case 'or':
                 return someMap(self.left.isMatch(sub), self.right.isMatch(sub))
+        
+        return {}
 
     def isThingish(self) -> bool:
         if self.op not in {'and', 'or'}: return True

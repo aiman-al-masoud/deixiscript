@@ -15,8 +15,8 @@ class Def(Composite):
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self
 
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
-        if not isinstance(sub, Def): return None
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
+        if not isinstance(sub, Def): return {}
         return self.definendum.isMatch(sub.definendum)
 
     def isThingish(self) -> bool:

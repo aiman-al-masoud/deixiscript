@@ -73,7 +73,7 @@ class SimpleSentence(Composite):
         raise Exception
 
         
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.isMatch import everyMap, someMap
 
         match sub:
@@ -81,12 +81,14 @@ class SimpleSentence(Composite):
                 sub_keys=sub.args.keys()
                 sup_keys=self.args.keys()
                 com_keys=sub_keys&sup_keys
-                if com_keys!=sup_keys: return None
+                if com_keys!=sup_keys: return {}
                 return everyMap(*[self.args[k].isMatch(sub.args[k]) for k in com_keys])
             case BinExp(op='and'):
                 return someMap(self.isMatch(sub.left), self.isMatch(sub.right))
             case BinExp(op='or'):
                 raise Exception
+        
+        return {}
 
     def isThingish(self) -> bool:
         return False

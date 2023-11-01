@@ -16,8 +16,8 @@ class Explicit(Ast):
     def unroll(self)->Sequence['Ast']:
         return [self]
 
-    def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
-        return {self:sub} if sub==self else None
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
+        return {self:sub} if sub==self else {}
 
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self in map: return map[self]
