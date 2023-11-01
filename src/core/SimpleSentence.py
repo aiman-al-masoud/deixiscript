@@ -94,8 +94,6 @@ def makeEvent(ast:SimpleSentence):
     return x4
 
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
-    # from core.decompress import decompress
-
     assert ast.verb=='have'
 
     # the following ops may create new entities, return KB needed
