@@ -30,7 +30,6 @@ class SimpleSentence(Composite):
 
     def askPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.decompress import isImplicitish
         
         match self:
             case SimpleSentence(verb=Str('be')):
@@ -38,11 +37,10 @@ class SimpleSentence(Composite):
                 return e(self.subject).does('have')._(self.object).as_('super').eval(kb)
             case SimpleSentence() if self.verb!='have':
                 event = makeEvent(self)
-                return event.eval(kb) # ask
-            case SimpleSentence(verb=Str('have')) if isImplicitish(self):
-                x1 = makeExplicit(self, kb)
-                return x1.it.eval(x1) # ask
+                return event.eval(kb)
             case SimpleSentence(verb=Str('have')):
+                x1 = makeExplicit(self, kb)
+                if x1.it!=self: return x1.it.eval(x1)
                 x=(self.subject,self.object,self.as_)
                 return kb << Int(x in kb.wm)
                 
@@ -51,7 +49,6 @@ class SimpleSentence(Composite):
     
     def tellPositive(self, kb:'KB')->'KB':
         from core.expbuilder import e
-        from core.decompress import isImplicitish
 
         # TODO: meta-command switch modes conceptual/world
 
@@ -64,10 +61,9 @@ class SimpleSentence(Composite):
                 old   = event.eval(kb)
                 if old.it: return old
                 return event.copy(cmd=Int(1)).eval(kb)
-            case SimpleSentence(verb=Str('have')) if isImplicitish(self):
-                x1 = makeExplicit(self, kb)            
-                return x1.it.copy(cmd=Int(1)).eval(x1)
             case SimpleSentence(verb=Str('have')):
+                x1 = makeExplicit(self, kb)
+                if x1.it !=self: return x1.it.copy(cmd=Int(1)).eval(x1)
                 x = (self.subject, self.object, self.as_)
                 delta = frozenset({x})
                 kb1   = kb + delta
@@ -112,6 +108,6 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
 
-    x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)# subject=x1.head or ast.subject ...
+    x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)
     x5=decompress(x4)
     return x3 << x5
