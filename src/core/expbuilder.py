@@ -46,7 +46,7 @@ class EB(Generic[T]):
         return EB(Def(definendum=self.e, definition=e(definition).e))
 
     def after(self, cause:'Ast|EB'):
-        return EB(Law(  cause=e(cause).e, effect=self.e))
+        return EB(Law(cause=e(cause).e, effect=self.e))
 
     @property
     def not_(self):
@@ -63,10 +63,7 @@ class EB(Generic[T]):
         return e(self.e).eval(kb).head
     
     def count(self, kb=KB()):
-        r = self.get(kb)
-        if r==False: return 0
-        if isinstance(r, BinExp): return len(r.unroll())
-        return 1
+        return len(self.get(kb).unroll())
     
     def tell(self, kb=KB()):
         return self.new.eval(kb)
