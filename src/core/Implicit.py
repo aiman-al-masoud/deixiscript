@@ -44,9 +44,7 @@ class Implicit(Composite):
 
     def isMatch(self, sub: 'Ast') -> Optional[Dict['Ast', 'Ast']]:
         from core.isMatch import everyMap
-        if not isinstance(sub, Implicit): return None
-        
-        # if sup.card > sub.card: return False
+        if not isinstance(sub, Implicit): return None        
         ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
         return {self:sub} if ok else None
     
