@@ -88,6 +88,9 @@ class SimpleSentence(Composite):
             case BinExp(op='or'):
                 raise Exception
 
+    def isThingish(self) -> bool:
+        return False
+
 
 def makeEvent(ast:SimpleSentence):
     from core.expbuilder import does, every

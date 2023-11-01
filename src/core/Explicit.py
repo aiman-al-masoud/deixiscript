@@ -22,3 +22,6 @@ class Explicit(Ast):
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self in map: return map[self]
         return self
+
+    def isThingish(self) -> bool:
+        return True

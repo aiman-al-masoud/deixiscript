@@ -7,9 +7,6 @@ from core.Implicit import Implicit
 from core.Explicit import Explicit
 
 
-NounPhrase = Explicit | Implicit
-NounPhrasish = NounPhrase | BinExp
-
 def decompress(ast:Ast)->Ast:
     from core.expbuilder import e
 
@@ -37,16 +34,8 @@ def isImplicitish(ast:Ast):# method
     r1=any([isImplicitish(x) for x in vars(ast).values()])
     return r1
 
-def isNounPhrasish(ast:Ast):# method
-    if not isinstance(ast, NounPhrasish): return False
-    if isinstance(ast, NounPhrase): return True
-    return all([isNounPhrasish(x) for x in vars(ast).values()])
-
-def isNounPhrasishConn(ast:Ast):
-    return isNounPhrasish(ast) and isinstance(ast, BinExp) and ast.op in ['and', 'or']
-
 def findNounPhrasishConjs(x:Ast):
-    return findAsts(x, isNounPhrasishConn)
+    return findAsts(x, lambda x:x.isThingish() and isinstance(x, BinExp))
     
 def findAsts(ast:Ast, fn:Callable[[Ast],bool])->Sequence[Ast]:
 

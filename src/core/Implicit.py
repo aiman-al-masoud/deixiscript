@@ -59,6 +59,9 @@ class Implicit(Composite):
         allIndividuals = {x for s in kb.wm for x in s if isIndividual(x)}
         x3=allIndividuals-x2
         return sortAndTrim(x3, kb, self.ord, self.card)
+    
+    def isThingish(self) -> bool:
+        return True
 
 def isIndividual(x:Ast):
     return isinstance(x, str) and '#' in x

@@ -16,11 +16,10 @@ class BinExp(Composite):
     right:'Ast'=Int(False)
         
     def askPositive(self, kb:'KB')->'KB':
-        from core.decompress import isNounPhrasish
 
         match self.op:
 
-            case Str('and'|'or') if isNounPhrasish(self):
+            case Str('and'|'or') if self.isThingish():
                 left = self.left.eval(kb)
                 right= self.right.eval(left)
                 return right << self.copy(left=left.it, right=right.it)
@@ -56,3 +55,7 @@ class BinExp(Composite):
                 return everyMap(self.left.isMatch(sub), self.right.isMatch(sub))
             case 'or':
                 return someMap(self.left.isMatch(sub), self.right.isMatch(sub))
+
+    def isThingish(self) -> bool:
+        if self.op not in {'and', 'or'}: return True
+        return self.left.isThingish() and self.right.isThingish()

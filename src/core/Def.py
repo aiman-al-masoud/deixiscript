@@ -19,4 +19,5 @@ class Def(Composite):
         if not isinstance(sub, Def): return None
         return self.definendum.isMatch(sub.definendum)
 
-
+    def isThingish(self) -> bool:
+        return False

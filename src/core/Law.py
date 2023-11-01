@@ -20,3 +20,6 @@ class Law(Composite):
         if not isinstance(sub, Law): return None
         return self.cause.isMatch(sub.cause)
 
+    def isThingish(self) -> bool:
+        return False
+
