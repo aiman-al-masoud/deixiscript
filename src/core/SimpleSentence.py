@@ -18,6 +18,9 @@ class SimpleSentence(Composite):
     to:'Ast'      =Int(False)
     on:'Ast'      =Int(False)
 
+    def isThingish(self) -> bool:
+        return False
+
     @property
     def args(self)->Dict[str, 'Ast']:
         x1 = [(k,v) for k,v in vars(self).items() if v] # non-falsy
@@ -83,15 +86,10 @@ class SimpleSentence(Composite):
                 com_keys=sub_keys&sup_keys
                 if com_keys!=sup_keys: return {}
                 return everyMap(*[self.args[k].isMatch(sub.args[k]) for k in com_keys])
-            case BinExp(op='and'):
+            case BinExp(op='and'|'or'):
                 return someMap(self.isMatch(sub.left), self.isMatch(sub.right))
-            case BinExp(op='or'):
-                raise Exception
         
         return {}
-
-    def isThingish(self) -> bool:
-        return False
 
 
 def makeEvent(ast:SimpleSentence):
