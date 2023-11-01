@@ -1,4 +1,4 @@
-from typing import Callable, Sequence
+from typing import Sequence
 from core.Composite import Composite
 from core.Ast import Ast
 from core.BinExp import BinExp
@@ -11,10 +11,9 @@ def decompress(ast:Ast)->Ast:
 
     if not isinstance(ast, Composite): return ast
     
-    conns = findNounPhrasishConjs(ast)
+    conns = findThingishConns(ast)
     if not conns: return ast
     conn = conns[0]
-    assert isinstance(conn, BinExp)
 
     op = opposite(conn.op) if ast.negation else conn.op
     left = decompress(ast.subst({conn:conn.left}))
@@ -32,13 +31,8 @@ def isImplicitish(ast:Ast):# method
     if isinstance(ast, Implicit): return True
     r1=any([isImplicitish(x) for x in vars(ast).values()])
     return r1
-
-def findNounPhrasishConjs(x:Ast):
-    return findAsts(x, lambda x:x.isThingish() and isinstance(x, BinExp))
     
-def findAsts(ast:Ast, fn:Callable[[Ast],bool])->Sequence[Ast]:
+def findThingishConns(ast:Ast)->Sequence[BinExp]:
+    if ast.isThingish() and isinstance(ast, BinExp): return [ast]
+    return tuple(y for x in vars(ast).values() for y in findThingishConns(x))
 
-    if fn(ast): return (ast,)
-    if isinstance(ast, Explicit): return tuple()
-
-    return tuple(y for x in vars(ast).values() for y in findAsts(x, fn))
