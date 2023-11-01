@@ -1,3 +1,8 @@
+How to fill up "which-gaps" when parsing?
+- use of transitive vs intransitive verb distinction in ST post-processing?
+- use of (ugly) explicit gap
+- use of special pronoun (unnatural in English)
+
 Maybe distinction between head and modifiers in search?
 cat which is red != red which is cat
 
