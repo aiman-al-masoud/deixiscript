@@ -54,7 +54,7 @@ class SimpleSentence(Composite):
                 return toHave(self).copy(cmd=Int(1)).eval(kb)
         
         
-    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']: # TODO: negation
         from core.someMap import everyMap, someMap
 
         match sub:
@@ -69,6 +69,11 @@ class SimpleSentence(Composite):
         
         return {}
 
+    def define(self, kb:'KB')->'Ast':
+        d={k:v.define(kb) for k,v in self.args.items()}
+        ss=self.copy(**d)
+        return Composite.define(ss, kb)
+      
 def toHave(ast:SimpleSentence):
     from core.EB import does, every, e
     from functools import reduce

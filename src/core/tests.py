@@ -254,7 +254,7 @@ def test_c51():
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
-# TODO
+# TODO: too big, split it up
 # %% using definitions to do create /search for instances of specialized concepts
 def test_c53():
     x1=the('stallion').when(the('horse').which(does('be')._('expensive'))).tell() 
@@ -264,12 +264,15 @@ def test_c53():
     x4=the('stallion').tell(x3)
     assert every('stallion').get(x4).unroll() == ['horse#3', 'horse#1']
 
-    # TODO recusive define? bottom up define?
-    # print('-------------------------')
-    # ast1=the('stallion').does('run').e.define(x1)
-    # ast2=the('horse').does('run').e.define(x1)
+    #  bottom up define:
+    ast1=the('stallion').does('run').e.define(x1)
+    ast2=the('horse').does('run').e.define(x1)
+    assert ast2.isMatch(ast1)
+    assert not ast1.isMatch(ast2)
     # print(ast1)
     # print(ast2)
+    # print(ast2.isMatch(ast1))
+    # print(ast1.isMatch(ast2))
 
 
 # TODO: wrong, "red which is cat" should be wrong,

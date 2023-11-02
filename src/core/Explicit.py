@@ -25,3 +25,6 @@ class Explicit(Ast):
 
     def isThingish(self) -> bool:
         return True
+
+    def define(self, kb:'KB'):
+        return self
