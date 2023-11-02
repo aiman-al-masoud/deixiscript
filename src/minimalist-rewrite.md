@@ -1,3 +1,5 @@
+Note to self: a question may create a whole new entity (thus having side effects even on the WM)
+
 How to fill up "which-gaps" when parsing?
 - use of transitive vs intransitive verb distinction in ST post-processing?
 - use of (ugly) explicit gap
