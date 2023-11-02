@@ -4,12 +4,12 @@ from core.KB import KB, WorldModel
 
 
 def show(wm:WorldModel):
-    from graphviz import Source # pyright:ignore
+    from graphviz import Source
     source = graphvizied(wm)
     Source(source, filename='tmp.gv', format='png').view()
 
 def save_png(kb:KB):
-    from graphviz import Source # pyright:ignore
+    from graphviz import Source
     source = graphvizied(kb.wm, kb.it.unroll())
     Source(source, filename='tmp.gv', format='png').render()
 
