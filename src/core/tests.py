@@ -266,10 +266,10 @@ def test_c53():
 
     # TODO recusive define? bottom up define?
     # print('-------------------------')
-    # x1=the('stallion').does('run').e.define(x3)
-    # x2=the('horse').does('run').e.define(x5)
-    # print(x1)
-    # print(x2)
+    # ast1=the('stallion').does('run').e.define(x1)
+    # ast2=the('horse').does('run').e.define(x1)
+    # print(ast1)
+    # print(ast2)
 
 
 # TODO: wrong, "red which is cat" should be wrong,
