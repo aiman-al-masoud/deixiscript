@@ -18,7 +18,7 @@ class Implicit(Composite):
     concept:Int   =Int(False)
         
     def askPositive(self, kb:'KB')->'KB':
-        from core.expbuilder import e
+        from core.EB import e
 
         if kb.concept or self.concept:
             raise Exception
@@ -29,7 +29,7 @@ class Implicit(Composite):
         return sortAndTrim(x3, kb, self.ord, self.card)
     
     def tellPositive(self, kb:'KB')->'KB':
-        from core.expbuilder import every, e
+        from core.EB import every, e
 
         if kb.concept or self.concept:
             raise Exception
@@ -43,7 +43,7 @@ class Implicit(Composite):
         return r2 << Str(new)
 
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
-        from core.isMatch import everyMap
+        from core.someMap import everyMap
         if not isinstance(sub, Implicit): return {}      
         ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
         return {self:sub} if ok else {}
@@ -68,7 +68,7 @@ def isIndividual(x:Ast):
 
 def sortAndTrim(things:Collection[Ast], kb:'KB', ord:Ast, card:Int):
     from functools import reduce
-    from core.expbuilder import e
+    from core.EB import e
     x4 = sorted(things, key=lambda x:kb.dd[x], reverse=ord=='last')
     x5 = x4[:card]
     if not x5: return kb << Int(False)

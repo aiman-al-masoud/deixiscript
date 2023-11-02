@@ -44,7 +44,7 @@ class Composite(Ast):
         return x1 << (Int(not x1.it))
 
     def tellNegative(self, kb:'KB')->'KB':
-        from core.expbuilder import e
+        from core.EB import e
         # TODO: wrong
         x1 = e(self.copy(negation=Int(False))).get(kb)
         # TODO unroll
@@ -75,7 +75,7 @@ class Composite(Ast):
     def conseq(self, kb:'KB')->'Ast':
         # TODO: when cause vanishes effects follow suit
         # TODO: match/map/subst
-        from core.expbuilder import e
+        from core.EB import e
         from functools import reduce
         x1 = [d.effect for d in kb.laws if d.cause.isMatch(self)]
         if not x1: return Int(0)

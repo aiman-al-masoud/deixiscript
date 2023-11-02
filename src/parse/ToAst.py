@@ -4,7 +4,7 @@ from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
 from core.Str import Str
-from core.expbuilder import e
+from core.EB import e
 
 class ToAst(Transformer):
 

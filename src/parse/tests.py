@@ -1,5 +1,5 @@
 from parse.parse import Parser
-from core.expbuilder import the, does
+from core.EB import the, does
 
 parser = Parser()
 

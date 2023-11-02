@@ -1,5 +1,5 @@
 
-from core.expbuilder import the
+from core.EB import the
 from plot.show import save_png, show
 
 def tezt_c41():

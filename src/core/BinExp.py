@@ -48,7 +48,7 @@ class BinExp(Composite):
 
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
 
-        from core.isMatch import everyMap, someMap
+        from core.someMap import everyMap, someMap
 
         match self.op:
             case 'and':

@@ -55,7 +55,7 @@ class SimpleSentence(Composite):
         
         
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
-        from core.isMatch import everyMap, someMap
+        from core.someMap import everyMap, someMap
 
         match sub:
             case SimpleSentence():
@@ -70,7 +70,7 @@ class SimpleSentence(Composite):
         return {}
 
 def toHave(ast:SimpleSentence):
-    from core.expbuilder import does, every, e
+    from core.EB import does, every, e
     from functools import reduce
 
     if ast.verb=='be':

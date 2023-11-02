@@ -1,4 +1,4 @@
-from core.expbuilder import does, e, every, the
+from core.EB import does, e, every, the
 from core.sortByGenerality import sortByGenerality
 from core.SimpleSentence import decompress
 from core.Str import Str
