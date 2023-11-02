@@ -1,4 +1,4 @@
-Note to self: a question may create a whole new entity (thus having side effects even on the WM)
+Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.
 
 How to fill up "which-gaps" when parsing?
 - use of transitive vs intransitive verb distinction in ST post-processing?
