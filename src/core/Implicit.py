@@ -63,6 +63,9 @@ class Implicit(Composite):
     def isThingish(self) -> bool:
         return True
 
+    def define(self, kb:'KB')->'Ast':
+        return super().define(kb).copy(card=self.card, ord=self.ord) #cmd=self.cmd   neg???
+
 def isIndividual(x:Ast):
     return isinstance(x, str) and '#' in x
 
