@@ -253,7 +253,6 @@ def test_c51():
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
-
 # simple arithmetics with anaphors
 def test_c54():
     x1 = e(1).binop('+', 1).eval()
