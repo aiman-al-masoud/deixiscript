@@ -19,7 +19,6 @@ _question1: "does" subject "do" verb object? complement* "?"?
 _question2: subject? "does" verb object? complement* "?"
 _command: subject? cmd verb object? complement*
 cmd:DOES_CMD
-DOES_CMD: "does"
 subject: noun_phrase
 verb: NAME
 object: noun_phrase
@@ -34,7 +33,7 @@ relative: relative_head "which" subordinate
 relative_head:noun_phrase
 subordinate: sentence
 
-noun: (("the"|"an"|"a")?|ord?|noun_cmd?|card?|negation?)* noun_head
+noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* noun_head
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
@@ -49,5 +48,7 @@ ARG1: "switch mode"
 ARG2: "concept" | "world"
 BINOP: "and" | "or" | "when" | "after"
 PREPOSITION: "to" | "as" | "from" | "on"
+_ARTICLE:"the"|"an"|"a"
+DOES_CMD: "does"
 %import common.WS
 %ignore WS
