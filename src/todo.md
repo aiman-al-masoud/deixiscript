@@ -7,6 +7,8 @@
 cat which is red != red which is cat
 this to allow Implicit to resolve to concept by default (if no individual is found).
 be sentences should sometimes not take concepts in the "object" position
+- "strong" IS-A relation only at creation time of an entity
+- "weak" IS relation any time later
 
 # Use brython to package the interpreter for the web
 https://brython.info/static_tutorial/en/index.html
