@@ -344,18 +344,3 @@ def test_c53():
 
 #     catConcept = every('concept').which(does('be')._('cat')).get(kb1)
 #     assert catConcept == 'cat'
-
-# def test_c021(): # with subconcepts
-#     kb1 = e('stallion').does('be')._('horse').tell()
-#     gen = the(1)('man').does('ride').on(the(1)('horse')).e
-#     spec1 =  the(1)('man').does('ride').on(the(1)('stallion')).e
-#     spec2 =  the(1)('man').does('ride').on(the('lama')).e
-#     assert isMatch(gen, spec1, kb1)
-#     assert not isMatch(spec1, gen, kb1)
-#     assert not isMatch(gen, spec2, kb1)
-
-# def test_c036():
-#     kb1 = the('button').tell()
-#     x1  = the(1)('button').does('be')._('down').e
-#     assert isMatch(x1, e('button#1').does('be')._('down').e , kb1)
-#     assert isMatch(x1, e('button#1').does('have')._('down').as_('super').e , kb1)
