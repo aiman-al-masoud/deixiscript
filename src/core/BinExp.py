@@ -68,6 +68,7 @@ def mathOp(op:str, left:Ast, right:Ast, kb:KB):
     r = right.eval(l)
 
     assert isinstance(l.it, Int) and isinstance(r.it, Int)
+    # TODO: 1 and 2 and 3 + 0 = 6
 
     match op:
         case '+': result = l.it + r.it
