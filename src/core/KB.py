@@ -15,7 +15,7 @@ class KB:
     wm:WorldModel             =frozenset()
     defs:Tuple['Def', ...]    =tuple()
     laws:Tuple['Law', ...]    =tuple()
-    dd:DeicticDict            =DeicticDict()
+    dd:DeicticDict['Ast']     =DeicticDict()
     concept:bool              =False
 
     def copy(self, **kwargs):
@@ -48,4 +48,5 @@ class KB:
 
     @property
     def it(self):
-        return self.dd.latest
+        from core.Int import Int
+        return self.dd.latest(Int(False))
