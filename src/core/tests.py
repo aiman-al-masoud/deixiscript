@@ -73,16 +73,16 @@ def test_c017():
     assert not Str('it').isMatch(Str('buruf'))
 
 def test_c018():
-    gen  = the('cat').e
-    spec = the('cat').which(does('have')._('mouse#1').as_('prey')).e
-    assert gen.isMatch(spec)
-    assert not spec.isMatch(gen)
+    sup = the('cat').e
+    sub = the('cat').which(does('have')._('mouse#1').as_('prey')).e
+    assert sup.isMatch(sub)
+    assert not sub.isMatch(sup)
 
 def test_c019():
-    gen  = e('cat#1').does('have')._('mouse#1').e
-    spec = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
-    assert gen.isMatch(spec)
-    assert not spec.isMatch(gen)
+    sup = e('cat#1').does('have')._('mouse#1').e
+    sub = e('cat#1').does('have')._('mouse#1').and_(e('cat#1').does('have')._('mouse#2')).e
+    assert sup.isMatch(sub)
+    assert not sub.isMatch(sup)
 
 def test_c020():
     gen   = the('man').does('ride').on(the('horse')).e
