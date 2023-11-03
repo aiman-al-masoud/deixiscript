@@ -1,8 +1,6 @@
-from typing import TYPE_CHECKING, Dict, Sequence
+from typing import Dict, Sequence
 from core.Ast import Ast
-
-if TYPE_CHECKING:
-    from core.KB import KB
+from core.KB import KB
 
 class Explicit(Ast):
     __slots__=()

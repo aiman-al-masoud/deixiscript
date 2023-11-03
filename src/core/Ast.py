@@ -1,7 +1,5 @@
-from typing import TYPE_CHECKING, Dict, Sequence
-
-if TYPE_CHECKING:
-    from core.KB import KB
+from typing import Dict, Sequence
+from core.KB import KB
 
 class Ast:
     def eval(self, kb:'KB')->'KB': raise Exception

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import FrozenSet, Tuple, TYPE_CHECKING
+from functools import cmp_to_key
+from typing import FrozenSet, Iterable, Tuple, TYPE_CHECKING, TypeVar
 from core.DeicticDict import DeicticDict
-from core.sortByGenerality import sortByGenerality
 
 if TYPE_CHECKING:
     from core.Ast import Ast
@@ -50,3 +50,13 @@ class KB:
     def it(self):
         from core.Int import Int
         return self.dd.latest(Int(False))
+
+
+T = TypeVar('T', bound='Ast')
+def sortByGenerality(asts:Iterable[T]):
+    x1 = sorted(asts, key=cmp_to_key(compareByGenerality))
+    x2 = tuple(x1)
+    return x2
+
+def compareByGenerality(ast1:'Ast', ast2:'Ast')->int:
+    return bool(ast1.isMatch(ast2)) - bool(ast2.isMatch(ast1))

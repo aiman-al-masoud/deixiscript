@@ -1,7 +1,7 @@
 from core.EB import does, e, every, the
-from core.sortByGenerality import sortByGenerality
 from core.SimpleSentence import decompress
 from core.Str import Str
+from core.KB import sortByGenerality
 
 
 # %% subst tests

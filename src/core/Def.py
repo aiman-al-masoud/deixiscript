@@ -3,8 +3,8 @@ from core.Composite import Composite
 from core.Int import Int
 from typing import Dict
 from core.Ast import Ast
-
 from core.KB import KB
+
 
 @dataclass(frozen=True)
 class Def(Composite):
