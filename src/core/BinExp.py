@@ -62,11 +62,15 @@ class BinExp(Composite):
         if self.op not in {'and', 'or'}: return True
         return self.left.isThingish() and self.right.isThingish()
 
+    # def __add__(self, o:Ast):
+    #     return sum(self.unroll())+o
+
 def mathOp(op:str, left:Ast, right:Ast, kb:KB):
     from core.EB import e
     l = left.eval(kb)
     r = right.eval(l)
 
+    # assert isinstance(l.it, Int|BinExp) and isinstance(r.it, Int)
     assert isinstance(l.it, Int) and isinstance(r.it, Int)
     # TODO: 1 and 2 and 3 + 0 = 6
 
