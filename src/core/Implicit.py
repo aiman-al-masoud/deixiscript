@@ -22,9 +22,9 @@ class Implicit(Composite):
             raise Exception
 
         x0 = {x for s in kb.wm for x in s if isIndividual(x)}
-        x2 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)] # TODO IS-A
-        x3 = [x for x in x2 if e(self.which.subst({Str.GAP:x})).get(kb)] # TODO "IS"
-        x4 = sortAndTrim(x3, kb, self.ord, self.card)
+        x1 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)] # TODO IS-A
+        x2 = [x for x in x1 if e(self.which.subst({Str.GAP:x})).get(kb)] # TODO "IS"
+        x4 = sortAndTrim(x2, kb, self.ord, self.card)
         return kb << x4
 
     def tellPositive(self, kb:'KB')->'KB':
