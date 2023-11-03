@@ -24,8 +24,8 @@ class Implicit(Composite):
             raise Exception
 
         x0 = {x for s in kb.wm for x in s if isIndividual(x)}
-        x2 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)]# maybe no need for complicated "be"? maybe Defs can handle complications and here just do (x,y,z) test?
-        x3 = [x for x in x2 if e(self.which.subst({Str.GAP:x})).get(kb)]
+        x2 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)] # TODO IS-A
+        x3 = [x for x in x2 if e(self.which.subst({Str.GAP:x})).get(kb)] # TODO "IS"
         x4 = sortAndTrim(x3, kb, self.ord, self.card)
         return kb << x4
 
@@ -38,8 +38,8 @@ class Implicit(Composite):
         n = every(self.head).count(kb)+1
         new = f'{self.head}#{n}'
         x1 = kb << Str(new)
-        x2 = e(new).does('be')._(self.head).tell(x1)  # ...also here
-        which = self.which.subst({Str.GAP:x2.it})
+        x2 = e(new).does('be')._(self.head).tell(x1)  # TODO: IS-A
+        which = self.which.subst({Str.GAP:x2.it}) # TODO: "IS"
         r2 = which.copy(cmd=Int(1)).eval(x2)
         return r2 << Str(new)
 
