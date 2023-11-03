@@ -9,9 +9,9 @@ from core.KB import KB
 
 @dataclass(frozen=True)
 class BinExp(Composite):
-    op:Str=Str('')
-    left:'Ast'=Int(False)
-    right:'Ast'=Int(False)
+    op:Ast      =Int(False)
+    left:'Ast'  =Int(False)
+    right:'Ast' =Int(False)
         
     def askPositive(self, kb:'KB')->'KB':
 

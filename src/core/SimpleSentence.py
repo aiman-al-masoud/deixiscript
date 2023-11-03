@@ -112,7 +112,7 @@ def decompress(ast:Ast)->Ast:
 
     return conn.copy(left=left, right=right, op=op, cmd=ast.cmd)
 
-def opposite(x:Str):
+def opposite(x:Ast):
     if x == 'and': return Str('or')
     if x == 'or': return Str('and')
     raise Exception
