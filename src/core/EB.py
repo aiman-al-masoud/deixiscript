@@ -68,7 +68,7 @@ class EB(Generic[T]):
     def tell(self, kb=KB()):
         return self.new.eval(kb)
 
-def e(x:Ast|EB|str|int):
+def e(x:Ast|EB|str|int)->EB[Ast]:
     if isinstance(x, EB):
         return x
     elif isinstance(x, Ast):

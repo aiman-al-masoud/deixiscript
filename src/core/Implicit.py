@@ -26,8 +26,9 @@ class Implicit(Composite):
         x0 = {x for s in kb.wm for x in s if isIndividual(x)}
         x2 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)]# maybe no need for complicated "be"? maybe Defs can handle complications and here just do (x,y,z) test?
         x3 = [x for x in x2 if e(self.which.subst({Str.GAP:x})).get(kb)]
-        return sortAndTrim(x3, kb, self.ord, self.card)
-    
+        x4 = sortAndTrim(x3, kb, self.ord, self.card)
+        return kb << x4
+
     def tellPositive(self, kb:'KB')->'KB':
         from core.EB import every, e
 
@@ -53,12 +54,12 @@ class Implicit(Composite):
         return super().subst(map)
 
     def askNegative(self, kb: 'KB') -> 'KB':
-
         x1=self.askPositive(kb)
         x2=set(x1.it.unroll())
         allIndividuals = {x for s in kb.wm for x in s if isIndividual(x)}
         x3=allIndividuals-x2
-        return sortAndTrim(x3, kb, self.ord, self.card)
+        x4=sortAndTrim(x3, kb, self.ord, self.card)
+        return kb << x4
     
     def isThingish(self) -> bool:
         return True
@@ -74,8 +75,7 @@ def sortAndTrim(things:Collection[Ast], kb:'KB', ord:Ast, card:Int):
     from core.EB import e
     x4 = sorted(things, key=lambda x:kb.dd[x], reverse=ord=='last')
     x5 = x4[:card]
-    if not x5: return kb << Int(False)
+    if not x5: return Int(False)
     x6 = [e(x) for x in x5]
     x7 = reduce(lambda a,b: a.or_(b), x6).e
-    x8=kb << x7
-    return x8
+    return x7
