@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 from core.Int import Int
-from typing import TYPE_CHECKING, Dict, Sequence, TypeVar
+from typing import Dict, Sequence, TypeVar
 from core.Ast import Ast
 
-if TYPE_CHECKING:
-    from core.KB import KB
+from core.KB import KB
 
 @dataclass(frozen=True)
 class Composite(Ast):

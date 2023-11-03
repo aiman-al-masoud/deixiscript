@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from typing import FrozenSet, Tuple
+from typing import FrozenSet, Tuple, TYPE_CHECKING
 from core.DeicticDict import DeicticDict
-from core.Ast import Ast
 from core.sortByGenerality import sortByGenerality
-from core.Def import Def
-from core.Law import Law
 
+if TYPE_CHECKING:
+    from core.Ast import Ast
+    from core.Def import Def
+    from core.Law import Law
 
 WorldModel = FrozenSet[Tuple['Ast', 'Ast', 'Ast']]
 
@@ -24,6 +25,9 @@ class KB:
         return self.copy(dd=self.dd.update(o))
 
     def __add__(self, o:'WorldModel|Def|Law'):
+        from core.Def import Def
+        from core.Law import Law
+
         match o:
             case frozenset(): 
                 return self.copy(wm=self.wm | o)
@@ -33,6 +37,9 @@ class KB:
                 return self.copy(laws=sortByGenerality([*self.laws, o]))
 
     def __sub__(self, o:'WorldModel|Def|Law'):
+        from core.Def import Def
+        from core.Law import Law
+
         match o:
             case frozenset():
                 return self.copy(wm=self.wm - o)

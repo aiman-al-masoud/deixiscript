@@ -1,12 +1,10 @@
-from typing import TYPE_CHECKING, Collection, Dict
+from typing import Collection, Dict
 from dataclasses import dataclass
 from core.Composite import Composite
 from core.Int import Int
 from core.Str import Str
 from core.Ast import Ast
-
-if TYPE_CHECKING: 
-    from core.KB import KB
+from core.KB import KB
 
 
 @dataclass(frozen=True)
