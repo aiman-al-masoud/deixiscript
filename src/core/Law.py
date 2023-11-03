@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from core.Composite import Composite
 from core.Int import Int
 from core.Ast import Ast
-
 from core.KB import KB
 
 

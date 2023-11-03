@@ -4,7 +4,6 @@ from typing import Dict, Sequence
 from core.Ast import Ast
 from core.Str import Str
 from core.Int import Int
-
 from core.KB import KB
 
 

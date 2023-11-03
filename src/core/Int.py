@@ -3,6 +3,7 @@ from typing import Dict, Sequence
 from core.Explicit import Explicit
 from core.Ast import Ast
 
+
 class Int(int, Explicit):
 
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:

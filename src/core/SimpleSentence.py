@@ -7,6 +7,7 @@ from core.Str import Str
 from core.Ast import Ast
 from core.KB import KB 
 
+
 @dataclass(frozen=True)
 class SimpleSentence(Composite):
     verb:'Ast'    =Int(False)
