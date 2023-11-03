@@ -23,6 +23,9 @@ class ToAst(Transformer):
     def ord(self, children):
         return {'ord': children[0]}
 
+    def number(self, children):
+        return Int(children[0])
+
     def card(self, children):
         return {'card': children[0]}
 

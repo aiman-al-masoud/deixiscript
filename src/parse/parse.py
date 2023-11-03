@@ -13,6 +13,7 @@ class Parser():
 
     def parse(self, code:str)->Ast:
         st=self.lark.parse(code)
+        # print('st=', st)
         ast=self.tr.transform(st)
         return ast
 

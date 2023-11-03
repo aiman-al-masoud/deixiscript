@@ -66,7 +66,7 @@ class Implicit(Composite):
         return super().define(kb).copy(card=self.card, ord=self.ord) #cmd=self.cmd   neg???
 
 def isIndividual(x:Ast):
-    return isinstance(x, str) and '#' in x
+    return isinstance(x, str) and '#' in x  or isinstance(x, int)
 
 def sortAndTrim(things:Collection[Ast], kb:'KB', ord:Ast, card:Int):
     from functools import reduce

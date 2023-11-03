@@ -1,5 +1,7 @@
 // AST ---------------------------------------------------------
-?ast: sentence | noun_phrase | _parens
+?ast: sentence | noun_phrase | number | _parens
+
+number:NUMBER
 
 // parentheses
 _parens: "(" ast ")"
@@ -46,7 +48,7 @@ NUMBER: /[0-9]+/
 ORDINAL: "first" | "last"
 ARG1: "switch mode"
 ARG2: "concept" | "world"
-BINOP: "and" | "or" | "when" | "after"
+BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
 PREPOSITION: "to" | "as" | "from" | "on"
 _ARTICLE:"the"|"an"|"a"
 DOES_CMD: "does"

@@ -30,7 +30,10 @@ Random AST generator for fuzz testing?
 	- remove Command(SimpleSentence) special case
 
 # Basic arithmetic operations
-- +,-,*,/
+- +,-,*,/,>,<,=
+
+# Ordinality
+Currently only supports first/last
 
 ---------------------
 Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.

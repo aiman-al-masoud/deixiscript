@@ -244,7 +244,6 @@ def test_c050():
     x4 = the('capra').which(does('run')).does('jump').tell(x3)
     assert e('capra#1').does('hop').get(x4)
 
-
 # similar problem: new cat which does run
 # %% events get in the way. you can fix it with "not event" negation type.
 # or maybe "an event isn't a thing", or maybe different name or yadda yadda...
@@ -253,6 +252,13 @@ def test_c51():
     x2=the('it').when(the('event').not_).tell(x1)
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
+
+
+# simple arithmetics with anaphors
+def test_c54():
+    x1 = e(1).binop('+', 1).eval()
+    assert the('number').get(x1) == 2
+    assert the('number').binop('+', 1).get(x1) == 3
 
 # TODO: too big, split it up
 # %% using definitions to do create /search for instances of specialized concepts
@@ -273,7 +279,6 @@ def test_c53():
     # print(ast2)
     # print(ast2.isMatch(ast1))
     # print(ast1.isMatch(ast2))
-
 
 # TODO: wrong, "red which is cat" should be wrong,
 # # foundamentally different relationship

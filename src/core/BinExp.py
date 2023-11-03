@@ -31,6 +31,8 @@ class BinExp(Composite):
                 if r1.it: return r1
                 r2 = self.right.eval(r1)
                 return r2
+            case Str('+'|'-'|'*'|'/'):
+                return mathOp(self.op, self.left, self.right, kb)
 
         raise Exception
     
@@ -59,3 +61,21 @@ class BinExp(Composite):
     def isThingish(self) -> bool:
         if self.op not in {'and', 'or'}: return True
         return self.left.isThingish() and self.right.isThingish()
+
+def mathOp(op:str, left:Ast, right:Ast, kb:KB):
+    from core.EB import e
+    l = left.eval(kb)
+    r = right.eval(l)
+
+    assert isinstance(l.it, Int) and isinstance(r.it, Int)
+
+    match op:
+        case '+': result = l.it + r.it
+        case '-': result = l.it - r.it
+        case '*': result = l.it * r.it
+        case '/': result = l.it / r.it
+        case _: raise Exception
+    
+    result1 = Int(result)
+    kb1 = e(result1).does('be')._('number').tell(kb)
+    return kb1 << result1
