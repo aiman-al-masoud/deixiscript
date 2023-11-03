@@ -9,7 +9,7 @@ from core.KB import KB
 
 @dataclass(frozen=True)
 class BinExp(Composite):
-    op:'Ast'      =Int(False)
+    op:'Ast'    =Int(False)
     left:'Ast'  =Int(False)
     right:'Ast' =Int(False)
         
