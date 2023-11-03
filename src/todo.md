@@ -17,6 +17,10 @@ maybe "conceptual" and "individual" modes/contexts that can be triggered with so
 # Fuzz testing
 Random AST generator for fuzz testing?
 
+# Syntax Sugar
+- adjectives as relative clauses with verb to be or similar
+- complements on nounphrases analogously
+
 # Property/Structural/Non-nominal Uniquess for everything
 - maybe: no entity can exist unless it is at least somewhat distinct from another already exisiting entity, and ID is not enough for the distinction
 	Benefits
