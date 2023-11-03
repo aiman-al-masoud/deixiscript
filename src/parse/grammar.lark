@@ -46,8 +46,6 @@ negation: "not"
 NAME: /[a-z]+/ | "_"
 NUMBER: /[0-9]+/
 ORDINAL: "first" | "last"
-ARG1: "switch mode"
-ARG2: "concept" | "world"
 BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
 PREPOSITION: "to" | "as" | "from" | "on"
 _ARTICLE:"the"|"an"|"a"
