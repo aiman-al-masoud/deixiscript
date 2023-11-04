@@ -43,10 +43,9 @@ class Composite(Ast):
         return x1 << (Int(not x1.it))
 
     def tellNegative(self, kb:'KB')->'KB':
-        from core.EB import e
-        x1 = e(self.copy(negation=Int(False))).get(kb)
-        x2 = x1.unroll()
-        x3 = {s for s in kb.wm if set(s) & set(x2)}
+        x1 = self.copy(negation=Int(False)).eval(kb).it
+        x2 = set(x1.unroll())
+        x3 = {s for s in kb.wm if set(s) & x2}
         x4 = frozenset(x3)
         return kb - x4
     
