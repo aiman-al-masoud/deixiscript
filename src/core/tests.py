@@ -101,6 +101,12 @@ def test_c040():
     assert gen.isMatch(spec)
     assert not spec.isMatch(gen)
 
+def test_c059(): # with negation
+    assert not the('cat').e.isMatch(the('cat').not_.e)
+    assert the('cat').not_.e.isMatch(the('cat').not_.e)
+    assert not the('cat').does('run').e.isMatch(the('cat').does('run').not_.e)
+    assert the('cat').does('run').e.isMatch(the('cat').does('run').e)
+
 # %% sort nounphrases by generality tests
 def test_c022():
     correct = (  # ascending generality

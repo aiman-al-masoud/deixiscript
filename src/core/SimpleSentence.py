@@ -63,11 +63,14 @@ class SimpleSentence(Composite):
                 sup_keys=self.args.keys()
                 com_keys=sub_keys&sup_keys
                 if com_keys!=sup_keys: return {}
-                return everyMap(*[self.args[k].isMatch(sub.args[k]) for k in com_keys])
+                result = everyMap(*[self.args[k].isMatch(sub.args[k]) for k in com_keys])
             case BinExp(op='and'|'or'):
-                return someMap(self.isMatch(sub.left), self.isMatch(sub.right))
-        
-        return {}
+                result = someMap(self.isMatch(sub.left), self.isMatch(sub.right))
+            case _:
+                result = {}
+
+        if not isinstance(sub, Composite): return result
+        return result if self.negation == sub.negation else {}
 
     def define(self, kb:'KB')->'Ast':
         d={k:v.define(kb) for k,v in self.args.items()}
