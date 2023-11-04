@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Generic, Tuple, TypeVar
 
+# TODO: https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two
 T=TypeVar('T')
 @dataclass(frozen=True)
 class DeicticDict(Generic[T]):

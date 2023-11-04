@@ -68,6 +68,10 @@ class EB(Generic[T]):
     def tell(self, kb=KB()):
         return self.new.eval(kb)
 
+    def reallyIs(self, x:'Ast|EB|str'):
+        return self.does('have')._(x).as_('concept')
+        
+
 def e(x:Ast|EB|str|int)->EB[Ast]:
     if isinstance(x, EB):
         return x

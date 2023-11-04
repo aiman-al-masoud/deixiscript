@@ -82,5 +82,5 @@ def mathOp(op:str, left:Ast, right:Ast, kb:KB):
         case _: raise Exception
     
     result1 = Int(result)
-    kb1 = e(result1).does('be')._('number').tell(kb)
+    kb1 = e(result1).reallyIs('number').tell(kb)
     return kb1 << result1

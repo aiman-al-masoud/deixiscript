@@ -16,6 +16,7 @@ class SimpleSentence(Composite):
     as_:'Ast'     =Int(False)
     to:'Ast'      =Int(False)
     on:'Ast'      =Int(False)
+    # adverb:'Ast'  =Int(False)
 
     def isThingish(self) -> bool:
         return False
@@ -48,7 +49,7 @@ class SimpleSentence(Composite):
                 x1 = makeExplicit(self, kb)
                 if x1.it!=self: return x1.it.copy(cmd=Int(1)).eval(x1)
                 x=(self.subject, self.object, self.as_)
-                return kb + frozenset({x})
+                return ( kb + frozenset({x}) ) << self.subject
             case _:
                 return toHave(self).copy(cmd=Int(1)).eval(kb)
         
@@ -78,7 +79,7 @@ def toHave(ast:SimpleSentence):
     from functools import reduce
 
     if ast.verb=='be':
-        return e(ast.subject).does('have')._(ast.object).as_('super').e
+        return e(ast.subject).does('have')._(ast.object).as_('attribute').e
 
     x1 = ast.args.items()
     x2 = [does('have')._(v).as_(k) for k,v in x1]
@@ -93,6 +94,8 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     x1=ast.subject.eval(kb)
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
+
+    assert x1.it and x2.it and x3.it
 
     x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)
     x5=decompress(x4)

@@ -14,7 +14,7 @@ class Implicit(Composite):
     ord:'Ast'     =Str('last')
     which:'Ast'   =Int(True)
     concept:Int   =Int(False)
-        
+    
     def askPositive(self, kb:'KB')->'KB':
         from core.EB import e
 
@@ -22,8 +22,8 @@ class Implicit(Composite):
             raise Exception
 
         x0 = {x for s in kb.wm for x in s if isIndividual(x)}
-        x1 = [x for x in x0 if e(x).does('be')._(self.head).get(kb)] # TODO IS-A
-        x2 = [x for x in x1 if e(self.which.subst({Str.GAP:x})).get(kb)] # TODO "IS"
+        x1 = [x for x in x0 if e(x).reallyIs(self.head).get(kb)]
+        x2 = [x for x in x1 if e(self.which.subst({Str.GAP:x})).get(kb)]
         x4 = sortAndTrim(x2, kb, self.ord, self.card)
         return kb << x4
 
@@ -36,8 +36,8 @@ class Implicit(Composite):
         n = every(self.head).count(kb)+1
         new = f'{self.head}#{n}'
         x1 = kb << Str(new)
-        x2 = e(new).does('be')._(self.head).tell(x1)  # TODO: IS-A
-        which = self.which.subst({Str.GAP:x2.it}) # TODO: "IS"
+        x2 = e(new).reallyIs(self.head).tell(x1)
+        which = self.which.subst({Str.GAP:x2.it})
         r2 = which.copy(cmd=Int(1)).eval(x2)
         return r2 << Str(new)
 

@@ -158,6 +158,7 @@ def test_c027():
     kb3 = the('horse').tell(kb2)
     kb4 = the('man').does('ride')._(the('horse')).tell(kb3)
     assert e('man#1').does('sit').on('horse#1').and_(e('horse#1').does('move')).get(kb4)
+    # print(kb4.dd)
     assert not e('man#1').does('sit').on('horse').get(kb4) # TODO: test every('horse')
 
 def test_c043():
@@ -253,8 +254,8 @@ def test_c51():
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
-# simple arithmetics with anaphors
-def test_c54():
+# %% simple arithmetics with anaphors
+def test_c55():
     x1 = e(1).binop('+', 1).eval()
     assert the('number').get(x1) == 2
     assert the('number').binop('+', 1).get(x1) == 3
@@ -274,21 +275,24 @@ def test_c53():
     ast2=the('horse').does('run').e.define(x1)
     assert ast2.isMatch(ast1)
     assert not ast1.isMatch(ast2)
-    # print(ast1)
-    # print(ast2)
-    # print(ast2.isMatch(ast1))
-    # print(ast1.isMatch(ast2))
 
-# TODO: wrong, "red which is cat" should be wrong,
-# # foundamentally different relationship
-# def test_c54():
-#     x1=the('cat').which(does('be')._('red')).tell()
-#     y1=the('cat').which(does('be')._('red')).get(x1)
-#     y2=the('red').which(does('be')._('cat')).get(x1)
-#     # print(y1, y2)
-#     # print(x1.wm)
+# %% concepts vs attributes
+def test_c54():
+    x1=the('cat').which(does('be')._('red')).tell()
+    assert the('cat').which(does('be')._('red')).get(x1) == 'cat#1'
+    assert not the('red').which(does('be')._('cat')).get(x1)
 
-# TODO: cause vanish, effect vanish
+def test_c56():
+    kb1=the('cat').tell()
+    kb2=the('red').tell(kb1)
+    kb3=the('cat').does('be')._(the('red')).tell(kb2)
+    assert ('cat#1', 'red#1', 'attribute') in kb3.wm
+    # print(kb3.wm)
+    # new cat which does run 
+    # the cat does be quiet
+
+
+# TODO: cause vanish => effect vanish
 # def test_c045():
 #     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()
 #     kb2 = the('capra').tell(kb1)
@@ -297,16 +301,6 @@ def test_c53():
 
 #     assert the('capra').does('sing').get(kb3)
 #     assert not the('capra').does('sing').get(kb4)
-
-# TODO
-# the color does be red     # not working in repl
-
-# TODO
-# # new cat which does run ---> doesn't work in repl!!!
-# def test_c52():
-#     x1=the('cat').which(does('run')).tell()
-#     assert ('event#1', 'cat#1', 'subject') in x1.wm
-#     print(x1.wm)
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
 # def test_51():
@@ -323,24 +317,17 @@ def test_c53():
 #     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
 #     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
 
-# # TODO
-# def test_c049():
-#     x1 = the('capra').p.tell()
-#     # problem: 'quiet' resolves to entity, it shouldn't 
-#     x2 = the('capra').does('be')._('quiet').p.tell(x1)
-#     # print(x2.wm)
-
 # TODO
 # # %% referring to concepts
 # def test_c042():
 #     kb0 = the(1)('cat').tell()
 #     kb1 = the(1)('dog').tell(kb0)
 
-#     allConcepts = every('concept').get(kb1)
+#     allConcepts = every('conceppppt').get(kb1)
 #     # print(allConcepts)
 
 #     assert isinstance(allConcepts, tuple)
 #     assert set(allConcepts) == {'cat', 'dog', 'super'} 
 
-#     catConcept = every('concept').which(does('be')._('cat')).get(kb1)
+#     catConcept = every('concepppppt').which(does('be')._('cat')).get(kb1)
 #     assert catConcept == 'cat'
