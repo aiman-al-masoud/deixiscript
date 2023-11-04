@@ -230,6 +230,8 @@ def test_c045(): # cause vanish => effect vanish
 
     assert the('capra').does('sing').get(kb3)
     assert not the('capra').does('sing').get(kb4)
+    assert not the('capra').does('eat').get(kb4)
+    # print(kb4.wm)
 
 # %% ordinality (first/last) test
 def test_c039():
