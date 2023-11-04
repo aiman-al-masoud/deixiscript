@@ -56,7 +56,11 @@ class Implicit(Composite):
         x2=set(x1.it.unroll())
         allIndividuals = {x for s in kb.wm for x in s if isIndividual(x)}
         x3=allIndividuals-x2
-        x4=sortAndTrim(x3, kb, self.ord, self.card)
+        
+        from core.EB import e
+        x4 = [x for x in x3 if e(self.which.subst({Str.GAP:x})).get(kb)]
+
+        x4=sortAndTrim(x4, kb, self.ord, self.card)
         return kb << x4
     
     def isThingish(self) -> bool:
@@ -66,7 +70,7 @@ class Implicit(Composite):
         return super().define(kb).copy(card=self.card, ord=self.ord) #cmd=self.cmd   neg???
 
 def isIndividual(x:Ast):
-    return isinstance(x, str) and '#' in x  or isinstance(x, int)
+    return  isinstance(x, str) and ('#' in x or ' ' in x)  or isinstance(x, int)
 
 def sortAndTrim(things:Collection[Ast], kb:'KB', ord:Ast, card:Int):
     from functools import reduce

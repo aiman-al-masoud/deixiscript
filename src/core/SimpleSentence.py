@@ -79,9 +79,10 @@ class SimpleSentence(Composite):
 
     def tellNegative(self, kb: 'KB') -> 'KB':
         match self.verb:
-            case Str('have'):
+            case Str('have'|'be'):
+                if self.verb=='be': return toHave(self).copy(cmd=Int(1), negation=Int(1)).eval(kb)
                 x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.copy(cmd=Int(1)).eval(x1)
+                if x1.it!=self: return x1.it.copy(cmd=Int(1), negation=Int(1)).eval(x1)
                 x=(self.subject, self.object, self.as_)
                 return x1 - frozenset({x})
             case _:
@@ -91,6 +92,9 @@ class SimpleSentence(Composite):
 def toHave(ast:SimpleSentence):
     from core.EB import does, every, e
     from functools import reduce
+
+    if ast.verb =='have':
+        return ast
 
     if ast.verb=='be':
         return e(ast.subject).does('have')._(ast.object).as_('attribute').e

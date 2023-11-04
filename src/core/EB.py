@@ -28,7 +28,7 @@ class EB(Generic[T]):
     def does(self, verb:'Ast|EB|str'):
         return EB(SimpleSentence(verb=e(verb).e, subject=self.e))
 
-    def complement(self, name:str, thing:'Ast|EB|str|int'):
+    def complement(self, name:str, thing:'Ast|EB|str|int')->'EB[SimpleSentence]':
         if not isinstance(self.e, SimpleSentence): raise Exception
         v = self.e.copy(**{name:e(thing).e})
         return EB(v)

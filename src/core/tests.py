@@ -315,13 +315,26 @@ def test_c057():
     assert the('cat').get(kb2)
     assert the('cat').does('run').not_.get(kb2)
 
-def test_58(): # special case: negating a has-sentence
+def test_c058(): # special case: negating a has-sentence
     x1 = the('capra').tell()
     x2 = the('capra').does('have')._(2).as_('experience').tell(x1)
     x3 = the('capra').does('have')._(2).as_('experience').not_.tell(x2)
     assert the('capra').get(x3)
     assert the('capra').does('have')._(2).as_('experience').not_.get(x3)
     # print('res=', x3.wm)
+
+def test_c060():
+    x1 = the('cat').tell()
+    x2 = the('cat').does('be')._('red').tell(x1)
+    x3 = the('cat').does('be')._('red').not_.tell(x2)
+    assert the('cat').does('be')._('red').get(x2)
+    assert the('cat').does('be')._('red').not_.get(x3)
+
+# which using gapped object, and negated head
+def test_c061():
+    x1 = the('out').new.does('be')._('ciao mondo').tell()
+    x2 = the('nothing').not_.which(the('out').does('have')._(Str.GAP).as_('attribute')).get(x1)
+    assert x2 == 'ciao mondo'
 
 # TODO
 # # %% referring to concepts
