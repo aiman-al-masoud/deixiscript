@@ -43,7 +43,7 @@ noun_cmd:"new"
 
 // TERMINALS ----------------------------------------------------
 negation: "not"
-NAME: /[a-z]+/ | "_"
+NAME: /[a-z]+/
 NUMBER: /[0-9]+/
 ORDINAL: "first" | "last"
 BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
