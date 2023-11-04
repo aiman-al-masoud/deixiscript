@@ -70,7 +70,7 @@ class Composite(Ast):
         from core.EB import e
         from functools import reduce
         x1 = [(d.effect, d.cause.isMatch(self)) for d in kb.laws]
-        x2 = [x[0].subst(x[1])  for x in x1 if x[1]]
+        x2 = [x[0].subst(x[1]) for x in x1 if x[1]]
         if not x2: return Int(0)
         x2 = [e(x) for x in x2]
         x3 = reduce(lambda a,b: a.and_(b), x2).e
