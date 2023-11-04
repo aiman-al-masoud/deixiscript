@@ -293,7 +293,7 @@ def test_c053():
     assert ast2.isMatch(ast1)
     assert not ast1.isMatch(ast2)
 
-# %% concepts vs attributes
+# %% concepts vs attributes ("a cat REALLY is a cat" vs "a cat 'is' red")
 def test_c054():
     x1=the('cat').which(does('be')._('red')).tell()
     assert the('cat').which(does('be')._('red')).get(x1) == 'cat#1'
