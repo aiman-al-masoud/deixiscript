@@ -291,16 +291,12 @@ def test_c56():
     # new cat which does run 
     # the cat does be quiet
 
-
-# TODO: cause vanish => effect vanish
-# def test_c045():
-#     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()
-#     kb2 = the('capra').tell(kb1)
-#     kb3 = the('capra').does('eat').idiom.tell(kb2)    
-#     kb4 = it_is_false_that(the('capra').does('eat')).idiom.tell(kb3)
-
-#     assert the('capra').does('sing').get(kb3)
-#     assert not the('capra').does('sing').get(kb4)
+# %% negation with tell
+def test_c57():
+    kb1=the('cat').new.does('run').tell()
+    kb2=the('cat').does('run').not_.tell(kb1)
+    assert the('cat').get(kb2)
+    assert the('cat').does('run').not_.get(kb2)
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
 # def test_51():
@@ -316,6 +312,16 @@ def test_c56():
 #     kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tell(kb1)
 #     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
 #     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
+
+# TODO: cause vanish => effect vanish
+# def test_c045():
+#     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()
+#     kb2 = the('capra').tell(kb1)
+#     kb3 = the('capra').does('eat').idiom.tell(kb2)    
+#     kb4 = it_is_false_that(the('capra').does('eat')).idiom.tell(kb3)
+
+#     assert the('capra').does('sing').get(kb3)
+#     assert not the('capra').does('sing').get(kb4)
 
 # TODO
 # # %% referring to concepts

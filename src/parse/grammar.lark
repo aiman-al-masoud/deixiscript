@@ -17,9 +17,9 @@ op: BINOP
 
 // SIMPLE-SENTENCE ----------------------------------------------
 simple_sentence: _command | _question1 | _question2
-_question1: "does" subject "do" verb object? complement* "?"?
-_question2: subject? "does" verb object? complement* "?"
-_command: subject? cmd verb object? complement*
+_question1: "does" negation* subject "do" negation* verb object? complement* "?"?
+_question2: subject? "does" negation* verb object? complement* "?"
+_command: subject? cmd negation* verb object? complement*
 cmd:DOES_CMD
 subject: noun_phrase
 verb: NAME
