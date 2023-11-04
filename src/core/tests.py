@@ -299,11 +299,13 @@ def test_c57():
     assert the('cat').does('run').not_.get(kb2)
 
 # # TODO: fix: capra#1 should still exist at the end, negation problem
-# def test_51():
+# def test_58():
 #     x1 = the('capra').tell()
-#     x2 = the('capra').does('have')._(0).as_('experience').tell(x1)
-#     x3 = it_is_false_that(the('capra').does('have')._(0).as_('experience')).tell(x2)
-#     print(x3.wm) # WRONNNG!!!
+#     x2 = the('capra').does('have')._(2).as_('experience').tell(x1)
+#     x3 = the('capra').does('have')._(2).as_('experience').not_.tell(x2)
+#     assert the('capra').get(x3)
+#     assert the('capra').does('have')._(2).as_('experience').not_.get(x3)
+#     # print('res=', x3.wm) # WRONNNG!!!
 
 # TODO: fix have-sentence specific negation problem!
 # %% negation with tell tests
