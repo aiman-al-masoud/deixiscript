@@ -248,21 +248,21 @@ def test_c050():
 # similar problem: new cat which does run
 # %% events get in the way. you can fix it with "not event" negation type.
 # or maybe "an event isn't a thing", or maybe different name or yadda yadda...
-def test_c51():
+def test_c051():
     x1=the('cat').tell()
     x2=the('it').when(the('event').not_).tell(x1)
     x3=the('it').does('run').tell(x2)
     assert the('event').does('have')._('cat#1').as_('subject').get(x3)
 
 # %% simple arithmetics with anaphors
-def test_c55():
+def test_c055():
     x1 = e(1).binop('+', 1).eval()
     assert the('number').get(x1) == 2
     assert the('number').binop('+', 1).get(x1) == 3
 
 # TODO: too big, split it up
 # %% using definitions to do create /search for instances of specialized concepts
-def test_c53():
+def test_c053():
     x1=the('stallion').when(the('horse').which(does('be')._('expensive'))).tell() 
     x2=the('horse').which(does('be')._('expensive')).tell(x1)
     x3=the('horse').tell(x2)
@@ -277,12 +277,12 @@ def test_c53():
     assert not ast1.isMatch(ast2)
 
 # %% concepts vs attributes
-def test_c54():
+def test_c054():
     x1=the('cat').which(does('be')._('red')).tell()
     assert the('cat').which(does('be')._('red')).get(x1) == 'cat#1'
     assert not the('red').which(does('be')._('cat')).get(x1)
 
-def test_c56():
+def test_c056():
     kb1=the('cat').tell()
     kb2=the('red').tell(kb1)
     kb3=the('cat').does('be')._(the('red')).tell(kb2)
@@ -292,7 +292,7 @@ def test_c56():
     # the cat does be quiet
 
 # %% negation with tell
-def test_c57():
+def test_c057():
     kb1=the('cat').new.does('run').tell()
     kb2=the('cat').does('run').not_.tell(kb1)
     assert the('cat').get(kb2)
