@@ -1,3 +1,4 @@
+import sys
 from typing import Collection, Dict
 from dataclasses import dataclass
 from core.Composite import Composite
@@ -52,14 +53,12 @@ class Implicit(Composite):
         return super().subst(map)
 
     def askNegative(self, kb: 'KB') -> 'KB':
-        x1=self.askPositive(kb)
+        x1= self.copy(card=Int(sys.maxsize)).askPositive(kb)
         x2=set(x1.it.unroll())
         allIndividuals = {x for s in kb.wm for x in s if isIndividual(x)}
         x3=allIndividuals-x2
-        
         from core.EB import e
         x4 = [x for x in x3 if e(self.which.subst({Str.GAP:x})).get(kb)]
-
         x4=sortAndTrim(x4, kb, self.ord, self.card)
         return kb << x4
     

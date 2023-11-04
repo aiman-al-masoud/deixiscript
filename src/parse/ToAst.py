@@ -4,9 +4,13 @@ from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
 from core.Str import Str
-from core.EB import e
+from core.EB import e, the
 
 class ToAst(Transformer):
+
+    def adjective(self, children):
+        adjectives=[str(x).strip('ful') for x in children]
+        return {'adjectives':adjectives[0]}
 
     def string(self, children):
         x = Str(str(children[0]).strip('"'))
@@ -55,8 +59,15 @@ class ToAst(Transformer):
         return {'which':children[0]}
 
     def noun(self, children):
+        adjs1=[the(str(x['adjectives'])) for x in children if 'adjectives' in x]
+        adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
+        adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
         d=reduce(lambda a,b: {**a, **b}, children)
-        return Implicit(**d)
+        # d['which'] = d['which'] if 'which' in d else adjs3
+        if 'adjectives' in d: del d['adjectives']
+        return e(Implicit(**d)).which(adjs3).e # TODO: wrong this removes previous which if any
+
+        # return the(d['head']).which(d.get('which', True)).e.copy(negation= Int( 'negation' in d))
     
     def relative(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)

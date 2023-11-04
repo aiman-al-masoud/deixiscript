@@ -1,5 +1,5 @@
 // AST ---------------------------------------------------------
-?ast: sentence | noun_phrase | number | _parens //| string
+?ast: sentence | noun_phrase | number | _parens
 number:NUMBER
 string:STRING
 
@@ -35,11 +35,13 @@ relative: relative_head "which" subordinate
 relative_head:noun_phrase
 subordinate: sentence
 
-noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)*  noun_head
+noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* adjective* noun_head
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
 noun_cmd:"new"
+
+adjective: /([a-z]+)ful/
 
 // TERMINALS ----------------------------------------------------
 negation: "not"
@@ -53,3 +55,5 @@ DOES: "does" //|"do"
 %import common.WS
 %import common.ESCAPED_STRING -> STRING
 %ignore WS
+
+// TODO: multi complements

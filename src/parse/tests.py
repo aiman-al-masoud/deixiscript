@@ -29,3 +29,8 @@ def test_p007():
 def test_p008():
     assert parser.parse('stdout does be "capra scema"') \
         == the('stdout').does('be')._("capra scema").new.e
+
+def test_p009():
+    x = parser.parse('the redful cat')
+    y = the('cat').which(does('be')._(the('red'))).e
+    assert  x == y
