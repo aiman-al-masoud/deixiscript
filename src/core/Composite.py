@@ -66,12 +66,12 @@ class Composite(Ast):
         return self
     
     def conseq(self, kb:'KB')->'Ast':
-        # TODO: when cause vanishes effects follow suit
         from core.EB import e
         from functools import reduce
         x1 = [(d.effect, d.cause.isMatch(self)) for d in kb.laws]
-        x2 = [x[0].subst(x[1]) for x in x1 if x[1]]
-        if not x2: return Int(0)
-        x2 = [e(x) for x in x2]
-        x3 = reduce(lambda a,b: a.and_(b), x2).e
-        return x3
+        x2 = x1 + [(e(d.effect).not_.e, e(d.cause).not_.e.isMatch(self)) for d in kb.laws] 
+        x3 = [x[0].subst(x[1]) for x in x2 if x[1]]
+        if not x3: return Int(0)
+        x4 = [e(x) for x in x3]
+        x5 = reduce(lambda a,b: a.and_(b), x4).e
+        return x5

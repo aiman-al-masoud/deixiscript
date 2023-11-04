@@ -222,6 +222,15 @@ def test_c044(): # w/ domino effect
     assert ('event#3','break','verb') in kb5.wm
     assert ('event#3','domino#1','subject') in kb5.wm
 
+def test_c045(): # cause vanish => effect vanish
+    kb1 = the('capra').does('sing').after(the('capra').does('eat')).tell()
+    kb2 = the('capra').tell(kb1)
+    kb3 = the('capra').does('eat').tell(kb2)    
+    kb4 = the('capra').does('eat').not_.tell(kb3)
+
+    assert the('capra').does('sing').get(kb3)
+    assert not the('capra').does('sing').get(kb4)
+
 # %% ordinality (first/last) test
 def test_c039():
     kb0 = the(1, 'cat').tell()
@@ -311,16 +320,6 @@ def test_58(): # special case: negating a has-sentence
     assert the('capra').get(x3)
     assert the('capra').does('have')._(2).as_('experience').not_.get(x3)
     # print('res=', x3.wm)
-
-# TODO: cause vanish => effect vanish
-# def test_c045():
-#     kb1 = the(1)('capra').does('sing').after(the(1)('capra').does('eat')).tell()
-#     kb2 = the('capra').tell(kb1)
-#     kb3 = the('capra').does('eat').idiom.tell(kb2)    
-#     kb4 = it_is_false_that(the('capra').does('eat')).idiom.tell(kb3)
-
-#     assert the('capra').does('sing').get(kb3)
-#     assert not the('capra').does('sing').get(kb4)
 
 # TODO
 # # %% referring to concepts
