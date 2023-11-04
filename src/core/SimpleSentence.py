@@ -30,8 +30,8 @@ class SimpleSentence(Composite):
 
     def askPositive(self, kb:'KB')->'KB':
         
-        match self:
-            case SimpleSentence(verb=Str('have')):
+        match self.verb:
+            case Str('have'):
                 x1 = makeExplicit(self, kb)
                 if x1.it!=self: return x1.it.eval(x1)
                 x=(self.subject, self.object, self.as_)
@@ -44,8 +44,8 @@ class SimpleSentence(Composite):
         old = self.copy(cmd=Int(0)).eval(kb)
         if old.it: return old
 
-        match self:
-            case SimpleSentence(verb=Str('have')):
+        match self.verb:
+            case Str('have'):
                 x1 = makeExplicit(self, kb)
                 if x1.it!=self: return x1.it.copy(cmd=Int(1)).eval(x1)
                 x=(self.subject, self.object, self.as_)
@@ -74,6 +74,17 @@ class SimpleSentence(Composite):
         ss=self.copy(**d)
         return Composite.define(ss, kb)
 
+    def tellNegative(self, kb: 'KB') -> 'KB':
+        match self.verb:
+            case Str('have'):
+                x1 = makeExplicit(self, kb)
+                if x1.it!=self: return x1.it.copy(cmd=Int(1)).eval(x1)
+                x=(self.subject, self.object, self.as_)
+                return x1 - frozenset({x})
+            case _:
+                return Composite.tellNegative(self, kb)
+      
+
 def toHave(ast:SimpleSentence):
     from core.EB import does, every, e
     from functools import reduce
@@ -86,6 +97,7 @@ def toHave(ast:SimpleSentence):
     x3 = reduce(lambda a,b:a.and_(b), x2)
     x4 = every('event').which(x3).e
     return x4
+
 
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     assert ast.verb=='have'

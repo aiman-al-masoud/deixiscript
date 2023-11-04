@@ -298,22 +298,13 @@ def test_c57():
     assert the('cat').get(kb2)
     assert the('cat').does('run').not_.get(kb2)
 
-# # TODO: fix: capra#1 should still exist at the end, negation problem
-# def test_58():
-#     x1 = the('capra').tell()
-#     x2 = the('capra').does('have')._(2).as_('experience').tell(x1)
-#     x3 = the('capra').does('have')._(2).as_('experience').not_.tell(x2)
-#     assert the('capra').get(x3)
-#     assert the('capra').does('have')._(2).as_('experience').not_.get(x3)
-#     # print('res=', x3.wm) # WRONNNG!!!
-
-# TODO: fix have-sentence specific negation problem!
-# %% negation with tell tests
-# def test_c016():
-#     kb1 = new(the('cat')).does('have')._(new(the('mouse'))).as_('food').tell()
-#     kb2 = it_is_false_that(the('cat').does('have')._(the('mouse')).as_('food')).tell(kb1)
-#     assert ('cat#1', 'mouse#1', 'food') in kb1.wm
-#     assert ('cat#1', 'mouse#1', 'food') not in kb2.wm
+def test_58(): # special case: negating a has-sentence
+    x1 = the('capra').tell()
+    x2 = the('capra').does('have')._(2).as_('experience').tell(x1)
+    x3 = the('capra').does('have')._(2).as_('experience').not_.tell(x2)
+    assert the('capra').get(x3)
+    assert the('capra').does('have')._(2).as_('experience').not_.get(x3)
+    # print('res=', x3.wm)
 
 # TODO: cause vanish => effect vanish
 # def test_c045():

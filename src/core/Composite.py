@@ -44,10 +44,8 @@ class Composite(Ast):
 
     def tellNegative(self, kb:'KB')->'KB':
         from core.EB import e
-        # TODO: wrong
         x1 = e(self.copy(negation=Int(False))).get(kb)
-        # TODO unroll
-        x2 = x1 if isinstance(x1, tuple) else (x1,)
+        x2 = x1.unroll()
         x3 = {s for s in kb.wm if set(s) & set(x2)}
         x4 = frozenset(x3)
         return kb - x4
