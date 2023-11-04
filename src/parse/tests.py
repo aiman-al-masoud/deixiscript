@@ -1,5 +1,5 @@
 from parse.parse import Parser
-from core.EB import the, does
+from core.EB import the, does, e
 
 parser = Parser()
 
@@ -22,3 +22,10 @@ def test_p001():
 def test_p006():
     assert parser.parse('a cat which does eat') \
         == the('cat').which(does('eat')).e
+
+def test_p007():
+    assert parser.parse('"capra scema"') == e("capra scema").e
+
+def test_p008():
+    assert parser.parse('stdout does be "capra scema"') \
+        == the('stdout').does('be')._("capra scema").new.e

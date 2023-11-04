@@ -8,6 +8,10 @@ from core.EB import e
 
 class ToAst(Transformer):
 
+    def string(self, children):
+        x = Str(str(children[0]).strip('"'))
+        return x
+
     def NUMBER(self, children):
         return Int(children)
 
