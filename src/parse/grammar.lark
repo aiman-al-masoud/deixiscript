@@ -35,7 +35,7 @@ relative: relative_head "which" subordinate
 relative_head:noun_phrase
 subordinate: sentence
 
-noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* adjective* noun_head
+noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* adjective* noun_head //complement*
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
@@ -55,5 +55,3 @@ DOES: "does" //|"do"
 %import common.WS
 %import common.ESCAPED_STRING -> STRING
 %ignore WS
-
-// TODO: multi complements

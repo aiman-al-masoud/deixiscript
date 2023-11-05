@@ -59,6 +59,9 @@ class ToAst(Transformer):
         return {'which':children[0]}
 
     def noun(self, children):
+        
+        # print(children)
+
         adjs1=[the(str(x['adjectives'])) for x in children if 'adjectives' in x]
         adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
         adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
