@@ -25,10 +25,3 @@ before that, throw an error if it doesn't exist.
 "x and y are red buttons" (syntactic)
 
 "x knows y and viceversa" (semantic)
-
-## Polymorphism
-
-
-
-
-
