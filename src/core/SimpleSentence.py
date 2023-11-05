@@ -53,6 +53,16 @@ class SimpleSentence(Composite):
             case _:
                 return toHave(self).copy(cmd=Int(1)).eval(kb)
         
+    def tellNegative(self, kb: 'KB') -> 'KB':
+        match self.verb:
+            case Str('have'|'be'):
+                if self.verb=='be': return toHave(self).copy(cmd=Int(1), negation=Int(1)).eval(kb)
+                x1 = makeExplicit(self, kb)
+                if x1.it!=self: return x1.it.copy(cmd=Int(1), negation=Int(1)).eval(x1)
+                edge = (self.subject, self.object, self.as_)
+                return x1 - frozenset({edge})
+            case _:
+                return toHave(self).copy(cmd=Int(1), negation=Int(1)).eval(kb)
         
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.someMap import everyMap, someMap
@@ -76,18 +86,6 @@ class SimpleSentence(Composite):
         ss=self.copy(**d)
         return Composite.define(ss, kb)
 
-    def tellNegative(self, kb: 'KB') -> 'KB':
-        match self.verb:
-            case Str('have'|'be'):
-                if self.verb=='be': return toHave(self).copy(cmd=Int(1), negation=Int(1)).eval(kb)
-                x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.copy(cmd=Int(1), negation=Int(1)).eval(x1)
-                x=(self.subject, self.object, self.as_)
-                return x1 - frozenset({x})
-            case _:
-                return toHave(self).tellNegative(kb)
-      
-
 def toHave(ast:SimpleSentence):
     from core.EB import does, every, e
     from functools import reduce
@@ -103,7 +101,6 @@ def toHave(ast:SimpleSentence):
     x3 = reduce(lambda a,b:a.and_(b), x2)
     x4 = every('event').which(x3).e
     return x4
-
 
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     assert ast.verb=='have'
