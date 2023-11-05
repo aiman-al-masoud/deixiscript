@@ -16,8 +16,8 @@ right: ast
 op: BINOP
 
 // SIMPLE-SENTENCE ----------------------------------------------
-simple_sentence: _command | _question1 | _question2
-_question1: DOES subject DOES negation* verb object? complement* "?"?
+simple_sentence: _command | _question2 // _question1 
+// _question1: DOES subject DOES negation* verb object? complement* "?"?
 _question2: subject? DOES negation* verb object? complement* "?"
 _command: subject? cmd negation* verb object? complement*
 cmd:DOES
