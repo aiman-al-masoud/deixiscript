@@ -51,7 +51,7 @@ NAME: /[a-z]+/
 NUMBER: /[0-9]+/
 ORDINAL: "first" | "last"
 BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
-PREPOSITION: "to" | "as" | "from" | "on"
+PREPOSITION: "to" | "as" | "on" | "of"
 _ARTICLE:"the"|"an"|"a"
 DOES: "does" //|"do"
 %import common.WS
