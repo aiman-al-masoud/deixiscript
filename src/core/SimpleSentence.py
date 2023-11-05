@@ -86,7 +86,7 @@ class SimpleSentence(Composite):
                 x=(self.subject, self.object, self.as_)
                 return x1 - frozenset({x})
             case _:
-                return Composite.tellNegative(self, kb)
+                return toHave(self).tellNegative(kb)
       
 
 def toHave(ast:SimpleSentence):

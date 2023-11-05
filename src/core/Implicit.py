@@ -14,13 +14,9 @@ class Implicit(Composite):
     card:Int      =Int(1)
     ord:'Ast'     =Str('last')
     which:'Ast'   =Int(True)
-    concept:Int   =Int(False)
     
     def askPositive(self, kb:'KB')->'KB':
         from core.EB import e
-
-        if kb.concept or self.concept:
-            raise Exception
 
         x0 = {x for s in kb.wm for x in s if isIndividual(x)}
         x1 = [x for x in x0 if e(x).reallyIs(self.head).get(kb)]
@@ -31,9 +27,6 @@ class Implicit(Composite):
     def tellPositive(self, kb:'KB')->'KB':
         from core.EB import every, e
 
-        if kb.concept or self.concept:
-            raise Exception
-
         n = every(self.head).count(kb)+1
         new = f'{self.head}#{n}'
         x1 = kb << Str(new)
@@ -41,16 +34,6 @@ class Implicit(Composite):
         which = self.which.subst({Str.GAP:x2.it})
         r2 = which.copy(cmd=Int(1)).eval(x2)
         return r2 << Str(new)
-
-    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
-        from core.someMap import everyMap
-        if not isinstance(sub, Implicit): return {}      
-        ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
-        return {self:sub} if ok and self.negation==sub.negation else {}
-    
-    def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
-        if self.which!=True: return self
-        return super().subst(map)
 
     def askNegative(self, kb: 'KB') -> 'KB':
         x1= self.copy(card=Int(sys.maxsize)).askPositive(kb)
@@ -61,7 +44,24 @@ class Implicit(Composite):
         x4 = [x for x in x3 if e(self.which.subst({Str.GAP:x})).get(kb)]
         x4=sortAndTrim(x4, kb, self.ord, self.card)
         return kb << x4
+
+    def tellNegative(self, kb:'KB')->'KB':
+        x1 = self.copy(negation=Int(False), cmd=Int(False)).eval(kb).it
+        x2 = set(x1.unroll())
+        x3 = {s for s in kb.wm if set(s) & x2}
+        x4 = frozenset(x3)
+        return kb - x4
     
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
+        from core.someMap import everyMap
+        if not isinstance(sub, Implicit): return {}      
+        ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
+        return {self:sub} if ok and self.negation==sub.negation else {}
+    
+    def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
+        if self.which!=True: return self
+        return super().subst(map)
+
     def isThingish(self) -> bool:
         return True
 
