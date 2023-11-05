@@ -336,22 +336,8 @@ def test_c061():
     x2 = the('nothing').not_.which(the('out').does('have')._(Str.GAP).as_('attribute')).get(x1)
     assert x2 == 'ciao mondo'
 
+# negation types 
 def test_c062():
     x1 = the('cat').tell()
     x2 = the('cat').tell(x1)
     assert not the('cat').not_.get(x2)
-
-# TODO
-# # %% referring to concepts
-# def test_c042():
-#     kb0 = the(1)('cat').tell()
-#     kb1 = the(1)('dog').tell(kb0)
-
-#     allConcepts = every('conceppppt').get(kb1)
-#     # print(allConcepts)
-
-#     assert isinstance(allConcepts, tuple)
-#     assert set(allConcepts) == {'cat', 'dog', 'super'} 
-
-#     catConcept = every('concepppppt').which(does('be')._('cat')).get(kb1)
-#     assert catConcept == 'cat'
