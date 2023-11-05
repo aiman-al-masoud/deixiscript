@@ -14,3 +14,5 @@ class Ast:
     def subst(self, map:Dict['Ast', 'Ast'])->'Ast': raise Exception
     def unroll(self)->Sequence['Ast']: raise Exception
     def isThingish(self)->bool: raise Exception
+    def isNegative(self)->bool: raise Exception
+    def isCmd(self)->bool: raise Exception

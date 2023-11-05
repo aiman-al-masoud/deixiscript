@@ -54,7 +54,7 @@ class SimpleSentence(Composite):
                 return toHave(self).copy(cmd=Int(1)).eval(kb)
         
         
-    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']: # TODO: negation
+    def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.someMap import everyMap, someMap
 
         match sub:
@@ -69,8 +69,7 @@ class SimpleSentence(Composite):
             case _:
                 result = {}
 
-        if not isinstance(sub, Composite): return result
-        return result if self.negation == sub.negation else {}
+        return result if self.isNegative() == sub.isNegative() else {}
 
     def define(self, kb:'KB')->'Ast':
         d={k:v.define(kb) for k,v in self.args.items()}
@@ -109,7 +108,7 @@ def toHave(ast:SimpleSentence):
 def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     assert ast.verb=='have'
 
-    # the following ops may create new entities, return KB needed
+    # the following ops may create new entities => need to return KB
     x1=ast.subject.eval(kb)
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
@@ -122,17 +121,15 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
 
 def decompress(ast:Ast)->Ast:
 
-    if not isinstance(ast, Composite): return ast
-    
     conns = findThingishConns(ast)
     if not conns: return ast
     conn = conns[0]
 
-    op = opposite(conn.op) if ast.negation else conn.op
+    op = opposite(conn.op) if ast.isNegative() else conn.op
     left = decompress(ast.subst({conn:conn.left}))
     right = decompress(ast.subst({conn:conn.right}))
 
-    return conn.copy(left=left, right=right, op=op, cmd=ast.cmd)
+    return conn.copy(left=left, right=right, op=op, cmd=Int(ast.isCmd()))
 
 def opposite(x:Ast):
     if x == 'and': return Str('or')

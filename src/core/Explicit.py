@@ -26,3 +26,9 @@ class Explicit(Ast):
 
     def define(self, kb:'KB'):
         return self
+
+    def isCmd(self) -> bool:
+        return False
+
+    def isNegative(self) -> bool:
+        return False

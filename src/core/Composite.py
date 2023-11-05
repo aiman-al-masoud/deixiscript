@@ -14,22 +14,14 @@ class Composite(Ast):
 
         defined = self.define(kb)
 
-        if not isinstance(defined, Composite): return defined.eval(kb)
+        if self.isCmd():
+            x1 = defined.tellNegative(kb) if defined.isNegative() else defined.tellPositive(kb)
+            x2 = defined.conseq(kb)
+            if not x2: return x1
+            x3 = x2.copy(cmd=Int(1)).eval(x1)
+            return x3
 
-        if self.cmd:
-            return defined.tell(kb)
-
-        return defined.ask(kb)
-
-    def ask(self, kb:'KB')->'KB':
-        return self.askNegative(kb) if self.negation else self.askPositive(kb)
-
-    def tell(self, kb:'KB')->'KB':
-        x1=self.tellNegative(kb) if self.negation else self.tellPositive(kb)
-        x2=self.conseq(kb)
-        if not x2: return x1
-        x3=x2.copy(cmd=Int(1)).eval(x1)
-        return x3
+        return defined.askNegative(kb) if defined.isNegative() else defined.askPositive(kb)
 
     T = TypeVar('T', bound='Ast')
     def copy(self:T, **kwargs:'Ast')->T:
@@ -68,3 +60,9 @@ class Composite(Ast):
         x4 = [e(x) for x in x3]
         x5 = reduce(lambda a,b: a.and_(b), x4).e
         return x5
+
+    def isNegative(self) -> bool:
+        return bool(self.negation)
+
+    def isCmd(self) -> bool:
+        return bool(self.cmd)

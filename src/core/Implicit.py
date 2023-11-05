@@ -56,7 +56,7 @@ class Implicit(Composite):
         from core.someMap import everyMap
         if not isinstance(sub, Implicit): return {}      
         ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
-        return {self:sub} if ok and self.negation==sub.negation else {}
+        return {self:sub} if ok and self.isNegative()==sub.isNegative() else {}
     
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self.which!=True: return self
