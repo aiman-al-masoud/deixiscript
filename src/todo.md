@@ -22,8 +22,8 @@ Random AST generator for fuzz testing?
 Currently only supports first/last, and limit DD
 
 # I/O Example with stdin and stdout buffers
-- the standard output has "ciao mondo" as value
-- do print the string when the standard output has the string as value
+- the standard output is "ciao mondo"
+- do print the string when the standard output is the string
 - do print "ciao mondo"
 
 # Simplify
