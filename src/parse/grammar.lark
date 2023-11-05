@@ -1,10 +1,5 @@
 // AST ---------------------------------------------------------
-?ast: sentence | noun_phrase | number | _parens
-number:NUMBER
-string:STRING
-
-// parentheses
-_parens: "(" ast ")"
+?ast: sentence | noun_phrase
 
 // SENTENCE ----------------------------------------------------
 ?sentence: compound_sentence | simple_sentence
@@ -29,19 +24,26 @@ complement_head: noun_phrase
 preposition: PREPOSITION
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase: noun | relative | _parens | string
+?noun_phrase: noun | relative | _parens | string | number
 
+number:NUMBER
+string:STRING
+
+// relative clause
 relative: relative_head "which" subordinate
 relative_head:noun_phrase
 subordinate: sentence
 
+// noun
 noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* adjective* noun_head //complement*
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
 noun_cmd:"new"
-
 adjective: /([a-z]+)ful/
+
+// parentheses
+_parens: "(" ast ")"
 
 // TERMINALS ----------------------------------------------------
 negation: "not"
