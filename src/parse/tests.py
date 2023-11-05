@@ -31,9 +31,8 @@ def test_p008():
         == the('stdout').does('be')._("capra scema").new.e
 
 def test_p009():
-    x = parser.parse('the redful cat')
-    y = the('cat').which(does('be')._(the('red'))).e
-    assert  x == y
+    assert parser.parse('the redful cat') \
+        == the('cat').which(does('be')._(the('red'))).e
 
 def test_p010():
     assert parser.parse('1+2*3') == e(1).binop('+', 2).binop('*', 3).e
