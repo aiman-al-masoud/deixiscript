@@ -9,12 +9,10 @@ from core.EB import e, the
 class ToAst(Transformer):
 
     def adjective(self, children):
-        adjectives=[str(x).strip('ful') for x in children]
-        return {'adjectives':adjectives[0]}
+        return {'adjective':str(children[0]).strip('ful')}
 
     def string(self, children):
-        x = Str(str(children[0]).strip('"'))
-        return x
+        return Str(str(children[0]).strip('"'))
 
     def NUMBER(self, children):
         return Int(children)
@@ -58,48 +56,17 @@ class ToAst(Transformer):
     def subordinate(self, children):
         return {'which':children[0]}
 
-    def noun(self, children):
-        
-        # print(children)
-
-        adjs1=[the(str(x['adjectives'])) for x in children if 'adjectives' in x]
-        adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
-        adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
-        d=reduce(lambda a,b: {**a, **b}, children)
-        # d['which'] = d['which'] if 'which' in d else adjs3
-        if 'adjectives' in d: del d['adjectives']
-        return e(Implicit(**d)).which(adjs3).e # TODO: wrong this removes previous which if any
-
-        # return the(d['head']).which(d.get('which', True)).e.copy(negation= Int( 'negation' in d))
-    
-    def relative(self, children):
-        d=reduce(lambda a,b: {**a, **b}, children)
-        # TODO add subject and object if absent??
-        return d['head'].copy(which=d['which'].copy(cmd=Int(0)))
-
     def complement_head(self, children):
         return {'complement_head':children[0]}
 
     def preposition(self, children):
         return {'preposition':children[0]}
 
-    def complement(self, children):
-        d=reduce(lambda a,b: {**a, **b}, children)
-        preposition= 'as_' if d['preposition']=='as' else d['preposition']
-        head=d['complement_head']
-        return {preposition:head}
-
     def subject(self, children):
         return {'subject': children[0]}
 
     def object(self, children):
         return {'object': children[0]}
-
-    def simple_sentence(self, children):
-        d=reduce(lambda a,b: {**a, **b}, children)
-        x1=SimpleSentence(**d)
-        x2=x1.copy(subject= x1.subject or Str.GAP) # TODO
-        return x2
 
     def left(self, children):
         return {'left':children[0]}
@@ -109,6 +76,35 @@ class ToAst(Transformer):
 
     def op(self, children):
         return {'op':children[0]}
+
+    def noun(self, children):
+        
+        adjs1=[the(str(x['adjective'])) for x in children if 'adjective' in x]
+        adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
+        adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
+        d=reduce(lambda a,b: {**a, **b}, children)
+        # d['which'] = d['which'] if 'which' in d else adjs3
+        if 'adjective' in d: del d['adjective']
+        return e(Implicit(**d)).which(adjs3).e # TODO: wrong this removes previous which if any
+
+        # return the(d['head']).which(d.get('which', True)).e.copy(negation= Int( 'negation' in d))
+    
+    def relative(self, children):
+        # TODO add subject and object if absent??
+        d=reduce(lambda a,b: {**a, **b}, children)
+        return d['head'].copy(which=d['which'].copy(cmd=Int(0)))
+
+    def complement(self, children):
+        d=reduce(lambda a,b: {**a, **b}, children)
+        preposition= 'as_' if d['preposition']=='as' else d['preposition']
+        head=d['complement_head']
+        return {preposition:head}
+
+    def simple_sentence(self, children):
+        d=reduce(lambda a,b: {**a, **b}, children)
+        x1=SimpleSentence(**d)
+        x2=x1.copy(subject= x1.subject or Str.GAP)
+        return x2
 
     def compound_sentence(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)
