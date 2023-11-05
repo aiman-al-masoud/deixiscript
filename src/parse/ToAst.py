@@ -82,12 +82,12 @@ class ToAst(Transformer):
         adjs1=[the(str(x['adjective'])) for x in children if 'adjective' in x]
         adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
         adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
-        d=reduce(lambda a,b: {**a, **b}, children)
-        # d['which'] = d['which'] if 'which' in d else adjs3
-        if 'adjective' in d: del d['adjective']
-        return e(Implicit(**d)).which(adjs3).e # TODO: wrong this removes previous which if any
+        d=reduce(lambda a,b: {**a, **b}, [x for x in children if 'adjective' not in x])
+        noun=Implicit(**d)
+        which = adjs3 if noun.which==Int(True) else e(noun.which).and_(adjs3)
+        return e(noun).which(which).e
 
-        # return the(d['head']).which(d.get('which', True)).e.copy(negation= Int( 'negation' in d))
+        
     
     def relative(self, children):
         # TODO add subject and object if absent??
