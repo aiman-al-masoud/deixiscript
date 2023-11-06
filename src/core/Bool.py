@@ -11,3 +11,6 @@ class Bool(int, Explicit):
     def unroll(self) -> Sequence['Ast']:
         if self==False: return []
         return super().unroll()
+
+    def __repr__(self) -> str:
+        return 'true' if self else 'false'  

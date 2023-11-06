@@ -4,7 +4,7 @@ from core.KB import KB
 def show(kb:KB):
     from graphviz import Source
     source = graphvizied(kb)
-    Source(source, filename='tmp.gpng').view()
+    Source(source, filename='tmp.png').view()
 
 def save_png(kb:KB):
     from graphviz import Source
