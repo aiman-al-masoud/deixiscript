@@ -111,7 +111,7 @@ def makeExplicit(ast:SimpleSentence, kb:'KB'):
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
 
-    assert x1.it and x2.it and x3.it, "undefined reference"
+    assert x1.it and x2.it and x3.it, "undefined reference: " + str(ast.subject if not x1.it else ast.object if not x2.it else ast.as_)
 
     x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)
     x5=decompress(x4)
