@@ -31,12 +31,7 @@ class KB:
             case frozenset(): 
                 return self.copy(wm=self.wm | o)
             case Def():
-                defs=sortByGenerality([*self.defs, o])
-
-                # for d in defs:
-                #     print(d)
-
-                return self.copy(defs=defs)
+                return self.copy(defs=sortByGenerality([*self.defs, o]))
             case Law():
                 return self.copy(laws=sortByGenerality([*self.laws, o]))
 
@@ -52,8 +47,8 @@ class KB:
 
     @property
     def it(self):
-        from core.Int import Int
-        return self.dd.latest(Int(False))
+        from core.Bool import Bool
+        return self.dd.latest(Bool(False))
 
 
 T = TypeVar('T', bound='Ast')

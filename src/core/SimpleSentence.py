@@ -1,6 +1,7 @@
 from typing import Dict, Sequence
 from dataclasses import dataclass
 from core.BinExp import BinExp
+from core.Bool import Bool
 from core.Composite import Composite
 from core.Int import Int
 from core.Str import Str
@@ -10,13 +11,13 @@ from core.KB import KB
 
 @dataclass(frozen=True)
 class SimpleSentence(Composite):
-    verb:'Ast'    =Int(False)
-    subject:'Ast' =Int(False)
-    object:'Ast'  =Int(False)
-    as_:'Ast'     =Int(False)
-    to:'Ast'      =Int(False)
-    on:'Ast'      =Int(False)
-    # adverb:'Ast'  =Int(False)
+    verb:'Ast'    =Bool(False)
+    subject:'Ast' =Bool(False)
+    object:'Ast'  =Bool(False)
+    as_:'Ast'     =Bool(False)
+    to:'Ast'      =Bool(False)
+    on:'Ast'      =Bool(False)
+    # adverb:'Ast'  =Bool(False)
 
     def isThingish(self) -> bool:
         return False
@@ -35,34 +36,34 @@ class SimpleSentence(Composite):
                 x1 = makeExplicit(self, kb)
                 if x1.it!=self: return x1.it.eval(x1)
                 x=(self.subject, self.object, self.as_)
-                return kb << Int(x in kb.wm)
+                return kb << Bool(x in kb.wm)
             case _:
                 return toHave(self).eval(kb)
     
     def tellPositive(self, kb:'KB')->'KB':
 
-        old = self.copy(cmd=Int(0)).eval(kb)
+        old = self.copy(cmd=Bool(0)).eval(kb)
         if old.it: return old
 
         match self.verb:
             case Str('have'):
                 x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.copy(cmd=Int(1)).eval(x1)
+                if x1.it!=self: return x1.it.copy(cmd=Bool(1)).eval(x1)
                 x=(self.subject, self.object, self.as_)
                 return ( kb + frozenset({x}) ) << self.subject
             case _:
-                return toHave(self).copy(cmd=Int(1)).eval(kb)
+                return toHave(self).copy(cmd=Bool(1)).eval(kb)
         
     def tellNegative(self, kb: 'KB') -> 'KB':
         match self.verb:
             case Str('have'|'be'):
-                if self.verb=='be': return toHave(self).copy(cmd=Int(1), negation=Int(1)).eval(kb)
+                if self.verb=='be': return toHave(self).copy(cmd=Bool(1), negation=Bool(1)).eval(kb)
                 x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.copy(cmd=Int(1), negation=Int(1)).eval(x1)
+                if x1.it!=self: return x1.it.copy(cmd=Bool(1), negation=Bool(1)).eval(x1)
                 edge = (self.subject, self.object, self.as_)
                 return x1 - frozenset({edge})
             case _:
-                return toHave(self).copy(cmd=Int(1), negation=Int(1)).eval(kb)
+                return toHave(self).copy(cmd=Bool(1), negation=Bool(1)).eval(kb)
         
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.someMap import everyMap, someMap
@@ -110,7 +111,7 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
     x2=ast.object.eval(x1)
     x3=ast.as_.eval(x2)
 
-    assert x1.it and x2.it and x3.it
+    assert x1.it and x2.it and x3.it, "undefined reference"
 
     x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)
     x5=decompress(x4)
@@ -126,7 +127,7 @@ def decompress(ast:Ast)->Ast:
     left = decompress(ast.subst({conn:conn.left}))
     right = decompress(ast.subst({conn:conn.right}))
 
-    return conn.copy(left=left, right=right, op=op, cmd=Int(ast.isCmd()))
+    return conn.copy(left=left, right=right, op=op, cmd=Bool(ast.isCmd()))
 
 def opposite(x:Ast):
     if x == 'and': return Str('or')

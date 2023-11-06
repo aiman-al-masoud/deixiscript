@@ -1,15 +1,15 @@
 from typing import Dict
 from dataclasses import dataclass
+from core.Bool import Bool
 from core.Composite import Composite
-from core.Int import Int
 from core.Ast import Ast
 from core.KB import KB
 
 
 @dataclass(frozen=True)
 class Law(Composite):
-    cause:'Ast'=Int(False)
-    effect:'Ast'=Int(False)
+    cause:'Ast'=Bool(False)
+    effect:'Ast'=Bool(False)
 
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self

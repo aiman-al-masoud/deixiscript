@@ -1,6 +1,7 @@
 import sys
 from typing import Collection, Dict
 from dataclasses import dataclass
+from core.Bool import Bool
 from core.Composite import Composite
 from core.Int import Int
 from core.Str import Str
@@ -13,7 +14,7 @@ class Implicit(Composite):
     head:Str      =Str(False)
     card:Int      =Int(1)
     ord:'Ast'     =Str('last')
-    which:'Ast'   =Int(True)
+    which:'Ast'   =Bool(True)
     
     def askPositive(self, kb:'KB')->'KB':
         from core.EB import e
@@ -32,7 +33,7 @@ class Implicit(Composite):
         x1 = kb << Str(new)
         x2 = e(new).reallyIs(self.head).tell(x1)
         which = self.which.subst({Str.GAP:x2.it})
-        r2 = which.copy(cmd=Int(1)).eval(x2)
+        r2 = which.copy(cmd=Bool(1)).eval(x2)
         return r2 << Str(new)
 
     def askNegative(self, kb: 'KB') -> 'KB':
@@ -46,7 +47,7 @@ class Implicit(Composite):
         return kb << x4
 
     def tellNegative(self, kb:'KB')->'KB':
-        x1 = self.copy(negation=Int(False), cmd=Int(False)).eval(kb).it
+        x1 = self.copy(negation=Bool(False), cmd=Bool(False)).eval(kb).it
         x2 = set(x1.unroll())
         x3 = {s for s in kb.wm if set(s) & x2}
         x4 = frozenset(x3)
@@ -58,7 +59,7 @@ class Implicit(Composite):
         if isinstance(sub, Implicit):
             ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
         elif isinstance(sub, Int) and self.head=='number':
-            ok = {Int(True):Int(True)}
+            ok = {Bool(True):Bool(True)}
         else:
             ok:Dict[Ast, Ast]={}
 
@@ -75,14 +76,14 @@ class Implicit(Composite):
         return super().define(kb).copy(card=self.card, ord=self.ord) #cmd=self.cmd   neg???
 
 def isIndividual(x:Ast):
-    return  isinstance(x, str) and ('#' in x or ' ' in x)  or isinstance(x, int)
+    return  isinstance(x, Str) and ('#' in x or ' ' in x)  or isinstance(x, Int) #or isinstance(x, Bool)
 
 def sortAndTrim(things:Collection[Ast], kb:'KB', ord:Ast, card:Int):
     from functools import reduce
     from core.EB import e
     x4 = sorted(things, key=lambda x:kb.dd[x], reverse=ord=='last')
     x5 = x4[:card]
-    if not x5: return Int(False)
+    if not x5: return Bool(False)
     x6 = [e(x) for x in x5]
     x7 = reduce(lambda a,b: a.or_(b), x6).e
     return x7

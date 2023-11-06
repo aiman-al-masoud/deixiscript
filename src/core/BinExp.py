@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from core.Bool import Bool
 from core.Composite import Composite
 from typing import Dict, Sequence
 from core.Ast import Ast
@@ -9,9 +10,9 @@ from core.KB import KB
 
 @dataclass(frozen=True)
 class BinExp(Composite):
-    op:'Ast'    =Int(False)
-    left:'Ast'  =Int(False)
-    right:'Ast' =Int(False)
+    op:'Ast'    =Bool(False)
+    left:'Ast'  =Bool(False)
+    right:'Ast' =Bool(False)
         
     def askPositive(self, kb:'KB')->'KB':
 
@@ -37,8 +38,8 @@ class BinExp(Composite):
         raise Exception
     
     def tellPositive(self, kb:'KB')->'KB':
-        x1 = self.left.copy(cmd=Int(1)).eval(kb)
-        x2 = self.right.copy(cmd=Int(1)).eval(x1 << kb.it)
+        x1 = self.left.copy(cmd=Bool(1)).eval(kb)
+        x2 = self.right.copy(cmd=Bool(1)).eval(x1 << kb.it)
         return x2
 
     def unroll(self)->Sequence['Ast']:

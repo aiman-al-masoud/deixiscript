@@ -1,5 +1,6 @@
 from functools import reduce
 from lark import Transformer
+from core.Bool import Bool
 from core.Implicit import Implicit
 from core.Int import Int
 from core.SimpleSentence import SimpleSentence
@@ -30,19 +31,19 @@ class ToAst(Transformer):
         return {'ord': children[0]}
 
     def number(self, children):
-        return Int(children[0])
+        return children[0] #Int(children[0])
 
     def card(self, children):
         return {'card': children[0]}
 
     def negation(self, _):
-        return {'negation': Int(1)}
+        return {'negation': Bool(1)}
 
     def cmd(self, _):
-        return {'cmd': Int(1)}
+        return {'cmd': Bool(1)}
 
     def noun_cmd(self, _):
-        return {'cmd': Int(1)}
+        return {'cmd': Bool(1)}
 
     def verb(self, children):
         return {'verb': children[0]}
@@ -81,7 +82,7 @@ class ToAst(Transformer):
         
         adjs1=[the(str(x['adjective'])) for x in children if 'adjective' in x]
         adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
-        adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
+        adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Bool(True)
         d=reduce(lambda a,b: {**a, **b}, [x for x in children if 'adjective' not in x])
 
         coreKeys={'head', 'which', 'card', 'ord', 'negation', 'cmd'}
@@ -90,10 +91,10 @@ class ToAst(Transformer):
         noun=Implicit(**core)
 
         comps1 = [adaptComplement(p, t) for p,t in comps.items()]
-        comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Int(True)
+        comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Bool(True)
 
-        which = adjs3 if noun.which==Int(True) else e(noun.which).and_(adjs3)
-        which2 = comps2 if comps2!=Int(True) and which==Int(True) else  e(which).and_(comps2) if comps2!=Int(True) else which
+        which = adjs3 if noun.which==Bool(True) else e(noun.which).and_(adjs3)
+        which2 = comps2 if comps2!=Bool(True) and which==Bool(True) else  e(which).and_(comps2) if comps2!=Bool(True) else which
 
         result = e(noun).which(which2).e
         return result
@@ -101,7 +102,7 @@ class ToAst(Transformer):
     def relative(self, children):
         # TODO add subject and object if absent??
         d=reduce(lambda a,b: {**a, **b}, children)
-        return d['head'].copy(which=d['which'].copy(cmd=Int(0)))
+        return d['head'].copy(which=d['which'].copy(cmd=Bool(0)))
 
     def complement(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)
@@ -120,9 +121,9 @@ class ToAst(Transformer):
 
         match d['op']:
             case 'when':
-                return e(d['left']).when(d['right']).e.copy(cmd=Int(1))# TODO!
+                return e(d['left']).when(d['right']).e.copy(cmd=Bool(1))# TODO!
             case 'after':
-                return e(d['left']).after(d['right']).e.copy(cmd=Int(1))# TODO!
+                return e(d['left']).after(d['right']).e.copy(cmd=Bool(1))# TODO!
             case _:
                 return e(d['left']).binop(d['op'], d['right']).e
 

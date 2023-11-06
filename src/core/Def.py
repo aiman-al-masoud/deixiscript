@@ -1,6 +1,6 @@
 from dataclasses import dataclass
+from core.Bool import Bool
 from core.Composite import Composite
-from core.Int import Int
 from typing import Dict
 from core.Ast import Ast
 from core.KB import KB
@@ -8,8 +8,8 @@ from core.KB import KB
 
 @dataclass(frozen=True)
 class Def(Composite):
-    definendum:'Ast'=Int(False)
-    definition:'Ast'=Int(False)
+    definendum:'Ast'=Bool(False)
+    definition:'Ast'=Bool(False)
     
     def tellPositive(self, kb:'KB')->'KB':
         return kb + self

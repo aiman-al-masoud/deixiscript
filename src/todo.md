@@ -26,9 +26,6 @@ Currently only supports first/last, and limit DD
 # Simplify
 Since define is called recursively once and for all, you may be able to avoid calling eval() from some of the other functions or maybe even call define at the top-level outside of eval
 
-# Real True and False/Nothing
-Using 1 and 0 leads to bugs.
-
 ---------------------
 Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.
 

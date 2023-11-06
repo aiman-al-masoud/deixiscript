@@ -1,5 +1,5 @@
 from dataclasses import dataclass, fields
-from core.Int import Int
+from core.Bool import Bool
 from typing import Dict, Sequence, TypeVar
 from core.Ast import Ast
 from core.KB import KB
@@ -7,8 +7,8 @@ from core.KB import KB
 
 @dataclass(frozen=True)
 class Composite(Ast):
-    negation:Int=Int(False)
-    cmd:Int=Int(False)
+    negation:Bool=Bool(False)
+    cmd:Bool=Bool(False)
 
     def eval(self, kb:'KB')->'KB':
 
@@ -18,7 +18,7 @@ class Composite(Ast):
             x1 = defined.tellNegative(kb) if defined.isNegative() else defined.tellPositive(kb)
             x2 = defined.conseq(kb)
             if not x2: return x1
-            x3 = x2.copy(cmd=Int(1)).eval(x1)
+            x3 = x2.copy(cmd=Bool(1)).eval(x1)
             return x3
 
         return defined.askNegative(kb) if defined.isNegative() else defined.askPositive(kb)
@@ -33,8 +33,8 @@ class Composite(Ast):
         return [self]
 
     def askNegative(self, kb:'KB')->'KB':
-        x1=self.copy(negation=Int(False)).eval(kb)
-        return x1 << Int(not x1.it)
+        x1=self.copy(negation=Bool(False)).eval(kb)
+        return x1 << Bool(not x1.it)
     
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self in map: return map[self]
@@ -45,8 +45,6 @@ class Composite(Ast):
 
         for d in kb.defs:
             m = d.definendum.isMatch(self)
-            # print('self=', self, 'definendum=', d.definendum, 'm=', m)
-            # print('---------------')
 
             if m: 
                 x1=d.definition.subst(m)
@@ -60,7 +58,7 @@ class Composite(Ast):
         x1 = [(d.effect, d.cause.isMatch(self)) for d in kb.laws]
         x2 = x1 + [(e(d.effect).not_.e, e(d.cause).not_.e.isMatch(self)) for d in kb.laws] 
         x3 = [x[0].subst(x[1]) for x in x2 if x[1]]
-        if not x3: return Int(0)
+        if not x3: return Bool(0)
         x4 = [e(x) for x in x3]
         x5 = reduce(lambda a,b: a.and_(b), x4).e
         return x5

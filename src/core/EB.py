@@ -2,6 +2,7 @@ import sys
 from typing import Generic, TypeVar
 from dataclasses import dataclass
 from core.Ast import Ast
+from core.Bool import Bool
 from core.SimpleSentence import SimpleSentence
 from core.BinExp import BinExp
 from core.Def import Def
@@ -50,11 +51,11 @@ class EB(Generic[T]):
 
     @property
     def not_(self):
-        return EB(self.e.copy(negation=Int(True)))
+        return EB(self.e.copy(negation=Bool(True)))
 
     @property
     def new(self):
-        return EB(self.e.copy(cmd=Int(True)))
+        return EB(self.e.copy(cmd=Bool(True)))
 
     def eval(self, kb=KB()):
         return self.e.eval(kb)
