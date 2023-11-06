@@ -59,7 +59,7 @@ class Implicit(Composite):
         if isinstance(sub, Implicit):
             ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
         elif isinstance(sub, Int) and self.head=='number':
-            ok = {Bool(True):Bool(True)}
+            ok = {Int(2):Int(2)}
         else:
             ok:Dict[Ast, Ast]={}
 
