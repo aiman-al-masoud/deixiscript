@@ -1,4 +1,4 @@
-from parse.parse import Parser
+from parse.Parser import Parser
 from core.EB import the, does, e
 from core.Str import Str
 

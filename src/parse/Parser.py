@@ -13,11 +13,10 @@ class Parser():
 
     def parse(self, code:str)->Ast:
         st=self.lark.parse(code)
-        # print('st=', st)
         ast=self.tr.transform(st)
         return ast
 
-# parser = Lark(grammar, start='ast')#, ambiguity='explicit')
+
 # x = parser.parse('1 cat does run on floor')
 # x = parser.parse('a cat')
 # x = parser.parse('a cat which does run')
@@ -28,7 +27,4 @@ class Parser():
 # x = parser.parse('a new cat')
 # x = parser.parse('a new cat which does eat')
 # x = parser.parse('it when thing')
-# y = ToAst().transform(x)
-
-# parser = Parser()
 # x=parser.parse('the 1 cat does run?')

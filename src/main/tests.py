@@ -1,5 +1,5 @@
 from core.KB import KB
-from parse.parse import Parser
+from parse.Parser import Parser
 from plot.show import show
 
 
