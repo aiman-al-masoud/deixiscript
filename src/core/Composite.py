@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from core.Int import Int
 from typing import Dict, Sequence, TypeVar
 from core.Ast import Ast
@@ -23,9 +23,11 @@ class Composite(Ast):
 
         return defined.askNegative(kb) if defined.isNegative() else defined.askPositive(kb)
 
-    T = TypeVar('T', bound='Ast')
+    T = TypeVar('T', bound='Composite')
     def copy(self:T, **kwargs:'Ast')->T:
-        return self.__class__(**{**vars(self), **kwargs})
+        myfields={x.name for x in fields(self)}
+        kwargs2 = {k:v for k,v in kwargs.items() if k in myfields}
+        return self.__class__(**{**vars(self), **kwargs2})
 
     def unroll(self)->Sequence['Ast']:
         return [self]
@@ -43,6 +45,8 @@ class Composite(Ast):
 
         for d in kb.defs:
             m = d.definendum.isMatch(self)
+            # print('self=', self, 'definendum=', d.definendum, 'm=', m)
+            # print('---------------')
 
             if m: 
                 x1=d.definition.subst(m)

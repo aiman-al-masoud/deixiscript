@@ -31,7 +31,12 @@ class KB:
             case frozenset(): 
                 return self.copy(wm=self.wm | o)
             case Def():
-                return self.copy(defs=sortByGenerality([*self.defs, o]))
+                defs=sortByGenerality([*self.defs, o])
+
+                # for d in defs:
+                #     print(d)
+
+                return self.copy(defs=defs)
             case Law():
                 return self.copy(laws=sortByGenerality([*self.laws, o]))
 

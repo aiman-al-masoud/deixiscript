@@ -54,9 +54,15 @@ class Implicit(Composite):
     
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.someMap import everyMap
-        if not isinstance(sub, Implicit): return {}      
-        ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
-        return {self:sub} if ok and self.isNegative()==sub.isNegative() else {}
+        
+        if isinstance(sub, Implicit):
+            ok = everyMap(self.head.isMatch(sub.head), self.which.isMatch(sub.which))
+        elif isinstance(sub, Int) and self.head=='number':
+            ok = {Int(True):Int(True)}
+        else:
+            ok:Dict[Ast, Ast]={}
+
+        return {self:sub, **ok} if ok and self.isNegative()==sub.isNegative() else {}
     
     def subst(self, map: Dict['Ast', 'Ast']) -> 'Ast':
         if self.which!=True: return self

@@ -1,7 +1,9 @@
 from typing import Dict, Sequence
 from core.KB import KB
+# from abc import abstractmethod
 
 class Ast:
+
     def eval(self, kb:'KB')->'KB': raise Exception
     def askNegative(self, kb:'KB')->'KB': raise Exception
     def tellNegative(self, kb:'KB')->'KB': raise Exception

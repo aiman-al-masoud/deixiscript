@@ -83,12 +83,21 @@ class ToAst(Transformer):
         adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
         adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Int(True)
         d=reduce(lambda a,b: {**a, **b}, [x for x in children if 'adjective' not in x])
-        noun=Implicit(**d)
-        which = adjs3 if noun.which==Int(True) else e(noun.which).and_(adjs3)
-        return e(noun).which(which).e
 
+        coreKeys={'head', 'which', 'card', 'ord', 'negation', 'cmd'}
+        core={k:v for k,v in d.items() if k in coreKeys}
+        comps={k:v for k,v in d.items() if k not in coreKeys}
+        noun=Implicit(**core)
+
+        comps1 = [adaptComplement(p, t) for p,t in comps.items()]
+        comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Int(True)
+
+        which = adjs3 if noun.which==Int(True) else e(noun.which).and_(adjs3)
+        which2 = comps2 if comps2!=Int(True) and which==Int(True) else  e(which).and_(comps2) if comps2!=Int(True) else which
+
+        result = e(noun).which(which2).e
+        return result
         
-    
     def relative(self, children):
         # TODO add subject and object if absent??
         d=reduce(lambda a,b: {**a, **b}, children)
@@ -117,3 +126,10 @@ class ToAst(Transformer):
             case _:
                 return e(d['left']).binop(d['op'], d['right']).e
 
+
+def adaptComplement(prepo:str, thing:Implicit):
+
+    if prepo=='of':
+        return e(thing).does('have')._(Str.GAP).as_('attribute')
+
+    raise Exception

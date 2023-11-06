@@ -3,9 +3,9 @@ from core.Ast import Ast
 from core.KB import KB, WorldModel
 
 
-def show(wm:WorldModel):
+def show(kb:KB):
     from graphviz import Source
-    source = graphvizied(wm)
+    source = graphvizied(kb.wm, kb.it.unroll())
     Source(source, filename='tmp.gv', format='png').view()
 
 def save_png(kb:KB):

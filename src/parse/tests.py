@@ -1,5 +1,6 @@
 from parse.parse import Parser
 from core.EB import the, does, e
+from core.Str import Str
 
 parser = Parser()
 
@@ -36,3 +37,7 @@ def test_p009():
 
 def test_p010():
     assert parser.parse('1+2*3') == e(1).binop('+', 2).binop('*', 3).e
+
+def test_p011():
+    assert parser.parse('house of cat') \
+        ==  the('house').which(the('cat').does('have')._(Str.GAP).as_('attribute')).e

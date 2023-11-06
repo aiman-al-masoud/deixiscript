@@ -32,3 +32,6 @@ class Explicit(Ast):
 
     def isNegative(self) -> bool:
         return False
+
+    def askPositive(self, kb: 'KB') -> 'KB':
+        return kb << self
