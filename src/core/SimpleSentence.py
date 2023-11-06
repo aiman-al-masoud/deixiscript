@@ -33,8 +33,8 @@ class SimpleSentence(Composite):
         
         match self.verb:
             case Str('have'):
-                x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.eval(x1)
+                kb1, it = makeExplicit(self, kb)
+                if it!=self: return it.eval(kb1)
                 x=(self.subject, self.object, self.as_)
                 return kb << Bool(x in kb.wm)
             case _:
@@ -47,8 +47,8 @@ class SimpleSentence(Composite):
 
         match self.verb:
             case Str('have'):
-                x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.copy(cmd=Bool(1)).eval(x1)
+                kb1, it = makeExplicit(self, kb)
+                if it!=self: return it.copy(cmd=Bool(1)).eval(kb1)
                 x=(self.subject, self.object, self.as_)
                 return ( kb + frozenset({x}) ) << self.subject
             case _:
@@ -58,10 +58,10 @@ class SimpleSentence(Composite):
         match self.verb:
             case Str('have'|'be'):
                 if self.verb=='be': return toHave(self).copy(cmd=Bool(1), negation=Bool(1)).eval(kb)
-                x1 = makeExplicit(self, kb)
-                if x1.it!=self: return x1.it.copy(cmd=Bool(1), negation=Bool(1)).eval(x1)
+                kb1, it = makeExplicit(self, kb)
+                if it!=self: return it.copy(cmd=Bool(1), negation=Bool(1)).eval(kb1)
                 edge = (self.subject, self.object, self.as_)
-                return x1 - frozenset({edge})
+                return kb1 - frozenset({edge})
             case _:
                 return toHave(self).copy(cmd=Bool(1), negation=Bool(1)).eval(kb)
         
@@ -103,7 +103,7 @@ def toHave(ast:SimpleSentence):
     x4 = every('event').which(x3).e
     return x4
 
-def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
+def makeExplicit(ast:SimpleSentence, kb:'KB'):
     assert ast.verb=='have'
 
     # the following ops may create new entities => need to return KB
@@ -115,7 +115,7 @@ def makeExplicit(ast:SimpleSentence, kb:'KB')->'KB':
 
     x4=ast.copy(subject=x1.it, object=x2.it, as_=x3.it)
     x5=decompress(x4)
-    return x3 << x5
+    return x3, x5
 
 def decompress(ast:Ast)->Ast:
 
