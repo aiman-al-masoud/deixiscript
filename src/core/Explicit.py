@@ -6,6 +6,9 @@ class Explicit(Ast):
     __slots__=()
 
     def eval(self, kb:'KB')->'KB':
+        return self.askPositive(kb)
+
+    def askPositive(self, kb: 'KB') -> 'KB':
         return kb << self
 
     def copy(self, **kwargs:'Ast'):
@@ -32,6 +35,3 @@ class Explicit(Ast):
 
     def isNegative(self) -> bool:
         return False
-
-    def askPositive(self, kb: 'KB') -> 'KB':
-        return kb << self
