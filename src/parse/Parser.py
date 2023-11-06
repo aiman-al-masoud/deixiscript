@@ -12,7 +12,9 @@ class Parser():
         self.tr = ToAst()
 
     def parse(self, code:str)->Ast:
-        st=self.lark.parse(code)
+        code1=code.replace(' is ', ' does be ').replace(' are ', ' does be ') # TODO
+
+        st=self.lark.parse(code1)
         ast=self.tr.transform(st)
         return ast
 

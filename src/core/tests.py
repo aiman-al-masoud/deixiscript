@@ -341,3 +341,12 @@ def test_c062():
     x1 = the('cat').tell()
     x2 = the('cat').tell(x1)
     assert not the('cat').not_.get(x2)
+
+# TODO: separate events!
+# # and phrase inside of command 
+# def test_c063():
+#     from plot.show import show
+#     kb1 = the('cat').tell()
+#     kb2 = the('dog').tell(kb1)
+#     kb3 = the('cat').and_(the('dog')).does('run').tell(kb2)
+#     # show(kb3)
