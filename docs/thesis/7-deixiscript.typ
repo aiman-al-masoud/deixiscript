@@ -1,33 +1,29 @@
 = Deixiscript
 
-== Code Organization
+== Internal and External Dependencies
 
-The language of the code is Python (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker.
+The language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. All of this software is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark, CPL for Graphviz).
 
-Tests are performed with the Pytest framework.
+Other than the aforementioned ones, the core components of the system will require no further dependencies beyond Python's own standard library. The present work itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published.
 
-The code follows the Interpreter Pattern with immutable classes.
+We welcome any further inspection and scrutiny of the code by anyone who is interested in developing it further, as we hope this will aid in improving the code's quality and conciseness, other than expanding its functionality. Regarding the latter, some of the possible further developments that we forsee are outlined later in this section.
+
+== Code Organization: high level overview
+
+The code is split into four modules: "core", "main", "parse" and "plot". The module "main" houses the program's main entry point. The module "plot" defines a few utility functions to visualize graphs. The module "parse" defines the language's concrete grammar(s). And the module "core" contains the core logic of the interpreter, which is independent of the rest of the code. Every module also contains a "tests.py" file which includes some unit tests that also serve to showcase the module's functionalities. 
+
+Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of uniform semantics in the business-logic: methods never directly modify an object, they rather return a new copy of it if need be; reducing the chances of a harmful/unforeseen side-effect (change of state in an object) flying under the radar.
+
+The code also follows the Interpreter Pattern, one of the well-known 23 GoF Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too great, and no alternative facilities were offered by the Python language, as function overloading is tedious and must be done by hand. The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types, the former representing atomic entities (or constants) such as strings and numbers, and the latter representing anything else: from the simplest of boolean expressions to the messiest of function definitions. The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
+
+
+
+
+
 
 The English subset will be interpreted rather than compiled.
 
 The core components of the interpreter will require no dependecies besides Python's (included) standard library.
-
-Lark will be used as a parsing library.
-
-The code will be available under GPLv3 for inspection and future research.
-
-- Functions tell() and ask() do NOT have ANY side effects (like most other
-  functions). tell() and ask() both return a brand new knowledge base object,
-  because even ask() may produce updated versions of the deictic dictionary and
-  add newly computed numbers to the world model. Pure functions and immutable
-  data structs whenever possible.
-
-What follows is an overview of packages and modules. TODO.
-
-- core
-- parser
-- main
-
 
 
 
