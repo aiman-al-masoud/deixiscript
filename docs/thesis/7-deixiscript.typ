@@ -134,7 +134,7 @@ Binexp, or "binary expression", is perhaps the most proteiform component of Deix
 
 What all BinExps have in common is three things: an operator string, a left and a right operand.
 
-The operator may be one of the two logical operators: (`and`, `or`), or one of the arithmetic operators (`+`, `\-`, `\*`, `/`). 
+The operator may be one of the two logical operators: (`and`, `or`), or one of the arithmetic operators (`+`, `-`, `*`, `/`). 
 
 Unlike any other AST type, A BinExp may be interpreted either as a "noun phrase" or as a "sentence", depending on its operator and its operands.
 
