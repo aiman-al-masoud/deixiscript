@@ -124,9 +124,13 @@ An event individual in the world model is a node with outgoing edges poiting tow
 
 As a cursory remark, all of the relations handled by the system, from simple "be" relations to the huge set of relations describing a complex event, can be broken down to very simple "have" relations, more specifically, in the form: "x has y as z", where x and y correspond to nodes and z corresponds to the label of the directed edge (from x to y) connecting them in a graph. 
 
-Searching for any non basic SimpleSentence thus evaluates to an event individual's ID, rather than the boolean value "true" returned by the successful positive declarative evaluation of a basic SimpleSentence.
+Searching for any non basic SimpleSentence thus evaluates to an event individual's string ID, rather than the boolean value of "true" returned by the successful evaluation of a basic SimpleSentence in search mode.
 
-//This idea is directly inspired by the approach discussed in this book @brachman2022machines.
+//This approach is inspired by the one discussed in this book @brachman2022machines.
+
+=== BinExp
+
+
 
 
 
