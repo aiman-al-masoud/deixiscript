@@ -148,29 +148,20 @@ BinExps are essential to the system for three main reasons: they work as traditi
 
 They work as lists because they can carry around multiple (implicit or explicit) references in one unique bundle, which can be "unrolled" into a sequence by the interpreter when it needs to perform a sequential calculation on them.
 
-They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the dog` has to be expanded into something like: `it is false that ((the cat likes the dog) and (the lion likes the dog))`.
+They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the raven` has to be expanded into something like: `it is false that ((the cat likes the raven) and (the lion likes the raven))`, switching from an `or` to an `and`.
+
+=== Def
 
 
+// === Law
 
 
-
-
-
-
-
-// The other major linguistic construct we mentioned was the sentence. A sentence can be 
 
 
 
 
 
 // function calls, to elaborate on one specific example, are handled as noun phrases 
-
-
-
-// A fundamental dis phrase vs sentence
-
-
 
 
 // == Future Work
