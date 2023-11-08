@@ -26,6 +26,10 @@ Currently only supports first/last, and limit DD
 # Simplify
 Since define is called recursively once and for all, you may be able to avoid calling eval() from some of the other functions or maybe even call define at the top-level outside of eval
 
+# Implement Tic-Tac-Toe
+a free spot is a spot that does not have an "x" nor an "o".
+after a spot has an "x" then a free spot has an "o".
+
 ---------------------
 Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.
 
