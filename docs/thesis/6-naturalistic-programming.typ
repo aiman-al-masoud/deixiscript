@@ -90,7 +90,7 @@ The code produced by the system was never really meant to be complete or executa
 
 Since then, there have been more complete attemps at creating a comprehensive natural language programming system, that was usable for general purpose programming. We will proceed to mention three of what we think may be the most important attempts: Pegasus, CAL and SN.
 
-=== Pegasus
+=== Pegasus <pegasus>
 
 The original implementation of Pegasus is laid out in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this @pegasuswebsite.
 
