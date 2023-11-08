@@ -92,9 +92,9 @@ Explicit references are of paramount importance implementation wise (only Explic
 
 === Implicit
 
-A key insight from the study of natural language, is that people almost never use explicit references (proper nouns, IDs, numbers...) when talking about individual entities; they instead make use of their "type" (common nouns) leveraging the indexicality of language within a given context. For instance, if a person refers to "the cat" when they're at home, versus when they're visiting a zoo they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat". 
+A key insight from the study of natural language, is that people almost never use explicit references (proper nouns, IDs, numbers...) when talking about individual entities; they instead make use of the "type" of these individual entities (common nouns) leveraging the indexicality of language within a given context. For instance, if a person refers to "the cat" when they're at home, versus when they're visiting a zoo, they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat". 
 
-A noun phrase, as we know, may be made arbitrarily long and arbitrarily precise (and thus exclude an arbitrary large set of individual entities from a context) through the usage of modifiers such as: adjectives, relative clauses and ordinal numbers: "the first agile calico cat which leaped on the desk with a fresh kill in its fangs".
+A noun phrase, as we only know too well, may be made arbitrarily long and arbitrarily precise (and thus exclude an arbitrarily large set of individual entities in a context) through the usage of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs".
 
 A noun phrase may also refer to multiple entities at once: "the two cats", "the three ocelots", "the 44 caracals".
 
