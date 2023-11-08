@@ -74,7 +74,9 @@ Given this, we present a strong case for the potential of the noun phrase as a n
 
 == Abstract Syntax
 
-We will now describe in detail the specific set of AST types (or abstract syntax) of the Deixiscript language. The main AST types are: Explicit, Implicit, BinExp, SimpleSentence, Def and Law. Almost every AST type (except for Explicit) can be negated and/or marked as a "command" (imperative mood) through the relative two boolean flags it carries. The ASTs which represent noun phrases are: Explicit, Implicit and (sometimes) BinExp; the ones which represent sentences are: (sometimes) BinExp, SimpleSentence, Def and Law.
+We will now describe in detail the specific set of AST types (or abstract syntax) of the Deixiscript language. The main AST types are: Explicit, Implicit, BinExp, SimpleSentence, Def and Law. Almost every AST type (except for Explicit) can be negated and/or marked as a "command" (imperative mood) through the relative two boolean flags it carries. 
+
+The ASTs which represent noun phrases (noun phrase types) are: Explicit, Implicit and (sometimes) BinExp; the ones which represent sentences are: (sometimes) BinExp, SimpleSentence, Def and Law.
 
 === Explicit
 
@@ -86,7 +88,7 @@ Another thing to keep in mind is that the system (as we will see) follows a clos
 
 Strings have a dual (or triple) purpose in Deixiscript: they all behave the same way as far as the system is concerned, but some of them are supposed to be considered "just strings" and others are supposed to be considered as symbols that represent more complex entities (individuals or concepts). What keeps them apart is the convention that "individual strings" contain a pound sign (`#`), for example: `"cat#1"` or `"hospital#33"`. Strings that don't have a pound sign can either be thought of as concepts (especially when they don't contain any spaces, such as: `cat` or `hospital`) or as "just strings".
 
-Explicit references are paramount implementation-wise, but their usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
+Explicit references are of paramount importance implementation wise (only Explicits are allowed into the world model), but their direct usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
 
 === Implicit
 
@@ -107,6 +109,27 @@ Once created, an existing entity can be retrieved (hoisted on top of the short t
 When the negative declarative (search opposite) option is used, the search will resolve in (one or more of) the individuals which do not match the type constraints. This is defined as the difference between the global set of individuals and the set of individuals matching the positive equivalent of the expression, taking care of the numerical constraints.
 
 When an entity has outlived its usefulness, it can be destroyed (or purged from the world model, or "forgotten") with a negative imperative statement about it.
+
+=== SimpleSentence
+
+This AST type contains: a verb, a subject, a direct object and some complements. The verb is a string, and the rest of its "arguments" are noun phrase types. Contrary to the English grammar concept of "simple sentence", a SimpleSentence's subject or object or complements can all contain relative clauses.
+
+A SimpleSentence AST models one or more relationship(s) between two or more entities (individuals or concepts). Just like an Implicit it can be interpreted as a positive or negative order, which will result, respectively, in the creation or destruction of relations (edges) in the knowledge graph; because of the closed world assumption a negative relation cannot be interpreted otherwise.
+
+A basic SimpleSentence is a SimpleSentence whose verb is the verb "to have" or the verb "to be".
+
+Before being executed, any non-basic SimpleSentence is converted into an Implicit AST representing an event. The Implicit representing the event is what is actually executed, either to create/destroy an event or to search for it (or for the absence of it). In fact, a non basic SimpleSentence could be seen as syntactic sugar for the direct creation of an event through a noun phrase describing it.
+
+An event individual in the world model is a node with outgoing edges poiting towards verb, a subject and a number of optional complements.
+
+As a cursory remark, all of the relations handled by the system, from simple "be" relations to the huge set of relations describing a complex event, can be broken down to very simple "have" relations, more specifically, in the form: "x has y as z", where x and y correspond to nodes and z corresponds to the label of the directed edge (from x to y) connecting them in a graph. 
+
+Searching for any non basic SimpleSentence thus evaluates to an event individual's ID, rather than the boolean value "true" returned by the successful positive declarative evaluation of a basic SimpleSentence.
+
+//This idea is directly inspired by the approach discussed in this book @brachman2022machines.
+
+
+
 
 
 
