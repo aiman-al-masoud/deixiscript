@@ -2,11 +2,13 @@
 
 == Internal and External Dependencies
 
-The language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. All of this software is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark, CPL for Graphviz).
+The implementation language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. All of this software is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark, CPL for Graphviz).
 
 Other than the aforementioned ones, the core components of the system will require no further dependencies beyond Python's own standard library. The present work itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published.
 
-We welcome any further inspection and scrutiny of the code by anyone who is interested in developing it further, as we hope this will aid in improving the code's quality and conciseness, other than expanding its functionality. Regarding the latter, some of the possible further developments that we forsee are outlined later in this section.
+We welcome any further inspection and scrutiny of the code by anyone who is interested in developing it further, as we hope this will aid in improving the code's quality and conciseness, other than expanding its functionality. Regarding the latter, some of the possible further developments that we forsee are outlined later in this section. 
+
+We will refer to the new computer language developed in the present work and described in the following pages with the code name "Deixiscript". The name is a protmonteau of the words: Deixis (as in the linguistic concept of indexicality and indirect references) and Script (because this system is intended mainly as a scripting language).
 
 == Code Organization: high level overview
 
@@ -46,7 +48,78 @@ Being this a naturalistic language, and specifically a language intended to be e
 
 The abstract syntax is inteded to be as language-neutral as possible; it serves the purpose of binding general natural language structures to their "equivalent" programming language structures: an issue related to the concept of programmatic semantics, mentioned in the earlier chapters of this work.
 
-An initial fundamental cross-linguistic distinction can be drawn between the phrase (specifically the noun phrase) and the sentence. 
+A fundamental cross-linguistic distinction can be drawn between phrases (specifically noun phrases) and sentences. 
+
+A declarative sentence expresses a complete thought, and its meaning corresponds with a proposition in logic, ie: it has a truth value, it can be true (corresponding to how the world really is) or false (contradicting the actual state of affairs). In English, a sentence can be simple, compound or complex; an example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog".
+
+A phrase is a linguistic structure that does not express a complete thought, in particular a noun phrase is a phrase of arbitrary length that performs the same function as a noun; a test for whether something counts as a noun phrase is to replace it with a pronoun and see if it fits, for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "it jumps over the lazy dog" or "the quick brown fox jumps over it".
+
+As we have already mentioned, a noun phrase can be of arbitrary length, the most trivial example is a single noun all by itself. A noun phrase typically includes articles, adjectives and relative clauses with an arbitrary level of nesting. It is therefore totally possible for a noun phrase to incorporate a sentence (as a relative clause), such as "the fox that jumped over the lazy dog", where "that jumped over the lazy dog" is the relative clause.
+
+A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or perhaps another, smaller, noun phrase). In the noun phrase "the lazy dog" the head is "dog".
+
+As can be evinced from these properties, the noun phrase leaps to the eye as a good candidate to represent data structures or entities in any framework that tries to achieve a coupling between natural language structures and programming language structures.
+
+There is another more general programming language structure that we think a noun phrase is a good candidate to represent, and that is the (programming) expression.
+
+A programming language expression is any piece of code that evaluates to (or returns) a value, as opposed to a statement, the latter of which is executed purely for its side-effects and does not return anything.
+
+With this in mind, and knowing how noun phrases "point to things/entities", it seems natural to us to draw a more general parallel between all kinds of expressions (the programming language construct) and noun phrases (the natural language construct).
+
+Other than data-structures and objects, what else can be considered an expression in "typical" traditional programming language? Well, a lot of things: function calls (as opposed to procedure calls), mathematical and boolean expressions obviously, the ternary operator, function literals, etc... 
+
+In some languages, the ones that embrace Expression Oriented Programming (EOP) to a greater degree, almost everything can be considered an expression, even regular (non anonymous) function or class defintions, every kind of variable assignment (which typically evaluates to the value of the right hand side) and sometimes even the if "statement" (which ends up being the "if expression") and the for loop.
+
+Given this, we present a strong case for the potential of the noun phrase as a naturalistic surrogate for all of these programming constructs.
+
+== Abstract Syntax
+
+We will now describe in detail the specific set of AST types (or abstract syntax) of the Deixiscript language. The main AST types are: Explicit, Implicit, BinExp, SimpleSentence, Def and Law. Almost every AST type (except for Explicit) can be negated and/or marked as a "command" (imperative mood) through the relative two boolean flags it carries. The ASTs which represent noun phrases are: Explicit, Implicit and (sometimes) BinExp; the ones which represent sentences are: (sometimes) BinExp, SimpleSentence, Def and Law.
+
+=== Explicit
+
+Explicit (or explicit references) correspond to the "leafs" in the framework described by the traditional Interpreter Pattern; they are hence constants, and constants (the name says it) can only ever evaluate to themselves. It would have made little sense, therefore, to allow them to be negated or marked as commands. A constant in Deixiscript can be: a string, a boolean or a number (only integers are supported as of the time of writing).
+
+Booleans are kept distinct from integers for two reasons: the system needs to have a special value that always syntactically matches anything (we will return to this point later) and another special value which points to no entity whatsoever ("nothing"). These special values are identified with the boolean values of true and false (only false, there is no need for a separate null pointer). To implement these two special constants through integers would mean to force 0 to point to nothing (which is clearly not the desired case, 0 should point to the number zero, which is a thing), and to force 1 to point to the value which syntactically matches any other construct, which again isn't right. Both of these choices would sooner or later lead to bugs, so booleans and integers are kept distinct.
+
+Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
+
+Strings have a dual (or triple) purpose in Deixiscript: they all behave the same way as far as the system is concerned, but some of them are supposed to be considered "just strings" and others are supposed to be considered as symbols that represent more complex entities (individuals or concepts). What keeps them apart is the convention that "individual strings" contain a pound sign (`#`), for example: `"cat#1"` or `"hospital#33"`. Strings that don't have a pound sign can either be thought of as concepts (especially when they don't contain any spaces, such as: `cat` or `hospital`) or as "just strings".
+
+Explicit references are paramount implementation-wise, but their usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
+
+=== Implicit
+
+A key insight from the study of natural language, is that people almost never use explicit references (proper nouns, IDs, numbers...) when talking about individual entities; they instead make use of their "type" (common nouns) leveraging the indexicality of language within a given context. For instance, if a person refers to "the cat" when they're at home, versus when they're visiting a zoo they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat". 
+
+A noun phrase, as we know, may be made arbitrarily long and arbitrarily precise (and thus exclude an arbitrary large set of individual entities from a context) through the usage of modifiers such as: adjectives, relative clauses and ordinal numbers: "the first agile calico cat which leaped on the desk with a fresh kill in its fangs".
+
+A noun phrase may also refer to multiple entities at once: "the two cats", "the three ocelots", "the 44 caracals".
+
+To support this kind of flexibility with implicit references, we have defined the "Implicit" AST type. An "Implicit" AST has: a head (usually a common noun), a relative clause (which can accept an arbitrarily complex SimpleSentence, or the trivial value of "true"), a cardinality (how many) and an ordinality (a function of the point in time an individual thing was last mentioned).
+
+Furthermore, an Implicit AST supports negation and/or imperative mood through the two boolean flags it carries. There are four possible combinations of these flags' values: positive declarative (search), negative declarative (search opposite), positive imperative (create) and negative imperative (destroy).
+
+The life cycle of an individual starts when a positive imperative (create) statement is made about it, this corresponds to the creation in the world model of a new node with a pound sign id and a connection to a concept node, plus any additional connections (which reflect additional logical relations) to other nodes. In this case, the noun head and the relative clause modifiers are interpreted as a programming language constructor, because they serve to specify the characteristics of the soon to be born entity.
+
+Once created, an existing entity can be retrieved (hoisted on top of the short term memory) by using a positive declarative statement (search), which will be interpreted as a search over the whole world model for (one or more) individual matching the specified type constraints.
+
+When the negative declarative (search opposite) option is used, the search will resolve in (one or more of) the individuals which do not match the type constraints. This is defined as the difference between the global set of individuals and the set of individuals matching the positive equivalent of the expression, taking care of the numerical constraints.
+
+When an entity has outlived its usefulness, it can be destroyed (or purged from the world model, or "forgotten") with a negative imperative statement about it.
+
+
+
+
+// The other major linguistic construct we mentioned was the sentence. A sentence can be 
+
+
+
+
+
+// function calls, to elaborate on one specific example, are handled as noun phrases 
+
+
 
 // A fundamental dis phrase vs sentence
 
