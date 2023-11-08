@@ -32,9 +32,9 @@ This is the equivalent of the context/environment of the Interpreter Pattern. It
 
 The abstract syntax of a language is distinct from its concrete syntax. 
 
-The concrete syntax consists in a set of production rules that describe a Context Free Grammar (CFG) and are captured by formalisms such as Extended Backus-Naur Form (EBNF). It is related to the front end, therefore to the particular way the user writes/speaks (or "linearizes") the language. This is manifested, for instance, in the difference between infix and prefix style of mathematical operator representation, or in the preference of English for the Subject Verb Object (SVO) word order in unmarked sentences.
+The concrete syntax consists in a set of production rules that describe a Context Free Grammar (CFG) and are captured by meta-languages such as the Extended Backus-Naur Form (EBNF). It is related to the front end, therefore to the particular way the user writes/speaks (or "linearizes") the language. This is manifested, for instance, in the difference between infix and prefix style of mathematical operator representation, or in the preference of English for the Subject Verb Object (SVO) word order in unmarked sentences above other word orders.
 
-The abstract syntax is instead the set of Abstract Syntax Trees (ASTs) that are used internally by the interpreter to carry around meaning and describe the actions to be executed. 
+The abstract syntax is instead the set of Abstract Syntax Trees (ASTs) that are used internally by the interpreter to carry around meaning, carry out symbolic manipulations and describe the actions to be executed on an environment.
 
 There is obviously a correspondence between the two kinds of syntaxes: a concrete grammar describes how a string of text (a linear representation of an idea) has to be turned into a parse tree (a bidimensional representation of the same idea); this parse tree can be further transformed, and when the "unimportant" details related to the concrete syntax are discarded, an AST is born.
 
@@ -42,66 +42,59 @@ These "unimportant" details may include the fact of whether the user took advant
 
 Another example may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user intended) precendence of operators and function calls.
 
-Being this a naturalistic language, and specifically a language intended to be easy for English speakers to read and write, the inspiration for both the concrete and abstract syntaxes came from natural language. 
+Being this a naturalistic language, and specifically a language intended to be easy for English speakers to read and write, the inspiration for both the concrete and abstract syntaxes came from natural language. The influence of English, specifically, is evident in the concrete syntax, but perhaps a little less so in the abstract syntax.
 
-The influence of English, specifically, is evident in the concrete syntax, but perhaps a little less so in the abstract syntax.
+The abstract syntax is inteded to be as language-neutral as possible; it serves the purpose of binding general natural language structures to their "equivalent" programming language structures: an issue related to the concept of programmatic semantics, mentioned in the earlier chapters of this work.
 
+A fundamental distinction in the kinds of possible abstract structures that can be made in all languages the authors are aware of is that between a 
 
-
-
-The English subset will be interpreted rather than compiled.
-
-The core components of the interpreter will require no dependecies besides Python's (included) standard library.
+// A fundamental dis phrase vs sentence
 
 
 
-== Future Work
 
-=== Ambiguous Grammars
+// == Future Work
 
-- no ambiguous sentence recognition and multi-tree parse, but possiblility to
-  "disambiguate" (really: change default parse order) using parentheses.
+// === Ambiguous Grammars
 
-
-=== Support for Synthetic and Agglutinative Grammars
-
-Perhaps as function hooks reaching out to the lexer from a higher level?
-
-=== Past Tense
-
-- past tense
-  - list of world models = history
-  - "anachronistic semantics": set of derivation clauses is unique
-  - search all of history in case of unspecified time
-  - alter all of history in case of unspecified time
-
-Alternative idea to "list of world models = history" => events can have associated times.
-
-=== Context Sensitivity
-
-- context sentitivity is incomplete
-  - the does eat the fish.
-  - it jumps. ---> "it" resolves to "the fish" :'-)
-
-But there is the potential to improve it: by managing the deictic dictionary, which could be "adjusted/biased" at any time to point to entities with specific qualities, maybe this could help to make the language more context sensitive. For example "it does jump" would increment the "timestamp" of jumping entities (based on the applicability of the verb "jump") causing the pronoun "it" to point to one of them (cats can jump, fish usually can't).
-
-=== Cataphora and full Deixis?
-
-=== Maybe Implementable on time
-
-Temporarily ignore: synthetic derivations, ordinals (first, second etc...), defaults (maybe as synthetic clauses, beware default creation loops), number restriction, mutex concepts, equation solver, noun-phrase complements, adjectives. You can use KB.dd for expression transformation history.
+// - no ambiguous sentence recognition and multi-tree parse, but possiblility to
+//   "disambiguate" (really: change default parse order) using parentheses.
 
 
-// = Metaphysics
+// === Support for Synthetic and Agglutinative Grammars
 
-// - At the most basic level there is: the Graph, the derivations and the DD. The Graph is the "interface" through which Deixiscript communicates with the outer world, including JS, which only uderstands has-as properties.
+// Perhaps as function hooks reaching out to the lexer from a higher level?
 
-// world model as the interface to the outer world
+// === Past Tense
 
-// = Deixis
+// - past tense
+//   - list of world models = history
+//   - "anachronistic semantics": set of derivation clauses is unique
+//   - search all of history in case of unspecified time
+//   - alter all of history in case of unspecified time
 
-// - Implicit references work as if any entity got the current timestamp whenever
-//   it was mentioned. When function ask() is called from findAll() the deictic
-//   dict is NOT updated, because the results from ask() are ignored.
+// Alternative idea to "list of world models = history" => events can have associated times.
 
-// = Syntactic Compression
+// === Context Sensitivity
+
+// - context sentitivity is incomplete
+//   - the does eat the fish.
+//   - it jumps. ---> "it" resolves to "the fish" :'-)
+
+// But there is the potential to improve it: by managing the deictic dictionary, which could be "adjusted/biased" at any time to point to entities with specific qualities, maybe this could help to make the language more context sensitive. For example "it does jump" would increment the "timestamp" of jumping entities (based on the applicability of the verb "jump") causing the pronoun "it" to point to one of them (cats can jump, fish usually can't).
+
+// === Cataphora and full Deixis?
+
+// === Maybe Implementable on time
+
+// Temporarily ignore: synthetic derivations, ordinals (first, second etc...), defaults (maybe as synthetic clauses, beware default creation loops), number restriction, mutex concepts, equation solver, noun-phrase complements, adjectives. You can use KB.dd for expression transformation history.
+
+
+// // = Metaphysics
+// // - At the most basic level there is: the Graph, the derivations and the DD. The Graph is the "interface" through which Deixiscript communicates with the outer world, including JS, which only uderstands has-as properties.
+// // world model as the interface to the outer world
+// // = Deixis
+// // - Implicit references work as if any entity got the current timestamp whenever
+// //   it was mentioned. When function ask() is called from findAll() the deictic
+// //   dict is NOT updated, because the results from ask() are ignored.
+// // = Syntactic Compression
