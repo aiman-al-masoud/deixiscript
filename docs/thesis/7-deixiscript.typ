@@ -46,7 +46,7 @@ Being this a naturalistic language, and specifically a language intended to be e
 
 The abstract syntax is inteded to be as language-neutral as possible; it serves the purpose of binding general natural language structures to their "equivalent" programming language structures: an issue related to the concept of programmatic semantics, mentioned in the earlier chapters of this work.
 
-A fundamental distinction in the kinds of possible abstract structures that can be made in all languages the authors are aware of is that between a 
+An initial fundamental cross-linguistic distinction can be drawn between the phrase (specifically the noun phrase) and the sentence. 
 
 // A fundamental dis phrase vs sentence
 
