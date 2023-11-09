@@ -98,7 +98,7 @@
   // Title page.
   v(0.25fr)
   align(center)[
-    #text(2em, weight: 700, title)
+    #text(1.5em, weight: 550, title)
   ]
 
   // Author information.
