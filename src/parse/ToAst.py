@@ -9,26 +9,15 @@ from core.EB import e, the
 
 class ToAst(Transformer):
 
-    def ADJECTIVE(self, c):
-        return Adjective(str(c).rstrip('ful'))
-
-    def STRING(self, c):
-        return Str(str(c).strip('"'))
-
-    def NUMBER(self, c):
-        return Int(c)
-
-    def WORD(self, children):
-        return Str(children)
-
-    def NEGATION(self, _):
-        return 'not'
-
-    def QUESTION_MARK(self, _):
-        return '?'
-
-    def verb(self, cs):
-        return Verb(cs[0])
+    def ADJECTIVE(self, c): return Adjective(str(c).rstrip('ful'))
+    def STRING(self, c): return Str(str(c).strip('"'))
+    def NUMBER(self, c): return Int(c)
+    def WORD(self, children):return Str(children)
+    def NEGATION(self, _): return 'not'
+    def QUESTION_MARK(self, _): return '?'
+    def verb(self, cs): return Verb(cs[0])
+    def noun(self, cs): return Implicit(head=cs[0])
+        
 
     def noun_adjective(self, cs):
         noun=cs[1]
@@ -61,9 +50,6 @@ class ToAst(Transformer):
         assert isinstance(noun, Implicit)
         return noun.copy(negation=Bool(1))
 
-    def noun(self, cs):        
-        return Implicit(head=cs[0])
-        
     def noun_relative(self, cs):
         noun=cs[0]
         sentence=cs[1].copy(cmd=Bool(0))
