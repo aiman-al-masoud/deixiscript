@@ -18,7 +18,7 @@ object: noun_phrase
 ?complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase:  STRING | NUMBER | noun_article | noun_negation | noun_ordinal | noun_complement | noun_adjective | noun | noun_relative | _parens
+?noun_phrase:  STRING | NUMBER | noun_article | noun_negation | noun_ordinal | noun_cardinal | noun_complement | noun_adjective | noun | noun_relative | _parens
 
 noun_relative: noun_phrase _RELATIVE sentence
 noun_adjective: adjective noun_phrase
@@ -26,11 +26,11 @@ noun_adjective: adjective noun_phrase
 noun_negation: NEGATION noun_phrase
 noun_complement: noun_phrase complement
 noun_ordinal: ORDINAL noun_phrase
+noun_cardinal: NUMBER noun_phrase
 
 // noun
-noun: (card?) noun_head
+noun: noun_head
 noun_head: NAME
-card: NUMBER
 adjective: /([a-z]+)ful/
 
 // parentheses
