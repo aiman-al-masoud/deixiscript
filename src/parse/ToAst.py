@@ -23,8 +23,8 @@ class ToAst(Transformer):
     def NAME(self, children):
         return Str(children)
 
-    def ord(self, children):
-        return {'ord': children[0]}
+    # def ord(self, children):
+    #     return {'ord': children[0]}
 
     def card(self, children):
         return {'card': children[0]}
@@ -59,6 +59,16 @@ class ToAst(Transformer):
         assert isinstance(adjective, Adjective)
         assert isinstance(noun, Implicit)
         return noun.addWhich(e(Str.GAP).does('be')._(the(adjective.value)).e)
+
+
+    def noun_ordinal(self, cs):
+        noun=cs[1]
+        ordinal=Str(str(cs[0]))
+        assert isinstance(noun, Implicit)
+        if ordinal=='new': return noun.copy(cmd=Bool(True))
+        return noun.copy(ord=ordinal)
+
+
 
     def noun_complement(self, cs):
         noun=cs[0]

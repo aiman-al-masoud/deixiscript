@@ -25,9 +25,10 @@ noun_adjective: adjective noun_phrase
 ?noun_article: _ARTICLE noun_phrase
 noun_negation: NEGATION noun_phrase
 noun_complement: noun_phrase complement
+noun_ordinal: ORDINAL noun_phrase
 
 // noun
-noun: (ord?|noun_cmd?|card?)* noun_head
+noun: (noun_cmd?|card?)* noun_head
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
