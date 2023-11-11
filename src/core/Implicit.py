@@ -75,6 +75,11 @@ class Implicit(Composite):
     def define(self, kb:'KB')->'Ast':
         return super().define(kb).copy(card=self.card, ord=self.ord) #cmd=self.cmd   neg???
 
+    def addWhich(self, ast:Ast):
+        from core.EB import e
+        if self.which==Bool(True): return self.copy(which=ast)
+        return self.copy(which=e(self.which).and_(ast).e)
+
 def isIndividual(x:Ast):
     return  isinstance(x, Str) and ('#' in x or ' ' in x)  or isinstance(x, Int) #or isinstance(x, Bool)
 

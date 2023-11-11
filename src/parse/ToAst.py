@@ -68,18 +68,16 @@ class ToAst(Transformer):
         comps1 = [adaptComplement(p, t) for p,t in comps.items()]
         comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Bool(True)
 
-        which = adjs3 if noun.which==Bool(True) else e(noun.which).and_(adjs3)
-        which2 = comps2 if comps2!=Bool(True) and which==Bool(True) else  e(which).and_(comps2) if comps2!=Bool(True) else which
+        which = adjs3 if noun.which==Bool(True) else e(noun.which).and_(adjs3).e
+        which2 = comps2 if comps2!=Bool(True) and which==Bool(True) else  e(which).and_(comps2).e if comps2!=Bool(True) else which
 
-        result = e(noun).which(which2).e
-        return result
+        return noun.addWhich(which2)
         
     def relative(self, cs):
         noun=cs[0]
         sentence=cs[1].copy(cmd=Bool(0))
         assert isinstance(noun, Implicit)
-        result= noun.copy(which=sentence)
-        return result
+        return noun.addWhich(sentence)
 
     def complement(self, children):
         preposition=str([x for x in children if isinstance(x, Token)][0])
