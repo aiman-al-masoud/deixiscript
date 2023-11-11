@@ -1,12 +1,9 @@
 from dataclasses import dataclass
-from functools import reduce
-from operator import ne, neg
 from lark import Token, Transformer
 from core.Ast import Ast
 from core.Bool import Bool
 from core.Implicit import Implicit
 from core.Int import Int
-from core.SimpleSentence import SimpleSentence
 from core.Str import Str
 from core.EB import e, the
 
