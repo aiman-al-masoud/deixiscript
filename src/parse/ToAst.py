@@ -60,9 +60,9 @@ class ToAst(Transformer):
 
     def noun_complement(self, cs):
         noun=cs[0]
-        complement=list(cs[1].items())
+        complement=cs[1]
         assert isinstance(noun, Implicit)
-        return noun.addWhich(adaptComplement(complement[0][0], complement[0][1]).e)
+        return noun.addWhich(adaptComplement(complement.preposition, complement.value).e)
 
     def noun_negation(self, cs):
         noun=cs[1]
@@ -81,7 +81,7 @@ class ToAst(Transformer):
     def complement(self, children):
         preposition=str([x for x in children if isinstance(x, Token)][0])
         value=[x for x in children if isinstance(x, Ast)][0]
-        return {preposition:value}
+        return Complement(preposition=preposition, value=value)
 
     def simple_sentence(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)
@@ -110,7 +110,7 @@ class Adjective(str):
 # class Verb:
 #     value:str
 
-# @dataclass
-# class Complement:
-#     preposition:str
-#     value:Ast
+@dataclass
+class Complement:
+    preposition:str
+    value:Ast
