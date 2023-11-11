@@ -71,12 +71,9 @@ class ToAst(Transformer):
         assert isinstance(noun, Implicit)
         return noun.copy(negation=Bool(1))
 
-    def noun(self, children):
-        
+    def noun(self, children):        
         d=reduce(lambda a,b: {**a, **b}, [x for x in children if not isinstance(x, Adjective)])
-        coreKeys={'head', 'which', 'card', 'ord', 'negation', 'cmd'}
-        core={k:v for k,v in d.items() if k in coreKeys}
-        noun=Implicit(**core)
+        noun=Implicit(**d)
         return noun
         
     def noun_relative(self, cs):
