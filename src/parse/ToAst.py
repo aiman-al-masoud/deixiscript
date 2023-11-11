@@ -60,6 +60,12 @@ class ToAst(Transformer):
         assert isinstance(noun, Implicit)
         return noun.addWhich(e(Str.GAP).does('be')._(the(adjective.value)).e)
 
+    def noun_complement(self, cs):
+        noun=cs[0]
+        complement=list(cs[1].items())
+        assert isinstance(noun, Implicit)
+        return noun.addWhich(adaptComplement(complement[0][0], complement[0][1]).e)
+
     def noun_negation(self, cs):
         noun=cs[1]
         assert isinstance(noun, Implicit)
@@ -68,16 +74,15 @@ class ToAst(Transformer):
     def noun(self, children):
         
         d=reduce(lambda a,b: {**a, **b}, [x for x in children if not isinstance(x, Adjective)])
-
         coreKeys={'head', 'which', 'card', 'ord', 'negation', 'cmd'}
         core={k:v for k,v in d.items() if k in coreKeys}
-        comps={k:v for k,v in d.items() if k not in coreKeys}
         noun=Implicit(**core)
+        return noun
 
-        comps1 = [adaptComplement(p, t) for p,t in comps.items()]
-        comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Bool(True)
-
-        return noun.addWhich(comps2)
+        # comps={k:v for k,v in d.items() if k not in coreKeys}
+        # comps1 = [adaptComplement(p, t) for p,t in comps.items()]
+        # comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Bool(True)
+        # return noun.addWhich(comps2)
         
     def noun_relative(self, cs):
         noun=cs[0]
