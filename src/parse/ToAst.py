@@ -29,9 +29,6 @@ class ToAst(Transformer):
     def cmd(self, _):
         return {'cmd': Bool(1)}
 
-    def noun_cmd(self, _):
-        return {'cmd': Bool(1)}
-
     def verb(self, children):
         return {'verb': children[0]}
 
