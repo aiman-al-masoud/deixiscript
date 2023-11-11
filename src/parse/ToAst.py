@@ -11,8 +11,8 @@ from core.EB import e, the
 
 class ToAst(Transformer):
 
-    def adjective(self, cs):
-        return Adjective(str(cs[0]).rstrip('ful'))
+    def ADJECTIVE(self, c):
+        return Adjective(str(c).rstrip('ful'))
 
     def STRING(self, c):
         return Str(str(c).strip('"'))

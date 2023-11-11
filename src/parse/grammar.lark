@@ -21,14 +21,14 @@ object: noun_phrase
 ?noun_phrase: noun | STRING | NUMBER | noun_article | noun_negation | noun_ordinal | noun_cardinal | noun_complement | noun_adjective | noun_relative | _parens
 
 noun_relative: noun_phrase _RELATIVE sentence
-noun_adjective: adjective noun_phrase
+noun_adjective: ADJECTIVE noun_phrase
 ?noun_article: _ARTICLE noun_phrase
 noun_negation: NEGATION noun_phrase
 noun_complement: noun_phrase complement
 noun_ordinal: ORDINAL noun_phrase
 noun_cardinal: NUMBER noun_phrase
 noun: WORD
-adjective: /([a-z]+)ful/
+ADJECTIVE: /([a-z]+)ful/
 
 // parentheses
 _parens: "(" ast ")"
