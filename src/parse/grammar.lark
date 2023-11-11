@@ -18,7 +18,7 @@ object: noun_phrase
 ?complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase: noun_article | noun_negation | noun_ordinal | noun_complement | noun_adjective | noun | noun_relative | _parens | STRING | NUMBER 
+?noun_phrase:  STRING | NUMBER | noun_article | noun_negation | noun_ordinal | noun_complement | noun_adjective | noun | noun_relative | _parens
 
 noun_relative: noun_phrase _RELATIVE sentence
 noun_adjective: adjective noun_phrase
