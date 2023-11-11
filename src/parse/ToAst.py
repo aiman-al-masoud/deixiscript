@@ -53,11 +53,15 @@ class ToAst(Transformer):
     def object(self, children):
         return {'object': children[0]}
 
+    def noun_adjective(self, cs):
+        noun=cs[1]
+        adjective=cs[0]
+        assert isinstance(adjective, Adjective)
+        assert isinstance(noun, Implicit)
+        return noun.addWhich(e(Str.GAP).does('be')._(the(adjective.value)).e)
+
     def noun(self, children):
         
-        adjs1=[the(str(x.value)) for x in children if isinstance(x, Adjective)]
-        adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
-        adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Bool(True)
         d=reduce(lambda a,b: {**a, **b}, [x for x in children if not isinstance(x, Adjective)])
 
         coreKeys={'head', 'which', 'card', 'ord', 'negation', 'cmd'}
@@ -68,12 +72,9 @@ class ToAst(Transformer):
         comps1 = [adaptComplement(p, t) for p,t in comps.items()]
         comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Bool(True)
 
-        which = adjs3 if noun.which==Bool(True) else e(noun.which).and_(adjs3).e
-        which2 = comps2 if comps2!=Bool(True) and which==Bool(True) else  e(which).and_(comps2).e if comps2!=Bool(True) else which
-
-        return noun.addWhich(which2)
+        return noun.addWhich(comps2)
         
-    def relative(self, cs):
+    def noun_relative(self, cs):
         noun=cs[0]
         sentence=cs[1].copy(cmd=Bool(0))
         assert isinstance(noun, Implicit)

@@ -18,11 +18,13 @@ object: noun_phrase
 ?complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase: noun | relative | _parens | STRING | NUMBER
-relative: noun_phrase _RELATIVE sentence
+?noun_phrase: noun_adjective | noun | noun_relative | _parens | STRING | NUMBER
+
+noun_relative: noun_phrase _RELATIVE sentence
+noun_adjective: _ARTICLE? adjective noun_phrase // TODO: remove ARTICLE
 
 // noun
-noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* adjective* noun_head complement*
+noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* noun_head complement*
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
