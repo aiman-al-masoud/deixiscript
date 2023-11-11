@@ -1,5 +1,7 @@
+from dataclasses import dataclass
 from functools import reduce
 from lark import Token, Transformer
+from core.Ast import Ast
 from core.Bool import Bool
 from core.Implicit import Implicit
 from core.Int import Int
@@ -9,8 +11,8 @@ from core.EB import e, the
 
 class ToAst(Transformer):
 
-    def adjective(self, children):
-        return {'adjective':str(children[0]).strip('ful')}
+    def adjective(self, cs):
+        return Adjective(str(cs[0]).rstrip('ful'))
 
     def string(self, children):
         return Str(str(children[0]).strip('"'))
@@ -68,10 +70,10 @@ class ToAst(Transformer):
 
     def noun(self, children):
         
-        adjs1=[the(str(x['adjective'])) for x in children if 'adjective' in x]
+        adjs1=[the(str(x.value)) for x in children if isinstance(x, Adjective)]
         adjs2=[e(Str.GAP).does('be')._(x) for x in adjs1]
         adjs3 = reduce(lambda a,b:a.and_(b), adjs2).e if adjs2 else Bool(True)
-        d=reduce(lambda a,b: {**a, **b}, [x for x in children if 'adjective' not in x])
+        d=reduce(lambda a,b: {**a, **b}, [x for x in children if not isinstance(x, Adjective)])
 
         coreKeys={'head', 'which', 'card', 'ord', 'negation', 'cmd'}
         core={k:v for k,v in d.items() if k in coreKeys}
@@ -118,3 +120,12 @@ def adaptComplement(prepo:str, thing:Implicit):
         return e(thing).does('have')._(Str.GAP).as_('attribute')
 
     raise Exception
+
+@dataclass
+class Adjective:
+    value:str
+
+# @dataclass
+# class Complement:
+#     preposition:str
+#     value:Ast
