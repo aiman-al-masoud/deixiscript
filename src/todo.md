@@ -30,6 +30,9 @@ Since define is called recursively once and for all, you may be able to avoid ca
 a free spot is a spot that does not have an "x" nor an "o".
 after a spot has an "x" then a free spot has an "o".
 
+# Maybe Fancy Math Ops
+1 and 2 and 3 + 0 // 6
+
 ---------------------
 Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.
 
