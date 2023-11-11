@@ -46,3 +46,7 @@ def test_p011():
 def test_p012():
     assert parser.parse('first cat') \
         ==  the('first', 'cat').e
+
+def test_p013():
+    assert parser.parse('the cat does run?') \
+        == the('cat').does('run').e

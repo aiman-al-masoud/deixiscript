@@ -24,8 +24,8 @@ class ToAst(Transformer):
     def NEGATION(self, _):
         return 'not'
 
-    def cmd(self, _):
-        return 'cmd'
+    def QUESTION_MARK(self, _):
+        return '?'
 
     def verb(self, cs):
         return Verb(cs[0])
@@ -82,7 +82,7 @@ class ToAst(Transformer):
         subject=nouns[0] if nouns else Str.GAP
         object=nouns[1] if len(nouns)>1 else Bool(False)
         negation=Bool(any([x for x in cs if x=='not']))
-        cmd=Bool(any([x for x in cs if x=='cmd']))
+        cmd=Bool(not any([x for x in cs if x=='?']))
         return e(subject).does(verb)._(object).e.copy(**complements, cmd=cmd, negation=negation)
 
     def compound_sentence(self, cs):

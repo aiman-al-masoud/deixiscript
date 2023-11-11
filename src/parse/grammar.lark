@@ -8,10 +8,7 @@
 compound_sentence: ast BINOP ast
 
 // SIMPLE-SENTENCE ----------------------------------------------
-simple_sentence: _command | _question
-_question: noun_phrase? _DOES NEGATION* verb noun_phrase? complement* "?"
-_command: noun_phrase? cmd NEGATION* verb noun_phrase? complement*
-cmd:_DOES
+simple_sentence: noun_phrase? _DOES NEGATION? verb noun_phrase? complement* QUESTION_MARK?
 verb: WORD
 complement: PREPOSITION noun_phrase?
 
@@ -44,6 +41,7 @@ ADJECTIVE: /([a-z]+)ful/
 ORDINAL: "first" | "last" | "new"
 BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
 PREPOSITION: "to" | "as" | "on" | "of"
+QUESTION_MARK: "?"
 _ARTICLE:"the"|"an"|"a"
 _DOES: "does" //|"do"
 _RELATIVE:"which"
