@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from functools import reduce
 from lark import Token, Transformer
+from core.Ast import Ast
 from core.Bool import Bool
 from core.Implicit import Implicit
 from core.Int import Int
@@ -20,9 +21,6 @@ class ToAst(Transformer):
         return Int(children)
 
     def NAME(self, children):
-        return Str(children)
-
-    def PREPOSITION(self, children):
         return Str(children)
 
     def ord(self, children):
@@ -58,9 +56,6 @@ class ToAst(Transformer):
     def complement_head(self, children):
         return {'complement_head':children[0]}
 
-    def preposition(self, children):
-        return {'preposition':children[0]}
-
     def subject(self, children):
         return {'subject': children[0]}
 
@@ -94,10 +89,9 @@ class ToAst(Transformer):
         return d['head'].copy(which=d['which'].copy(cmd=Bool(0)))
 
     def complement(self, children):
-        d=reduce(lambda a,b: {**a, **b}, children)
-        preposition= 'as_' if d['preposition']=='as' else d['preposition']
-        head=d['complement_head']
-        return {preposition:head}
+        preposition=str([x for x in children if isinstance(x, Token)][0])
+        value=[x for x in children if isinstance(x, Ast)][0]
+        return {preposition:value}
 
     def simple_sentence(self, children):
         d=reduce(lambda a,b: {**a, **b}, children)

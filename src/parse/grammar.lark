@@ -15,9 +15,7 @@ cmd:_DOES
 subject: noun_phrase
 verb: NAME
 object: noun_phrase
-?complement: preposition complement_head?
-complement_head: noun_phrase
-preposition: PREPOSITION
+?complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
 ?noun_phrase: noun | relative | _parens | string | number
