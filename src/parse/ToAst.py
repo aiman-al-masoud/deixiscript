@@ -24,7 +24,7 @@ class ToAst(Transformer):
         adjective=cs[0]
         assert isinstance(adjective, Adjective)
         assert isinstance(noun, Implicit)
-        return noun.addWhich(e(Str.GAP).does('be')._(the(adjective)).e)
+        return noun.addWhich(e(Str.GAP).does('be')._(the(adjective)).e) # TODO: rm the?
 
     def noun_cardinal(self, cs):
         noun=cs[1]
