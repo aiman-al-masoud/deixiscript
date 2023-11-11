@@ -28,7 +28,6 @@ noun_complement: noun_phrase complement
 noun_ordinal: ORDINAL noun_phrase
 noun_cardinal: NUMBER noun_phrase
 noun: WORD
-ADJECTIVE: /([a-z]+)ful/
 
 // parentheses
 _parens: "(" ast ")"
@@ -37,6 +36,7 @@ _parens: "(" ast ")"
 NEGATION: "not"
 WORD: /[a-z]+/
 NUMBER: /[0-9]+/
+ADJECTIVE: /([a-z]+)ful/
 ORDINAL: "first" | "last" | "new"
 BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
 PREPOSITION: "to" | "as" | "on" | "of"
