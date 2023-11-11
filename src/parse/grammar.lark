@@ -18,10 +18,7 @@ object: noun_phrase
 ?complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase: noun | relative | _parens | string | number
-
-number:NUMBER
-string:STRING
+?noun_phrase: noun | relative | _parens | STRING | NUMBER
 
 // relative clause
 relative: relative_head _RELATIVE subordinate

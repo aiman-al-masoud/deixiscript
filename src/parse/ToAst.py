@@ -14,20 +14,17 @@ class ToAst(Transformer):
     def adjective(self, cs):
         return Adjective(str(cs[0]).rstrip('ful'))
 
-    def string(self, children):
-        return Str(str(children[0]).strip('"'))
+    def STRING(self, c):
+        return Str(str(c).strip('"'))
 
-    def NUMBER(self, children):
-        return Int(children)
+    def NUMBER(self, c):
+        return Int(c)
 
     def NAME(self, children):
         return Str(children)
 
     def ord(self, children):
         return {'ord': children[0]}
-
-    def number(self, children):
-        return children[0]
 
     def card(self, children):
         return {'card': children[0]}
