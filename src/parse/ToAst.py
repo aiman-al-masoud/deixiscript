@@ -44,12 +44,6 @@ class ToAst(Transformer):
     def noun_head(self, children):
         return {'head':children[0]}
 
-    def relative_head(self, children):
-        return {'head':children[0]}
-
-    def subordinate(self, children):
-        return {'which':children[0]}
-
     def complement_head(self, children):
         return {'complement_head':children[0]}
 
@@ -80,10 +74,12 @@ class ToAst(Transformer):
         result = e(noun).which(which2).e
         return result
         
-    def relative(self, children):
-        # TODO add subject and object if absent??
-        d=reduce(lambda a,b: {**a, **b}, children)
-        return d['head'].copy(which=d['which'].copy(cmd=Bool(0)))
+    def relative(self, cs):
+        noun=cs[0]
+        sentence=cs[1].copy(cmd=Bool(0))
+        assert isinstance(noun, Implicit)
+        result= noun.copy(which=sentence)
+        return result
 
     def complement(self, children):
         preposition=str([x for x in children if isinstance(x, Token)][0])

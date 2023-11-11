@@ -19,11 +19,7 @@ object: noun_phrase
 
 // NOUN-PHRASE --------------------------------------------------
 ?noun_phrase: noun | relative | _parens | STRING | NUMBER
-
-// relative clause
-relative: relative_head _RELATIVE subordinate
-relative_head:noun_phrase
-subordinate: sentence
+relative: noun_phrase _RELATIVE sentence
 
 // noun
 noun: (_ARTICLE?|ord?|noun_cmd?|card?|negation?)* adjective* noun_head complement*
