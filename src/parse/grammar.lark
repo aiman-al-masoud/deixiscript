@@ -9,8 +9,8 @@ compound_sentence: ast BINOP ast
 
 // SIMPLE-SENTENCE ----------------------------------------------
 simple_sentence: _command | _question
-_question: subject? _DOES negation* verb object? complement* "?"
-_command: subject? cmd negation* verb object? complement*
+_question: subject? _DOES NEGATION* verb object? complement* "?"
+_command: subject? cmd NEGATION* verb object? complement*
 cmd:_DOES
 subject: noun_phrase
 verb: NAME
@@ -25,7 +25,7 @@ noun_adjective: adjective noun_phrase
 ?noun_article: _ARTICLE noun_phrase
 
 // noun
-noun: (ord?|noun_cmd?|card?|negation?)* noun_head complement*
+noun: (ord?|noun_cmd?|card?|NEGATION?)* noun_head complement*
 noun_head: NAME
 card: NUMBER
 ord: ORDINAL
@@ -36,7 +36,7 @@ adjective: /([a-z]+)ful/
 _parens: "(" ast ")"
 
 // TERMINALS ----------------------------------------------------
-negation: "not"
+NEGATION: "not"
 NAME: /[a-z]+/
 NUMBER: /[0-9]+/
 ORDINAL: "first" | "last"

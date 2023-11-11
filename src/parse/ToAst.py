@@ -29,7 +29,7 @@ class ToAst(Transformer):
     def card(self, children):
         return {'card': children[0]}
 
-    def negation(self, _):
+    def NEGATION(self, _):
         return {'negation': Bool(1)}
 
     def cmd(self, _):
