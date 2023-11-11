@@ -44,7 +44,7 @@ PREPOSITION: "to" | "as" | "on" | "of"
 QUESTION_MARK: "?"
 _ARTICLE:"the"|"an"|"a"
 _DOES: "does" //|"do"
-_RELATIVE:"which"|"that"
+_RELATIVE:"which"|"that"|"who"
 %import common.WS
 %import common.ESCAPED_STRING -> STRING
 %ignore WS
