@@ -34,9 +34,6 @@ class ToAst(Transformer):
 
     def verb(self, children):
         return {'verb': children[0]}
-    
-    def noun_head(self, children):
-        return {'head':children[0]}
 
     def complement_head(self, children):
         return {'complement_head':children[0]}
@@ -78,10 +75,8 @@ class ToAst(Transformer):
         assert isinstance(noun, Implicit)
         return noun.copy(negation=Bool(1))
 
-    def noun(self, children):        
-        d=reduce(lambda a,b: {**a, **b}, [x for x in children if not isinstance(x, Adjective)])
-        noun=Implicit(**d)
-        return noun
+    def noun(self, cs):        
+        return Implicit(head=cs[0])
         
     def noun_relative(self, cs):
         noun=cs[0]
@@ -106,7 +101,6 @@ class ToAst(Transformer):
             case 'when': return e(cs[0]).when(cs[2]).e.copy(cmd=Bool(1))
             case 'after': return e(cs[0]).after(cs[2]).e.copy(cmd=Bool(1))
             case _: return e(cs[0]).binop(op, cs[2]).e
-
 
 def adaptComplement(prepo:str, thing:Implicit):
 
