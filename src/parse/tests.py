@@ -42,3 +42,7 @@ def test_p010():
 def test_p011():
     assert parser.parse('house of cat') \
         ==  the('house').which(the('cat').does('have')._(Str.GAP).as_('attribute')).e
+
+def test_p012():
+    assert parser.parse('first cat') \
+        ==  the('first', 'cat').e

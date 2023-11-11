@@ -60,15 +60,12 @@ class ToAst(Transformer):
         assert isinstance(noun, Implicit)
         return noun.addWhich(e(Str.GAP).does('be')._(the(adjective.value)).e)
 
-
     def noun_ordinal(self, cs):
         noun=cs[1]
         ordinal=Str(str(cs[0]))
         assert isinstance(noun, Implicit)
         if ordinal=='new': return noun.copy(cmd=Bool(True))
         return noun.copy(ord=ordinal)
-
-
 
     def noun_complement(self, cs):
         noun=cs[0]
