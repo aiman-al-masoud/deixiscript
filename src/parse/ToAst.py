@@ -43,7 +43,7 @@ class ToAst(Transformer):
         adjective=cs[0]
         assert isinstance(adjective, Adjective)
         assert isinstance(noun, Implicit)
-        return noun.addWhich(e(Str.GAP).does('be')._(the(adjective.value)).e)
+        return noun.addWhich(e(Str.GAP).does('be')._(the(adjective)).e)
 
     def noun_cardinal(self, cs):
         noun=cs[1]
@@ -103,9 +103,12 @@ def adaptComplement(prepo:str, thing:Implicit):
 
     raise Exception
 
-@dataclass
-class Adjective:
-    value:str
+class Adjective(str):
+    pass
+
+# @dataclass
+# class Verb:
+#     value:str
 
 # @dataclass
 # class Complement:
