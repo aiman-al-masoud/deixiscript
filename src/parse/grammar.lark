@@ -5,10 +5,7 @@
 ?sentence: compound_sentence | simple_sentence
 
 // COMPOUND (AND ALSO COMPLEX) SENTENCE ------------------------
-compound_sentence: left op right
-left: ast
-right: ast
-op: BINOP
+compound_sentence: ast BINOP ast
 
 // SIMPLE-SENTENCE ----------------------------------------------
 simple_sentence: _command | _question

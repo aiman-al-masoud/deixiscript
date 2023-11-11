@@ -1,5 +1,5 @@
 from functools import reduce
-from lark import Transformer
+from lark import Token, Transformer
 from core.Bool import Bool
 from core.Implicit import Implicit
 from core.Int import Int
@@ -24,14 +24,11 @@ class ToAst(Transformer):
     def PREPOSITION(self, children):
         return Str(children)
 
-    def BINOP(self, children):
-        return Str(children)
-
     def ord(self, children):
         return {'ord': children[0]}
 
     def number(self, children):
-        return children[0] #Int(children[0])
+        return children[0]
 
     def card(self, children):
         return {'card': children[0]}
@@ -68,15 +65,6 @@ class ToAst(Transformer):
 
     def object(self, children):
         return {'object': children[0]}
-
-    def left(self, children):
-        return {'left':children[0]}
-
-    def right(self, children):
-        return {'right':children[0]}
-
-    def op(self, children):
-        return {'op':children[0]}
 
     def noun(self, children):
         
@@ -116,16 +104,12 @@ class ToAst(Transformer):
         x2=x1.copy(subject= x1.subject or Str.GAP)
         return x2
 
-    def compound_sentence(self, children):
-        d=reduce(lambda a,b: {**a, **b}, children)
-
-        match d['op']:
-            case 'when':
-                return e(d['left']).when(d['right']).e.copy(cmd=Bool(1))# TODO!
-            case 'after':
-                return e(d['left']).after(d['right']).e.copy(cmd=Bool(1))# TODO!
-            case _:
-                return e(d['left']).binop(d['op'], d['right']).e
+    def compound_sentence(self, cs):
+        op=str([x for x in cs if isinstance(x, Token)][0])
+        match op:
+            case 'when': return e(cs[0]).when(cs[2]).e.copy(cmd=Bool(1))
+            case 'after': return e(cs[0]).after(cs[2]).e.copy(cmd=Bool(1))
+            case _: return e(cs[0]).binop(op, cs[2]).e
 
 
 def adaptComplement(prepo:str, thing:Implicit):
