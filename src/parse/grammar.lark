@@ -8,7 +8,7 @@
 compound_sentence: ast BINOP ast
 
 // SIMPLE-SENTENCE ----------------------------------------------
-simple_sentence: noun_phrase? _DOES NEGATION? verb noun_phrase? complement* QUESTION_MARK?
+simple_sentence: noun_phrase? _HELPER NEGATION? verb noun_phrase? complement* QUESTION_MARK?
 verb: WORD
 complement: PREPOSITION noun_phrase?
 
@@ -43,7 +43,7 @@ BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
 PREPOSITION: "to" | "as" | "on" | "of"
 QUESTION_MARK: "?"
 _ARTICLE:"the"|"an"|"a"
-_DOES: "does" //|"do"
+_HELPER: "does" //|"do"
 _RELATIVE:"which"|"that"|"who"
 %import common.WS
 %import common.ESCAPED_STRING -> STRING
