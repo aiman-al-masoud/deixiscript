@@ -26,7 +26,7 @@ number:NUMBER
 string:STRING
 
 // relative clause
-relative: relative_head "which" subordinate
+relative: relative_head _RELATIVE subordinate
 relative_head:noun_phrase
 subordinate: sentence
 
@@ -50,6 +50,7 @@ BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"
 PREPOSITION: "to" | "as" | "on" | "of"
 _ARTICLE:"the"|"an"|"a"
 _DOES: "does" //|"do"
+_RELATIVE:"which"
 %import common.WS
 %import common.ESCAPED_STRING -> STRING
 %ignore WS
