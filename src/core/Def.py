@@ -6,7 +6,7 @@ from core.Ast import Ast
 from core.KB import KB
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, repr=False)
 class Def(Composite):
     definendum:'Ast'=Bool(False)
     definition:'Ast'=Bool(False)

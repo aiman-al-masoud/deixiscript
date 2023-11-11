@@ -3,13 +3,12 @@ from dataclasses import dataclass
 from core.BinExp import BinExp
 from core.Bool import Bool
 from core.Composite import Composite
-from core.Int import Int
 from core.Str import Str
 from core.Ast import Ast
 from core.KB import KB 
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, repr=False)
 class SimpleSentence(Composite):
     verb:'Ast'    =Bool(False)
     subject:'Ast' =Bool(False)
@@ -85,6 +84,7 @@ class SimpleSentence(Composite):
     def define(self, kb:'KB')->'Ast':
         d={k:v.define(kb) for k,v in self.args.items()}
         ss=self.copy(**d)
+        # print(ss, kb.defs)
         return Composite.define(ss, kb)
 
 def toHave(ast:SimpleSentence):

@@ -68,3 +68,18 @@ class Composite(Ast):
 
     def isCmd(self) -> bool:
         return bool(self.cmd)
+    
+    def __repr__(self):
+
+        import dataclasses
+        from operator import attrgetter
+
+        nodef_f_vals = (
+            (f.name, attrgetter(f.name)(self))
+            for f in dataclasses.fields(self)
+            if attrgetter(f.name)(self) != f.default
+        )
+
+        nodef_f_repr = ", ".join(f"{name}={value}" for name, value in nodef_f_vals)
+        return f"{self.__class__.__name__}({nodef_f_repr})"
+    

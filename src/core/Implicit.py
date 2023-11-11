@@ -9,7 +9,7 @@ from core.Ast import Ast
 from core.KB import KB
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, repr=False)
 class Implicit(Composite):
     head:Str      =Str(False)
     card:Int      =Int(1)

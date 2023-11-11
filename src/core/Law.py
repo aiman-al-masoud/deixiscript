@@ -6,7 +6,7 @@ from core.Ast import Ast
 from core.KB import KB
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, repr=False)
 class Law(Composite):
     cause:'Ast'=Bool(False)
     effect:'Ast'=Bool(False)

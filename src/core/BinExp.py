@@ -8,7 +8,7 @@ from core.Int import Int
 from core.KB import KB
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, repr=False)
 class BinExp(Composite):
     op:'Ast'    =Bool(False)
     left:'Ast'  =Bool(False)
