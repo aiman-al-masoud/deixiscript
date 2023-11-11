@@ -13,7 +13,7 @@ _question: subject? _DOES NEGATION* verb object? complement* "?"
 _command: subject? cmd NEGATION* verb object? complement*
 cmd:_DOES
 subject: noun_phrase
-verb: NAME
+verb: WORD
 object: noun_phrase
 ?complement: PREPOSITION noun_phrase?
 
@@ -30,7 +30,7 @@ noun_cardinal: NUMBER noun_phrase
 
 // noun
 noun: noun_head
-noun_head: NAME
+noun_head: WORD
 adjective: /([a-z]+)ful/
 
 // parentheses
@@ -38,7 +38,7 @@ _parens: "(" ast ")"
 
 // TERMINALS ----------------------------------------------------
 NEGATION: "not"
-NAME: /[a-z]+/
+WORD: /[a-z]+/
 NUMBER: /[0-9]+/
 ORDINAL: "first" | "last" | "new"
 BINOP: "and" | "or" | "when" | "after" | "+" | "-" | "*" | "/"

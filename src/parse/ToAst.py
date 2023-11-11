@@ -20,14 +20,8 @@ class ToAst(Transformer):
     def NUMBER(self, c):
         return Int(c)
 
-    def NAME(self, children):
+    def WORD(self, children):
         return Str(children)
-
-    # def ord(self, children):
-    #     return {'ord': children[0]}
-
-    def card(self, children):
-        return {'card': children[0]}
 
     def NEGATION(self, _):
         return {'negation': Bool(1)}
