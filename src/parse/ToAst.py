@@ -32,9 +32,6 @@ class ToAst(Transformer):
     def verb(self, children):
         return {'verb': children[0]}
 
-    def complement_head(self, children):
-        return {'complement_head':children[0]}
-
     def subject(self, children):
         return {'subject': children[0]}
 
