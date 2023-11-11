@@ -31,7 +31,6 @@ noun_ordinal: ORDINAL noun_phrase
 noun: (card?) noun_head
 noun_head: NAME
 card: NUMBER
-ord: ORDINAL
 adjective: /([a-z]+)ful/
 
 // parentheses
