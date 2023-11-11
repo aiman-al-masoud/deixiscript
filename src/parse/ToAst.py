@@ -60,6 +60,11 @@ class ToAst(Transformer):
         assert isinstance(noun, Implicit)
         return noun.addWhich(e(Str.GAP).does('be')._(the(adjective.value)).e)
 
+    def noun_negation(self, cs):
+        noun=cs[1]
+        assert isinstance(noun, Implicit)
+        return noun.copy(negation=Bool(1))
+
     def noun(self, children):
         
         d=reduce(lambda a,b: {**a, **b}, [x for x in children if not isinstance(x, Adjective)])
