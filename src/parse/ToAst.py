@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from functools import reduce
 from lark import Token, Transformer
-from core.Ast import Ast
 from core.Bool import Bool
 from core.Implicit import Implicit
 from core.Int import Int
