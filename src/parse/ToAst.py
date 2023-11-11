@@ -78,11 +78,6 @@ class ToAst(Transformer):
         core={k:v for k,v in d.items() if k in coreKeys}
         noun=Implicit(**core)
         return noun
-
-        # comps={k:v for k,v in d.items() if k not in coreKeys}
-        # comps1 = [adaptComplement(p, t) for p,t in comps.items()]
-        # comps2 = reduce(lambda a,b:a.and_(b), comps1).e if comps1 else Bool(True)
-        # return noun.addWhich(comps2)
         
     def noun_relative(self, cs):
         noun=cs[0]
