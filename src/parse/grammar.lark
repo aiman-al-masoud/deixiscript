@@ -9,13 +9,11 @@ compound_sentence: ast BINOP ast
 
 // SIMPLE-SENTENCE ----------------------------------------------
 simple_sentence: _command | _question
-_question: subject? _DOES NEGATION* verb object? complement* "?"
-_command: subject? cmd NEGATION* verb object? complement*
+_question: noun_phrase? _DOES NEGATION* verb noun_phrase? complement* "?"
+_command: noun_phrase? cmd NEGATION* verb noun_phrase? complement*
 cmd:_DOES
-subject: noun_phrase
 verb: WORD
-object: noun_phrase
-?complement: PREPOSITION noun_phrase?
+complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
 ?noun_phrase: noun | STRING | NUMBER 

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from functools import reduce
+from operator import ne, neg
 from lark import Token, Transformer
 from core.Ast import Ast
 from core.Bool import Bool
@@ -24,19 +25,13 @@ class ToAst(Transformer):
         return Str(children)
 
     def NEGATION(self, _):
-        return {'negation': Bool(1)}
+        return 'not'
 
     def cmd(self, _):
-        return {'cmd': Bool(1)}
+        return 'cmd'
 
-    def verb(self, children):
-        return {'verb': children[0]}
-
-    def subject(self, children):
-        return {'subject': children[0]}
-
-    def object(self, children):
-        return {'object': children[0]}
+    def verb(self, cs):
+        return Verb(cs[0])
 
     def noun_adjective(self, cs):
         noun=cs[1]
@@ -83,11 +78,15 @@ class ToAst(Transformer):
         value=[x for x in children if isinstance(x, Ast)][0]
         return Complement(preposition=preposition, value=value)
 
-    def simple_sentence(self, children):
-        d=reduce(lambda a,b: {**a, **b}, children)
-        x1=SimpleSentence(**d)
-        x2=x1.copy(subject= x1.subject or Str.GAP)
-        return x2
+    def simple_sentence(self, cs):
+        nouns=[x for x in cs if isinstance(x, Ast)]
+        complements={x.preposition:x.value for x in cs if isinstance(x, Complement)}
+        verb=[x for x in cs if isinstance(x, Verb)][0]
+        subject=nouns[0] if nouns else Str.GAP
+        object=nouns[1] if len(nouns)>1 else Bool(False)
+        negation=Bool(any([x for x in cs if x=='not']))
+        cmd=Bool(any([x for x in cs if x=='cmd']))
+        return e(subject).does(verb)._(object).e.copy(**complements, cmd=cmd, negation=negation)
 
     def compound_sentence(self, cs):
         op=str([x for x in cs if isinstance(x, Token)][0])
@@ -106,9 +105,8 @@ def adaptComplement(prepo:str, thing:Implicit):
 class Adjective(str):
     pass
 
-# @dataclass
-# class Verb:
-#     value:str
+class Verb(str):
+    pass
 
 @dataclass
 class Complement:
