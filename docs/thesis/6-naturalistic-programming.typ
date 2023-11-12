@@ -2,79 +2,101 @@
 
 Natural/istic programming is a broad term that can be applied to all those attempts (with varying degrees of sophistication) at using a more or less realistic subset of natural language to write code.
 
-The idea of instructing a computer in natural language (or something similar enough to deserve that name) has, long before the advent of Large Language Models, been a dream and sometimes a nightmare, for people in computer science.
+The idea of instructing a computer in natural/istic language (or some formal language close enough to deserve that nomenclature) has been a long standing dream, and sometimes a nightmare, for many people in computer science, long before the advent of modern day Large Language Models.
 
 == Skepticism
 
-The advantages of programming in natural language haven't always been clear to everyone.
+We begin by saying, first and foremost, that the advantages of programming in natural language haven't always been clear to everyone in the field. There has been disagreement regarding the extent to which programming in natural language may prove to be advantageous, but even on whether it be a desirable goal to achieve in the first place. 
 
-There has been no unanimous agreement on what extent programming in natural language may be advantageous, let alone be a desirable state of affairs in the first place.
+Edsger Dijkstra (1930-2002) was a notable computer scientist, advocate of structured programming and famous for (among the other things): the Dijkstra shortest path algorithm, the Banker's algorithm and the concept of semaphore in multi-threaded computing.
 
-Edsger Dijkstra (1930-2002), notable computer scientist, advocate of structured programming and famous for (among the other things): the Dijkstra shortest path algorithm, the Banker's algorithm and the concept of semaphore in multi-threaded computing, was very skeptical to say the least.
+Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming". According to him, not only was "natural language programming" technically difficult to achieve, but even assuming (ad absurdum) that it had been achieved long ago, it would have done programmers and more generally the field of computer science no good @foolishnessnatprogramming.
 
-Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming". Not only was "natural language programming" a difficult technical feat to accomplish indeed, but had it ever been accomplished, it would actually do more harm than good @foolishnessnatprogramming.
+Dijkstra argues that formal languages, while less familiar to the average person, are also much less prone at being misused; in natural language it is far too easy to make nonsensical statements, and while it is true that an automated system that processes a statement in formal language may end up looking "stupid" by not recognizing what, to the human eye, may seem like an blatant mistake, it is at least clear what the outcome of such a statement will be, as opposed to the ambiguity inherent to much of what we say in natural language.
 
-He argued that simple, elegant formalisms and narrow interfaces were and still are the key to past and future progress in fields such as mathematics and computer science, and that natural language would only do harm due to its intrinsic ambiguousness and the ease with which it can produce nonsensical statements. 
+Natural language, moreover, is pretty bad at expressing mathematical relations concisely; modern algebra, he argues, arised precisely when mathematicians gave up on trying to use natural language to represent their equations.
 
-It is also quite true that back in the day computers weren't nearly as widespread as in 2023, and people who were using them were more often than not experts trying to solve specialized problems rather than end-users seeking a more intuitive mode of interaction with their machines.
+While Dijkstra raises some important points that we shall elaborate on in some of the later discussions, it is important to remember that back in the day when he was writing, computers weren't nearly as widespread as in the present date; back then it was easier to regard the computer as merely a calculating device (hence the higher relevancy of mathematical notation in programming languages). 
 
-== Precision/Expressiveness Tradeoff
+Nowadays computers are tools for document and mutlimedia consumption, gaming consoles, video editing devices, office work stations etc... What an end-user often requires isn't a precise formalism to neatly express a mathematical concept, but rather an easy to learn scripting language to customize the behavior of a program on their computer. We think that natural language may be a good candidate at least for this niche, and for many other real-world problems that don't involve too many abstract mathematical concepts.
 
-// % fox and grapes 
-But taking a step back, even from the point of view of implementation, a tradeoff exists between the naturalness and expressivity on the one side, and the ease of implementation and precision of a formal language on the other @kuhn2014survey.
+== Precision vs Expressiveness
 
-Within the PENS classification scheme, a set of widely different Controlled Natural Languages (CNLs) based on English are classified by 4 metrics: Precision, Expressiveness, Naturalness and Simplicity.
+There is a tradeoff between naturalness and expressiveness on the one side, and ease of implementation and precision on the other.
 
-Or, respectively: the level of independence from context (P), the amount of expressible propositions (E), the similarity to natural language (N) and the ease of (computer) implementation (S).
+Within the PENS (Precision, Expressiveness, Naturalness and Simplicity) language classification scheme @kuhn2014survey, a set of widely different Controlled Natural Languages (CNLs), all based on English, were classified by 4 metrics: Precision, Expressiveness, Naturalness and Simplicity.
 
-The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated and Naturalness and Expressiveness are positively correlated. This corresponds to our initial intuitions.
+What these metrics roughly mean, respectively, is: the level of independence from context (Precision), the amount of expressible propositions (Expressiveness), the similarity to natural language (Naturalness) and the ease of implementation as a computer program (Simplicity).
 
-There is a tradeoff, and this tradeoff is emblematic of a problem. The push toward reasearch in naturalistic programming stems in part from the shortcomings of contemporary programming languages @knoll2006pegasus, @lopes2003beyond, @pulido2017survey.
+The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated, and Naturalness and Expressiveness are positively correlated.
 
-In these works, it is argued that the abstractions that power the current generation of programming languages, while powerful enough to support general purpose programming, are insufficient for tackling certain kinds of problems concisely, resulting in verbose, repetitive and suboptimally organized code.
+To (grossly) summarize the results: the (natural) languages we learn as we grow up are very natural (obviously) and very expressive: you can say almost anything in natural language, or better yet: it's hard to come up with any concrete examples of things you can't say. On the other hand: these natural languages tend to be imprecise (highly context dependent) and, also because of this, hard to implement on a computer.
 
-The example of Aspect Oriented Programming (AOP) is brought up to elucidate the point. AOP, it is argued, offers an elegant and powerful way to express cross-cutting concerns, which traditional Object Oriented Programming (OOP) languages lack @lopes2003beyond.
+== Expressiveness and Succintness
 
-An example is logging all of the calls to functions with such and such a name or signature. In a traditional OOP language you would have to insert a call to a logging function in every such function that you wished to track the activity of. In an AOP language this is a concern that can be handled by an Aspect, written as "separate chapters of the imaginary book that describes the application" @lopes2003beyond.
+When we speak of "expressiveness" in the more general context of programming languages, we don't refer to the mere ability of a programming language to describe an algorithm; we also think that an expressive language should do so _effectively_. Conciseness, terseness, succintness: some people tend to believe that it is possible to equate these properties of a programming language with its effective power.
 
-It is further argued that this is a prelude of the evolution of naturalistic traits in programming languages, as the mechanism used by AOP is similar to how we would actually use natural language's referenatial capabilities to describe solutions to a problem (splitting it into different "chapters").
+Paul Graham (1964-), computer scientist, author and entrepreneur, argues just this in an essay from 2002 titled "Succintness is Power" @succpower. The succintness he has in mind, isn't defined as the size in lines or in characters of a piece of code, but rather as the number of distinct components of the Abstract Syntax Tree (AST) of the same code.
 
-The need for better abstractions is also reflected in the criticism of software design patterns as a poor language's solution to the lack of more powerful abstractions @revengenerds, and in the practice of Literate Programming @knuth1984literate.
+As the author believes, a good language is a language that not only lets you tell a computer what to do once you've thought about it, but also aids you at thinking about the problem in the first place, and discovering novel solutions to it; this, however, is a property that is hard to measure precisely, because empirical tests often require predefined problems and expect a certain kind of solution, which puts a constraint on the kind of creativity that can be tested for. But the tests that have been performed, however incomplete, seem to point to the idea that succintness is power, according to the author.
+
+The author argues that most of the other desirable traits of a language can be traced back to its level of succintness: restrictiveness is just when a language lets you take a longer "detour", rather than letting you take a "shortcut", when trying to translate your thoughts to it.
+
+When it comes to readability, he draws the distinction between readability-per-line versus the readability of a whole program, arguing for the importance of the latter: after all, the average line of code may be more readable in language A than in language B, but if the same program requires 100 such lines to express in language A, and just 10 in language B, it may be more beneficial to sacrifice readability-per-line. But readability-per-line is a successful marketing strategy, because it means that a language will took easy to learn, to the eyes of its new potential users, and that feature can be successfully employed to advertize a language over its competitors; the author further exemplifies this with the analogy of advertizing for small monthly installments versus large upfront payments, as an instance of a parallel successful marketing strategy.
+
+While natural language certainly is not better than mathematical notation at succintly expressing mathematical equations, there are other areas of human experience that are more easily, and perhaps more effectively, captured through the mechanisms of natural language.
+
+== Shortcomings of traditional languages
+
+The push towards naturalistic programming stems in part from the shortcomings of contemporary programming languages at describing certain classes of problems concisely @knoll2006pegasus, @knoll2011naturalistic, @lopes2003beyond, @pulido2017survey.
+
+In these works, it is argued that the abstractions that power the current generation of programming languages, while adequate to support general purpose programming, in practice result in verbose, repetitive and brittle code in many cases.
+
+There is a _Semantic Gap_ between the desired behavior of a program and the code that is written to produce it, the same paper which discusses this concept @knoll2011naturalistic shows how this fact results in the "scattering of ideas" in traditional programming languages whenever the need arises to express a concept that isn't directly supported by the language in question. 
+
+A concrete example of this "scattering of ideas" results from the use of flags (boolean variables) that are conditionally modified in a loop and read elsewhere in the code: the logic behind their particular usage may be trivial when explained in natural language, while being entirely opaque at a first reading of the code; this means that the logic they express may have to be painstakingly pieced back together by the people that read the code, potentially many times over. Code comments, which consist essentially of short natural language explanations, may help add clarity to such obscure pieces of code, but one must be careful to avoid their usage in excess, as they may become obsolete and are not checked by the compiler.
+
+The emergence of Aspect Oriented Programming (AOP) is brought up an earlier paper @lopes2003beyond to make a similar argument regarding the limits of traditional programming languages.
+
+AOP is a programming paradigm that addresses the problem of cross-cutting concerns, by advocating their separation from the core business-logic. A cross-cutting concern, in software development, is an aspect of a program that affects various modules at the same time, without the possibility (in non-AOP languages) of being encapsulated in any single one of them.
+
+A most obvious example is logging all of the calls to functions with such and such characteristics and only those. In a traditional OOP language, one would have to insert a call to a the logger at the beginning or at the end of every function that one wished to track. In an AOP language this is a concern that can be handled by an Aspect: a separate section of the program that neatly encapsulates that cross-cutting concern, similar to how we could write a "chapter about logging" if we were trying to describe the behavior of the same application using nothing but the referenatial capabilities afforded by natural language in a traditional book.
+
+The need for better abstractions is also reflected in the general criticism of software design patterns as what could be described as a poor languages's solution to the lack of more powerful abstractions @revengenerds, and in the practice of Literate Programming @knuth1984literate.
 
 == Literate Programming
 
-Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX typesetting and markup system, coined the term "Literate Programming" in 1984 to describe his original approach to writing programs.
+Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX typesetting and markup system, coined the term "Literate Programming" in 1984 to describe his novel approach to writing programs.
 
-Knuth designed a language called "WEB"; apparently back when he chose this name for it, "web" was still "one of the few three-letter words of English that hadn't al-
-ready been applied to computers" @knuth1984literate.
+Knuth designed a language called "WEB"; apparently back when he chose this name for it, the word "web" was still "one of the few three-letter words of English that hadn't already been applied to computers" @knuth1984literate.
 
-The language WEB combines a markup language with a traditional general purpose programming language (TEX and PASCAL respectively, in Knuth's original work); the idea is that a program is a web of components, and that it is best to describe the links between these components using a mix of natural language descriptions (using TEX) and formal notation (using PASCAL).
+The language WEB combines together a markup language with a traditional general purpose programming language (TEX and PASCAL respectively, in Knuth's original work); the idea is that a program can be seen as a web of components, and that it is best to describe the links between these components using a mixture of natural language descriptions (with TEX) and formal notation (with PASCAL).
 
-According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language. 
-
-This is akin to how a typical math text book is organized, mirroring this observation: "The insight here is that a program should be written primarily in a natural language, with snippets of code in more appropriate syntax as (and only as) required" @osmosianblog.
+According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language.
 
 == Natural Style
 
-It is interesting to take a look at how people usually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which the same programmer employs when translating his/her ideas into executable code  @knoll2006pegasus, @miller1981natural.
+It is interesting to take a look at how people actually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which the same programmer employs when translating his/her ideas into executable code @knoll2006pegasus, @miller1981natural.
 
-An early and oft-cited study in this respect is the one conducted by L. A. Miller in 1981 @miller1981natural. A group of college students who were not familiar with computers were asked to provide solutions to six file manipulation problems, and their proposed solutions (in natural language) were evaluated for metrics such as preference of expression and contextual referencing.
+An early and oft-cited study in this respect is the one conducted by L. A. Miller in 1981 @miller1981natural. A group of college students who were not familiar with computers were asked to provide solutions to six file manipulation problems, and their proposed solutions (all written in natural language) were evaluated for metrics such as preference of expression and contextual referencing.
 
-It was found that the students were prone to using contextual references such as pronouns and words like "the previous" and "the next", a phenomenon broadly known as Deixis, of which we speak in the chapter on linguistics. They would also do this rather than explicitly assigning variables.
+It was found that the students were prone to use contextual references such as pronouns and words like "the previous" and "the next", a phenomenon broadly known as Deixis. They would use these implicit contextual references rather than explicitly assigning any variables.
 
-The students preferred to treat data structures in a cumulative way, using universal quantifiers rather than loops to express operations that had to be carried out on multiple instances of a data structure. They actually avoided using any of the traditional structured programming constructs (if-then-else, while, for...) or even unstructured programming constructs (goto statements).
+The students preferred to treat data structures in a cumulative way, using universal quantifiers rather than loops to express operations that had to be carried out on multiple instances of a data structure. They avoided using any of the traditional structured programming constructs (if-then-else, while, for...) or even unstructured programming constructs (goto statements).
 
-When describing an algorithm, the students tended to begin by the most general and crucial step of the procedure, to only then mention those special cases which required a different sort of treatment; further refining, or annotating, an initial general statement is an idea that is also brought up in @brachman2022machines and seems to be an important trait of how humans naturally tend to describe things.
+When describing an algorithm, the students tended to begin by the most general and crucial step of the procedure, to only then mention those special cases which required a different sort of treatment; further refining, or annotating, an initial general statement is an idea that is also brought up with some variations in @brachman2022machines and thus seems to us as an important trait of how humans naturally tend to describe complex problems.
 
-This is often not the case in code, where such things as crucial steps buried within deeply nested ifs, and guard clauses and early returns to reduce the level of nesting and help ease the mental overload of such early checking for special cases are the order of the day.
+This is often not how we do things in programming language code, where the crucial step of a function may be buried deep within a hierarchy of nested if-statements; or perhaps, to avoid the nesting, delayed until after all of the guard clauses and early returns that check for all of the edge cases.
 
-The subjects also expected the computer to possess some pragmatic knowledge of the world and of their intentions, and to fill in the semantic gaps whenever needed. "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" @foolishnessnatprogramming as Dijkstra would've put it.
+Perhaps the success of the exception handling model (which itself is not perfect, by any means) is owed in part to the philosophy of tackling the most important step first, and handling the edge cases as exceptions later.
 
-A positive, implementation-wise, finding is that the subjects tended to use a relatively restricted vocabulary, though they still seemed to be using synonyms sometimes.
+The subjects of the 1981 experiment @miller1981natural also expected the computer to possess some pragmatic knowledge of the world and of their intentions, expecting it to fill in the semantic gaps whenever needed. As Dijkstra would've put it: "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" @foolishnessnatprogramming.
+
+Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time.
 
 == Stories and Code
 
-What do programming and story telling have in common? A lot, actually, according to a 2005 study that involved a system which automatically translated "stories" to scaffolding (or underspecified) code fragments in Python @liu2005metafor, @liu2005programmatic.
+What do computer programming and story telling have in common? A lot, according to a 2005 study that involved a system which automatically translated "stories" to scaffolding (or underspecified) code fragments in Python @liu2005metafor, @liu2005programmatic.
 
 The transpiler, called Metafor, was integrated with a "with a large knowledge base of Common Sense Knowledge, Concept-Net (Liu and Singh, 2004), derived from Open Mind a corpus of 750,000 natural language statements of Common Sense knowledge contributed by 15,000 Web community volunteers" @liu2005metafor.
 
