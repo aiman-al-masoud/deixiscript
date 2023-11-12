@@ -30,6 +30,9 @@ Since define is called recursively once and for all, you may be able to avoid ca
 # Maybe limit decompress
 only one list (subject exor object, "as" can't be > 1)
 
+# Errors and meta for error messages
+
+
 ---------------------
 Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.
 
