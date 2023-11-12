@@ -41,7 +41,8 @@ class EB(Generic[T]):
 
     def which(self, which:'Ast|EB')->'EB[Implicit]':
         assert isinstance(self.e, Implicit)
-        return EB(self.e.copy(which=e(which).e))
+        return EB(self.e.addWhich(e(which).e))
+        # return EB(self.e.copy(which=e(which).e))
 
     def when(self, definition:'Ast|EB|int|str'):
         return EB(Def(definendum=self.e, definition=e(definition).e))
