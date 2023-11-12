@@ -8,8 +8,7 @@
 compound_sentence: ast BINOP ast
 
 // SIMPLE-SENTENCE ----------------------------------------------
-simple_sentence: noun_phrase? _HELPER NEGATION? verb noun_phrase? complement* QUESTION_MARK?
-verb: WORD
+simple_sentence: noun_phrase? _HELPER NEGATION? VERB noun_phrase? complement* QUESTION_MARK?
 complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
@@ -35,6 +34,7 @@ noun: WORD
 
 // TERMINALS ----------------------------------------------------
 NEGATION: "not"
+VERB: WORD
 WORD: /[a-z]+/
 NUMBER: /[0-9]+/
 ADJECTIVE: /([a-z]+)ful/
