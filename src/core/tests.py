@@ -344,8 +344,8 @@ def test_c062():
 
 # definition of sentence with nested definition of subject
 def test_c063():
-    x1=the('lion').when(the('cat').which(does('be')._('big'))).tell()
-    x2=the('lion').does('leap').when(the('lion').does('jump')).tell(x1)
+    x1=the('lion').does('leap').when(the('lion').does('jump')).tell()
+    x2=the('lion').when(the('cat').which(does('be')._('big'))).tell(x1)
     x3=the('cat').which(does('be')._('big')).tell(x2)
     x4=the('lion').does('leap').tell(x3)
     assert the('lion').does('jump').get(x4)

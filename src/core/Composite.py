@@ -44,12 +44,14 @@ class Composite(Ast):
     def define(self, kb:'KB')->'Ast':
 
         for d in kb.defs:
-            m = d.definendum.isMatch(self)
+            definendum=d.definendum.define(kb-d)
+            definition=d.definition.define(kb-d)
+            m = definendum.isMatch(self)
 
             if m: 
-                x1=d.definition.subst(m)
+                x1=definition.subst(m)
                 return x1.define(kb)
-            
+        
         return self
     
     def conseq(self, kb:'KB')->'Ast':
