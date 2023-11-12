@@ -211,7 +211,7 @@ The language also introduces the concept of "Naturalistic Iterators" and "Natura
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
-== Naturalistic Types
+// == Naturalistic Types
 // TODO
 
 // #bibliography("bib.bib")
