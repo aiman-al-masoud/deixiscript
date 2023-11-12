@@ -64,7 +64,7 @@ A most obvious example is logging all of the calls to functions with such and su
 
 The need for better abstractions is also reflected in the general criticism of software design patterns as what could be described as a poor languages's solution to the lack of more powerful abstractions @revengenerds, and in the practice of Literate Programming @knuth1984literate.
 
-== Literate Programming
+== Literate Programming <literate>
 
 Donald Knuth (1938-), a computer scientist known for his foundational work in time complexity theory and for creating the TEX typesetting and markup system, coined the term "Literate Programming" in 1984 to describe his novel approach to writing programs.
 
@@ -164,11 +164,11 @@ Drawbacks related to Pegasus, or at least to the original version, include perfo
 
 All in all, Pegasus remains a valid example of a general purpose naturalistic programming system; the product is, to our knowledge as of writing, not yet available to the public, but one can see examples of its usage on the project's official website @pegasuswebsite.
 
-=== CAL
+=== CAL <cal>
 
-Another worthwhile case of a general purpose naturalistic programming language, also originally from 2006, is that presented by the intrestingly called "Osmosian Order of Plain English Programmers" @osmosianblog.
+Another example of general purpose naturalistic programming language, also originally from 2006 with further developments up until recently, is presented by the intrestingly called "Osmosian Order of Plain English Programmers" @osmosianblog.
 
-Some of the motivations behind this project, as explained by the authors, are related to the idea, also mentioned elsewhere @knoll2006pegasus, of eliminating the intermediate translation step from natural language thoughts and natural language pseudo-code into rigorous programming language constructs.
+A motivation behind this project, as explained by the authors, is to eliminate the intermediate translation step from natural language pseudo-code to rigorous programming language notation (cf:  @knoll2006pegasus).
 
 Another motivating factor was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
 
@@ -178,42 +178,40 @@ The authors seem to have come to the conclusion that all of this is indeed possi
 
 The authors draw a parallel between the "pictures" (we assume they're talking about mental images in human beings) and the "types" (programming language types), and between the skills that a young (or old) human being may acquire and the traditional routines of a programming language.
 
-Most of the code in most of the programs, they claim, represents simple enough logic that it is most convenient to express it in natural language. However, high-level (natural language) and low-level (programming language) code can and should coexist in certain scenarios; the authors use the metaphor of a math text-book to expound this idea: mathemathical formulas in formal notation, when convenient, interspersed in a text mostly made up of natural language, an idea that echoes the philosophy behind Literate Programming we discussed earlier @knuth1984literate.
+Most of the code in most of the programs, they claim, represents simple enough logic that it is most convenient to express it in natural language. However, high-level (natural language) and low-level (programming language) code can and should coexist in certain scenarios; the authors use the metaphor of a math text-book to support this idea: mathemathical formulas in formal notation, when convenient, interspersed in a text mostly made up of natural language; an idea akin to the philosophy behind Literate Programming we discussed earlier @literate.
 
-The CAL compiler is freely downloadable, together with the instructions manual in pdf, on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing @osmosianblog.
+What's striking about this language is that, albeit very English-like in syntax, there is a markedly procedural taste to it, complete with variables, loops and routines. There are something like three kinds of routines: procedures, deciders and functions. The procedures, just like classical procedures, are routines with side effects that "simply do something" without returning a value. Deciders and functions on the other hand can resolve to a value; the former being used to define when a condition is true (also allowing the system to infer when it is false), and the latter being used to derive a value from a passed parameter and also usable with possessives (such as "the triangle's area") in a fashion reminiscent of getter methods or derived properties in OOP.
 
-The 100 page manual gives a comprehensive overview of the language with plenty of examples. What's striking about this language is that, albeit naturalistic, it follows a markedly procedural paradigm, complete with variables, loops and routines.
-
-There are at least three kinds of routines in this language: procedures, deciders and functions. CAL procedures, just like classical procedures, are routines with side effects "that simply do something" without returning a value. Deciders and functions on the other hand can resolve to a value; the former being used to define when a condition is true (allowing the system to automatically infer when it is false), and the latter being used to derive a value from a passed parameter and can also be used with possessives (such as "the triangle's area") in a fashion reminiscent of getter methods or derived properties in OOP.
-
-It is also possible to define custom data types using natural language syntax to define the fields and the types thereof. Among the custom types that can be defined are "records" and "things" (a kind of dynamic structure). Units of measurments and the conversion between them are also supported. Based on a remark on a differ
-
-// % seems to be nominal not structural https://wiki.osdev.org/Plain_English_Programming
+It is possible to define custom data types, using natural language syntax to define the fields and the respective types thereof. Among the custom types that can be defined are "records" and "things" (a kind of dynamic structure). Units of measurments and the conversion between them are also supported. 
 
 The language also supports event driven programming, and has various I/O capabilities such as timers, audio output and even a 2D graphics system which can be used to draw and plot shapes.
 
+The CAL compiler is freely downloadable (and can re-compile itself in about 3 seconds), together with the instructions manual available as a pdf, all on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing. The 100 page manual gives a comprehensive overview of the language with plenty of examples @osmosianblog.
+
+// Based on a remark on a differ
+// % seems to be nominal not structural https://wiki.osdev.org/Plain_English_Programming
+
 === SN
 
-A newer example of a full fledged naturalistic general purpose programming language is given by the SN language, or "Sicut Naturali" @hernandez2021evolution ("Just as in nature" in Latin) discussed in a 2019 paper by Oscar Pulido-Prieto and Ulises Juárez-Martínez @pulido2019model.
+A slightly newer example of a full fledged naturalistic programming language is given by the language SN (which stands for "Sicut Naturali", or "Just as in nature" in Latin @hernandez2021evolution) discussed in a 2019 paper by Oscar Pulido-Prieto and Ulises Juárez-Martínez @pulido2019model.
 
 The authors cite a distinction made by others between what is called the "formalist" versus the "naturalist" approach to programming languages based on natural language. The formalist approach focuses on correct execution, thus favoring an unambiguous grammars, while the naturalist approach tolerates ambiguous grammars and attempts to resolve the remaining ambiguities using techniques from artificial intelligence @pulido2019model.
 
-The authors state that their approach is closer to the formalist camp, and in fact, while the philosophy and style of the language is new and differs significantly from a typical object oriented language, some of the syntax looks artificial as compared to the two previously surveyed works (Pegasus and CAL). It must be said though that some of the syntax does try to imitate English to a good extent.
+The authors state that their approach is closer to the formalist camp; and interestingly, while the philosophy and style of the language is novel, and differs significantly from a typical object oriented language, and while many of the syntax does try to imitate English to a certain extent, the syntax overall is a little less close to English's than the two previously surveyed projects (@pegasus, @cal).
 
-The authors begin by discussing what they believe are the basic elements that would allow a naturalistic system to function as a general purpose programming language, and come to the conclusion that: nouns, adjectives, verbs, circumstances, phrases, anaphors, explicit and static types and formalized syntax and rules (in accordance with the formalist approach) are the required building blocks for such a system.
+The authors discuss what they believe are the basic elements that should allow a naturalistic system to function as a general purpose programming language, and come to the conclusion that the required building blocks for such a system are: nouns, adjectives, verbs, circumstances, phrases, anaphors, explicit and static types and formalized syntax and rules (in accordance with the formalist approach).
 
-A SN Noun roughly corresponds to a class in OOP as it can inherit from another noun (only single inheritance is allowed) and can posses attributes. An Adjective on the other hand supports multiple inheritance, and can be applied to a Noun to specialize it. A verb is defined on either a Noun or an adjective, similar to how a method can be defined on a class or on a Scala trait.
+A SN Noun roughly corresponds to a class in OOP as it can inherit from another noun (only single inheritance is allowed) and can posses attributes. An Adjective, on the other hand, supports multiple inheritance, and can be applied to a Noun to specialize it. A verb is defined on either a Noun or an adjective, similar to how a method can be defined on a class or on a trait (such as in the language Scala).
 
-Circumstances are a special construct that can apply to either attributes or verbs, and it serves to specify the applicability (or unapplicability) of adjectives to Nouns, or the conditions and time of execution of a verb. For instance, one could specify that an Adjective mutually excludes another, or that a verb should be executed before or after another, for example to log the creation of all instances of a certain kind of Noun.
+Circumstances are a special construct that can apply to either attributes or verbs, they serve to specify the applicability (or unapplicability) of adjectives to Nouns, or the conditions and time of execution of a verb. For instance, one could specify that an Adjective mutually excludes another, or that a verb should be executed before or after another, for example to log the creation of all instances of a certain kind of Noun.
 
-Noun phrases, which can be a combination of Nouns, Adjectives and "with/as" clauses and support plurals, have a dual usage in SN: they can either be used as constructors to create new instances of a certain kind (with the "a/an" keyword) or to refer to already existing instances of such a kind (with the "the" keyword).
+Noun phrases, which can be a combination of Nouns, Adjectives, and "with/as" clauses, and can support plurals, have a dual usage in SN: they can either be used as constructors to create new instances of a certain kind (with the "a/an" keyword) or to refer to already existing instances of such a kind (with the "the" keyword).
 
-The language also supports the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by saying things like: "repeat the next 2 instructions until i > 10." @pulido2019model.
+The language also introduces the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by making such statements: "repeat the next 2 instructions until i > 10."
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
 == Naturalistic Types
-
-// % TODO
+// TODO
 
 // #bibliography("bib.bib")
