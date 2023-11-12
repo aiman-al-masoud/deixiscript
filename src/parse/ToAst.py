@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+from typing import List
 from lark import Token, Transformer
+from core.Paragraph import Paragraph
 from core.Ast import Ast
 from core.Bool import Bool
 from core.Implicit import Implicit
@@ -77,11 +79,21 @@ class ToAst(Transformer):
             case 'after': return e(cs[0]).after(cs[2]).e.copy(cmd=Bool(1))
             case _: return e(cs[0]).binop(op, cs[2]).e
 
-def adaptComplement(prepo:str, thing:Implicit):
+    def ast(self, cs):
+        nonFlat=[list(x.statements) if isinstance(x, Paragraph) else x for x in cs]
+        x=flatten(nonFlat)
+        result= Paragraph(statements=tuple(x))
+        if len(result.statements)==1: return result.statements[0]
+        return result
 
+def flatten(s:List):
+    if not s: return s
+    if isinstance(s[0], List): return [*flatten(s[0]), *flatten(s[1:])]
+    return [*s[:1], *flatten(s[1:])] 
+
+def adaptComplement(prepo:str, thing:Implicit):
     if prepo=='of':
         return e(thing).does('have')._(Str.GAP).as_('attribute')
-
     raise Exception
 
 class Adjective(str):

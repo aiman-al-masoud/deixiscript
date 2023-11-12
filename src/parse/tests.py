@@ -1,3 +1,4 @@
+from core.Paragraph import Paragraph
 from parse.Parser import Parser
 from core.EB import the, does, e
 from core.Str import Str
@@ -24,9 +25,8 @@ def test_p006():
     assert parser.parse('a cat which does eat') \
         == the('cat').which(does('eat')).e
 
-#TODO: need start AST!!!!!!!!!
-# def test_p007():
-#     assert parser.parse('"capra scema"') == e("capra scema").e
+def test_p007():
+    assert parser.parse('"capra scema"') == e("capra scema").e
 
 def test_p008():
     assert parser.parse('stdout does be "capra scema"') \
@@ -50,3 +50,15 @@ def test_p012():
 def test_p013():
     assert parser.parse('the cat does run?') \
         == the('cat').does('run').e
+
+def test_p014():
+    assert parser.parse('the cat does run. the dog does hide. a man does worry.') \
+        == Paragraph(statements=(
+            the('cat').does('run').new.e,
+            the('dog').does('hide').new.e,
+            the('man').does('worry').new.e,
+        ))
+
+def test_p015():
+    assert parser.parse('cat does sit on table') \
+        == the('cat').does('sit').on(the('table')).new.e
