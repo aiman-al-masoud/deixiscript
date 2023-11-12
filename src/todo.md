@@ -9,12 +9,6 @@ https://brython.info/static_tutorial/en/index.html
 # Fuzz testing
 Random AST generator for fuzz testing?
 
-# Property/Structural/Non-nominal Uniquess for everything
-- maybe: no entity can exist unless it is at least somewhat distinct from another already exisiting entity, and ID is not enough for the distinction
-	Benefits
-	- remove Negation(NounPhrase) special case 
-	- remove Command(SimpleSentence) special case
-	
 # Ordinality
 Currently only supports first/last, and limit DD
 
@@ -26,9 +20,9 @@ Currently only supports first/last, and limit DD
 # Simplify
 Since define is called recursively once and for all, you may be able to avoid calling eval() from some of the other functions or maybe even call define at the top-level outside of eval
 
-# Implement Tic-Tac-Toe
-a free spot is a spot that does not have an "x" nor an "o".
-after a spot has an "x" then a free spot has an "o".
+# Implement
+- Tic-Tac-Toe: a free spot is a spot that does not have an "x" nor an "o". after a spot has an "x" then a free spot has an "o".
+- odd/even number recognition
 
 # Maybe Fancy Math Ops
 1 and 2 and 3 + 0 // 6
