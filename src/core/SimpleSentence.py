@@ -56,13 +56,13 @@ class SimpleSentence(Composite):
     def tellNegative(self, kb: 'KB') -> 'KB':
         match self.verb:
             case Str('have'|'be'):
-                if self.verb=='be': return toHave(self).copy(cmd=Bool(1), negation=Bool(1)).eval(kb)
+                if self.verb=='be': return toHave(self).tellNegative(kb)
                 kb1, it = makeExplicit(self, kb)
-                if it!=self: return it.copy(cmd=Bool(1), negation=Bool(1)).eval(kb1)
+                if it!=self: return it.tellNegative(kb)
                 edge = (self.subject, self.object, self.as_)
                 return kb1 - frozenset({edge})
             case _:
-                return toHave(self).copy(cmd=Bool(1), negation=Bool(1)).eval(kb)
+                return toHave(self).tellNegative(kb)
         
     def isMatch(self, sub: 'Ast') -> Dict['Ast', 'Ast']:
         from core.someMap import everyMap, someMap
