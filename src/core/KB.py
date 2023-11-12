@@ -42,7 +42,9 @@ class KB:
         match o:
             case frozenset():
                 return self.copy(wm=self.wm - o)
-            case Def()|Law():
+            case Def():
+                return self.copy(defs=sortByGenerality([x for x in self.defs if not x.isMatch(o)]))
+            case Law():
                 raise Exception
 
     @property

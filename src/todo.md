@@ -34,7 +34,10 @@ after a spot has an "x" then a free spot has an "o".
 1 and 2 and 3 + 0 // 6
 
 # Maybe limit decompress
-only one list (subject exor object, "as" can't be > 1) 
+only one list (subject exor object, "as" can't be > 1)
+
+# test_c063
+will not work if lion is defined after lion jumping...
 
 ---------------------
 Note to self: a question may create a whole new entity (thus having side effects even on the WM). Actually no, right now a generic simple sentence is converted to an event first (a "nounphrase") so none of its constituents are created if it is not (the whole thing) a command.

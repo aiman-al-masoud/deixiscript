@@ -342,17 +342,13 @@ def test_c062():
     x2 = the('cat').tell(x1)
     assert not the('cat').not_.get(x2)
 
-# # TODO WRONG! In Def lion wasn't expanded, this causes leap not to expand to jump
-# def test_c063():
-#     x1=the('lion').when(the('cat').which(does('be')._('big'))).tell()
-#     x2=the('lion').does('leap').when(the('lion').does('jump')).tell(x1)
-#     x3=the('cat').which(does('be')._('big')).tell(x2)
-#     x4=the('lion').does('leap').tell(x3)
-#     print('-----------------------')
-#     print(the('lion').does('leap').e.define(x3))
-#     # print(x4.wm)
-#     # print(x2.defs[1])
-
+# definition of sentence with nested definition of subject
+def test_c063():
+    x1=the('lion').when(the('cat').which(does('be')._('big'))).tell()
+    x2=the('lion').does('leap').when(the('lion').does('jump')).tell(x1)
+    x3=the('cat').which(does('be')._('big')).tell(x2)
+    x4=the('lion').does('leap').tell(x3)
+    assert the('lion').does('jump').get(x4)
 
 # TODO: separate events!
 # # and phrase inside of command 

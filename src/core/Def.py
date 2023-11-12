@@ -20,3 +20,10 @@ class Def(Composite):
 
     def isThingish(self) -> bool:
         return False
+
+    def define(self, kb: 'KB') -> 'Ast':
+        # return super().define(kb)
+        definendum=self.definendum.define(kb-self)
+        definition=self.definition.define(kb-self)
+        result=self.copy(definendum=definendum, definition=definition)
+        return result
