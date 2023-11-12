@@ -6,6 +6,14 @@ kb=KB()
 parser=Parser()
 
 while True:
-    ast=parser.parse(input('> '))
+    # x=input('> ')
+    # if x.startswith(':def'):
+    #         y=x.lstrip(':def').strip()
+    #         print(y)
+    #         ast=parser.parse(y)
+    #         print(ast.define(kb))
+    #         continue
+    x=input('> ')
+    ast=parser.parse(x)
     kb=ast.eval(kb)
     save_png(kb)
