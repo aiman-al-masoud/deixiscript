@@ -12,7 +12,7 @@ simple_sentence: noun_phrase? _HELPER NEGATION? VERB noun_phrase? complement* QU
 complement: PREPOSITION noun_phrase?
 
 // NOUN-PHRASE --------------------------------------------------
-?noun_phrase: noun | STRING | NUMBER 
+?noun_phrase: NOUN | STRING | NUMBER 
         | noun_article 
         | noun_negation 
         | noun_ordinal 
@@ -30,10 +30,10 @@ noun_complement: noun_phrase complement
 noun_ordinal: ORDINAL noun_phrase
 noun_cardinal: NUMBER noun_phrase
 _parens: "(" ast ")"
-noun: WORD
 
 // TERMINALS ----------------------------------------------------
 NEGATION: "not"
+NOUN: WORD
 VERB: WORD
 WORD: /[a-z]+/
 NUMBER: /[0-9]+/

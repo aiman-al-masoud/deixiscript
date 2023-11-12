@@ -16,7 +16,7 @@ class ToAst(Transformer):
     def NEGATION(self, _): return 'not'
     def QUESTION_MARK(self, _): return '?'
     def VERB(self, c): return Verb(c)
-    def noun(self, cs): return Implicit(head=cs[0])        
+    def NOUN(self, c): return Implicit(head=Str(c))        
 
     def noun_adjective(self, cs):
         noun=cs[1]
