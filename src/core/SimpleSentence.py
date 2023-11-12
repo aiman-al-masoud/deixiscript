@@ -84,7 +84,6 @@ class SimpleSentence(Composite):
     def define(self, kb:'KB')->'Ast':
         d={k:v.define(kb) for k,v in self.args.items()}
         ss=self.copy(**d)
-        # print(ss, kb.defs)
         return Composite.define(ss, kb)
 
 def toHave(ast:SimpleSentence):
