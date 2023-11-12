@@ -96,65 +96,73 @@ Another finding was that the subjects tended to use a relatively restricted voca
 
 == Stories and Code
 
-What do computer programming and story telling have in common? A lot, according to a 2005 study that involved a system which automatically translated "stories" to scaffolding (or underspecified) code fragments in Python @liu2005metafor, @liu2005programmatic.
+What do computer programming and story telling have in common? A lot, according to a study from 2005. The study involved a system which automatically translated user stories to Python code fragments @liu2005metafor, @liu2005programmatic.
 
-The transpiler, called Metafor, was integrated with a "with a large knowledge base of Common Sense Knowledge, Concept-Net (Liu and Singh, 2004), derived from Open Mind a corpus of 750,000 natural language statements of Common Sense knowledge contributed by 15,000 Web community volunteers" @liu2005metafor.
+The program, which can be seen as a very peculiar kind of transpiler, called Metafor, was integrated with a large Common Sense Knowledge base called Concept-Net, derived from the Open Mind corpus of natural language Common Sense statements.
 
-A very interesting concept discussed in this work is that ambiguity isn't always bad, on the contrary, it can be desirable under certain circumstances: as a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change, for instance, by automatically promoting attributes to sub-classes @liu2005metafor. This also ties in well with the idea of "successive refinements" mentioned earlier.
+The code generated was "scaffolding", or underspecified code, that in fact wasn't meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity isn't always a negative aspect of natural language, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. This ties in well with the idea of "successive refinements" we mentioned earlier.
 
-The paper also touched upon the concept of "programmatic semantics", also expanded upon another work @liu2005programmatic by the same authors; which is the idea that natural language structures imply and can be mapped upon the more traditional programming structures from structuted programming and OOP: "A surprising amount of what we call programmatic semantics can be inferred from linguistic structure" @liu2005metafor.
+The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on.
 
-The authors propose, for instance, that a noun phrases may correspond to data structures, verbs to functions, and so on, and we propose a slight modification to these ideas in the present work (Deixiscript).
-
-The code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students (some with novice and some with intermediate programming skills), in trying to answer the question of whether they'd be likely to use it as a brainstorming tool rather than more traditional pen-and-paper methods @liu2005metafor.
+As we already saw, the code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate the task of outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students, some of which with novice and some of which with intermediate programming skills. The students responded to the question of whether they'd be likely to use it as a brainstorming tool, in lieu of more traditional pen-and-paper methods @liu2005metafor.
 
 == General Purpose Systems
 
-Since then, there have been more complete attemps at creating a comprehensive natural language programming system, that was usable for general purpose programming. We will proceed to mention three of what we think may be the most important attempts: Pegasus, CAL and SN.
+Since then, there have been newer and more complete attempts at creating a comprehensive natural language programming system, that supported general purpose programming. We will proceed to mention three of what we think may be the most important ones: Pegasus, CAL and SN.
 
 === Pegasus <pegasus>
 
-The original implementation of Pegasus is laid out in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this @pegasuswebsite.
+The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this @pegasuswebsite.
+
+==== Implicit Referencing, Compression and Context Dependence
 
 According to the authors, the main features that distinguish natural language from programming languages are: implicit referecing, compression and context dependence.
 
-Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" are all words clearly exemplify this phenomenon. 
+Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" are all words clearly exemplify this phenomenon.
 
-Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "you pet the cat and the dog" understood as an abbreviation for "you pet the cat and you pet the dog". An example of semantic compression would be the in sentence "first go from left to right, then viceversa", where "viceversa", in this case, would mean: "from right to left".
+Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "he pets the cat and the cheetah" understood as an abbreviation for "he pets the cat and he pets the cheetah". An example of semantic compression would be the in sentence "first go from left to right, then viceversa", where "viceversa", in this case, would mean: "from right to left".
 
 Context Dependence refers to the fact that, contra most programming languages, the same string in natural language can be reduced in different ways depending on the surrounding context, not only on the string itself. In the sentence: "the mouse runs, then it jumps, the cat kills it, then it jumps" there are two identical instances of the phrase "then it jumps": in the former the pronoun "it" refers to the mouse, in the latter the pronoun "it" refers to the cat.
 
-These three mechanisms, in the authors' opinion, all help in reducing the amount of redundancy in our spoken and written communication @knoll2006pegasus.
+These three mechanisms, in the authors' opinion, all help in reducing the amount of redundancy in our spoken and written communication.
 
-The authors propose a distinction between what they call "Atomic" versus "Complex" ideas, the former stemming directly from human perception (such as "the smell of wood", or "the warmth of wood"), and the latter being a combination of the former (such as the very idea of "wood").
+==== Idea Notation
+
+The authors discuss of a possible formalization of human thought; it may or may not be possible for a computer to "experience" the same thoughts and feelings as a human being, but, according to the authors, it is should be possible to describe the structure of human thought formally enough for it to be imitated mechanically.
+
+They propose a distinction between what they call "Atomic" versus "Complex" ideas, the former stemming directly from human perception (such as "the smell of wood", or "the warmth of wood"), and the latter being a combination of the former (such as the very idea of "wood").
 
 They also recognize a third category of ideas they call "Composed", which "combine several Complex ideas for a short moment" @knoll2006pegasus, effectively corresponding with propositions, such as the meaning of the sentence: "the car drives on the street".
 
-The authors go ahead to describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
+Every idea, they assert, can have a concrete representaiton as: an entity, an action or a property; corresponding to a noun, a verb or an adjective/adverb respectively, in most natural languages.
 
-// % The authors also mention a distinction they assert is a general trend in natural languages: nouns (entities), verbs (actions) and adjectives and adverbs (properties).
+The authors then describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
 
-The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory
+==== Architecture
+
+The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory.
 
 The Mind is what matches ideas to idea-patterns stored in Pegaus's long term semantic network. An idea-pattern is associated to an action, which is performed when the Mind determines that it matches an idea recevied as an input.
 
-The Short Term Memory is what enables Pegasus to contextually resolve pronouns such as "it", and other deictic words and phrases. It is implemented as a bounded queue, and purposefully limited to 8 memory cells (corresponding to eight recently mentioned entities), as the authors think this is optimal for human operation @knoll2006pegasus. 
+The Short Term Memory is what enables Pegasus to contextually resolve pronouns such as "it", and other deictic words and phrases. It is implemented as a bounded queue, and purposefully limited to 8 memory cells, corresponding to eight recently mentioned entities, as the authors believe this is optimal number for operation by human beings (cf: @miller1956magical).
 
 Lastly, the Long Term Memory stores Pegasus's semantic knowledge, for example is-a relationshipts between concepts.
 
-When an idea and its sub-ideas are fully resolved as an action, such a system can execute it directly as an interpreter would, or generate the equivalent code in the selected backend, the paper mentions Java as an example.
+When an idea and its sub-ideas are fully resolved, such a system can take action directly (as an interpreter), or generate the equivalent code in a given programming language (as a compiler), the paper mentions Java as an example.
 
-An interesting and novel idea mentioned in the paper is that of a translatable programming language: Pegasus is designed to be language-independent at its core, this means that many different front-ends, corresponding to different concrete grammars, can be implemented for it. For instance, the paper mentions Pegasus's capability of reading both English and German, and even of freely translating between a language and the other.
+==== Translatability
 
-The paper mentions AppleScript as one of the other programming languages that were, for a period of time at least, multilingual; AppleScript's keywords were translated in multiple different languages. In any case, AppleScript took the popular approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
+An interesting idea mentioned in the paper is that of a "translatable programming language": Pegasus is designed to be language-independent at its core, this means that many different front-ends, corresponding to different concrete grammars, corresponding to different human languages, can be implemented for it. For instance, the paper mentions Pegasus's capability of reading both English and German, and even of freely translating between a language and the other.
 
-Some of the drawbacks discussed of the approach taken by Pegasus and of naturalistic programming in generale are related to: varying choice of expression, vagueness inherent in natural language specifications (cf. @fantechi2021language), the convenience of formal notation over natural language descriptions in many cases (cf. @foolishnessnatprogramming) and the limitation in expressivity imposed on the naturalistic language by the underlying programming language, at least when transpiling to it.
+The paper mentions the programming language AppleScript as a historical precedent for this idea, as it has been, at least for a period of time, multilingual; this really meant that AppleScript's keywords had translations in multiple natural languages. In any case, AppleScript took the more popular (and less naturalistic) approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
 
-Drawbacks related to Pegasus, or at least that original implementation from 2006, include performance issues related to some of the implementation choices, the problem of having to manage an extensive database due to the choice to support a language's full natural inflection and conjugation patterns, and the limited expressivity of the initial implementation of the Pegasus language itself.
+==== Drawbacks
 
-All in all, Pegasus is a general natural language purpose programming system, one can see examples of its usage on the official website @pegasuswebsite, the product is, to our knowledge as of writing, not yet available to the public.
+Some of the drawbacks of the approach taken by Pegasus (and of naturalistic programming in general) are discussed in the final part of the paper. The general problems are said to be: varying choice of expression, vagueness inherent in natural language specifications (cf. @fantechi2021language), the convenience of mathematical notation over natural language descriptions (cf. @foolishnessnatprogramming) and the limitation in expressivity imposed on the naturalistic language by the underlying programming language when transpiling to it.
 
-// % MENTION OTHER PAPER ON NATURALISTIC TYPES!
+Drawbacks related to Pegasus, or at least to the original version, include performance issues related to some of the implementation choices, the problem of having to manage an extensive database due to the choice to support a language's full natural inflection and conjugation patterns, and the limited expressivity of the initial implementation of the Pegasus language itself.
+
+All in all, Pegasus remains a valid example of a general purpose naturalistic programming system; the product is, to our knowledge as of writing, not yet available to the public, but one can see examples of its usage on the project's official website @pegasuswebsite.
 
 === CAL
 
