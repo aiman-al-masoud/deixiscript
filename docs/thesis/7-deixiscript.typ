@@ -117,7 +117,7 @@ The code is split into four modules: `core`, `main`, `parse` and `plot`. The mod
 
 === Interpreter Pattern
 
-The code inside of the `core` module follows the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative facilities were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
+The code inside of the `core` module follows the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative polymorphic mechanisms were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
 
 The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types. The former represent atomic entities (or constants) such as strings and numbers, and the latter represent anything else: from the simplest of boolean expressions to the messiest of function definitions. 
 
