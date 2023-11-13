@@ -4,7 +4,7 @@ We will refer to the new computer language developed in the present work and des
 
 As we have seen in the previous sections, envisioning a naturalistic programming system involves in part the description of a "programmatic semantics" @verbsAsFuncs, or mapping between the constructs of natural language and the constructs of one or more programming languages.
 
-We propose the following set of linguistic abstractions as the basic building blocks for Deixiscript: noun phrases, simple sentences, definitions (a priori knowledge), laws (a posteriori knowledge), the question/command distinction and the possibility to negate noun phrases or sentences. In the following section we will present each of these abstractions and discuss their proposed application to the domain of programming.
+We propose the following set of linguistic abstractions as the basic building blocks for our naturalistic system: noun phrases, simple sentences, definitions (a priori knowledge), laws (a posteriori knowledge), the question/command distinction and the possibility to negate noun phrases or sentences. In the following section we will present each of these abstractions and discuss their proposed application to the domain of programming.
 
 == Noun Phrases
 
@@ -32,7 +32,7 @@ The verbs that require a direct object are known as transitive verbs, for instan
 
 Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him a consul".
 
-Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the sentence mentioned above would be just "piove", without any visible subject.
+Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the example sentence above would be just "piove", without any visible subject.
 
 Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent "verbful" sentence, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice!"
 
@@ -42,7 +42,7 @@ A compound sentence is a sentence made up of two or more simple or compound sent
 
 ==== Complex Sentences
 
-A complex sentence creates a relation of dependency between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow out loud" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing out loud and obtaining food).
+A complex sentence creates a relation of dependence between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow out loud enough" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing out loud and obtaining food).
 
 But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is very different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the (necessary, and somewhat trivial) relationship between them.
 
@@ -56,7 +56,7 @@ Questions in English are generally stated in the indicative mood, with some slig
 
 == Negation
 
-We distinguish between two kinds of negation in natural language: the first applies to simple sentence, which thus asserts the falsity of a proposition (eg: "the sun doesn't rise from the west"), and the second applies to noun phrases and serves to exclude a certain kind of property from the scope of the noun phrase (eg: "the non-residents").
+For the sake of this work, we distinguish between two kinds of negation in natural language: the first applies to a simple sentence and asserts the falsity of the relative proposition (eg: "the sun doesn't rise from the west"), and the second applies to a noun phrase and serves to exclude individuals with a certain property from the scope of referents pointed to by the noun phrase (eg: "the non-resident visitors").
 
 == Programmatic Semantics
 
@@ -134,29 +134,29 @@ These "unimportant" details may include the fact of whether the user took advant
 
 Another example may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user intended) precendence of operators.
 
-In this implementation of Deixiscript, we chose to stick to one concrete syntax, inspired by English; but in principle the language could be extended to support multiple concrete syntaxes insipred by different natural languages; this is possible because the underlying abstract syntax, while also inspired by English, is general enough to be applicable to many other languages too.
-
-
-
+In this implementation of Deixiscript, we chose to stick to one concrete syntax, inspired by English; but in principle the language could be extended to support multiple concrete syntaxes insipred by different natural languages; this is possible because the underlying abstract syntax, while also inspired by English, is probably general enough to be applicable to many other languages too.
 
 == Abstract Syntax
 
-We will now describe in detail the specific set of AST types (or abstract syntax) of the Deixiscript language. The main AST types are: Explicit, Implicit, BinExp, SimpleSentence, Def and Law. Almost every AST type (except for Explicit) can be negated and/or marked as a "command" (imperative mood) through the relative two boolean flags it carries. 
+For the types of ASTs supported by Deixiscript we chose to draw inspiration from the linguistic abstractions we discussed earlier: noun phrases, simple sentences and compound sentences. For what concerns complex sentences, we split them into two kinds we call: Defs and Laws, corresponding to the two kinds of knowledge we previously discussed: a priori and a posteriori respectively.
 
-The ASTs which represent noun phrases (noun phrase types) are: Explicit, Implicit and (sometimes) BinExp; the ones which represent sentences are: (sometimes) BinExp, SimpleSentence, Def and Law.
+We chose not to create specific AST types for questions (or commands/assertions) and for negations; instead, these distinctions are signalled by two flags (boolean attributes) that can be used to mark (almost) any AST object as a command/question or as positive/negative.
 
-=== Explicit
+=== Noun Phrases
 
-Explicit (or explicit references) correspond to the "leafs" in the framework described by the traditional Interpreter Pattern; they are hence constants, and constants (the name says it) can only ever evaluate to themselves. It would have made little sense, therefore, to allow them to be negated or marked as commands. A constant in Deixiscript can be: a string, a boolean or a number (only integers are supported as of the time of writing).
+Noun phrases come in different flavors, an initial distinction can be made between explicit and implicit noun phrases. As we have seen, people tend to use implicit references most of the time when speaking naturally, but it was useful for us to include support for explicit references too.
+
+An explicit AST type in Deixiscript corresponds to the "leaf" components of the framework described by the traditional Interpreter Pattern; they are constants, and constants (as the name implies) can only ever evaluate to themselves. It would have made little sense, therefore, to allow them to be negated or marked as commands. A constant in Deixiscript can be: a string, a boolean or a number (only integers are supported as of the time of writing).
 
 Booleans are kept distinct from integers for two reasons: the system needs to have a special value that always syntactically matches anything (we will return to this point later) and another special value which points to no entity whatsoever ("nothing"). These special values are identified with the boolean values of true and false (only false, there is no need for a separate null pointer). To implement these two special constants through integers would mean to force 0 to point to nothing (which is clearly not the desired case, 0 should point to the number zero, which is a thing), and to force 1 to point to the value which syntactically matches any other construct, which again isn't right. Both of these choices would sooner or later lead to bugs, so booleans and integers are kept distinct.
 
-Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
+Strings have a triple purpose in Deixiscript: they all behave the same way as far as the system is concerned, but some of them are supposed to be considered "just strings" and others are supposed to be considered as symbols that represent more complex entities (individuals or concepts). What keeps them apart is the convention that "individual strings" contain a pound sign (`#`), for example: `"cat#1"` or `"puma#33"`, which probably refer to an individual cat and an individual puma respectively. Strings that don't have a pound sign can either be thought of as concepts (especially when they don't contain any spaces, such as: `cat` or `puma`) or as "just strings" (like strings in any other programming language).
 
-Strings have a dual (or triple) purpose in Deixiscript: they all behave the same way as far as the system is concerned, but some of them are supposed to be considered "just strings" and others are supposed to be considered as symbols that represent more complex entities (individuals or concepts). What keeps them apart is the convention that "individual strings" contain a pound sign (`#`), for example: `"cat#1"` or `"puma#33"`. Strings that don't have a pound sign can either be thought of as concepts (especially when they don't contain any spaces, such as: `cat` or `puma`) or as "just strings".
+Explicit references are important implementation wise (only Explicits are allowed into the world model), but their direct usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
 
-Explicit references are of paramount importance implementation wise (only Explicits are allowed into the world model), but their direct usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
-
+------------
+=== Explicit
+// Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
 === Implicit
 
 
