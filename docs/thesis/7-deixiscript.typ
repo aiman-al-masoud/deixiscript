@@ -158,26 +158,25 @@ Explicit references are important implementation wise (only Explicits are allowe
 
 ==== Implicit References
 
-Implicit references exist to simulate the flexibility of noun phrases in real natural languages; an implicit is essentially a description of a thing 
+Implicit references exist to simulate the flexibility of noun phrases in real natural languages; an implicit reference is essentially a description; the basic kind of implicit reference in Deixiscript includes a head, which is usually a common noun, and a relative clause. The relative clause can contain an arbitrarily long sentence which further describes the referent(s). Adjectives are implemented as syntax sugar on top of relative clauses, by expanding them to relative clauses with a copula, for example something like: "the corageous cat" would de-sugar to "the cat that is corageous".
 
-An "Implicit" AST has: a head (usually a common noun), a relative clause (which can accept an arbitrarily complex SimpleSentence, or the trivial value of "true"), a cardinality (how many) and an ordinality (a function of the point in time an individual thing was last mentioned).
+A basic implicit reference also contains numerical information relative to the cardinality (how many referents should be matched) and to the ordinality (or position in short term memory) which is implemented as a function of the point in time an individual thing was last mentioned, following the simplifying assumption that an individual that was mentioned lately is likely to be mentioned again after a short amount of time.
+
+A basic implicit reference also supports two distinct flags to mark it as a command or as negative respectively; there are four possible combinations of these two flags' values: positive question (search), negative question (inverted search), positive command (create) and negative command (destroy).
+
+The life cycle of an individual starts when a "create" statement is made about it, this triggers the creation in the world model of a new node with a pound-sign ID and a connection to a concept node (corresponding to the head of the noun phrase), plus any additional connections (corresponding to the realtive clause of the noun phrase) to other nodes. This is the usage of noun phrases akin to a that of a constructor in OOP languages.
+
+Once created, an existing entity can be retrieved (hoisted on top of the short term memory, or used as an argument of a simple sentence) by using "search" mode, which will be interpreted as a search over the whole world model for (one or more) individual(s) matching the type constraints specified by the head and relative clause.
+
+When the "inverted search" option is used, the search will resolve in (one or more of) the individuals which do _not_ match the type constraints. This is defined as the difference between the global set of individuals and the set of individuals matching the positive equivalent of the expression; taking care of the numerical constraints separately.
+
+When an entity has outlived its usefulness, it can be purged from the world model (or "forgotten") with a negative command about it.
+
+To increase the flexibility of implicit references, Deixiscript also provides the option to use an "and" or an "or" conjunction to enumerate many basic implicit references; for instance one could refer to "the bobcat and the panther" simultaneously; this "compound implicit reference" of sorts can be used as an argument inside of a simple sentence, and triggers the automatic expansion of that sentence into multiple sentences based on the number of resolved referents.
+
 
 ------------
-=== Explicit
-// Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
-=== Implicit
 
-To support this kind of flexibility with implicit references, we have defined the "Implicit" AST type. An "Implicit" AST has: a head (usually a common noun), a relative clause (which can accept an arbitrarily complex SimpleSentence, or the trivial value of "true"), a cardinality (how many) and an ordinality (a function of the point in time an individual thing was last mentioned).
-
-Furthermore, an Implicit AST supports negation and/or imperative mood through the two boolean flags it carries. There are four possible combinations of these flags' values: positive declarative (search), negative declarative (search opposite), positive imperative (create) and negative imperative (destroy).
-
-The life cycle of an individual starts when a positive imperative (create) statement is made about it, this corresponds to the creation in the world model of a new node with a pound sign id and a connection to a concept node, plus any additional connections (which reflect additional logical relations) to other nodes. In this case, the noun head and the relative clause modifiers are interpreted as a programming language constructor, because they serve to specify the characteristics of the soon to be born entity.
-
-Once created, an existing entity can be retrieved (hoisted on top of the short term memory) by using a positive declarative statement (search), which will be interpreted as a search over the whole world model for (one or more) individual matching the specified type constraints.
-
-When the negative declarative (search opposite) option is used, the search will resolve in (one or more of) the individuals which do not match the type constraints. This is defined as the difference between the global set of individuals and the set of individuals matching the positive equivalent of the expression, taking care of the numerical constraints.
-
-When an entity has outlived its usefulness, it can be destroyed (or purged from the world model, or "forgotten") with a negative imperative statement about it.
 
 === SimpleSentence
 
@@ -218,6 +217,12 @@ BinExps are essential to the system for three main reasons: they work as traditi
 They work as lists because they can carry around multiple (implicit or explicit) references in one unique bundle, which can be "unrolled" into a sequence by the interpreter when it needs to perform a sequential calculation on them.
 
 They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the raven` has to be expanded into something like: `it is false that ((the cat likes the raven) and (the lion likes the raven))`, switching from an `or` to an `and`.
+
+
+
+=== Explicit
+// Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
+
 
 // === Def// === Law
 
