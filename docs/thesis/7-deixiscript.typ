@@ -2,7 +2,7 @@
 
 We will refer to the new computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality and indirect references) and Script (because this system is mainly intended as a scripting language). The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
 
-As we have seen in the previous sections, envisioning a naturalistic programming system involves in part the description of a "programmatic semantics" @verbsAsFuncs, or mapping between the constructs of natural language and the constructs of one or more programming languages.
+As we have seen in the previous sections, envisioning a naturalistic programming system involves in part the description of a "programmatic semantics" /* @verbsasfuncs */, or mapping between the constructs of natural language and the constructs of one or more programming languages.
 
 We propose the following set of linguistic abstractions as the basic building blocks for our naturalistic system: noun phrases, simple sentences, definitions (a priori knowledge), laws (a posteriori knowledge), the question/command distinction and the possibility to negate noun phrases or sentences. In the following section we will present each of these abstractions and discuss their proposed application to the domain of programming.
 
@@ -64,7 +64,7 @@ Coming back to the subject of programmatic semantics, we propose that noun phras
 
 === Noun Phrases
 
-A noun phrase generally represents things (material and immaterial objects) or types (categories of objects), and this makes it a good candidate, in the context of programming, to play the role of strings, numbers, records and data structures in general, as was also discussed in a previous section @verbsAsFuncs.
+A noun phrase generally represents things (material and immaterial objects) or types (categories of objects), and this makes it a good candidate, in the context of programming, to play the role of strings, numbers, records and data structures in general, as was also discussed in a previous section //@verbsasfuncs .
 
 Besides data structures, we believe that the noun phrase captures a more general programming construct known as the "expression"; an expression in programming languages is any piece of code that evaluates to (or returns) a value. It is generally contrasted to a "statement" (or "instruction"), which does not evaluate to anything, and is hence executed purely for its side-effects (state mutations it produces in the execution environment).
 
