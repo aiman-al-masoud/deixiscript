@@ -146,6 +146,8 @@ We chose not to create specific AST types for questions (or commands/assertions)
 
 Noun phrases come in different flavors, an initial distinction can be made between explicit and implicit noun phrases. As we have seen, people tend to use implicit references most of the time when speaking naturally, but it was useful for us to include support for explicit references too.
 
+==== Explicit References
+
 An explicit AST type in Deixiscript corresponds to the "leaf" components of the framework described by the traditional Interpreter Pattern; they are constants, and constants (as the name implies) can only ever evaluate to themselves. It would have made little sense, therefore, to allow them to be negated or marked as commands. A constant in Deixiscript can be: a string, a boolean or a number (only integers are supported as of the time of writing).
 
 Booleans are kept distinct from integers for two reasons: the system needs to have a special value that always syntactically matches anything (we will return to this point later) and another special value which points to no entity whatsoever ("nothing"). These special values are identified with the boolean values of true and false (only false, there is no need for a separate null pointer). To implement these two special constants through integers would mean to force 0 to point to nothing (which is clearly not the desired case, 0 should point to the number zero, which is a thing), and to force 1 to point to the value which syntactically matches any other construct, which again isn't right. Both of these choices would sooner or later lead to bugs, so booleans and integers are kept distinct.
@@ -154,11 +156,16 @@ Strings have a triple purpose in Deixiscript: they all behave the same way as fa
 
 Explicit references are important implementation wise (only Explicits are allowed into the world model), but their direct usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
 
+==== Implicit References
+
+Implicit references exist to simulate the flexibility of noun phrases in real natural languages; an implicit is essentially a description of a thing 
+
+An "Implicit" AST has: a head (usually a common noun), a relative clause (which can accept an arbitrarily complex SimpleSentence, or the trivial value of "true"), a cardinality (how many) and an ordinality (a function of the point in time an individual thing was last mentioned).
+
 ------------
 === Explicit
 // Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
 === Implicit
-
 
 To support this kind of flexibility with implicit references, we have defined the "Implicit" AST type. An "Implicit" AST has: a head (usually a common noun), a relative clause (which can accept an arbitrarily complex SimpleSentence, or the trivial value of "true"), a cardinality (how many) and an ordinality (a function of the point in time an individual thing was last mentioned).
 
