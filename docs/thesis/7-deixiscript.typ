@@ -60,7 +60,7 @@ We distinguish between two kinds of negation in natural language: the first appl
 
 == Programmatic Semantics
 
-Coming back to the subject of programmatic semantics, we propose that noun phrases be regarded as expressions, that simple and compound sentences be thought of mainly as procedure invocations, and that complex sentences be regareded as function definitions or event handlers.
+Coming back to the subject of programmatic semantics, we propose that noun phrases be regarded as expressions, that simple and compound sentences be thought of mainly as procedure invocations, and that complex sentences be regareded as function/type definitions or event handlers.
 
 === Noun Phrases
 
