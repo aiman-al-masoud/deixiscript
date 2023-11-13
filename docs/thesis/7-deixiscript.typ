@@ -89,15 +89,57 @@ When it comes to a priori knowledge, we think that a computer program essentiall
 On the other hand, we believe that the a posteriori knowledge contained in a program essentially corresponds with the "useful work" done by it, this knowledge is more correlated to the side-effects, intended as the desired output or external behavior of the program: it describes them. A perfect example of this, we think, are event handlers in an Event Driven programming language, when a programmer adds an event handler to a program (eg: "when the button is clicked, the counter increments"), they are essentially teaching the environment a new cause-and-effect relationship. You may also say that they are teaching it to react with a certain response to a given stimulus, or that they are teaching it to expect a certain kind of event to take place after another.
 
 
+== Implementation
 
+=== Language
+
+The implementation language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. 
+
+=== Parser
+
+The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. 
+
+The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. 
+
+=== Licensing
+
+All of the software used to develop Deixiscript is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark; CPL for Graphviz). Other than the aforementioned ones, the core components of Deixiscript will require no further dependencies beyond Python's own standard library.
+
+Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We welcome any further inspection and scrutiny of the code by anyone who is interested, as we hope that this openness will aid in improving the code's quality and conciseness, and in expanding its functionality. Regarding the latter, we will suggest some possible further developments later in this section.
+
+=== Code Style
+
+Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of predictable semantics in the business-logic: method calls never directly modify an object, they rather return a new copy of it if need be; reducing the chances of an unforeseen side-effect (state mutation within an object) flying under the radar and causing harm.
+
+=== Interpreter Pattern
+
+The code inside of the "core" module follows the Interpreter Pattern, one of the well-known 23 GoF Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative facilities were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
+
+The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types. The former represent atomic entities (or constants) such as strings and numbers, and the latter represent anything else: from the simplest of boolean expressions to the messiest of function definitions. 
+
+The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
+
+=== Modules
+
+The code is split into four modules: `core`, `main`, `parse` and `plot`. The module `main` houses the program's main entry point. The module `plot` defines a few utility functions to visualize graphs. The module `parse` defines the language's concrete grammar(s). And the module `core` contains the core logic of the interpreter, which is independent of the rest of the code. Every module also includes a `tests.py` file which contains some unit tests that serve to test and showcase the module's functionalities.
+
+// ==== Core
+
+// The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
+
+// ===== Expression Builder
+
+// The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
+
+// ===== Knowledge Base
+
+// This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
 
 
 ----------------
 
 
-
 == Abstract Syntax vs Concrete Syntax
-
 
 // We will begin by fleshing out what is known as the "abstract syntax" of Deixiscript. The abstract syntax of a language is the set of Abstract Syntax Tree (AST) types, that is distinct from its concrete syntax; the latter consisting in a set of production rules (usually represented in Extended Backus-Naur Form (EBNF)) that describe more of what the language looks like "from the outside". Obviously, the same abstract syntax may be associated to multiple concrete syntaxes, and viceversa.
 
@@ -193,47 +235,6 @@ They enable syntactic de/compression, because any SimpleSentence that contains a
 === Def
 
 
-
-
-== Implementation
-
-=== Language
-
-The implementation language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. 
-
-=== Parser
-
-The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. All of this software is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark, CPL for Graphviz).
-
-=== License
-
-Other than the aforementioned ones, the core components of the system will require no further dependencies beyond Python's own standard library. The present work itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published.
-
-We welcome any further inspection and scrutiny of the code by anyone who is interested in developing it further, as we hope this will aid in improving the code's quality and conciseness, other than expanding its functionality. Regarding the latter, some of the possible further developments that we forsee are outlined later in this section. 
-
-=== Code Style
-
-Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of predictable semantics in the business-logic: method calls never directly modify an object, they rather return a new copy of it if need be; reducing the chances of a harmful/unforeseen side-effect (change of state in an object) flying under the radar.
-
-=== Code Organization
-
-The code inside of the "core" module follows the Interpreter Pattern, one of the well-known 23 GoF Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too great, and no alternative facilities were offered by the Python language, as function overloading is tedious and must be done by hand. The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types, the former representing atomic entities (or constants) such as strings and numbers, and the latter representing anything else: from the simplest of boolean expressions to the messiest of function definitions. The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
-
-=== Modules
-
-The code is split into four modules: "core", "main", "parse" and "plot". The module "main" houses the program's main entry point. The module "plot" defines a few utility functions to visualize graphs. The module "parse" defines the language's concrete grammar(s). And the module "core" contains the core logic of the interpreter, which is independent of the rest of the code. Every module also contains a "tests.py" file which includes some unit tests that also serve to showcase the module's functionalities.
-
-==== Core
-
-The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
-
-===== Expression Builder
-
-The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
-
-===== Knowledge Base
-
-This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
 
 // === Law
 
