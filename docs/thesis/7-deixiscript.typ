@@ -111,17 +111,19 @@ Deixiscript itself is free software, and will be made available under the terms 
 
 Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of predictable semantics in the business-logic: method calls never directly modify an object, they rather return a new copy of it if need be; reducing the chances of an unforeseen side-effect (state mutation within an object) flying under the radar and causing harm.
 
+=== Modules
+
+The code is split into four modules: `core`, `main`, `parse` and `plot`. The module `main` houses the program's main entry point. The module `plot` defines a few utility functions to visualize graphs. The module `parse` defines the language's concrete grammar(s). And the module `core` contains the core logic of the interpreter, which is independent of the rest of the code. Every module also includes a `tests.py` file which contains some unit tests that serve to test and showcase the module's functionalities.
+
 === Interpreter Pattern
 
-The code inside of the "core" module follows the Interpreter Pattern, one of the well-known 23 GoF Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative facilities were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
+The code inside of the `core` module follows the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative facilities were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
 
 The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types. The former represent atomic entities (or constants) such as strings and numbers, and the latter represent anything else: from the simplest of boolean expressions to the messiest of function definitions. 
 
 The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
 
-=== Modules
 
-The code is split into four modules: `core`, `main`, `parse` and `plot`. The module `main` houses the program's main entry point. The module `plot` defines a few utility functions to visualize graphs. The module `parse` defines the language's concrete grammar(s). And the module `core` contains the core logic of the interpreter, which is independent of the rest of the code. Every module also includes a `tests.py` file which contains some unit tests that serve to test and showcase the module's functionalities.
 
 // ==== Core
 
