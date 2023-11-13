@@ -90,8 +90,6 @@ On the other hand, we believe that the a posteriori knowledge contained in a pro
 
 
 
-// The first is that the a priori knowledge essentially consists of data and function definitions, 
-
 
 
 ----------------
