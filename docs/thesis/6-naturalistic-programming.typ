@@ -74,7 +74,7 @@ The language WEB combines together a markup language with a traditional general 
 
 According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language.
 
-== Natural Style
+== Natural Style <the80s>
 
 It is interesting to take a look at how people actually describe problems and their solutions in natural language. It is telling that the manner, style and train of thought in describing an algorithmic procedure employed by a person on the street, or even by a programmer when elaborating an idea in the abstract, can be very different from that which the same programmer employs when translating his/her ideas into executable code @knoll2006pegasus, @miller1981natural.
 
@@ -102,7 +102,7 @@ The program, which can be seen as a very peculiar kind of transpiler, called Met
 
 The code generated was "scaffolding", or underspecified code, that in fact wasn't meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity isn't always a negative aspect of natural language, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. This ties in well with the idea of "successive refinements" we mentioned earlier.
 
-The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on.
+The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on. <verbsAsFuncs>
 
 As we already saw, the code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate the task of outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students, some of which with novice and some of which with intermediate programming skills. The students responded to the question of whether they'd be likely to use it as a brainstorming tool, in lieu of more traditional pen-and-paper methods @liu2005metafor.
 
@@ -155,6 +155,8 @@ When an idea and its sub-ideas are fully resolved, such a system can take action
 An interesting idea mentioned in the paper is that of a "translatable programming language": Pegasus is designed to be language-independent at its core, this means that many different front-ends, corresponding to different concrete grammars, corresponding to different human languages, can be implemented for it. For instance, the paper mentions Pegasus's capability of reading both English and German, and even of freely translating between a language and the other.
 
 The paper mentions the programming language AppleScript as a historical precedent for this idea, as it has been, at least for a period of time, multilingual; this really meant that AppleScript's keywords had translations in multiple natural languages. In any case, AppleScript took the more popular (and less naturalistic) approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
+
+// ALSO ALGOL https://en.wikipedia.org/wiki/Non-English-based_programming_languages
 
 ==== Drawbacks
 

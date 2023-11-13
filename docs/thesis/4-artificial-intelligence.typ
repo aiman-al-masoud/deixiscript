@@ -1,12 +1,12 @@
 = Artificial Intelligence
 
-Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic, spanned over decades of research from its first inception in the last century, and occupied some of the most brilliant minds in history.
+Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic, has spanned over decades of research from its first inception in the last century, and has preoccupied some of the most brilliant minds in history.
 
-It is an endeavor which involves knowledge of the most disparate of disciplines: logic, mathematics, computer science and philosophy. Unfortunately, it is impossible to cover all of its history in a work like this, therefore we will spend the next few pages painting it in very broad strokes and focusing mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
+It is an endeavor which involves knowledge of the most disparate of disciplines: logic, mathematics, computer science and philosophy, to cite a few examples. Unfortunately, it is impossible to cover all of its history in the present work, we will therefore spend the next few pages painting it in very broad strokes; we will focus mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
 
 == History of Term
 
-The term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy (1927-2011), eminent computer scientist who is also known for having invented Lisp in 1958 @lisproots, which has evolved into a family of programming languages we discuss about in the section on programming languages, but the subject of "thinking machines" is older and can trace its origins years before that @smith2006history.
+The term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy (1927-2011), eminent computer scientist who is also known for having invented Lisp in 1958 @lisproots, a language which today has evolved into a family of programming languages and counts many dialects; but the subject of "thinking machines" is older and can trace its origins years before that @smith2006history.
 
 == The Turing Test
 
@@ -77,7 +77,7 @@ Typically used for: prediction, clustering, pattern classification, recognition 
 
 === Points in common
 
-A big idea that the two approaches share, in a sense, is that they can be both regarded as declarative programming paradigms. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
+A big idea that we think the two approaches share is that they can be both regarded as declarative programming paradigms of sorts. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
 
 Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language @ilkou2020symbolic, @yang2021learning.
 
@@ -190,4 +190,4 @@ There are two kinds of quantifiers: existential and universal. Existential quant
 
 // // % come up w/
 
-// // #bibliography("bib.bib")
+// #bibliography("bib.bib")

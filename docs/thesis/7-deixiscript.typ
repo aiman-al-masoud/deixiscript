@@ -1,36 +1,107 @@
 = Deixiscript
 
-== Internal and External Dependencies
+We will refer to the new computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality and indirect references) and Script (because this system is mainly intended as a scripting language). The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
 
-The implementation language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. All of this software is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark, CPL for Graphviz).
+As we have seen in the previous sections, envisioning a naturalistic programming system involves in part the description of a "programmatic semantics" @verbsAsFuncs, or mapping between the constructs of natural language and the constructs of one or more programming languages.
 
-Other than the aforementioned ones, the core components of the system will require no further dependencies beyond Python's own standard library. The present work itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published.
+We propose the following set of linguistic abstractions as the basic building blocks for Deixiscript: noun phrases, simple sentences, definitions (a priori knowledge), laws (a posteriori knowledge), the question/command distinction and the possibility to negate noun phrases or sentences. In the following section we will present each of these abstractions and discuss their proposed application to the domain of programming.
 
-We welcome any further inspection and scrutiny of the code by anyone who is interested in developing it further, as we hope this will aid in improving the code's quality and conciseness, other than expanding its functionality. Regarding the latter, some of the possible further developments that we forsee are outlined later in this section. 
+== Noun Phrases
 
-We will refer to the new computer language developed in the present work and described in the following pages with the code name "Deixiscript". The name is a protmonteau of the words: Deixis (as in the linguistic concept of indexicality and indirect references) and Script (because this system is intended mainly as a scripting language).
+A phrase is a linguistic structure that does not express a complete thought; in particular: a noun phrase is a phrase of arbitrary length that performs the same function as a noun; a general test for whether something counts as a noun phrase is to replace it with a pronoun and see if the sentence still makes sense; for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "_it_ jumps over the lazy dog" or "the quick brown fox jumps over _it_".
 
-== Code Organization: high level overview
+As we saw, a noun phrase can be of arbitrary length, the most trivial example is given by a single noun all by itself. A noun phrase also typically includes articles, adjectives and relative clauses with an arbitrary level of nesting. It is therefore possible for a noun phrase to incorporate a sentence (as a relative clause), such as "the fox _that jumped over the lazy dog_", where "that jumped over the lazy dog" is the relative clause.
 
-The code is split into four modules: "core", "main", "parse" and "plot". The module "main" houses the program's main entry point. The module "plot" defines a few utility functions to visualize graphs. The module "parse" defines the language's concrete grammar(s). And the module "core" contains the core logic of the interpreter, which is independent of the rest of the code. Every module also contains a "tests.py" file which includes some unit tests that also serve to showcase the module's functionalities.
+A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or any smaller noun phrase). In the noun phrase "the lazy dog" the head is "dog".
 
-Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of uniform semantics in the business-logic: methods never directly modify an object, they rather return a new copy of it if need be; reducing the chances of a harmful/unforeseen side-effect (change of state in an object) flying under the radar.
+A noun phrase therefore generally represents things (material and immaterial objects) or types (categories of objects); a noun phrase can also be a proper noun (a name of a person or place).
 
-The code inside of the "core" module follows the Interpreter Pattern, one of the well-known 23 GoF Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too great, and no alternative facilities were offered by the Python language, as function overloading is tedious and must be done by hand. The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types, the former representing atomic entities (or constants) such as strings and numbers, and the latter representing anything else: from the simplest of boolean expressions to the messiest of function definitions. The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
+A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. For instance, if a person refers to "the cat" when they're at home, versus "the cat" when they're visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat". 
 
-== Core
+A noun phrase, as we only know too well, may be made arbitrarily long, and hence arbitrarily precise, (and hence exclude an arbitrarily large set of individual entities in a context); and this can be achieved through the use of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs". Moreover, a noun phrase may also refer to multiple entities at once: "the two cats", "the cat and the ocelot", "the 44 caracals".
 
-The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
+== Simple, Compound and Complex Sentences
 
-=== Expression Builder
+A declarative sentence expresses a complete thought; the meaning it carries corresponds to a logical proposition, and the latter is associated to a truth value. Having a truth value means that whatever construct carries it can be true or false: in the former case it would be describing how the world really is, and in the latter case it would contradict the actual state of affairs in the world.
 
-The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
+In English, a sentence can be simple, compound or complex; an example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence generally has a subject (the doer of an action), a verb (the action) a direct object (the passive agent that receives the action) and any number of complements; such complements can help specify the location or time of the action, or can correspond to any other actors directly or indirectly involved in the action, in English they are generally introduced via a preposition such as: "to", "from", "by"...
 
-=== Knowledge Base
+We will refer to the subject, direct object and complements in a sentence collectively as the "arguments" of the verb, because the number of arguments or "slots" to be filled can vary depending on the nature of the verb that is used. This number is known as the "transitivity" (or more generally the "valency") of a verb. These arguments we speak of are generally noun phrases.
 
-This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
+The verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
 
-== Core Grammar
+Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him a consul".
+
+Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the sentence mentioned above would be just "piove", without any visible subject.
+
+Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent "verbful" sentence, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice!"
+
+==== Compound Sentences
+
+A compound sentence is a sentence made up of two or more simple or compound sentences joined together by a conjunction or disjunction. An example is: "the cat meowed loud, but she failed to obtain food"; it is important to note that the two simple sentences incorporated in the larger compound sentence remain "independent" of each other: you can rephrase the previous sentence by changing their order and the meaning is logically equivalent (if you ignore the time factor, at least).
+
+==== Complex Sentences
+
+A complex sentence creates a relation of dependency between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow out loud" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing out loud and obtaining food).
+
+But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is very different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the (necessary, and somewhat trivial) relationship between them.
+
+== Questions vs Commands
+
+A simple declarative sentence generally stands for a logical proposition, in English these are generally known as sentences in the indicative mood, and often constrasted with sentences in the subjunctive mood, which refer to possible or unreal events.
+
+Natural languages also typically include an imperative mood, a sentence in the imperative mood (an "order" or a "command") doesn't really correspond to a logical proposition, but it expresses nontheless the desire of the speaker for the world around them to change in some specific respect.
+
+Questions in English are generally stated in the indicative mood, with some slight syntactical differences and/or a different tone of voice in speech.
+
+== Negation
+
+We distinguish between two kinds of negation in natural language: the first applies to simple sentence, which thus asserts the falsity of a proposition (eg: "the sun doesn't rise from the west"), and the second applies to noun phrases and serves to exclude a certain kind of property from the scope of the noun phrase (eg: "the non-residents").
+
+== Programmatic Semantics
+
+Coming back to the subject of programmatic semantics, we propose that noun phrases be regarded as expressions, that simple and compound sentences be thought of mainly as procedure invocations, and that complex sentences be regareded as function definitions or event handlers.
+
+=== Noun Phrases
+
+A noun phrase generally represents things (material and immaterial objects) or types (categories of objects), and this makes it a good candidate, in the context of programming, to represent strings, numbers, records and data structures in general, as was also mentioned in a previous section @verbsAsFuncs.
+
+Besides data structures, we believe that the noun phrase captures a more general programming construct known as the "expression"; an expression in programming languages is any piece of code that evaluates to (or returns) a value. It is generally contrasted to a "statement" (or "instruction"), which does not evaluate to anything, and is hence executed purely for its side-effects (state mutations it produces in the execution environment).
+
+An important property of expressions is composability: a number, boolean, string, record or object literal is an example of an expression in most programming languages, and so are mathematical expressions, function calls and any combination of the former; just like noun phrases, programming expressions can grow up to an arbitrary length and can contain nested expressions.
+
+Some programming languages are known as Expression Oriented, because almost every construct they provide returns a value and is composable, even constructs that are traditionally seen as statements such as for loops or if-else "statements", an example of this is the Scala Language @alexander2017functional.
+
+=== Simple and Compound Sentences
+
+The tendency will be to regard these as either assertions: which add knowledge to the world model or as yes-or-no questions: which evaluate to a truth value, depending on the current state of the knowledge base.
+
+As we saw, an assertion doesn't precisely correspond to an imperative sentence in English, but it is the closest thing there will be to a "command", we will therefore use these terms interchangeably. 
+
+=== Complex Sentences
+
+We mentioned the fact that complex sentences allow the speaker to express a relation of subordination between two ideas; and we mentioned the philosophical distinction between "analytic" (or "a priori") and "synthetic" (or "a posteriori") knowledge, and how a valid option to verbalize this kind of knowledge in natural language is indeed through the use of a complex sentence. We think that two useful parallels with the domain of programming can be drawn here.
+
+The question of whether "analytic" and "synthetic" knowledge really exhaust all of human knowledge is an open issue in philosophy; and there are indications that this is not the case, specifically in the existence of unfalsifiable (like analytic) knowledge that nontheless depends on real world experience (like synthetic), for instance the general notion that "things change"; this third kind of knowledge can't be neatly classified in the binary scheme presented to us by the analytic/synthetic distinction. But regardless of this problem with the distinction, we will assume that all of the knowledge contained in a computer program falls exclusively under one of these two categories.
+
+When it comes to a priori knowledge, we think that a computer program essentially presents us with defintions: function definitions, type definitions, class definitions; these are all examples of abstractions that the programmer essentially creates for their own comfort: to avoid having to repeat themselves and hence to improve code maintainability; the interpreter or compiler needs to know that when we say `abs(x)` we really mean `-x if x<0 else x`, but it would just as well directly accept `-x if x<0 else x`, or the equivalent machine code.
+
+On the other hand, we believe that the a posteriori knowledge contained in a program essentially corresponds with the "useful work" done by it, it is more correlated to the side-effects, intended as the desired output or external behavior of the program: it describes them. A perfect example of this, we think, are event handlers in an Event Driven programming language, when a programmer adds an event handler to a program (eg: "when the button is clicked, the counter increments"), they are essentially teaching the environment a new cause-and-effect relationship.
+
+
+
+// The first is that the a priori knowledge essentially consists of data and function definitions, 
+
+
+
+----------------
+
+
+
+== Abstract Syntax vs Concrete Syntax
+
+
+// We will begin by fleshing out what is known as the "abstract syntax" of Deixiscript. The abstract syntax of a language is the set of Abstract Syntax Tree (AST) types, that is distinct from its concrete syntax; the latter consisting in a set of production rules (usually represented in Extended Backus-Naur Form (EBNF)) that describe more of what the language looks like "from the outside". Obviously, the same abstract syntax may be associated to multiple concrete syntaxes, and viceversa.
 
 The abstract syntax of a language is distinct from its concrete syntax. 
 
@@ -47,30 +118,6 @@ Another example may be the presence or absence of parentheses in an expression, 
 Being this a naturalistic language, and specifically a language intended to be easy for English speakers to read and write, the inspiration for both the concrete and abstract syntaxes came from natural language. The influence of English, specifically, is evident in the concrete syntax, but perhaps a little less so in the abstract syntax.
 
 The abstract syntax is inteded to be as language-neutral as possible; it serves the purpose of binding general natural language structures to their "equivalent" programming language structures: an issue related to the concept of programmatic semantics, mentioned in the earlier chapters of this work.
-
-A fundamental cross-linguistic distinction can be drawn between phrases (specifically noun phrases) and sentences. 
-
-A declarative sentence expresses a complete thought, and its meaning corresponds with a proposition in logic, ie: it has a truth value, it can be true (corresponding to how the world really is) or false (contradicting the actual state of affairs). In English, a sentence can be simple, compound or complex; an example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog".
-
-A phrase is a linguistic structure that does not express a complete thought, in particular a noun phrase is a phrase of arbitrary length that performs the same function as a noun; a test for whether something counts as a noun phrase is to replace it with a pronoun and see if it fits, for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "it jumps over the lazy dog" or "the quick brown fox jumps over it".
-
-As we have already mentioned, a noun phrase can be of arbitrary length, the most trivial example is a single noun all by itself. A noun phrase typically includes articles, adjectives and relative clauses with an arbitrary level of nesting. It is therefore totally possible for a noun phrase to incorporate a sentence (as a relative clause), such as "the fox that jumped over the lazy dog", where "that jumped over the lazy dog" is the relative clause.
-
-A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or perhaps another, smaller, noun phrase). In the noun phrase "the lazy dog" the head is "dog".
-
-As can be evinced from these properties, the noun phrase leaps to the eye as a good candidate to represent data structures or entities in any framework that tries to achieve a coupling between natural language structures and programming language structures.
-
-There is another more general programming language structure that we think a noun phrase is a good candidate to represent, and that is the (programming) expression.
-
-A programming language expression is any piece of code that evaluates to (or returns) a value, as opposed to a statement, the latter of which is executed purely for its side-effects and does not return anything.
-
-With this in mind, and knowing how noun phrases "point to things/entities", it seems natural to us to draw a more general parallel between all kinds of expressions (the programming language construct) and noun phrases (the natural language construct).
-
-Other than data-structures and objects, what else can be considered an expression in "typical" traditional programming language? Well, a lot of things: function calls (as opposed to procedure calls), mathematical and boolean expressions obviously, the ternary operator, function literals, etc... 
-
-In some languages, the ones that embrace Expression Oriented Programming (EOP) to a greater degree, almost everything can be considered an expression, even regular (non anonymous) function or class defintions, every kind of variable assignment (which typically evaluates to the value of the right hand side) and sometimes even the if "statement" (which ends up being the "if expression") and the for loop.
-
-Given this, we present a strong case for the potential of the noun phrase as a naturalistic surrogate for all of these programming constructs.
 
 == Abstract Syntax
 
@@ -92,11 +139,6 @@ Explicit references are of paramount importance implementation wise (only Explic
 
 === Implicit
 
-A key insight from the study of natural language, is that people almost never use explicit references (proper nouns, IDs, numbers...) when talking about individual entities; they instead make use of the "type" of these individual entities (common nouns) leveraging the indexicality of language within a given context. For instance, if a person refers to "the cat" when they're at home, versus when they're visiting a zoo, they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat". 
-
-A noun phrase, as we only know too well, may be made arbitrarily long and arbitrarily precise (and thus exclude an arbitrarily large set of individual entities in a context) through the usage of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs".
-
-A noun phrase may also refer to multiple entities at once: "the two cats", "the three ocelots", "the 44 caracals".
 
 To support this kind of flexibility with implicit references, we have defined the "Implicit" AST type. An "Implicit" AST has: a head (usually a common noun), a relative clause (which can accept an arbitrarily complex SimpleSentence, or the trivial value of "true"), a cardinality (how many) and an ordinality (a function of the point in time an individual thing was last mentioned).
 
@@ -152,6 +194,48 @@ They enable syntactic de/compression, because any SimpleSentence that contains a
 
 === Def
 
+
+
+
+== Implementation
+
+=== Language
+
+The implementation language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. 
+
+=== Parser
+
+The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. All of this software is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark, CPL for Graphviz).
+
+=== License
+
+Other than the aforementioned ones, the core components of the system will require no further dependencies beyond Python's own standard library. The present work itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published.
+
+We welcome any further inspection and scrutiny of the code by anyone who is interested in developing it further, as we hope this will aid in improving the code's quality and conciseness, other than expanding its functionality. Regarding the latter, some of the possible further developments that we forsee are outlined later in this section. 
+
+=== Code Style
+
+Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of predictable semantics in the business-logic: method calls never directly modify an object, they rather return a new copy of it if need be; reducing the chances of a harmful/unforeseen side-effect (change of state in an object) flying under the radar.
+
+=== Code Organization
+
+The code inside of the "core" module follows the Interpreter Pattern, one of the well-known 23 GoF Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too great, and no alternative facilities were offered by the Python language, as function overloading is tedious and must be done by hand. The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types, the former representing atomic entities (or constants) such as strings and numbers, and the latter representing anything else: from the simplest of boolean expressions to the messiest of function definitions. The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
+
+=== Modules
+
+The code is split into four modules: "core", "main", "parse" and "plot". The module "main" houses the program's main entry point. The module "plot" defines a few utility functions to visualize graphs. The module "parse" defines the language's concrete grammar(s). And the module "core" contains the core logic of the interpreter, which is independent of the rest of the code. Every module also contains a "tests.py" file which includes some unit tests that also serve to showcase the module's functionalities.
+
+==== Core
+
+The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
+
+===== Expression Builder
+
+The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
+
+===== Knowledge Base
+
+This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
 
 // === Law
 
