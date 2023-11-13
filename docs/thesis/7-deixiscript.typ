@@ -64,7 +64,7 @@ Coming back to the subject of programmatic semantics, we propose that noun phras
 
 === Noun Phrases
 
-A noun phrase generally represents things (material and immaterial objects) or types (categories of objects), and this makes it a good candidate, in the context of programming, to represent strings, numbers, records and data structures in general, as was also mentioned in a previous section @verbsAsFuncs.
+A noun phrase generally represents things (material and immaterial objects) or types (categories of objects), and this makes it a good candidate, in the context of programming, to play the role of strings, numbers, records and data structures in general, as was also discussed in a previous section @verbsAsFuncs.
 
 Besides data structures, we believe that the noun phrase captures a more general programming construct known as the "expression"; an expression in programming languages is any piece of code that evaluates to (or returns) a value. It is generally contrasted to a "statement" (or "instruction"), which does not evaluate to anything, and is hence executed purely for its side-effects (state mutations it produces in the execution environment).
 
@@ -87,7 +87,6 @@ The question of whether "analytic" and "synthetic" knowledge really exhaust all 
 When it comes to a priori knowledge, we think that a computer program essentially presents us with defintions: function definitions, type definitions, class definitions; these are all examples of abstractions that the programmer essentially creates for their own comfort: to avoid having to repeat themselves and hence to improve code maintainability; the interpreter or compiler needs to know that when we say `abs(x)` we really mean `-x if x<0 else x`, but it would just as well directly accept `-x if x<0 else x`, or the equivalent machine code.
 
 On the other hand, we believe that the a posteriori knowledge contained in a program essentially corresponds with the "useful work" done by it, this knowledge is more correlated to the side-effects, intended as the desired output or external behavior of the program: it describes them. A perfect example of this, we think, are event handlers in an Event Driven programming language, when a programmer adds an event handler to a program (eg: "when the button is clicked, the counter increments"), they are essentially teaching the environment a new cause-and-effect relationship. You may also say that they are teaching it to react with a certain response to a given stimulus, or that they are teaching it to expect a certain kind of event to take place after another.
-
 
 == Implementation
 
@@ -113,53 +112,32 @@ Regarding the code's style, an effort was made to follow the Functional Paradigm
 
 === Modules
 
-The code is split into four modules: `core`, `main`, `parse` and `plot`. The module `main` houses the program's main entry point. The module `plot` defines a few utility functions to visualize graphs. The module `parse` defines the language's concrete grammar(s). And the module `core` contains the core logic of the interpreter, which is independent of the rest of the code. Every module also includes a `tests.py` file which contains some unit tests that serve to test and showcase the module's functionalities.
+The code is split into four modules: `core`, `main`, `parse` and `plot`. The module `main` houses the program's main entry point. The module `plot` defines a few utility functions to visualize graphs. The module `parse` defines the language's concrete grammar(s). And the module `core` contains the classes representing the AST types, and is independent of the rest of the code. Every module also includes a `tests.py` file which contains some unit tests that serve to test and showcase the module's functionalities.
 
 === Interpreter Pattern
 
-The code inside of the `core` module follows the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative polymorphic mechanisms were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
+The classes inside of the `core` module follow the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative polymorphic mechanisms were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
 
 The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types. The former represent atomic entities (or constants) such as strings and numbers, and the latter represent anything else: from the simplest of boolean expressions to the messiest of function definitions. 
 
 The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
 
-
-
-// ==== Core
-
-// The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
-
-// ===== Expression Builder
-
-// The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
-
-// ===== Knowledge Base
-
-// This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
-
-
-----------------
-
-
 == Abstract Syntax vs Concrete Syntax
 
-// We will begin by fleshing out what is known as the "abstract syntax" of Deixiscript. The abstract syntax of a language is the set of Abstract Syntax Tree (AST) types, that is distinct from its concrete syntax; the latter consisting in a set of production rules (usually represented in Extended Backus-Naur Form (EBNF)) that describe more of what the language looks like "from the outside". Obviously, the same abstract syntax may be associated to multiple concrete syntaxes, and viceversa.
+The abstract syntax of a language is the set of Abstract Syntax Tree (ASTs) that are used internally to carry around meaning, and undergo transformations (symbolic manipulations); the abstract syntax is distinct from the concrete syntax.
 
-The abstract syntax of a language is distinct from its concrete syntax. 
+The concrete syntax consists in a set of production rules that describe a Context Free Grammar (CFG) and are captured by meta-languages such as the Extended Backus-Naur Form (EBNF). The concrete syntax  is closely related to the "front end" of the interpreter, therefore to the particular way the user chooses to write/speak (or "linearize") the language. This is manifested, for instance, in the difference between infix and prefix style of writing a mathematical operator, or in the preference of English speakers for the Subject Verb Object (SVO) word order in unmarked sentences, above all other equally available word orders.
 
-The concrete syntax consists in a set of production rules that describe a Context Free Grammar (CFG) and are captured by meta-languages such as the Extended Backus-Naur Form (EBNF). It is related to the front end, therefore to the particular way the user writes/speaks (or "linearizes") the language. This is manifested, for instance, in the difference between infix and prefix style of mathematical operator representation, or in the preference of English for the Subject Verb Object (SVO) word order in unmarked sentences above other word orders.
+There is obviously a correspondence between the two kinds of syntaxes: a concrete grammar describes how a string of text (a linear representation of an idea) has to be turned into a parse tree (a hierarchical, bidimensional, representation of the same idea); this parse tree can be further transformed, and when the "unimportant" details related to the concrete syntax are discarded, an AST is produced.
 
-The abstract syntax is instead the set of Abstract Syntax Trees (ASTs) that are used internally by the interpreter to carry around meaning, carry out symbolic manipulations and describe the actions to be executed on an environment.
+These "unimportant" details may include the fact of whether the user took advantage of the "sugared" version of a construct or not; syntax sugar is a more appealing (terser, more expressive, easier to read) syntax that is usually implemented on top of a less appealing (more verbose, less expressive, harder to read) construct, with the latter usually being easier for the system to manipulate.
 
-There is obviously a correspondence between the two kinds of syntaxes: a concrete grammar describes how a string of text (a linear representation of an idea) has to be turned into a parse tree (a bidimensional representation of the same idea); this parse tree can be further transformed, and when the "unimportant" details related to the concrete syntax are discarded, an AST is born.
+Another example may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user intended) precendence of operators.
 
-These "unimportant" details may include the fact of whether the user took advantage of the "sugared" version of a construct or not; syntax sugar is a more appealing (terser, more expressive, easier to read) syntax that is usually implemented on top of a less appealing (more verbose, less expressive, harder to read) construct, with the latter usually being easier for the system to evaluate.
+In this implementation of Deixiscript, we chose to stick to one concrete syntax, inspired by English; but in principle the language could be extended to support multiple concrete syntaxes insipred by different natural languages; this is possible because the underlying abstract syntax, while also inspired by English, is general enough to be applicable to many other languages too.
 
-Another example may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user intended) precendence of operators and function calls.
 
-Being this a naturalistic language, and specifically a language intended to be easy for English speakers to read and write, the inspiration for both the concrete and abstract syntaxes came from natural language. The influence of English, specifically, is evident in the concrete syntax, but perhaps a little less so in the abstract syntax.
 
-The abstract syntax is inteded to be as language-neutral as possible; it serves the purpose of binding general natural language structures to their "equivalent" programming language structures: an issue related to the concept of programmatic semantics, mentioned in the earlier chapters of this work.
 
 == Abstract Syntax
 
@@ -234,19 +212,23 @@ They work as lists because they can carry around multiple (implicit or explicit)
 
 They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the raven` has to be expanded into something like: `it is false that ((the cat likes the raven) and (the lion likes the raven))`, switching from an `or` to an `and`.
 
-=== Def
+// === Def// === Law
 
 
+// ==== Core
 
-// === Law
+// The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
+
+// ===== Expression Builder
+
+// The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
+
+// ===== Knowledge Base
+
+// This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
 
 
-
-
-
-
-
-// function calls, to elaborate on one specific example, are handled as noun phrases 
+----------------
 
 
 // == Future Work
@@ -287,7 +269,7 @@ They enable syntactic de/compression, because any SimpleSentence that contains a
 
 
 // // = Metaphysics
-// // - At the most basic level there is: the Graph, the derivations and the DD. The Graph is the "interface" through which Deixiscript communicates with the outer world, including JS, which only uderstands has-as properties.
+// // - At the most basic level there is: the Graph, the derivations and the DD. The Graph is the "interface" through which Deixiscript communicates with the outer world, including JS, which only uderstands has-as properties. Actually also the commands/questions themsevles are the interface
 // // world model as the interface to the outer world
 // // = Deixis
 // // - Implicit references work as if any entity got the current timestamp whenever
