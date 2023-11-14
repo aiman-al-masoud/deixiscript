@@ -1,3 +1,8 @@
+- Advice Taker
+- Machines Like Us
+- Metafor (presented in detail in naturalistic programming)
+
+
 = Artificial Intelligence
 
 Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic, has spanned over decades of research from its first inception in the last century, and has preoccupied some of the most brilliant minds in history.
