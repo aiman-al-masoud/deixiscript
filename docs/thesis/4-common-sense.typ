@@ -1,7 +1,8 @@
 - Advice Taker
 - Machines Like Us
+- Common Sense
+- Chosmky on Creativity: novelty, appropriateness to context, unpredictability in terms of environmental circumstances, and value.
 - Metafor (presented in detail in naturalistic programming)
-
 
 = Artificial Intelligence
 
