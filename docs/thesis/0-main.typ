@@ -5,27 +5,23 @@
   authors: (
     (name: "Aiman Al Masoud", 
     email: "", 
-    affiliation: "unipv", 
+    affiliation: "Università degli Studi di Pavia", 
     postal: "", 
     phone: ""),
   ),
   abstract: lorem(59),
 )
 
-#include "0-intro.typ"
+#include "1-intro.typ"
 #pagebreak()
-#include "1-voice-interfaces.typ"
+#include "2-programming-languages.typ"
 #pagebreak()
-#include "2-linguistics.typ"
+#include "3-artificial-intelligence.typ"
 #pagebreak()
-#include "3-philosophy.typ"
+#include "4-naturalistic-programming.typ"
 #pagebreak()
-#include "4-artificial-intelligence.typ"
+#include "5-deixiscript.typ"
 #pagebreak()
-#include "5-programming-languages.typ"
-#pagebreak()
-#include "6-naturalistic-programming.typ"
-#pagebreak()
-#include "7-deixiscript.typ"
+#include "6-future-work.typ"
 #pagebreak()
 #bibliography("bib.bib")
