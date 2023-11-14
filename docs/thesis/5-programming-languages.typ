@@ -1,5 +1,7 @@
 = Programming Languages
 
+The naturalistic approach can be seen as a new programming paradigm, albeit one which the principles of which aren't still well defined much less well established; it may be of some help to briefly review the main (most popular) programming paradigms as of today, before trying to formulate ideas 
+
 == Procedural Programming
 
 Procedural programming is a kind of Imperative programming, because it lets the programmer handle state and control flow explicitly.

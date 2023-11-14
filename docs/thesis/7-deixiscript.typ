@@ -172,7 +172,7 @@ When the "inverted search" option is used, the search will resolve in (one or mo
 
 When an entity has outlived its usefulness, it can be purged from the world model (or "forgotten") with a negative command about it.
 
-To increase the flexibility of implicit references, Deixiscript also provides the option to use an "and" or an "or" conjunction to enumerate many basic implicit references; for instance one could refer to "the bobcat and the panther" simultaneously; this "compound implicit reference" of sorts can be used as an argument inside of a simple sentence, and triggers the automatic expansion of that sentence into multiple sentences based on the number of resolved referents.
+To increase the flexibility of implicit references, Deixiscript also provides the option to use an "and" or an "or" conjunction to enumerate many basic implicit references; for instance one could refer to "the bobcat and the panther" simultaneously; this "compound implicit reference" of sorts can be used as an argument inside of a simple sentence, and in this case it triggers the automatic expansion of that sentence into multiple sentences based on the number of resolved referents and the kind of conjunction used.
 
 
 ------------

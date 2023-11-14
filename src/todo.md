@@ -1,3 +1,16 @@
+New organization:
+
+- INTRO
+- PROGRAMMING LANGUAGES
+- ARTIFICIAL INTELLIGENCE
+- NATURALISTIC PROGRAMMING
+- DEIXISCRIPT
+- VOICE INTERFACES
+- FUTURE WORK
+
+
+
+
 # How to fill up "which-gaps" when parsing?
 - use of transitive vs intransitive verb distinction in ST post-processing?
 - use of (ugly) explicit gap
