@@ -16,7 +16,8 @@
 #pagebreak()
 #include "2-programming-languages.typ"
 #pagebreak()
-#include "3-artificial-intelligence.typ"
+// or maybe swap common-sense and naturalistic-programming?
+#include "3-common-sense.typ"
 #pagebreak()
 #include "4-naturalistic-programming.typ"
 #pagebreak()
