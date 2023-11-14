@@ -1,6 +1,212 @@
+= Temporary Notes
+
+https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/
+(K. R. Chowdhary, Professor)
+
+evolution of programming languages, arisal and transfer of new features, death of obsolete ones
+
+
+zuse's weird language from the early 40s
+
+
+machine code bad:
+  - numerical codes
+  - absolute addressing: must modify when refactoring
+
+interpreted vs compiled
+early assembly languages (late 40s early 50s), some interpreted (shortcode...)
+HW didn't have floating point intructions, those had to be simulated, so interpreting was a negligible overhead. IBM 704 had indexing and floating point.
+
+the first widely accepted compiled high-level language was Fortran, developed at IBM, John Backus (the guy from Backus Naur Form)
+The IBM Mathematical FORmula TRANslating System:
+Fortran I 1956, it had var names, user defined subroutines, arithmetic if ( which passed control to one of three locations in the program depending on whether the result of the arithmetic statement was negative, zero, or positive) and do (while?)
+
+no independent compilation and 704 unreliability put a limit on size of program
+
+designers were being HW specific, heavily geared towards performance, no dynamic vars
+
+LISP born out of desire to process symbolic data in lists (most prior computations were numerical). Introduced recursion and contional expressions (logical if), dynamic alloc and garbage collection. Advice Taker.3 This application
+became the impetus for the development of the list-processing language LISP
+
+LISP's syntax is extremely simple.
+LISP is a functional language, discuss FP, discuss declarative vs imperative.
+
+static (lexical) vs dynamic scoping. In static scoping (Java, C, C++) it depends on program text (nearest def wins), independent of runtime call stack. In dynamic scoping ... Mixed scoping in some languages like JS.
+
+original lisp had dynamic scope (roots of lisp, Paul Graham)
+
+ML then (Miranda and Haskell purely functional)... Haskell also has lazy eval
+
+
+ALGOL (late 50s, early 60s) effort to design machine independent scientific computation lang. generalized fortran
+
+John Backus, a programming language designer at IBM, proposed a metalanguage of "metalinguistic formulas"[1][7][8] to describe the syntax of the new programming language IAL, known today as ALGOL 58 (1959). His notation was first used in the ALGOL 60 report.
+
+BNF is a notation for Chomsky's context-free grammars. Backus was familiar with Chomsky's wor
+
+ALGOL also introduced block structure, pass by value and "pass by name"
+https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
+
+symbolic/textual substitution
+
+Implications of the pass-by-name mechanism:
+- The argument expression is re-evaluated each time the formal parameter is accessed.
+- The procedure can change the values of variables used in the argument expression and hence change the expression's value. 
+
+ALGOL allowed recursion (probably first imperative lang to do so)
+
+ALGOL 60 lacked native input and output statements in the language was another major
+reason for its lack of acceptance (no hello world!)
+
+COBOL
+Grace Hopper: “mathematical programs should be written in mathematical
+notation, data processing programs should be written in English statements”.
+during the proposal process English, French and German keywords, UNIVAC, Remington-Rand (company) UNIVAC... but not "naturalistic", has been very widespread but not very "respected"
+
+Many critical systems that still use COBOL exist nowadays
+https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
+
+
+BASIC
+
+BASIC (Beginner's All-purpose Symbolic Instruction Code) was originally
+
+1963 to
+design a new language especially for liberal arts students.
+
+The most important aspect of the original BASIC was that it was the first
+widely used language that was used through terminals connected to a remote
+computer.7 Terminals had just begun to be available at that time. Before then,
+most programs were entered into computers through either punched cards or
+paper tape.
+
+The resurgence of BASIC in the 1990s was driven by the appearance of
+Visual BASIC (VB). VB became widely used in large part because it provided
+a simple way of building graphical user interfaces (GUIs), hence the name
+Visual BASIC.
+
+PL/I
+
+Perhaps the best single-sentence description of PL/I is that it included what
+were then considered the best parts of ALGOL 60 (recursion and block struc-
+ture), Fortran IV (separate compilation with communication through global
+data), and COBOL 60 (data structures, input/output, and report-generating
+facilities), along with an extensive collection of new constructs, all somehow
+cobbled together.
+
+“I absolutely fail to see how we can keep our growing
+programs firmly within our intellectual grip when by its sheer baroqueness
+the programming language—our basic tool, mind you!—already escapes our
+intellectual control.” Dijkstra
+
+APL
+A Programming Language
+originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemented.
+
+Huge number of operators, unreadable
+
+SIMULA 67
+
+- extension of ALGOL 60
+- first OOP lang
+- using computers for simulation
+- coroutines: subprograms that are allowed to restart at the position where they previously stopped
+- class construct, prelude to OOP, data abstractions
+
+https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
+
+ALGOL 68
+
+orthogonality
+
+user defined data types
+
+ALGOL 68 extended the elegant simplicity of
+ALGOL 60, whereas PL/I simply threw together the features of several lan-
+guages to attain its goals.
+
+Pascal, C
+
+LOGIC PROGRAMMING & PROLOG
+
+declarative paradigm
+programming based on predicate logic
+data and inference method
+
+https://www.sciencedirect.com/topics/computer-science/resolution-principle
+
+During the early 1970s,
+The first Prolog interpreter was developed at Marseille in 1972
+University of Aix-Marseille
+Department of Artificial Intelligence at the University of Edin-
+burgh
+
+
+intelligent database, facts and rules
+
+two major reasons why logic programming has
+not become more widely used. First, as with some other nonimperative
+approaches, programs written in logic languages thus far have proven to
+be highly inefficient relative to equivalent imperative programs. Second, it
+has been determined that it is an effective approach for only a few relatively
+small areas of application: certain kinds of database management systems and
+some areas of AI.
+
+Prolog++
+
+https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
+
+
+Smalltalk
+Ph.D.
+dissertation work of Alan Kay in the late 1960s at the University of Utah (Kay,
+1969).
+
+everything is an object, all the way down
+sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
+
+
+C++
+
+discussion of general OOP approach
+
+On the negative side, because C++ is a very large and complex language,
+it clearly suffers drawbacks similar to those of PL/I. It inherited most of the
+insecurities of C, which make it less safe than languages such as Ada and
+Java.
+
+Java
+
+The Scripting Langs
+(Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
+
+many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s)
+
+Markup Languages
+
+
+
+The "ideal" language?????
+
+can it exist?
+Are some PLs clearly better/worse than others? (yes according to people like P. Graham)
+
+(the pragmatic programmer)
+believing that something that changed didn't change (as a result of high coupling)
+believing that something that hasn't changed did change (as a result of repetition)
+
+
+
+// growing a lang, Guy Steele
+
+
+----------------------
+
+
 = Programming Languages
 
-The naturalistic approach can be seen as a new programming paradigm, albeit one which the principles of which aren't still well defined much less well established; it may be of some help to briefly review the main (most popular) programming paradigms as of today, before trying to formulate ideas 
+The naturalistic approach can be seen as a new programming paradigm, albeit one which the principles of which aren't still well defined much less well established; it may be of some help to briefly review the main (most popular) programming paradigms as of today, before trying to formulate any ideas specific to naturalistic programming.
+
 
 == Procedural Programming
 
