@@ -69,7 +69,16 @@ The introduction of recursion in programming languages meant that (mutable) vari
 
 This in turn leads to a host of considerations which culminate in pure functional programming, as exemplified in modern languages such as Haskell, developed in the 1990s. Haskell specifically is what's known as a "lazy" language: all expressions are lazily evaluated, without regards for their order in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
 
-Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as dynamic scoping (contrasted to static or "lexical" scoping).
+Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping; the latter being by far the most popular scoping strategy in modern languages, because it is deemed to be more intuitive.
+
+In a typical program, it is convenient that the same variable name be used and re-used in many different places, with different values and different meanings. It is therefore paramount to define a precise set of rules regarding the "scope" (region of visibility) of a variable. Moreover, variable scopes can be nested. 
+
+When resolving the variable "X", static scoping takes into account the (lexically, graphically) closest location where a variable with that name has been defined, and it uses that value to resolve "X". Dynamic scoping, on the other hand, takes "X" to be whatever it is in the current execution environment at run-time.
+
+// To use an example from natural language, 
+// "the cat that ate the tuna that swam in the ocean is sitting on the bench"
+
+
 
 
 
