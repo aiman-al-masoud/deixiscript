@@ -99,6 +99,67 @@ Modern dialects of Lisp (Lisp is not a single language) tend to support both str
 
 All in all, the effect of Lisp on the programming language landscape has been significant, although the dialects of Lisp are not, comparatively, very popular languages, the principles from Functional Programming Lisp helped to shape are still being studied and incorporated in formerly imperative languages; the performance of functional languages has improved through the years, and the debate over the purported "naturalness" of the imperative approach over the functional one, or viceversa, is still a very current one among programmers.
 
+== ALGOL
+
+The first versions of ALGOL were developed during the late 1950s to early 1960s, in an effort to create a machine independent standard for scientific computation, and to provide a universal alternative to Fortran, which initially ran only on IBM hardware.
+
+ALGOL 60 is notable for being the first language to be described using what would come to be known as the Backus Naur Form (BNF), a metalanguage for the description of Context Free Grammars (CFGs), originally introduced by John Backus and later developed with Peter Naur (1928-2016).
+
+BNF, or its variant: Extended BNF (EBNF), remains to this day the most popular means of describing the syntax of programming languages. Born as a notation for the class of grammars known as "Context Free" introduced by linguist and philosopher Noam Chomsky (1928-), BNF describes a grammar as a set of production rules; each rule has a left and a right hand side; on the left is the name of the grammatical element being defined, on the right is the sequence of sub-elements it comprises of. It is reported that a similar formalism had been used by Pāṇini, an ancient Sanskrit grammarian who lived in India between the 6th and the 4th century BCE, to describe the morphology of Sanskrit.
+
+ALGOL 60 was also notable for having introduced the block structure for managing nested scopes, for being the among the first imperative languages to support recursion, and for having, besides the more common "pass by value", an additional peculiar "pass by name" mechanism for argument passing.
+
+// https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
+
+Passing an argument to a function or procedure (or more generally, to a "routine") is an essential part of invoking it. As is often the case, there are different possible ways to do it. The most common are "pass by reference" and "pass by value"; the first essentially provides the invoked function with a reference (such as a pointer) to the original object, making it possible for the function to change the original object (side-effects). The second (pass by value) copies the value of the object and provides the function with a copy of it. Obviously, these two mechanisms are de facto equivalent if all of the objects are immutable, such as in a pure functional language.
+
+What both of the aforementioned approaches (by reference and by value) always have in common, is that they require the argument expression to be fully evaluated before it is ever used inside of the function's body. On the contrary, pass by name doesn't. Pass by name is akin to a textual substitution, within the function's body, of every appearence of the parameter's name with the argument's text.
+
+The implication of this is, that whole formulas can be passed in as arguments, because they are not evaluated before the function's body is executed, but rather during its execution. This makes it possible to exploit the technique known as Jensen's Device, from Danish computer scientis Jørn Jensen (1925-2007).
+
+For instance, if the formula `w*x[i]` is passed in as a parameter to a function that performs a loop over `i` from `0` to `n` and sums the values, the sum of the weighted values of an array can be computed for any arbitrary value of `w`, or, for that matter, any arbitrary expression that is passed into the same parameter. In modern languages, a lambda expression such as `x->w*x[i]` could be used to a similar effect.
+
+ALGOL 60 was quite influential, but it wasn't the last version of the language to come out. The year 1968 saw the release of ALGOL 68, which introduced some novelties such as user defined data types. It is also known as a famous example of language were the concept of orthogonality is visible (but perhaps carried a little too far).
+
+Orthogonality in the design of programming languages refers to the possibility of combining the constructs of a language in a relatively unconstrained way. For example, a language which allows import statements to appear in any part of the code (such as Python) is more orthogonal in this respect than a language that only allows them to appear in one place, such as at the top of a source file. If done well, orthogonal design helps keep a language intuitive and free of "exceptions to the rule".
+
+The languages in the AGOL family are no longer popular nowadays, but they are worthy of mention for having introduced some of the language design and description criteria that are still in use today.
+
+
+
+
+
+
+ALGOL 68
+orthogonality
+user defined data types
+
+ALGOL 68 extended the elegant simplicity of
+ALGOL 60, whereas PL/I simply threw together the features of several lan-
+guages to attain its goals.
+
+
+
+
+
+
+//  lamdas
+
+
+
+```
+f (x) = x*x
+```
+
+f (y)
+```
+ = y*y
+```
+
+
+
+There are many mechanisms to pass an argument to a function 
+
 
 
 ----------
@@ -106,23 +167,9 @@ All in all, the effect of Lisp on the programming language landscape has been si
 
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 
-
-ALGOL (late 50s, early 60s) effort to design machine independent scientific computation lang. generalized fortran
-
-John Backus, a programming language designer at IBM, proposed a metalanguage of "metalinguistic formulas" to describe the syntax of the new programming language IAL, known today as ALGOL 58 (1959). His notation was first used in the ALGOL 60 report.
-
-BNF is a notation for Chomsky's context-free grammars. Backus was familiar with Chomsky's work
-
 ALGOL also introduced block structure, pass by value and "pass by name"
 https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
 
-symbolic/textual substitution
-
-Implications of the pass-by-name mechanism:
-- The argument expression is re-evaluated each time the formal parameter is accessed.
-- The procedure can change the values of variables used in the argument expression and hence change the expression's value. 
-
-ALGOL allowed recursion (probably first imperative lang to do so)
 
 ALGOL 60 lacked native input and output statements in the language, was another major
 reason for its lack of acceptance (no hello world!)
