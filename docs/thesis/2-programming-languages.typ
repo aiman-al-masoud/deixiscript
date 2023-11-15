@@ -10,7 +10,7 @@ Programming paradigms themselves generally fall into two main categories: impera
 
 The programming paradigms mentioned two paragraphs ago by no means exhaust all of the existing paradigms, let alone all of the possibly existing but not yet discovered ones, but it is nonetheless useful and instructive to take a closer look at the history and evolution of these few, alongside the programming languages that championed them and pioneered their use. This is what we will do in the following pages.
 
-== 
+== The Origins
 
 As is usually the case with many things in history, it is unclear who started it all. It is said that the first programmer in history was the British mathematician Ada Lovelace (1815-1852), who showed how it was possible to write programs for the Analytical Engine, a mechanical general purpose computer envisioned by the mathematician Charles Babbage (1791-1871). This machine, however, was never built during the lifetime of the two.
 
@@ -25,9 +25,13 @@ It is said that Babbage, in turn, was inspired in his project by the unlikeliest
 
 Despite all of this, we will have to wait for half a century until the birth of the man credited as the conventional inventor of the first programming language: German computer scientist Konrad Zuse (1910-1995). His programming language was Plankalkül ("Program Calculus" in German), designed to run on the Z1 computer, also envisioned and built by Zuse around the 1940s. Unfortunately, with World War II raging on, and Zuse trapped in Germany and isolated from the rest of the computer engineering community, his work remained for a long time largely unknown to the general audience.
 
+== Machine Language
+
 With the birth of the digital computer in the mid 1940s, the first programming languages that were developed were machine languages. A machine language is a purely numerical representation of an instruction supported by the machine's architecture, that can thus be directly executed by the machine; these instructions are, usually, very simple compared to an instruction in a modern high level language. While it is theoretically possible to design a computer atchitecture that executes a high level language out of the box, in practice this is never done, not even today, for practical and performance related reasons.
 
 There are two problems, from the human user's perspective, with machine languages: they are purely numerical, and require one to memorize the numerical opcode (operation code) corresponding to a kind of instruction; and they also require the human programmer to manually specify the addresses of the memory cells that contain the data or instructions to be used; this means that the programmer will also have to manually change all of the other addresses if he/she decides that an extra instruction has to be inserted in the middle of existing ones.
+
+== Assembly Language
 
 This is why assembly languages were invented, shortly after that. An assembly language is a, usually, thin abstraction over the underlying machine code, the latter still being the only language which the bare metal can run out of the box. But assembly languages are much easier to use than machine code, because they provide alphabetical aliases for the numerical opcodes, and because they manage memory addresses automatically, relieving the programmer from the burden of having to keep track of them manually.
 
@@ -37,6 +41,8 @@ Needless to say, pure interpretation is slower than compilation due to the extra
 
 Back in the day, computers were mostly used to perform scientific computations, and floating point operations, which just means operations on decimal numbers up to a certain level of precision, where consequently one of the most important kinds of operations for most programs written at the time; and we still sometimes measure computing power in FLOPS (Floating Point Operations per Second) nowadays.
 
+== Fortran
+
 Things changed when the IBM 704 computer was introduced; the 704 was the first computer to incorporate native floating point operations. When the 704 was introduced in the mid 1950s, people suddenly realized that interpretation was slow, and the software team at IBM released what came to hold the symbolic title of "first high level programming language": Fortran, "The IBM Mathematical FORmula TRANslating System". 
 
 Fortran survives to this day in some scientific computation communities, with heavy modifications from the language that came out in 1956; the original version of Fortran developed by John Backus and his team at IBM supported basic arithmetics, limited length variable names, subroutines, the do-loop and a construct known as the arithmetic if, which branched to different parts of the program based on the value of an arithmetical expression.
@@ -44,6 +50,8 @@ Fortran survives to this day in some scientific computation communities, with he
 Fortran lacked many of the language facilities we take for granted today. There was no incremental compilation: all of the parts of a program had to be recompiled from scratch all the time, and, given the occasional unreliability and slowness of the 704 /* was it compiled on the same machine it ran on?? */, this meant restricted program sizes. It also didn't have any dynamic memory allocation capabilities, which weren't essential for batch scientific computations anyway.
 
 Overall, Fortran is an example among many of a language born with a specific purpose (doing math efficiently on the IBM 704) that later evolved, incorporating new constructs, and was ported over to numerous platforms. It is also a prime example of an imperative language.
+
+== Lisp
 
 Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor. 
 
@@ -53,9 +61,11 @@ The dummy problem McCarthy provides us with, in his paper, is about deducing the
 
 In the process of developing a language to implement this program, McCarthy ended up with a very elegant set of language primitives. Lisp has pioneered an incredible number of innovations programmers still appreciate today; it came first at introducing recursion, conditional expressions (logical if), and dynamic (during run-time) allocation and deallocation of memory (with garbage collection).
 
-Recursion is a universal concept found in many places including natural language, mathematics and computer science. In the latter two fields, the term "recursive function" basically refers to a function whose definition contains a reference to itself (the same function being defined). Recursion breaks a problem down into manageable subproblems, and, like iteration, it allows to repeat computations without duplication of code.
+Recursion is a universal concept found in many places including natural language, mathematics and computer science. In the latter two fields, the term "recursive function" basically refers to a function whose definition contains a reference to itself (the same function being defined). Recursion breaks a problem down into manageable subproblems, and, like iteration, it provides a means to repeat the same computation over and over without duplication of code.
 
-Unlike iteration, recursion doesn't require any reassignment of "counter" variables. 
+Unlike iteration, recursion doesn't require any reassignment of "counter" variables. Any iterative process (or "loop") must keep (at least) a counter which is incremented/decremented at every step, similar to how a jury may count the loops the athletes run at a sports competition. But a recursive function sidesteps all of that, because it can call a new instance of itself with a different argument, for example an incremented/decremented number, and conditionally stop when a condition known as the "base case" is met, returning a value.
+
+The introduction of recursion in programming languages meant that (mutable) variables were no longer an unavoidable thing, and it ushered in a new paradigm known as Functional Programming (FP). Functional Programming is a declarative paradigm centered around the mathematical function, as the name says. 
 
 
 ----------
