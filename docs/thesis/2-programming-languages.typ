@@ -127,41 +127,6 @@ The languages in the AGOL family are no longer popular nowadays, but they are wo
 
 
 
-
-
-
-ALGOL 68
-orthogonality
-user defined data types
-
-ALGOL 68 extended the elegant simplicity of
-ALGOL 60, whereas PL/I simply threw together the features of several lan-
-guages to attain its goals.
-
-
-
-
-
-
-//  lamdas
-
-
-
-```
-f (x) = x*x
-```
-
-f (y)
-```
- = y*y
-```
-
-
-
-There are many mechanisms to pass an argument to a function 
-
-
-
 ----------
 = Temporary Notes
 
