@@ -121,7 +121,7 @@ For instance, if the formula `w*x[i]` is passed in as a parameter to a function 
 
 ALGOL 60 wasn't the last version of the language to come out. The year 1968 saw the release of ALGOL 68, which introduced some novelties such as user defined data types. It is also known as a famous example of language were the concept of orthogonality is all too visible, and perhaps carried a little too far.
 
-Orthogonality in the design of programming languages refers to the possibility of combining the constructs of a language in a relatively unconstrained way. For example, a language which allows import statements to appear in any part of the code (such as Python) is more orthogonal in this respect than a language that only allows them to appear in one place, typically the top of a source file. If done well, orthogonal design helps keep a language free of "exceptions to the rule", and as such more intuitive to use.
+Orthogonality in the design of programming languages refers to the possibility of combining the constructs of a language in a relatively unconstrained way. For example, a language which allows import statements to appear in any part of the code (such as Python) is more orthogonal in this respect than a language that only allows them to appear in one place, typically at the top of a source file. If done well, orthogonal design helps keep a language free of "exceptions to the rule", and as such more intuitive to use.
 
 The languages in the AGOL family are no longer popular nowadays, but they are worthy of mention for having introduced some of the language design and description criteria that are still in use today.
 
@@ -132,12 +132,6 @@ The languages in the AGOL family are no longer popular nowadays, but they are wo
 
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 
-ALGOL also introduced block structure, pass by value and "pass by name"
-https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
-
-
-ALGOL 60 lacked native input and output statements in the language, was another major
-reason for its lack of acceptance (no hello world!)
 
 COBOL
 Grace Hopper: “mathematical programs should be written in mathematical
@@ -196,16 +190,6 @@ SIMULA 67
 - class construct, OOP, data abstractions
 
 https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
-
-ALGOL 68
-
-orthogonality
-
-user defined data types
-
-ALGOL 68 extended the elegant simplicity of
-ALGOL 60, whereas PL/I simply threw together the features of several lan-
-guages to attain its goals.
 
 Pascal, C
 
