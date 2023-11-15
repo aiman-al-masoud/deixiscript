@@ -1,13 +1,10 @@
 = Temporary Notes
 
+evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/
 (K. R. Chowdhary, Professor)
 
-evolution of programming languages, arisal and transfer of new features, death of obsolete ones
-
-
-zuse's weird language from the early 40s
-
+(konrad) zuse's weird language from the early 40s
 
 machine code bad:
   - numerical codes
@@ -15,35 +12,35 @@ machine code bad:
 
 interpreted vs compiled
 early assembly languages (late 40s early 50s), some interpreted (shortcode...)
+
 HW didn't have floating point intructions, those had to be simulated, so interpreting was a negligible overhead. IBM 704 had indexing and floating point.
 
 the first widely accepted compiled high-level language was Fortran, developed at IBM, John Backus (the guy from Backus Naur Form)
+
 The IBM Mathematical FORmula TRANslating System:
 Fortran I 1956, it had var names, user defined subroutines, arithmetic if ( which passed control to one of three locations in the program depending on whether the result of the arithmetic statement was negative, zero, or positive) and do (while?)
 
-no independent compilation and 704 unreliability put a limit on size of program
+no independent compilation per file (had to recompile everything from scratch) and 704 unreliability put a limit on size of program
 
 designers were being HW specific, heavily geared towards performance, no dynamic vars
 
-LISP born out of desire to process symbolic data in lists (most prior computations were numerical). Introduced recursion and contional expressions (logical if), dynamic alloc and garbage collection. Advice Taker.3 This application
-became the impetus for the development of the list-processing language LISP
+LISP born out of desire to process symbolic data in lists (most prior computations were numerical). Introduced recursion and contional expressions (logical if), dynamic alloc and garbage collection. Advice Taker This application became the impetus for the development of the list-processing language LISP
 
 LISP's syntax is extremely simple.
 LISP is a functional language, discuss FP, discuss declarative vs imperative.
 issue of naturalness vs ease of efficient implementation.
 
-static (lexical) vs dynamic scoping. In static scoping (Java, C, C++) it depends on program text (nearest def wins), independent of runtime call stack. In dynamic scoping ... Mixed scoping in some languages like JS.
-
 original lisp had dynamic scope (roots of lisp, Paul Graham)
+
+static (lexical) vs dynamic scoping. In static scoping (Java, C, C++) it depends on program text (nearest def wins), independent of runtime call stack. In dynamic scoping ... Mixed scoping in some languages like JS.
 
 ML then (Miranda and Haskell purely functional)... Haskell also has lazy eval
 
-
 ALGOL (late 50s, early 60s) effort to design machine independent scientific computation lang. generalized fortran
 
-John Backus, a programming language designer at IBM, proposed a metalanguage of "metalinguistic formulas"[1][7][8] to describe the syntax of the new programming language IAL, known today as ALGOL 58 (1959). His notation was first used in the ALGOL 60 report.
+John Backus, a programming language designer at IBM, proposed a metalanguage of "metalinguistic formulas" to describe the syntax of the new programming language IAL, known today as ALGOL 58 (1959). His notation was first used in the ALGOL 60 report.
 
-BNF is a notation for Chomsky's context-free grammars. Backus was familiar with Chomsky's wor
+BNF is a notation for Chomsky's context-free grammars. Backus was familiar with Chomsky's work
 
 ALGOL also introduced block structure, pass by value and "pass by name"
 https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
@@ -56,7 +53,7 @@ Implications of the pass-by-name mechanism:
 
 ALGOL allowed recursion (probably first imperative lang to do so)
 
-ALGOL 60 lacked native input and output statements in the language was another major
+ALGOL 60 lacked native input and output statements in the language, was another major
 reason for its lack of acceptance (no hello world!)
 
 COBOL
@@ -77,7 +74,7 @@ design a new language especially for liberal arts students.
 
 The most important aspect of the original BASIC was that it was the first
 widely used language that was used through terminals connected to a remote
-computer.7 Terminals had just begun to be available at that time. Before then,
+computer. Terminals had just begun to be available at that time. Before then,
 most programs were entered into computers through either punched cards or
 paper tape.
 
@@ -113,7 +110,7 @@ SIMULA 67
 - first OOP lang
 - using computers for simulation
 - coroutines: subprograms that are allowed to restart at the position where they previously stopped
-- class construct, prelude to OOP, data abstractions
+- class construct, OOP, data abstractions
 
 https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
 
@@ -131,9 +128,9 @@ Pascal, C
 
 LOGIC PROGRAMMING & PROLOG
 
-declarative paradigm
-programming based on predicate logic
-data and inference method
+- declarative paradigm
+- programming based on predicate logic
+- data specification AND inference method
 
 https://www.sciencedirect.com/topics/computer-science/resolution-principle
 
@@ -160,13 +157,18 @@ https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
 
 
 Smalltalk
-Ph.D.
-dissertation work of Alan Kay in the late 1960s at the University of Utah (Kay,
+
+Ph.D. dissertation work of Alan Kay in the late 1960s at the University of Utah (Kay,
 1969).
+
+http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
 
 everything is an object, all the way down
 sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
 
+Alan Kay's OOP emphasized message passing, dynamic types, NOT inheritance.
+If an object accepts the same kind of messages, it has the same interface.
+code reuse must not be conflated with common interfaces
 
 C++
 
@@ -182,11 +184,11 @@ Java
 The Scripting Langs
 (Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
 
-many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s)
+originally interpreted
+
+many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s), 
 
 Markup Languages
-
-
 
 The "ideal" language?????
 
