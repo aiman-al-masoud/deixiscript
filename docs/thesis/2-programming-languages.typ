@@ -4,7 +4,11 @@ evolution of programming languages, arisal and transfer of new features, death o
 https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/
 (K. R. Chowdhary, Professor)
 
-(konrad) zuse's weird language from the early 40s
+Ada Lovelace 1815-1852, Charles Babbage (1791-1871) Analytical Engine
+https://www.britannica.com/biography/Ada-Lovelace
+Ada: “weaves algebraic patterns, just as the Jacquard-loom weaves flowers and leaves.”
+
+(konrad) zuse's weird language from the early 40s, Plankalkül
 
 machine code bad:
   - numerical codes
