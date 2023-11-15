@@ -67,6 +67,8 @@ Unlike iteration, recursion doesn't require any reassignment of "counter" variab
 
 The introduction of recursion in programming languages meant that (mutable) variables were no longer an unavoidable necessity, and it ushered in a new paradigm known as Functional Programming (FP). Functional Programming is a declarative paradigm centered around the concept of a "pure" or mathematical function, as the name says. Every computation is performed by function application, operators can be seen as functions, a variable assignment (which is immutable) can be seen as the definition of a function without arguments: a function without arguments always returns a constant value, since the output of a function can only change when the input changes, and the "input" of a constant never changes. Furthermore, since there are no side effects, all expressions are "referentially transparent": they always mean what they say, independent of the order or the context of execution.
 
+// Alvin Alexander, scala
+
 This in turn leads to a host of considerations which culminate in pure functional programming, as exemplified in modern languages such as Haskell, developed in the 1990s. Haskell specifically is what's known as a "lazy" language: all expressions are lazily evaluated, without regards for their order in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
 
 Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping.
@@ -74,9 +76,6 @@ Returning to Lisp, we need to discuss the issue of variable scoping. The origina
 In a typical program, it is convenient that the same variable name be used and re-used in many different places, with different values and different meanings. It is therefore paramount to define a precise set of rules regarding the "scope" (region of visibility) of a variable. Moreover, variable scopes can be nested. 
 
 When resolving the variable "X", static scoping takes into account the (lexically, graphically) closest location where a variable with that name has been defined in the code, and it uses that value to resolve "X". Dynamic scoping, on the other hand, takes "X" to be whatever it is in the current execution environment at run-time.
-
-// To use an example from natural language, 
-// "the cat that ate the tuna that swam in the ocean is sitting on the bench"
 
 Take the following example to illustrate the concept, suppose that you have a "variable declaration" and a "function definition" such as the following:
 
@@ -97,9 +96,7 @@ https://www.gnu.org/software/emacs/emacs-paper.html#SEC17
 Modern dialects of Lisp tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
 
 
-//  implicit args problem
 
-// Alvin Alexander, scala
 
 
 ----------
