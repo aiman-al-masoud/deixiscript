@@ -1,15 +1,52 @@
+When we speak of programming languages in the contemporary sense, we generally refer to a particular kind of computer language (a formal language that can be processed by computers) that is suitable for what we call general purpose programming. This usually involves the property of turing completeness; that is, the ability to emulate certain aspects of a Turing Machine, the epitome of the theoretical general purpose computing device.
+
+Just like there are thousands of natural languages, some of which are used and understood all over the world, and many more of which are only used by a relatively restricted number of speakers; so too there are myriads of programming languages: some of which have achieved world-fame and are widespread in the industry, and many more of which remain relatively esoteric.
+
+It is usually much easier for a programmer to master multiple programming languages during the course of his or her lifetime, than it is for him or her to master the same number of natural languages. This is at least in part due to the objective complexity of any natural language as compared to any programming language (we just don't notice it as human beings); but it is also in part due to the fact that programming languages (even, possibly, very different looking ones) generally fall into a restricted number of groupings, identified by their dominant programming paradigm.
+
+As we will see, some of the most popular programming paradigms of all times are: procedural programming, object oriented programming, functional programming and logical programming. Some languages tend to stick to a specific paradigm more than other languages, emphasizing the paradigm's "purity" over the possibility of a hybrid approach; other languages are know as "multi-paradigm" because they support or even encourage the use of different paradigms for different kinds of tasks; some paradigms mix well together, and others do so to a lesser degree.
+
+Programming paradigms themselves generally fall into two main categories: imperative and declarative.Broadly speaking: the imperative approach is about instructing the machine on how to do something on a step by step basis, while the declarative approach specifies the requirements and leaves the more open-ended specifics of how to accomplish them to the machine.
+
+The programming paradigms mentioned two paragraphs ago by no means exhaust all of the existing paradigms, let alone all of the possibly existing but not yet discovered ones, but it is nonetheless useful and instructive to take a closer look at the history and evolution of these few, alongside the programming languages that championed them and pioneered their use. This is what we will do in the following pages.
+
+== 
+
+As is usually the case with many things in history, it is unclear who started it all. It is said that the first programmer in history was the British mathematician Ada Lovelace (1815-1852), who showed how it was possible to write programs for the Analytical Engine, a mechanical general purpose computer envisioned by the mathematician Charles Babbage (1791-1871). This machine, however, was never built during the lifetime of the two.
+
+It is said that Babbage, in turn, was inspired in his project by the unlikeliest of sources: a mechanical weaving device built by the French weaver and merchant Joseph Marie Jacquard (1752-1834). This mechanical device allowed even unskilled workers to produce intricate patterns on silk, patterns which could be represented on the so called puched (or "punch") cards, a technology which will be used up until more than a century later to input programs into the first eletronic computers.
+
+// https://sciencehistory.org/stories/magazine/the-french-connection/
+// https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/
+// (K. R. Chowdhary, Professor)
+
+// https://www.britannica.com/biography/Ada-Lovelace
+// Ada: “weaves algebraic patterns, just as the Jacquard-loom weaves flowers and leaves.”
+
+Despite all of this, we will have to wait for half a century until the birth of the man credited as the conventional inventor of the first programming language: German computer scientist Konrad Zuse (1910-1995). His programming language was Plankalkül ("Program Calculus" in German), designed to run on the Z1 computer, also envisioned and built by Zuse around the 1940s. Unfortunately, with World War II raging on, and Zuse trapped in Germany and isolated from the rest of the computer engineering community, his work remained for a long time largely unknown to the general audience.
+
+With the birth of the digital computer in the mid 1940s, the first programming languages that were developed were machine languages. A machine language is a purely numerical representation of an instruction supported by the machine's architecture, that can thus be directly executed by the machine; these instructions are, usually, very simple compared to an instruction in a modern high level language. While it is theoretically possible to design a computer atchitecture that executes a high level language out of the box, in practice this is never done, not even today, for practical and performance related reasons.
+
+There are two problems, from the human user's perspective, with machine languages: they are purely numerical, and require one to memorize the numerical opcode (operation code) corresponding to a kind of instruction; and they also require the human programmer to manually specify the addresses of the memory cells that contain the data or instructions to be used; this means that the programmer will also have to manually change all of the other addresses if he/she decides that an extra instruction has to be inserted in the middle of existing ones.
+
+This is why assembly languages were invented, shortly after that. An assembly language is a, usually, thin abstraction over the underlying machine code, the latter still being the only language which the bare metal can run out of the box. But assembly languages are much easier to use than machine code, because they provide alphabetical aliases for the numerical opcodes, and because they manage memory addresses automatically, relieving the programmer from the burden of having to keep track of them manually.
+
+Though it may sound strange to us nowadays, in the early days some of the assembly languages were interpreted rather than compiled. Compilation versus Interpretation are the two main approaches that can be used to implement any programming language, rather than being a real intrinsic feature of the language in question. A compiled language is first translated to machine code, and the machine code (rather than the compiled language's code) is then run on the target computer. On the other hand, an interpreted language requires at least another program to be actively running on the target computer, an interpreter; the latter dynamically translates code in the interpreted language into actions by performing them on the machine.
+
+Needless to say, pure interpretation is slower than compilation due to the extra overhead of the interpreter, but back in the early 1950s this wasn't considered a problem, because the power-hungry floating point operations had to be interpreted anyway (they weren't part of any machnine's native architecture yet).
+
+Back in the day, computers were mostly used to perform scientific computations, and floating point operations, which just means operations on decimal numbers up to a certain level of precision, where consequently one of the most important kinds of operations for most programs written at the time; and we still sometimes measure computing power in FLOPS (Floating Point Operations per Second) nowadays.
+
+Things changed when the IBM 704 computer was introduced. The 704 was the first computer to incorporate native floating point operations 
+
+
+
+
+----------
 = Temporary Notes
 
-Joseph Marie Jacquard
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
-https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/
-(K. R. Chowdhary, Professor)
 
-Ada Lovelace 1815-1852, Charles Babbage (1791-1871) Analytical Engine
-https://www.britannica.com/biography/Ada-Lovelace
-Ada: “weaves algebraic patterns, just as the Jacquard-loom weaves flowers and leaves.”
-
-(konrad) zuse's weird language from the early 40s, Plankalkül
 
 machine code bad:
   - numerical codes
