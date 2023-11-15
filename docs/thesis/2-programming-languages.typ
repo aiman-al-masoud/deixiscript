@@ -73,7 +73,7 @@ Returning to Lisp, we need to discuss the issue of variable scoping. The origina
 
 In a typical program, it is convenient that the same variable name be used and re-used in many different places, with different values and different meanings. It is therefore paramount to define a precise set of rules regarding the "scope" (region of visibility) of a variable. Moreover, variable scopes can be nested. 
 
-When resolving the variable "X", static scoping takes into account the (lexically, graphically) closest location where a variable with that name has been defined, and it uses that value to resolve "X". Dynamic scoping, on the other hand, takes "X" to be whatever it is in the current execution environment at run-time.
+When resolving the variable "X", static scoping takes into account the (lexically, graphically) closest location where a variable with that name has been defined in the code, and it uses that value to resolve "X". Dynamic scoping, on the other hand, takes "X" to be whatever it is in the current execution environment at run-time.
 
 // To use an example from natural language, 
 // "the cat that ate the tuna that swam in the ocean is sitting on the bench"
