@@ -1,5 +1,6 @@
 = Temporary Notes
 
+Joseph Marie Jacquard
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 https://www.computerhistory.org/storageengine/punched-cards-control-jacquard-loom/
 (K. R. Chowdhary, Professor)
