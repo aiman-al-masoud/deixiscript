@@ -78,9 +78,24 @@ When resolving the variable "X", static scoping takes into account the (lexicall
 // To use an example from natural language, 
 // "the cat that ate the tuna that swam in the ocean is sitting on the bench"
 
+To make an informal example, suppose that you have a "variable declaration" and a "function definition" such as the following:
+
+`
+X is the oven.
+to bake a cake: put it inside of X.
+...
+...
+bake the cake.
+`
+
+If the above language is statically scoped, then when calling the function "bake" from whichever distant position in the code, "X" will always be "the oven", no matter what. But if the above language is dynamically scoped, well... it depends! If the function "bake" is called from a context where the name "X" has been redefined to mean something else: "the freezer" let's suppose, then the cake will be baked by placing it in the freezer!
 
 
 
+
+
+
+//  implicit args problem
 
 
 
