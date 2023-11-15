@@ -69,6 +69,7 @@ The introduction of recursion in programming languages meant that (mutable) vari
 
 This in turn leads to a host of considerations which culminate in pure functional programming, as exemplified in modern languages such as Haskell, developed in the 1990s. Haskell specifically is what's known as a "lazy" language: all expressions are lazily evaluated, without regards for their order in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
 
+Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as dynamic scoping (contrasted to static or "lexical" scoping).
 
 
 
