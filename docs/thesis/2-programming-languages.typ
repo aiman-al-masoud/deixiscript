@@ -125,6 +125,19 @@ Orthogonality in the design of programming languages refers to the possibility o
 
 The languages in the AGOL family are no longer popular nowadays, but they are worthy of mention for having introduced some of the language design and description criteria that are still in use today.
 
+== COBOL
+
+The COmmon Business-Oriented Language, COBOL, is not exactly known for having a good reputation amongst programmers. The Jargon File, a partly humorous dictionary-like compendium of computer related slang, begins the definition of the term "COBOL" like this: "[COmmon Business-Oriented Language] (Synonymous with evil.) A weak, verbose, and flabby language used by code grinders to do boring mindless things on dinosaur mainframes."
+
+// http://www.catb.org/jargon/html/C/COBOL.html
+// http://www.catb.org/jargon/quoting.html
+
+The Jargon File also reports the following quote by Edsger Dijkstra: "The use of COBOL cripples the mind; its teaching should, therefore, be regarded as a criminal offense."
+
+Many mission critical systems to this day depend on large COBOL codebases; this is why, despite the kind reputation it has earned during the last 60+ years of its existence, it is still a topic of relevance today.
+
+As the name implies, COBOL was originally intended for data manipulation in business applications; 
+
 
 
 ----------
