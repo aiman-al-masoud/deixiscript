@@ -65,13 +65,15 @@ Recursion is a universal concept found in many places including natural language
 
 Unlike iteration, recursion doesn't require any reassignment of "counter" variables. Any iterative process (or "loop") must keep (at least) a counter which is incremented/decremented at every step, similar to how a jury may count the loops the athletes run at a sports competition. But a recursive function sidesteps all of that, because it can call a new instance of itself with a different argument, for instance: an incremented/decremented number, and conditionally stop when a condition known as the "base case" is met, finally returning a value.
 
-The introduction of recursion in programming languages meant that (mutable) variables were no longer an unavoidable necessity, and it ushered in a new paradigm known as Functional Programming (FP). Functional Programming is a declarative paradigm centered around the concept of a "pure" or mathematical function, as the name says. Every computation is performed by function application, operators can be seen as functions, a variable assignment (which is immutable) can be seen as the definition of a function without arguments: a function without arguments always returns a constant value, since the output of a function can only change when the input changes, and the "input" of a constant never changes. Furthermore, since there are no side effects, all expressions are "referentially transparent": they always mean what they say, independent of the order or the context of execution.
+The introduction of recursion in programming languages meant that (mutable) variables were no longer an unavoidable necessity, and it ushered in a new paradigm known as Functional Programming (FP). Functional Programming is a declarative paradigm centered around the concept of a "pure" or mathematical function, as the name says. Every computation is performed by function application, operators can be seen as functions, a variable assignment (which is immutable) can be seen as the definition of a function without arguments: a function without arguments always returns a constant value, since the output of a function can only change when the input changes, and the "input" of a constant never changes. Furthermore, since there are no side effects, all expressions are "referentially transparent": they always mean what they say, independent of the order or the context of execution, this makes writing code akin to writing mathematical formulas.
 
 // Alvin Alexander, scala
 
 This in turn leads to a host of considerations which culminate in pure functional programming, as exemplified in modern languages such as Haskell, developed in the 1990s. Haskell specifically is what's known as a "lazy" language: all expressions are lazily evaluated, without regards for their order in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
 
 Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping.
+
+// roots of lisp, Paul Graham
 
 In a typical program, it is convenient that the same variable name be used and re-used in many different places, with different values and different meanings. It is therefore paramount to define a precise set of rules regarding the "scope" (region of visibility) of a variable. Moreover, variable scopes can be nested. 
 
@@ -87,15 +89,15 @@ to bake a cake: put it inside of X.
 bake the cake.
 `
 
-If the language above is statically scoped, then when calling the function "bake" from whichever distant position in the code, "X" will always be "the oven", no matter what. But if the above language is dynamically scoped, well... it depends! If the function "bake" is called from a context where the name "X" has been redefined to mean something else: "the freezer" let's suppose, then the cake will be baked by placing it in the freezer!
+If the language above is statically scoped, then when calling the function "bake" from whichever distant position in the code, "X" will always be "the oven", no matter what. But if the above language is dynamically scoped, well... it depends! If the function "bake" is called from a context where the name "X" has been redefined to mean something else, suppose it's now: "the freezer", then the cake will be baked by placing it in the freezer!
 
 Dynamic versus static scoping thus behave differently in the presence of implicit arguments to a function; ie: when a function reads a variable from the outer scope. The reader can see why dynamic scoping is deemed to be a little less intuitive than static scoping; in spite of this, it is still deemed useful by some programmers in certain cases.
 
 https://www.gnu.org/software/emacs/emacs-paper.html#SEC17
 
-Modern dialects of Lisp tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
+Modern dialects of Lisp (Lisp is not a single language) tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
 
-
+All in all, the effect of Lisp on the programming language landscape has been significant, although the dialects of Lisp are not, comparatively, very popular languages, the principles from Functional Programming Lisp helped to shape are still being studied and incorporated in formerly imperative languages; the performance of functional languages has improved through the years, and the debate over the purported "naturalness" of the imperative approach over the functional one, or viceversa, is still a very current one among programmers.
 
 
 
@@ -105,13 +107,9 @@ Modern dialects of Lisp tend to support both strategies, as do some languages su
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 
 
-LISP born out of desire to process symbolic data in lists (most prior computations were numerical). Introduced recursion and contional expressions (logical if), dynamic alloc and garbage collection. Advice Taker This application became the impetus for the development of the list-processing language LISP
-
-LISP's syntax is extremely simple.
-LISP is a functional language, discuss FP, discuss declarative vs imperative.
 issue of naturalness vs ease of efficient implementation.
 
-original lisp had dynamic scope (roots of lisp, Paul Graham)
+original lisp had dynamic scope ()
 
 static (lexical) vs dynamic scoping. In static scoping (Java, C, C++) it depends on program text (nearest def wins), independent of runtime call stack. In dynamic scoping ... Mixed scoping in some languages like JS.
 
