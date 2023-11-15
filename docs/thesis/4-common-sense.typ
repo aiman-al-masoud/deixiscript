@@ -1,8 +1,9 @@
 - Advice Taker
 - Machines Like Us
-- Common Sense
-- Chosmky on Creativity: novelty, appropriateness to context, unpredictability in terms of environmental circumstances, and value.
+- Comment on Machines Like Us
 - Metafor (presented in detail in naturalistic programming)
+- Common Sense
+- Chosmky on Creativity: novelty, appropriateness to context, unpredictability in terms of environmental circumstances, and value, mention hierarchy of problems by constraints
 
 = Artificial Intelligence
 

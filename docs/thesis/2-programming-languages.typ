@@ -30,6 +30,7 @@ became the impetus for the development of the list-processing language LISP
 
 LISP's syntax is extremely simple.
 LISP is a functional language, discuss FP, discuss declarative vs imperative.
+issue of naturalness vs ease of efficient implementation.
 
 static (lexical) vs dynamic scoping. In static scoping (Java, C, C++) it depends on program text (nearest def wins), independent of runtime call stack. In dynamic scoping ... Mixed scoping in some languages like JS.
 
@@ -108,6 +109,7 @@ Huge number of operators, unreadable
 SIMULA 67
 
 - extension of ALGOL 60
+- support for data abstractions
 - first OOP lang
 - using computers for simulation
 - coroutines: subprograms that are allowed to restart at the position where they previously stopped
