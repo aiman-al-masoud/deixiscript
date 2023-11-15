@@ -107,14 +107,6 @@ All in all, the effect of Lisp on the programming language landscape has been si
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 
 
-issue of naturalness vs ease of efficient implementation.
-
-original lisp had dynamic scope ()
-
-static (lexical) vs dynamic scoping. In static scoping (Java, C, C++) it depends on program text (nearest def wins), independent of runtime call stack. In dynamic scoping ... Mixed scoping in some languages like JS.
-
-ML then (Miranda and Haskell purely functional)... Haskell also has lazy eval
-
 ALGOL (late 50s, early 60s) effort to design machine independent scientific computation lang. generalized fortran
 
 John Backus, a programming language designer at IBM, proposed a metalanguage of "metalinguistic formulas" to describe the syntax of the new programming language IAL, known today as ALGOL 58 (1959). His notation was first used in the ALGOL 60 report.
