@@ -4,7 +4,7 @@ Natural/istic programming is a broad term that can be applied to all those attem
 
 The idea of instructing a computer in natural/istic language (or some formal language close enough to deserve that nomenclature) has been a long standing dream, and sometimes a nightmare, for many people in computer science, long before the advent of modern day Large Language Models.
 
-== Skepticism
+== Criticism
 
 We begin by saying, first and foremost, that the advantages of programming in natural language haven't always been clear to everyone in the field. There has been disagreement regarding the extent to which programming in natural language may prove to be advantageous, but even on whether it be a desirable goal to achieve in the first place. 
 
@@ -19,6 +19,9 @@ Natural language, moreover, is pretty bad at expressing mathematical relations c
 While Dijkstra raises some important points that we shall elaborate on in some of the later discussions, it is important to remember that back in the day when he was writing, computers weren't nearly as widespread as in the present date; back then it was easier to regard the computer as merely a calculating device (hence the higher relevancy of mathematical notation in programming languages). 
 
 Nowadays computers are tools for document and mutlimedia consumption, gaming consoles, video editing devices, office work stations etc... What an end-user often requires isn't a precise formalism to neatly express a mathematical concept, but rather an easy to learn scripting language to customize the behavior of a program on their computer. We think that natural language may be a good candidate at least for this niche, and for many other real-world problems that don't involve too many abstract mathematical concepts.
+
+// Programming Languages shouldn't be" too Natural"
+// Mandrioli, Dino and Pradella, Matteo
 
 == Precision vs Expressiveness
 
