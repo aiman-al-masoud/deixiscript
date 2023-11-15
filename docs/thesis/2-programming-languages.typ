@@ -69,7 +69,7 @@ The introduction of recursion in programming languages meant that (mutable) vari
 
 This in turn leads to a host of considerations which culminate in pure functional programming, as exemplified in modern languages such as Haskell, developed in the 1990s. Haskell specifically is what's known as a "lazy" language: all expressions are lazily evaluated, without regards for their order in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
 
-Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping; the latter being by far the most popular scoping strategy in modern languages, because it is deemed to be more intuitive.
+Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping.
 
 In a typical program, it is convenient that the same variable name be used and re-used in many different places, with different values and different meanings. It is therefore paramount to define a precise set of rules regarding the "scope" (region of visibility) of a variable. Moreover, variable scopes can be nested. 
 
@@ -78,7 +78,7 @@ When resolving the variable "X", static scoping takes into account the (lexicall
 // To use an example from natural language, 
 // "the cat that ate the tuna that swam in the ocean is sitting on the bench"
 
-To make an informal example, suppose that you have a "variable declaration" and a "function definition" such as the following:
+Take the following example to illustrate the concept, suppose that you have a "variable declaration" and a "function definition" such as the following:
 
 `
 X is the oven.
@@ -88,16 +88,16 @@ to bake a cake: put it inside of X.
 bake the cake.
 `
 
-If the above language is statically scoped, then when calling the function "bake" from whichever distant position in the code, "X" will always be "the oven", no matter what. But if the above language is dynamically scoped, well... it depends! If the function "bake" is called from a context where the name "X" has been redefined to mean something else: "the freezer" let's suppose, then the cake will be baked by placing it in the freezer!
+If the language above is statically scoped, then when calling the function "bake" from whichever distant position in the code, "X" will always be "the oven", no matter what. But if the above language is dynamically scoped, well... it depends! If the function "bake" is called from a context where the name "X" has been redefined to mean something else: "the freezer" let's suppose, then the cake will be baked by placing it in the freezer!
 
+Dynamic versus static scoping thus behave differently in the presence of implicit arguments to a function; ie: when a function reads a variable from the outer scope. The reader can see why dynamic scoping is deemed to be a little less intuitive than static scoping; in spite of this, it is still deemed useful by some programmers in certain cases.
 
+https://www.gnu.org/software/emacs/emacs-paper.html#SEC17
 
-
+Modern dialects of Lisp tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
 
 
 //  implicit args problem
-
-
 
 // Alvin Alexander, scala
 
