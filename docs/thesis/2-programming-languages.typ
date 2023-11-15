@@ -37,9 +37,25 @@ Needless to say, pure interpretation is slower than compilation due to the extra
 
 Back in the day, computers were mostly used to perform scientific computations, and floating point operations, which just means operations on decimal numbers up to a certain level of precision, where consequently one of the most important kinds of operations for most programs written at the time; and we still sometimes measure computing power in FLOPS (Floating Point Operations per Second) nowadays.
 
-Things changed when the IBM 704 computer was introduced. The 704 was the first computer to incorporate native floating point operations 
+Things changed when the IBM 704 computer was introduced; the 704 was the first computer to incorporate native floating point operations. When the 704 was introduced in the mid 1950s, people suddenly realized that interpretation was slow, and the software team at IBM released what came to hold the symbolic title of "first high level programming language": Fortran, "The IBM Mathematical FORmula TRANslating System". 
 
+Fortran survives to this day in some scientific computation communities, with heavy modifications from the language that came out in 1956; the original version of Fortran developed by John Backus and his team at IBM supported basic arithmetics, limited length variable names, subroutines, the do-loop and a construct known as the arithmetic if, which branched to different parts of the program based on the value of an arithmetical expression.
 
+Fortran lacked many of the language facilities we take for granted today. There was no incremental compilation: all of the parts of a program had to be recompiled from scratch all the time, and, given the occasional unreliability and slowness of the 704 /* was it compiled on the same machine it ran on?? */, this meant restricted program sizes. It also didn't have any dynamic memory allocation capabilities, which weren't essential for batch scientific computations anyway.
+
+Overall, Fortran is an example among many of a language born with a specific purpose (doing math efficiently on the IBM 704) that later evolved, incorporating new constructs, and was ported over to numerous platforms. It is also a prime example of an imperative language.
+
+Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor. 
+
+McCarthy's real aim was to arrive at an implementation for "Advice Taker", a program he first described in his seminal paper from 1959: "Programs with Common Sense". The hypothetical program would be fed with data in the form of predicate calculus Well-formed formulas (WFFs) or "sentences", and it would be given a concrete goal to accomplish; it then would've had to reason from the premises it had available to arrive at a solution to the problem, drawing immediate conclusions from the premises and taking action in case the conclusions were found to be imperative sentences. 
+
+The example problem McCarthy provides us with, in his paper, is about deducing the appropriate steps to get him (McCarthy) to the airport to catch a flight, given such premises as the fact that he (McCarthy) is currently at home, that he has a car, that the airport is in such and such a location, that the car can get him to distant places, etc... This might seem like a trivial problem for any "non-feeble-minded human" to use McCarthy's own expression, but the difficulty associated to reliably automating this kind of "trivial" reasoning is what came to be known as the problem of Common Sense in AI.
+
+In the process of developing a language to implement this program, McCarthy ended up with a very elegant set of language primitives. Lisp has pioneered an incredible number of innovations programmers still appreciate today; it came first at introducing recursion, conditional expressions (logical if), and dynamic (during run-time) allocation and deallocation of memory (with garbage collection).
+
+Recursion is a universal concept found in many places including natural language, mathematics and computer science. In the latter two fields, the term "recursive function" basically refers to a function whose definition contains a reference to itself (the same function being defined). Recursion breaks a problem down into manageable subproblems, and, like iteration, it allows to repeat computations without duplication of code.
+
+Unlike iteration, recursion doesn't require any reassignment of "counter" variables. 
 
 
 ----------
@@ -47,24 +63,6 @@ Things changed when the IBM 704 computer was introduced. The 704 was the first c
 
 evolution of programming languages, arisal and transfer of new features, death of obsolete ones
 
-
-machine code bad:
-  - numerical codes
-  - absolute addressing: must modify when refactoring
-
-interpreted vs compiled
-early assembly languages (late 40s early 50s), some interpreted (shortcode...)
-
-HW didn't have floating point intructions, those had to be simulated, so interpreting was a negligible overhead. IBM 704 had indexing and floating point.
-
-the first widely accepted compiled high-level language was Fortran, developed at IBM, John Backus (the guy from Backus Naur Form)
-
-The IBM Mathematical FORmula TRANslating System:
-Fortran I 1956, it had var names, user defined subroutines, arithmetic if ( which passed control to one of three locations in the program depending on whether the result of the arithmetic statement was negative, zero, or positive) and do (while?)
-
-no independent compilation per file (had to recompile everything from scratch) and 704 unreliability put a limit on size of program
-
-designers were being HW specific, heavily geared towards performance, no dynamic vars
 
 LISP born out of desire to process symbolic data in lists (most prior computations were numerical). Introduced recursion and contional expressions (logical if), dynamic alloc and garbage collection. Advice Taker This application became the impetus for the development of the list-processing language LISP
 
