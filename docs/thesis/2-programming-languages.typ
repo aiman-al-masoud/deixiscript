@@ -196,9 +196,8 @@ It seems that Alan Kay considers this, and other aspects of the modern popular a
 
 Among the most popular object oriented languages is C++, developed in the 1980s by Danish computer scientist Bjarne Stroustrup (1950-) as an extension of the extremely popular C programming language that allowed the use of object oriented constructs. 
 
-It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have been attempts at curtailing C++'s complexity while retaining its power; C++ is a very powerful language that, unfortunately, is also a 
+It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have partly been attempts at curtailing C++'s complexity while retaining its power; C++ is a very powerful language that, unfortunately, is also a huge hodgepodge of features accumulated over the years, starting from all of the C programming language, which had to be supported from the start.
 
-D, Java
 
 // https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
 
