@@ -160,7 +160,7 @@ PL/I (Programming Language One) is perhaps the next most criticised programming 
 
 It included what were seen as the best features of ALGOL 60, Fortran IV and COBOL 60; together with a host of additional new features that were absent from the other three. While this should've made it a good language, unfortunately, as one can imagine, the problem with PL/I is that it was far too complex.
 
-As has become custormary at this point, we will quote Dijkstra, eloquently criticising the language in question:
+As is customary, we will quote Dijkstra, eloquently criticising the language in question:
 
 "I absolutely fail to see how we can keep our growing programs firmly within our intellectual grip when by its sheer baroqueness the programming language—our basic tool, mind you!—already escapes our
 intellectual control."
