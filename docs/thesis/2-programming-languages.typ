@@ -41,6 +41,8 @@ There are two problems, from the human user's perspective, with machine language
 
 This is why assembly languages were invented shortly after that. An assembly language is usually a thin abstraction over the underlying machine code, the latter still being the only language which the bare metal can run out of the box. But assembly languages are much easier to use than machine code, because they provide alphabetical aliases for the numerical opcodes, and because they manage memory addresses automatically, relieving the programmer from the burden of having to keep track of them in their head.
 
+=== Compilation vs Interpretation
+
 Though it may sound strange to us nowadays, in the early days some of the assembly languages were interpreted rather than compiled. Compilation versus Interpretation are the two main approaches that can be used to implement any programming language, rather than being a real intrinsic feature of the language in question. A compiled language is first translated to machine code, and the machine code (rather than the compiled language's code) is then run on the target computer. On the other hand, an interpreted language requires at least another program to be actively running on the target computer, an interpreter; the latter dynamically translates code in the interpreted language into actions by performing them on the machine.
 
 Needless to say, pure interpretation is slower than compilation due to the extra overhead of the interpreter, but back in the early 1950s this wasn't considered a problem, because the power-hungry floating point operations had to be interpreted anyway (they weren't part of any machnine's native architecture yet).
@@ -55,51 +57,58 @@ Fortran survives to this day in some scientific computation communities, with he
 
 Fortran lacked many of the language facilities we take for granted today. There was no incremental compilation: all of the parts of a program had to be recompiled from scratch all the time, and, given the occasional unreliability and slowness of the 704 /* was it compiled on the same machine it ran on?? */, this meant restricted program sizes. It also didn't have any dynamic memory allocation capabilities, which weren't essential for batch scientific computations anyway.
 
-Overall, Fortran is an example among many of a language born with a specific purpose (doing math efficiently on the IBM 704) that later evolved, incorporating new constructs, and was ported over to numerous platforms. It is also a prime example of an imperative language.
+Overall, Fortran is an example among many of a language born with a specific purpose (doing math efficiently on the IBM 704) that later evolved, incorporating new constructs, and was ported over to numerous platforms. It is also a prime example of an imperative, procedural language.
 
 == Lisp and Functional Programming
 
-Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor. 
+Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor.
 
-McCarthy's real aim was to arrive at an implementation for "Advice Taker", a program he first described in his seminal paper from 1959: "Programs with Common Sense". The hypothetical program would be fed with data in the form of predicate calculus Well-formed formulas (WFFs) or "sentences", and it would be given a concrete goal to accomplish; it then would've had to reason from the premises it had available to arrive at a solution to the problem, drawing immediate conclusions from the premises and taking action in case the conclusions were found to be imperative sentences. 
+=== Advice Taker
+
+McCarthy's final aim was to arrive at an implementation for "Advice Taker", a program he first described in his seminal paper from 1959: "Programs with Common Sense". The hypothetical program would be fed with data in the form of predicate calculus Well-formed formulas (WFFs) or "sentences", and it would be given a concrete goal to accomplish; it then would've had to reason from the premises it had available to arrive at a solution to the problem, drawing immediate conclusions from the premises and taking action in case the conclusions were found to be imperative sentences. 
 
 The dummy problem McCarthy provides us with, in his paper, is about deducing the appropriate steps to get him (McCarthy) to the airport to catch a flight, given such premises as the fact that he (McCarthy) is currently at home, that he has a car, that the airport is in such and such a location, that the car can get him to distant places, etc... This might seem like a trivial problem (or perhaps non-problem) to any "non-feeble-minded human" to use McCarthy's own expression; but the difficulty associated to reliably automating this kind of "trivial" reasoning is what came to be known as: the problem of Common Sense in AI.
 
 In the process of developing a language to implement such program, McCarthy ended up with a very elegant set of language primitives. Lisp has pioneered an incredible number of innovations programmers still appreciate today; it came first at introducing recursion, conditional expressions (logical if), and dynamic (during run-time) allocation and deallocation of memory (with garbage collection).
 
+=== Recursion
+
 Recursion is a universal concept found in many places including natural language, mathematics and computer science. In the latter two fields, the term "recursive function" basically refers to a function whose definition contains a reference to itself (the same function being defined). Recursion breaks a problem down into manageable subproblems, and, like iteration, it provides a means to repeat the same computation over and over without duplication of code.
 
 Unlike iteration, recursion doesn't require any reassignment of "counter" variables. Any iterative process (or "loop") must keep (at least) a counter which is incremented/decremented at every step, similar to how a jury may count the loops the athletes run at a sports competition. But a recursive function sidesteps all of that, because it can call a new instance of itself with a different argument, for instance: an incremented/decremented number, and conditionally stop when a condition known as the "base case" is met, finally returning a value.
 
-The introduction of recursion in programming languages meant that (mutable) variables were no longer an unavoidable necessity, and it ushered in a new paradigm known as Functional Programming (FP). Functional Programming is a declarative paradigm centered around the concept of a "pure" or mathematical function, as the name says. Every computation is performed by function application, operators can be seen as functions, a variable assignment (which is immutable) can be seen as the definition of a function without arguments: a function without arguments always returns a constant value, since the output of a function can only change when the input changes, and the "input" of a constant never changes. Furthermore, since there are no side effects, all expressions are "referentially transparent": they always mean what they say, independent of the order or the context of execution, this makes writing code akin to writing mathematical formulas.
 
-// Alvin Alexander, scala
+=== Pure Functional Programming
 
-This in turn leads to a host of considerations which culminate in pure functional programming, as exemplified in modern languages such as Haskell, developed in the 1990s. Haskell specifically is what's known as a "lazy" language: all expressions are lazily evaluated, without regards for their order in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
+The introduction of recursion in programming languages meant that (mutable) variables were no longer an unavoidable necessity for coding, and it ushered in a new paradigm known as Functional Programming (FP). Functional Programming is a declarative paradigm. It is declarative because it abstracts away state management and explicit flow control, which are two very important aspects of imperative programming.
 
-Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping.
+FP is centered around the concept of a "pure" or mathematical function. A "pure" function is a function that has no side-effects; this means that it does not mutate any state, and it does not depend on mutable state; a pure function's output only depends on its input. A function that returns the current date and time is not pure, because its output depends on a mutable external factor (the state of the computer's clock). A function that adds an element to a list in-place (modifying the original list) is not pure, but a function that adds an element by returning a whole new list, and not modyfing the original, is.
 
-// roots of lisp, Paul Graham
+In FP, every computation is performed by function application, operators can be seen as functions, a variable assignment (which is immutable) can be seen as the definition of a function without arguments: a function without arguments always returns a constant value, since the output of a function can only change when the input changes, and the "input" of a constant never changes. Furthermore, since there are no side effects, all expressions are "referentially transparent": they always mean what they say, independent of the order or the context of execution, this makes writing code akin to writing mathematical formulas, and this is useful: it makes reasoning about the code easier. // Alvin Alexander, scala
+
+All of this culminates in the pure functional programming languages such as Haskell, developed in the 1990s. Haskell specifically is also what's known as a "lazy evaluation" language: all expressions are lazily evaluated, without regards for the order in which they were declared in the source code. After all, if a variable is defined on line 100 and used only at line 500, who needs to evaluate it before line 500, given that its evaluation (or lack thereof) can't ever affect anything else in the least? This has its advantages, but also results in unpredictable memory management, which can be seen as a drawback in some applications.
+
+
+=== Variable Scoping
+
+Returning to Lisp, we need to discuss the issue of variable scoping. The original Lisp had something known as "dynamic scoping", contrasted to static or "lexical" scoping. // roots of lisp, Paul Graham
 
 In a typical program, it is convenient that the same variable name be used and re-used in many different places, with different values and different meanings. It is therefore paramount to define a precise set of rules regarding the "scope" (region of visibility) of a variable. Moreover, variable scopes can be nested. 
 
 When resolving the variable "X", static scoping takes into account the (lexically, graphically) closest location where a variable with that name has been defined in the code, and it uses that value to resolve "X". Dynamic scoping, on the other hand, takes "X" to be whatever it is in the current execution environment at run-time.
 
-Take the following example to illustrate the concept, suppose that you have a "variable declaration" and a "function definition" such as the following:
+Take the following example to illustrate the concept, suppose that you have a "variable declaration", a "function definition", some unspecified code in the middle, and then a function invocation:
 
 `
 X is the oven.
 to bake a cake: put it inside of X.
-...
 ...
 bake the cake.
 `
 
 If the language above is statically scoped, then when calling the function "bake" from whichever distant position in the code, "X" will always be "the oven", no matter what. But if the above language is dynamically scoped, well... it depends! If the function "bake" is called from a context where the name "X" has been redefined to mean something else, suppose it's now: "the freezer", then the cake will be baked by placing it in the freezer!
 
-Dynamic versus static scoping thus behave differently in the presence of implicit arguments to a function; ie: when a function reads a variable from the outer scope. The reader can see why dynamic scoping is deemed to be a little less intuitive than static scoping; in spite of this, it is still deemed useful by some programmers in certain cases.
-
-https://www.gnu.org/software/emacs/emacs-paper.html#SEC17
+Dynamic versus static scoping thus behave differently in the presence of implicit arguments to a function; ie: when a function reads a variable from the outer scope. The reader can see why dynamic scoping is deemed to be a little less intuitive than static scoping; in spite of this, it is still deemed useful by some programmers in certain cases. // https://www.gnu.org/software/emacs/emacs-paper.html#SEC17
 
 Modern dialects of Lisp (Lisp is not a single language) tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
 
@@ -113,9 +122,9 @@ ALGOL 60 is notable for being the first language to be described using what woul
 
 BNF, or its variant: Extended BNF (EBNF), remains to this day the most popular means of describing the syntax of programming languages. Born as a notation for the class of grammars known as "Context Free" introduced by linguist and philosopher Noam Chomsky (1928-), BNF describes a grammar as a set of production rules; each rule has a left and a right hand side; on the left is the name of the grammatical element being defined, on the right is the sequence of sub-elements it comprises of. It is reported that a similar formalism had been used by Pāṇini, an ancient Sanskrit grammarian who lived in India between the 6th and the 4th century BCE, to describe the morphology of Sanskrit.
 
-ALGOL 60 was also notable for having introduced the block structure for managing nested scopes, for being the among the first imperative languages to support recursion, and for having, besides the more common "pass by value", an additional peculiar "pass by name" mechanism for argument passing.
+ALGOL 60 was also notable for having introduced the block structure for managing nested scopes, for being the among the first imperative languages to support recursion, and for having, besides the more common "pass by value", an additional peculiar "pass by name" mechanism for argument passing. // https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
 
-// https://www2.cs.sfu.ca/~cameron/Teaching/383/PassByName.html
+=== Argument Passing
 
 Passing an argument to a function or procedure (or more generally, to a "routine") is an essential part of invoking it. As is often the case, there are different possible ways to do it. The most common are "pass by reference" and "pass by value"; the first essentially provides the invoked function with a reference (such as a pointer) to the original object, making it possible for the function to change the original object (side-effects). The second (pass by value) copies the value of the object and provides the function with a copy of it. Obviously, these two mechanisms are de facto equivalent if all of the objects are immutable, such as in a pure functional language.
 
@@ -125,6 +134,8 @@ The implication of this is, that whole formulas can be passed in as arguments, b
 
 For instance, if the formula `w*x[i]` is passed in as a parameter to a function that performs a loop over `i` from `0` to `n` and sums the values, the sum of the weighted values of an array can be computed for any arbitrary value of `w`, or, for that matter, any arbitrary expression that is passed into the same parameter. In modern languages, a lambda expression such as `x->w*x[i]` could be used to a similar effect.
 
+=== ALGOL 68 and Orthogonality
+
 ALGOL 60 wasn't the last version of the language to come out. The year 1968 saw the release of ALGOL 68, which introduced some novelties such as user defined data types. It is also known as a famous example of language were the concept of orthogonality is all too visible, and perhaps carried a little too far.
 
 Orthogonality in the design of programming languages refers to the possibility of combining the constructs of a language in a relatively unconstrained way. For example, a language which allows import statements to appear in any part of the code (such as Python) is more orthogonal in this respect than a language that only allows them to appear in one place, typically at the top of a source file. If done well, orthogonal design helps keep a language free of "exceptions to the rule", and as such more intuitive to use.
@@ -133,9 +144,8 @@ The languages in the AGOL family are no longer popular nowadays, but they are wo
 
 == COBOL
 
-The COmmon Business-Oriented Language, COBOL, is not exactly known for its good reputation among programmers. The Jargon File, a partly-humorous partly-serious dictionary-like compendium of computer related slang, has an entry on the subject that describes COBOL as being: "A weak, verbose, and flabby language used by code grinders to do boring mindless things on dinosaur mainframes."
+The COmmon Business-Oriented Language, COBOL, is not exactly known for its good reputation among programmers. The Jargon File, a partly-humorous partly-serious dictionary-like compendium of computer related slang, has an entry on the subject that describes COBOL as being: "A weak, verbose, and flabby language used by code grinders to do boring mindless things on dinosaur mainframes."// http://www.catb.org/jargon/html/C/COBOL.html
 
-// http://www.catb.org/jargon/html/C/COBOL.html
 // http://www.catb.org/jargon/quoting.html
 
 The Jargon File also reports the following quote by Edsger Dijkstra: "The use of COBOL cripples the mind; its teaching should, therefore, be regarded as a criminal offense."
@@ -154,24 +164,21 @@ COBOL is "naturalistic" in some sense. In COBOL, you don't use the regular addit
 
 Despite this, and as the same paper duly mentions, the statement structure usually doesn't follow English's grammar this closely; moreover, it is too rigid, and its rigidity coupled with its deceptive "naturalness" on the surface creates more confusion to the programmer than it does good.
 
-In closing, we must remember that many mission critical systems to this day depend on large COBOL codebases; this is why, despite the kind of reputation it has earned during the last 60+ years of its existence, COBOL is still a topic of relevance today.
-
-// https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
+In closing, we must remember that many mission critical systems to this day depend on large COBOL codebases; this is why, despite the kind of reputation it has earned during the last 60+ years of its existence, COBOL is still a topic of relevance today. // https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
 
 
 == PL/I
 
-PL/I (Programming Language One) is perhaps the next most criticised programming language, after COBOL, that we will talk about. Developed in the 1960s at IBM, it was born as a "large" language. 
-// guy steele
+PL/I (Programming Language One) is perhaps the second most criticised programming language, after COBOL, that we will bring up. Developed in the 1960s at IBM, it was born as a "large" language, that no single programmer could wrap their head around. // guy steele
 
-It included what were seen as the best features of ALGOL 60, Fortran IV and COBOL 60; together with a host of additional new features that were absent from the other three. While this should've made it a good language, unfortunately, as one can imagine, the problem with PL/I is that it was far too complex.
+It included what were seen as the best features of ALGOL 60, Fortran IV and COBOL 60; together with a host of additional new features that were absent from the other three. While this should've made it a good language, unfortunately, as one can imagine, the problem with PL/I is that it was far too complex. // programming languages book
 
-We will quote Dijkstra again, eloquently criticising the language in question:
+Quoting Dijkstra, who eloquently criticises the language in question:
 
 "I absolutely fail to see how we can keep our growing programs firmly within our intellectual grip when by its sheer baroqueness the programming language—our basic tool, mind you!—already escapes our
 intellectual control."
 
-We think that the main lesson to take away from PL/I is that a language shouldn't incorporate too many features that can't be well integrated together, but rather be designed with a minimal set of orthogonal features that allow for future extension by users.
+We think the main lesson to take away from PL/I is that a language shouldn't incorporate too many features that can't be well integrated together, but rather be designed with a minimal set of orthogonal features that allow for future extension by users.
 
 
 == SIMULA 67, Smalltalk and Object Orientation
@@ -200,7 +207,7 @@ Among the most popular object oriented languages is C++, developed in the 1980s 
 
 It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have partly been attempts at curtailing C++'s complexity while retaining its power; C++ is a very powerful language that, unfortunately, is also a huge hodgepodge of features accumulated over the years, and retained due to backwards compatibility concerns, starting from basically all of the C programming language, which had to be supported from the start.
 
-The early association with languages such as Simula and C++, which were basically procedural languages with object oriented features tacked on top, has lead to the modern impression that OOP is somewhat necessarily an imperative programming paradigm. This is not strictly true, OOP can work even without the need for mutable state and explicit flow control which characterizes imperative languages; in fact, Object Oriented and Functional programming can even coexist relatively well in a language, as is demonstrated by Scala.
+ The early association with languages such as Simula and C++, which were basically procedural languages with object oriented features tacked on top, has lead to the modern impression that OOP is somewhat necessarily an imperative programming paradigm. State management is a problem; it may be said that while Functional Programming tries to minimize and isolate the state of a program, OOP's strategy is to merely hide it behind an object's interface. This is not strictly true, OOP can work even without the need for mutable state and explicit flow control which characterizes imperative languages; in fact, Object Oriented and Functional programming can even coexist relatively well in a language, as is demonstrated by Scala.
 
 A popular criticism of OOP revolves around its reliance on Software Design Patterns to solve a specific set of problems. The natural way to solve a problem in computer science, it is argued, should be to solve it once and for all, and then to abstract away the solution for later re-use. Software Design Patterns on the other hand require rethinking through and reimplementing solutions for a very similar problem everytime it comes up again. It can also be shown that some of the original 23 GoF patterns for OOP languages can be entirely avoided when using languages with a different set of abstractions, for instance: higher order functions and lambdas from Functional Programming. Indeed, many of these functional abstractions have made, and are making, their way into modern OOP languages and common practice. // graham, revenge of nerds
 
@@ -218,7 +225,7 @@ Despite the fair criticism, some from illustrous critics, OOP is still the domin
 
 Logic Programming is a declarative paradigm based on the use of predicate logic to declare facts and inference rules; its development is closely tied to the development of Prolog during the 1970s by a collaboration between the University of Aix-Marseille and the Department of Artificial Intelligence at the University of Edinburgh. Prolog remains to this day the most widely known, studied and used example of Logic Programming Language.
 
-The strength of logic programming lies in its being, as aforementioned, a highly declarative paradigm. Unlike other more imperative paradigms, where the programmer is required to tell the computer how to use the facts that it is given, in languages like Prolog what is required of the user are the simple declarative facts and inference rules; the way they are used to draw conclusions is entirely up to the system.
+The strength of logic programming lies in its being, as aforementioned, a highly declarative paradigm. Unlike other more imperative paradigms, where the programmer is required to tell the computer how to carry out a task step by step, in languages like Prolog what is required of the user are just the simple declarative facts and the inference rules; the way they are used to draw conclusions is entirely up to the system.
 
 Logic Programming is based on a particular form of logic known as predicate logic or First Order Logic (FOL); FOL provides a formal way of expressing propositions and the relationships occurring between them. A proposition corresponds to the meaning of an English sentence, it is something that can have a truth value: true or false; ie: correspond to how the world really is, or contradict the actual state of affairs.
 
@@ -270,6 +277,20 @@ Another factor to take into account is that the traditional cumbersomeness of st
 
 But it isn't only about scripting languages becoming statically typed; some of the successful ideas from scripting languages are also making it to the other side. Scripting languages have traditionally had a tool known as a "Read Print Eval Loop" (REPL), also known as an "interactive shell"; this tool allows developers to test out statements and functions interactively on the fly, greatly increasing their productivity. There is a trend where classical compiled programming languages are also getting REPLs: Java has Jshell (and the older BeanShell), Haskell, Kotlin and Scala also all have REPLs.
 
+== The Ideal Language
+
+In our brief analysis of the evolution of programming languages, we left out a lot of important names, and we barely did justice to the ones we covered; it would be preposterous to try and answer the question of whether an ideal programming language exists, let alone try describing it.
+
+We saw how these languages can vary wildly in purpose; and, as the saying goes, "form follows function": it is therefore quite improbable that a single programming language that is a perfect fit for all problems may even exist.
+
+Nonetheless, we did come across some generally accepted principles of design, and some broadly applicaple ideas; we also did see that certain languages are critisized for their design decisions somewhat more than others; in other words: while it is certainly true that all programming languages serve the purpose they were designed for the best, not all programming languages were created equal; this, we think, is also the opinion of computer scientist Paul Graham.
+
+As Guy Steele (1954-), computer scientist and language designer, points out in his talk "Growing a Language" starting out small and planning for (organic, user directed) growth is the best strategy a language designer can take. Starting with a large set of primitives (like PL/I, which we discussed) is not a good strategy; just like starting without the proper facilities to let the users define new constructs, that are well integrated with the language's native ones.
+
+
+
+// - believing that something that changed didn't change (as a result of high coupling)
+// - believing that something that hasn't changed did change (as a result of repetition)
 
 // ----------
 // = Temporary Notes
@@ -332,11 +353,6 @@ But it isn't only about scripting languages becoming statically typed; some of t
 
 // Markup Languages
 
-// The "ideal" language?????
-
-// can it exist?
-// Are some PLs clearly better/worse than others? (yes according to people like P. Graham)
-
 // (the pragmatic programmer)
 // - believing that something that changed didn't change (as a result of high coupling)
 // - believing that something that hasn't changed did change (as a result of repetition)
@@ -348,7 +364,3 @@ But it isn't only about scripting languages becoming statically typed; some of t
 // There are other kinds of Imperative programming such as unstructured programming which makes use of goto statements, but Procedural programming relies on structured programming techniques (control flow structures such as loops and if statements rather than gotos) and procedures (a kind of routine) to modularize the program.
 
 // // % https://survey.stackoverflow.co/2023/#technology
-
-// While it is a tenet of OOP that state should be hidden behind objects, Functional Programming takes the more radical approach of abolishing state (aka: mutable state) altogether from most of the codebase, isolating it from the core logic.
-
-// A very concise way of defining pure FP is that it is about: Pure Functions and immutable data structures.
