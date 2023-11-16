@@ -140,9 +140,9 @@ Interestingly, Grace Hopper is credited with the first attestation of the term "
 
 What interests us specifically about COBOL, is that it was one of the earliest languages to be designed with the idea in mind of imitating natural language. This idea was championed by Grace Hopper, who believed that mathematical notation was better suited for scientific computation, but data manipulation was a better match for (naturalistic) English statements, with the characteristic all-caps English-like keywords of the era.
 
-During the proposal process, COBOL was also presented with keywords translated in French and German; we had there the beginnings of the "internationalized" programming language, something that the ALGOL 68 standard went on to do seriously later in that decade. An idea that nonetheless didn't garner much success, as anyone can see today.
+During the proposal process, COBOL was also presented with keywords translated in French and German; we had there the beginnings of the "internationalized" programming language, something that the ALGOL 68 standard went on to do seriously later in that decade; an idea that nonetheless didn't garner much success, as anyone can see today.
 
-In COBOL you don't use the regular addition operator, you rather ADD something TO something else. The naturalness of COBOL statements can push as far as statements like the following example taken from the paper about the PENS ranking for Controlled Natural Languages: // PENS RANKING
+COBOL is "naturalistic" in some sense. In COBOL, you don't use the regular addition operator `+`, you rather ADD something TO something else. The naturalness of COBOL statements can push as far as statements like the following example taken from the paper about the PENS ranking for Controlled Natural Languages: // PENS RANKING
 
 `PERFORM P WITH TEST BEFORE VARYING C FROM 1 BY 2 UNTIL C GREATER THAN 10`
 
@@ -150,7 +150,7 @@ Despite this, and as the same paper duly mentions, the statement structure usual
 
 In closing, we must remember that many mission critical systems to this day depend on large COBOL codebases; this is why, despite the kind of reputation it has earned during the last 60+ years of its existence, COBOL is still a topic of relevance today.
 
-https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
+// https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
 
 
 
