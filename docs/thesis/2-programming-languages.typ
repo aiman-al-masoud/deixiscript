@@ -172,15 +172,18 @@ intellectual control."
 We think that the main lesson to take away from PL/I is that a language shouldn't incorporate too many features that can't be well integrated together, but rather be designed with a minimal set of orthogonal features that allow for future extension by users.
 
 
-== SIMULA 67 and Smalltalk
+== SIMULA 67, Smalltalk and Object Orientation
 
 Simula is generally recognized as the first Object Oriented Programming (OOP) language, though the term "object-oriented" was coined a little while later by computer scientist Alan Kay (1940-).
 
 // http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
 
-Developed during the 1960s at the Norwegian Computing Center in Oslo, Simula was designed to simulate real world events, as the name suggests. Syntactically, it was an extension of ALGOL 60. It was the first language to introduce  objects, classes, inheritance and subclasses, virtual procedures and coroutines. A coroutine is a kind of subprogram that is allowed to stop and restart from where it left off, a feature that was found useful in simulating events.
+Developed during the 1960s at the Norwegian Computing Center in Oslo, Simula was designed to simulate real world events, as the name suggests. Syntactically, it was an extension of ALGOL 60. It was the first language to introduce objects, classes, inheritance and subclasses, virtual procedures and coroutines. A coroutine is a kind of subprogram that is allowed to stop and restart from where it left off, a feature that was found useful in simulating events.
 
-Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this ideal by the knowledge of how cells work in living organisms; and had envisioned, much before the personal computer really took off, a huge networks of computers communicating with each other over a global network. Analogously, the objects he described could be seen as a network of virtual computers.
+Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this ideal by his knowledge of how cells worked in living organisms; and had envisioned, much before the personal computer really took off, a huge networks of computers communicating with each other over a global network. Analogously, the objects he described could be seen as a network of virtual computers.
+
+
+// https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
 
 // http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
 
@@ -195,6 +198,16 @@ Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, part
 // https://www.cs.scranton.edu/~mccloske/dijkstra_quotes.html
 //  "Object-oriented programming is an exceptionally bad idea which could only have originated in California." 
 
+// C++
+
+// discussion of general OOP approach
+
+// On the negative side, because C++ is a very large and complex language,
+// it clearly suffers drawbacks similar to those of PL/I. It inherited most of the
+// insecurities of C, which make it less safe than languages such as Ada and
+// Java.
+
+// Java
 
 
 ----------
@@ -228,8 +241,6 @@ originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemen
 Huge number of operators, unreadable
 
 
-https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
-
 Pascal, C
 
 LOGIC PROGRAMMING & PROLOG
@@ -246,7 +257,6 @@ University of Aix-Marseille
 Department of Artificial Intelligence at the University of Edin-
 burgh
 
-
 intelligent database, facts and rules
 
 two major reasons why logic programming has
@@ -262,16 +272,6 @@ Prolog++
 https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
 
 
-C++
-
-discussion of general OOP approach
-
-On the negative side, because C++ is a very large and complex language,
-it clearly suffers drawbacks similar to those of PL/I. It inherited most of the
-insecurities of C, which make it less safe than languages such as Ada and
-Java.
-
-Java
 
 The Scripting Langs
 (Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
