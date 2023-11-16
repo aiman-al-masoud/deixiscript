@@ -232,7 +232,7 @@ FOL also includes conjunctions (logical `and` and logical `or`), the negation op
 
 The existential quantifier declares the existence of at least an individual with specified properties; for instance `∃X.(cat(X) and red(X))` may mean that there is at least an X such that it is a red cat. 
 
-The universal quantifier declares a global property of all individuals that satisfy a given description; for instance `∀X.(mortal(X) <- man(X))`, where `<-` is an implication, may express the idea that every man is mortal, "X is man implies X is mortal".
+The universal quantifier declares a global property of all individuals that satisfy a given description; for instance `∀X.(mortal(X) <- man(X))`, where `<-` is an implication arrow, may express the idea that every man is mortal, "X is man implies X is mortal".
 
 
 
