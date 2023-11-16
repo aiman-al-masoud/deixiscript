@@ -240,6 +240,8 @@ When the left handside contains a predicate, the Horn clause represents an impli
 
 Statements in Prolog have two interpretations: they can either be declarations or queries; this typically means two modes: typically the facts and inference rules can be written to a file, which is loaded into an interpreter which then allows the user to make queries using the same syntax. For instance querying for `father(X, john)` will attempt to find John's father using the information declared in the file; `father(harry, john)` will check if Harry is John's father returning `yes` in case the proposition is true, and `no` otherwise.
 
+Prolog and similar systems always assume that the information they possess is complete; that anything that is true is also known to be true, and thus: that anything that is not known to be true is false. This is known as the Closed-World Assumption (CWA), and it is generally contrasted with the Open-World Assumption (OWA) used by some other systems. The CWA is closely related to the concept of Negation as Failure, which means that if there is a failure in proving the truth of a statement, then the statement is considered false.
+
 // The assumption made by systems such as Prolog, regarding a fact that wasn't explicitly stated, is that it is false; this is known as the closed world assumption.
 // Any fact for which 
 // Negation as Failure
