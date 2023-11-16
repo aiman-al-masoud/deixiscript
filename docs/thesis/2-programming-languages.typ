@@ -182,16 +182,14 @@ Developed during the 1960s at the Norwegian Computing Center in Oslo, Simula was
 
 Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this ideal by the knowledge of how cells work in living organisms; and had envisioned, much before the personal computer really took off, a huge networks of computers communicating with each other over a global network. Analogously, the objects he described could be seen as a network of virtual computers.
 
-http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
+// http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
 
-everything is an object, all the way down
-sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
+// everything is an object, all the way down
+// sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
 
-Alan Kay's OOP emphasized message passing, dynamic types, NOT inheritance.
-If an object accepts the same kind of messages, it has the same interface.
-code reuse must not be conflated with common interfaces
-
-
+// Alan Kay's OOP emphasized message passing, dynamic types, NOT inheritance.
+// If an object accepts the same kind of messages, it has the same interface.
+// code reuse must not be conflated with common interfaces
 
 // https://dzone.com/articles/whats-wrong-with-object-oriented-programming
 // https://www.cs.scranton.edu/~mccloske/dijkstra_quotes.html
