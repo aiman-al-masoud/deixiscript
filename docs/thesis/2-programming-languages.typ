@@ -153,6 +153,19 @@ In closing, we must remember that many mission critical systems to this day depe
 // https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
 
 
+== PL/I
+
+PL/I (Programming Language One) is perhaps the next most criticised programming language, after COBOL, that we will talk about. Developed in the 1960s at IBM, it was born as a "large" language. 
+// guy steele
+
+It included what were seen as the best features of ALGOL 60, Fortran IV and COBOL 60; together with a host of additional new features that were absent from the other three. While this should've made it a good language, unfortunately, as one can imagine, the problem with PL/I is that it was far too complex.
+
+As has become custormary, we will quote Dijkstra again, eloquently criticising the language in question:
+
+"I absolutely fail to see how we can keep our growing programs firmly within our intellectual grip when by its sheer baroqueness the programming language—our basic tool, mind you!—already escapes our
+intellectual control."
+
+We think that the main lesson to take away from PL/I is that a language shouldn't incorporate too many features that can't be well integrated together, but rather be designed with a minimal set of orthogonal features that allow for future extension by users.
 
 ----------
 = Temporary Notes
