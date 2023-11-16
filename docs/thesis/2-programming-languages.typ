@@ -204,23 +204,13 @@ A popular criticism of OOP revolves around its reliance on Software Design Patte
 
 As has become customary for us, we will quote Dijsktra in closing, who once said about OOP that: "Object-oriented programming is an exceptionally bad idea which could only have originated in California."
 
-Despite the fair criticism, some from illustrous critics, OOP is still the dominant approach in the software industry to this day. It has brought programming abstractions a little closer to the human mind, with its insistence on the "object" metaphor, and for this we owe it something.
-
+Despite the fair criticism, some from illustrous critics, OOP is still the dominant approach in the software industry to this day. It has brought programming abstractions a little closer to the human mind, with its insistence on the familiar "object" metaphor, and for this we owe it something.
 
 
 // https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
-
 // http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
-
 // https://dzone.com/articles/whats-wrong-with-object-oriented-programming
 // https://www.cs.scranton.edu/~mccloske/dijkstra_quotes.html
-//  "Object-oriented programming is an exceptionally bad idea which could only have originated in California." 
-
-// C++
-// On the negative side, because C++ is a very large and complex language,
-// it clearly suffers drawbacks similar to those of PL/I. It inherited most of the
-// insecurities of C, which make it less safe than languages such as Ada and Java.
-
 
 ----------
 = Temporary Notes
