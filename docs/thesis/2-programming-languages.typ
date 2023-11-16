@@ -194,6 +194,11 @@ A "class" is a template used to create new objects (or "instances" of a class). 
 
 It seems that Alan Kay considers this, and other aspects of the modern popular approach to OOP, as a significant departure from what he originally envisioned in Smalltalk. For example, in the way many subsequent languages conflated polymorphism (common interfaces) with inheritance (code reuse) through the mechanism of classes; something which has lead to problems, compounded by the existence of codebases with deep and complicated inheritance hierarchies, and has generally turned inheritance into a discouraged construct to use, an idea which is usually manifested in the "composition over inheritance" motto.
 
+Among the most popular object oriented languages is C++, developed in the 1980s by Danish computer scientist Bjarne Stroustrup (1950-) as an extension of the extremely popular C programming language that allowed the use of object oriented constructs. 
+
+It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have been attempts at curtailing C++'s complexity while retaining its power; C++ is a very powerful language that, unfortunately, is also a 
+
+D, Java
 
 // https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
 
