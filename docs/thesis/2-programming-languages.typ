@@ -196,7 +196,13 @@ It seems that Alan Kay considers this, and other aspects of the modern popular a
 
 Among the most popular object oriented languages is C++, developed in the 1980s by Danish computer scientist Bjarne Stroustrup (1950-) as an extension of the extremely popular C programming language that allowed the use of object oriented constructs. 
 
-It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have partly been attempts at curtailing C++'s complexity while retaining its power; C++ is a very powerful language that, unfortunately, is also a huge hodgepodge of features accumulated over the years, starting from all of the C programming language, which had to be supported from the start.
+It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have partly been attempts at curtailing C++'s complexity while retaining its power; C++ is a very powerful language that, unfortunately, is also a huge hodgepodge of features accumulated over the years, and retained due to backwards compatibility concerns, starting from all of the C programming language, which had to be supported from the start.
+
+The early association with languages such as Simula and C++ which were basically procedural languages with object oriented features tacked on top, has lead to the modern impression that OOP is somewhat necessarily an imperative programming paradigm. This is not strictly true, OOP can work even without the need for mutable state and explicit flow control characteristic of imperative languages; in fact, Object Oriented and Functional programming can even coexist relatively well in a language, as is demonstrated by Scala.
+
+As has become customary, we will quote Dijsktra, who once said, critisizing OOP, that: "Object-oriented programming is an exceptionally bad idea which could only have originated in California."
+
+Despite the many critics, some illustrous such as Dijsktra, 
 
 
 // https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
