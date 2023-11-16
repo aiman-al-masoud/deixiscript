@@ -199,13 +199,6 @@ It seems that Alan Kay considers this, and other aspects of the modern popular a
 
 // http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
 
-// everything is an object, all the way down
-// sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
-
-// Alan Kay's OOP emphasized message passing, dynamic types, NOT inheritance.
-// If an object accepts the same kind of messages, it has the same interface.
-// code reuse must not be conflated with common interfaces
-
 // https://dzone.com/articles/whats-wrong-with-object-oriented-programming
 // https://www.cs.scranton.edu/~mccloske/dijkstra_quotes.html
 //  "Object-oriented programming is an exceptionally bad idea which could only have originated in California." 
