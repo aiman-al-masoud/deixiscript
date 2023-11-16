@@ -1,2 +1,2 @@
 rm *.pdf
-typst c book.typ
+typst c 0-main.typ

@@ -1,3 +1,5 @@
+= Programming Languages
+
 When we speak of programming languages in the contemporary sense, we generally refer to a particular kind of computer language (a formal language that can be processed by computers) that is suitable for what we call general purpose programming. This usually involves the property of turing completeness; that is, the ability to emulate certain aspects of a Turing Machine, the epitome of the theoretical general purpose computing device.
 
 Just like there are thousands of natural languages, some of which are used and understood all over the world, and many more of which are only used by a relatively restricted number of speakers; so too there are myriads of programming languages: some of which have achieved world-fame and are widespread in the industry, and many more of which remain relatively esoteric.
@@ -55,7 +57,7 @@ Fortran lacked many of the language facilities we take for granted today. There 
 
 Overall, Fortran is an example among many of a language born with a specific purpose (doing math efficiently on the IBM 704) that later evolved, incorporating new constructs, and was ported over to numerous platforms. It is also a prime example of an imperative language.
 
-== Lisp
+== Lisp and Functional Programming
 
 Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor. 
 
@@ -180,7 +182,7 @@ Simula is generally recognized as the first Object Oriented Programming (OOP) la
 
 Developed during the 1960s at the Norwegian Computing Center in Oslo, Simula was designed to simulate real world events, as the name suggests. Syntactically, it was an extension of ALGOL 60. It was the first language to introduce objects, classes, inheritance and subclasses, virtual procedures and coroutines. A coroutine is a kind of subprogram that is allowed to stop and restart from where it left off, a feature that was found useful in simulating events.
 
-Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this ideal by his knowledge of how cells worked in living organisms; and had envisioned, much before the personal computer really took off, a huge networks of computers communicating with each other over a global network. Analogously, the objects he described could be seen as a network of virtual computers.
+Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this ideal by his knowledge of how cells worked in living organisms; and had envisioned, much before the personal computer really took off, a huge network of computers communicating with each other over a global network. Analogously, the objects he described could be seen as a network of virtual computers.
 
 Simula and Smalltalk were responsible for starting a revolution in the way software was written. This was also reflected in the shift towards Abstract Data Types (ADTs) which hide their implemenation behind the interface they present to the user. Nowadays OOP is still the dominant paradigm in software development, with most of the top programming languages by popularity featured on the annual Stack Overflow developer survey supporting OOP in some form. // https://survey.stackoverflow.co/2023/
 
@@ -270,8 +272,6 @@ Prolog++
 
 https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
 
-
-
 The Scripting Langs
 (Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
 
@@ -287,9 +287,10 @@ can it exist?
 Are some PLs clearly better/worse than others? (yes according to people like P. Graham)
 
 (the pragmatic programmer)
-believing that something that changed didn't change (as a result of high coupling)
-believing that something that hasn't changed did change (as a result of repetition)
+- believing that something that changed didn't change (as a result of high coupling)
+- believing that something that hasn't changed did change (as a result of repetition)
 
+declarative "better"
 
 
 // growing a lang, Guy Steele
