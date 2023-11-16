@@ -175,87 +175,87 @@ When an entity has outlived its usefulness, it can be purged from the world mode
 To increase the flexibility of implicit references, Deixiscript also provides the option to use an "and" or an "or" conjunction to enumerate many basic implicit references; for instance one could refer to "the bobcat and the panther" simultaneously; this "compound implicit reference" of sorts can be used as an argument inside of a simple sentence, and in this case it triggers the automatic expansion of that sentence into multiple sentences based on the number of resolved referents and the kind of conjunction used.
 
 
-------------
+// ------------
 
 
-=== SimpleSentence
+// === SimpleSentence
 
-This AST type contains: a verb, a subject, a direct object and some complements. The verb is a string, and the rest of its "arguments" are noun phrase types. Contrary to the English grammar concept of "simple sentence", a SimpleSentence's subject or object or complements can all contain relative clauses.
+// This AST type contains: a verb, a subject, a direct object and some complements. The verb is a string, and the rest of its "arguments" are noun phrase types. Contrary to the English grammar concept of "simple sentence", a SimpleSentence's subject or object or complements can all contain relative clauses.
 
-A SimpleSentence AST models one or more relationship(s) between two or more entities (individuals or concepts). Just like an Implicit it can be interpreted as a positive or negative order, which will result, respectively, in the creation or destruction of relations (edges) in the knowledge graph; because of the closed world assumption a negative relation cannot be interpreted otherwise.
+// A SimpleSentence AST models one or more relationship(s) between two or more entities (individuals or concepts). Just like an Implicit it can be interpreted as a positive or negative order, which will result, respectively, in the creation or destruction of relations (edges) in the knowledge graph; because of the closed world assumption a negative relation cannot be interpreted otherwise.
 
-A basic SimpleSentence is a SimpleSentence whose verb is the verb "to have" or the verb "to be".
+// A basic SimpleSentence is a SimpleSentence whose verb is the verb "to have" or the verb "to be".
 
-Before being executed, any non-basic SimpleSentence is converted into an Implicit AST representing an event. The Implicit representing the event is what is actually executed, either to create/destroy an event or to search for it (or for the absence of it). In fact, a non basic SimpleSentence could be seen as syntactic sugar for the direct creation of an event through a noun phrase describing it.
+// Before being executed, any non-basic SimpleSentence is converted into an Implicit AST representing an event. The Implicit representing the event is what is actually executed, either to create/destroy an event or to search for it (or for the absence of it). In fact, a non basic SimpleSentence could be seen as syntactic sugar for the direct creation of an event through a noun phrase describing it.
 
-An event individual in the world model is a node with outgoing edges poiting towards verb, a subject and a number of optional complements.
+// An event individual in the world model is a node with outgoing edges poiting towards verb, a subject and a number of optional complements.
 
-As a cursory remark, all of the relations handled by the system, from simple "be" relations to the huge set of relations describing a complex event, can be broken down to very simple "have" relations, more specifically, in the form: "x has y as z", where x and y correspond to nodes and z corresponds to the label of the directed edge (from x to y) connecting them in a graph. 
+// As a cursory remark, all of the relations handled by the system, from simple "be" relations to the huge set of relations describing a complex event, can be broken down to very simple "have" relations, more specifically, in the form: "x has y as z", where x and y correspond to nodes and z corresponds to the label of the directed edge (from x to y) connecting them in a graph. 
 
-Searching for any non basic SimpleSentence thus evaluates to an event individual's string ID, rather than the boolean value of "true" returned by the successful evaluation of a basic SimpleSentence in search mode.
+// Searching for any non basic SimpleSentence thus evaluates to an event individual's string ID, rather than the boolean value of "true" returned by the successful evaluation of a basic SimpleSentence in search mode.
 
-//This approach is inspired by the one discussed in this book @brachman2022machines.
+// //This approach is inspired by the one discussed in this book @brachman2022machines.
 
-=== BinExp
+// === BinExp
 
-Binexp, or "binary expression", is perhaps the most proteiform component of Deixiscript's abstract syntax; it is inspired partly  by the usage of connectives (and syntactic compression, discussed in @pegasus) in natural language, and partly by the binary operators of more traditional programming languages.
+// Binexp, or "binary expression", is perhaps the most proteiform component of Deixiscript's abstract syntax; it is inspired partly  by the usage of connectives (and syntactic compression, discussed in @pegasus) in natural language, and partly by the binary operators of more traditional programming languages.
 
-What all BinExps have in common is three things: an operator string, a left and a right operand.
+// What all BinExps have in common is three things: an operator string, a left and a right operand.
 
-The operator may be one of the two logical operators: (`and`, `or`), or one of the arithmetic operators (`+`, `-`, `*`, `/`). 
+// The operator may be one of the two logical operators: (`and`, `or`), or one of the arithmetic operators (`+`, `-`, `*`, `/`). 
 
-Unlike any other AST type, A BinExp may be interpreted either as a "noun phrase" or as a "sentence", depending on its operator and its operands.
+// Unlike any other AST type, A BinExp may be interpreted either as a "noun phrase" or as a "sentence", depending on its operator and its operands.
 
-If the operator is arithmetic, the BinExp is always to be interpreted as a noun phrase, because numbers are "nouns", any operation involving them evaluates to a value, and hence is an expression.
+// If the operator is arithmetic, the BinExp is always to be interpreted as a noun phrase, because numbers are "nouns", any operation involving them evaluates to a value, and hence is an expression.
 
-If the operator is logical, then it depends on the operands; if both operands are noun phrases then the whole BinExp is a noun phrase and it points to some entities, for instance: `the bobcat and the panther`. Otherwise, if both operands are sentences then the BinExp is interpreted as a sentence (analogous to a compound sentence in traditional English grammar) such as: `the bobcat hunts and the panther eats`.
+// If the operator is logical, then it depends on the operands; if both operands are noun phrases then the whole BinExp is a noun phrase and it points to some entities, for instance: `the bobcat and the panther`. Otherwise, if both operands are sentences then the BinExp is interpreted as a sentence (analogous to a compound sentence in traditional English grammar) such as: `the bobcat hunts and the panther eats`.
 
-There is probably little sense in having a BinExp where the left operand is a sentence but the right operand is a noun phrase, or viceversa.
+// There is probably little sense in having a BinExp where the left operand is a sentence but the right operand is a noun phrase, or viceversa.
 
-BinExps are essential to the system for three main reasons: they work as traditional logical and arithmetic operations like in most other programming languages, they replace the lists or sequences of a traditional programming language, and they enable syntactic compression.
+// BinExps are essential to the system for three main reasons: they work as traditional logical and arithmetic operations like in most other programming languages, they replace the lists or sequences of a traditional programming language, and they enable syntactic compression.
 
-They work as lists because they can carry around multiple (implicit or explicit) references in one unique bundle, which can be "unrolled" into a sequence by the interpreter when it needs to perform a sequential calculation on them.
+// They work as lists because they can carry around multiple (implicit or explicit) references in one unique bundle, which can be "unrolled" into a sequence by the interpreter when it needs to perform a sequential calculation on them.
 
-They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the raven` has to be expanded into something like: `it is false that ((the cat likes the raven) and (the lion likes the raven))`, switching from an `or` to an `and`.
-
-
-
-=== Explicit
-// Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
+// They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the raven` has to be expanded into something like: `it is false that ((the cat likes the raven) and (the lion likes the raven))`, switching from an `or` to an `and`.
 
 
-// === Def// === Law
+
+// === Explicit
+// // Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
 
 
-// ==== Core
-
-// The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
-
-// ===== Expression Builder
-
-// The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
-
-// ===== Knowledge Base
-
-// This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
+// // === Def// === Law
 
 
-----------------
+// // ==== Core
 
-// Edward Sapir (1884-1939) linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
+// // The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
 
-// Were a language ever completely "grammatical" it would be a perfect engine of  conceptual expression. Unfortunately, or luckily, no language is tyrannically consistent. All grammars leak @sapir1921language.
+// // ===== Expression Builder
+
+// // The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
+
+// // ===== Knowledge Base
+
+// // This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
 
 
-// == Compositionality
+// ----------------
+
+// // Edward Sapir (1884-1939) linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
+
+// // Were a language ever completely "grammatical" it would be a perfect engine of  conceptual expression. Unfortunately, or luckily, no language is tyrannically consistent. All grammars leak @sapir1921language.
 
 
-// Simple statement: "The meaning of a complex expression is determined by its structure and the meanings of its constituents."
-// It certainly holds for many artificial languages
-// variations to account for indexicality (occasional vs standing meaning)
-// The principle remains controversial
-// related principles: Substitutivity, 
-// "If two meaningful expressions differ only in that one is the result of substituting a synonym for a constituent within the other then the two expressions are synonyms." (Ssingular)
-// this is a stronger assumption than Compositionality, number of planets vs eight example
-// // https://plato.stanford.edu/entries/compositionality/
+// // == Compositionality
+
+
+// // Simple statement: "The meaning of a complex expression is determined by its structure and the meanings of its constituents."
+// // It certainly holds for many artificial languages
+// // variations to account for indexicality (occasional vs standing meaning)
+// // The principle remains controversial
+// // related principles: Substitutivity, 
+// // "If two meaningful expressions differ only in that one is the result of substituting a synonym for a constituent within the other then the two expressions are synonyms." (Ssingular)
+// // this is a stronger assumption than Compositionality, number of planets vs eight example
+// // // https://plato.stanford.edu/entries/compositionality/
 
