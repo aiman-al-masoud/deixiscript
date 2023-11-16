@@ -20,8 +20,8 @@ While Dijkstra raises some important points that we shall elaborate on in some o
 
 Nowadays computers are tools for document and mutlimedia consumption, gaming consoles, video editing devices, office work stations etc... What an end-user often requires isn't a precise formalism to neatly express a mathematical concept, but rather an easy to learn scripting language to customize the behavior of a program on their computer. We think that natural language may be a good candidate at least for this niche, and for many other real-world problems that don't involve too many abstract mathematical concepts.
 
-// Programming Languages shouldn't be" too Natural"
-// Mandrioli, Dino and Pradella, Matteo
+// Programming Languages shouldn't be" too Natural" Mandrioli, Dino and Pradella, Matteo
+// ambiguities in natural language, Fantechi
 
 == Precision vs Expressiveness
 
