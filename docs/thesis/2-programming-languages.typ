@@ -192,7 +192,7 @@ Inheritance is mainly about code reuse: if a class needs the same methods (funct
 
 A "class" is a template used to create new objects (or "instances" of a class). OOP doesn't require classes or even inheritance to work; however, class-based programming is the dominant (but not the only) approach in modern OOP.
 
-It seems that Alan Kay considers this, and other aspects of the modern popular approach to OOP, as a significant departure from what he originally envisioned in Smalltalk. For example, in the way many modern languages conflate polymorphism (or common interfaces) with inheritance (code reuse) through the mechanism of classes; something which has lead to problems, especially with large inheritance hierarchies, and has generally turned inheritance into a discouraged construct, an idea which is usually manifested in the "composition over inheritance" motto.
+It seems that Alan Kay considers this, and other aspects of the modern popular approach to OOP, as a significant departure from what he originally envisioned in Smalltalk. For example, in the way many modern languages conflate polymorphism (common interfaces) with inheritance (code reuse) through the mechanism of classes; something which has lead to problems, especially with large inheritance hierarchies, and has generally turned inheritance into a discouraged construct, an idea which is usually manifested in the "composition over inheritance" motto.
 
 
 // https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
