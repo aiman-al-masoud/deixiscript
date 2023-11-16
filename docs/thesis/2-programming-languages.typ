@@ -191,20 +191,6 @@ Visual BASIC (VB). VB became widely used in large part because it provided
 a simple way of building graphical user interfaces (GUIs), hence the name
 Visual BASIC.
 
-PL/I
-
-Perhaps the best single-sentence description of PL/I is that it included what
-were then considered the best parts of ALGOL 60 (recursion and block struc-
-ture), Fortran IV (separate compilation with communication through global
-data), and COBOL 60 (data structures, input/output, and report-generating
-facilities), along with an extensive collection of new constructs, all somehow
-cobbled together.
-
-“I absolutely fail to see how we can keep our growing
-programs firmly within our intellectual grip when by its sheer baroqueness
-the programming language—our basic tool, mind you!—already escapes our
-intellectual control.” Dijkstra
-
 APL
 A Programming Language
 originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemented.
