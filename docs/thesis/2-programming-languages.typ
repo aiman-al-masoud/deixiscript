@@ -250,13 +250,45 @@ Logical Programming is nonetheless very interesting paradigm to study, and it ce
 
 == The Scripting Languages
 
+The Scripting Languages aren't a cohesive block; their purpose typically ranges from: quick protytping, to end-user programming (which is related to the customization of a program by the user), to glue code (letting programs written in different languages communicate).
+
+Some scripting languages, however, are also used for scientific computing and data analysis; and some are used on the backend of websites to provide dynamic behavior. Some are domain specific, and some are general purpose.
+
+Eminent examples of scripting languages are: the many variants of the Unix shell, Awk, Perl, Javascript, PHP, Python, Ruby, Lua and many more. Despite this huge level of variation, the Scripting Languages have always shared some common traits that are characteristic of them.
+
+The prototypical scripting language is used in an exploratory setting, as a "quick and dirty" tool to test out an idea or to produce glue code; and, as such, a shortened, concise and convenient syntax is deemed to be essential. Furthermore, a scripting language is usually interpreted, because it is embedded within an existing environment, implemented in some other programming language which does "the heavy lifting". It seems fair to think that, it was as a consequence of these two factors that most scripting languages were born as dynamically typed languages.
+
+Dynamic typing is contrasted with a static typing; in statically typed languages most or all of the variable types are known and checked for correctness at compile-time, before the code ever runs. In purely dynamically typed languages, there are absolutely no compile-time type checks; the code either works at run-time or it fails at run-time.
+
+While Test Driven Development (TDD), a very important concept in its own right, is sometimes proposed as an alternative to static type checking, the last decade has seen the birth and adoption of numerous supersets of the popular dynamically typed scripting languages. 
+
+Such supersets enhace their base languages by providing what is known as "gradual typing", or "optional static typing"; examples of such supersets and/or static type-checkers include: MyPy for Python, Typescript (and others) for Javascript, Sorbet for Ruby, and Hack for PHP. 
+
+Another factor to take into account is that the traditional cumbersomeness of static typing (due to lengthy, explicit type declarations) can also be regarded as a thing of the past; today most modern languages and type-checkers have built in support for type inference: the type of a variable can be inferred from the value of its initial assignment, thus cutting down on what was perceived as boilerplate (redundant) code, while also preserving the benefits of static type checking.
+
+// Static typing also improved 
+// This is clearly an indication that 
+
+
+// and tests sometimes proposed as a 
+
+
+// a dynamically typed interpreted 
+
+// The Scripting Languages don't follow a unique paradigm, but there are enough commonalities between them that people tend to think of them as a category of their own. 
+
+Examples of scripting languages include: 
+
+
+
 // The Scripting Langs
 // (Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
 
-// originally interpreted
-
-// many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s), 
-
+// interpreted, with REPL
+// usually no explicit main
+// for customization, browser extensions, gaming platforms etc...
+// many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s)
+// BeanShell and JShell, Haskell REPL
 
 ----------
 = Temporary Notes
