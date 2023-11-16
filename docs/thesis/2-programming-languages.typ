@@ -262,33 +262,14 @@ Dynamic typing is contrasted with a static typing; in statically typed languages
 
 While Test Driven Development (TDD), a very important concept in its own right, is sometimes proposed as an alternative to static type checking, the last decade has seen the birth and adoption of numerous supersets of the popular dynamically typed scripting languages. 
 
-Such supersets enhace their base languages by providing what is known as "gradual typing", or "optional static typing"; examples of such supersets and/or static type-checkers include: MyPy for Python, Typescript (and others) for Javascript, Sorbet for Ruby, and Hack for PHP. 
+Such supersets enhace their base languages by providing what is known as "gradual typing", or "optional static typing"; examples of such supersets and/or static type-checkers include: MyPy for Python, Typescript (and others) for Javascript, Sorbet for Ruby, and Hack for PHP.
+
+It is likely that the debate on the online developer community between proponents of dynamic versus static typing will go on indefinitely, as, despite the growing adoption of gradual typing, some high-profile proponents of dynamic typing still exist. // https://world.hey.com/dhh/turbo-8-is-dropping-typescript-70165c01
 
 Another factor to take into account is that the traditional cumbersomeness of static typing (due to lengthy, explicit type declarations) can also be regarded as a thing of the past; today most modern languages and type-checkers have built in support for type inference: the type of a variable can be inferred from the value of its initial assignment, thus cutting down on what was perceived as boilerplate (redundant) code, while also preserving the benefits of static type checking.
 
-// Static typing also improved 
-// This is clearly an indication that 
+But it isn't only about scripting languages becoming statically typed; some of the successful ideas from scripting languages are also making it to the other side. Scripting languages have traditionally had a tool known as a "Read Print Eval Loop" (REPL), also known as an "interactive shell"; this tool allows developers to test out statements and functions interactively on the fly, greatly increasing their productivity. There is a trend where classical compiled programming languages are also getting REPLs: Java has Jshell (and the older BeanShell), Haskell, Kotlin and Scala also all have REPLs.
 
-
-// and tests sometimes proposed as a 
-
-
-// a dynamically typed interpreted 
-
-// The Scripting Languages don't follow a unique paradigm, but there are enough commonalities between them that people tend to think of them as a category of their own. 
-
-Examples of scripting languages include: 
-
-
-
-// The Scripting Langs
-// (Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
-
-// interpreted, with REPL
-// usually no explicit main
-// for customization, browser extensions, gaming platforms etc...
-// many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s)
-// BeanShell and JShell, Haskell REPL
 
 ----------
 = Temporary Notes
