@@ -146,7 +146,7 @@ In COBOL you don't use the regular addition operator, you rather ADD something T
 
 `PERFORM P WITH TEST BEFORE VARYING C FROM 1 BY 2 UNTIL C GREATER THAN 10`
 
-Despite this, and as the same paper duly mentions, the statement structure usually doesn't follow English's grammar this closely, it is too rigid and this coupled with its deceptive "naturalness" on the surface creates more confusion to the programmer than it does good.
+Despite this, and as the same paper duly mentions, the statement structure usually doesn't follow English's grammar this closely; moreover, it is too rigid, and its rigidity coupled with its deceptive "naturalness" on the surface creates more confusion to the programmer than it does good.
 
 In closing, we must remember that many mission critical systems to this day depend on large COBOL codebases; this is why, despite the kind of reputation it has earned during the last 60+ years of its existence, COBOL is still a topic of relevance today.
 
