@@ -204,15 +204,9 @@ It seems that Alan Kay considers this, and other aspects of the modern popular a
 //  "Object-oriented programming is an exceptionally bad idea which could only have originated in California." 
 
 // C++
-
-// discussion of general OOP approach
-
 // On the negative side, because C++ is a very large and complex language,
 // it clearly suffers drawbacks similar to those of PL/I. It inherited most of the
-// insecurities of C, which make it less safe than languages such as Ada and
-// Java.
-
-// Java
+// insecurities of C, which make it less safe than languages such as Ada and Java.
 
 
 ----------
