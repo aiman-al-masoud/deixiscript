@@ -352,15 +352,10 @@ def test_c063():
 
 # defaults with Laws (synthetic derivations)
 def test_c64():
-    # new red
-    # the not event does be red after new cat
-    # new cat
     x1=the('event').not_.does('be')._('red').after(the('cat').new).tell()
     x2=the('red').tell(x1)
     x3=the('cat').tell(x2)
     assert the('cat').does('be')._('red').get(x3)
-
-
 
 # TODO: separate events!
 # # and phrase inside of command 
