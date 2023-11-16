@@ -164,12 +164,40 @@ PL/I (Programming Language One) is perhaps the next most criticised programming 
 
 It included what were seen as the best features of ALGOL 60, Fortran IV and COBOL 60; together with a host of additional new features that were absent from the other three. While this should've made it a good language, unfortunately, as one can imagine, the problem with PL/I is that it was far too complex.
 
-As is customary, we will quote Dijkstra, eloquently criticising the language in question:
+We will quote Dijkstra again, eloquently criticising the language in question:
 
 "I absolutely fail to see how we can keep our growing programs firmly within our intellectual grip when by its sheer baroqueness the programming language—our basic tool, mind you!—already escapes our
 intellectual control."
 
 We think that the main lesson to take away from PL/I is that a language shouldn't incorporate too many features that can't be well integrated together, but rather be designed with a minimal set of orthogonal features that allow for future extension by users.
+
+
+== SIMULA 67 and Smalltalk
+
+Simula is generally recognized as the first Object Oriented Programming (OOP) language, though the term "object-oriented" was coined a little while later by computer scientist Alan Kay (1940-).
+
+// http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
+
+Developed during the 1960s at the Norwegian Computing Center in Oslo, Simula was designed to simulate real world events, as the name suggests. Syntactically, it was an extension of ALGOL 60. It was the first language to introduce  objects, classes, inheritance and subclasses, virtual procedures and coroutines. A coroutine is a kind of subprogram that is allowed to stop and restart from where it left off, a feature that was found useful in simulating events.
+
+Smalltalk originated in a Ph.D. dissertation work by Alan Kay from the late 1960s. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this by the knowledge of how cells work in living organisms, and had envisioned, much before the personal computer really took off, a huge networks of computers communicating with each other over a network. Analogously, the objects he described could be seen as a network of virtual computers.
+
+http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
+
+everything is an object, all the way down
+sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
+
+Alan Kay's OOP emphasized message passing, dynamic types, NOT inheritance.
+If an object accepts the same kind of messages, it has the same interface.
+code reuse must not be conflated with common interfaces
+
+
+
+// https://dzone.com/articles/whats-wrong-with-object-oriented-programming
+// https://www.cs.scranton.edu/~mccloske/dijkstra_quotes.html
+//  "Object-oriented programming is an exceptionally bad idea which could only have originated in California." 
+
+
 
 ----------
 = Temporary Notes
@@ -201,14 +229,6 @@ originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemen
 
 Huge number of operators, unreadable
 
-SIMULA 67
-
-- extension of ALGOL 60
-- support for data abstractions
-- first OOP lang
-- using computers for simulation
-- coroutines: subprograms that are allowed to restart at the position where they previously stopped
-- class construct, OOP, data abstractions
 
 https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
 
@@ -243,20 +263,6 @@ Prolog++
 
 https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
 
-
-Smalltalk
-
-Ph.D. dissertation work of Alan Kay in the late 1960s at the University of Utah (Kay,
-1969).
-
-http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en
-
-everything is an object, all the way down
-sending a message to an object to invoke one of its methods. inspired by cells in living organisms, or network of intercommunicating virtual computers.
-
-Alan Kay's OOP emphasized message passing, dynamic types, NOT inheritance.
-If an object accepts the same kind of messages, it has the same interface.
-code reuse must not be conflated with common interfaces
 
 C++
 
