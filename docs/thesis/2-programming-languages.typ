@@ -182,6 +182,13 @@ Developed during the 1960s at the Norwegian Computing Center in Oslo, Simula was
 
 Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, partly inspired by Simula, is credited for putting OOP on a firm theoretical basis. The idea of message passing is paramount to Kay's concept of object orientation: everything is an object, and all objects communicate with each other exlusively by passing messages; he was inspired in this ideal by his knowledge of how cells worked in living organisms; and had envisioned, much before the personal computer really took off, a huge networks of computers communicating with each other over a global network. Analogously, the objects he described could be seen as a network of virtual computers.
 
+Simula and Smalltalk were responsible for starting a revolution in the way software was written. This was also reflected in the shift towards Abstract Data Types (ADTs) which hide their implemenation behind the interface they present to the user. Nowadays OOP is still the dominant paradigm in software development, with most of the top programming languages by popularity featured on the annual Stack Overflow developer survey supporting OOP in some form. // https://survey.stackoverflow.co/2023/
+
+At the core of modern OOP is the idea that data and behavior should be combined into a single entity: the object; which hides its data (or "state") and exposes an interface to other such entities, communicating with them through message passing, often understood as method calls. The "traditional" four pillars of OOP are: data abstraction, encapsulation, inheritance, and polymorphism.
+
+Polymorphism and Inheritance aren't among the terms introduced or favored by Alan Kay. Polymorphism originally comes from the mathematical jargon about functions (indeed, a concept of Polymorphism is also present in Functional Programming) and it refers to an interface's ability to apply to different types; for example, the generic possibility of calculating the area of a shape applies equally well to a square, to a circle or to a trapezoid, but the concrete formulas to compute the areas of those three kinds of shapes are quite different.
+
+
 
 // https://www.quora.com/What-are-the-main-differences-between-Simula-and-Smalltalk
 
@@ -212,9 +219,6 @@ Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, part
 
 ----------
 = Temporary Notes
-
-evolution of programming languages, arisal and transfer of new features, death of obsolete ones
-
 
 BASIC
 
@@ -326,14 +330,6 @@ The natural language parallel of procedural programming is something like detail
 
 
 == Object Oriented Programming
-
-An extremely popular programming paradigm, supported to some degree by all of the most popular languages (2023), usually used in conjunction with [procedural programming](./1-procedural.md), and thus being often described as an imperative style of programming, though this need not be the case.
-
-The core of OOP is the idea that objects should combine data and behavior into a single entity, which interacts with other entities through message passing. 
-
-The traditional four pillars of OOP are: data abstraction, encapsulation, inheritance, and polymorphism.
-
-An object should manage their state internally, hiding it from the others.
 
 In practice, message passing is usually though of and implemented as a procedure call, though purely object oriented languages (and "actor-oriented" languages) do in fact exist.
 
