@@ -238,16 +238,24 @@ For practical reasons, Prolog is based on a restricted dialect of predicate logi
 
 When the left handside contains a predicate, the Horn clause represents an implication; you could think of it as a "definition" of the left handside in terms of the right handside, for instance: `father(X,Y) :- parent(X,Y), male(X)` means that X is the father of Y, when X is the parent of Y and X is male; every variable in a Horn clause is implicitly universally quantified.
 
-Statements in Prolog have two interpretations: they can either be declarations or queries; this typically means two modes: typically the facts and inference rules can be written to a file, which is loaded into an interpreter which then allows the user to make queries using the same syntax. For instance querying for `father(X, john)` will attempt to find John's father using the information declared in the file; `father(harry, john)` will check if Harry is John's father returning `yes` in case the proposition is true, and `no` otherwise.
+Statements in Prolog have two interpretations: they can either be declarations or queries; this typically means two modes: typically the facts and inference rules can be written to a file, which is loaded into an interpreter which then allows the user to make queries using the same syntax. For instance querying for `father(X, john)` will attempt to find John's father using the information declared in the file; `father(harry, john)` will check if Harry is John's father returning `yes` in case the proposition is true, and `no` otherwise. This process of substituting variables and trying to match formulas is known as unification, and its implementation can be rather complicated.
 
-Prolog and similar systems always assume that the information they possess is complete; that anything that is true is also known to be true, and thus: that anything that is not known to be true is false. This is known as the Closed-World Assumption (CWA), and it is generally contrasted with the Open-World Assumption (OWA) used by some other systems. The CWA is closely related to the concept of Negation as Failure, which means that if there is a failure in proving the truth of a statement, then the statement is considered false.
+Prolog and similar systems always assume that the information they possess is complete; that anything that is true is also known to be true, and thus: that anything that is not known to be true is false. This is known as the Closed-World Assumption (CWA), and it is generally contrasted with the Open-World Assumption (OWA) used by some other systems. The CWA is closely related to the concept of Negation as Failure, which views negation as the failure to prove the truth of a statement.
 
-// The assumption made by systems such as Prolog, regarding a fact that wasn't explicitly stated, is that it is false; this is known as the closed world assumption.
-// Any fact for which 
-// Negation as Failure
-//  anything that is true is also known to be true
+// https://www.dataversity.net/introduction-to-open-world-assumption-vs-closed-world-assumption/
 
-// Logical Programming is an interesting paradigm, 
+Logical Programming has seen periods of greater popularity, especially during the years of the Japanese Fifth Generation Computer Systems (FGCS) initiative, from the early 1980s to the early 1990s. /* history of AI */ It hasn't become more widespread in part because of performance related issues: unification is too slow; there are just no fast solutions to elementary problems such as sorting a list of numbers in pure logical programming, short of explicitly writing the code for a sorting algorithm, which necessarily means being "less declarative".
+
+Logical Programming is nonetheless very interesting paradigm to study, and it certainly has its merits in the implementation of Expert Systems, and in certain kinds of Natural Language Processing and symbolic AI tasks.
+
+== The Scripting Languages
+
+// The Scripting Langs
+// (Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
+
+// originally interpreted
+
+// many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s), 
 
 
 ----------
@@ -308,12 +316,6 @@ Prolog++
 
 https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
 
-The Scripting Langs
-(Ba)sh, awk, Perl, Javascript, PHP, Python, Ruby, Lua
-
-originally interpreted
-
-many of these langs were born with dynamic typing, but later evolved (one or multiple) static typing subset(s), 
 
 Markup Languages
 
