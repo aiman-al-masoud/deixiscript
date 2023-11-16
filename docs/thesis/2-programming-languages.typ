@@ -214,6 +214,24 @@ Despite the fair criticism, some from illustrous critics, OOP is still the domin
 // https://dzone.com/articles/whats-wrong-with-object-oriented-programming
 // https://www.cs.scranton.edu/~mccloske/dijkstra_quotes.html
 
+== Prolog and Logic Programming
+
+Logic Programming is a declarative paradigm based on the use of predicate logic to declare facts and inference rules; its development is closely tied to the development of Prolog during the 1970s by a collaboration between the University of Aix-Marseille and the Department of Artificial Intelligence at the University of Edinburgh. Prolog remains to this day the most widely known, studied and used example of Logic Programming Language.
+
+The strength of logic programming lies in its being, as aforementioned, a highly declarative paradigm. Unlike other more imperative paradigms, where the programmer is required to tell the computer how to use the facts that it is given, in languages like Prolog what is required of the user are the simple declarative facts and inference rules; the way they are used to draw conclusions is entirely up to the system.
+
+Logic Programming is based on a particular form of logic known as predicate logic or First Order Logic (FOL); FOL provides a formal way of expressing propositions and the relationships occurring between them. A proposition corresponds to the meaning of an English sentence, it is something that can have a truth value: true or false; ie: correspond to how the world really is, or contradict the actual state of affairs.
+
+Just like algebra provides a basis for the algorithmic resolution of mathematical equations, FOL provides a basis for proving conclusions from a set of premises in an automated way, something that is otherwise known as "theorem proving".
+
+FOL, or "predicate" logic, includes the predicate as one of its essential concepts. A predicate can be roughly thought of as a boolean function; for instance in the formula `cat(ginger)`, the predicate is `cat` and the individual `ginger`; the formula is stating a fact: the fact that `ginger` is a `cat`.
+
+A predicate, or "relation", may have accept any number of terms; for instance `sleep(ginger, couch)` may mean that ginger is sleeping on the couch; it may also mean that the couch is sleeping on ginger, depending on what conventional order we choose for the terms in the tuple.
+
+FOL also includes conjunctions (logical `and` and logical `or`), quantifiers (existential and universal) and implications.
+
+
+
 ----------
 = Temporary Notes
 
