@@ -230,11 +230,22 @@ A predicate, or "relation", may have accept any number of terms; for instance `s
 
 FOL also includes conjunctions (logical `and` and logical `or`), the negation operator, quantifiers (existential and universal) and implications.
 
-The existential quantifier declares the existence of at least an individual with specified properties; for instance `∃X.(cat(X) and red(X))` may mean that there is at least an X such that it is a red cat. 
+The existential quantifier declares the existence of at least an individual with the specified properties; for instance `∃X.(cat(X) and red(X))` may mean that there is at least an X such that it is a red cat. 
 
 The universal quantifier declares a global property of all individuals that satisfy a given description; for instance `∀X.(mortal(X) <- man(X))`, where `<-` is an implication arrow, may express the idea that every man is mortal, "X is man implies X is mortal".
 
+For practical reasons, Prolog is based on a restricted dialect of predicate logic, specifically: it is based on a special kind of formula known as the Horn clause, developed by mathematician Alfred Horn (1918-2001); a Horn clause has a left and a right handisde that are separated by an implication. The implication goes from right to left. The left hand side may only contain one single predicate, or be completely empty. When the left handside is empty there is no implication, and the right handside is treated as a fact; for instance the formula `cat(ginger)` from before.
 
+When the left handside contains a predicate, the Horn clause represents an implication; you could think of it as a "definition" of the left handside in terms of the right handside, for instance: `father(X,Y) :- parent(X,Y), male(X)` means that X is the father of Y, when X is the parent of Y and X is male; every variable in a Horn clause is implicitly universally quantified.
+
+Statements in Prolog have two interpretations: they can either be declarations or queries; this typically means two modes: typically the facts and inference rules can be written to a file, which is loaded into an interpreter which then allows the user to make queries using the same syntax. For instance querying for `father(X, john)` will attempt to find John's father using the information declared in the file; `father(harry, john)` will check if Harry is John's father returning `yes` in case the proposition is true, and `no` otherwise.
+
+// The assumption made by systems such as Prolog, regarding a fact that wasn't explicitly stated, is that it is false; this is known as the closed world assumption.
+// Any fact for which 
+// Negation as Failure
+//  anything that is true is also known to be true
+
+// Logical Programming is an interesting paradigm, 
 
 
 ----------
