@@ -4,25 +4,6 @@ Natural/istic programming is a broad term that can be applied to all those attem
 
 The idea of instructing a computer in natural/istic language (or some formal language close enough to deserve that nomenclature) has been a long standing dream, and sometimes a nightmare, for many people in computer science, long before the advent of modern day Large Language Models.
 
-== Criticism
-
-We begin by saying, first and foremost, that the advantages of programming in natural language haven't always been clear to everyone in the field. There has been disagreement regarding the extent to which programming in natural language may prove to be advantageous, but even on whether it be a desirable goal to achieve in the first place. 
-
-Edsger Dijkstra (1930-2002) was a notable computer scientist, advocate of structured programming and famous for (among the other things): the Dijkstra shortest path algorithm, the Banker's algorithm and the concept of semaphore in multi-threaded computing.
-
-Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming". According to him, not only was "natural language programming" technically difficult to achieve, but even assuming (ad absurdum) that it had been achieved long ago, it would have done programmers and more generally the field of computer science no good @foolishnessnatprogramming.
-
-Dijkstra argues that formal languages, while less familiar to the average person, are also much less prone at being misused; in natural language it is far too easy to make nonsensical statements, and while it is true that an automated system that processes a statement in formal language may end up looking "stupid" by not recognizing what, to the human eye, may seem like an blatant mistake, it is at least clear what the outcome of such a statement will be, as opposed to the ambiguity inherent to much of what we say in natural language.
-
-Natural language, moreover, is pretty bad at expressing mathematical relations concisely; modern algebra, he argues, arised precisely when mathematicians gave up on trying to use natural language to represent their equations.
-
-While Dijkstra raises some important points that we shall elaborate on in some of the later discussions, it is important to remember that back in the day when he was writing, computers weren't nearly as widespread as in the present date; back then it was easier to regard the computer as merely a calculating device (hence the higher relevancy of mathematical notation in programming languages). 
-
-Nowadays computers are tools for document and mutlimedia consumption, gaming consoles, video editing devices, office work stations etc... What an end-user often requires isn't a precise formalism to neatly express a mathematical concept, but rather an easy to learn scripting language to customize the behavior of a program on their computer. We think that natural language may be a good candidate at least for this niche, and for many other real-world problems that don't involve too many abstract mathematical concepts.
-
-// Programming Languages shouldn't be" too Natural" Mandrioli, Dino and Pradella, Matteo
-// ambiguities in natural language, Fantechi
-
 == Precision vs Expressiveness
 
 There is a tradeoff between naturalness and expressiveness on the one side, and ease of implementation and precision on the other.
@@ -216,7 +197,26 @@ The language also introduces the concept of "Naturalistic Iterators" and "Natura
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
-// == Naturalistic Types
-// TODO
+== Criticism
 
+There has been disagreement regarding the extent to which programming in natural language may prove to be advantageous, but even on whether it be a desirable goal to achieve in the first place. 
+
+Edsger Dijkstra (1930-2002) was a notable computer scientist, advocate of structured programming and famous for (among the other things): the Dijkstra shortest path algorithm, the Banker's algorithm and the concept of semaphore in multi-threaded computing.
+
+Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming". According to him, not only was "natural language programming" technically difficult to achieve, but even assuming (ad absurdum) that it had been achieved long ago, it would have done programmers and more generally the field of computer science no good @foolishnessnatprogramming.
+
+Dijkstra argues that formal languages, while less familiar to the average person, are also much less prone at being misused; in natural language it is far too easy to make nonsensical statements, and while it is true that an automated system that processes a statement in formal language may end up looking "stupid" by not recognizing what, to the human eye, may seem like an blatant mistake, it is at least clear what the outcome of such a statement will be, as opposed to the ambiguity inherent to much of what we say in natural language.
+
+Natural language, moreover, is pretty bad at expressing mathematical relations concisely; modern algebra, he argues, arised precisely when mathematicians gave up on trying to use natural language to represent their equations.
+
+While Dijkstra raises some important points that we shall elaborate on in some of the later discussions, it is important to remember that back in the day when he was writing, computers weren't nearly as widespread as in the present date; back then it was easier to regard the computer as merely a calculating device (hence the higher relevancy of mathematical notation in programming languages). 
+
+Nowadays computers are tools for document and mutlimedia consumption, gaming consoles, video editing devices, office work stations etc... What an end-user often requires isn't a precise formalism to neatly express a mathematical concept, but rather an easy to learn scripting language to customize the behavior of a program on their computer. We think that natural language may be a good candidate at least for this niche, and for many other real-world problems that don't involve too many abstract mathematical concepts.
+
+// Programming Languages shouldn't be" too Natural" Mandrioli, Dino and Pradella, Matteo
+// ambiguities in natural language, Fantechi
+
+
+// TODO
+// == Naturalistic Types
 // #bibliography("bib.bib")
