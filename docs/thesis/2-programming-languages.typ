@@ -228,7 +228,12 @@ FOL, or "predicate" logic, includes the predicate as one of its essential concep
 
 A predicate, or "relation", may have accept any number of terms; for instance `sleep(ginger, couch)` may mean that ginger is sleeping on the couch; it may also mean that the couch is sleeping on ginger, depending on what conventional order we choose for the terms in the tuple.
 
-FOL also includes conjunctions (logical `and` and logical `or`), quantifiers (existential and universal) and implications.
+FOL also includes conjunctions (logical `and` and logical `or`), the negation operator, quantifiers (existential and universal) and implications.
+
+The existential quantifier declares the existence of at least an individual with specified properties; for instance `∃X.(cat(X) and red(X))` may mean that there is at least an X such that it is a red cat. 
+
+The universal quantifier declares a global property of all individuals that satisfy a given description; for instance `∀X.(mortal(X) <- man(X))`, where `<-` is an implication, may express the idea that every man is mortal, "X is man implies X is mortal".
+
 
 
 
