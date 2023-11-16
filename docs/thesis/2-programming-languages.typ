@@ -271,171 +271,84 @@ Another factor to take into account is that the traditional cumbersomeness of st
 But it isn't only about scripting languages becoming statically typed; some of the successful ideas from scripting languages are also making it to the other side. Scripting languages have traditionally had a tool known as a "Read Print Eval Loop" (REPL), also known as an "interactive shell"; this tool allows developers to test out statements and functions interactively on the fly, greatly increasing their productivity. There is a trend where classical compiled programming languages are also getting REPLs: Java has Jshell (and the older BeanShell), Haskell, Kotlin and Scala also all have REPLs.
 
 
-----------
-= Temporary Notes
+// ----------
+// = Temporary Notes
 
-BASIC
+// BASIC
 
-BASIC (Beginner's All-purpose Symbolic Instruction Code) was originally
+// BASIC (Beginner's All-purpose Symbolic Instruction Code) was originally
 
-1963 to
-design a new language especially for liberal arts students.
+// 1963 to
+// design a new language especially for liberal arts students.
 
-The most important aspect of the original BASIC was that it was the first
-widely used language that was used through terminals connected to a remote
-computer. Terminals had just begun to be available at that time. Before then,
-most programs were entered into computers through either punched cards or
-paper tape.
+// The most important aspect of the original BASIC was that it was the first
+// widely used language that was used through terminals connected to a remote
+// computer. Terminals had just begun to be available at that time. Before then,
+// most programs were entered into computers through either punched cards or
+// paper tape.
 
-The resurgence of BASIC in the 1990s was driven by the appearance of
-Visual BASIC (VB). VB became widely used in large part because it provided
-a simple way of building graphical user interfaces (GUIs), hence the name
-Visual BASIC.
+// The resurgence of BASIC in the 1990s was driven by the appearance of
+// Visual BASIC (VB). VB became widely used in large part because it provided
+// a simple way of building graphical user interfaces (GUIs), hence the name
+// Visual BASIC.
 
-APL
-A Programming Language
-originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemented.
+// APL
+// A Programming Language
+// originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemented.
 
-Huge number of operators, unreadable
+// Huge number of operators, unreadable
 
 
-Pascal, C
+// Pascal, C
 
-LOGIC PROGRAMMING & PROLOG
+// LOGIC PROGRAMMING & PROLOG
 
-- declarative paradigm
-- programming based on predicate logic
-- data specification AND inference method
+// - declarative paradigm
+// - programming based on predicate logic
+// - data specification AND inference method
 
-https://www.sciencedirect.com/topics/computer-science/resolution-principle
+// https://www.sciencedirect.com/topics/computer-science/resolution-principle
 
-During the early 1970s,
-The first Prolog interpreter was developed at Marseille in 1972
-University of Aix-Marseille
-Department of Artificial Intelligence at the University of Edin-
-burgh
+// During the early 1970s,
+// The first Prolog interpreter was developed at Marseille in 1972
+// University of Aix-Marseille
+// Department of Artificial Intelligence at the University of Edin-
+// burgh
 
-intelligent database, facts and rules
+// intelligent database, facts and rules
 
-two major reasons why logic programming has
-not become more widely used. First, as with some other nonimperative
-approaches, programs written in logic languages thus far have proven to
-be highly inefficient relative to equivalent imperative programs. Second, it
-has been determined that it is an effective approach for only a few relatively
-small areas of application: certain kinds of database management systems and
-some areas of AI.
+// two major reasons why logic programming has
+// not become more widely used. First, as with some other nonimperative
+// approaches, programs written in logic languages thus far have proven to
+// be highly inefficient relative to equivalent imperative programs. Second, it
+// has been determined that it is an effective approach for only a few relatively
+// small areas of application: certain kinds of database management systems and
+// some areas of AI.
 
-Prolog++
+// Prolog++
 
-https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
+// https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
 
 
-Markup Languages
+// Markup Languages
 
-The "ideal" language?????
+// The "ideal" language?????
 
-can it exist?
-Are some PLs clearly better/worse than others? (yes according to people like P. Graham)
+// can it exist?
+// Are some PLs clearly better/worse than others? (yes according to people like P. Graham)
 
-(the pragmatic programmer)
-- believing that something that changed didn't change (as a result of high coupling)
-- believing that something that hasn't changed did change (as a result of repetition)
+// (the pragmatic programmer)
+// - believing that something that changed didn't change (as a result of high coupling)
+// - believing that something that hasn't changed did change (as a result of repetition)
 
-declarative "better"
+// declarative "better"
 
+// // growing a lang, Guy Steele
+// ----------------------
+// There are other kinds of Imperative programming such as unstructured programming which makes use of goto statements, but Procedural programming relies on structured programming techniques (control flow structures such as loops and if statements rather than gotos) and procedures (a kind of routine) to modularize the program.
 
-// growing a lang, Guy Steele
+// // % https://survey.stackoverflow.co/2023/#technology
 
+// While it is a tenet of OOP that state should be hidden behind objects, Functional Programming takes the more radical approach of abolishing state (aka: mutable state) altogether from most of the codebase, isolating it from the core logic.
 
-----------------------
-
-
-= Programming Languages
-
-The naturalistic approach can be seen as a new programming paradigm, albeit one which the principles of which aren't still well defined much less well established; it may be of some help to briefly review the main (most popular) programming paradigms as of today, before trying to formulate any ideas specific to naturalistic programming.
-
-
-== Procedural Programming
-
-Procedural programming is a kind of Imperative programming, because it lets the programmer handle state and control flow explicitly.
-
-There are other kinds of Imperative programming such as unstructured programming which makes use of goto statements, but Procedural programming relies on structured programming techniques (control flow structures such as loops and if statements rather than gotos) and procedures (a kind of routine) to modularize the program.
-
-Procedural programming is an old and well established idea. Most of the popular general purpose programming languages nowadays (2023) fully support procedural programming, although none of them is "purely procedural". 
-
-It is fair to say that it's the way most programmers first learn to code.
-
-A Procedure is a kind of Routine (a distinct block/sequence of code intended to be reused) which, unlike a Pure Function, can have side-effects.
-
-Procedural programming typically conceives data (primitives, structs/records) and instructions/behavior (statements, functions) as separate entities.
-
-The natural language parallel of procedural programming is something like detailing the steps of a recipe.
-
-// % https://survey.stackoverflow.co/2023/#technology
-// % https://en.wikipedia.org/wiki/Procedural_programming
-// % https://medium.com/codex/procedural-programming-was-procedural-programming-is-procedural-programming-will-be-a26131cb463f
-
-
-== Object Oriented Programming
-
-In practice, message passing is usually though of and implemented as a procedure call, though purely object oriented languages (and "actor-oriented" languages) do in fact exist.
-
-Computer scientist Alan Kay, creator of the language Smalltalk, is usually cited as the "father" of OOP, albeit his own conception of the paradigm differs somewhat from the more popular procedural-based version.
-
-Most OOP languages are class-based, a class is a template that is used to create instances of objects. This again, however, isn't the sole approach: a minority of languages are instead prototype-based: a prototype is a fully functioning object of its own, that can be cloned later if more instances of it are needed.
-
-Inheritance is a moderately controversial topic among modern programmers, due to the rigidity of hierarchies, the problems related to refactoring, and the danger inherent to multiple inheritance (MI). Mixins and traits are slightly different modern alternative to MI.
-
-Another important concept of (though not exclusively of) OOP is polymorphism: the idea that the same interface can apply to different underlying implementations.
-
-The natural language parallels of OOP are many and varied: the concept of agents or efficient causes (data+behavior), the idea of these agents interacting together to achieve a common goal (message passing), and the subdivision of the world into concepts and subconcepts (classes and inheritance).
-
-// % https://www.merriam-webster.com/dictionary/agent
-// % https://survey.stackoverflow.co/2023/#technology
-// % https://en.wikipedia.org/wiki/Object-oriented_programming
-// % https://medium.com/nerd-for-tech/the-four-pillars-of-object-oriented-programming-39efe4e87afc
-
-
-== Functional Programming
-
-While it is a tenet of OOP that state should be hidden behind objects, Functional Programming takes the more radical approach of abolishing state (aka: mutable state) altogether from most of the codebase, isolating it from the core logic.
-
-Pure functional programming is a declarative...
-
-A very concise way of defining pure FP is that it is about: Pure Functions and immutable data structures.
-
-A pure function is a function whose output depends entirely on its inputs (referential purity) and whose evaluation does not alter the state of any data structure (absence of side-effects).
-
-An example of an impure function would be, for example, anything that has to do with I/O, like even a simple print function.
-
-As a consequence of this, FP bans the use of iteration and iterative control flow strcutures such as loops: because they require mutable variables, and only makes use of recursion as the basic way of repeating instructions; but it builds numerous higher level abstractions on top of it, many of which (functions as first class citizens and higher order functions) have since made it into most mainstream programming languages.
-
-In theory, FP and OOP are compatible to a large extent (cf. Scala) and it is possible to write a program using immutable objects which respects the rules of both paradigms to a large degree.
-
-Functional programming takes most of its ideas from lambda calculus, a field of pure mathematics.
-
-// % https://en.wikipedia.org/wiki/Functional_programming
-// % https://www.amazon.com/Functional-Programming-Simplified-Alvin-Alexander/dp/1979788782
-
-== Logic Programming
-
-Logic Programming is based on a different branch of mathematics: formal logic, mostly predicate logic, though a few higher order logic based languages exist.
-
-It is, not unlike FP, a declarative style of programming: logical implications are declared, usually in the form of a horn clause, and then are used to formally prove statements.
-
-// % https://en.wikipedia.org/wiki/Logic_programming
-
-
-== The End of Programming
-
-Computer Scientist Matt Welsh has argued that traditional programming done by humans will become obsolete as a result of the advancement of AI systems that can be told what to do in natural language and come up with solutions for problems they were never explicitly taught how to deal with (zero-shot learning).
-
-However, the proliferation of guides on how to best use modern LLMs and the birth of Prompt Engineering suggests that a certain level of experience will be still needed to make effective use of these new "executable English" systems.
-
-Natural language thus seems to be the new frontier of programming, and a decent understanding of natural language, its style at describing problems, its advantages over traditional programming languages and its limitations will be crucial over the next decades, as LLMs grow more powerful and useful.
-
-
-// % https://www.promptingguide.ai/
-// % https://it.wikipedia.org/wiki/Matt_Welsh
-// % https://cacm.acm.org/magazines/2023/1/267976-the-end-of-programming/fulltext
-// % https://www.tcg.com/blog/on-the-wisdom-of-natural-language-programming/
+// A very concise way of defining pure FP is that it is about: Pure Functions and immutable data structures.
