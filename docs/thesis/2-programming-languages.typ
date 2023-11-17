@@ -150,19 +150,23 @@ The COmmon Business-Oriented Language, COBOL, is not exactly known for its good 
 
 The Jargon File also reports the following quote by Edsger Dijkstra: "The use of COBOL cripples the mind; its teaching should, therefore, be regarded as a criminal offense."
 
-As the name implies, COBOL was originally intended for data manipulation in business applications; it was designed around the end of the 1950s by a committee sponsored by the US Department of Defense; and the American mathematician, computer scientist and military official Grace Hopper (1906-1992) had an important role in its design.
+As the name ("Business-Oriented") implies, COBOL was originally intended for data manipulation in business applications; it was designed around the end of the 1950s by a committee sponsored by the US Department of Defense; and the American mathematician, computer scientist and military official Grace Hopper (1906-1992) had an important role in its design.
 
-Interestingly, Grace Hopper is credited with the first attestation of the term "bug" to indicate the malfunctioning of a computer program, back when in 1947 she taped on a report in a log book the remains of a moth that got stuck in a relay inside of a computer that was malfunctioning.
+Interestingly, Grace Hopper is credited with the first attestation of the term "bug" to indicate the malfunctioning of a computer program, back when in 1947 she taped on a report in a log book the remains of a moth that got stuck in a relay, inside of a computer that was malfunctioning.
 
-What interests us specifically about COBOL, is that it was one of the earliest languages to be designed with the idea in mind of imitating natural language. This idea was championed by Grace Hopper, who believed that mathematical notation was better suited for scientific computation, but data manipulation was a better match for (naturalistic) English statements, with the characteristic all-caps English-like keywords of the era.
+=== COBOL was "naturalistic" 
 
-During the proposal process, COBOL was also presented with keywords translated in French and German; we had there the beginnings of the "internationalized" programming language, something that the ALGOL 68 standard went on to do seriously later in that decade; an idea that nonetheless didn't garner much success, as anyone can see today.
+What interests us specifically about COBOL, is that it was one of the earliest languages to be designed with the idea in mind of imitating natural language. This idea was championed by Grace Hopper, who believed that mathematical notation was better suited for scientific computation, but data manipulation was a better match for English-like statements, with the characteristic all-caps English keywords of the era. There was also a concern that managers and business people would not have understood mathematical notation.
 
-COBOL is "naturalistic" in some sense. In COBOL, you don't use the regular addition operator `+`, you rather ADD something TO something else. The naturalness of COBOL statements can push as far as statements like the following example taken from the paper about the PENS ranking for Controlled Natural Languages: // PENS RANKING
+During the proposal process, COBOL was also presented with keywords translated in French and German; we had there the beginnings of the "internationalized" programming language, something that the ALGOL 68 standard went on to do seriously later in that decade (ALGOL 68 was also available in Russian, among other "translations"); an idea that nonetheless didn't garner much success, as anyone can see today. // programming languages book
+
+There is a sense in which COBOL is "naturalistic". In COBOL, you don't use the regular addition operator `+`, you rather ADD something TO something else. The naturalness of COBOL statements can push as far as statements like the following example taken from the paper about the PENS ranking for Controlled Natural Languages: // PENS RANKING
 
 `PERFORM P WITH TEST BEFORE VARYING C FROM 1 BY 2 UNTIL C GREATER THAN 10`
 
-Despite this, and as the same paper duly mentions, the statement structure usually doesn't follow English's grammar this closely; moreover, it is too rigid, and its rigidity coupled with its deceptive "naturalness" on the surface creates more confusion to the programmer than it does good.
+Despite this, and as the same paper duly mentions, the statement structure usually doesn't follow English's grammar this closely; moreover, it is too rigid, and its rigidity, coupled with its deceptive "naturalness" on the surface, creates more confusion to the programmer than it does good.
+
+=== COBOL today
 
 In closing, we must remember that many mission critical systems to this day depend on large COBOL codebases; this is why, despite the kind of reputation it has earned during the last 60+ years of its existence, COBOL is still a topic of relevance today. // https://www.linkedin.com/pulse/importance-cobol-2023-bryan-varie/
 
