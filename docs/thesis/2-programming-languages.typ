@@ -319,7 +319,7 @@ We saw how these languages can vary wildly in purpose; and, as the saying goes, 
 
 Nonetheless, we investigated the most popular programming paradigms, their merits and their flaws, and we did come across some generally accepted principles of design (like orthogonality), and some broadly applicaple ideas; we also did see that certain languages are critisized for their design decisions somewhat more than others. In other words: while it is certainly true that all programming languages serve the purpose they were designed for the best, not all programming languages were created equal, and good design is important; this, we think, is also the opinion of computer scientist Paul Graham.
 
-As Guy Steele (1954-), computer scientist and language designer, points out in his talk "Growing a Language" starting out small and planning for (organic, user directed) growth is the best strategy a language designer can take. Starting with a large set of primitives (like PL/I, which we discussed) is as bad as starting without the proper facilities to let language users define new constructs, that integrate well with the language's native ones.
+As Guy Steele (1954-), computer scientist and language designer, explains in his talk "Growing a Language" starting out small and planning for (organic, user directed) growth is the best strategy a language designer can take. Starting with a large set of primitives (like PL/I, which we discussed) is as bad as starting without the proper facilities to let language users define new constructs, that integrate well with the language's native ones.
 
 
 // Mark Rendle, the worst language ever!
