@@ -1,9 +1,23 @@
+// what is "common sense in AI"
 // - Advice Taker
-// - Machines Like Us
-// - Comment on Machines Like Us
-// - Metafor (presented in detail in naturalistic programming)
-// - Common Sense
+// the ability to make effective use of ordinary, everyday, experiential knowledge in achieving ordinary, everyday, practical goals
+// more specialized kind of rationality
+// commonsense reasoning enables an AI system to act appropriately in the face of unforeseen events
+// common sense knowledge is valuable in understanding natural language (the ball broke the table because it was made of steel example)
 // - Chosmky on Creativity: novelty, appropriateness to context, unpredictability in terms of environmental circumstances, and value, mention hierarchy of problems by constraints
+// knowledge AND reasoning
+// KR representation hypothesis
+// theory of everything, naive physics, naive phsychology
+// knowledge graphs 
+// Brachman on semantic networks and Levesque on automated planning
+// criticism and baesyian networks and relationship to neural networks
+// https://en.wikipedia.org/wiki/Bayesian_network
+// https://en.wikipedia.org/wiki/Bayes%27_theorem
+// https://jonascleveland.com/bayesian-network-vs-neural-network/
+// Machines Like Us proposed implementation system
+// - Metafor (presented in detail in naturalistic programming)
+// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
+// https://en.wikipedia.org/wiki/Commonsense_reasoning
 
 = Artificial Intelligence
 
@@ -102,28 +116,6 @@ the behavior that manifests that knowledge" @brachman2022machines.
 
 In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
 
-// Unification
-
-// @folstan
-// @baader2001unification
-
-// <!-- 
-// While propositional logic is limited to connectives (conjunctions and disjunctions) and negations -->
-
-// - different logical calculi
-// - propositional logic
-// - higher order logics
-// - description of FOL and examples
-// - unification
-// - common sense
-// - advice taker
-// - machines like us proposed system
-// <!-- Predicate Logic is the generalization of Proposition Logic, the latter dealing -->
-// <!-- Predicate Logic isn't the only kind of logic,  -->
-// <!-- There are actually many dialects of  -->
-
-
-
 
 // <!-- devised the Turing Machine, and later worked on cyphers during WW2 breaking the Enigma code -->
 
@@ -166,7 +158,6 @@ In other words, the system contains physical parts that we take to be symbols re
 // “By 1989, we had identified and implemented about 20 such special-case
 // reasoners, each with its own data structures and algorithms. Today [2019]
 // there are over 1100 of these ‘heuristic level reasoning modules.’
-
 
 // Symbolic (GOFAI) vs Sybsymbolic divide
 
