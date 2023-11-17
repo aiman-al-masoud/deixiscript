@@ -322,6 +322,8 @@ Nonetheless, we investigated the most popular programming paradigms, their merit
 As Guy Steele (1954-), computer scientist and language designer, points out in his talk "Growing a Language" starting out small and planning for (organic, user directed) growth is the best strategy a language designer can take. Starting with a large set of primitives (like PL/I, which we discussed) is as bad as starting without the proper facilities to let language users define new constructs, that integrate well with the language's native ones.
 
 
+// Mark Rendle, the worst language ever!
+
 // - believing that something that changed didn't change (as a result of high coupling)
 // - believing that something that hasn't changed did change (as a result of repetition)
 
