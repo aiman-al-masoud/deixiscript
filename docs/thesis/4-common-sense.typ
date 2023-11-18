@@ -22,11 +22,11 @@ Chomsky draws inspiration from his pioneering work in linguistics to arrive at a
 
 A person may produce an indefinite amount of sentences that are new to his or her experience, but they are not random; they are just the right thing to say, and yet they are also independent of "detectable stimulus configurations".
 
-Since the data available to a child learning his or her first language is most often incomplete and poor in quality, Chomsky's thesis has always been that human children have an innate ability to learn the class of languages we call "human languages", this implies a congenital, biological limit on the kind of grammars that are possible for these languages.
+Since the data available to a child learning his or her first language is most often incomplete and poor in quality, Chomsky's thesis has always been that human children have an innate ability to learn the class of languages we call "human languages", this implies a congenital, biological limit on the kinds of grammars that are possible for these languages.
 
-From this follows the idea that human creativity too, in the more general sense, may be limited by a "system of constraints and governing principles"; this idea is known as the "Limits Thesis", and its compatibility with the "established beliefs" about creativity is the object of contention of the paper by D'Agostino; beliefs that emphasize the rulelessness and unpredictability (rather than boundedness) of creative work.
+From this follows the idea that human creativity too, in the more general sense, may be limited by a "system of constraints and governing principles"; this idea is known as the "Limits Thesis", and its compatibility with the "established beliefs" about creativity is the object of contention of the paper by D'Agostino; such "established beliefs" emphasize the rulelessness and unpredictability (rather than boundedness) of creative work.
 
-D'Agostino's solution is to try understanding creativity in terms of problem solving; problems are characterized by their constraints, different sets of contraints determine different problems. Problems can be ranked in a hierarchy, based on the kinds of constraints they place on the agent trying to solve them; this hierarchy includes problems with 5 kinds of constraints: determinative, limitative, eliminative, tentative and trivial. The respective problems grow in "difficulty", or better: in "undefinedness".
+D'Agostino's solution is to try understanding creativity in terms of problem solving; problems are characterized by their constraints, different sets of contraints determine different problems. Problems can be ranked in a hierarchy, based on the kinds of constraints they place on any valid solution; this hierarchy includes problems with 5 kinds of constraints: determinative, limitative, eliminative, tentative and trivial. We think that the respective 5 classes of problems are sorted by growing "undefinedness", rather than "difficulty", as we shall see.
 
 "Determinative" constraints are the strictest: they characterize the class of problems for which it is easy to define an algorithm, for which a procedural solution exists, such as arithmetic problems. "Limitative" constraints characterize those problems that are "well-defined", they provide necessary and sufficient conditions for the solution, examples of such problems are related to theorem discovery: there are necessary and sufficient conditions for some argument to count as a valid theorem for something; yet there is no single mechanized way of discovering such proofs. "Eliminative" constraints only provide necessary (but no sufficient) conditions for the solutions that satisfy them, these problems are termed as "partially-defined", many "design-related" problems (eg: in architecture, engineering...) fall into this category.
 
@@ -124,19 +124,25 @@ Some researchers believe that one of the main bottlenecks of Symbolic methods ha
 
 == Symbolic AI: a closer look
 
-We will now take a closer look at some of the theory behind the more "classical" kind of AI. An interesting place to start from is the enunciation of the Knowledge Representation (KR) hypothesis by philosopher Brian Cantwell Smith, which states that:
+We have already talked about Advice Taker, the hypothetical program originally envisioned in 1959 by John McCarty to be a general purpose common sense reasoner; but McCarty's reasearch didn't stop there, he went on to publish more papers on the subject of common sense in AI. Another important one was "Philosophical Problems from the Standpoint of AI" from 1981.
 
-"Any mechanically embodied intelligent process will be comprised of
-structural ingredients that a) we as external observers naturally take to
-represent a propositional account of the knowledge that the overall
-process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering
-the behavior that manifests that knowledge" @brachman2022machines.
+He begins this paper by discussing the very notion of "intelligence" in a machine, not being fully satisfied by the criterion defined by the Turing Test; he proposes to regard intelligent machines as: "fact manipulators".
 
-In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
+There are two parts of intelligence, he goes on to say; an "epistemological" part and a "heuristic" part. The "epistemological" part is related to how the world is represented internally to the machine, and the "heuristic" part is related to how this representation is used to actually solve problems.
 
+We think that this view of "intelligence" in machines is consistent with the Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, which states that:
 
+"Any mechanically embodied intelligent process will be comprised of structural ingredients that a) we as external observers naturally take to represent a propositional account of the knowledge that the overall process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering the behavior that manifests that knowledge"
 
-// - Advice Taker
+// https://cse.buffalo.edu/~rapaport/563S05/KR.hypoth.html
+//  @brachman2022machines.
+
+In other words, the physical structure of the system is isomorphic to (closely mirrors) the logical structure of the knowledge we take it to be representing.
+
+McCarthy reminds the reader of the general relevance of philosophy to the problem of AI, however he dismisses a lot of philosophy is irrelevant when it comes to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
+
+However, it is hard even to arrive at a naive formalization of common sense that is precise enough to be implemented on a computer.
+
 
 
 // mccarthy: philosophical porblems from the standpoint of AI
