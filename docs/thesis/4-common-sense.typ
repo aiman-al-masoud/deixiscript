@@ -141,7 +141,8 @@ In other words, the physical structure of the system is isomorphic to (closely m
 
 McCarthy reminds the reader of the general relevance of philosophy to the problem of AI, however he dismisses a lot of philosophy is irrelevant when it comes to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
 
-However, it is hard even to arrive at a naive formalization of common sense that is precise enough to be implemented on a computer. Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
+However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to act accordingly. Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
+
 
 
 
@@ -149,9 +150,6 @@ However, it is hard even to arrive at a naive formalization of common sense that
 // intelligent machines as fact manipulators (consistent with KR hypothesis)
 // https://cse.buffalo.edu/~rapaport/563S05/KR.hypoth.html
 // adequate world model (also own goals), answer questions, get extra info, perform actions due to goals
-// two parts of intelligence: empistemological (represent world) vs heuristic (solve problem)
-// basic philosophical presuppositions (world exists, info obtainable through senses...)
-// define even a naive, common-sense view of the world precisely enough to program a computer to act accordingly
 // Nth-order logic as a favored representation
 // situations (world state), fluents (predicate which depends on time), causality
 // the frame problem
