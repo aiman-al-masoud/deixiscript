@@ -4,7 +4,10 @@
 // flexible, not "idiot savant"
 // more specialized kind of rationality
 // commonsense reasoning enables an AI system to act appropriately in the face of unforeseen events
-// common sense knowledge is valuable in understanding natural language (the ball broke the table because it was made of steel example)
+// common sense knowledge is valuable in understanding natural language
+// capable of resolving pronouns like the word “it” in the aforementioned sentence, “The large ball crashed through the table because it was made of steel”
+// Winograd
+// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
 // - Chosmky on Creativity: novelty, appropriateness to context, unpredictability in terms of environmental circumstances, and value, mention hierarchy of problems by constraints
 // knowledge AND reasoning
 // KR representation hypothesis
@@ -17,7 +20,6 @@
 // https://jonascleveland.com/bayesian-network-vs-neural-network/
 // Machines Like Us proposed implementation system
 // - Metafor (presented in detail in naturalistic programming)
-// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
 // https://en.wikipedia.org/wiki/Commonsense_reasoning
 // mccarthy: philosophical porblems from the standpoint of AI
 // intelligent machines as fact manipulators (consistent with KR hypothesis)
