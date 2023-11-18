@@ -1,3 +1,109 @@
+= Common Sense
+
+It is puzzling how easy it is to program a machine to perform an extremely difficult task from the human point of view (such as beating the world champion in chess), and yet apparently so hard to get the same machine to do something that every sane person does on a daily basis without even thinking too hard: using common sense.
+
+The book "Machines like Us: Toward AI with Common Sense" from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively.
+
+"Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses and make use of non-expert knowledge to achieve ordinary, practical goals. Common sense is a specialized yet flexible kind of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts; formulate predictions on the behavior of simple physical systems, or the behavior of other people based on their feelings and goals; and to use this to handle the occurrence of a new or unusual situation smoothly.
+
+The problem of endowing machines with Common Sense is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather a system that can stand its ground even in an unprecedented scenario; and unpredictable scenarios as Brachman and Levesque remind us in their book happen much more often than we might think: there are so many unknowns in the real world that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
+
+More of interest to us, specifically, is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as one of the examples made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", to resolve the referent of the pronoun "it", it is necessary to have some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a harder, stronger material than wood. Were the last part of the sentence to change to: "... it was made of wood", then the natural interpretation of the pronoun "it" would also change; in that case, "it" would point to the table, no more to the ball.
+
+The goal of formalizing Common Sense has also arguably not been the only focus of AI during the past 70 or so years of its existence; in what follows we shall (very) briefly discuss some of the broad ideas in AI, to then get back to the more specific problem in question.
+
+== History of AI
+
+Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic; spanning over decades of research from its first inception in the last century, and preoccuping some of the most brilliant minds in logic, mathematics, philosophy and computer science.
+
+Unfortunately, it is impossible to cover all of its history in the present work, we will therefore spend the next few pages painting it in very broad strokes; we will focus mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
+
+As we already mentioned in the section dedicated to the Lisp programming language(s), the term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy; but the study of so called "thinking machines" is a little older than that @smith2006history.
+
+== The Turing Test
+
+Back in 1950 @turing2009computing, British mathematician, logician and cryptanalist Alan Turing (1912-1954), set out on the ambitious journey of determining whether sentient behaviour was "provably computable" @smith2006history.
+
+Turing introduced what came to be known as the Turing Test: a metric to tell if a computer could "think", according to the definition given by Turing. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a "curtain". The judge's goal is to tell them apart, from their usage of language alone. The goal of the machine, in this "imitation game", is to deceive the human judge into thinking he's conversing with another human being @smith2006history.
+
+It was recently reported (2022-23) that some Large Language Models (LLMs) such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
+
+== Alternatives to the Turing Test
+
+An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test @smith2006history.
+
+There are a number of variations and alternatives to the Turing Test; one is the Feigenbaum Test (or subject matter expert Turing test), which eliminates the "casual" nature of the open-ended conversational Turing Test, by stipulating that a computer demonstrate proficency in a specialized area of interest @smith2006history, this, by surpassing an expert in that specific field.
+
+Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would @smith2006history.
+
+Yet another alternative is the Winograd schema challenge (WSC) introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the "large ball crashing through the table" example we discussed earlier, that are aimed at probing a system's competence at resolving implicit references that require common sense knowledge and reasoning.
+
+== The Chinese Room Argument
+
+Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial topics to say the least in the philosophy of mind. Years before the advent of LLMs, in 1980, philosopher John Searle (1932-) first made public his famous Chinese Room Argument @searle1999chinese.
+
+In the mental experiment, Searle urges us (non-Chinese speakers) to imagine ourselves being locked up in a room filled with books on how to manipulate Chinese symbols algorithmically. One will find that he/she is able to communicate with the outside world only through a narrow interface of textual messages written on slips of paper and passed through the door.
+
+After learning how to manipulate those symbols and getting reasonably good at it, one will achieve the ability to deceive an external observer sitting outside of the room regarding one's own knowledge of Chinese. But, obviously, knowledge of how to manipulate its syntactic symbols by rote doesn't correspond with true semantic understanding of a language.
+
+Numerous objections and counter-objections to the argument have been rised since then @chineseroomstan, and there is still no general consensus on the conclusions and validity of the argument @chineseroomstan. It is nonetheless a powerful and intuitive case for the idea that what computers are doing when they "think" is fundamentally different from what humans do (or at least, what the writer of this paragraph in his subjective experience does).
+
+== Symbolic vs Sub-symbolic AI
+
+An important methodological distinction in the discipline of AI is represented by the traditional one made between "Symbolic" or "Good Old Fashioned AI" (GOFAI), versus "Sub-Symbolic" AI. The rationale behind this nomenclature stems from "old" AI's reliance on explicit human-readable symbols and formal logic notation, rather than the more numerical and statistical methods of "new" AI.
+
+Symbolic AI, as we said, represents the older and more traditional approach; it is typically associated to First Order Logic (FOL), to Knowledge Bases (KBs) and to Expert Systems, and has seen a period of flourishing during the birth of AI and in the 1980s during the hayday of Expert Systems.
+
+Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's "perceptron", has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and "Deep" Learning (which "just" means using neural nets with a larger number of layers).
+
+// http://neuralnetworksanddeeplearning.com/about.html
+
+=== Neural Networks
+
+The neural network is a kind of architecture for a computer program that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms. 
+
+A neural network is a collection of neurons organized in layers; each neuron from a layer produces an output which is channelled as an input to all of the neurons of the subsequent layer. Each connection going into a neuron has an associated weight (or importance); a weight is modelled as a factor (number) which multiplies the given input at the corresponding connection. 
+
+A neuron applies the corresponding weight to each of its inputs, then sums up the results, adds a bias to the sum, then applies a function known as the "activation function" to the result; the activation function has to be non-linear, so as to introduce non-linearity to the network and allow it to approximate non linear relations; the reason it is termed "activating" is that this function determines when the neuron will be "firing"; a common choice for it is the sigmoid function, which approximates the step function.
+
+// https://stackoverflow.com/questions/9782071/why-must-a-nonlinear-activation-function-be-used-in-a-backpropagation-neural-net
+
+Stepping back to see the big picture, when an input enters the first layer of the network each of the neurons produces an output, which is fed into the next layer, which in turn produces outputs which go into the next layer, etc... Until the output layer is reached. The input layer may consist of, for example, the values of the pixels of a greyscale image containing handwritten digits that has to be classified; and the 10 outputs, for instance, may represent the probability that the image represents either one of the 10 digits (from 0 to 9).
+
+Training the neural network consists in finding the "optimal" weights and biases which minimize the prediction error of the network for a particular training set; computed as a cost function. This usually involves approximating the derivative of the cost function through the use of numerical and stochastic methods, because the exact solution would be too computationally demanding to evaluate.
+
+=== Sub-Symbolic: pros and cons
+
+The advantages of the sub-symbolic approach are: an increased robustness to noisy and/or missing data; the ease of scaling up and handling large amounts of data; the better suitability for perceptual problems (such as face recognition) where it can be pretty hard to describe rules in any formal or natural language for lack of relevant explicit knowledge; less human intervention, because the machine can learn autonomously from the data; and good execution speeds (once the model is trained). Sub-symbolic approaches are typically used for tasks such as: data clustering, pattern classification, and recognition of speech and text
+
+The disadvantages of the sub-symbolic approach include: a lack of interpretability (often resulting in a black-box system); a relatively high dependence on training data; and the fact that such models typically require large amounts of computational resources and large amounts of data to train initially.
+
+=== Symbolic: pros and cons
+
+The advantages of the symbolic approach have traditionally been: the ease of implementing explainable reasoning, with intermediate steps; rule modularity, or the discreteness and independence of rules from each other; and the applicability to abstract problems such as theorem proving.
+
+The disadvantages of the symbolic approach are: the adversity to noisy datasets; and the fact that rules are (usually) hand-crafted and hard-coded into the system, which also makes them hard to maintain.
+
+=== Points in common
+
+A core idea that we think the two approaches share is that they can be both regarded as declarative programming paradigms of sorts. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
+
+Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language @ilkou2020symbolic, @yang2021learning.
+
+== Symbolic AI: a closer look
+
+We will now take a closer look at some of the theory behind the more "classical" kind of AI. An interesting place to start from is the enunciation of the Knowledge Representation (KR) hypothesis by philosopher Brian Cantwell Smith, which states that:
+
+"Any mechanically embodied intelligent process will be comprised of
+structural ingredients that a) we as external observers naturally take to
+represent a propositional account of the knowledge that the overall
+process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering
+the behavior that manifests that knowledge" @brachman2022machines.
+
+In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
+
+
+
 // what is "common sense in AI"
 // - Advice Taker
 // the ability to make effective use of ordinary, everyday, experiential knowledge in achieving ordinary, everyday, practical goals
@@ -37,88 +143,6 @@
 // . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
 
-= Common Sense
-
-It is puzzling how easy it is to program a machine to perform an extremely difficult task from the human point of view (such as beating the world champion in chess), yet apparently so hard to get the same machine to do something that every sane person does on a daily basis: use common sense.
-
-"Common sense" in the context of AI doesn't mean anything much different from what it means for most people: it is the ordinary ability to posses and make use of non-expert knowledge to achieve ordinary, practical goals. Common sense is a specialized kind of rationality; it doesn't demand formal study or take above-average intelligence for a human being to reason through experiential facts; formulate predictions on the behavior of simple physical systems, or the behavior of other people based on their feelings and goals; and to handle the occurrence of a new or unusual situation smoothly.
-
-
-= Artificial Intelligence
-
-Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic, has spanned over decades of research from its first inception in the last century, and has preoccupied some of the most brilliant minds in history.
-
-It is an endeavor which involves knowledge of the most disparate of disciplines: logic, mathematics, computer science and philosophy, to cite a few examples. Unfortunately, it is impossible to cover all of its history in the present work, we will therefore spend the next few pages painting it in very broad strokes; we will focus mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
-
-== History of Term
-
-The term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy (1927-2011), eminent computer scientist who is also known for having invented Lisp in 1958 @lisproots, a language which today has evolved into a family of programming languages and counts many dialects; but the subject of "thinking machines" is older and can trace its origins years before that @smith2006history.
-
-== The Turing Test
-
-Back in 1950 @turing2009computing, Alan Turing (1912-1954), mathematician, computer scientist, logician and cryptanalist set out on a very ambitious journey, which has influenced the practice of AI ever since, and that was the task of determining whether sentient behaviour was "provably computable" @smith2006history.
-
-// % Goedel
-
-In doing so, Turing introduced the concept of the Turing Test: a metric to tell if a computer could "think", according to the definition given by its author. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a curtain. The judge's goal is to tell them apart, from their usage of language alone. In what can be aptly described as an "imitation game", the goal of the machine is to deceive the human judge regarding its being a machine @smith2006history.
-
-It was recently reported (2022-23) that some Large Language Models (LLMs) such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
-
-=== The Chinese Room Argument
-
-Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial topics to say the least in the philosophy of mind. Years before the advent of LLMs, in 1980, philosopher John Searle (1932-) first made public his famous Chinese Room Argument @searle1999chinese.
-
-In the mental experiment, Searle urges us (non-Chinese speakers) to imagine ourselves being locked up in a room filled with books on how to manipulate Chinese symbols algorithmically. One will find that he/she is able to communicate with the outside world only through a narrow interface of textual messages written on slips of paper and passed through the door.
-
-After learning how to manipulate those symbols and getting reasonably good at it, one will achieve the ability to deceive an external observer sitting outside of the room regarding one's own knowledge of Chinese. But, obviously, knowledge of how to manipulate its syntactic symbols by rote doesn't correspond with true semantic understanding of a language.
-
-Numerous objections and counter-objections to the argument have been rised since then @chineseroomstan, and there is still no general consensus on the conclusions and validity of the argument @chineseroomstan. It is nonetheless a powerful and intuitive case for the idea that what computers are doing when they "think" is fundamentally different from what humans do (or at least, what the writer of this paragraph in his subjective experience does).
-
-=== Alternatives to the Turing Test
-
-An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined and always keeping in mind arguments such as Searle's Chinese Room), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test @smith2006history.
-
-There are a number of variations and alternatives to the Turing Test, such as the Feigenbaum Test (or subject matter expert Turing test), which eliminates the "casual" nature of the open-ended conversational Turing Test from the picture, by stipulating that a computer demonstrate proficency in a specialized area of interest @smith2006history, this, by surpassing an expert in that specific field.
-
-Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would @smith2006history.
-
-== Symbolic vs Sub-symbolic AI
-
-An important methodological distinction in the discipline of AI is represented by the Symbolic vs Sub-Symbolic divide.
-
-The rationale behind this terminology stems from "old" AI's reliance on explicit human-readable symbols and notation to represent information.
-
-Symbolic AI or Good Old Fashioned AI (GOFAI) represents the older and more traditional approach to the subject, it is typically associated to First Order Logic (FOL), to Knowledge Bases (KBs) and to Expert Systems, and has seen a period of flourishing during the birth of AI and in the 1980s in the hayday of Expert Systems.
-
-Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's "perceptron", has been slower at achieving vast adoption, and is now enjoying a renewed period of popularity, with the advent and perfection of such techniques as Machine Learning (ML) and Deep Learning that harness the power of gargantuan Neural Networks.
-
-The advantages of the symbolic approach have traditionally been: the ease of implementing explainable reasoning, with intermediate steps; rule modularity, or the discreteness and independence of rules from each other; and the applicability to abstract problems such as theorem proving.
-
-The disadvantages of the symbolic approach are: the adversity to noisy datasets; and the fact that rules are (usually) hand-crafted and hard-coded into the system, which also makes them hard to maintain.
-
-The advantages of the sub-symbolic approach are: an increased robustness to noisy and/or missing data; the ease of scaling up and handling large amounts of data; the better suitability for perceptual problems (such as face recognition) where it can be pretty hard to describe rules in any formal or natural language for lack of relevant explicit knowledge; less human intervention, because the machine can learn autonomously from the data; and good execution speeds (once the model is trained). Sub-symbolic approaches are typically used for tasks such as: data clustering, pattern classification, and recognition of speech and text
-
-The disadvantages of the sub-symbolic approach include: a lack of interpretability (often resulting in a black-box system); a relatively high dependence on training data; and the fact that such models typically require large amounts of computational resources and large amounts of data to train initially.
-
-=== Points in common
-
-A core idea that we think the two approaches share is that they can be both regarded as declarative programming paradigms of sorts. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
-
-Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language @ilkou2020symbolic, @yang2021learning.
-
-== Symbolic AI: a closer look
-
-// <!-- sth myrs -->
-
-We will now take a closer look at some of the theory behind the more "classical" kind of AI. An interesting place to start from is the enunciation of the Knowledge Representation (KR) hypothesis by philosopher Brian Cantwell Smith, which states that:
-
-"Any mechanically embodied intelligent process will be comprised of
-structural ingredients that a) we as external observers naturally take to
-represent a propositional account of the knowledge that the overall
-process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering
-the behavior that manifests that knowledge" @brachman2022machines.
-
-In other words, the system contains physical parts that we take to be symbols representing propositions, and the behavior of the system depends on the state of those physical parts: there is a close mapping between the logical propositions we deal in, and the state of the physical parts it deals in.
 
 
 // <!-- devised the Turing Machine, and later worked on cyphers during WW2 breaking the Enigma code -->
