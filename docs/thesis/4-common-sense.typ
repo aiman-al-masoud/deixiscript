@@ -37,6 +37,12 @@
 // . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
 
+= Common Sense
+
+It is puzzling how easy it is to program a machine to perform an extremely difficult task from the human point of view (such as beating the world champion in chess), yet apparently so hard to get the same machine to do something that every sane person does on a daily basis: use common sense.
+
+"Common sense" in the context of AI doesn't mean anything much different from what it means for most people: it is the ordinary ability to posses and make use of non-expert knowledge to achieve ordinary, practical goals. Common sense is a specialized kind of rationality; it doesn't demand formal study or take above-average intelligence for a human being to reason through experiential facts; formulate predictions on the behavior of simple physical systems, or the behavior of other people based on their feelings and goals; and to handle the occurrence of a new or unusual situation smoothly.
+
 
 = Artificial Intelligence
 
