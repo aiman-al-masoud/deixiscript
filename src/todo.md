@@ -1,3 +1,5 @@
+https://ganelson.github.io/inform-website/
+
 # How to fill up "which-gaps" when parsing?
 - use of transitive vs intransitive verb distinction in ST post-processing?
 - use of (ugly) explicit gap

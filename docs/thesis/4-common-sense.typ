@@ -1,6 +1,7 @@
 // what is "common sense in AI"
 // - Advice Taker
 // the ability to make effective use of ordinary, everyday, experiential knowledge in achieving ordinary, everyday, practical goals
+// flexible, not "idiot savant"
 // more specialized kind of rationality
 // commonsense reasoning enables an AI system to act appropriately in the face of unforeseen events
 // common sense knowledge is valuable in understanding natural language (the ball broke the table because it was made of steel example)
@@ -18,6 +19,22 @@
 // - Metafor (presented in detail in naturalistic programming)
 // https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
 // https://en.wikipedia.org/wiki/Commonsense_reasoning
+// mccarthy: philosophical porblems from the standpoint of AI
+// intelligent machines as fact manipulators (consistent with KR hypothesis)
+// https://cse.buffalo.edu/~rapaport/563S05/KR.hypoth.html
+// adequate world model (also own goals), answer questions, get extra info, perform actions due to goals
+// two parts of intelligence: empistemological (represent world) vs heuristic (solve problem)
+// basic philosophical presuppositions (world exists, info obtainable through senses...)
+// define even a naive, common-sense view of the world precisely enough to program a computer to act accordingly
+// Nth-order logic as a favored representation
+// situations (world state), fluents (predicate which depends on time), causality
+// the frame problem
+// John McCarthy and Patrick J. Hayes defined this problem in their 1969 article, Some Philosophical Problems from the Standpoint of Artificial Intelligence. 
+// rational default assumptions and what humans consider common sense in a virtual environment
+// https://plato.stanford.edu/entries/frame-problem/
+// . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
+// https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
+
 
 = Artificial Intelligence
 
