@@ -136,29 +136,9 @@ In other words, the system contains physical parts that we take to be symbols re
 
 
 
-// what is "common sense in AI"
 // - Advice Taker
-// the ability to make effective use of ordinary, everyday, experiential knowledge in achieving ordinary, everyday, practical goals
-// flexible, not "idiot savant"
-// more specialized kind of rationality
-// commonsense reasoning enables an AI system to act appropriately in the face of unforeseen events
-// common sense knowledge is valuable in understanding natural language
-// capable of resolving pronouns like the word “it” in the aforementioned sentence, “The large ball crashed through the table because it was made of steel”
-// Winograd
-// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
-// - Chosmky on Creativity: novelty, appropriateness to context, unpredictability in terms of environmental circumstances, and value, mention hierarchy of problems by constraints
-// knowledge AND reasoning
-// KR representation hypothesis
-// theory of everything, naive physics, naive phsychology
-// knowledge graphs 
-// Brachman on semantic networks and Levesque on automated planning
-// criticism and baesyian networks and relationship to neural networks
-// https://en.wikipedia.org/wiki/Bayesian_network
-// https://en.wikipedia.org/wiki/Bayes%27_theorem
-// https://jonascleveland.com/bayesian-network-vs-neural-network/
-// Machines Like Us proposed implementation system
-// - Metafor (presented in detail in naturalistic programming)
-// https://en.wikipedia.org/wiki/Commonsense_reasoning
+
+
 // mccarthy: philosophical porblems from the standpoint of AI
 // intelligent machines as fact manipulators (consistent with KR hypothesis)
 // https://cse.buffalo.edu/~rapaport/563S05/KR.hypoth.html
@@ -174,6 +154,22 @@ In other words, the system contains physical parts that we take to be symbols re
 // https://plato.stanford.edu/entries/frame-problem/
 // . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
+
+
+// flexible, not "idiot savant"
+// knowledge AND reasoning
+// KR representation hypothesis
+// theory of everything, naive physics, naive phsychology
+// knowledge graphs 
+// Brachman on semantic networks and Levesque on automated planning
+// criticism related to better baesyian networks and relationship to neural networks
+// https://en.wikipedia.org/wiki/Bayesian_network
+// https://en.wikipedia.org/wiki/Bayes%27_theorem
+// https://jonascleveland.com/bayesian-network-vs-neural-network/
+// Machines Like Us proposed implementation system
+// - Metafor (presented in detail in naturalistic programming)
+// https://en.wikipedia.org/wiki/Commonsense_reasoning
+
 
 // -------------------------------------------------------------------------------
 
