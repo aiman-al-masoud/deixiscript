@@ -124,13 +124,15 @@ Some researchers believe that one of the main bottlenecks of Symbolic methods ha
 
 == Symbolic AI: a closer look
 
-We have already talked about Advice Taker, the hypothetical program originally envisioned in 1959 by John McCarty to be a general purpose common sense reasoner; but McCarty's reasearch didn't stop there, he went on to publish more papers on the subject of common sense in AI. Another important one was "Philosophical Problems from the Standpoint of AI" from 1981.
+We have already talked about Advice Taker, the hypothetical program originally envisioned in 1959 by John McCarthy to be a general purpose common sense reasoner; but McCarty's reasearch didn't stop there, he went on to publish more papers on the subject of common sense in AI. Another important one was "Philosophical Problems from the Standpoint of AI" which he and the British computer scientist and AI researcher Patrick J. Hayes (1944-) published in 1981.
 
-He begins this paper by discussing the very notion of "intelligence" in a machine, not being fully satisfied by the criterion defined by the Turing Test; he proposes to regard intelligent machines as: "fact manipulators".
+The paper begins by discussing the very notion of "intelligence" in a machine, as the authors aren't fully satisfied by the Turing Test's criterion; they propose to regard intelligent machines as: "fact manipulators".
 
-There are two parts of intelligence, he goes on to say; an "epistemological" part and a "heuristic" part. The "epistemological" part is related to how the world is represented internally to the machine, and the "heuristic" part is related to how this representation is used to actually solve problems.
+Intelligence is broken down into two parts: an "epistemological" and a "heuristic" part. The "epistemological" part is related to how the world is represented internally to the machine, and the "heuristic" part is related to how this representation is used to actually solve problems. The paper mainly discusses the epistemological part, and proposes to represent knowledge as formal logic (predicate logic, or some higher order logic). 
 
-We think that this view of "intelligence" in machines is consistent with the Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, which states that:
+An "intelligent" machine will have an adequate world model, which should also allow it to represent its own goals; it will be able to answer questions based on the knowledge contained in its world model; it will be able to get extra information from its environment if it determines that its current knowledge is insufficient; and it will perform actions to achieve its goals.
+
+We think that this view of "intelligence" in machines is consistent with the more general Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, which states that:
 
 "Any mechanically embodied intelligent process will be comprised of structural ingredients that a) we as external observers naturally take to represent a propositional account of the knowledge that the overall process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering the behavior that manifests that knowledge"
 
@@ -141,21 +143,16 @@ In other words, the physical structure of the system is isomorphic to (closely m
 
 McCarthy reminds the reader of the general relevance of philosophy to the problem of AI, however he dismisses a lot of philosophy is irrelevant when it comes to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
 
-However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to act accordingly. Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
+However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to just act accordingly (let alone discover them introspectively). Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
 
+One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about how to make sure that the state of the world model is updated in all the relevant ways, after an action is executed. When talking of time-mutable world model state, we generally speak of "fluents", which are a kind of predicate that depends on time.
 
+The problem is generally considered to be solved as far as classical AI is concerned; but it has some interesting implications in philosophy and cognitive science.  
 
-
-// mccarthy: philosophical porblems from the standpoint of AI
-// intelligent machines as fact manipulators (consistent with KR hypothesis)
-// https://cse.buffalo.edu/~rapaport/563S05/KR.hypoth.html
-// adequate world model (also own goals), answer questions, get extra info, perform actions due to goals
-// Nth-order logic as a favored representation
-// situations (world state), fluents (predicate which depends on time), causality
-// the frame problem
-// John McCarthy and Patrick J. Hayes defined this problem in their 1969 article, Some Philosophical Problems from the Standpoint of Artificial Intelligence. 
-// rational default assumptions and what humans consider common sense in a virtual environment
 // https://plato.stanford.edu/entries/frame-problem/
+
+
+// rational default assumptions and what humans consider common sense in a virtual environment
 // . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
 
