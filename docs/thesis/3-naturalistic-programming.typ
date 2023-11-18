@@ -216,7 +216,9 @@ Nowadays computers are tools for document and mutlimedia consumption, gaming con
 // Programming Languages shouldn't be" too Natural" Mandrioli, Dino and Pradella, Matteo
 // ambiguities in natural language, Fantechi
 
+A criticism that we may add, is that naturalistic programming doesn't present a all-comprehensive paradigm the same way procedural or functional, or even object oriented programming do; we have seen examples of naturalistic languages with very different orientations. There are however some common ideas that we think we found in every work.  
 
 // TODO
 // == Naturalistic Types
 // #bibliography("bib.bib")
+

@@ -2,17 +2,55 @@
 
 It is puzzling how easy it is to program a machine to perform an extremely difficult task from the human point of view (such as beating the world champion in chess), and yet apparently so hard to get the same machine to do something that every sane person does on a daily basis without even thinking too hard: using common sense.
 
+== The Core Issue
+
 The book "Machines like Us: Toward AI with Common Sense" from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively.
 
 "Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses and make use of non-expert knowledge to achieve ordinary, practical goals. Common sense is a specialized yet flexible kind of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts; formulate predictions on the behavior of simple physical systems, or the behavior of other people based on their feelings and goals; and to use this to handle the occurrence of a new or unusual situation smoothly.
 
 The problem of endowing machines with Common Sense is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather a system that can stand its ground even in an unprecedented scenario; and unpredictable scenarios as Brachman and Levesque remind us in their book happen much more often than we might think: there are so many unknowns in the real world that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
 
-More of interest to us, specifically, is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as one of the examples made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", to resolve the referent of the pronoun "it", it is necessary to have some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a harder, stronger material than wood. Were the last part of the sentence to change to: "... it was made of wood", then the natural interpretation of the pronoun "it" would also change; in that case, "it" would point to the table, no more to the ball.
+== Common Sense and Natural Language
 
-The goal of formalizing Common Sense has also arguably not been the only focus of AI during the past 70 or so years of its existence; in what follows we shall (very) briefly discuss some of the broad ideas in AI, to then get back to the more specific problem in question.
+Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as one of the examples made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", to resolve the referent of the pronoun "it", it is necessary to have some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a harder, stronger material than wood. Were the last part of the sentence to change to: "... it was made of wood", then the natural interpretation of the pronoun "it" would also change; in that case, "it" would point to the table, no more to the ball.
+
+== The issue of Creativity
+
+Since the issue of natural language was brought up, we thought to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguisitc expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity". 
+
+Chomsky draws inspiration from his pioneering work in linguistics to arrive at a more general notion of human creativity. Any language speaker regularily builds or grasps a sentence he may be looking at for the first time in his or her life, this is an example of what Chomsky calls linguistic productivity; since the data available to a child learning his or her first language is most often incomplete and poor in quality, Chomsky's thesis has always been that human children have an innate ability to learn the class of languages we call "human languages", this implies a congenital, biological limit on the kind of grammars that are possible for these languages.
+
+From this follows the idea that human creativity too, in the more general sense, may be limited by a "system of constraints and governing principles"; this idea is known as the "Limits Thesis", and its compatibility with the "established beliefs" about creativity is the object of contention of the paper by D'Agostino; beliefs that emphasize the rulelessness and unpredictability (rather than boundedness) of creative work.
+
+D'Agostino's solution is to try understanding creativity in terms of problem solving; problems are characterized by their constraints, different sets of contraints determine different problems. Problems can be ranked in a hierarchy, based on the kinds of constraints they place on the agent trying to solve them; this hierarchy includes problems with 5 kinds of constraints: determinative, limitative, eliminative, tentative and trivial. The respective problems grow in "difficulty", or better: in "undefinedness".
+
+"Determinative" constraints are the strictest: they characterize the class of problems for which it is easy to define an algorithm, for which a procedural solution exists, such as arithmetic problems. "Limitative" constraints characterize those problems that are "well-defined", they provide necessary and sufficient conditions for the solution, examples of such problems are related to theorem discovery: there are necessary and sufficient conditions for some argument to count as a valid theorem for something; yet there is no single mechanized way of discovering such proofs. "Eliminative" constraints only provide necessary (but no sufficient) conditions for the solutions that satisfy them, these problems are termed as "partially-defined", many "design-related" problems in the real world fall into this category.
+
+If a problem is given where some (but not all) of the constraints may be violated, then the constraints are "Tentative", examples of such problems may occur in the history of science, where to accomodate for certain new facts, a theory may have to be proposed which reject certain standards of methodological practice;  and if the constraints are even more vague than that, if they don't even tentatively try to provide necessary conditions, then they are "Trivial", the problems they describe are termed "improvisational", and examples of such problems are common in the domain of aesthetics (such as the arts).
+
+
+
+
+
+// such a schema "characteriZes" arid thus delimits "the class of potential languages", limited data 
+// "an indefinite number of expressions which are new to" his "experience", and to do so "on an appropriate occasion, despite their novelty and independently of detectable stimulus configurations"
+
+// creativity "takes place within - presupposes, in fact - a system of constraints and governing principles". I call this claim the Limits Thesis.
+
+// there are disputes that Limits Thesis is incompatible with idea of novelty in creativity, rulesness
+// In short, our basic settled beliefs about true human creativity appear to be these: the created product is novel, exemplary, and appropriate to the demands of the situation in which it is produced; while the creative process is neither random nor fully determined by antecedently avail- able rules or recipes
+// "constitutes or incorporates a solution to a problem, constraints
+// hierarchy of constraints
+// (a): determinative constraints procedural stuff like arithmetics
+// (b): limitative constraints, necessary and sufficient conditions on such solutions, well-defined
+// (c): eliminative contraints necessary (but not sufficient) conditions, partially-defined
+// (d): tentative, in the sense that adequate solutions of such problems require the violation of one or more of these constraints
+// (e): trivial constraints, do not, even tentatively, specify even necessary conditions on adequate solutions. Such improvisational
+// limits on the kinds of constraints in terms of which human beings can define problems which are humanly soluble
 
 == History of AI
+
+The goal of formalizing Common Sense has also arguably not been the only focus of AI during the past 70 or so years of its existence; in what follows we shall (very) briefly discuss some of the broad ideas in AI, to then get back to the more specific problem in question.
 
 Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic; spanning over decades of research from its first inception in the last century, and preoccuping some of the most brilliant minds in logic, mathematics, philosophy and computer science.
 
@@ -91,6 +129,8 @@ The disadvantages of the symbolic approach are: the adversity to noisy datasets;
 A core idea that we think the two approaches share is that they can be both regarded as declarative programming paradigms of sorts. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
 
 Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language @ilkou2020symbolic, @yang2021learning.
+
+// TODO baesyian networks
 
 == Symbolic AI: a closer look
 
