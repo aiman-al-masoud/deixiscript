@@ -26,7 +26,9 @@ Back in 1950 @turing2009computing, British mathematician, logician and cryptanal
 
 Turing introduced what came to be known as the Turing Test: a metric to tell if a computer could "think", according to the definition given by Turing. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a "curtain". The judge's goal is to tell them apart, from their usage of language alone. The goal of the machine, in this "imitation game", is to deceive the human judge into thinking he's conversing with another human being @smith2006history.
 
-It was recently reported (2022-23) that some Large Language Models (LLMs) such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
+It was recently reported (2022-23) that some Large Language Models (LLMs), based on Deep Learning techniques, such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era. 
+
+// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
 
 == Alternatives to the Turing Test
 
@@ -143,7 +145,7 @@ In other words, the system contains physical parts that we take to be symbols re
 // . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
 
-
+// -------------------------------------------------------------------------------
 
 // <!-- devised the Turing Machine, and later worked on cyphers during WW2 breaking the Enigma code -->
 
