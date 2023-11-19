@@ -148,7 +148,7 @@ However, it is hard even to arrive at a naive formalization of common sense that
 
 One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about how to make sure that the state of the world model is updated in all the relevant ways, after an action is executed. When talking of time-mutable world model state, we generally speak of "fluents", which are a kind of predicate that depends on time.
 
-The problem is generally considered to be solved as far as classical AI is concerned; but it has some interesting implications in philosophy and cognitive science @sep-frame-problem.  
+The problem is generally considered to be solved as far as classical AI is concerned; but it has some interesting implications in philosophy and cognitive science @sep-frame-problem.
 
 // https://plato.stanford.edu/entries/frame-problem/
 
