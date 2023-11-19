@@ -76,7 +76,7 @@ In the mental experiment, Searle urges us (non-Chinese speakers) to imagine ours
 
 After learning how to manipulate those symbols and getting reasonably good at it, one will achieve the ability to deceive an external observer sitting outside of the room regarding one's own knowledge of Chinese. But, obviously, knowledge of how to manipulate its syntactic symbols by rote doesn't correspond with true semantic understanding of a language.
 
-Numerous objections and counter-objections to the argument have been rised since then @chineseroomstan, and there is still no general consensus on the conclusions and validity of the argument @chineseroomstan. It is nonetheless a powerful and intuitive case for the idea that what computers are doing when they "think" is fundamentally different from what humans do (or at least, what the writer of this paragraph in his subjective experience does).
+Numerous objections and counter-objections to the argument have been rised since then, and there is still no general consensus on the conclusions and validity of the argument @sep-chinese-room. It is nonetheless a powerful and intuitive case for the idea that what computers are doing when they "think" is fundamentally different from what humans do (or at least, what the writer of this paragraph in his subjective experience does).
 
 == Symbolic vs Sub-symbolic AI
 
@@ -148,10 +148,9 @@ However, it is hard even to arrive at a naive formalization of common sense that
 
 One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about how to make sure that the state of the world model is updated in all the relevant ways, after an action is executed. When talking of time-mutable world model state, we generally speak of "fluents", which are a kind of predicate that depends on time.
 
-The problem is generally considered to be solved as far as classical AI is concerned; but it has some interesting implications in philosophy and cognitive science.  
+The problem is generally considered to be solved as far as classical AI is concerned; but it has some interesting implications in philosophy and cognitive science @sep-frame-problem.  
 
 // https://plato.stanford.edu/entries/frame-problem/
-
 
 // rational default assumptions and what humans consider common sense in a virtual environment
 // . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
