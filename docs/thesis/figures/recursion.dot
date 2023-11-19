@@ -1,0 +1,41 @@
+// f 0 = 1
+// f n = n * f(n-1)
+
+digraph G {
+    
+    start [
+        label = "Start";
+        shape = "rect";
+    ];
+
+    factOfN [
+        label = "factorial(n)";
+        shape = "rect";
+    ]
+
+    choice [
+        label = "n >= 1";
+        shape = "diamond";
+    ]
+
+    reccall [
+        label = "return n * factorial(n-1)";
+        shape = rect;
+    ]
+
+    final [
+        label = "return 1";
+    ]
+
+    start -> factOfN;
+    factOfN -> choice;
+    choice -> reccall [label = "yes"];
+    reccall -> factOfN;
+    choice -> final [label = "no"];
+
+    {
+        rank=same;
+        final; reccall;
+    }
+
+}

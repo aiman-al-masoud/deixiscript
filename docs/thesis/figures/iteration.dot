@@ -1,0 +1,40 @@
+// while n >= 1: f:= n*f; n = n-1;
+
+digraph G {
+    
+    start [
+        label = "Start";
+        shape = "rect";
+    ];
+
+    factOfN [
+        label = "factorial(n)";
+        shape = "rect";
+    ]
+
+    choice [
+        label = "n >= 1";
+        shape = "diamond";
+    ]
+
+    accumulFact [
+        label = "f = n * f\nn = n - 1";
+        shape = "rect";
+    ]
+
+    final [
+        label = "return f";
+    ]
+
+    start -> factOfN;
+    factOfN -> choice;
+    choice ->  accumulFact [label="yes"];
+    accumulFact:s -> choice;
+    choice ->  final [label="no"];
+
+    {
+        rank=same;
+        final; choice;
+    }
+
+}

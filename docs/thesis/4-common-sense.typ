@@ -4,7 +4,7 @@ It is puzzling how easy it is to program a machine to perform an extremely diffi
 
 == The Core Issue
 
-The book "Machines like Us: Toward AI with Common Sense" from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively.
+The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively @kautz2023ronald.
 
 "Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses and make use of non-expert knowledge to achieve ordinary, practical goals. Common sense is a specialized yet flexible kind of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts; formulate predictions on the behavior of simple physical systems, or the behavior of other people based on their feelings and goals; and to use this to handle the occurrence of a new or unusual situation smoothly.
 
@@ -16,7 +16,7 @@ Of specific interest to us is the fact that cracking the problem of Common Sense
 
 == The issue of Creativity
 
-Since the issue of natural language was brought up, we thought to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguisitc expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity". 
+Since the issue of natural language was brought up, we thought to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguisitc expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity" @d1984chomsky. 
 
 Chomsky draws inspiration from his pioneering work in linguistics to arrive at a more general notion of human creativity. The speaker of any language regularily builds or grasps the meaning of a sentence he may be looking at for the first time in his or her life; this is an example of what Chomsky calls linguistic productivity.
 
@@ -50,13 +50,11 @@ As we already mentioned in the section dedicated to the Lisp programming languag
 
 == The Turing Test
 
-Back in 1950 @turing2009computing, British mathematician, logician and cryptanalist Alan Turing (1912-1954), set out on the ambitious journey of determining whether sentient behaviour was "provably computable" @smith2006history.
+Back in 1950, British mathematician, logician and cryptanalist Alan Turing (1912-1954), set out on the ambitious journey of determining whether sentient behaviour was "provably computable" @turing2009computing, @smith2006history.
 
-Turing introduced what came to be known as the Turing Test: a metric to tell if a computer could "think", according to the definition given by Turing. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a "curtain". The judge's goal is to tell them apart, from their usage of language alone. The goal of the machine, in this "imitation game", is to deceive the human judge into thinking he's conversing with another human being @smith2006history.
+Turing introduced what came to be known as the Turing Test: a metric to tell if a computer could "think", according to the definition given by Turing. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a "curtain". The judge's goal is to tell them apart, from their usage of language alone. The goal of the machine, in this "imitation game", is to deceive the human judge into thinking he's conversing with another human being.
 
-It was recently reported (2022-23) that some Large Language Models (LLMs), based on Deep Learning techniques, such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era. 
-
-// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
+It was recently reported (2022-23) that some Large Language Models (LLMs), based on Deep Learning techniques, such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
 
 == Alternatives to the Turing Test
 
@@ -67,6 +65,8 @@ There are a number of variations and alternatives to the Turing Test; one is the
 Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would @smith2006history.
 
 Yet another alternative is the Winograd schema challenge (WSC) introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the "large ball crashing through the table" example we discussed earlier, that are aimed at probing a system's competence at resolving implicit references that require common sense knowledge and reasoning.
+
+// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
 
 == The Chinese Room Argument
 
@@ -86,11 +86,9 @@ Symbolic AI, as we said, represents the older and more traditional approach; it 
 
 Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's "perceptron", has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and "Deep" Learning (which "just" means using neural nets with a larger number of layers).
 
-// http://neuralnetworksanddeeplearning.com/about.html
-
 === Neural Networks
 
-The neural network is a kind of architecture for a computer program that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms. 
+The neural network is a kind of architecture for a computer program that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms @nielsen2015neural.
 
 A neural network is a collection of neurons organized in layers; each neuron from a layer produces an output which is channelled as an input to all of the neurons of the subsequent layer. Each connection going into a neuron has an associated weight (or importance); a weight is modelled as a factor (number) which multiplies the given input at the corresponding connection. 
 
@@ -104,7 +102,7 @@ Training a neural network consists in finding the "optimal" weights and biases w
 
 === Sub-Symbolic: pros and cons
 
-The advantages of the sub-symbolic approach are: an increased robustness to noisy and/or missing data; the ease of scaling up and handling large amounts of data; the better suitability for perceptual problems (such as face recognition) where it can be pretty hard to describe rules in any formal or natural language for lack of relevant explicit knowledge; less human intervention, because the machine can learn autonomously from the data; and good execution speeds (once the model is trained). Sub-symbolic approaches are typically used for tasks such as: data clustering, pattern classification, and recognition of speech and text
+The advantages of the sub-symbolic approach are: an increased robustness to noisy and/or missing data; the ease of scaling up and handling large amounts of data; the better suitability for perceptual problems (such as face recognition) where it can be pretty hard to describe rules in any formal or natural language for lack of relevant explicit knowledge; less human intervention, because the machine can learn autonomously from the data; and good execution speeds (once the model is trained). Sub-symbolic approaches are typically used for tasks such as: data clustering, pattern classification, and recognition of speech and text @smith2006history.
 
 The disadvantages of the sub-symbolic approach include: a lack of interpretability (often resulting in a black-box system); a relatively high dependence on training data; and the fact that such models typically require large amounts of computational resources and large amounts of data to train initially.
 
@@ -126,24 +124,27 @@ Some researchers believe that one of the main bottlenecks of Symbolic methods ha
 
 We have already talked about Advice Taker, the hypothetical program originally envisioned in 1959 by John McCarthy to be a general purpose common sense reasoner; but McCarty's reasearch didn't stop there, he went on to publish more papers on the subject of common sense in AI. Another important one was "Philosophical Problems from the Standpoint of AI" which he and the British computer scientist and AI researcher Patrick J. Hayes (1944-) published in 1981.
 
+=== Machine Intelligence
+
 The paper begins by discussing the very notion of "intelligence" in a machine, as the authors aren't fully satisfied by the Turing Test's criterion; they propose to regard intelligent machines as: "fact manipulators".
 
 Intelligence is broken down into two parts: an "epistemological" and a "heuristic" part. The "epistemological" part is related to how the world is represented internally to the machine, and the "heuristic" part is related to how this representation is used to actually solve problems. The paper mainly discusses the epistemological part, and proposes to represent knowledge as formal logic (predicate logic, or some higher order logic). 
 
 An "intelligent" machine will have an adequate world model, which should also allow it to represent its own goals; it will be able to answer questions based on the knowledge contained in its world model; it will be able to get extra information from its environment if it determines that its current knowledge is insufficient; and it will perform actions to achieve its goals.
 
-We think that this view of "intelligence" in machines is consistent with the more general Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, which states that:
+We think that this view of "intelligence" in machines is consistent with the more general Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, and discussed in Brachman's and Levesque's book which states that:
 
-"Any mechanically embodied intelligent process will be comprised of structural ingredients that a) we as external observers naturally take to represent a propositional account of the knowledge that the overall process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering the behavior that manifests that knowledge"
-
-// https://cse.buffalo.edu/~rapaport/563S05/KR.hypoth.html
-//  @brachman2022machines.
+"Any mechanically embodied intelligent process will be comprised of structural ingredients that a) we as external observers naturally take to represent a propositional account of the knowledge that the overall process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering the behavior that manifests that knowledge" @krhypothesis.
 
 In other words, the physical structure of the system is isomorphic to (closely mirrors) the logical structure of the knowledge we take it to be representing.
 
-McCarthy reminds the reader of the general relevance of philosophy to the problem of AI, however he dismisses a lot of philosophy is irrelevant when it comes to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
+=== Naive Theories
+
+McCarthy and Hayes remind the reader of the general relevance of philosophy to the problem of AI, however they dismisses a lot of it is irrelevant to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
 
 However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to just act accordingly (let alone discover them introspectively). Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
+
+=== The Frame Problem
 
 One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about how to make sure that the state of the world model is updated in all the relevant ways, after an action is executed. When talking of time-mutable world model state, we generally speak of "fluents", which are a kind of predicate that depends on time.
 
