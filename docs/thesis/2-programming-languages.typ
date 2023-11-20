@@ -14,7 +14,9 @@ Programming paradigms themselves generally fall into two main categories: impera
 
 The four programming paradigms that we mentioned by no means exhaust all of the known paradigms, let alone all of the possible yet undiscovered ones, but it is nonetheless useful and instructive to take a closer look at the history and evolution of these few, alongside the programming languages that championed them and pioneered their use. This is what we will do in the following pages. 
 
-The book "Concepts of programming languages", by Robert W. Sebesta @sebesta2012concepts, offered us with an invaluable historical perspective on the history and evolution of programming languages and language design criterions; we will be often citing information from it.
+The book "Concepts of programming languages", by Robert W. Sebesta @sebesta2012concepts, offered us with an invaluable historical perspective on the history and evolution of programming languages and language design criterions./* ; we will be often citing information from it. */
+// we will often be citing it.
+// we will often refer to it for historical facts.
 
 == The Origins
 
@@ -63,20 +65,24 @@ Lisp (List Processor) was born with very different goals in mind. It was designe
 
 McCarthy's final aim was to arrive at an implementation for "Advice Taker", a program he first described in his seminal paper from 1959: "Programs with Common Sense". The hypothetical program would be fed with data in the form of predicate calculus Well-formed formulas (WFFs) or "sentences", and it would be given a concrete goal to accomplish; it then would've had to reason from the premises it had available to arrive at a solution to the problem, drawing immediate conclusions from the premises and taking action in case the conclusions were found to be imperative sentences @mccarthy1959programs.
 
-The dummy problem McCarthy provides us with, in his paper, is about deducing the appropriate steps to get him (McCarthy) to the airport to catch a flight, given such premises as the fact that he (McCarthy) is currently at home, that he has a car, that the airport is in such and such a location, that the car can get him to distant places, etc... This might seem like a trivial problem (or perhaps non-problem) to any "non-feeble-minded human" to use McCarthy's own expression; but the difficulty associated to reliably automating this kind of "trivial" reasoning is what came to be known as: the problem of Common Sense in AI.
+The dummy problem McCarthy provides us with, in his paper, is about deducing the appropriate steps to get him (McCarthy) to the airport to catch a flight, given such premises as the fact that he (McCarthy) is currently at home, that he has a car, that the airport is in such and such a location, that the car can get him to distant places, etc... This might seem like a trivial problem (or perhaps non-problem) to any "non-feeble-minded human" to use McCarthy's own words; but the difficulty associated to reliably automating this kind of "trivial" reasoning is what came to be known as: the problem of Common Sense in AI.
 
-In the process of developing a language to implement such program, McCarthy ended up with a very elegant set of language primitives. Lisp has pioneered an incredible number of innovations programmers still appreciate today; it came first at introducing recursion, conditional expressions (logical if), and dynamic (during run-time) allocation and deallocation of memory (with garbage collection) @lisproots, @sebesta2012concepts.
+In the process of developing a language to implement such program, McCarthy ended up with a very elegant set of language primitives. Lisp has pioneered a large number of innovations programmers still appreciate today; it came first at introducing: recursion, conditional expressions (logical if), and dynamic (during run-time) allocation and deallocation of memory (with garbage collection) @lisproots, @sebesta2012concepts.
 
 === Recursion
 
-Recursion is a universal concept found in many places including natural language, mathematics and computer science. In the latter two fields, the term "recursive function" basically refers to a function whose definition contains a reference to itself (the same function being defined). Recursion breaks a problem down into manageable subproblems, and, like iteration, it provides a means to repeat the same computation over and over without duplication of code.
+Recursion is a universal concept found in many places including natural language, mathematics and computer science. In the latter two fields, the term "recursive function" basically refers to a function whose definition contains a reference to itself (to the very function being defined). Recursion breaks a problem down into manageable subproblems, and, like iteration, it provides a means to repeat the same computation over and over without duplication of code.
 
 Unlike iteration, recursion doesn't require any reassignment of "counter" variables. Any iterative process (or "loop") must keep (at least) a counter which is incremented/decremented at every step, similar to how a jury may count the loops the athletes run at a sports competition. But a recursive function sidesteps all of that, because it can call a new instance of itself with a different argument, for instance: an incremented/decremented number, and conditionally stop when a condition known as the "base case" is met, finally returning a value.
 
+#linebreak()
+
 #figure(
   grid(columns: 2, image("figures/recursion.dot.png", width: 90%), image("figures/iteration.dot.png", width: 80%)),
-  caption: "Calculating the factorial of n, recursive vs iterative approach",
+  caption: "Calculating the factorial of n, recursive vs iterative approach.",
 ) <recvsiter>
+
+#linebreak()
 
 The factorial of a positive integer number is the product of that number and all of the integers that precede it and are greater than one. The flowcharts in @recvsiter illustrate the difference between computing this simple function using a recursive versus an iterative approach respectively. Notice how iteration (on the right) needs to update two variables: the one that stores the value of n (which gets decremented at every iteration); and the variable that accumulates the result (the factorial of the original number n). In the recursive approach there is no need for mutable variables; the factorial function repeatedly calls itself for smaller and smaller integer values, until it reaches the base case (n < 1); at that point the latest call returns a value, and the call stack begins unwinding, until eventually the oldest call is reached, and that finally returns the full value of factorial(n).
 

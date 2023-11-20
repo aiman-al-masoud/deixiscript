@@ -87,13 +87,16 @@
   authors: (),
   logo: none,
   body
-) = {
+) = { 
+
   // Set the document's basic properties.
   set document(author: authors.map(a => a.name), title: title)
   set text(font: "New Computer Modern", lang: "en", size: 13pt)
   show math.equation: set text(weight: 400)
+  show figure.caption: emph
   set heading(numbering: "1.1")
-  set par(justify: true)
+  set par(justify: true, linebreaks: "simple")
+
 
   // Title page.
   v(0.25fr)
@@ -148,10 +151,15 @@
   pagebreak()
 
 
+
   // Main body.
   set page(numbering: "1", number-align: center, margin: (right:3cm, left:3cm, top:4.5cm, bottom:4.5cm))
   set par(first-line-indent: 20pt, leading: 1em)
   set page(header: getHeader(), paper:"a4")
   counter(page).update(1)
+  
+  // show heading: it => [#it]
+  show heading: set block(above: 2em, below: 2em)
+
   body
 }
