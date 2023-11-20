@@ -75,14 +75,14 @@ Recursion is a universal concept found in many places including natural language
 
 Unlike iteration, recursion doesn't require any reassignment of "counter" variables. Any iterative process (or "loop") must keep (at least) a counter which is incremented/decremented at every step, similar to how a jury may count the loops the athletes run at a sports competition. But a recursive function sidesteps all of that, because it can call a new instance of itself with a different argument, for instance: an incremented/decremented number, and conditionally stop when a condition known as the "base case" is met, finally returning a value.
 
-#linebreak()
+// #linebreak()
 
 #figure(
   grid(columns: 2, image("figures/recursion.dot.png", width: 90%), image("figures/iteration.dot.png", width: 80%)),
   caption: "Calculating the factorial of n, recursive vs iterative approach.",
 ) <recvsiter>
 
-#linebreak()
+// #linebreak()
 
 The factorial of a positive integer number is the product of that number and all of the integers that precede it and are greater than one. The flowcharts in @recvsiter illustrate the difference between computing this simple function using a recursive versus an iterative approach respectively. Notice how iteration (on the right) needs to update two variables: the one that stores the value of n (which gets decremented at every iteration); and the variable that accumulates the result (the factorial of the original number n). In the recursive approach there is no need for mutable variables; the factorial function repeatedly calls itself for smaller and smaller integer values, until it reaches the base case (n < 1); at that point the latest call returns a value, and the call stack begins unwinding, until eventually the oldest call is reached, and that finally returns the full value of factorial(n).
 
