@@ -1,5 +1,11 @@
 # THESIS
-- More space between paragraph and its title.
+
+- Chapter 2 add TODO: Dijkstra on GOTO: https://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html
+- Chapter 3 add GPT for coding
+    - https://github.com/dair-ai/Prompt-Engineering-Guide
+    - https://www.promptingguide.ai/it
+    - https://www.awesomescreenshot.com/blog/knowledge/chat-gpt-code
+
 
 
 
