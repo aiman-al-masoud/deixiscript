@@ -8,7 +8,7 @@ The evolution of programming languages also mirrors that of natural languages, t
 
 It is usually much easier for a programmer to master multiple programming languages during the course of his or her lifetime, than it is for him or her to master the same number of natural languages. This is at least in part due to the objective complexity of any natural language as compared to any programming language (we just don't notice it as human beings); but it is also in part due to the fact that programming languages (even, possibly, very different looking ones) generally fall into a restricted number of groupings, identified by their dominant programming paradigm.
 
-As we will see, some of the most popular programming paradigms of all times are four: procedural programming, object oriented programming, functional programming and logical programming. Some languages tend to stick to a specific paradigm more than other languages, emphasizing the paradigm's "purity" over the possibility of a hybrid approach; other languages are know as "multi-paradigm" because they support or even encourage the use of different paradigms for different kinds of tasks; some paradigms mix well together, and others do so to a lesser degree.
+As we will see, some of the most popular programming paradigms of all times are four: procedural programming, object oriented programming, functional programming and logic programming. Some languages tend to stick to a specific paradigm more than other languages, emphasizing the paradigm's "purity" over the possibility of a hybrid approach; other languages are know as "multi-paradigm" because they support or even encourage the use of different paradigms for different kinds of tasks; some paradigms mix well together, and others do so to a lesser degree.
 
 Programming paradigms themselves generally fall into two main categories: imperative and declarative. Broadly speaking: the imperative approach is about instructing the machine on how to do something on a step by step basis, while the declarative approach specifies the requirements and leaves the more open-ended specifics of how to accomplish them to the machine.
 
@@ -51,7 +51,7 @@ Back in the day, computers were mostly used to perform scientific computations, 
 
 Things changed when the IBM 704 computer was introduced; the 704 was the first computer to incorporate native floating point operations. When the 704 was introduced in the mid 1950s, people suddenly realized that interpretation was slow, and the software team at IBM released what came to hold the symbolic title of "first high level programming language": Fortran, "The IBM Mathematical FORmula TRANslating System". 
 
-Fortran survives to this day in some scientific computation communities, with heavy modifications from the language that came out in 1956; the original version of Fortran developed by John Backus and his team at IBM supported basic arithmetics, limited length variable names, subroutines, the do-loop and a construct known as the arithmetic if, which branched to different parts of the program based on the value of an arithmetical expression.
+Fortran survives to this day in some scientific computation communities, with heavy modifications from the language that came out in 1956; the original version of Fortran developed by John Backus (1924-2007) and his team at IBM supported basic arithmetics, limited length variable names, subroutines, the do-loop and a construct known as the arithmetic if, which branched to different parts of the program based on the value of an arithmetical expression.
 
 Fortran lacked many of the language facilities we take for granted today. There was no incremental compilation: all of the parts of a program had to be recompiled from scratch all the time, and, given the occasional unreliability and slowness of the 704 /* was it compiled on the same machine it ran on?? */, this meant restricted program sizes. It also didn't have any dynamic memory allocation capabilities, which weren't essential for batch scientific computations anyway.
 
@@ -84,7 +84,7 @@ Unlike iteration, recursion doesn't require any reassignment of "counter" variab
 
 // #linebreak()
 
-The factorial of a positive integer number is the product of that number and all of the integers that precede it and are greater than one. The flowcharts in @recvsiter illustrate the difference between computing this simple function using a recursive versus an iterative approach respectively. Notice how iteration (on the right) needs to update two variables: the one that stores the value of n (which gets decremented at every iteration); and the variable that accumulates the result (the factorial of the original number n). In the recursive approach there is no need for mutable variables; the factorial function repeatedly calls itself for smaller and smaller integer values, until it reaches the base case (n < 1); at that point the latest call returns a value, and the call stack begins unwinding, until eventually the oldest call is reached, and that finally returns the full value of factorial(n).
+The factorial of a positive integer number is the product of that number and all of the integers that precede it and are greater than one. The flowcharts in @recvsiter illustrate the difference between computing this simple function using a recursive versus an iterative approach respectively. Notice how iteration (on the right) needs to update two variables: the one that stores the value of n (which gets decremented at every iteration); and the variable that accumulates the result (the factorial of the original number n). In the recursive approach there is no need for mutable variables; the factorial function repeatedly calls itself for smaller and smaller integer values, until it reaches the base case (n < 1); at that point the latest call returns a value, and the call stack begins unwinding, until eventually the oldest call is reached, and that finally returns the full value of `factorial(n)`.
 
 === Pure Functional Programming
 
@@ -117,7 +117,7 @@ If the language above is statically scoped, then when calling the function "bake
 
 Dynamic versus static scoping thus behave differently in the presence of implicit arguments to a function; ie: when a function reads a variable from the outer scope. The reader can see why dynamic scoping is deemed to be a little less intuitive than static scoping; in spite of this, it is still deemed useful by some programmers in certain cases @emacspaper.
 
-Modern dialects of Lisp (Lisp is not a single language) tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
+Modern _dialects_ of Lisp (Lisp is not a single language) tend to support both strategies, as do some languages such as Javascript. But static scoping is by far the most popular scoping strategy in modern languages.
 
 === The impact of Lisp
 
@@ -159,7 +159,7 @@ The Jargon File also attributes the following quote to Edsger Dijkstra: "The use
 
 As the name ("Business-Oriented") implies, COBOL was originally intended for data manipulation in business applications; it was designed around the end of the 1950s by a committee sponsored by the US Department of Defense; and the American mathematician, computer scientist and military official Grace Hopper (1906-1992) had an important role in its design.
 
-Interestingly, Grace Hopper is credited with the first attestation of the term "bug" to indicate the malfunctioning of a computer program, back when in 1947 she taped on a report in a log book the remains of a moth that got stuck in a relay, inside of a computer that was malfunctioning.
+On an unrelated note, Grace Hopper is credited with the first attestation of the term "bug" to indicate the malfunctioning of a computer program, back when in 1947 she taped on a report in a log book the remains of a moth that got stuck in a relay, inside of a computer that was malfunctioning @computerBug.
 
 === COBOL was "naturalistic" 
 
@@ -205,9 +205,9 @@ Smalltalk originated in Alan Kay's late 1960s Ph.D. dissertation. Alan Kay, part
 
 === Object Oriented Programming
 
-Simula and Smalltalk were responsible for starting a revolution in the way software was written. This was also reflected in the shift towards Abstract Data Types (ADTs) which hide their implemenation behind the interface they present to the user. Nowadays OOP is still the dominant paradigm in software development, with most of the top programming languages by popularity featured on the annual Stack Overflow developer survey supporting OOP in some form @stackoverflow2023survey.
+Simula and Smalltalk were responsible for starting a revolution in the way software was written. This was also reflected in the shift towards Abstract Data Types (ADTs) which hide their implementation behind the interface they present to the user. Nowadays OOP is still the dominant paradigm in software development, with most of the top programming languages by popularity featured on the annual Stack Overflow developer survey supporting OOP in some form @stackoverflow2023survey.
 
-At the core of modern OOP is the idea that data and behavior should be combined into a single entity: the object; which hides its data (or "state") and exposes an interface to other such entities, communicating with them through message passing, often understood as method calls. The "traditional" four pillars of OOP are: data abstraction, encapsulation, inheritance, and polymorphism.
+At the core of modern OOP is the idea that data and behavior should be combined into a single entity: the object; the object hides its data (or "state") and exposes an interface to other such entities, communicating with them through message passing, often understood as method calls. The "traditional" four pillars of OOP are: data abstraction, encapsulation, inheritance, and polymorphism.
 
 === Polymorphism
 
@@ -219,15 +219,15 @@ Inheritance is mainly about code reuse: if a class needs the same methods (funct
 
 A "class" is a template used to create new objects (or "instances" of a class). OOP doesn't require classes or even inheritance to work; however, class-based programming is the dominant (but not the only) approach in modern OOP.
 
-It seems that Alan Kay considers this, and other aspects of the modern popular approach to OOP, as a significant departure from what he originally envisioned in Smalltalk. For example, in the way many subsequent languages conflated polymorphism (common interfaces) with inheritance (code reuse) through the mechanism of classes @alankayoop. This is something that has lead to problems, compounded by the possibility of creating deep and complicated inheritance hierarchies, and has generally turned inheritance into a discouraged construct to use, an idea which is usually manifested in the "composition over inheritance" motto.
+It seems as though Alan Kay considers this, and other aspects of the modern popular approach to OOP, as a significant departure from what he originally envisioned in Smalltalk. For example, in the way many subsequent languages conflated polymorphism (common interfaces) with inheritance (code reuse) through the mechanism of classes @alankayoop. This is something that has lead to problems, compounded by the possibility of creating deep and complicated inheritance hierarchies, and has generally turned inheritance into a discouraged construct to use, an idea which is usually manifested in the "composition over inheritance" motto.
 
 === C++ and its legacy
 
 Among the most popular and oldest object oriented languages is C++, developed in the 1980s by Danish computer scientist Bjarne Stroustrup (1950-), as an object oriented extension to the vastly popular C programming language @sebesta2012concepts.
 
-It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have partly been attempts at curtailing C++'s complexity while conserving some of its power; C++ is a very powerful language that, unfortunately, is also a huge hodgepodge of features accumulated over the years, and retained due to backwards compatibility concerns, starting from basically all of the C programming language, which had to be supported right from the start.
+It may be said that many of the OOP languages released in the following years (Java, D, Rust...) have partly been attempts at curtailing C++'s complexity while preserving some of its power; C++ is a very powerful language that, unfortunately, is also a huge hodgepodge of features accumulated over the years, and retained due to backwards compatibility concerns, starting from basically all of the C programming language, which had to be supported right from the start.
 
-The early association with languages such as Simula and C++, which were basically procedural languages with object oriented features tacked on top, has lead to the modern impression that OOP is somewhat necessarily an imperative programming paradigm; this is not strictly true, OOP can work even without the need for the mutable state and the explicit flow control which characterizes imperative languages; in fact, Object Oriented and Functional programming can even coexist relatively well in a language, as is demonstrated by languages like Scala.
+The early association with languages such as Simula and C++, which were basically procedural languages with object oriented features tacked on top, has lead to the modern impression that OOP is somewhat necessarily an imperative programming paradigm; this is not strictly true, OOP can work even without the need for the mutable state and the explicit flow control which characterizes imperative languages; in fact, Object Oriented and Functional programming can even coexist relatively well in a language, as is demonstrated by languages like Scala @alexander2017functional.
 
 === Criticism of OOP
 
@@ -237,7 +237,7 @@ A popular criticism of OOP revolves around its reliance on Software Design Patte
 
 Moreover, it can be argued that some of the original 23 GoF patterns for OOP languages can be entirely avoided when using languages with a different set of abstractions, for instance: higher order functions and lambdas from Functional Programming @revengenerds. Indeed, many of these functional abstractions have made, and are making, their way into modern OOP languages and common practice.
 
-As has become customary for us, we will quote Dijsktra in closing, who once said about OOP that: "Object-oriented programming is an exceptionally bad idea which could only have originated in California." @dijkstraOOp
+We will (again) quote Dijsktra in closing, who once said about OOP that: "Object-oriented programming is an exceptionally bad idea which could only have originated in California." @dijkstraOOp
 
 Despite the fair criticism, some from illustrous critics, OOP is still the dominant approach in the software industry. It has brought programming abstractions a little closer to the human mind, with its insistence on the familiar "object" metaphor.
 
@@ -245,7 +245,7 @@ Despite the fair criticism, some from illustrous critics, OOP is still the domin
 
 Logic Programming is a declarative paradigm based on the use of predicate logic to declare facts and inference rules; its development is closely linked to the development of Prolog during the 1970s as a result of a collaboration between the University of Aix-Marseille and the Department of Artificial Intelligence at the University of Edinburgh. Prolog remains to this day the most widely known, studied and used example of Logic Programming Language @sebesta2012concepts.
 
-The strength of logic programming lies in its being, as aforementioned, a highly declarative paradigm. Unlike imperative programming, where the programmer is required to explicitly manage control flow and deal with mutable state, or even functional programming where the programmer still has to write an algorithm, in logic programming what is required of the user are just the simple facts and the inference rules; the way those two are used to draw conclusions is entirely up to the system.
+The strength of logic programming lies in its being, as aforementioned, a highly declarative paradigm. Unlike imperative programming, where the programmer is required to explicitly manage control flow and deal with mutable state, or even functional programming where the programmer still has to explicitly write an algorithm, in logic programming what is required of the user are just the simple facts and the inference rules; the way those two are used to draw conclusions is entirely up to the system.
 
 === First Order Logic
 
@@ -281,23 +281,23 @@ Prolog and similar systems always assume that the information they possess is co
 
 === The impact of Prolog 
 
-Logical Programming has seen periods of greater popularity, especially during the years of the Japanese Fifth Generation Computer Systems (FGCS) initiative, from the early 1980s to the early 1990s @smith2006history. This paradigm hasn't become more widespread in part because of performance related issues; Unification is relatively slow: there are still no known fast solutions in pure Logic Programming to elementary problems such as sorting a list of numbers, short of explicitly writing the code for a sorting algorithm, which means abandoning pure Logic Programming @sebesta2012concepts.
+Logic Programming has seen periods of greater popularity, especially during the years of the Japanese Fifth Generation Computer Systems (FGCS) initiative, from the early 1980s to the early 1990s @smith2006history. This paradigm hasn't become more widespread in part because of performance related issues; Unification is relatively slow: there are still no known fast solutions in pure Logic Programming to elementary problems such as sorting a list of numbers, short of explicitly writing the code for a sorting algorithm, which means abandoning pure Logic Programming @sebesta2012concepts.
 
-Logical Programming is nonetheless a very interesting paradigm to study, and it certainly has its merits in the field of Expert Systems, and in certain kinds of Natural Language Processing and symbolic AI tasks.
+Logic Programming is nonetheless a very interesting paradigm to study, and it certainly has its merits in the field of Expert Systems, and in certain kinds of Natural Language Processing and symbolic AI tasks.
 
 == The Scripting Languages
 
-The Scripting Languages aren't a cohesive block; their purpose ranges from: quick protytping, to end-user programming (related to the customization of a program by the user), and to glue code (letting programs written in different languages communicate).
+The Scripting Languages aren't a cohesive block; their purpose ranges from: quick protytping, to end-user programming (related to the customization of a program by the user), and to glue code (letting programs written in different languages interact with each other).
 
 Some scripting languages are also used for scientific computing, data exploration and data analysis; and some are used on the backend of websites to provide dynamic behavior tailored to each individual user. Some are domain specific and have a restricted set of use cases; some are general purpose, and can be used to build almost anything, and fast.
 
 Eminent examples of scripting languages are: the many variants of the Unix shell, Awk, Perl, Javascript, PHP, Python, Ruby, Lua and many more. Despite this huge amount of diversity, the Scripting Languages have always shared some common traits that are characteristic of them.
 
-The prototypical scripting language is used in an exploratory setting, as a "quick and dirty" tool to test out an idea or to produce glue code; and, as such, a shortened and convenient syntax is deemed to be essential to a good Scripting Language. Furthermore, a scripting language is usually interpreted, because it is embedded within an existing environment, implemented in some "real" programming language which does "the heavy lifting". It seems fair to think that, it was partly as a consequence of these two factors that most scripting languages were born as dynamically typed languages.
+The prototypical scripting language is used in an exploratory setting, as a "quick and dirty" tool to test out an idea or to produce glue code; and, as such, a shortened and convenient syntax is deemed to be essential to a good scripting language. Furthermore, a scripting language is usually interpreted, because it is embedded within an existing environment, implemented in some "real" programming language which does "the heavy lifting". It seems fair to think that, it was partly as a consequence of these two factors that most scripting languages were born as dynamically typed languages.
 
 === Dynamic vs Static Typing
 
-Dynamic typing is contrasted with Static typing; in statically typed languages most or all of the variable types are known and checked for correctness at compile-time, before the code ever runs. In purely dynamically typed languages, there are absolutely no compile-time type checks; the code either works at run-time, or fails at run-time.
+Dynamic typing is contrasted with Static typing; in statically typed languages most or all of the variable types are known in advance, and checked for correctness at compile-time: before the code ever runs. In purely dynamically typed languages, there are absolutely no compile-time type checks; the code either works at run-time, or fails at run-time.
 
 While thorough testing, which is very important also in a statically typed setting, is sometimes presented as an alternative to static type checking altogether, the last decade has seen the birth and adoption of numerous supersets of the popular dynamically typed languages.
 
@@ -313,17 +313,17 @@ Another factor to take into account is that the traditional cumbersomeness of st
 
 === Feature exchanges
 
-But it isn't only about scripting languages becoming "statically" typed; some of the successful ideas from scripting languages are also making it to the other side. Scripting languages have traditionally had a tool known as a "Read Eval Print Loop" (REPL), also known as an "interactive shell"; this tool allows developers to test out statements and functions interactively on the fly, greatly increasing their productivity. There is a trend where classical compiled programming languages are also getting REPLs: Java now has Jshell (as well as the older BeanShell), Haskell, Kotlin and Scala also all come with REPLs.
+But it isn't only about scripting languages becoming "statically" typed; some of the successful ideas from scripting languages are also making it to the other side. Scripting languages have traditionally had a tool known as a "Read Eval Print Loop" (REPL), also known as an "interactive shell"; this tool allows developers to test out statements and functions interactively on the fly, greatly increasing their productivity. There is a trend where classical compiled programming languages are also getting REPLs: Java now has Jshell (as well as the older BeanShell), Haskell, Scala and Kotlin also all come with REPLs.
 
 == The Ideal Language
 
 In our brief analysis of the evolution of programming languages, we left out a lot of important names, and we barely did justice to the ones we covered; it would be preposterous to try and answer the question of whether an ideal programming language exists, let alone try describing it.
 
-We saw how these languages can vary wildly in purpose; and, as the saying goes, "form follows function": it is therefore quite improbable that a single programming language that is a perfect fit for all problems may even exist.
+We saw how these languages can vary wildly in purpose; and, as the saying goes: "form follows function"; it is therefore quite improbable that a single programming language that is a perfect fit for all problems may even exist.
 
-Nonetheless, we investigated the most popular programming paradigms, their merits and their flaws, and we did come across some generally accepted principles of design (like orthogonality), and some broadly applicaple ideas; we also did see that certain languages are critisized for their design decisions somewhat more than others. In other words: while it is certainly true that all programming languages serve the purpose they were designed for the best, not all programming languages were created equal, and good design is important; this, we think, is also the opinion of computer scientist Paul Graham.
+Nonetheless, we investigated the most popular programming paradigms, their merits and their flaws, and we did come across some generally accepted principles of design (like orthogonality), and some broadly applicaple ideas; we also did see that certain languages are critisized for their design decisions somewhat more than others. In other words: while it is certainly true that all programming languages serve the purpose they were designed for the best, not all programming languages were created equal, and good design is still an important factor; this, we think, is also the opinion of computer scientist Paul Graham (1964-) @revengenerds.
 
-As Guy Steele (1954-), computer scientist and language designer, explains in his talk "Growing a Language" @steele1998growing starting out small and planning for (organic, user directed) growth is the best strategy a language designer can take. Starting with a large set of primitives (like PL/I, which we discussed) is as bad as starting without the proper facilities to let language users define new constructs, that integrate well with the language's native ones.
+As Guy Steele (1954-), computer scientist and language designer, explains in his talk "Growing a Language" @steele1998growing, planning for (organic, user directed) growth is the best strategy a modern language designer can take. Starting with a large set of primitives (like PL/I, which we discussed) is as bad as starting without the proper facilities to let the language users themselves define new constructs, that integrate well with the language's native ones.
 
 
 // Mark Rendle, the worst language ever!

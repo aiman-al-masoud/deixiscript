@@ -159,7 +159,7 @@
   counter(page).update(1)
   
   // show heading: it => [#it]
-  show heading: set block(above: 2em, below: 2em)
+  show heading: set block(above: 3em, below: 2em)
   show figure: set block(above: 4em, below: 4em)
 
 
