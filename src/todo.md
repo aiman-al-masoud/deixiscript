@@ -1,12 +1,19 @@
 # THESIS
 
 - Chapter 2 add TODO: Dijkstra on GOTO: https://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html
-- Chapter 3 add GPT for coding
-    - https://github.com/dair-ai/Prompt-Engineering-Guide
-    - https://www.promptingguide.ai/it
-    - https://www.awesomescreenshot.com/blog/knowledge/chat-gpt-code
-
-
+- Chapter 3 
+    - GPT
+        - https://github.com/dair-ai/Prompt-Engineering-Guide
+        - https://www.promptingguide.ai/it
+        - https://www.awesomescreenshot.com/blog/knowledge/chat-gpt-code
+        - https://github.com/elshor/naturaljs
+        - https://ganelson.github.io/inform-website/
+        - https://github.com/fergusq/tampio
+        - https://github.com/LLMscribe/prompt_experiments
+        - https://arxiv.org/abs/2304.13187
+- Chapter 4 
+    - frame problem
+    - machines like us
 
 
 https://ganelson.github.io/inform-website/
