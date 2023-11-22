@@ -179,7 +179,7 @@ domain specific language for interactive fiction (IF)
 
 is software simulating environments in which players use text commands to control characters and influence the environment. Works in this form can be understood as literary narratives, either in the form of interactive narratives or interactive narrations. These works can also be understood as a form of video game,[1] either in the form of an adventure game or role-playing game. In common usage, the term refers to text adventures, a type of adventure game where the entire interface can be "text-only",[2] however, graphic text adventures still fall under the text adventure category if the main way to interact with the game is by typing text. Some users of the term distinguish between interactive fiction, known as "Puzzle-free", that focuses on narrative, and "text adventures" that focus on puzzles.
 
-Evolved from Inform 6 which used more formal notation; OOP-procedural lang, objects (optionally) can inherit from one or more classes.
+Evolved from Inform 6 which used more formal notation; OOP-procedural lang, objects (optionally) can inherit from one or more classes (OLD INFORM ONLYYYYY).
 
 
 Notable features include strong bias towards declarative rule-based style of programming and ability to infer types and properties of objects from the way they are used. For example, the statement "John wears a hat." creates a "person" called "John" (since only people are capable of wearing things), creates a "thing" with the "wearable" property (since only objects marked "wearable" are capable of being worn), and sets John as wearing the hat.
