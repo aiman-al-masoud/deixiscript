@@ -74,6 +74,9 @@ Moreover, Dijkstra cites the theoretical findings of Corrado Böhm and Giuseppe 
 
 Nowadays, unstructured programming is (mostly) a defunct paradigm in all but the most low-level languages (assembly); some of its vestiges still survive in the "break" and "continue" instructions still in use in some high-level languages, to exit early out of a loop or skip an iteration, respectively.
 
+// http://www.cs.unibo.it/~martini/PP/bohm-jac.pdf
+// https://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html
+
 == Lisp and Functional Programming
 
 Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor.
