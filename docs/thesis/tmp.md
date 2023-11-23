@@ -1,4 +1,13 @@
- <!-- # STRUCTURED vs UNSTRCTURED PROGRAMMING (2-prog-langs) 
+# PLANNER (2-nat-prog, 4-common-sense)
+a precursor of Prolog with procedural/logic hybrid planning
+
+https://en.wikipedia.org/wiki/Planner_(programming_language)
+
+Winograd wrote SHRDLU in planner
+https://it.wikipedia.org/wiki/SHRDLU 
+
+
+<!-- # STRUCTURED vs UNSTRCTURED PROGRAMMING (2-prog-langs) 
 
 humans have poorly developed ability to understand processes that evolve in time, better suited to understanding static processes => we need to shorten the gap between the textual representation and the process's spread in time.
 
@@ -14,7 +23,7 @@ http://www.cs.unibo.it/~martini/PP/bohm-jac.pdf
 https://stackoverflow.com/questions/931762/can-every-recursion-be-converted-into-iteration
 https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis -->
 
-# Prompt Engineering (3-nat-prog)
+<!-- # Prompt Engineering (3-nat-prog)
 
 new discipline to develop and optimize prompts to LLMs, understand capabilities and limitations of LLMs.
 
@@ -94,7 +103,7 @@ Rules normally exist in contexts in which they are broken.
 When you spend many bits-of-optimisation locating a character, it only takes a few extra bits to specify their antipode.
 There's a common trope in plots of protagonist vs antagonist.
 
-waluigi simulacra as "attractor states"
+waluigi simulacra as "attractor states" -->
 
 https://plato.stanford.edu/entries/decision-causal/
 https://www.lesswrong.com/tag/evidential-decision-theory
@@ -103,10 +112,10 @@ DT: decision theory, advice agent on action to take to chances of desired outcom
 CDT: causal efficacy taken as a criterion for efficacy of actions
 EDT: evidential,a Bayesian evidence for the desired outcome. Some critics say it recommends auspiciousness over causal efficacy 
 
-factuality problem: tendency to generate accurate-sounding responses that are non-factual; 
+<!-- factuality problem: tendency to generate accurate-sounding responses that are non-factual; 
 provide ground truth (context), act on probab params (temp), examples of know and not know
 
-bias: distribution and order of exemplars might influece answers to ambiguous prompts.
+bias: distribution and order of exemplars might influece answers to ambiguous prompts. -->
 
 # POTENTIAL THREATS of AI (4-common-sense)
 and proposed moratorium on large language model experiments
@@ -131,7 +140,7 @@ Tom Jones example of "engineering AI" proponent, pays no attention to understadi
 “I have a great new theory of organisms. It lists many that exist and many that can’t possibly exist, and I can tell you nothing about the distinction.
 
 
-# AI ASSISTED CODING  (3-nat-prog)
+<!-- # AI ASSISTED CODING  (3-nat-prog)
 https://arxiv.org/pdf/2304.13187.pdf
 
 - with GPT 4
@@ -144,7 +153,7 @@ TODO Summarize Conclusions:
 - Python refactored using GPT-4 to the original code demonstrated that GPT-4 improved the quality of the code (metrics). Not accuracy, just refactor quality
 - generates tests with high degree of coverage, but failed majority of time; unclear why. Good, but test examples should be designed by human with domain expertise.
 - while AI coding tools are very powerful, they still require humans in the loop to ensure validity and accuracy of the results, especially mathematical concepts.
-- further work needed to investigate how improved prompting techniques (eg: CoT) might improve the performance of LLMs on complex coding problems,
+- further work needed to investigate how improved prompting techniques (eg: CoT) might improve the performance of LLMs on complex coding problems, -->
 
 # Inform 7  (3-nat-prog)
 
@@ -166,16 +175,6 @@ Evolved from Inform 6 which was a C-style OOP-procedural lang, where objects cou
 Inform 7: rule-based (rather than OOP), type inference from usage (eg: only people can "wear" things).
 
 https://web.archive.org/web/20180314185630/http://inform7.com/learn/documents/WhitePaper.pdf
-
-@article{nelson2006natural,
-  title={Natural language, semantic analysis, and interactive fiction},
-  author={Nelson, Graham},
-  journal={IF Theory Reader},
-  volume={141},
-  number={99},
-  pages={104},
-  year={2006}
-}
 
 - programming IF is dialogue to reach state
 - parallel text: one by human, one by comp
@@ -253,11 +252,12 @@ is in [the place].”
 - binary predicates are important, also comparatives as syntax sugar on top of binary predicates
 - aim to test the compatibility of the statements, and also to find the simplest meaning which can be given to the whole
 
-
-# PLANNER (2-nat-prog, 4-common-sense)
-a precursor of Prolog with procedural/logic hybrid planning
-
-https://en.wikipedia.org/wiki/Planner_(programming_language)
-
-Winograd wrote SHRDLU in planner
-https://it.wikipedia.org/wiki/SHRDLU 
+<!-- @article{nelson2006natural,
+  title={Natural language, semantic analysis, and interactive fiction},
+  author={Nelson, Graham},
+  journal={IF Theory Reader},
+  volume={141},
+  number={99},
+  pages={104},
+  year={2006}
+} -->
