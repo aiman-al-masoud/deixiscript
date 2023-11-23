@@ -308,9 +308,11 @@ IF can be thought of as a form of (interactive) literature, where a reader can i
 
 All Interactive Fiction products before Inform 7 were typically authored in classical (procedural or OOP) programming languages; and indeed: Inform 6, Inform 7's predecessor, was one such language: a C-style procedural language with Object-Orientation, and some extra features (like "hooks") geared towards IF creation specifically.
 
-Inform 7 reads almost like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see what this means); Inform 7 can also infer the type of a "variable" from its usage, but that doesn't refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensistivity.
+Inform 7 reads almost like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see later what this means); it can also infer the type of a "variable" from its usage, but that doesn't refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensistivity.
 
 Inform 7 can perform inference of a the category (or "kind") of the referent of a noun phrase; for instance: if a rule is declared that states that only people can "wear" things, and a variable (say "John") is declared to be "wearing a hat", then John will be created as a person.
+
+It is a language with a past tense! This feature is useful at capturing "past game state", something that in other languages is achieved through flags and counter variables; the need for the latter is minimized in Inform 7.
 
 In the 2005 (revised in 2006) paper titled: "Natural Language, Semantic Analysis and Interactive Fiction" @nelson2006natural, Nelson explains what strategies were used in the implementation of Inform 7, and what difficulties were encountered (mainly in the broad subject of Semantics). As a side note, the language was recently open-sourced (in 2022), and the source-code is available on GitHub, as of the date of writing. The paper also argues that natural language is the _natural_ language for the creation of IF content.
 
@@ -340,8 +342,4 @@ The paper's discussion on semantics briefly touches on the broader issue of Comp
 
 Pronouns are certainly another, related, problem in semantics. The issue of "Donkey anaphora", an old issue in logic, is brought up. In the sentene: "If the farmer owns a donkey, he beats it" how are we to resolve the pronoun "it"? As: a single individual donkey, or rather as any donkey that is owned by the farmer?
 
-As already mentioned, types ...
-
-
-
-
+// As already mentioned, types ...
