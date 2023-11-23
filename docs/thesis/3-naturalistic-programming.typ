@@ -327,9 +327,19 @@ Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that
 
 The strong distinction between "specific" and "general" rules that exists in OOP is seen as inadequate for this kind of application. Class and method definition are what he calls "general" rules, and object creation with specific attributes and values for the sake of the concrete program or game are what he refers to as "specific".
 
-An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermiable (the player can't stick a hand through to grab the apple stored inside, just like he/she can't walk through walls); but a player wearing a magical ring should be able to.
+An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermiable (the player can't stick a hand through to grab the apple stored inside, just like he/she can't walk through walls); but it is further stipulated that a player wearing a magical ring should be able to.
 
-The solution to this problem in Inform 6 (which was an OOP language) was either to add a general rule, which was deemed inappropriate for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple!
+The solution to this problem in Inform 6 (which is an OOP language) was either to add a general rule, which was deemed a little over-the-top for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple!
+
+The solution in Inform 7 involves the introduction of a new kind of rule, which specifies the circumstances under which other rules have to be ignored. // cf: machines like us 
+In general, specific rules take precedence over more general ones, and the order of declaration of the rules in the source code is irrelevant, because rule-precendence is hanled automatically.
+
+This system of "gradation of rules" needs: (1) a working system of types that can recognize and match subtypes to general types; and (2) a mechanism to declare "circumstances" in which different rules apply (or don't apply).
+
+
+
+
+
 
 
 
