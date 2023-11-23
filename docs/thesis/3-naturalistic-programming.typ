@@ -298,3 +298,7 @@ The conclusions were that, while very powerful, AI coding tools still currently 
 
 // We suggest that it might be proficuous to examine the way this mapping...
 
+== Inform 7
+
+Perhaps the most advanced 
+
