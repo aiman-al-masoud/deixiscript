@@ -323,9 +323,13 @@ As an example of rule number (3) in action, one of the data structures in Inform
 
 The rationale behind rule number (4) is that the language can be more flexible, and bend better to the needs of the programmer, without the presence of a built-in database of semantic knowledge. However, is not an absolute rule: there are indeed some (few) semantical concepts that are built into the language, such as the spatial concept of "containment" which is deemed important by programmers of IF.
 
-Inform 7, as already stated, emphasizes Rules over Objects. 
+Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that Interactive Fiction is a domain where "unintended consequences" and "unplanned relationships" abound; there are no clearcut "server-client" relationships: there are no "master" classes and "slave" classes which exist solely for the purpose of the former, it is simply not feasible to manually define rules of interaction between every two pair of classes (or even interfaces) in the program; he gives the example of a "tortoise" and an "arrow" as two kinds of very different things that are probably not going to be thought of as interacting together when writing the game, but may end up doing so anyway in game-play, and it is simply not feasible to go around defining "tortoise-arrow protocols".
 
+The strong distinction between "specific" and "general" rules that exists in OOP is seen as inadequate for this kind of application. Class and method definition are what he calls "general" rules, and object creation with specific attributes and values for the sake of the concrete program or game are what he refers to as "specific".
 
+An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermiable (the player can't stick a hand through to grab the apple stored inside, just like he/she can't walk through walls); but a player wearing a magical ring should be able to.
+
+The solution to this problem in Inform 6 (which was an OOP language) was either to add a general rule, which was deemed inappropriate for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple!
 
 
 
