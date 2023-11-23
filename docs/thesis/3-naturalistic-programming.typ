@@ -312,7 +312,7 @@ Inform 7 reads almost like English, and boasts quite an unusual feature-set comp
 
 Inform 7 can perform inference of a the category (or "kind") of the referent of a noun phrase; for instance: if a rule is declared that states that only people can "wear" things, and a variable (say "John") is declared to be "wearing a hat", then John will be created as a person.
 
-In the 2005 (revised in 2006) paper titled: "Natural Language, Semantic Analysis and Interactive Fiction" @nelson2006natural, Nelson explains what strategies were used in the implementation of Inform 7, and what difficulties were encountered (mainly in the broad subject of Semantics). The language was recently open-sourced (in 2022), and the source-code is now available on GitHub. The paper also argues that natural language is the _natural_ language for the creation of IF content.
+In the 2005 (revised in 2006) paper titled: "Natural Language, Semantic Analysis and Interactive Fiction" @nelson2006natural, Nelson explains what strategies were used in the implementation of Inform 7, and what difficulties were encountered (mainly in the broad subject of Semantics). As a side note, the language was recently open-sourced (in 2022), and the source-code is available on GitHub, as of the date of writing. The paper also argues that natural language is the _natural_ language for the creation of IF content.
 
 // https://intfiction.org/t/inform-7-v10-1-0-is-now-open-source/55674
 // https://github.com/ganelson/inform
@@ -323,7 +323,7 @@ As an example of rule number (3) in action, one of the data structures in Inform
 
 The rationale behind rule number (4) is that the language can be more flexible, and bend better to the needs of the programmer, without the presence of a built-in database of semantic knowledge. However, is not an absolute rule: there are indeed some (few) semantical concepts that are built into the language, such as the spatial concept of "containment" which is deemed important by programmers of IF.
 
-Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that Interactive Fiction is a domain where "unintended consequences" and "unplanned relationships" abound; there are no clearcut "server-client" relationships: there are no "master" classes and "slave" classes which exist solely for the purpose of the former, it is simply not feasible to manually define rules of interaction between every two pair of classes (or even interfaces) in the program; he gives the example of a "tortoise" and an "arrow" as two kinds of very different things that are probably not going to be thought of as interacting together when writing the game, but may end up doing so anyway in game-play, and it is simply not feasible to go around defining "tortoise-arrow protocols".
+Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that Interactive Fiction is a domain where "unintended consequences" and "unplanned relationships" abound; there are no clearcut "server-client" relationships between the objects: there are no "master" classes and "slave" classes which exist solely for the purpose of the former, and hence it is simply not feasible to manually define rules of interaction between every two pair of classes (or even interfaces) in the program; he gives the example of a "tortoise" and an "arrow" as two kinds of very different things that are probably not going to be thought of as interacting together when writing the game, but may end up doing so anyway in game-play, and it is simply not feasible to go around defining "tortoise-arrow protocols".
 
 The strong distinction between "specific" and "general" rules that exists in OOP is seen as inadequate for this kind of application. Class and method definition are what he calls "general" rules, and object creation with specific attributes and values for the sake of the concrete program or game are what he refers to as "specific".
 
@@ -332,28 +332,16 @@ An example of how this is an issue is given by the (code organization) problem o
 The solution to this problem in Inform 6 (which is an OOP language) was either to add a general rule, which was deemed a little over-the-top for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple!
 
 The solution in Inform 7 involves the introduction of a new kind of rule, which specifies the circumstances under which other rules have to be ignored. // cf: machines like us 
-In general, specific rules take precedence over more general ones, and the order of declaration of the rules in the source code is irrelevant, because rule-precendence is hanled automatically.
+In general, specific rules take precedence over more general ones, and the order of declaration of the rules in the source code is irrelevant, because rule-precendence is handled automatically.
 
-This system of "gradation of rules" needs: (1) a working system of types that can recognize and match subtypes to general types; and (2) a mechanism to declare "circumstances" in which different rules apply (or don't apply).
+This system of "gradation of rules" needs: (1) a working system of types that can recognize and match subtypes to general types; and (2) a mechanism to declare "circumstances" in which different rules apply (or don't).
 
+The paper's discussion on semantics briefly touches on the broader issue of Compositionality. The problem is a well known one in philosophy and linguistics; Compositionality (expressed simple terms) is the idea that: "the meaning of a complex expression is determined by its structure and the meanings of its constituents". This certainly seems to be a property of artificial languages (such as mathematical notation, or most computer languages) but it is disputed whether it is also a property of unconstrained natural language. // https://plato.stanford.edu/entries/compositionality/
 
+Pronouns are certainly another, related, problem in semantics. The issue of "Donkey anaphora", an old issue in logic, is brought up. In the sentene: "If the farmer owns a donkey, he beats it" how are we to resolve the pronoun "it"? As: a single individual donkey, or rather as any donkey that is owned by the farmer?
 
-
-
-
-
-
-//  and it can infer the type of a variable from its usage in 
-
-// Inform 7 has a very unusual feature-set compared to mainstream programming languages; besides the most obvious one (that it reads almost like English). 
-
-
-// that it reads almost like
+As already mentioned, types ...
 
 
 
-// IF is the simulation of environments through 
-
-
-It was designed to be the successor
 

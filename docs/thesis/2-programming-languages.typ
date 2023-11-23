@@ -339,7 +339,7 @@ But it isn't only about scripting languages becoming "statically" typed; some of
 
 In our brief analysis of the evolution of programming languages, we left out a lot of important names, and we barely did justice to the ones we covered; it would be preposterous to try and answer the question of whether an ideal programming language exists, let alone try describing it.
 
-We saw how these languages can vary wildly in purpose; and, as the saying goes: "form follows function"; it is therefore quite improbable that a single programming language that is a perfect fit for all problems may even exist.
+We saw how these languages can vary wildly in purpose; and, as the adage goes: "form follows function"; it is therefore quite improbable that a single "best" programming language that is a perfect fit for all problems may ever exist (though the "worst" probably already does @bslang).
 
 Nonetheless, we investigated the most popular programming paradigms, their merits and their flaws, and we did come across some generally accepted principles of design (like orthogonality), and some broadly applicaple ideas; we also did see that certain languages are critisized for their design decisions somewhat more than others. In other words: while it is certainly true that all programming languages serve the purpose they were designed for the best, not all programming languages were created equal, and good design is still an important factor; this, we think, is also the opinion of computer scientist Paul Graham (1964-) @revengenerds.
 

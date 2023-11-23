@@ -133,7 +133,7 @@ https://www.commondreams.org/opinion/noam-chomsky-on-chatgpt
 
 AI has turned more towards engineering and deviated from original "science-oriented" (understanding-seeking) ideal
 
-Tom Jones example of "engineering AI" proponent, pays no attention to understading, only concrete practical benefit
+"Tom Jones" example of "engineering AI" proponent, pays no attention to understading, only concrete practical benefit
 
 "The systems work just as well with impossible languages that infants cannot acquire as with those they acquire quickly and virtually reflexively. "
 
@@ -154,7 +154,7 @@ TODO Summarize Conclusions:
 - generates tests with high degree of coverage, but failed majority of time; unclear why. Good, but test examples should be designed by human with domain expertise.
 - while AI coding tools are very powerful, they still require humans in the loop to ensure validity and accuracy of the results, especially mathematical concepts.
 - further work needed to investigate how improved prompting techniques (eg: CoT) might improve the performance of LLMs on complex coding problems, -->
-
+<!-- 
 # Inform 7  (3-nat-prog)
 
 ALSO FROM 2006!!!!!!! (Like Pegasus and CAL)
@@ -213,8 +213,8 @@ https://web.archive.org/web/20180314185630/http://inform7.com/learn/documents/Wh
   variations to account for indexicality (occasional vs standing meaning)
   The principle remains controversial
   related principles: Substitutivity, 
-  "If two meaningful expressions differ only in that one is the result of substituting a synonym for a constituent within the other then the two expressions are synonyms." (Ssingular) this is a stronger assumption than Compositionality, number of planets vs eight example
-- Pronouns are difficult, Donkey anaphora: "If Pedro owns a donkey he beats it.", does "it" mean a specific donkey or a category of donkeys such that are owned...  ?
+  "If two meaningful expressions differ only in that one is the result of substituting a synonym for a constituent within the other then the two expressions are synonyms." (Ssingular) this is a stronger assumption than Compositionality, number of planets vs eight example -->
+<!-- - Pronouns are difficult, Donkey anaphora: "If Pedro owns a donkey he beats it.", does "it" mean a specific donkey or a category of donkeys such that are owned...  ? -->
 - container is a central idea,image schema” by which we metaphorically extend our bodily ideas of inside and out onto the world around us. The body being a container of great importance to us, we
 correspondingly picture the spatial world around us in terms of containment even when it
 is seldom so clear-cut.
