@@ -300,5 +300,46 @@ The conclusions were that, while very powerful, AI coding tools still currently 
 
 == Inform 7
 
-Perhaps the most advanced 
+Inform 7 is perhaps the most advanced naturalistic programming language we know of, and certainly the only one that has been widely (by naturalistic language standards) used among the ones we surveyed.
+
+Designed by British mathematician and poet Graham Nelson (1968-), as a successor to the more traditional Inform 6 programming language (also created by him), Inform 7 is a domain specific language for the creation of Interactive Fiction (IF).
+
+IF can be thought of as a form of (interactive) literature, where a reader can interact (chiefly through text) with the characters and environments in the narrative, which can include graphics and puzzles; IF can also be thought of as a kind of video-game, or "text-adventure". This typically invloves the simulation of environments (called "rooms"), objects and characters and the interaction of these together.
+
+All Interactive Fiction products before Inform 7 were typically authored in classical (procedural or OOP) programming languages; and indeed: Inform 6, Inform 7's predecessor, was one such language: a C-style procedural language with Object-Orientation, and some extra features (like "hooks") geared towards IF creation specifically.
+
+Inform 7 reads almost like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see what this means); Inform 7 can also infer the type of a "variable" from its usage, but that doesn't refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensistivity.
+
+Inform 7 can perform inference of a the category (or "kind") of the referent of a noun phrase; for instance: if a rule is declared that states that only people can "wear" things, and a variable (say "John") is declared to be "wearing a hat", then John will be created as a person.
+
+In the 2005 (revised in 2006) paper titled: "Natural Language, Semantic Analysis and Interactive Fiction" @nelson2006natural, Nelson explains what strategies were used in the implementation of Inform 7, and what difficulties were encountered (mainly in the broad subject of Semantics). The language was recently open-sourced (in 2022), and the source-code is now available on GitHub. The paper also argues that natural language is the _natural_ language for the creation of IF content.
+
+// https://intfiction.org/t/inform-7-v10-1-0-is-now-open-source/55674
+// https://github.com/ganelson/inform
+
+The paper states that the four rules that were followed in the design and implementation of the language were that: (1) A casual reader should be able to (correctly) guess the meaning of Inform 7 source code; (2) The implementation has to be (computationally) economical, but not at the price of intelligibility; (3) if in doubt as to syntax, the language should imitate books or newspapers; (4) contextual knowledge is (mainly) supplied by the author of a program, not built into the language.
+
+As an example of rule number (3) in action, one of the data structures in Inform 7 is the table (there are no arrays); and the table looks like a table in print. 
+
+The rationale behind rule number (4) is that the language can be more flexible, and bend better to the needs of the programmer, without the presence of a built-in database of semantic knowledge. However, is not an absolute rule: there are indeed some (few) semantical concepts that are built into the language, such as the spatial concept of "containment" which is deemed important by programmers of IF.
+
+Inform 7, as already stated, emphasizes Rules over Objects. 
+
+
+
+
+
+//  and it can infer the type of a variable from its usage in 
+
+// Inform 7 has a very unusual feature-set compared to mainstream programming languages; besides the most obvious one (that it reads almost like English). 
+
+
+// that it reads almost like
+
+
+
+// IF is the simulation of environments through 
+
+
+It was designed to be the successor
 
