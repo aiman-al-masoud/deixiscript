@@ -1,11 +1,3 @@
-# PLANNER
-a precursor of Prolog with procedural/logic hybrid planning
-
-https://en.wikipedia.org/wiki/Planner_(programming_language)
-
-Winograd wrote SHRDLU in planner
-https://it.wikipedia.org/wiki/SHRDLU 
-
 # STRUCTURED vs UNSTRCTURED PROGRAMMING
 
 humans have poorly developed ability to understand processes that evolve in time, better suited to understanding static processes => we need to shorten the gap between the textual representation and the process's spread in time.
@@ -261,3 +253,11 @@ is in [the place].”
 - binary predicates are important, also comparatives as syntax sugar on top of binary predicates
 - aim to test the compatibility of the statements, and also to find the simplest meaning which can be given to the whole
 
+
+# PLANNER
+a precursor of Prolog with procedural/logic hybrid planning
+
+https://en.wikipedia.org/wiki/Planner_(programming_language)
+
+Winograd wrote SHRDLU in planner
+https://it.wikipedia.org/wiki/SHRDLU 
