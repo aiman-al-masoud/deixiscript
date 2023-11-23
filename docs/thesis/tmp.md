@@ -1,4 +1,4 @@
-# STRUCTURED vs UNSTRCTURED PROGRAMMING (2-prog-langs)
+ <!-- # STRUCTURED vs UNSTRCTURED PROGRAMMING (2-prog-langs) 
 
 humans have poorly developed ability to understand processes that evolve in time, better suited to understanding static processes => we need to shorten the gap between the textual representation and the process's spread in time.
 
@@ -12,7 +12,7 @@ Jacopini-Bohm theorem: any algo can be implemented using only: sequence, selecti
 http://www.cs.unibo.it/~martini/PP/bohm-jac.pdf
 
 https://stackoverflow.com/questions/931762/can-every-recursion-be-converted-into-iteration
-https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis
+https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis -->
 
 # Prompt Engineering (3-nat-prog)
 

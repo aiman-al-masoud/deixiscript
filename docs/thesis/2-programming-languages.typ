@@ -58,6 +58,22 @@ Fortran lacked many of the language facilities we take for granted today. There 
 
 Overall, Fortran is an example among many of a language born with a specific purpose (doing math efficiently on the IBM 704) that later evolved, incorporating new constructs, and was ported over to numerous platforms. It is also a prime example of an imperative, procedural language.
 
+== Structured vs Unstructured Programming
+
+A characteristic feature of machine code, assembly languages, and the early high-level languages is perhaps their classification as "unstructured" or "non-structured" programming languages. Unstructured programming simply means having one single huge code block, together with the (frequent) use of GOTO statements to manage control flow.
+
+A GOTO (or GO TO), as the name implies, instructs the machine to pause the current linear execution flow, and jump to a wholly different location in the program instead. The destination of the jump is usually marked with a label (a name).
+
+The extensive use of GOTOs was famously criticised by Dijkstra in his 1968 letter titled: "Go To Statement Considered Harmful". He argued that humans are better suited at understanding static processes: that they have a poor grasp of those processes that evolve in time.
+
+Given these human limitations, it is better for us to try and shorten the conceptual gap between the textual representation of a program, and the spread in time of the process it describes. Of course, the GOTO statement complicates this, much more so than structured programming's solutions: loops and conditionals.
+
+In a for-loop, for example, the iteration variable clearly acts like a "coordinate" in helping the programmer to orient himself through the iterative process; but with an unconstrained use of GOTOs it is hard to find a suitable set of such "coordinate" variables.
+
+Moreover, Dijkstra cites the theoretical findings of Corrado Böhm and Giuseppe Jacopini, namely: the Böhm-Jacopini theorem, which proves that the three basic constructs of structured programming: sequence, selection and iteration are enough to write any program that could be written in the "traditional way" using labels and GOTOs.
+
+Nowadays, unstructured programming is (mostly) a defunct paradigm in all but the most low-level languages (assembly); some of its vestiges still survive in the "break" and "continue" instructions still in use in some high-level languages, to exit early out of a loop or skip an iteration, respectively.
+
 == Lisp and Functional Programming
 
 Lisp (List Processor) was born with very different goals in mind. It was designed by the American computer scientist and Artificial Intelligence researcher John McCarthy (1927-2011) in 1958. Incidentally, it is he who coined the term "Artificial Intelligence" (AI) back in those years. His goals back then were to design a language that made it easy to perform symbolic (therefore non-numeric) computations on lists. A list data structure in computer science is a sequence of elements which is not contiguous in memory; each element stores a value and a pointer to the location of the successor.
