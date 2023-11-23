@@ -1,4 +1,4 @@
-# STRUCTURED vs UNSTRCTURED PROGRAMMING
+# STRUCTURED vs UNSTRCTURED PROGRAMMING (2-prog-langs)
 
 humans have poorly developed ability to understand processes that evolve in time, better suited to understanding static processes => we need to shorten the gap between the textual representation and the process's spread in time.
 
@@ -14,7 +14,7 @@ http://www.cs.unibo.it/~martini/PP/bohm-jac.pdf
 https://stackoverflow.com/questions/931762/can-every-recursion-be-converted-into-iteration
 https://en.wikipedia.org/wiki/Church%E2%80%93Turing_thesis
 
-# Prompt Engineering
+# Prompt Engineering (3-nat-prog)
 
 new discipline to develop and optimize prompts to LLMs, understand capabilities and limitations of LLMs.
 
@@ -108,7 +108,7 @@ provide ground truth (context), act on probab params (temp), examples of know an
 
 bias: distribution and order of exemplars might influece answers to ambiguous prompts.
 
-# POTENTIAL THREATS of AI
+# POTENTIAL THREATS of AI (4-common-sense)
 and proposed moratorium on large language model experiments
 https://futureoflife.org/open-letter/pause-giant-ai-experiments/
 
@@ -118,7 +118,7 @@ NOT https://www.lesswrong.com/posts/AxTJuFSPdfhACJCea/the-stamp-collector
 
 https://www.armscontrol.org/act/2017-10/news-briefs/man-saved-world-dies-77
 
-# CHOMSKY ON GPT and GOFAI
+# CHOMSKY ON GPT and GOFAI  (4-common-sense)
 https://www.commondreams.org/opinion/noam-chomsky-on-chatgpt
 
 
@@ -131,7 +131,7 @@ Tom Jones example of "engineering AI" proponent, pays no attention to understadi
 “I have a great new theory of organisms. It lists many that exist and many that can’t possibly exist, and I can tell you nothing about the distinction.
 
 
-# AI ASSISTED CODING
+# AI ASSISTED CODING  (3-nat-prog)
 https://arxiv.org/pdf/2304.13187.pdf
 
 - with GPT 4
@@ -146,7 +146,7 @@ TODO Summarize Conclusions:
 - while AI coding tools are very powerful, they still require humans in the loop to ensure validity and accuracy of the results, especially mathematical concepts.
 - further work needed to investigate how improved prompting techniques (eg: CoT) might improve the performance of LLMs on complex coding problems,
 
-# Inform 7
+# Inform 7  (3-nat-prog)
 
 ALSO FROM 2006!!!!!!! (Like Pegasus and CAL)
 
@@ -254,7 +254,7 @@ is in [the place].”
 - aim to test the compatibility of the statements, and also to find the simplest meaning which can be given to the whole
 
 
-# PLANNER
+# PLANNER (2-nat-prog, 4-common-sense)
 a precursor of Prolog with procedural/logic hybrid planning
 
 https://en.wikipedia.org/wiki/Planner_(programming_language)
