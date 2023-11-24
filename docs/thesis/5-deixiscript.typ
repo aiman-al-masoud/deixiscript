@@ -1,3 +1,15 @@
+// Principles of naturalistic programming adopted
+// graceful integration of many high-level with a few low-level concepts (and formal notation).
+// the language should be readable by any casual English speaker.
+// use of implicit references (when possible and actually useful).
+// rules and circumstances rather than methods and events.
+// automatically managed rule-hierarchy and cancellation annotations (rather than classical polymorphism).
+// errors should be reported as soon as possible, and should strive to indicate their proximate cause.
+// declarative is better than imperative (but some procedural features are needed for automatic planning).
+// static, strong types but without verbose type-definitions.
+
+
+
 = Deixiscript
 
 We will refer to the new computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality and indirect references) and Script (because this system is mainly intended as a scripting language). The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).

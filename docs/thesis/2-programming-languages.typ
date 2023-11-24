@@ -23,7 +23,7 @@ The book "Concepts of programming languages", by Robert W. Sebesta @sebesta2012c
 
 As is usually the case with many things in history, it is unclear who "started it all". It is said that the first programmer in history was the British mathematician Ada Lovelace (1815-1852), who first described an algorithm to compute the Bernoulli numbers on the Analytical Engine, a mechanical general-purpose computer envisioned by the mathematician Charles Babbage (1791-1871). This machine, however, was never built during the lifetime of the two.
 
-It is said that Babbage, in turn, was inspired in his project by the unlikeliest of sources: a mechanical weaving device built by the French weaver and merchant Joseph Marie Jacquard (1752-1834): the Jacquard-loom. Ada once wrote, describing the Analytical Engine, that it could: “[weave] algebraic patterns, just as the Jacquard-loom weaves flowers and leaves” @adaLovelace.
+It is said that Babbage, in turn, was inspired in his project by the unlikeliest of sources: a mechanical weaving device built by the French weaver and merchant Joseph Marie Jacquard (1752-1834): the Jacquard-loom. Ada Lovelace once wrote, describing the Analytical Engine, that it could: “[weave] algebraic patterns, just as the Jacquard-loom weaves flowers and leaves” @adaLovelace.
 
 The Jaquard-loom allowed even the least skilled of textile workers to produce intricate patterns on silk, patterns which could be _stored_ on the so called puched cards (or "punch" cards), a data storage technology that will be used up until more than a century later to input programs into the first eletronic computers @frenchConnection, @punchedCardsLoom, @chowdhary2007evolution.
 
@@ -75,7 +75,7 @@ Given these human limitations, it is better for us to try and shorten the concep
 
 In a for-loop, for example, the iteration variable clearly acts like a "coordinate" in helping the programmer to orient himself through the iterative process; but with an unconstrained use of GOTOs it is hard to find a suitable set of such "coordinate" variables.
 
-Moreover, Dijkstra cites the theoretical findings of Corrado Böhm and Giuseppe Jacopini, namely: the Böhm-Jacopini theorem @bohm1966flow, which proves that the three basic constructs of structured programming: sequence, selection and iteration are enough to write any program that could be written in the "traditional way" using labels and GOTOs.
+Moreover, Dijkstra cites the theoretical findings of Corrado Böhm (1923-2017) and Giuseppe Jacopini (1936-2001), namely: the Böhm-Jacopini theorem @bohm1966flow, which proves that the three basic constructs of structured programming: sequence, selection and iteration are enough to write any program that could be written in the "traditional way" using labels and GOTOs.
 
 Nowadays, unstructured programming is (mostly) a defunct paradigm in all but the most low-level languages (assembly); some of its vestiges still survive in the "break" and "continue" instructions still in use in some high-level languages, to exit early out of a loop or skip an iteration, respectively.
 
