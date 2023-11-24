@@ -183,7 +183,7 @@ Orthogonality in the design of programming languages refers to the possibility o
 
 === Impact of ALGOL
 
-After decades of being a favored algorithmic "lingua-franca" in academia, the languages in the AGOL family are no longer popular nowadays. But they are still a worthwhile subject of study, for having pioneered some of the language design and description criteria that are still in use today.
+After decades of being a favored algorithmic "lingua-franca" in academia, ALGOL and the ALGOL language family are no longer popular nowadays. But they are still a worthwhile subject of study, for having pioneered some of the language design and description criteria that we take for granted today.
 
 == COBOL
 
@@ -199,7 +199,7 @@ On an unrelated note, Grace Hopper is credited with the first attestation of the
 
 What interests us specifically about COBOL, is that it was one of the earliest languages to be designed with the idea of imitating natural language. This idea was championed by Grace Hopper, who believed that mathematical notation was better suited for scientific computation, but that data manipulation was a better match for English-like statements, with the characteristic all-caps English keywords of the era. There was also a concern that managers and business people wouldn't have easily understood mathematical notation.
 
-During the proposal process, COBOL was also presented with keywords translated in French and German @sebesta2012concepts: we had there the beginnings of the "internationalized" programming language; something that the ALGOL 68 standard went on to do seriously later on in that decade (ALGOL 68 was also available in Russian keywords, among its other "translations"). Of course, this is an idea that didn't garner much success, as anyone can see by today looking at contemporary languages.
+During the proposal process, COBOL was also presented with keywords translated in French and German @sebesta2012concepts: we had there the beginnings of the "internationalized" programming language; something that the ALGOL 68 standard went on to do seriously later on in that decade (ALGOL 68 was also available in Russian keywords, among its other "translations"). Of course, this is an idea that didn't catch on, as anyone can see by today looking at contemporary languages.
 
 There is a sense in which COBOL is "naturalistic". In COBOL, you don't use the regular addition operator `+`, you rather ADD something TO something else. The naturalness of COBOL statements can push as far as statements like the following example taken from the paper about the PENS ranking for Controlled Natural Languages @kuhn2014survey:
 
@@ -356,7 +356,7 @@ It is likely that the debate between proponents of dynamic versus static typing 
 
 === Type Inference
 
-Another factor to take into account is that the traditional cumbersomeness of static typing (due to lengthy, explicit type declarations) can also be regarded as a thing of the past; today most modern languages and type-checkers have built-in support for type inference: the type of a variable can be deduced from the value of its initial assignment, thus cutting down on what was perceived as boilerplate (redundant) code, while also preserving the benefits of static type checking @whyStaticCameBack.
+Another factor to take into account is that the traditional cumbersomeness of static typing (due to lengthy, explicit type declarations) can be regarded as a thing of the past; today most modern languages and type-checkers have built-in support for type inference: the type of a variable can be deduced from the value of its initial assignment, thus cutting down on what was perceived as boilerplate (redundant) code, while also preserving the benefits of static type checking @whyStaticCameBack.
 
 === Feature exchanges
 
@@ -366,7 +366,7 @@ But it isn't only about scripting languages becoming "statically" typed; some of
 
 In our brief analysis of the evolution of programming languages, we left out a lot of important names, and we barely did justice to the ones we covered; it would be preposterous to try and answer the question of whether an ideal programming language exists, let alone try describing it.
 
-We saw how these languages can vary wildly in purpose; and, as the adage goes: "form follows function"; it is therefore quite improbable that a single _best_ programming language that is a perfect fit for all problems may ever exist (though the _worst_ could, and probably already does @bslang).
+We saw how these languages can vary wildly in purpose; and, as the engineering adage goes: "form follows function"; it is therefore quite improbable that a single _best_ programming language that is a perfect fit for all problems may ever exist (though the _worst_ could, and probably already does @bslang).
 
 Nonetheless, we investigated the most popular programming paradigms, their merits and their flaws, and we did come across some generally accepted principles of design (like orthogonality), and some broadly applicaple ideas; we also did see that certain languages are critisized for their design decisions somewhat more than others. 
 
