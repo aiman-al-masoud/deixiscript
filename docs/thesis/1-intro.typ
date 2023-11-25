@@ -42,14 +42,18 @@ Our role as human beings in relation to computers might turn into an "educationa
 
 == The Importance of Natural Language
 
-This huge paradigm shift that is awaiting us all may sound like a great prospect. We will finally ditch those abstruse, unnatural, archaic ensembles of symbols, numbers and brackets, that a relatively restricted percentage of the human race uses to move bits in memory, and to light pixels on screens. 
+This huge paradigm shift that is awaiting us all may sound like a great prospect. We will finally ditch those abstruse, unnatural, archaic ensembles of symbols, numbers and brackets, that a relatively restricted percentage of the human race still uses to move bits around in memory, and to light pixels on displays. More people will finally have a (more intuitive) access to their machine's capabilities.
 
-Will the new normal really be so good? We certainly hope that it will, but we also fear that this _great leap forward_ has all the potential to come with its fair share of problems, and not just the ones related to the way people will have to adapt to the new software economy that will emerge. 
+Will the new normal really be so good? We certainly hope that it will, but we also fear that this _great leap forward_ has all the potential to come with its fair share of troubles, and not just the ones related to the economic effect of this paradigm shift on all people (not just the ones in software engineering), or the legal issues regarding the copyright of the data consumed or produced by AI-models.
 
-As Matt Welsh states, in the article we talked about a while ago: "AI-based computation has long since crossed the Rubicon of being amenable to static analysis and formal proof", this can turn a modern-day AI-system into a huge danger, if due caution is not excercised in its deployment; more so if it is getting its "oders" from untrained people, in the highly ambiguous medium that is unconstrained natural language.
+As Matt Welsh states, in the article we talked about a while ago: "AI-based computation has long since crossed the Rubicon of being amenable to static analysis and formal proof", this can turn a big modern-day AI-system (from a big corporation, for example) into a dangerously powerful black-box, if due caution is not excercised in its deployment; more so if it is getting its "orders" from untrained personnel, in the highly ambiguous medium that is unconstrained natural language.
+
+To make matters worse, a thinker the likes of Noam Chomsky (1928-) has expressed his skepticism in controlling the threats posed by a potentially super-human artificial intelligence going haywire, in a recent interview from May 2023 @chomskygpt; suspecting that: "the genie is out of the bottle"; but nonetheless stating that: "such suspicions are of course no reason not to try, and to exercise vigilance".
 
 
 
+
+// https://www.commondreams.org/opinion/noam-chomsky-on-chatgpt
 
 == Outline of the Chapters
 == Practical Goals (and Non-Goals)
