@@ -1,6 +1,6 @@
 = Naturalistic Programming
 
-Are there any benefits to naturalistic programming? What languages (if any) make use of this paradigm? And what are its downsides?
+Are there any benefits to naturalistic programming? What languages (if any) make use of this paradigm? And what are its downsides? In the following pages we will try answering these questions.
 
 == Precision and Expressiveness: a tradeoff
 
@@ -20,9 +20,9 @@ Does the lack of expressiveness represent a problem in traditional programming l
 
 In these works, it is argued that the abstractions that power the current generation of programming languages often tend to result in verbose, repetitive and brittle code.
 
-The important issue of "_Semantic Gap_" is brought up in a paper from 2011 which proposes and discusses the possibility of designing a language with "naturalistic types" @knoll2011naturalistic. There is a _Semantic Gap_ between the desired behavior of a program, and the code that is written to produce it; this results in the "scattering of ideas" we sometimes see in traditional programming languages, when the need arises to express a concept that isn't directly supported by the programming language in question.
+=== The Issue of Semantic Gap
 
-=== An Issue of Semantic Gap
+The important issue of "_Semantic Gap_" is brought up in a paper from 2011 which proposes and discusses the possibility of designing a language with "naturalistic types" @knoll2011naturalistic. There is a _Semantic Gap_ between the desired behavior of a program, and the code that is written to produce it; this results in the "scattering of ideas" we sometimes see in traditional programming languages, when the need arises to express a concept that isn't directly supported by the programming language in question.
 
 A concrete example of this "scattering of ideas" is reflected in the use of _flags_ (boolean variables) that are conditionally altered in a loop, and then read elsewhere in the code; the logic behind any particular use of such flags may be trivial when explained out loud in natural language, while being entirely opaque at a first reading of the code.
 
