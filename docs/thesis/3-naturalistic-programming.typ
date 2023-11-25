@@ -4,6 +4,8 @@ Natural/istic programming is a broad term that can be applied to all those attem
 
 The idea of instructing a computer in natural/istic language (or some formal language close enough to deserve that nomenclature) has been a long standing dream, and sometimes a nightmare, for many people in computer science, long before the advent of modern day Large Language Models.
 
+// formal specifications are written in "natlang"
+
 == Precision vs Expressiveness
 
 There is a tradeoff between naturalness and expressiveness on the one side, and ease of implementation and precision on the other.
@@ -199,28 +201,76 @@ The compiler can produce Java Bytecode or even transpile snippets of code in the
 
 == Criticism
 
-There has been disagreement regarding the extent to which programming in natural language may prove to be advantageous, but even on whether it be a desirable goal to achieve in the first place. 
+Despite the advantages, and independently of the implementational difficulties, there are some strong points to be made about the disadvantages of programming in natural language.
 
-Edsger Dijkstra (1930-2002) was a notable computer scientist, advocate of structured programming and famous for (among the other things): the Dijkstra shortest path algorithm, the Banker's algorithm and the concept of semaphore in multi-threaded computing.
+=== Lack of Precision
 
-Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming". According to him, not only was "natural language programming" technically difficult to achieve, but even assuming (ad absurdum) that it had been achieved long ago, it would have done programmers and more generally the field of computer science no good @foolishnessnatprogramming.
+As we already mentioned in the introduction, Dijkstra wrote a short piece in 1978 in which he was critical of what he called: "natural language programming". According to him, not only was natural language programming technically difficult to achieve, but even supposing (ad absurdum) that it had been achieved long before modern computers were invented, it would have _harmed_ rather than _benefitted_ us programmers, and more generally the field of computer science @foolishnessnatprogramming.
 
-Dijkstra argues that formal languages, while less familiar to the average person, are also much less prone at being misused; in natural language it is far too easy to make nonsensical statements, and while it is true that an automated system that processes a statement in formal language may end up looking "stupid" by not recognizing what, to the human eye, may seem like an blatant mistake, it is at least clear what the outcome of such a statement will be, as opposed to the ambiguity inherent to much of what we say in natural language.
+Dijkstra argues that formal languages, while less familiar to the average person, are also much less prone at being misused; in natural language it is far too easy let nonsensical statements go virtually undetected.
 
-Natural language, moreover, is pretty bad at expressing mathematical relations concisely; modern algebra, he argues, arised precisely when mathematicians gave up on trying to use natural language to represent their equations.
+It is true that an automated system that processes a statement in formal language may end up "making a fool of itself" by not recognizing what, to the human eye, may seem like an blatant mistake; but it is also true that the outcome of such a formal statement is clear, as opposed to an ambiguous statement in natural language, that may require context and perhaps human-level semantic competence to disambiguate; and may still not be entirely clear.
 
-While Dijkstra raises some important points that we shall elaborate on in some of the later discussions, it is important to remember that back in the day when he was writing, computers weren't nearly as widespread as in the present date; back then it was easier to regard the computer as merely a calculating device (hence the higher relevancy of mathematical notation in programming languages). 
+As it is explained in the article "From: Language and Communication Problems in Formalization" @fantechi2021language, a natural language's sources of imprecision are multiple: syntax, anaphora (implicit references to previously mentioned entities), vagueness, comparatives and superlatives, disjunctions ("do this _or_ do that"), escape clauses ("if _possible_"), usage of a weak verb (may, may not), quantifiers (the scope of quantifiers can be unclear), underspecification and passive voice (passive voice may omit the doer of the action).
 
-Nowadays computers are tools for document and mutlimedia consumption, gaming consoles, video editing devices, office work stations etc... What an end-user often requires isn't a precise formalism to neatly express a mathematical concept, but rather an easy to learn scripting language to customize the behavior of a program on their computer. We think that natural language may be a good candidate at least for this niche, and for many other real-world problems that don't involve too many abstract mathematical concepts.
+Syntax alone, for example, accounts for multiple types of ambiguities related to the "associativity" of conjunctions and modifiers: "I go to visit a friend with a red car", is the red car mine, ie: is it the means by which I go visit my friend? Or rather it is my friend who owns it? ("friend with a red car").
+
+=== Verbosity
+
+Natural language, is pretty bad at expressing mathematical relations concisely; modern algebra, as Dijkstra argues, arised precisely when mathematicians gave up on trying to use natural language to represent equations.
+
+It is important however to note that nowadays computers are not just "computing machines"; well, in a sense they still are of course, but they're also tools for document and mutlimedia consumption, gaming consoles, video-editing devices, office work stations etc... 
+
+It often happens that the kind of information a user needs to describe to a computer isn't akin to densely-packed mathematical concepts; but rather to everyday concepts, concepts that are best expressed using the words and mechanisms of natural language.
+
+Tradional "naturalisitic" languages such as COBOL or Applescript have also been accused of being more verbose than the competing "non-naturalistic" languages, for using "English" syntax; however, it is to be noted that languages like the two previously mentioned ones are best regarded as classical procedural/imperative languages with a "natural language sugarcoating on top" (a vague surface resemblance to natural language); they are not built on any deeper naturalistic principles.
 
 // Programming Languages shouldn't be" too Natural" Mandrioli, Dino and Pradella, Matteo
-// ambiguities in natural language, Fantechi
 
-A criticism that we may add, is that naturalistic programming doesn't present a all-comprehensive paradigm the same way procedural or functional, or even object oriented programming do; we have seen examples of naturalistic languages with very different orientations. There are however some common ideas that we think we found in every work.  
+=== Are legal documents _really_ written in "natural" language?
 
-// TODO
-// == Naturalistic Types
-// #bibliography("bib.bib")
+One of the criticisms we wish to add to this list relates to the blunt observation that "many important precise documents are written in natural language" @nelson2006natural. We think this claim is perhaps a little imprecise, because the "natural" language used in such works as legal documents and scientific descriptions is a special, slightly more formal subset of the more unconstrained natural language we speak everyday.
+
+Legal English, pejoratively known as "Legalese", is a special registry of the English language (and of course all other natural languages with a legal tradition have similar subsets) that is used for the creation of precise legal documents. It is widely regarded as a very obstruse subset of English, that lay readers can only superficially understand; it is argued that Legal English has, not only its own special lexicon (words related to law), but even its own distinct syntax and semantics @legalese.
+
+If this is true, and in lights of the problem of Compositionality which we discussed, it may very well be that natural language as it is, without any constraints of sorts, is indeed inadequate at writing anything too precise; because the semantics (the meaning) of any sentence or phrase would always be open to revision.
+
+In any case, Legal English (while being a moderately formalized subset of English) still makes use of grammatical mechanisms that are far more "natural" than the ones adopted by traditional programming languages.
+
+=== What is "natural" anyway (in software)?
+
+And finally, another criticism that we may to this list, is that the current naturalistic programming languages don't seem to agree on a unique, all-comprehensive set of guiding principles for the hypothesized "naturalistic paradigm" they all seem to follow.
+
+As we have seen, for instance, the "English" parsed by the CAL compiler is markedly procedural. It certainly is (very) much closer to English than COBOL's or AppleScript's could ever hope to be, but it still thinks of programs in terms of "procedures" and "data-structures", isn't this perhaps really the "natural", or at least the "most obvious", way to think of the organization of a computer program?
+
+It certainly isn't the only one. We have seen how Functional Programming thinks of any program as the application of pure (mathematical) functions, how Object-Oriented programming thinks of a program as a network of independent interacting objects that exchange messages, and how logic programming thinks of it as a list of facts, rules of inference, and goals to be (dis-)proven.
+
+It is said that: "if all you have is a hammer, everything looks like a nail", well: what does naturalistic programming's "hammer" look like? It may be that there is no specific answer to that, given the amorphous nature of the human tongues. A natural language may be used "procedurally", "object-orientedly", "functionally" or "logically"; and, as some argue, all of these programming ideas ultimately trace their origin to the multi-faceted nature of human language @pulido2019model.
+
+But we think that despite their individual differences, there are some distinctive features of the surveyed languages, that go deeper than "simple" matters of surface aesthetics; some of which are further related to the topic of the next chapter: "Common Sense".
+
+If we were asked to give an account, a summary, of the philosophy of the naturalistic languages we surveyed, we think the following points would be our answer. It is to be kept in mind, though, that individual biases also played a role in shaping our views, so what follows can't be a completely objective answer.
+
+We think that a naturalitic language should: (1) gracefully integrate high-level concepts and low-level concepts, it should offer a way to express mathematical ideas in mathematical notation, and relate those quantitative ideas to "higher-level" qualitative ones.
+
+(2) it should be readable to the average English speaker (if based on English), who should be able to correctly guess the meaning of a full (well, at least a reasonably small) program written in it; not just an individual statement here and there, the full document.
+
+(3) it should allow for the moderate use of implicit references ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (paraphrase sentences) when communicating with other human beings who didn't properly understand what we said; it is fair to expect a computer to need more help than the average human at resolving implicit references.
+
+(4) a system of defeasible (revisable) rules, and a gradation of such rules 
+
+
+// Principles of naturalistic programming adopted
+// graceful integration of many high-level with a few low-level concepts (and formal notation).
+// the language should be readable by any casual English speaker.
+// use of implicit references (when possible and actually useful).
+// rules and circumstances rather than methods and events.
+// automatically managed rule-hierarchy and cancellation annotations (rather than classical polymorphism).
+// errors should be reported as soon as possible, and should strive to indicate their proximate cause.
+// declarative is better than imperative (but some procedural features are needed for automatic planning).
+// static, strong types but without verbose type-definitions.
+// revisable rules (not liskov) and weak defaults
+
 
 == Prompt Engineering
 
@@ -343,3 +393,39 @@ The paper's discussion on semantics briefly touches on the broader issue of Comp
 Pronouns are certainly another, related, problem in semantics. The issue of "Donkey anaphora", an old issue in logic, is brought up. In the sentene: "If the farmer owns a donkey, he beats it" how are we to resolve the pronoun "it"? As: a single individual donkey, or rather as any donkey that is owned by the farmer?
 
 // As already mentioned, types ...
+Types are also discussed as an important problem. As aforementioned, a system of types is needed for the benefit of the "gradation of rules"; but the devil is in the details. 
+
+The choice in Inform 7 was that the basic types should be restricted to little more than a dozen, all other types are defined from these. There is also no multiple inheritance; apparently an "object" can _directly_ "inherit" only from one type, but the type may be a composition of more types, as we understood it. 
+
+Can an object stop being part of a type at run-time? The answer given to this question is a "no"; but, interestingly, the justification for this choice is not given purely in terms of computational efficiency or convenience.
+
+The idea is that sometimes a dramatic effect can change an object so much that it can't be regarded as the original object anymore. In a way, this reminds us of the classical philosophical distinction between "essential" and "accidental" properties of things. //https://plato.stanford.edu/entries/essential-accidental/
+
+#quote[
+  “What is your definition of justice?”
+  “Justice, Elijah, is that which exists when all the laws are enforced.”
+  Fastolfe nodded. “A good definition, Mr. Baley, for a robot. The desire
+  to see all laws enforced has been built into R. Daneel, now. Justice is a
+  very concrete term to him since it is based on law enforcement, which is
+  in turn based upon the existence of specific and definite laws. There is
+  nothing abstract about it. A human being can recognize the fact that, on
+  the basis of an abstract moral code, some laws may be bad ones and
+  their enforcement unjust. What do you say, R. Daneel?”
+  “An unjust law,” said R. Daneel evenly, “is a contradiction in terms.”
+  “To a robot it is, Mr. Baley. So you see, you mustn’t confuse your
+  justice and R. Daneel’s.”
+]
+
+A diametrically opposed issue, that still has to do with types, is the nature of their association to behavior. Are we to regard a "bird who can't fly" as a "bird" nonetheless? Or is "a flightless bird" a "contraddiction in terms", just like an "unjust law" appears to be for R. Daneel, the positronic robot in Asimov's "Caves of Steel"?
+
+Following the reccommendation of the Liskov principle for Object-Oriented design, defining a penguin as a "flightless bird" would indeed be considered bad practice if the superclass "bird" included a method "fly"; the Liskov principle roughly states that: "any property that holds for a superclass should also hold for a subclass". This principle ensures, among other things, that interfaces are not broken by subclassing.
+
+So if the "Penguin" class can't fly, neither can the "Bird" superclass. The "Sparrow" class might. But it is "natural" to say that "birds (generally) don't fly"? As it is argued in other places @brachman2022machines: no, this isn't natural. A more naturalistic approach, would be to (somehow) declare a set of defeasible (revisable) defaults for the concepts at hand. In other words: any bird can fly until proven that it can't.
+
+// https://www.cs.cmu.edu/~wing/publications/LiskovWing94.pdf
+
+A criterion for choosing what types there should be, is given by their utility; ie: how useful a  concept is to the purpose of defining a general law? This in turn depends on context: "a rock" may be a perfectly good concept in everyday life, but it may be a "little" imprecise in the context of mineralogy.
+
+
+
+

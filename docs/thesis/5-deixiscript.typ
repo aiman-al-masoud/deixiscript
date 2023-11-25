@@ -1,13 +1,3 @@
-// Principles of naturalistic programming adopted
-// graceful integration of many high-level with a few low-level concepts (and formal notation).
-// the language should be readable by any casual English speaker.
-// use of implicit references (when possible and actually useful).
-// rules and circumstances rather than methods and events.
-// automatically managed rule-hierarchy and cancellation annotations (rather than classical polymorphism).
-// errors should be reported as soon as possible, and should strive to indicate their proximate cause.
-// declarative is better than imperative (but some procedural features are needed for automatic planning).
-// static, strong types but without verbose type-definitions.
-
 
 
 = Deixiscript

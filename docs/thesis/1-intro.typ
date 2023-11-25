@@ -1,5 +1,9 @@
 = Introduction
 
+// Edsger Dijkstra (1930-2002) was a notable computer scientist, advocate of structured programming and famous for (among the other things): the Dijkstra shortest path algorithm, the Banker's algorithm and the concept of semaphore in multi-threaded computing.
+
+// Dijkstra wrote a short piece in 1978 lambasting what he called "natural language programming".
+
 // Old quote by Dijkstra.
 == What is naturalistic programming?
 == The End of Programming (by Matt Welsh)
