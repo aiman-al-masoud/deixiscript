@@ -52,9 +52,13 @@ To make matters worse, a thinker the likes of Noam Chomsky (1928-) has expressed
 
 But the interview we just cited isn't mainly about the threat of super-human Artificial General Intelligence (AGI) wreaking havoc in the world, as serious as it may be (and it is). The interview was mainly about the inadequacy of current Deep Learning models, such as the popular GPT (Generative Pre-trained Transformer), at actually modelling human linguistic thought.
 
-Chomsky argues that 
+Chomsky argues that while systems like GPT are very good at capturing statistical patterns in natural language, they also work just as well with any "impossible languages", ie: with artificial grammars that infants don't learn spontaneously; making them an unreliable model of (at least) human language acquisition.
 
-// https://www.commondreams.org/opinion/noam-chomsky-on-chatgpt
+Moreover, he discusses how the shift from a more "science-oriented" to a more "engineering-oriented" kind of AI has lead to the general impression that scientific discoveries (ie: gaining actual understanding of a phenomenon)
+
+// nielsen2015neural
+// In the early days of AI research people hoped that the effort to build an AI would also help us understand the principles behind intelligence and, maybe, the functioning of the human brain. But perhaps the outcome will be that we end up understanding neither the brain nor how artificial intelligence works!
+
 
 == Outline of the Chapters
 
