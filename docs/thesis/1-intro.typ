@@ -54,11 +54,11 @@ But the interview we just cited isn't mainly about the threat of super-human Art
 
 Chomsky argues that while systems like GPT are very good at capturing statistical patterns in natural language, they also work just as well with any "impossible languages", ie: with artificial grammars that infants don't learn spontaneously; making them an unreliable model of (at least) human language acquisition.
 
-Moreover, he discusses how the shift from a more "science-oriented" to a more "engineering-oriented" kind of AI has lead to the general impression that scientific discoveries (ie: gaining actual understanding of a phenomenon)
+Moreover, he discusses how the shift from a more "science-oriented" (ie: geared towards understanding a phenomenon) to a more "engineering-oriented" (ie: just building a useful tool) kind of AI leads to the risk of disillusionment for actual scientific discoveries in the general public. 
 
-// nielsen2015neural
-// In the early days of AI research people hoped that the effort to build an AI would also help us understand the principles behind intelligence and, maybe, the functioning of the human brain. But perhaps the outcome will be that we end up understanding neither the brain nor how artificial intelligence works!
+A person arguing that studying the extraordinary navigational capacities of ants is "useless" (because we modern humans have very precise maps and GPS satellites, etc...) would be laughed at. But a person making the same statement about the formal study of language (because we have huge statistical models churning on terabytes of data that produce near human-level quality prose) is more likely to be listened to nowadays.
 
+To conclude, we believe this is a critical juncture of human history, for a number of reasons, and the rapid proliferation of AI systems trained on huge amounts of data is certainly an important one among them; to paraphrase an idea that quantum physicist and computer programmer Michael Nielsen (1974-) expressed in his book "Neural networks and deep learning" @nielsen2015neural: we know that AI started out as an effort to understand reasoning and intelligence (maybe even shed light on human intelligence), but it may end very soon, with us having understood neither how human intelligence, nor even how artificial intelligence itself works.
 
 == Outline of the Chapters
 
