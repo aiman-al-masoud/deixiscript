@@ -25,6 +25,8 @@ Though it may sound paradoxical, in light of what we just said, unconstrained na
 
 But this is not a paradox: the last decade (the 2010s) has seen the comeback and surge in popularity of Big Data and Machine Learning (ML) techniques on the scene of Artificial Intelligence (AI), along with the development of new Deep Learning architectures: such as the Transformer, originally proposed in 2017.
 
+// TODO: transformer cite.
+
 Modern day Large Language Models (LLMs) can say and do things most of us never imagined were possible (in the practical sense) for a computer program before; though everyone knew, of course, of the theoretical possibility for such apparently "intelligent" behavior, as evidenced also by thought-experiments such as John Searle's famous Chinese Room argument.
 
 // TODO: Searle cite
