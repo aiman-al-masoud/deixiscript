@@ -6,6 +6,26 @@
 
 // Old quote by Dijkstra.
 == What is naturalistic programming?
+
+Naturalistic programming is broadly defined as the attempt to write (computer executable) code in a varyingly complex _subset_ of a natural language: the kind of language we are all naturally familiar with, and brought up speaking from a very early age.
+
+We say "a _subset_ of natural language" because full, unconstrained natural language is (at least we think) still far too complex and dynamic to be used as a feasible programming language, without any constraints or limitations put in place whatsoever; and no one so far has agreed entirely on what that _subset_ should look like, let alone what it should (or shouldn't) allow us to say.
+
+It was (and maybe still is) customary to dismiss these attempts with the justification that natural language is too "imprecise", too "vague" or too "ambiguous" for the job of telling computers what to do; that this job better suits formal languages, so why bother anyway?
+
+Edsger Dijkstra (1930-2002), the late, great computer scientist and early advocate of structured programming, famously wrote a piece in 1978 titled: "On the foolishness of "natural language programming" @foolishnessnatprogramming. In it he discusses what he (rightly) sees as the defects of natural language (ambiguity, verbosity...) compared to formal languages when describing mathematical concepts and computer algorithms. 
+
+He goes as far as to argue to the effect that even if "natural language programming" were ever achieved, it wouldn't be a step in the direction of scientific progress, but rather a step back into the "dark" ages of mathematical notation: the rhetorical stage, back when equations were expressed in long, convoluted, confusing words, rather than in elegant and concise symbols.
+
+And yet, we still speak natural language everyday: we listen to the news, we read books, we speak to our dearest friends and relatives, we trust natural language with the preservation of our legal rights and statues, with the preservation of our very democracy! How can such a vague, ambiguous, imprecise linguistical system (or systems) not be trusted at making sure our computers don't crash, yet be fully trusted in making sure the rest of our human society doesn't come crumbling down like a castle of cards? There's clearly more to say about natural language.
+
+// we write very important documents that 
+// we should be familiar enough 
+// could this be a problem of 
+// but stat systmes
+
+
+
 == The End of Programming (by Matt Welsh)
 == The Growing Importance of Natural Language
 == Outline of the Chapters
