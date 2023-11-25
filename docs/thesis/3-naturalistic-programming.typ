@@ -422,14 +422,9 @@ The idea is that sometimes a dramatic effect can change an object so much that i
 
 A diametrically opposed issue, that still has to do with types, is the nature of their association to behavior. Are we to regard a "bird who can't fly" as a "bird" nonetheless? Or is "a flightless bird" a "contraddiction in terms", just like an "unjust law" appears to be for R. Daneel, the positronic robot in Asimov's "Caves of Steel"?
 
-Following the reccommendation of the Liskov principle for Object-Oriented design, defining a penguin as a "flightless bird" would indeed be considered bad practice if the superclass "bird" included a method "fly"; the Liskov principle roughly states that: "any property that holds for a superclass should also hold for a subclass". This principle ensures, among other things, that interfaces are not broken by subclassing.
+Following the reccommendation of the Liskov principle @liskov1994behavioral for Object-Oriented design, defining a penguin as a "flightless bird" would indeed be considered bad practice if the superclass "bird" included a method "fly"; the Liskov principle roughly states that: "any property that holds for a superclass should still hold for a subclass". This behavioral principle ensures, among other things, that interfaces from a superclass are not broken in the process of deriving subclasses.
 
-So if the "Penguin" class can't fly, neither can the "Bird" superclass. The "Sparrow" class might. But it is "natural" to say that "birds (generally) don't fly"? As it is argued in other places @brachman2022machines: no, this isn't natural. A more naturalistic approach, would be to (somehow) declare a set of defeasible (revisable) defaults for the concepts at hand. In other words: any bird can fly until proven that it can't.
-
-// https://www.cs.cmu.edu/~wing/publications/LiskovWing94.pdf
+So if the "Penguin" class can't fly, neither can the "Bird" superclass. The "Sparrow" class might. But it is "natural" to say that "birds (generally) don't fly"? As it is argued in other places @brachman2022machines: no, this isn't the natural way humans organize concepts. A more naturalistic approach, would be to (somehow) declare a set of defeasible (revisable) defaults for the concepts at hand; in other words: any bird can fly, until proven that it can't.
 
 A criterion for choosing what types there should be, is given by their utility; ie: how useful a  concept is to the purpose of defining a general law? This in turn depends on context: "a rock" may be a perfectly good concept in everyday life, but it may be a "little" imprecise in the context of mineralogy.
-
-
-
 
