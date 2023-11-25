@@ -27,6 +27,8 @@ But this is not a paradox: the last decade (the 2010s) has seen the comeback and
 
 Modern day Large Language Models (LLMs) can say and do things most of us never imagined were possible (in the practical sense) for a computer program before; though everyone knew, of course, of the theoretical possibility for such apparently "intelligent" behavior, as evidenced also by thought-experiments such as John Searle's famous Chinese Room argument.
 
+// TODO: Searle cite
+
 Matt Welsh (1976-), computer scientist and software engineer, has written an article on January 2023 titled "The End of Programming" @Welsh2022. Welsh believes that the field of Computer Science is headed for an upheaval, that it won't even be remotely recognizable to what it is today, in 10 to 30 years from now.
 
 Programming (intended as humans explicitly writing computer programs, in a formal language) will be dead by then, according to Welsh; of course, one will still be able to write and run programs in some formal language for his/her own amusement, but the serious work will be handled by Artificial Intelligence models.
@@ -46,9 +48,11 @@ This huge paradigm shift, that is awaiting us all, may sound like a great prospe
 
 Will the new normal really be so good? We certainly hope that it will, but we also fear that this _great leap forward_ has all the potential to come with its fair share of troubles, and not just the ones related to the economic effect of this paradigm shift on all people (not just the ones in software engineering), or the legal issues regarding the copyright of the data consumed or produced by AI-models.
 
+// economy and law cite
+
 As Matt Welsh states, in the article we talked about a while ago: "AI-based computation has long since crossed the Rubicon of being amenable to static analysis and formal proof", this can turn a big modern-day AI-system (from a big corporation, for example) into a dangerously powerful black-box, if due caution is not excercised in its deployment; more so if it is getting its "orders" from untrained personnel, in the highly ambiguous medium that is unconstrained natural language.
 
-To make matters worse, a thinker the likes of Noam Chomsky (1928-) has expressed, in a recent interview from May 2023 @chomskygpt, his skepticism in controlling the threats posed by a potentially super-human artificial intelligence going haywire; suspecting that: "the genie is out of the bottle"; but nonetheless stating that: "such suspicions are of course no reason not to try, and to exercise vigilance".
+To make matters worse, a thinker of the calibre of Noam Chomsky (1928-) has expressed, in a recent interview from May 2023 @chomskygpt, his skepticism in controlling the threats posed by a potentially super-human artificial intelligence going haywire; suspecting that: "the genie is out of the bottle"; but nonetheless stating that: "such suspicions are of course no reason not to try, and to exercise vigilance".
 
 But the interview we just cited isn't mainly about the threat of super-human Artificial General Intelligence (AGI) wreaking havoc in the world, as serious as it may be (and it is). The interview was mainly about the inadequacy of current Deep Learning models, such as the popular GPT (Generative Pre-trained Transformer), at actually modelling human linguistic thought.
 
@@ -56,19 +60,19 @@ Chomsky argues that while systems like GPT are very good at capturing statistica
 
 Moreover, he discusses how the shift from a more "science-oriented" (ie: geared towards understanding a phenomenon) to a more "engineering-oriented" (ie: just building a useful tool) kind of AI leads to the risk of disillusionment for actual scientific discoveries in the general public. 
 
-A person arguing that studying the extraordinary navigational capacities of ants is "useless" (because we modern humans have very precise maps and GPS satellites, etc...) would be laughed at. But a person making the same statement about the formal study of language (because we have huge statistical models churning on terabytes of data that produce near human-level quality prose) is more likely to be listened to nowadays.
+Chomsky says that a person arguing that studying the extraordinary navigational capacities of ants is "useless" (because we modern humans have very precise maps and GPS satellites, etc...) would be laughed at. But a person making the same statement about the formal study of language (because we have huge statistical models churning on terabytes of data that produce near human-level quality prose) is more likely to be listened to nowadays.
 
 To conclude, we believe this is a critical juncture of human history, for a number of reasons, and the rapid proliferation of AI systems trained on huge amounts of data is certainly an important one among them; to paraphrase an idea that quantum physicist and computer programmer Michael Nielsen (1974-) expressed in his book "Neural networks and deep learning" @nielsen2015neural: we know that AI started out as an effort to understand reasoning and intelligence (maybe even shed light on human intelligence), but it may end very soon, with us having understood neither how human intelligence, nor even how artificial intelligence itself works.
 
 == Outline of the Chapters
 
-The first chapter will be an overview of the four most popular and widely known programming paradigms of all times (procedural, functional, object-oriented and logic), presented in the guise of a brief historical overview of the evolution of programming languages in general. We think that a solid understanding of what past and modern programming languages are capable of, and at what price (both in the positive and in the negative sense), is of fundamental importance in evaluating a new paradigm, or designing a new language.
+The first chapter will be an overview of the four most popular and widely known programming paradigms of all times (procedural, functional, object-oriented and logic), presented in the guise of a brief historical summary of the evolution of programming languages in general. We think that a solid understanding of what past and modern programming languages are capable of, and at what price (both in the positive and in the negative sense), is of fundamental importance in evaluating a new paradigm, or designing a new language.
 
 The second chapter will bring the focus on naturalistic programming specifically, and it will try answering some of the following questions: what existing programming languages are naturalistic? Is "naturalistic programming" just about using a more "English-like" (natural) syntax? Can any deeper underlying common principles be discerned in these languages? Do we think naturalistic programming is a "real" (fully-developed) paradigm yet? All of the projects we will discuss, approach the subject of natural language from a classical (non ML) standpoint, they are in this sense "normal" programming languages, with some very special features. We will also bring up the tangentially related topic of Prompt Engineering for the optimization of LLM responses, which we see as an emergent competing approach (implementation-wise) to what may truly one day be called "programming in natural language".
 
-The third chapter will jump straight into the intriguing (yet difficult) topic of Common Sense in AI; it will be a little bit shorter than the others, for obvious reasons; and it will try relating some of the principles of naturalistic programming, to some of those in classical (or "Symbolic", or "Good Old Fashioned") AI.
+The third chapter will jump straight into the intriguing (yet difficult) topic of Common Sense in AI, it will try relating some of the principles of naturalistic programming, to some of those in classical (or "Symbolic", or "Good Old Fashioned") AI.
 
-The last 2-3 chapters will be dedicated to describing our work in trying to implement some of the naturalistic ideas into a new prototype of a language we are designing ("Deixiscript").
+The last 2 chapters will be dedicated to describing our work in trying to implement some of the naturalistic ideas into a new prototype of a language we are designing ("Deixiscript").
 
 // == Practical Goals (and Non-Goals)
 
