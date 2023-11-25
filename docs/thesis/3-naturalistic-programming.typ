@@ -1,5 +1,7 @@
 = Naturalistic Programming
 
+Are there any benefits to naturalistic programming? What languages (if any) make use of this paradigm? And what are its downsides?
+
 == Precision and Expressiveness: a tradeoff
 
 A general phenomenon in languages, is that there tends to be a tradeoff between naturalness and expressiveness on the one side, versus precision and ease of implementation on the other.
