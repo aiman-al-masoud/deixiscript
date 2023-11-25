@@ -251,14 +251,19 @@ But we think that despite their individual differences, there are some distincti
 
 If we were asked to give an account, a summary, of the philosophy of the naturalistic languages we surveyed, we think the following points would be our answer. It is to be kept in mind, though, that individual biases also played a role in shaping our views, so what follows can't be a completely objective answer.
 
-We think that a naturalitic language should: (1) gracefully integrate high-level concepts and low-level concepts, it should offer a way to express mathematical ideas in mathematical notation, and relate those quantitative ideas to "higher-level" qualitative ones.
+We think that a naturalitic language should: 
+
+(1) gracefully integrate high-level concepts and low-level concepts, it should offer a way to express mathematical ideas in mathematical notation, and relate those quantitative ideas to "higher-level" qualitative ones.
 
 (2) it should be readable to the average English speaker (if based on English), who should be able to correctly guess the meaning of a full (well, at least a reasonably small) program written in it; not just an individual statement here and there, the full document.
 
 (3) it should allow for the moderate use of implicit references ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (paraphrase sentences) when communicating with other human beings who didn't properly understand what we said; it is fair to expect a computer to need more help than the average human at resolving implicit references.
 
-(4) a system of defeasible (revisable) rules, and a gradation of such rules 
+(4) a system of "defeasible" (revisable), "gradated" (on a general/specific continuum) rules, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances may futher restrict or generalize the applicability of a rule to a certain situation or state of affairs.
 
+(5) errors should be reported in clear, "natural" terms. They should report the proximate cause of the problem. No reference to underlying implementation-code shall be made, but rather to the applicability of user-defined rules and circumstances to the concrete situations that come up. The user should be told things like: "You haven't explained what it means to 'ride' in a car, 'riding' just applies to horses", or: "What do you mean when you say that a cat is 'red'?".
+
+(6) the declarative approach is to be preferred over the imperative. A user should describe the problem rather than the solution; but compromises need to be made in many cases, and some procedural features may end up being necessary, after all.
 
 // Principles of naturalistic programming adopted
 // graceful integration of many high-level with a few low-level concepts (and formal notation).
@@ -270,7 +275,6 @@ We think that a naturalitic language should: (1) gracefully integrate high-level
 // declarative is better than imperative (but some procedural features are needed for automatic planning).
 // static, strong types but without verbose type-definitions.
 // revisable rules (not liskov) and weak defaults
-
 
 == Prompt Engineering
 
