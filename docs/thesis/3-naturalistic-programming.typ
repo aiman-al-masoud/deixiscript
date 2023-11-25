@@ -405,7 +405,9 @@ Can an object stop being part of a type at run-time? The answer given to this qu
 
 The idea is that sometimes a dramatic effect can change an object so much that it can't be regarded as the original object anymore. In a way, this reminds us of the classical philosophical distinction between "essential" and "accidental" properties of things. //https://plato.stanford.edu/entries/essential-accidental/
 
-#quote[
+
+
+#quote(attribution: ["The Caves of Steel, Isaac Asimov"])[
   “What is your definition of justice?”
   “Justice, Elijah, is that which exists when all the laws are enforced.”
   Fastolfe nodded. “A good definition, Mr. Baley, for a robot. The desire
@@ -420,7 +422,7 @@ The idea is that sometimes a dramatic effect can change an object so much that i
   justice and R. Daneel’s.”
 ]
 
-A diametrically opposed issue, that still has to do with types, is the nature of their association to behavior. Are we to regard a "bird who can't fly" as a "bird" nonetheless? Or is "a flightless bird" a "contraddiction in terms", just like an "unjust law" appears to be for R. Daneel, the positronic robot in Asimov's "Caves of Steel"?
+A diametrically opposed issue, that still has to do with types, is the nature of their association to behavior. Are we to regard a "bird who can't fly" as a "bird" nonetheless? Or is "a flightless bird" a "contraddiction in terms", just like an "unjust law" appears to be for R. Daneel, the positronic robot in Asimov's book "The Caves of Steel"? @asimov2011caves
 
 Following the reccommendation of the Liskov principle @liskov1994behavioral for Object-Oriented design, defining a penguin as a "flightless bird" would indeed be considered bad practice if the superclass "bird" included a method "fly"; the Liskov principle roughly states that: "any property that holds for a superclass should still hold for a subclass". This behavioral principle ensures, among other things, that interfaces from a superclass are not broken in the process of deriving subclasses.
 

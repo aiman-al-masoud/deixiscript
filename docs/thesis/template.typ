@@ -96,6 +96,7 @@
   show figure.caption: emph
   set heading(numbering: "1.1")
   set par(justify: true, linebreaks: "simple")
+  set quote(block: true)
 
 
   // Title page.
