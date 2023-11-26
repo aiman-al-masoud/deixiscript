@@ -22,6 +22,8 @@ Since the data available to a child learning his or her first language is most o
 
 From this follows the idea that human creativity too, in the more general sense, may be limited by a "system of constraints and governing principles"; this idea is known as the "Limits Thesis", and its compatibility with the "established beliefs" about creativity is the object of contention of the paper by D'Agostino; such "established beliefs" emphasize the rulelessness and unpredictability (rather than boundedness) of creative work.
 
+=== A hierarchy of constraints
+
 D'Agostino's solution, to reconcile Chomsky's view with the "established beliefs", involves trying to understand creativity in terms of problem solving; problems are characterized by their constraints, different sets of contraints determine different problems. Problems can be ranked in a hierarchy, based on the kinds of constraints they place on any valid solution; this hierarchy includes problems with 5 kinds of constraints: determinative, limitative, eliminative, tentative and trivial. We think that the respective 5 classes of problems are sorted by growing "undefinedness", rather than "difficulty", as we shall see.
 
 "Determinative" constraints are the strictest: they characterize the class of problems for which it is easy to define an algorithm, for which a procedural solution exists, such as arithmetic problems. "Limitative" constraints characterize those problems that are "well-defined", they provide necessary and sufficient conditions for the solution, examples of such problems are related to theorem discovery: there are necessary and sufficient conditions for some argument to count as a valid theorem for some position; yet there is no single mechanized way of discovering such proofs. "Eliminative" constraints only provide necessary (but no sufficient) conditions for the solutions that satisfy them, these problems are termed as "partially-defined", many "design-related" problems (eg: in architecture, engineering...) fall into this category.
@@ -34,17 +36,17 @@ For instance: a well-defined problem may take on a much more mundane shape than 
 
 Likewise, we think it is easy to find examples of "partially-defined" problems that can be solved by the application of common sense knowledge and reasoning; and if one identifies the concept of a "constraint" from the above analysis with the concept of a "goal" (a desirable state of the world) in logic-based planning, then "radical" problems that are solvable by common sense could be cases in which some goals are less important than others and can be sacrificed (there is a goal-hierarchy); such an example is brought up (in chapter 9) of the book "Machines like Us", which discusses how a self-driving car equipped with common sense may decide to modify an original plan of action (like driving to a specific grocery store) because of an unexpected obstacle on the road, and decide instead to go to another grocery store (to get the same or a similar kind of groceries it was ordered to get).
 
-== History of AI
+// == History of AI
 
-The goal of formalizing Common Sense has arguably not been the (sole) focus of AI during the past 70 or so years of its existence; in what follows we shall (very) briefly discuss some of the broad ideas in AI, to then get back to the more specific problem in question.
+// Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic; spanning over decades of research from its first inception in the last century, and preoccuping some of the most brilliant minds in logic, mathematics, philosophy and computer science.
 
-Artificial Intelligence is an extremely broad area of study that has undergone various "summers" and "winters" @ilkou2020symbolic; spanning over decades of research from its first inception in the last century, and preoccuping some of the most brilliant minds in logic, mathematics, philosophy and computer science.
+// Unfortunately, it is impossible to cover all of its history in the present work, we will therefore spend the next few pages painting it in very broad strokes; we will focus mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
 
-Unfortunately, it is impossible to cover all of its history in the present work, we will therefore spend the next few pages painting it in very broad strokes; we will focus mostly on the more traditional Symbolic or "Good Old Fashioned AI" (GOFAI) approach, which will be most relevant to the present work.
-
-As we already mentioned in the section dedicated to the Lisp programming language(s), the term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy; but the study of so called "thinking machines" is a little older than that @smith2006history.
+// As we already mentioned in the section dedicated to the Lisp programming language(s), the term "Artificial Intelligence" (AI) proper was first coined in 1956 by John McCarthy; but the study of so called "thinking machines" is a little older than that @smith2006history.
 
 == The Turing Test
+
+The goal of formalizing Common Sense has arguably not been the (sole) focus of AI during the past 70 or so years of its existence; in what follows we shall (very) briefly discuss some of the broad ideas in AI, to then get back to the more specific problem in question.
 
 Back in 1950, British mathematician, logician and cryptanalist Alan Turing (1912-1954), set out on the ambitious journey of determining whether sentient behaviour was "provably computable" @turing2009computing, @smith2006history.
 
@@ -52,7 +54,7 @@ Turing introduced what came to be known as the Turing Test: a metric to tell if 
 
 It was recently reported (2022-23) that some Large Language Models (LLMs), based on Deep Learning techniques, such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
 
-== Alternatives to the Turing Test
+=== Alternatives to the Turing Test
 
 An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test @smith2006history.
 
@@ -96,9 +98,9 @@ The disadvantages of the sub-symbolic approach include: a lack of interpretabili
 
 === Sub-symbolic AI: Neural Networks
 
-The neural network is a kind of architecture for a computer program that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms @nielsen2015neural.
+Most of the modern sub-symbolic AIs are based on Neural Networks. The Neural Network (NN) is a kind of architecture for a computer program, that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms @nielsen2015neural.
 
-A neural network is a collection of neurons organized in layers; each neuron from a layer produces an output which is channelled as an input to all of the neurons of the subsequent layer. Each connection going into a neuron has an associated weight (or importance); a weight is modelled as a factor (number) which multiplies the given input at the corresponding connection. 
+A neural network is a collection of neurons organized in layers; each neuron from a layer produces an output which is channelled as an input to all of the neurons of the subsequent layer, the typical NN doesn't have loops, though recurrent neural networks (RNNs) do. Each connection going into a neuron has an associated weight (or importance); a weight is modelled as a factor (number) which multiplies the given input at the corresponding connection. 
 
 A neuron applies the corresponding weight to each of its inputs, then sums up the results, adds a bias to the sum, then applies a function known as the "activation function" to the result; the activation function has to be non-linear, so as to introduce non-linearity to the network and allow it to approximate non linear relations; the reason it is termed "activating" is that this function determines when the neuron will be "firing"; a common choice for it is the sigmoid function, which approximates the step function.
 
@@ -108,9 +110,9 @@ Stepping back to see the big picture, when an input enters the first layer of th
 
 Training a neural network consists in finding the "optimal" weights and biases which minimize the prediction error of the network for a particular training set, the error computed as a "cost function". This usually involves approximating the derivative of the cost function through the use of numerical and stochastic methods, because the exact solution would be too computationally demanding to evaluate.
 
-=== Points in common
+=== Symbolic and Sub-symbolic: points in common
 
-A core idea that we think the two approaches share is that they can be both regarded as declarative programming paradigms of sorts. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
+A core idea, that we think the two approaches share, is that they can be both regarded as declarative programming paradigms of sorts. As we've discussed in the section dedicated to programming languages, a computer can be told how to do something (imperative), or it can be (just) told to do that thing (declarative). A case of declarative programming taken to the extreme is when the computer is merely given a description of the problem, and told to devise a solution of its own. In this sense, both kinds of AIs are declarative: the idea is to avoid explicitly coding a behavior that may be beyond our practical reach with more traditional programming abstractions.
 
 Some researchers believe that one of the main bottlenecks of Symbolic methods has always been the reliance on manually compiled and maintained rule-sets. The manual creation and maintenance of inference rules is a limiting factor that some research projects are trying to eliminate, also through the use of hybrid Symbolic/Sub-symbolic approaches for learning rules automatically from quasi-natural language @ilkou2020symbolic, @yang2021learning.
 
@@ -156,11 +158,29 @@ The frame problem is generally considered to be solved in the narrow context of 
 
 Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of *wood*", then "it" would naturally refer to the table, not the ball.
 
+=== Defeasible Rules
 
-// suggest parallel between techniques for common sense in classical AI and naturalistic programming
-// suggest "automated" planning in programming language
+We think that the defeasibility (or revisability) of general rules is a recurrent theme in natural language; we have seen it when talking about L. A. Miller's findings on his group of students that were asked to write programs in natural language, we have seen it in Inform 7's revisable "gradation of rules" system, and we also see it in the work related to Common Sense in AI; Brachman and Levesque speak of "annotations", and give them an important role in their proposed (tentative) design for a system with Common Sense.
+
+The annotations they talk about concern the cancellation of restrictions (for example, on the value or number of a role in a relationship), but they (annotations) also concern the assignment of default fillers for a role, and perhaps even the management of metadata such as "source of belief", and "strength of belief" in a proposition.
+
+=== Automatic Planning
+
+An key concept that is also discussed in the same book, is that of automated planning. We have previously referred to the example that Brachman and Levesque make (about the self driving car, deciding to change route based on its terminal goal); to posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
+
+We think that introducing this concept (automated planning) to a naturalistic programming language would present an improvement over prior work, and there is a precedent for this: the so called "Constraint programming languages".
+
+==== Constraint Programming
+
+Constraint programming is a declarative paradigm based on the notion of a constraint. A constraint is a natural, declarative way to describe relationships between objects @laffra1991constraints. This reminds us of the similar notion of constraint that we mentioned while discussing D'Agostino's views on Chomsky's Limit Thesis. In a constraint programming language, the programmer declares the constraints, similar to how he/she declares the facts and inference rules in a language that supports logic programming. This paradigm was born in the context of logic programming, so it is sometimes called "Constraint Logic Programming" @jaffar1987constraint.
+
+The solution of a constraint problem can be guided by a more or less exact algorithm, sometimes a heuristic that a programmer may or may not be able to specify, but it is the system's job to determine exactly how the solution is found.
+
+We think this is an interesting paradigm, because it could be extended to systems with various independent "agents" (similar to objects in OOP, or "actors") @laffra1991constraints, these actors could all be trying to fullfill their own goals (constraint) different from the goals of the others, by executing some basic actions declared procedurally by the programmer or learned through the concatenation of more basic actions, and acting according to the rules (or circumstances) declared by the programmer in natural language.
+
+
+
 // design langs to decrease semantic gap, rather than LLMs to translate
-
 
 // -------------------------------------------------------------------------------------------
 
