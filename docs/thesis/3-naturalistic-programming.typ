@@ -449,26 +449,31 @@ And finally, another criticism that we may to this list, is that the current nat
 
 As we have seen, for instance, the "English" parsed by the CAL compiler is markedly procedural. It certainly is (very) much closer to English than COBOL's or AppleScript's could ever hope to be, but it still thinks of programs in terms of "procedures" and "data-structures", isn't this perhaps really the "natural", or at least the "most obvious", way to think of the organization of a computer program?
 
-It certainly isn't the only one. We have seen how Functional Programming thinks of any program as the application of pure (mathematical) functions, how Object-Oriented programming thinks of a program as a network of independent interacting objects that exchange messages, and how logic programming thinks of it as a list of facts, rules of inference, and goals to be (dis-)proven.
+It certainly isn't the only one. We have seen how Functional Programming thinks of any program as the application of pure (mathematical) functions, how Object-Oriented programming thinks of a program as a network of independent, interacting objects that exchange messages, and how logic programming thinks of it as a list of facts, rules of inference, and goals to be (dis-)proven.
 
-It is said that: "if all you have is a hammer, everything looks like a nail", well: what does naturalistic programming's "hammer" look like? It may be that there is no specific answer to that, given the amorphous nature of the human tongues. A natural language may be used "procedurally", "object-orientedly", "functionally" or "logically"; and, as some argue, all of these programming ideas ultimately trace their origin to the multi-faceted nature of human language @pulido2019model.
+It is said that: "if all you have is a hammer, everything looks like a nail", well: what does naturalistic programming's "hammer" look like? This may be a silly question to ask, after all. The human tongues may not have a single "hammer", but rather a toolbox full of grammatical mechanisms and "natural" concepts, to help us deal with the complexity of the world.
 
-But we think that despite their individual differences, there are some distinctive features of the surveyed languages, that go deeper than "simple" matters of surface aesthetics; some of which are further related to the topic of the next chapter: "Common Sense".
+As some argue, ideas from the programming paradigms we dicussed, ultimately trace their origin to some idea in natural language @pulido2019model: they're part of this original "toolbox" (natural language's descriptive mechanisms); and in any case, we can successfully describe these programming paradigms to someone who's never heard of them before, using natural language.
 
-If we were asked to give an account, a summary, of the philosophy of the naturalistic languages we surveyed, we think the following points would be our answer. It is to be kept in mind, though, that individual biases also played a role in shaping our views, so what follows can't be a completely objective answer.
+Discovering the full extent of this naturalistic toolbox is a very abitious task, that we will not attempt to undertake, certainly not here.
+
+== The "Essence" of Naturalistic Programming
+
+Despite their individual differences, we think there are some distinctive common features of the surveyed naturalistic languages, that go deeper than "simple" matters of surface aesthetics; some of which are further related to the topic of the next chapter: "Common Sense".
+
+If we were asked to give an account, a summary, of the philosophy of the naturalistic languages we surveyed, we think the following points would be our answer. It is to be kept in mind, though, that our individual biases also played a role in shaping our views, so what follows can't be a completely objective answer.
 
 We think that a naturalitic language should: 
 
-(1) gracefully integrate high-level concepts and low-level concepts, it should offer a way to express mathematical ideas in mathematical notation, and relate those quantitative ideas to "higher-level" qualitative ones.
+(1) gracefully integrate high-level concepts and low-level concepts, it should offer a way to express mathematical ideas in mathematical notation, and relate those quantitative ideas to "higher-level" qualitative ones. // cal, pegasus
 
-(2) it should be readable to the average English speaker (if based on English), who should be able to correctly guess the meaning of a full (well, at least a reasonably small) program written in it; not just an individual statement here and there, the full document.
+(2) it should be readable to the average English speaker (if based on English), who should be able to correctly guess the meaning of a full (well, at least a reasonably small) program written in it; not just an individual statement here and there, the full document. // inform7, pegasus
 
-(3) it should allow for the moderate use of implicit references ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (paraphrase sentences) when communicating with other human beings who didn't properly understand what we said; it is fair to expect a computer to need more help than the average human at resolving implicit references.
+(3) it should allow for the moderate use of implicit references ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (paraphrase sentences) when communicating with other human beings who didn't properly understand what we said; it is fair to expect a computer to need more help than the average human at resolving implicit references. // pegasus, SN
 
-(4) a system of "defeasible" (revisable), "gradated" (on a general/specific continuum) rules, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances may futher restrict or generalize the applicability of a rule to a certain situation or state of affairs.
+(4) there should be a system of "defeasible" (revisable), "gradated" (on a general/specific continuum) rules, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances may futher restrict or generalize the applicability of a rule to a certain situation or state of affairs. // inform7, SN
 
-(5) errors should be reported in clear, "natural" terms. They should report the proximate cause of the problem. No reference to underlying implementation-code shall be made, but rather to the applicability of user-defined rules and circumstances to the concrete situations that come up. The user should be told things like: "You haven't explained what it means to 'ride' in a car, 'riding' just applies to horses", or: "What do you mean when you say that a cat is 'red'?".
+(5) errors should be reported in clear, "natural" terms. They should report the proximate cause of the problem. No reference to underlying implementation-code shall be made, but rather to the applicability of user-defined rules and circumstances to the concrete situations that come up. The user should be told things like: "You haven't explained what it means to 'ride' in a car, 'riding' just applies to horses", or: "What do you mean when you say that a cat is 'red'?". // inform 7
 
-(6) the declarative approach is to be preferred over the imperative. A user should describe the problem rather than the solution; but compromises need to be made in many cases, and some procedural features may end up being necessary, after all.
-
+(6) the declarative approach is to be preferred over the imperative. A user should describe the problem rather than the solution, whenever possible; but compromises need to be made in many cases, and some procedural features may end up being necessary, after all.
 
