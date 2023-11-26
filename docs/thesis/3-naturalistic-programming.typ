@@ -72,7 +72,7 @@ The subjects of the experiment also expected the computer to possess some pragma
 
 === Size of Vocabulary
 
-Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time. Besides, studies have shown that to understand novels and newspaper articles a non-native English speaker needs to know just about 8000 to 9000 of the most common lemmas (root-words, or "word families"), and to understant dialogue on TV shows or movies that number is even less: only about 3000 lemmas @bbcWords. The problem of vocabulary isn't great, of course we must remember that a human speaker can often make up for the words he/she doesn't know from contextual information and implied world knowledge, which is definitely a bigger problem for a machine.
+Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time. Besides, studies have shown that to understand novels and newspaper articles a non-native English speaker needs to know just about 8000 to 9000 of the most common lemmas (root-words, or "word families"), and to understant dialogue on TV shows or movies that number is even less: only about 3000 lemmas @bbcWords. The problem of vocabulary doesn't appear great, of course we must remember that a human speaker can often make up for the words he/she doesn't know from contextual information and implied world knowledge, which is definitely a bigger problem for a machine.
 
 == Literate Programming <literate>
 
@@ -458,7 +458,7 @@ It is said that: "if all you have is a hammer, everything looks like a nail", we
 
 As some argue, ideas from the programming paradigms we dicussed, ultimately trace their origin to some idea in natural language @pulido2019model: they're part of this original "toolbox" (natural language's descriptive mechanisms); and in any case, we can successfully describe these programming paradigms to someone who's never heard of them before, using natural language.
 
-Discovering the full extent of this naturalistic toolbox is a very abitious task, that we will not attempt to undertake, certainly not here.
+Discovering the full extent of this naturalistic toolbox is a very ambitious task, that we will not attempt to undertake, certainly not here.
 
 == The "Essence" of Naturalistic Programming
 
@@ -472,11 +472,11 @@ We think that a naturalitic language should:
 
 (2) it should be readable to the average English speaker (if based on English), who should be able to correctly guess the meaning of a full (well, at least a reasonably small) program written in it; not just an individual statement here and there, the full document. // inform7, pegasus
 
-(3) it should allow for the moderate use of implicit references ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (paraphrase sentences) when communicating with other human beings who didn't properly understand what we said; it is fair to expect a computer to need more help than the average human at resolving implicit references. // pegasus, SN
+(3) it should allow for the moderate use of implicit references ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (we paraphrase sentences) to make ourselves clear to other human beings who didn't "get us" the first time; it is fair to expect a formal register (it's a program specification after all) to require less of these implicit references, than casual talk between friends. // pegasus, SN
 
-(4) there should be a system of "defeasible" (revisable), "gradated" (on a general/specific continuum) rules, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances may futher restrict or generalize the applicability of a rule to a certain situation or state of affairs. // inform7, SN
+(4) there should be a system of "defeasible" (revisable), "gradated" (on a general to specific continuum) rules, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances may futher restrict or generalize the applicability of a rule to a certain situation or state of affairs. // inform7, SN
 
-(5) errors should be reported in clear, "natural" terms. They should report the proximate cause of the problem. No reference to underlying implementation-code shall be made, but rather to the applicability of user-defined rules and circumstances to the concrete situations that come up. The user should be told things like: "You haven't explained what it means to 'ride' in a car, 'riding' just applies to horses", or: "What do you mean when you say that a cat is 'red'?". // inform 7
+(5) errors and warnings should be reported in clear, "natural" terms. They should report the proximate cause of the problem. No reference to underlying implementation-code shall be made, but rather to the applicability of user-defined rules and circumstances to the concrete situations that come up. The user should be told things like: "You haven't explained what it means to 'ride' in a car, 'riding' just applies to: horses, bicycles", or: "The 'man' cannot 'ride' in the 'car' yet, because he doesn't have the 'keys'". // inform 7
 
 (6) the declarative approach is to be preferred over the imperative. A user should describe the problem rather than the solution, whenever possible; but compromises need to be made in many cases, and some procedural features may end up being necessary, after all.
 

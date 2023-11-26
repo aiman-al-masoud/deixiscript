@@ -82,7 +82,19 @@ Symbolic AI, as we said, represents the older and more traditional approach; it 
 
 Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's "perceptron", has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and "Deep" Learning (which "just" means using neural nets with a larger number of layers).
 
-=== Neural Networks
+=== Symbolic: pros and cons
+
+The advantages of the symbolic approach have traditionally been: the ease of implementing explainable reasoning, with intermediate steps; rule modularity, or the discreteness and independence of rules from each other; and the applicability to abstract problems such as theorem proving.
+
+The disadvantages of the symbolic approach are: the adversity to noisy datasets; and the fact that rules are (usually) hand-crafted and hard-coded into the system, which also makes them hard to maintain.
+
+=== Sub-Symbolic: pros and cons
+
+The advantages of the sub-symbolic approach are: an increased robustness to noisy and/or missing data; the ease of scaling up and handling large amounts of data; the better suitability for perceptual problems (such as face recognition) where it can be pretty hard to describe rules in any formal or natural language for lack of relevant explicit knowledge; less human intervention, because the machine can learn autonomously from the data; and good execution speeds (once the model is trained). Sub-symbolic approaches are typically used for tasks such as: data clustering, pattern classification, and recognition of speech and text @smith2006history.
+
+The disadvantages of the sub-symbolic approach include: a lack of interpretability (often resulting in a black-box system); a relatively high dependence on training data; and the fact that such models typically require large amounts of computational resources and large amounts of data to train initially.
+
+=== Sub-symbolic AI: Neural Networks
 
 The neural network is a kind of architecture for a computer program that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms @nielsen2015neural.
 
@@ -95,18 +107,6 @@ A neuron applies the corresponding weight to each of its inputs, then sums up th
 Stepping back to see the big picture, when an input enters the first layer of the network each of the neurons produces an output, which is fed into the next layer, which in turn produces outputs which go into the next layer, etc... Until the output layer is reached. The input layer may consist of, for example, the values of the pixels of a greyscale image containing handwritten digits that has to be classified; and the 10 outputs, for instance, may represent the probability that the image represents either one of the 10 digits (from 0 to 9).
 
 Training a neural network consists in finding the "optimal" weights and biases which minimize the prediction error of the network for a particular training set, the error computed as a "cost function". This usually involves approximating the derivative of the cost function through the use of numerical and stochastic methods, because the exact solution would be too computationally demanding to evaluate.
-
-=== Sub-Symbolic: pros and cons
-
-The advantages of the sub-symbolic approach are: an increased robustness to noisy and/or missing data; the ease of scaling up and handling large amounts of data; the better suitability for perceptual problems (such as face recognition) where it can be pretty hard to describe rules in any formal or natural language for lack of relevant explicit knowledge; less human intervention, because the machine can learn autonomously from the data; and good execution speeds (once the model is trained). Sub-symbolic approaches are typically used for tasks such as: data clustering, pattern classification, and recognition of speech and text @smith2006history.
-
-The disadvantages of the sub-symbolic approach include: a lack of interpretability (often resulting in a black-box system); a relatively high dependence on training data; and the fact that such models typically require large amounts of computational resources and large amounts of data to train initially.
-
-=== Symbolic: pros and cons
-
-The advantages of the symbolic approach have traditionally been: the ease of implementing explainable reasoning, with intermediate steps; rule modularity, or the discreteness and independence of rules from each other; and the applicability to abstract problems such as theorem proving.
-
-The disadvantages of the symbolic approach are: the adversity to noisy datasets; and the fact that rules are (usually) hand-crafted and hard-coded into the system, which also makes them hard to maintain.
 
 === Points in common
 
@@ -159,6 +159,7 @@ Of specific interest to us is the fact that cracking the problem of Common Sense
 
 // suggest parallel between techniques for common sense in classical AI and naturalistic programming
 // suggest "automated" planning in programming language
+// design langs to decrease semantic gap, rather than LLMs to translate
 
 
 // -------------------------------------------------------------------------------------------
