@@ -99,9 +99,9 @@ As we already saw, the code produced by the system was never really meant to be 
 
 //  STORIES! inform 7!!!
 
-== General Purpose Naturalistic Languages
+== Existing Naturalistic Languages
 
-Since then, there have been newer and more complete attempts at creating a comprehensive natural language programming system, that supported general purpose programming. We will proceed to mention four of what (we think) may be the most important ones (in no particular order): Pegasus, CAL, SN and Inform 7.
+There have been some pretty complete attempts at creating comprehensive natural language programming systems. We will proceed to mention four of what (we think) may be the most important ones (in no particular order): Pegasus, CAL, SN and Inform 7.
 
 === Pegasus <pegasus>
 

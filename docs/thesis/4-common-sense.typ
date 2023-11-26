@@ -32,7 +32,7 @@ We are tempted to say that Common Sense encompasses all of the aforementioned mo
 
 For instance: a well-defined problem may take on a much more mundane shape than the discovery of new mathematical theorems; it may be a "problem" such as the one we already mentioned when discussing McCarthy's Advice Taker: the "problem" of getting to the airport given that one's location is A, the airport's location is B, and the means of transport from A to B is available in the form of a car one can drive.
 
-Likewise, we think it is easy to find examples of "partially-defined" problems that can be solved by the application of common sense knowledge and reasoning; and if one identifies the concept of a "constraint" from the above analysis with the concept of a "goal" (a desirable state of the world) in logic-based planning, then "radical" problems that are solvable by common sense could be cases in which some goals are less important than others and can be sacrificed (there is a goal-hierarchy); such an example is brought up in chapter 9 of the book "Machines like Us", which discusses how a self-driving car equipped with common sense may decide to modify an original plan of action (like driving to a specific grocery store) because of an unexpected obstacle on the road, and decide instead to go to another grocery store (to get the same or a similar kind of groceries it was ordered to get).
+Likewise, we think it is easy to find examples of "partially-defined" problems that can be solved by the application of common sense knowledge and reasoning; and if one identifies the concept of a "constraint" from the above analysis with the concept of a "goal" (a desirable state of the world) in logic-based planning, then "radical" problems that are solvable by common sense could be cases in which some goals are less important than others and can be sacrificed (there is a goal-hierarchy); such an example is brought up (in chapter 9) of the book "Machines like Us", which discusses how a self-driving car equipped with common sense may decide to modify an original plan of action (like driving to a specific grocery store) because of an unexpected obstacle on the road, and decide instead to go to another grocery store (to get the same or a similar kind of groceries it was ordered to get).
 
 == History of AI
 
@@ -156,8 +156,9 @@ The frame problem is generally considered to be solved in the narrow context of 
 
 Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of *wood*", then "it" would naturally refer to the table, not the ball.
 
-// We think there are some parallels between efforst in naturalistic programming ()
 
+// suggest parallel between techniques for common sense in classical AI and naturalistic programming
+// suggest "automated" planning in programming language
 
 
 // -------------------------------------------------------------------------------------------
