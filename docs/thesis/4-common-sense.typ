@@ -146,7 +146,7 @@ One of the facts that this "Theory of Everything" states out the so called "naiv
 
 Predicate logic is "monotonic" @sep-logic-nonmonotonic, this means that the more premises are added to the knowledge base, the more conclusions one will be able to draw. But this is not always desirable: we wish the system to handle "defeasible inferences" (a kind of tentative inference from partial information, which is revisable in light of additional information). 
 
-For example, we might learn that "Bob" is a fish swimming near the shore, and that he gets thrown out of the water by a wave onto the sand in the beach; since fish can't breathe out of the water, we should infer that Bob dies. But then we come to learn that Bob is a Mudskipper (a species of amphibious fish who can live in semiaquatic habitats), so we should revise our inference, and say that Bob isn't dead, after all.
+For example, we might learn that "Bob" is a fish swimming near the shore, and that he gets thrown out of the water by a wave onto the sand in the beach; since fish can't breathe out of the water, we should infer that Bob dies. But then we come to learn that Bob is a mudskipper (a species of amphibious fish who can live in semiaquatic habitats), so we should revise our inference, and say that Bob isn't dead, after all.
 
 But "plain" predicate logic is monotonic, as already said: it doesn't allow us to declare "revisable" rules of inference; and since most things don't change when an action or event happens, it wouldn't be efficient (neither computationally, nor logically) to list out, one by one, all of the cases in which the happening of an event E _doesn't_ have any effect on thing T.
 

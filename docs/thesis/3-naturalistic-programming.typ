@@ -54,26 +54,25 @@ It was found that the students were quite often prone to using contextual refere
 
 === Universal Quantification
 
-The students preferred to treat data structures in a cumulative way, using universal quantifiers, rather than loops, to express operations that had to be carried out on multiple instances of a data structure. They avoided using any of the traditional structured programming constructs (if-then-else, while, for...), let alone unstructured programming constructs (goto statements).
+The students preferred to treat data structures in a cumulative way, using universal quantifiers, rather than loops, to express operations that had to be carried out on multiple instances of a data structure. They avoided using any of the traditional structured programming constructs (if-then-else, while, for...), let alone the even more unnatural unstructured programming constructs (goto statements).
 
 === Blunt (but Revisable) General Statements
 
-One of those historic (2006-2009) "Get a Mac" commercials by Apple comes to mind, when talking about this aspect of natural language. The espisode in question begins with the character interpreting "PC" making a very blunt statement about how easy it is to use a PC, and then some small, hard to read text suddenly appears down at the bottom of the screen. We are told that this is just some "legal copy" (a kind of legal disclaimer), because apparently the claim about "how easy it is to use PC" requires a "little more explanation". PC goes on to make more and more of such "bold" claims, and the legal copy promptly grows, until it floods the entirety of the screen.
+One of those historic (2006-2009) "Get a Mac" commercials by Apple (the company) comes to mind, when talking about this aspect of natural language. The espisode in question begins with the character interpreting "PC" making a very blunt statement about how easy it is to use a PC, and then some small, hard to read text suddenly appears down at the bottom of the screen. We are told that this is just some "legal copy" (a kind of legal disclaimer), because apparently the claim about how "easy" it is to use PC requires a "little more" explanation. PC goes on to make more and more of such "bold" claims, and the legal copy promptly grows, until it floods the entirety of the screen.
 
 In any case, when describing an algorithm, the students from the experiment by Miller tended to begin by the most general and crucial step of the procedure, to only then deal with those special cases which required a different sort of treatment. This strategy of dealing with complexity: the further refinement, or "annotation" of a blunt initial general statement, seems to be a pervasive idea; and we will encounter it again later.
 
-It is often not how we do things in traditional programming language code, where the crucial step of a function may be delayed until after all of the guard clauses and early returns that check for the edge cases are visited; or, worse: be buried deep within a hierarchy of nested if-statements.
+It is often not how we do things in traditional programming language code, where the crucial step of a function may be delayed until after all of the guard clauses and early returns that check for the edge cases are visited; or, worse: the crucial step may be buried deep within a hierarchy of nested if-statements.
 
-Perhaps the success of the exception handling model (which itself is not perfect, by any means) is owed in part to the philosophy of tackling the most important step first, and handling the edge cases as exceptions later.
+Perhaps the success of the exception handling model (which itself is not perfect, by any means) is owed in part to the philosophy of tackling the most important step first, and handling the edge cases (as exceptions) later.
 
 === Implied Knowledge
 
-The subjects of the experiment also expected the computer to possess some pragmatic knowledge of the world and of their intentions, expecting it to fill in the semantic gaps whenever needed. As Dijkstra would've put it: "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" @foolishnessnatprogramming.
+The subjects of the experiment also expected the computer to possess some pragmatic, contextual knowledge of the world and of their intentions, expecting it to fill in the semantic gaps whenever needed. As Dijkstra would've put it: "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" @foolishnessnatprogramming.
 
 === Size of Vocabulary
 
-Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time.
-
+Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time. Besides, studies have shown that to understand novels and newspaper articles a non-native English speaker needs to know just about 8000 to 9000 of the most common lemmas (root-words, or "word families"), and to understant dialogue on TV shows or movies that number is even less: only about 3000 lemmas @bbcWords. The problem of vocabulary isn't great, of course we must remember that a human speaker can often make up for the words he/she doesn't know from contextual information and implied world knowledge, which is definitely a bigger problem for a machine.
 
 == Literate Programming <literate>
 
