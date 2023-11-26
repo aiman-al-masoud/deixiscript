@@ -1,3 +1,5 @@
+// mention levesque mail
+
 = Common Sense
 
 It is puzzling how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.

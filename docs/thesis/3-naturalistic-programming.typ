@@ -38,9 +38,9 @@ The paper "Beyond AOP: toward naturalistic programming" @lopes2003beyond (from 2
 
 AOP is a programming paradigm that aims at increasing the modularity of code by addressing the problem of cross-cutting concerns, and does so by advocating their separation from the core business-logic. A cross-cutting concern, in software development, is an aspect of a program that affects various modules at the same time, without the possibility (in non-AOP languages) of being encapsulated in any single one of them.
 
-A most obvious cross-cutting concern is logging. For instance: the problem of logging all of the calls to functions with such and such characteristics, and only those. In a traditional OOP language, one would have to insert a call to a the logger at the beginning or at the end of every function that one wished to track.
+A most obvious cross-cutting concern is logging. For instance: the problem of logging all of the calls to functions with such and such characteristics, and only those. In a traditional OOP language, one would have to insert a call to the logger at the beginning or at the end of every function that one wished to track.
 
-In a language that supports AOP, this concern can be handled by an Aspect: a separate section of the program that neatly encapsulates that cross-cutting concern (logging all such-and-such functions); similar to how we could write a "chapter about logging" if we were describing the behavior of the same application using the referenatial capabilities afforded to us by the natural language in a printed book; the way people have always been describing (even very complex) ideas and processes for centuries.
+In a language that supports AOP, this concern can be handled by an Aspect: a separate section of the program that neatly encapsulates that cross-cutting concern (logging all such-and-such functions); similar to how we could write a "chapter about logging" if we were describing the behavior of the same application using the referential capabilities afforded to us by the natural language in a printed book; the way people have always been describing (even very complex) ideas and processes for centuries.
 
 == Natural Style <the80s>
 
@@ -86,13 +86,15 @@ According to this philosophy, the program should make sense to a human being fir
 
 == Stories and Code
 
-What do computer programming and story telling have in common? A lot, according to a study from 2005. The study involved a system which automatically translated user stories to Python code fragments @liu2005metafor, @liu2005programmatic.
+What do computer programming and story telling have in common? A lot, according to a study from 2005 by Hugo Liu and Henry Lieberman. The study involved a system which automatically translated user stories to Python code fragments @liu2005metafor, @liu2005programmatic.
 
 The program, which can be seen as a very peculiar kind of transpiler, called Metafor, was integrated with a large Common Sense Knowledge base called Concept-Net, derived from the Open Mind corpus of natural language Common Sense statements.
 
-The code generated was "scaffolding", or underspecified code, that in fact wasn't meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity isn't always a negative aspect of natural language, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. This ties in well with the idea of "successive refinements" we mentioned earlier.
+The code generated was "scaffolding", or underspecified code, that in fact wasn't meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity isn't always a negative aspect of natural language, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. 
 
-The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on. <verbsasfuncs>
+// This ties in well with the idea of "successive refinements" we mentioned earlier.
+
+The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same two authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on. <verbsasfuncs>
 
 As we already saw, the code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate the task of outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students, some of which with novice and some of which with intermediate programming skills. The students responded to the question of whether they'd be likely to use it as a brainstorming tool, in lieu of more traditional pen-and-paper methods @liu2005metafor.
 
@@ -104,11 +106,11 @@ There have been some pretty complete attempts at creating comprehensive natural 
 
 === Pegasus <pegasus>
 
-The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing this @pegasuswebsite.
+The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing @pegasuswebsite.
 
 ==== Implicit Referencing, Compression and Context Dependence
 
-According to the authors, the main features that distinguish natural language from programming languages are: implicit referecing, compression and context dependence.
+According to the authors, the main features that distinguish natural language from programming languages are: implicit referencing, compression and context dependence.
 
 Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" are all words clearly exemplify this phenomenon.
 
@@ -126,7 +128,7 @@ They propose a distinction between what they call "Atomic" versus "Complex" idea
 
 They also recognize a third category of ideas they call "Composed", which "combine several Complex ideas for a short moment" @knoll2006pegasus, effectively corresponding with propositions, such as the meaning of the sentence: "the car drives on the street".
 
-Every idea, they assert, can have a concrete representaiton as: an entity, an action or a property; corresponding to a noun, a verb or an adjective/adverb respectively, in most natural languages.
+Every idea, they assert, can have a concrete representation as: an entity, an action or a property; corresponding to a noun, a verb or an adjective/adverb respectively, in most natural languages.
 
 The authors then describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
 
@@ -134,11 +136,11 @@ The authors then describe a formalism they call "the idea notation" to express c
 
 The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory.
 
-The Mind is what matches ideas to idea-patterns stored in Pegaus's long term semantic network. An idea-pattern is associated to an action, which is performed when the Mind determines that it matches an idea recevied as an input.
+The Mind is what matches ideas to idea-patterns stored in Pegasus's long term semantic network. An idea-pattern is associated to an action, which is performed when the Mind determines that it matches an idea recevied as an input.
 
 The Short Term Memory is what enables Pegasus to contextually resolve pronouns such as "it", and other deictic words and phrases. It is implemented as a bounded queue, and purposefully limited to 8 memory cells, corresponding to eight recently mentioned entities, as the authors believe this is optimal number for operation by human beings (cf: @miller1956magical).
 
-Lastly, the Long Term Memory stores Pegasus's semantic knowledge, for example is-a relationshipts between concepts.
+Lastly, the Long Term Memory stores Pegasus's semantic knowledge, for example is-a relationships between concepts.
 
 When an idea and its sub-ideas are fully resolved, such a system can take action directly (as an interpreter), or generate the equivalent code in a given programming language (as a compiler), the paper mentions Java as an example.
 
@@ -158,11 +160,11 @@ All in all, Pegasus remains a valid example of a general purpose naturalistic pr
 
 === CAL <cal>
 
-Another example of general purpose naturalistic programming language, also originally from 2006 with further developments up until recently, is presented by the intrestingly called "Osmosian Order of Plain English Programmers" @osmosianblog.
+Another example of general purpose naturalistic programming language, also originally from 2006 with further developments up until recently, is presented by the interestingly called "Osmosian Order of Plain English Programmers" @osmosianblog.
 
-A motivation behind this project, as explained by the authors, is to eliminate the intermediate translation step from natural language pseudo-code to rigorous programming language notation (cf:  @knoll2006pegasus).
+A motivation behind this project, as explained by the authors (Gerry and Dan Rzeppa, father and son), is to eliminate the intermediate translation step from natural language pseudo-code to rigorous programming language notation (cf:  @knoll2006pegasus).
 
-Another motivating factor was to answer the question of whether natural language could be parsed in a sufficietly "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
+Another motivating factor was to answer the question of whether natural language could be parsed in a sufficiently "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
 
 And finally, to determine whether low-level programs could conveniently be written in such a subset of the English language.
 
@@ -178,7 +180,7 @@ It is possible to define custom data types, using natural language syntax to def
 
 The language also supports event driven programming, and has various I/O capabilities such as timers, audio output and even a 2D graphics system which can be used to draw and plot shapes.
 
-The CAL compiler is freely downloadable (and can re-compile itself in about 3 seconds), together with the instructions manual available as a pdf, all on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing. The 100 page manual gives a comprehensive overview of the language with plenty of examples @osmosianblog.
+The CAL compiler is freely downloadable (and can re-compile itself in about 3 seconds), together with the instructions manual available as a pdf file, all on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing. The 100 page manual gives a comprehensive overview of the language with plenty of examples @osmosianblog.
 
 === SN
 
@@ -196,7 +198,7 @@ Circumstances are a special construct that can apply to either attributes or ver
 
 Noun phrases, which can be a combination of Nouns, Adjectives, and "with/as" clauses, and can support plurals, have a dual usage in SN: they can either be used as constructors to create new instances of a certain kind (with the "a/an" keyword) or to refer to already existing instances of such a kind (with the "the" keyword).
 
-The language also introduces the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by making such statements: "repeat the next 2 instructions until i > 10."
+The language also introduces the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by making such statements: `repeat the next 2 instructions until i > 10`.
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
