@@ -58,7 +58,7 @@ The students preferred to treat data structures in a cumulative way, using unive
 
 === Blunt (but Revisable) General Statements
 
-One of those historic (2006-2009) "Get a Mac" commercials by Apple (the company) comes to mind, when talking about this aspect of natural language. The espisode in question begins with the character interpreting "PC" making a very blunt statement about how easy it is to use a PC, and then some small, hard to read text suddenly appears down at the bottom of the screen. We are told that this is just some "legal copy" (a kind of legal disclaimer), because apparently the claim about how "easy" it is to use PC requires a "little more" explanation. PC goes on to make more and more of such "bold" claims, and the legal copy promptly grows, until it floods the entirety of the screen.
+One of those historic (2006-2009) "Get a Mac" commercials @getAMac by Apple (the company) comes to mind, when talking about this aspect of natural language. The espisode in question begins with the character interpreting "PC" making a very blunt statement about how easy it is to use a PC, and then some small, hard to read text suddenly appears down at the bottom of the screen. We are told that this is just some "legal copy" (a kind of legal disclaimer), because apparently the claim about how "easy" it is to use PC requires a "little more" explanation. PC goes on to make more and more of such "bold" claims, and the legal copy promptly grows, until it floods the entirety of the screen.
 
 In any case, when describing an algorithm, the students from the experiment by Miller tended to begin by the most general and crucial step of the procedure, to only then deal with those special cases which required a different sort of treatment. This strategy of dealing with complexity: the further refinement, or "annotation" of a blunt initial general statement, seems to be a pervasive idea; and we will encounter it again later.
 
@@ -210,7 +210,7 @@ Inform 7 is perhaps the most advanced naturalistic programming language we know 
 
 Designed by British mathematician and poet Graham Nelson (1968-), as a successor to the more traditional Inform 6 programming language (also created by him), Inform 7 is a domain specific language for the creation of Interactive Fiction (IF).
 
-IF can be thought of as a form of (interactive) literature, where a reader can interact (chiefly through text) with the characters and environments in the narrative, which can include graphics and puzzles; IF can also be thought of as a kind of video-game, or "text-adventure". This typically invloves the simulation of environments (called "rooms"), objects and characters and the interaction of these together.
+IF can be thought of as a form of (interactive) literature, where a reader can interact (chiefly through text) with the characters and environments in the narrative, which can include graphics and puzzles; IF can also be thought of as a kind of video-game, or "text-adventure". This typically involves the simulation of environments (called "rooms"), objects and characters and the interaction of these together.
 
 ==== Interactive Fiction
 
@@ -218,7 +218,7 @@ All Interactive Fiction products before Inform 7 were typically authored in clas
 
 ==== Unusual Features
 
-Inform 7 almost reads like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see later what this means); it can also infer the type of a "variable" from its usage, but that doesn't refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensistivity.
+Inform 7 almost reads like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see later what this means); it can also infer the type of a "variable" from its usage, but that doesn't refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensitivity.
 
 Inform 7 can perform inference of a the category (or "kind") of the referent of a noun phrase; for instance: if a rule is declared that states that only people can "wear" things, and a variable (say "John") is declared to be "wearing a hat", then John will be created as a person.
 
@@ -242,7 +242,7 @@ Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that
 
 The strong distinction between "specific" and "general" rules that exists in OOP is seen as inadequate for this kind of application. Class and method definition are what he calls "general" rules, and object creation with specific attributes and values for the sake of the concrete program or game are what he refers to as "specific".
 
-An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermiable (the player can't stick a hand through to grab the apple stored inside, just like he/she can't walk through walls); but it is further stipulated that a player wearing a magical ring should be able to.
+An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermeable (the player can't stick a hand through to grab the apple stored inside, just like he/she can't walk through walls); but it is further stipulated that a player wearing a magical ring should be able to.
 
 The solution to this problem in Inform 6 (which is an OOP language) was either to add a general rule, which was deemed a little over-the-top for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple!
 
@@ -273,6 +273,8 @@ The idea is that sometimes a dramatic effect can change (more like "disfigure") 
 
 In a way, this reminds us of the classical philosophical distinction between "essential" and "accidental" properties of things @sep-essential-accidental.
 
+#pagebreak()
+
 ===== Flightless Birds (are still birds)
 
 #quote(attribution: ["The Caves of Steel, Isaac Asimov"])[
@@ -292,7 +294,7 @@ In a way, this reminds us of the classical philosophical distinction between "es
 
 A diametrically opposed issue, that still has to do with types, is the nature of their association to behavior. Are we to regard a "bird who can't fly" as a "bird" nonetheless? Or is "a flightless bird" a "contraddiction in terms", just like an "unjust law" appears to be for R. Daneel, the positronic robot from Asimov's book "The Caves of Steel"? @asimov2011caves
 
-Following the reccommendation of the Liskov principle @liskov1994behavioral for Object-Oriented design, defining a penguin as a "flightless bird" would indeed be considered bad practice if the superclass "bird" included a method "fly"; the Liskov principle roughly states that: "any property that holds for a superclass should still hold for a subclass". This behavioral principle ensures, among other things, that interfaces from a superclass are not broken in the process of deriving subclasses.
+Following the recommendation of the Liskov principle @liskov1994behavioral for Object-Oriented design, defining a penguin as a "flightless bird" would indeed be considered bad practice if the superclass "bird" included a method "fly"; the Liskov principle roughly states that: "any property that holds for a superclass should still hold for a subclass". This behavioral principle ensures, among other things, that interfaces from a superclass are not broken in the process of deriving subclasses.
 
 So if the "Penguin" class can't fly, neither can the "Bird" superclass. The "Sparrow" class might. But it is "natural" to say that "birds (generally) don't fly"? As it is argued in other places @brachman2022machines: no, this isn't the natural way humans organize concepts. A more naturalistic approach, would be to (somehow) declare a set of defeasible (revisable) defaults for the concepts at hand; in other words: any bird can fly, until proven that it can't.
 
@@ -302,7 +304,7 @@ We couldn't have a meaningful discussion on "natural language programming" in th
 
 === Large Language Models
 
-An LLM is a general purpose language model, typically based on "transformers": a kind of neural network architecture. It is trained on huge amounts of data, to give an idea of the size: it is reported that GPT-3 (Generative Pre-trained Transformer) was trained on 45 terabytes of text data collected from the Internet. // https://www.springboard.com/blog/data-science/machine-learning-gpt-3-open-ai/
+An LLM is a general purpose language model, typically based on "transformers": a kind of neural network architecture. It is trained on huge amounts of data, to give an idea of the size: it is reported that GPT-3 (Generative Pre-trained Transformer) was trained on 45 terabytes of text data collected from the Internet @gpt45teras.
 
 Such models are "general purpose", in the sense that they have language "understanding" and generation capabilities that can be useful in a very wide range of applications. Such models can be fed a text input (prompted), and they are typically described at any step as predicting "the most likely word" that comes after the "sequence of words" in the prompt.
 
@@ -312,13 +314,13 @@ Prompt Engineering aims to develop and optimize prompts to LLMs, while trying to
 
 A prompt can be an instruction or a question, and may include other details such as context, input data or examples.
 
-The "Prompt Engineering Guide" webiste @promptingguide offers a wide-ranging overview of the concepts and techniques from this emergent discipline, with plenty of links to (very recent) studies and material for further reading. 
+The "Prompt Engineering Guide" website @promptingguide offers a wide-ranging overview of the concepts and techniques from this emergent discipline, with plenty of links to (very recent) studies and material for further reading. 
 
 === Applications of Prompt Engineering
 
 The applications of LLMs mentioned earlier include, but are not limited to: text summarization, information extraction, text classification (eg: sentiment analysis), conversation (or "role prompting", ie: configuring custom chatbots), code generation (which is of special concern to us) and reasoning.
 
-All this can sometimes be achived through a very simple prompt, and sometimes requires a little more thinking and cleverness to get the model to behave as desired. The Prompt Engineering Guide recommends to start simple: plenty of tasks can be achived through single or few shot prompting.
+All this can sometimes be achieved through a very simple prompt, and sometimes requires a little more thinking and cleverness to get the model to behave as desired. The Prompt Engineering Guide recommends to start simple: plenty of tasks can be achieved through single or few shot prompting.
 
 === Prompting Techniques
 
@@ -332,13 +334,13 @@ CoT involves providing the model with a breakdown of the solution to the example
 
 === Stylistic Recommendations
 
-Other two recommendations are: to be specific about what you want, to be precise; and to avoid telling the model what it shoudln't do, but rather tell it what it should do (even in the sense of merely paraphrasing the sentence). For instance, telling the model that: "the chatbot should refrain from asking for personal preferences" is considered better than the direct command: "do not ask for personal preferences".
+Other two recommendations are: to be specific about what you want, to be precise; and to avoid telling the model what it shouldn't do, but rather tell it what it should do (even in the sense of merely paraphrasing the sentence). For instance, telling the model that: "the chatbot should refrain from asking for personal preferences" is considered better than the direct command: "do not ask for personal preferences".
 
 === LLM Settings
 
 The behavior of an LLM can also be influenced at a lower level by tweaking its settings or "parameters"; and there are a few of these: temperature, maximum length, stop sequences, frequence and presence penalty.
 
-Temperature is related to how "deterministic" the output should be: a lower temperature causes the LLM'S output to be "more deterministic", ie: the words with the highest likeliness are chosen more often (making it is slightly better for tasks that require factual answers); while a higher temperature means that less likely (hence less "obvious") words are chosen to complete the output, resulting in better performance for tasks that require a higher level of "creativity".
+Temperature is related to how "deterministic" the output should be: a lower temperature causes the LLM's output to be "more deterministic", ie: the words with the highest likeliness are chosen more often (making it is slightly better for tasks that require factual answers); while a higher temperature means that less likely (hence less "obvious") words are chosen to complete the output, resulting in better performance for tasks that require a higher level of "creativity".
 
 A stop sequence is a special sequence of tokens that tells the model to stop producing text when it is generated. It can be an alternative to the maximum length, which only specifies the upper bound for the length of a generated response, helping one to avoid excessive API-usage costs or long/irrelevant responses.
 
@@ -348,7 +350,7 @@ Frequency Penalty discourages the model from repeating words that it has alreay 
 
 ==== Factuality and Bias
 
-There are potential problems and risks associated to prompting LLMs. Some of the more obvious ones are: related to bias (ie: the order and distribution of exemplars might influece answers to the more ambiguous or edge-case prompts), and factuality: there is no guarantee that the output of the model will contain factual information, as is clearly stated by the disclaimers on the websites of the companies that provide access to said models as a service; nonetheless, there have been cases where this basic fact has been disregarded by users of the model @chatgptlawyer.
+There are potential problems and risks associated to prompting LLMs. Some of the more obvious ones are: related to bias (ie: the order and distribution of exemplars might influence answers to the more ambiguous or edge-case prompts), and factuality: there is no guarantee that the output of the model will contain factual information, as is clearly stated by the disclaimers on the websites of the companies that provide access to said models as a service; nonetheless, there have been cases where this basic fact has been disregarded by users of the model @chatgptlawyer.
 
 ==== Adversarial Prompting
 
@@ -364,7 +366,7 @@ This problem can be mitigated by introducing an explicit distinction between ins
 
 ===== Prompt Leaking
 
-Prompt Leaking is when a special kind of malicious prompt succeeds at letting the model discolse its original "orders" (we might metaphorically call them "source code"); this can be risky if the model (eg: a chatbot) was aware of some sensitive data from the company behind it, that wasn't supposed to be made public to users on the Internet.
+Prompt Leaking is when a special kind of malicious prompt succeeds at letting the model disclose its original "orders" (we might metaphorically call them "source code"); this can be risky if the model (eg: a chatbot) was aware of some sensitive data from the company behind it, that wasn't supposed to be made public to users on the Internet.
 
 ===== Jailbreaking
 
@@ -380,11 +382,11 @@ This is all described in depth by the article, a simplified version of the expla
 
 We glimpsed at the fact that modern LLMs trained on multi-lingual corpora can translate between different natural languages (such as English to French, or viceversa). We've also mentioned, among the tasks that a modern LLM can perform, the generation of programming language code from an input prompt in natural language. 
 
-As such, an LLM can be thought of as implementing a transpiler (or source-to-source compiler) from a vague specification in natural language to runnable code in some formal programming language. Assistive coding tools, such as Github Copilot (based on a GPT-like Large Language Model), are getting widely adopted by developers // https://github.blog/2023-10-10-research-quantifying-github-copilots-impact-on-code-quality/
+As such, an LLM can be thought of as implementing a transpiler (or source-to-source compiler) from a vague specification in natural language to runnable code in some formal programming language. Assistive coding tools, such as Github Copilot (based on a GPT-like Large Language Model), are getting widely adopted by developers @gptImpactOnCode.
 
-The effectiveness of LLMs at performing this and related tasks was the object of study of a paper from Aprile 2023 @poldrack2023ai. 
+The effectiveness of LLMs at performing this and related tasks was the object of study of a paper from April 2023 @poldrack2023ai. 
 
-The experimenters subjected GPT-4 to a series of experiments which invloved three kinds of tasks: generating runnable Python code from natural language, refactoring (ie: improving the quality of) existing code, and generating tests for existing code. 
+The experimenters subjected GPT-4 to a series of experiments which involved three kinds of tasks: generating runnable Python code from natural language, refactoring (ie: improving the quality of) existing code, and generating tests for existing code. 
 
 As far as code generation goes, it was found that a "novice prompt engineer" could solve the problem by prompting the model most of the time; however, a sizeable minority of the problems from the experiment would have required significant human debugging.
 
@@ -406,7 +408,7 @@ As we have seen, there exists a Precision/Expressivity tradeoff @kuhn2014survey.
 
 Dijkstra argues that formal languages, while less familiar to the average person, are also much less prone at being misused; in natural language it is far too easy let nonsensical statements go virtually undetected.
 
-It is true that an automated system that processes a statement in formal language may end up "making a fool of itself" by not recognizing what, to the human eye, may seem like an blatant mistake; but it is also true that the outcome of such a formal statement is clear, as opposed to an ambiguous statement in natural language, that may require context and perhaps human-level semantic competence to disambiguate; and may still not be entirely clear.
+It is true that an automated system that processes a statement in formal language may end up "making a fool of itself" by not recognizing what, to the human eye, may seem like a blatant mistake; but it is also true that the outcome of such a formal statement is clear, as opposed to an ambiguous statement in natural language, that may require context and perhaps human-level semantic competence to disambiguate; and may still not be entirely clear.
 
 As it is explained in the article "From: Language and Communication Problems in Formalization" @fantechi2021language, a natural language's sources of imprecision are multiple: syntax, anaphora (implicit references to previously mentioned entities), vagueness, comparatives and superlatives, disjunctions ("do this _or_ do that"), escape clauses ("if _possible_"), usage of a weak verb (may, may not), quantifiers (the scope of quantifiers can be unclear), underspecification and passive voice (passive voice may omit the doer of the action).
 
@@ -416,11 +418,11 @@ Syntax alone, for example, accounts for multiple types of ambiguities related to
 
 Natural language, is pretty bad at expressing mathematical relations concisely; modern algebra, as Dijkstra argues, arised precisely when mathematicians gave up on trying to use natural language to represent equations.
 
-It is important however to note that nowadays computers are not just "computing machines"; well, in a sense they still are of course, but they're also tools for document and mutlimedia consumption, gaming consoles, video-editing devices, office work stations etc... 
+It is important however to note that nowadays computers are not just "computing machines"; well, in a sense they still are of course, but they're also tools for document and multimedia consumption, gaming consoles, video-editing devices, office work stations etc... 
 
 It often happens that the kind of information a user needs to describe to a computer isn't akin to densely-packed mathematical concepts; but rather to everyday concepts, concepts that are best expressed using the words and mechanisms of natural language.
 
-Tradional "naturalisitic" languages such as COBOL or Applescript have also been accused of being more verbose than the competing "non-naturalistic" languages, for using "English" syntax; however, it is to be noted that languages like the two previously mentioned ones are best regarded as classical procedural/imperative languages with a "natural language sugarcoating on top" (a vague surface resemblance to natural language); they are not built on any deeper naturalistic principles.
+Traditional "naturalistic" languages such as COBOL or Applescript have also been accused of being more verbose than the competing "non-naturalistic" languages, for using "English" syntax; however, it is to be noted that languages like the two previously mentioned ones are best regarded as classical procedural/imperative languages with a "natural language sugarcoating on top" (a vague surface resemblance to natural language); they are not built on any deeper naturalistic principles.
 
 ==== Is Expressiveness Succintness?
 
@@ -468,7 +470,7 @@ Despite their individual differences, we think there are some distinctive common
 
 If we were asked to give an account, a summary, of the philosophy of the naturalistic languages we surveyed, we think the following points would be our answer. It is to be kept in mind, though, that our individual biases also played a role in shaping our views, so what follows can't be a completely objective answer.
 
-We think that a naturalitic language should: 
+We think that a naturalistic language should: 
 
 (1) gracefully integrate high-level concepts and low-level concepts @osmosianblog, it should offer a way to express mathematical ideas in mathematical notation, and relate those quantitative ideas to "higher-level" qualitative ones.
 
@@ -476,7 +478,7 @@ We think that a naturalitic language should:
 
 (3) it should allow for the moderate use of implicit references @knoll2006pegasus, @pulido2019model ("the red cat", "the yellow dog", "the last number"...) but not to the point of introducing anaphoric ambiguities; after all, we tend to naturally disambiguate (we paraphrase sentences) to make ourselves clear to other human beings who didn't "get us" the first time; it is fair to expect a formal register (it's a program specification after all) to require less of these implicit references, than casual talk between friends.
 
-(4) there should be a system of "defeasible" (revisable), "gradated" (on a general to specific continuum) rules @nelson2006natural, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances @nelson2006natural, @pulido2019model may futher restrict or generalize the applicability of a rule to a certain situation or state of affairs.
+(4) there should be a system of "defeasible" (revisable), "gradated" (on a general to specific continuum) rules @nelson2006natural, the application of which should be managed automatically by the system, based on the specificity required in each usage; it would also be very nice to have context-sensitive resolution of pronouns (and maybe all implicit references) based on the surrounding context of the sentence they are used in. Circumstances @nelson2006natural, @pulido2019model may further restrict or generalize the applicability of a rule to a certain situation or state of affairs.
 
 (5) errors and warnings should be reported in clear, "natural" terms. They should mention the proximate cause of the problem @nelson2006natural. No reference to underlying implementation-code should be made, but rather to the applicability of user-defined rules and circumstances (_speak the user's language_ @nielsen1994enhancing) to the concrete situations that come up. The user should be told things like: "You haven't explained what it means to 'ride' in a car, 'riding' just applies to: horses, bicycles", or: "The 'man' cannot 'ride' in the 'car' yet, because he doesn't have the 'keys'".
 

@@ -10,11 +10,11 @@ The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines f
 
 "Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses (and make use of) non-expert knowledge to achieve ordinary, practical goals. Common sense is quite a flexible subset of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts, to formulate predictions on the behavior of simple physical systems, or on the behavior of other intelligent agents (people) based on the feelings and goals of the latter, and to use these insights to smoothly handle the occurrence of an unexpected or unusual situation.
 
-The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan") happen much more often than we might think: there are so many unknowns in the real world, that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
+The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan" @taleb2007black) happen much more often than we might think: there are so many unknowns in the real world, that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
 
 == The Issue of Creativity
 
-We want to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguisitc expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity" @d1984chomsky. 
+We want to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguistics expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity" @d1984chomsky. 
 
 Chomsky draws inspiration from his pioneering work in linguistics to arrive at a more general notion of human creativity. The speaker of any language regularily builds or grasps the meaning of a sentence he may be looking at for the first time in his or her life; this is an example of what Chomsky calls linguistic productivity.
 
@@ -36,7 +36,7 @@ We are tempted to say that Common Sense encompasses all of the aforementioned mo
 
 For instance: a well-defined problem may take on a much more mundane shape than the discovery of new mathematical theorems; it may be a "problem" such as the one we already mentioned when discussing McCarthy's Advice Taker: the "problem" of getting to the airport given that one's location is A, the airport's location is B, and the means of transport from A to B is available in the form of a car one can drive.
 
-Likewise, we think it is easy to find examples of "partially-defined" problems that can be solved by the application of common sense knowledge and reasoning; and if one identifies the concept of a "constraint" from the above analysis with the concept of a "goal" (a desirable state of the world) in logic-based planning, then "radical" problems that are solvable by common sense could be cases in which some goals are less important than others and can be sacrificed (there is a goal-hierarchy); such an example is brought up (in chapter 9) of the book "Machines like Us", which discusses how a self-driving car equipped with common sense may decide to modify an original plan of action (like driving to a specific grocery store) because of an unexpected obstacle on the road, and decide instead to go to another grocery store (to get the same or a similar kind of groceries it was ordered to get).
+Likewise, we think it is easy to find examples of "partially-defined" problems that can be solved by the application of common sense knowledge and reasoning; and if one identifies the concept of a "constraint" from the above analysis with the concept of a "goal" (a desirable state of the world) in logic-based planning, then "radical" problems that are solvable by common sense could be cases in which some goals are less important than others and can be sacrificed (there is a goal-hierarchy); such an example is brought up in chapter 9 of the book "Machines like Us", which discusses how a self-driving car equipped with common sense may decide to modify an original plan of action (like driving to a specific grocery store) because of an unexpected obstacle on the road, and decide instead to go to another grocery store (to get the same or a similar kind of groceries it was ordered to get).
 
 // == History of AI
 
@@ -54,7 +54,7 @@ Back in 1950, British mathematician, logician and cryptanalist Alan Turing (1912
 
 Turing introduced what came to be known as the Turing Test: a metric to tell if a computer could "think", according to the definition given by Turing. The test involves a "suspicious human judge" who has to converse with two subjects: another human and a machine, both hidden behind a "curtain". The judge's goal is to tell them apart, from their usage of language alone. The goal of the machine, in this "imitation game", is to deceive the human judge into thinking he's conversing with another human being.
 
-It was recently reported (2022-23) that some Large Language Models (LLMs), based on Deep Learning techniques, such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
+It was recently reported (2022-2023) that some Large Language Models (LLMs), based on Deep Learning techniques, such as Google's LaMDA @turingtestobsolete and OpenAI's GPT @gptbroketuring have succeded in passing the Turing Test, an ambitious feat which had remained largely unaccomplished for decades prior to that @smith2006history. If this is all accurate, it means that we are now living in the post-Turing Test era.
 
 === Alternatives to the Turing Test
 
@@ -64,9 +64,7 @@ There are a number of variations and alternatives to the Turing Test; one is the
 
 Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would @smith2006history.
 
-Yet another alternative is the Winograd schema challenge (WSC) introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the example about the "table and the ball" we discussed earlier, that are aimed at probing a system's competence at making common-sense inferences on sentences.
-
-// https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
+Yet another alternative is the Winograd schema challenge (WSC) @winogradChallengeGpt introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the example about the "table and the ball" we will discuss later (@commonSenseAndNatlang), that are aimed at probing a system's competence at making common-sense inferences on sentences.
 
 == The Chinese Room Argument
 
@@ -82,9 +80,9 @@ Numerous objections and counter-objections to the argument have been rised since
 
 An important methodological distinction in the discipline of AI is represented by the traditional one made between "Symbolic" or "Good Old Fashioned AI" (GOFAI), versus "Sub-Symbolic" AI. The rationale behind this nomenclature stems from "old" AI's reliance on explicit human-readable symbols and formal logic notation, rather than the more numerical and statistical methods of "new" AI.
 
-Symbolic AI, as we said, represents the older and more traditional approach; it is typically associated to First Order Logic (FOL), to Knowledge Bases (KBs) and to Expert Systems, and has seen a period of flourishing during the birth of AI and in the 1980s during the hayday of Expert Systems.
+Symbolic AI, as we said, represents the older and more traditional approach; it is typically associated to First Order Logic (FOL), to Knowledge Bases (KBs) and to Expert Systems, and has seen a period of flourishing during the birth of AI and in the 1980s during the heyday of Expert Systems.
 
-Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's "perceptron", has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and "Deep" Learning (which "just" means using neural nets with a larger number of layers).
+Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's (1928-1971) "perceptron" , has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and "Deep" Learning (which "just" means using neural nets with a larger number of layers).
 
 === Symbolic: pros and cons
 
@@ -122,7 +120,7 @@ Some researchers believe that one of the main bottlenecks of Symbolic methods ha
 
 == Symbolic AI: a closer look
 
-We have already talked about Advice Taker, the hypothetical program originally envisioned in 1959 by John McCarthy to be a general purpose common sense reasoner; but McCarty's reasearch didn't stop there, he went on to publish more papers on the subject of common sense in AI. Another important one was "Philosophical Problems from the Standpoint of AI" which he and the British computer scientist and AI researcher Patrick J. Hayes (1944-) published in 1981.
+We have already talked about Advice Taker, the hypothetical program originally envisioned in 1959 by John McCarthy to be a general purpose common sense reasoner; but McCarty's reasearch didn't stop there. Another important work was "Philosophical Problems from the Standpoint of AI" which he and the British computer scientist and AI researcher Patrick J. Hayes (1944-) published in 1981.
 
 === Machine Intelligence
 
@@ -140,7 +138,7 @@ In other words, the physical structure of the system is isomorphic to (closely m
 
 === Naive Theories of Everything
 
-McCarthy and Hayes remind the reader of the general relevance of philosophy to the problem of AI, however they dismisses a lot of it is irrelevant to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
+McCarthy and Hayes remind the reader of the general relevance of philosophy to the problem of AI, however they dismisses a lot of it is irrelevant to the question of building a general AI system: there is no question that the physical world exists and that it already contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
 
 However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to just act accordingly (let alone discover them introspectively). Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
 
@@ -156,9 +154,9 @@ But "plain" predicate logic is monotonic, as already said: it doesn't allow us t
 
 The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has spaked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing a small thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak of this broader problem any further.
 
-== Common Sense and Natural Language
+== Common Sense and Natural Language <commonSenseAndNatlang>
 
-Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of *wood*", then "it" would naturally refer to the table, not the ball.
+Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel" (all emphases ours), resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of _wood_", then "it" would naturally refer to the table, not the ball.
 
 === Defeasible Rules
 
@@ -168,7 +166,7 @@ The annotations they talk about concern the cancellation of restrictions (for ex
 
 === Automatic Planning
 
-An key concept that is also discussed in the same book, is that of automated planning. We have previously referred to the example that Brachman and Levesque make (about the self driving car, deciding to change route based on its terminal goal); to posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
+An key concept that is also discussed in "Machines Like Us", is that of automated planning. We have previously referred to the example that Brachman and Levesque make (about the self driving car, deciding to change route based on its terminal goal); to posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
 
 We think that introducing this concept (automated planning) to a naturalistic programming language would present an improvement over prior work, and there is a precedent for this: the so called "Constraint programming languages".
 

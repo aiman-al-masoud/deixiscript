@@ -98,6 +98,8 @@
   set par(justify: true, linebreaks: "simple")
   set quote(block: true)
 
+  show quote: set text(font: "FreeSans", size: 11pt)
+
 
   // Title page.
   v(0.25fr)
