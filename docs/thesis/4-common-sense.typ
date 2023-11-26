@@ -1,18 +1,18 @@
 = Common Sense
 
-It is puzzling how easy it is to program a machine to perform an extremely difficult task from the human point of view (such as beating the world champion in chess), and yet apparently so hard to get the same machine to do something that every sane person does on a daily basis without even thinking too hard: using common sense.
+It is puzzling how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.
 
 == The Core Issue
 
 The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively @kautz2023ronald.
 
-"Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses and make use of non-expert knowledge to achieve ordinary, practical goals. Common sense is quite a flexible subset of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts; formulate predictions on the behavior of simple physical systems, or the behavior of other people based on their feelings and goals; and to use this to handle the occurrence of a new or unusual situation smoothly.
+"Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses (and make use of) non-expert knowledge to achieve ordinary, practical goals. Common sense is quite a flexible subset of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts, to formulate predictions on the behavior of simple physical systems, or on the behavior of other intelligent agents (people) based on the feelings and goals of the latter, and to use these insights to smoothly handle the occurrence of an unexpected or unusual situation.
 
-The problem of endowing machines with Common Sense is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather a system that can stand its ground even in an unprecedented scenario; and unpredictable scenarios as Brachman and Levesque remind us in their book happen much more often than we might think: there are so many unknowns in the real world that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
+The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan") happen much more often than we might think: there are so many unknowns in the real world, that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
 
 == Common Sense and Natural Language
 
-Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as one of the examples made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", to resolve the referent of the pronoun "it", it is necessary to have some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a harder, stronger material than wood. Were the last part of the sentence to change to: "... it was made of wood", then the natural interpretation of the pronoun "it" would also change; in that case, "it" would point to the table, no more to the ball.
+Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of *wood*", then "it" would naturally refer to the table, not the ball.
 
 == The issue of Creativity
 
@@ -64,13 +64,13 @@ There are a number of variations and alternatives to the Turing Test; one is the
 
 Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would @smith2006history.
 
-Yet another alternative is the Winograd schema challenge (WSC) introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the "large ball crashing through the table" example we discussed earlier, that are aimed at probing a system's competence at resolving implicit references that require common sense knowledge and reasoning.
+Yet another alternative is the Winograd schema challenge (WSC) introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the example about the "table and the ball" we discussed earlier, that are aimed at probing a system's competence at making common-sense inferences on sentences.
 
 // https://d-kz.medium.com/evaluating-gpt-3-and-gpt-4-on-the-winograd-schema-challenge-reasoning-test-e4de030d190d
 
 == The Chinese Room Argument
 
-Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial topics to say the least in the philosophy of mind. Years before the advent of LLMs, in 1980, philosopher John Searle (1932-) first made public his famous Chinese Room Argument @searle1999chinese.
+Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial in the philosophy of mind. Years before the advent of modern day LLMs, in 1980, philosopher John Searle (1932-) first published his famous Chinese Room Argument @searle1999chinese.
 
 In the mental experiment, Searle urges us (non-Chinese speakers) to imagine ourselves being locked up in a room filled with books on how to manipulate Chinese symbols algorithmically. One will find that he/she is able to communicate with the outside world only through a narrow interface of textual messages written on slips of paper and passed through the door.
 
@@ -138,7 +138,7 @@ We think that this view of "intelligence" in machines is consistent with the mor
 
 In other words, the physical structure of the system is isomorphic to (closely mirrors) the logical structure of the knowledge we take it to be representing.
 
-=== Naive Theories
+=== Naive Theories of Everything
 
 McCarthy and Hayes remind the reader of the general relevance of philosophy to the problem of AI, however they dismisses a lot of it is irrelevant to the question of building a general AI system: there is no question that the physical world exists and that it alredy contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
 
@@ -146,23 +146,25 @@ However, it is hard even to arrive at a naive formalization of common sense that
 
 === The Frame Problem
 
-One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about how to make sure that the state of the world model is updated in all the relevant ways, after an action is executed. When talking of time-mutable world model state, we generally speak of "fluents", which are a kind of predicate that depends on time.
+One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about ensuring that the state of the world model is updated in all the relevant ways (and only the relevant ways), after an action is executed by the intelligent agent. When talking of time-mutable state, we generally speak of "fluents", which are a kind of predicate that depends on time.
 
-The problem is generally considered to be solved as far as classical AI is concerned; but it has some interesting implications in philosophy and cognitive science @sep-frame-problem.
+Predicate logic is "monotonic" @sep-logic-nonmonotonic, this means that the more premises are added to the knowledge base, the more conclusions one will be able to draw. But this is not always desirable: we wish the system to handle "defeasible inferences" (a kind of tentative inference from partial information, which is revisable in light of additional information). 
 
-// https://plato.stanford.edu/entries/frame-problem/
+For example, we might learn that "Bob" is a fish swimming near the shore, and that he gets thrown out of the water by a wave onto the sand in the beach; since fish can't breathe out of the water, we should infer that Bob dies. But then we come to learn that Bob is a Mudskipper (a species of amphibious fish who can live in semiaquatic habitats), so we should revise our inference, and say that Bob isn't dead, after all.
 
-// rational default assumptions and what humans consider common sense in a virtual environment
-// . The epistemological problem is this: How is it possible for holistic, open-ended, context-sensitive relevance to be captured by a set of propositional, language-like representations of the sort used in classical AI? The computational counterpart to the epistemological problem is this. How could an inference process tractably be confined to just what is relevant, given that relevance is holistic, open-ended, and context-sensitive?
+But "plain" predicate logic is monotonic, as already said: it doesn't allow us to declare "revisable" rules of inference; and since most things don't change when an action or event happens, it wouldn't be efficient (neither computationally, nor logically) to list out, one by one, all of the cases in which the happening of an event E _doesn't_ have any effect on thing T.
+
+The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has spaked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing a small thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak of this broader problem any further.
+
+
+
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
 
 
 // flexible, not "idiot savant"
 // knowledge AND reasoning
 // KR representation hypothesis
-// theory of everything, naive physics, naive phsychology
 // knowledge graphs 
-// Brachman on semantic networks and Levesque on automated planning
 // criticism related to better baesyian networks and relationship to neural networks
 // https://en.wikipedia.org/wiki/Bayesian_network
 // https://en.wikipedia.org/wiki/Bayes%27_theorem
