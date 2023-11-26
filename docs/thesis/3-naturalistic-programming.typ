@@ -1,10 +1,14 @@
 = Naturalistic Programming
 
-Are there any benefits to naturalistic programming? What languages (if any) make use of this paradigm? And what are its downsides? In the following pages we will try answering these questions.
+We think that the upshot of the previous chapter about programming languages, is that these kinds of formal languages are "precise" and "simple".
+
+They're precise, because they (like mathematical notation) have a clearly defined syntax and semantics; and they're "simple" because their core should contain as few elements as possible, and these elements should be orthogonal (as free to combine with one another as feasible). Precision makes the meaning of code in a programming language as directly dependent on syntax as possible, and simplicity makes a programming language "easy" to implement on a computer (as compared to a natural language).
+
+Given these advantages of programming languages, what would the benefit of writing code using natural language be, if any? This is what we shall discuss in the following pages, together with four examples of currently existing naturalistic programming languages. We shall also make a brief digression about LLMs, Prompt Engineering and AI-assisted coding (in natural language); we shall follow that with some criticism that can be made about using natural languages in code, and we shall conclude the chapter with what (we think) are the distinguisihing characteristics of the naturalistic languages we studied, that give them an edge over the traditional programming languages.
 
 == Precision and Expressiveness: a tradeoff
 
-A general phenomenon in languages, is that there tends to be a tradeoff between naturalness and expressiveness on the one side, versus precision and ease of implementation on the other.
+A general trend in languages, is that there tends to be a tradeoff between naturalness and expressiveness on the one side, versus precision and ease of implementation on the other.
 
 Within the PENS (Precision, Expressiveness, Naturalness and Simplicity) language classification scheme @kuhn2014survey, a diverse set of Controlled Natural Languages (CNLs), all based on English, were classified by 4 metrics: Precision, Expressiveness, Naturalness and Simplicity.
 
@@ -12,11 +16,11 @@ This is roughly what these four metrics mean, respectively: the level of indepen
 
 The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated, and Naturalness and Expressiveness are positively correlated.
 
-In other words: we had been speaking about how imprecise natural language is, in the last chapter, but now we must acknowledge the other side of the medal: natural language has an exceptional level of expressiveness, as compared to the formal languages. You can say almost anything in natural language, or better yet: it is hard to think of an idea you can't express, using plain English or any other human tongue.
+In other words: in the last chapter we had been talking about how imprecise natural language is, but now we must acknowledge the other side of the medal, namely that: natural language has an exceptional level of expressiveness, as compared to the formal languages. You can say almost anything in natural language, or better yet: it is hard to think of an idea that you can't express, using plain English or any other human tongue.
 
 == Shortcomings of programming languages
 
-Does the lack of expressiveness represent a problem in traditional programming languages? We think a lot of the evidence points to that conclusion; beginning from the very existence of these lines of research, which stem primarily from the shortcomings of contemporary programming languages, at adequately describing certain classes of problems @knoll2006pegasus, @knoll2011naturalistic, @lopes2003beyond, @pulido2017survey.
+Does the lack of expressiveness represent a problem in traditional programming languages? We think a lot of the evidence points to that conclusion; beginning from the very existence of reaserch into naturalistic programming, which seems to stem from the shortcomings of contemporary programming languages, at adequately describing certain classes of problems @knoll2006pegasus, @knoll2011naturalistic, @lopes2003beyond, @pulido2017survey.
 
 In these works, it is argued that the abstractions that power the current generation of programming languages often tend to result in verbose, repetitive and brittle code.
 
