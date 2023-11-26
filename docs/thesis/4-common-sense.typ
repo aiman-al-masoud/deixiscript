@@ -2,7 +2,7 @@
 
 It is puzzling how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.
 
-== The Core Issue
+== A Central Problem
 
 The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively @kautz2023ronald.
 
@@ -10,13 +10,9 @@ The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines f
 
 The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan") happen much more often than we might think: there are so many unknowns in the real world, that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
 
-== Common Sense and Natural Language
+== The Issue of Creativity
 
-Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of *wood*", then "it" would naturally refer to the table, not the ball.
-
-== The issue of Creativity
-
-Since the issue of natural language was brought up, we thought to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguisitc expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity" @d1984chomsky. 
+We want to suggest a parallel between the problem of Common Sense in AI, and the somewhat related issue of "Creativity" in linguisitc expression and other areas of human endeavor. Philosopher Fred D'Agostino (1946-) discusses Chomsky's views on human creativity in his paper from 1984 "Chomsky on Creativity" @d1984chomsky. 
 
 Chomsky draws inspiration from his pioneering work in linguistics to arrive at a more general notion of human creativity. The speaker of any language regularily builds or grasps the meaning of a sentence he may be looking at for the first time in his or her life; this is an example of what Chomsky calls linguistic productivity.
 
@@ -156,7 +152,15 @@ But "plain" predicate logic is monotonic, as already said: it doesn't allow us t
 
 The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has spaked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing a small thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak of this broader problem any further.
 
+== Common Sense and Natural Language
 
+Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of *wood*", then "it" would naturally refer to the table, not the ball.
+
+// We think there are some parallels between efforst in naturalistic programming ()
+
+
+
+// -------------------------------------------------------------------------------------------
 
 // https://en.wikipedia.org/wiki/Situation_calculus#The_successor_state_axioms
 
