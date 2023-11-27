@@ -1,8 +1,6 @@
-// mention levesque mail
-
 = Common Sense
 
-It is puzzling how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.
+It is puzzling to think how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess @deepBlue), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.
 
 == A Central Problem
 
@@ -10,7 +8,11 @@ The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines f
 
 "Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses (and make use of) non-expert knowledge to achieve ordinary, practical goals. Common sense is quite a flexible subset of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts, to formulate predictions on the behavior of simple physical systems, or on the behavior of other intelligent agents (people) based on the feelings and goals of the latter, and to use these insights to smoothly handle the occurrence of an unexpected or unusual situation.
 
-The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan" @taleb2007black) happen much more often than we might think: there are so many unknowns in the real world, that the likelihood of a random bizarre event happening is much higher than the likelihood of any specific kind of bizarre event taken singularily.
+The book "Machines Like Us" also proposes a general idea for implementing a system with Common Sense reasoning capabilities, though many implementation details are left open, and Hector Levesque, whom I had the pleasure of contacting via email, has confirmed that no system along those lines has been built yet (as of June 2023).
+
+The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. 
+
+Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan" @taleb2007black) happen much more often than we would be inclined think: the tiny likelihood of a single, specific, bizarre event taken by itself is deceptive; in the real world there are so many unknowns that eccentric events are the order of the day.
 
 == The Issue of Creativity
 
@@ -58,13 +60,13 @@ It was recently reported (2022-2023) that some Large Language Models (LLMs), bas
 
 === Alternatives to the Turing Test
 
-An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings which may still not be verbally able to express themselves adequately enough to pass the test @smith2006history.
+An important point to make is that the Turing Test may represent a sufficient condition for "intelligence" (depending on how the term is defined), but passing it certainly isn't a necessary condition for intelligence, very young children offer the perfect example of intelligent beings who may still not be able to (verbally) express themselves adequately enough to pass the test @smith2006history.
 
 There are a number of variations and alternatives to the Turing Test; one is the Feigenbaum Test (or subject matter expert Turing test), which eliminates the "casual" nature of the open-ended conversational Turing Test, by stipulating that a computer demonstrate proficency in a specialized area of interest @smith2006history, this, by surpassing an expert in that specific field.
 
 Another alternative is Nicholas Negroponte's variation, where an AI should help a human accomplish goals in the same way a human would @smith2006history.
 
-Yet another alternative is the Winograd schema challenge (WSC) @winogradChallengeGpt introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the example about the "table and the ball" we will discuss later (@commonSenseAndNatlang), that are aimed at probing a system's competence at making common-sense inferences on sentences.
+Yet another alternative is the Winograd schema challenge (WSC) @winogradChallengeGpt introduced by Levesque in 2012, and named after computer scientist Terry Allen Winograd (1946-). This test involves specific questions, similar to the example about the "table and the ball" that we will discuss later in this chapter (@commonSenseAndNatlang). These questions are aimed at probing a system's competence at making common-sense inferences from partial information contained in sentences.
 
 == The Chinese Room Argument
 
@@ -78,15 +80,15 @@ Numerous objections and counter-objections to the argument have been rised since
 
 == Symbolic vs Sub-symbolic AI
 
-An important methodological distinction in the discipline of AI is represented by the traditional one made between "Symbolic" or "Good Old Fashioned AI" (GOFAI), versus "Sub-Symbolic" AI. The rationale behind this nomenclature stems from "old" AI's reliance on explicit human-readable symbols and formal logic notation, rather than the more numerical and statistical methods of "new" AI.
+An important methodological distinction in the discipline of AI is represented by the traditional one made between "Symbolic" or "Good Old Fashioned AI" (GOFAI), versus "Sub-Symbolic" AI. The rationale behind this nomenclature stems from "old" AI's reliance on explicit human-readable symbols and formal logic notation, rather than the numerical and statistical methods of "new" AI.
 
-Symbolic AI, as we said, represents the older and more traditional approach; it is typically associated to First Order Logic (FOL), to Knowledge Bases (KBs) and to Expert Systems, and has seen a period of flourishing during the birth of AI and in the 1980s during the heyday of Expert Systems.
+Symbolic AI, as we said, represents the older and more traditional branch of AI; it is typically associated to the use of First Order Logic (FOL), or some other formal language, to represent knowledge, and it has seen a period of flourishing during the birth of AI and in the 1980s during the heyday of Expert Systems.
 
-Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's (1928-1971) "perceptron" , has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and "Deep" Learning (which "just" means using neural nets with a larger number of layers).
+Sub-symbolic AI, while tracing its origins back to such early works as Frank Rosenblatt's (1928-1971) "perceptron", has been slower at achieving vast adoption; it is now enjoying a new period of popularity, with the advent and perfection of such techniques that harness the power of neural networks such as Machine Learning (ML), and Deep Learning (which "just" means using _deep_ neural networks, with a larger number of layers).
 
 === Symbolic: pros and cons
 
-The advantages of the symbolic approach have traditionally been: the ease of implementing explainable reasoning, with intermediate steps; rule modularity, or the discreteness and independence of rules from each other; and the applicability to abstract problems such as theorem proving.
+The advantages of the symbolic approach have traditionally been: the ease of implementing explainable reasoning, with intermediate steps; rule modularity, or the discreteness and independence of rules from one another; and the applicability to abstract problems such as theorem proving.
 
 The disadvantages of the symbolic approach are: the adversity to noisy datasets; and the fact that rules are (usually) hand-crafted and hard-coded into the system, which also makes them hard to maintain.
 
@@ -98,7 +100,7 @@ The disadvantages of the sub-symbolic approach include: a lack of interpretabili
 
 === Sub-symbolic AI: Neural Networks
 
-Most of the modern sub-symbolic AIs are based on Neural Networks. The Neural Network (NN) is a kind of architecture for a computer program, that draws inspiration for its name from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms @nielsen2015neural.
+Most of the modern Sub-symbolic AIs are based on Neural Networks. The Neural Network (NN) is a kind of architecture for a computer program, that draws inspiration from the functioning of neurons (nerve cells) and synapses in the brains of biological organisms @nielsen2015neural.
 
 A neural network is a collection of neurons organized in layers; each neuron from a layer produces an output which is channelled as an input to all of the neurons of the subsequent layer, the typical NN doesn't have loops, though recurrent neural networks (RNNs) do. Each connection going into a neuron has an associated weight (or importance); a weight is modelled as a factor (number) which multiplies the given input at the corresponding connection. 
 
@@ -106,9 +108,9 @@ A neuron applies the corresponding weight to each of its inputs, then sums up th
 
 // https://stackoverflow.com/questions/9782071/why-must-a-nonlinear-activation-function-be-used-in-a-backpropagation-neural-net
 
-Stepping back to see the big picture, when an input enters the first layer of the network each of the neurons produces an output, which is fed into the next layer, which in turn produces outputs which go into the next layer, etc... Until the output layer is reached. The input layer may consist of, for example, the values of the pixels of a greyscale image containing handwritten digits that has to be classified; and the 10 outputs, for instance, may represent the probability that the image represents either one of the 10 digits (from 0 to 9).
+Stepping back to see the big picture, when an input enters the first layer of the network, each of the neurons produces an output, which is fed into the next layer, which in turn produces outputs which go into the next layer, etc... Until the output layer is reached. The input layer may consist of, for example, the values of the pixels of a greyscale image representing handwritten digits that have to be classified; and the 10 outputs, for instance, may represent the probability that the image represents either one of the 10 digits (from 0 to 9).
 
-Training a neural network consists in finding the "optimal" weights and biases which minimize the prediction error of the network for a particular training set, the error computed as a "cost function". This usually involves approximating the derivative of the cost function through the use of numerical and stochastic methods, because the exact solution would be too computationally demanding to evaluate.
+Training a neural network consists of finding the "optimal" weights and biases which minimize the prediction error of the network for a particular training set, the error is often computed as a "cost function". Minimizing the error usually involves approximating the derivative of the cost function through the use of numerical and stochastic methods, because the exact solution would be too computationally demanding to evaluate.
 
 === Symbolic and Sub-symbolic: points in common
 
@@ -126,11 +128,11 @@ We have already talked about Advice Taker, the hypothetical program originally e
 
 The paper begins by discussing the very notion of "intelligence" in a machine, as the authors aren't fully satisfied by the Turing Test's criterion; they propose to regard intelligent machines as: "fact manipulators".
 
-Intelligence is broken down into two parts: an "epistemological" and a "heuristic" part. The "epistemological" part is related to how the world is represented internally to the machine, and the "heuristic" part is related to how this representation is used to actually solve problems. The paper mainly discusses the epistemological part, and proposes to represent knowledge as formal logic (predicate logic, or some higher order logic). 
+Intelligence is broken down into two parts: an "epistemological" and a "heuristic" part. The "epistemological" part is related to how the world is represented internally by the machine, and the "heuristic" part is related to how this representation is used by the machine to actually solve problems. The paper mainly discusses the epistemological part, and proposes to represent knowledge as formal logic (predicate logic, or some higher order logic).
 
 An "intelligent" machine will have an adequate world model, which should also allow it to represent its own goals; it will be able to answer questions based on the knowledge contained in its world model; it will be able to get extra information from its environment if it determines that its current knowledge is insufficient; and it will perform actions to achieve its goals.
 
-We think that this view of "intelligence" in machines is consistent with the more general Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, and discussed in Brachman's and Levesque's book which states that:
+We think that this view of "intelligence" in machines is consistent with the more general Knowledge Representation (KR) hypothesis as formulated by philosopher Brian Cantwell Smith, (and brought up in Brachman's and Levesque's book "Machines Like Us"), which states that:
 
 "Any mechanically embodied intelligent process will be comprised of structural ingredients that a) we as external observers naturally take to represent a propositional account of the knowledge that the overall process exhibits, and b) independent of such external semantic attribution, play a formal but causal and essential role in engendering the behavior that manifests that knowledge" @krhypothesis.
 
@@ -138,45 +140,47 @@ In other words, the physical structure of the system is isomorphic to (closely m
 
 === Naive Theories of Everything
 
-McCarthy and Hayes remind the reader of the general relevance of philosophy to the problem of AI, however they dismisses a lot of it is irrelevant to the question of building a general AI system: there is no question that the physical world exists and that it already contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
+McCarthy and Hayes remind the reader of the general relevance of philosophy to the problem of AI, however they dismiss a lot of it is irrelevant to the question of building a general AI system: there is no question that the physical world exists and that it already contains some intelligent agents such as people; and that information about the world is obtainable through the senses (or input channels of a computer); and that our common sense and scientific views of the world are roughly correct; etc...
 
-However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to just act accordingly (let alone discover them introspectively). Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our minds, that it takes a certain degree of effort to even state them clearly in natural language. A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
+However, it is hard even to arrive at a naive formalization of common sense that is precise enough for a computer to act accordingly (let alone for the computer to discover this formalization "introspectively"). Moreover, we may say that such "naive common sense theories" of the world are so deeply ingrained in our own minds, that it takes a certain degree of effort to even state them clearly enough in natural language. 
+
+A taste of such theories is given in the book by Brachman and Levesque, where it is divided into three parts: "A Theory of Everything", "Naive Physics" and "Naive Psychology"; the first of these three contains statements such as: "There are things, and they have properties" and "Event occurrences are nonphysical things whose existence is responsible for change", to give an idea of the level of abstractness and (apparent) obviousness they deal with.
 
 === The Frame Problem
 
-One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about ensuring that the state of the world model is updated in all the relevant ways (and only the relevant ways), after an action is executed by the intelligent agent. When talking of time-mutable state, we generally speak of "fluents", which are a kind of predicate that depends on time.
+One of the facts that this "Theory of Everything" states out the so called "naive law of inertia", which is somewhat related to one of the problems originally raised in the 1981 paper by McCarty and Hayes. The problem is widely known as the "Frame Problem", and it's about ensuring that the state of the world model is updated in all the relevant ways (and _only_ the relevant ways), after an action is executed by the intelligent agent. As a side-note: when talking of time-mutable state, we generally speak of "fluents", which are a kind of predicate that depends on time.
 
-Predicate logic is "monotonic" @sep-logic-nonmonotonic, this means that the more premises are added to the knowledge base, the more conclusions one will be able to draw. But this is not always desirable: we wish the system to handle "defeasible inferences" (a kind of tentative inference from partial information, which is revisable in light of additional information). 
+Predicate logic is "monotonic" @sep-logic-nonmonotonic, this means that the more premises are added to the knowledge base, the more conclusions one will be able to draw. But this is not always desirable: we wish the system to handle "defeasible inferences": a kind of tentative inference from partial information, which is open to revision in light of additional information. 
 
-For example, we might learn that "Bob" is a fish swimming near the shore, and that he gets thrown out of the water by a wave onto the sand in the beach; since fish can't breathe out of the water, we should infer that Bob dies. But then we come to learn that Bob is a mudskipper (a species of amphibious fish who can live in semiaquatic habitats), so we should revise our inference, and say that Bob isn't dead, after all.
+For example, we might learn that "Bob" is a fish swimming near the shore, and that he gets thrown out of the water by a wave onto the sand in the beach; since fish can't breathe out of the water, we should infer that Bob dies. But then we come to learn that Bob is a mudskipper @mudskipper (a species of amphibious fish who can live in semiaquatic habitats), so we should revise our inference, and come to believe that Bob isn't dead after all.
 
-But "plain" predicate logic is monotonic, as already said: it doesn't allow us to declare "revisable" rules of inference; and since most things don't change when an action or event happens, it wouldn't be efficient (neither computationally, nor logically) to list out, one by one, all of the cases in which the happening of an event E _doesn't_ have any effect on thing T.
+But "plain" predicate logic is monotonic, as already said: it doesn't allow us to declare "revisable" rules of inference; and since "most things don't change when an action or event happens", it wouldn't be efficient (neither computationally, nor logically) to list out, one by one, all of the cases in which the happening of an event E _doesn't_ have any effect on thing T.
 
-The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has spaked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing a small thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak of this broader problem any further.
+The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has sparked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing one thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak here of this problem any further.
 
 == Common Sense and Natural Language <commonSenseAndNatlang>
 
-Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because _it_ was made of steel" (all emphases ours), resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because _it_ was made of _wood_", then "it" would naturally refer to the table, not the ball.
+Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because it was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because it was made of _wood_" (emphasis added), then "it" would naturally be taken to refer to the table, not the ball.
 
 === Defeasible Rules
 
-We think that the defeasibility (or revisability) of general rules is a recurrent theme in natural language; we have seen it when talking about L. A. Miller's findings on his group of students that were asked to write programs in natural language, we have seen it in Inform 7's revisable "gradation of rules" system, and we also see it in the work related to Common Sense in AI; Brachman and Levesque speak of "annotations", and give them an important role in their proposed (tentative) design for a system with Common Sense.
+We think that the defeasibility (or revisability) of general rules is a recurrent theme in natural language; we have seen it when talking about L. A. Miller's findings on his group of students that were asked to write text-manipulating programs in natural language, we have seen it in Inform 7's system of "gradation of rules" and circumstances, and we also see it in the work related to Common Sense in AI; Brachman and Levesque speak of "annotations", and give them an important role in their proposed (tentative) design for a system with Common Sense.
 
 The annotations they talk about concern the cancellation of restrictions (for example, on the value or number of a role in a relationship), but they (annotations) also concern the assignment of default fillers for a role, and perhaps even the management of metadata such as "source of belief", and "strength of belief" in a proposition.
 
 === Automatic Planning
 
-An key concept that is also discussed in "Machines Like Us", is that of automated planning. We have previously referred to the example that Brachman and Levesque make (about the self driving car, deciding to change route based on its terminal goal); to posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
+An key concept that is also discussed in "Machines Like Us", is that of automated planning. We have previously referred to the example that Brachman and Levesque make (about the self driving car, deciding to change route based on its terminal goal of getting the groceries); to posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
 
-We think that introducing this concept (automated planning) to a naturalistic programming language would present an improvement over prior work, and there is a precedent for this: the so called "Constraint programming languages".
+We think that introducing this concept (automated planning) to a naturalistic programming language would present an improvement over prior work, and there is a precedent for this in the broader scope of programming languages: the so called "Constraint programming languages".
 
 ==== Constraint Programming
 
-Constraint programming is a declarative paradigm based on the notion of a constraint. A constraint is a natural, declarative way to describe relationships between objects @laffra1991constraints. This reminds us of the similar notion of constraint that we mentioned while discussing D'Agostino's views on Chomsky's Limit Thesis. In a constraint programming language, the programmer declares the constraints, similar to how he/she declares the facts and inference rules in a language that supports logic programming. This paradigm was born in the context of logic programming, so it is sometimes called "Constraint Logic Programming" @jaffar1987constraint.
+Constraint programming is a declarative paradigm based on the notion of a constraint. A constraint is a natural, declarative way to describe relationships between objects @laffra1991constraints. This reminds us of the similar notion of constraint that came up while discussing D'Agostino's views on Chomsky's Limit Thesis. In a constraint programming language, the programmer declares the constraints, similar to how he/she declares the facts and inference rules in a language that supports logic programming. This paradigm was born in the context of logic programming, so there is a variant of it which is sometimes called "Constraint Logic Programming" @jaffar1987constraint.
 
-The solution of a constraint problem can be guided by a more or less exact algorithm, sometimes a heuristic that a programmer may or may not be able to specify, but it is the system's job to determine exactly how the solution is found.
+The solution of a constraint problem can be guided by a more or less exact algorithm, sometimes only a heuristic that a programmer may or may not be able to specify, but after it is specified, it is the system's job to determine exactly how the particular solution is found.
 
-We think this is an interesting paradigm, because it could be extended to systems with various independent "agents" (similar to objects in OOP, or "actors") @laffra1991constraints, these actors could all be trying to fullfill their own goals (constraint) different from the goals of the others, by executing some basic actions declared procedurally by the programmer or learned through the concatenation of more basic actions, and acting according to the rules (or circumstances) declared by the programmer in natural language.
+We think this is an interesting paradigm, because it could be extended to systems with various "agents" (similar to objects in OOP) @laffra1991constraints, these independent actors could all be trying to fullfill their own goal (constraint) different from the goals of the others, by executing some basic actions declared procedurally by the programmer or perhaps learned through the concatenation of more basic actions, and abiding by the rules (or circumstances) declared by the programmer in natural language.
 
 
 

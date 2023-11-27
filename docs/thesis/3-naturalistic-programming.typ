@@ -106,7 +106,7 @@ There have been some pretty complete attempts at creating comprehensive natural 
 
 === Pegasus <pegasus>
 
-The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting privately via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing @pegasuswebsite.
+The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing @pegasuswebsite.
 
 ==== Implicit Referencing, Compression and Context Dependence
 
