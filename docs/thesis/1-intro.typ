@@ -19,36 +19,28 @@ And yet, we still speak natural language everyday: we listen to the news, we rea
 // could this be a problem of 
 // but stat systmes
 
-== The End of Programming
+== Programming is dead
 
-Though it may sound paradoxical, in light of what we just said, unconstrained natural language may indeed be heading to become the primary means of interaction between us and our computers, in the short to medium term.
+Though it may sound paradoxical, in light of what we just said, natural language may indeed be headed to become the primary means of interaction between us and our computers, in the short to medium term.
 
-But this is not a paradox: the last decade (the 2010s) has seen the comeback and surge in popularity of Big Data and Machine Learning (ML) techniques on the scene of Artificial Intelligence (AI), along with the development of new Deep Learning architectures: such as the Transformer, originally proposed in 2017.
+But this is not a paradox: the last decade (the 2010s) has seen the flourishing and surge in popularity of Machine Learning (ML) techniques on the scene of Artificial Intelligence (AI) @brachman2022machines, along with the development of new Deep Learning architectures such as the Transformer @whatGptDoesWolfram.
 
-// TODO: transformer cite.
+Modern day Large Language Models (LLMs) can say and do things most of us never imagined were possible (in the practical sense) for a computer program before; though everyone knew, of course, of the theoretical possibility for such apparently highly "intelligent" behavior, as evidenced also by thought-experiments such as John Searle's (1932-) famous Chinese Room argument, which we talk about in "Common Sense" @commonsense.
 
-Modern day Large Language Models (LLMs) can say and do things most of us never imagined were possible (in the practical sense) for a computer program before; though everyone knew, of course, of the theoretical possibility for such apparently "intelligent" behavior, as evidenced also by thought-experiments such as John Searle's famous Chinese Room argument.
+Matt Welsh (1976-), computer scientist and software engineer, has written an article on January 2023 titled "The End of Programming" @Welsh2022. Welsh believes that the entire field of Computer Science is headed for an upheaval, that it won't be even _remotely recognizable_ to what it is today, 10 to 30 years from now.
 
-// TODO: Searle cite
+Programming (intended as humans explicitly writing computer programs, in a formal language) will be dead by then, according to Welsh; of course, one will still be able to write programs in some formal language for his/her own amusement, but the serious work will be done by Artificial Intelligence models.
 
-Matt Welsh (1976-), computer scientist and software engineer, has written an article on January 2023 titled "The End of Programming" @Welsh2022. Welsh believes that the field of Computer Science is headed for an upheaval, that it won't even be remotely recognizable to what it is today, 10 to 30 years from now.
-
-Programming (intended as humans explicitly writing computer programs, in a formal language) will be dead by then, according to Welsh; of course, one will still be able to write and run programs in some formal language for his/her own amusement, but the serious work will be handled by Artificial Intelligence models.
-
-Our role as human beings in relation to computers might turn into an "educational" one (rather than an "engineering" one, as it remains today); we will have to "educate" machines, rather than to program them or even to "train" them with data (in the current Machine Learning sense of the word). Of course, we will be "educating" them, just like we educate children, speaking to them in natural language.
+Our role as human beings in relation to computers might turn into an "educational" one (rather than an "engineering" one, as it remains today); we will have to "educate" machines, rather than to program them or even to "train" them with data (in the current Machine Learning sense of the word "train"). Of course, we will be "educating" these "temperamental, mysterious, adaptive agents" (as Welsh says), just like we educate our children, speaking to them in natural language.
 
 // Natural language is how we started 
 // is this how it will end?
 
-// The paradigm shift will be huge: it is not clear whether we are even prepared to deal with it.
-// "the fundamental building blocks of computation are temperamental, mysterious, adaptive agents"
-// pandora's box
+== Long live Natural Language
 
-== The Importance of Natural Language
+This huge paradigm shift, that is awaiting us all, may sound like a great prospect. We will finally ditch those abstruse, unnatural, archaic ensembles of symbols, numbers and brackets, that a relatively restricted percentage of the human race still uses daily to move bits around in memory, and to light pixels on displays. More people will finally have a (more intuitive) access to their machine's capabilities.
 
-This huge paradigm shift, that is awaiting us all, may sound like a great prospect. We will finally ditch those abstruse, unnatural, archaic ensembles of symbols, numbers and brackets, that a relatively restricted percentage of the human race still uses to move bits around in memory, and to light pixels on displays. More people will finally have a (more intuitive) access to their machine's capabilities.
-
-Will the new normal really be so good? We certainly hope that it will, but we also fear that this _great leap forward_ has all the potential to come with its fair share of troubles, and not just the ones related to the economic effect of this paradigm shift on all people (not just the ones in software engineering), or the legal issues regarding the copyright of the data consumed or produced by AI-models.
+Will the new normal really be so good? We certainly hope that it will, but we also fear that this _great leap forward_ has all the potential to come with its fair share of troubles, and not just the ones related to the economic @jobLossGpt effect of this paradigm shift on all people (not just the ones in software engineering), or the legal issues @legalRisksGpt regarding the copyright of the data consumed or produced by AI-models.
 
 // economy and law cite
 
@@ -64,7 +56,7 @@ Moreover, we can add, such models need huge amounts of data to achieve a level o
 
 Chomsky expresses his concern for the shift from a more "science-oriented" AI (ie: geared towards understanding the phenomenon) to a more "engineering-oriented" one (ie: just aiming to build a useful tool); this may lead to the risk of disillusionment for important scientific discoveries in the general public.
 
-Chomsky says that a person arguing that studying the extraordinary navigational capacities of ants is "useless" (because we modern humans have: maps, GPS satellites, digital compasses, etc...) would be laughed at. But a person making a similar argument about the formal study of language (because we already have huge statistical models churning on terabytes of input data to produce near human-level quality prose) is much more likely to be listened to, nowadays.
+Chomsky says that a person arguing that studying the extraordinary navigational capacities of ants is "useless" (because we modern humans have: maps, GPS satellites, digital compasses, etc...) would be laughed at. But a person making a similar argument about the formal study of language (because we already have huge statistical models churning on terabytes of input data to produce near human-level quality prose) is much more likely to be taken seriously, nowadays.
 
 To conclude, we believe this is a critical juncture of human history, for a number of reasons, and the rapid proliferation of AI systems trained on huge amounts of data is certainly an important one among them; to paraphrase an idea that quantum physicist and computer programmer Michael Nielsen (1974-) expressed in his book "Neural networks and deep learning" @nielsen2015neural: AI started out as an effort to understand reasoning and intelligence (maybe even shed some light on human intelligence), but it may end very soon, with us humans having understood neither how human intelligence works, nor even how the artificial intelligences we built work.
 
@@ -72,20 +64,13 @@ To conclude, we believe this is a critical juncture of human history, for a numb
 
 The first chapter will be an overview of the four most popular and widely known programming paradigms of all times (procedural, functional, object-oriented and logic), presented in the guise of a brief historical summary of the evolution of programming languages in general. We think that a solid understanding of what past and modern programming languages are capable of, and at what price (both in the positive and in the negative sense), is of fundamental importance in evaluating a new paradigm, or designing a new language.
 
-The second chapter will bring the focus on naturalistic programming specifically, and it will try answering some of the following questions: what existing programming languages are naturalistic? Is "naturalistic programming" just about using a more "English-like" (natural) syntax? Can any deeper underlying common principles be discerned in these languages? Do we think naturalistic programming is a "real" (fully-developed) paradigm yet? All of the projects we will discuss, approach the subject of natural language from a classical (non ML) standpoint, they are in this sense "ordinary" programming languages, with some very out-of-the-ordinary features. We will also bring up the tangentially related topic of Prompt Engineering for the optimization of LLM responses, which we see as an emergent competing approach (implementation-wise) to what may truly one day be called "programming in natural language".
+The second chapter will bring the focus on naturalistic programming specifically, and it will try answering some of the following questions: what existing programming languages are naturalistic? Is "naturalistic programming" just about using a more "English-like" (natural) syntax? Can any deeper underlying common principles be discerned in these languages? Do we think naturalistic programming is a "real" (fully-developed) paradigm yet? All of the projects we will discuss, approach the subject of natural language from a classical (non ML) standpoint, they are in this sense "ordinary" programming languages, with some very out-of-the-ordinary features. We will also bring up the tangentially related topic of Prompt Engineering for the optimization of LLM responses, which we see as an emergent competing approach (implementation-wise) to building what may truly one day be called "programming in natural language".
 
-The third chapter will jump straight into the intriguing (yet difficult) topic of Common Sense in AI, it will try relating some of the principles of naturalistic programming, to some of those in classical (or "Symbolic", or "Good Old Fashioned") AI.
+The third chapter will jump straight into the intriguing (yet difficult) topic of Common Sense in AI, it will try relating some of the principles of naturalistic programming to some of those in classical (or "Symbolic", or "Good Old Fashioned") AI.
 
-The last 2 chapters will be dedicated to describing our work in trying to implement some of the naturalistic ideas into a new prototype of a language we are designing ("Deixiscript").
+The last 2 chapters will be dedicated to describing our work in trying to implement some of the naturalistic ideas into a new prototype language we are designing ("Deixiscript").
 
 // == Practical Goals (and Non-Goals)
-
-// What is naturalistic programming?
-// Why is it relevant today?.
-// Prompt Engineering.
-// Problems with not having a formalized understading natlang prog.
-// State goals and non goals.
-// Outline of the chapters.
 
 // == Goals
 // To show that is is possible to efficiently approximate some key features of natural language (implicit referencing and syntactic compression) with a formalized subset of it.
@@ -96,16 +81,6 @@ The last 2 chapters will be dedicated to describing our work in trying to implem
 // == Non Goals
 // The goal is not to make a full system, but rather to prototype a language. Modern LLMs provide a way to translate natural language to code, but we want a language rather than a probabilistic translator, we want to axiomatize that part of natural language that is useful for programming.
 
-// // == The End of Programming
-
-// // Computer Scientist Matt Welsh has argued that traditional programming done by humans will become obsolete as a result of the advancement of AI systems that can be told what to do in natural language and come up with solutions for problems they were never explicitly taught how to deal with (zero-shot learning).
-
 // // However, the proliferation of guides on how to best use modern LLMs and the birth of Prompt Engineering suggests that a certain level of experience will be still needed to make effective use of these new "executable English" systems.
 
 // // Natural language thus seems to be the new frontier of programming, and a decent understanding of natural language, its style at describing problems, its advantages over traditional programming languages and its limitations will be crucial over the next decades, as LLMs grow more powerful and useful.
-
-
-// // // % https://www.promptingguide.ai/
-// // // % https://it.wikipedia.org/wiki/Matt_Welsh
-// // // % https://cacm.acm.org/magazines/2023/1/267976-the-end-of-programming/fulltext
-// // // % https://www.tcg.com/blog/on-the-wisdom-of-natural-language-programming/

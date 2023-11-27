@@ -1,4 +1,4 @@
-= Common Sense
+= Common Sense <commonsense>
 
 It is puzzling to think how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess @deepBlue), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.
 
@@ -8,11 +8,11 @@ The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines f
 
 "Common sense" in the context of AI doesn't mean anything much different from what it means for most of us in our daily life: it is the ordinary ability to posses (and make use of) non-expert knowledge to achieve ordinary, practical goals. Common sense is quite a flexible subset of rationality; it doesn't demand formal study or take above-average intelligence for a person to reason through experiential facts, to formulate predictions on the behavior of simple physical systems, or on the behavior of other intelligent agents (people) based on the feelings and goals of the latter, and to use these insights to smoothly handle the occurrence of an unexpected or unusual situation.
 
-The book "Machines Like Us" also proposes a general idea for implementing a system with Common Sense reasoning capabilities, though many implementation details are left open, and Hector Levesque, whom I had the pleasure of contacting via email, has confirmed that no system along those lines has been built yet (as of June 2023).
+The book "Machines Like Us" also proposes a general idea for implementing a system with Common Sense reasoning capabilities, though many implementation details are left open, and Hector Levesque, whom I had the pleasure of contacting via email, said that, to his knowledge, no system along those lines has been built yet (as of June 2023).
 
-The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in an unprecedented scenario. 
+The problem of endowing machines with Common Sense, is arguably at the core of designing a truly general AI system, not just a very efficient yet specialized problem solver, but rather: a system that can stand its ground, even in uncharted territory. 
 
-Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan" @taleb2007black) happen much more often than we would be inclined think: the tiny likelihood of a single, specific, bizarre event taken by itself is deceptive; in the real world there are so many unknowns that eccentric events are the order of the day.
+Moreover, unpredictable scenarios (as Brachman and Levesque remind us in their book, and as Nassim Taleb (1960-) reminds us in his 2007 book "The Black Swan" @taleb2007black) happen much more often than we would be inclined think: the tiny likelihood of a single, specific, bizarre event taken by itself shoudln't deceive us; in the real world there are so many unknowns, so much so that eccentric events are the order of the day.
 
 == The Issue of Creativity
 
@@ -30,9 +30,17 @@ From this follows the idea that human creativity too, in the more general sense,
 
 D'Agostino's solution, to reconcile Chomsky's view with the "established beliefs", involves trying to understand creativity in terms of problem solving; problems are characterized by their constraints, different sets of contraints determine different problems. Problems can be ranked in a hierarchy, based on the kinds of constraints they place on any valid solution; this hierarchy includes problems with 5 kinds of constraints: determinative, limitative, eliminative, tentative and trivial. We think that the respective 5 classes of problems are sorted by growing "undefinedness", rather than "difficulty", as we shall see.
 
-"Determinative" constraints are the strictest: they characterize the class of problems for which it is easy to define an algorithm, for which a procedural solution exists, such as arithmetic problems. "Limitative" constraints characterize those problems that are "well-defined", they provide necessary and sufficient conditions for the solution, examples of such problems are related to theorem discovery: there are necessary and sufficient conditions for some argument to count as a valid theorem for some position; yet there is no single mechanized way of discovering such proofs. "Eliminative" constraints only provide necessary (but no sufficient) conditions for the solutions that satisfy them, these problems are termed as "partially-defined", many "design-related" problems (eg: in architecture, engineering...) fall into this category.
+"Determinative" constraints are the strictest: they characterize the class of problems for which it is easy to define an algorithm, for which a procedural solution exists, such as arithmetic problems. 
 
-If a problem is given where some (but not all) of the constraints may be violated, then the constraints are "tentative", and the problem is "radical"; solved examples of such problems may occur in the history of science, where to accomodate for certain new facts, a theory may have had to be proposed which rejected certain standards of methodological practice. Lastly, if the constraints are even more vague than that, if they don't even tentatively try to provide necessary conditions for their solution, then they are "trivial" and the problems they describe are termed "improvisational"; examples of such problems are common in the domain of aesthetics (such as the arts).
+"Limitative" constraints characterize those problems that are "well-defined", they provide necessary and sufficient conditions for the solution, examples of such problems are related to theorem discovery: there are necessary and sufficient conditions for some argument to count as a valid theorem for some position; yet there is no single mechanized way of discovering such proofs. 
+
+"Eliminative" constraints only provide necessary (but no sufficient) conditions for the solutions that satisfy them, these problems are termed as "partially-defined", many "design-related" problems (eg: in architecture, engineering...) fall into this category.
+
+If a problem is given where _some_ (of course not _all_) of the constraints may be violated, then the constraints are "tentative", and the problem is "radical"; solved examples of such problems may occur in the history of science, where to accomodate for certain new facts, a theory may have had to be proposed which rejected certain standards of methodological practice. 
+
+Lastly, if the constraints are even more vague than that, if they don't even tentatively try to provide necessary conditions for their solution, then they are "trivial" and the problems they describe are termed "improvisational"; examples of such problems are common in the domain of aesthetics (such as the arts).
+
+=== Relationship with Common Sense
 
 We are tempted to say that Common Sense encompasses all of the aforementioned modes of reasoning, minus the "expert twist" to most of the concrete examples of problems provided by D'Agostino in his clear exposition of the problem-hierarchy. 
 
