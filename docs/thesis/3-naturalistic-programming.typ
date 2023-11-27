@@ -84,7 +84,7 @@ The language WEB combines together a markup language with a traditional general 
 
 According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language.
 
-== Stories and Code
+== Stories and Code <metafor>
 
 What do computer programming and story telling have in common? A lot, according to a study from 2005 by Hugo Liu and Henry Lieberman. The study involved a system which automatically translated user stories to Python code fragments @liu2005metafor, @liu2005programmatic.
 
@@ -398,9 +398,17 @@ The conclusions were that, while very powerful, AI coding tools still currently 
 
 // We suggest that it might be proficuous to examine the way this mapping...
 
+=== LLMs and naturalistic languages
+
+Ultimately, we think that the efforts to improve LLMs that work as "translators" from natural language to some programming language will have a tremendous impact on the way people write software in the future.
+
+We think perhaps this could also be helpful in gaining some better empirical understanding of what some researchers call "programmatic semantics" (the way natural language structures map to traditional programming language structures), which we also talked about in a previous section @metafor.
+
+While it is a great thing to have a black-box that works as an automatic natural language to code translator, nonetheless, we think it would be of some (at least theoretical) benefit to complement those lines of research with the development of programming languages that are closer to the way humans think to being with, of new formal languages that finally bridge the _Semantic Gap_ between our ideas and the machine's primitives.
+
 == Criticism
 
-Despite the advantages, and independently of the implementational difficulties, there are some strong negative points to be made about programming in natural language.
+Despite the advantages, and independently of the implementational difficulties, there are some strong negative points to be made about natural language (used as a programming language).
 
 === A Lack of Precision
 
