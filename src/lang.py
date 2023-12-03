@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import dataclasses
 from functools import cmp_to_key, reduce
-from typing import Callable, List, Literal, Tuple, TypeVar
+from typing import Callable, List, Tuple, TypeVar
 from kb import KB
 from zorror import Zorror
 
@@ -17,7 +17,6 @@ class Ast:
         if 'cmd' in vars(self): 
             return self.__class__(**{**newDict, 'cmd':cmd})
 
-        # TODO: make all ASTs dataclasses (or at least avoid float, int, str) to avoid this check
         if dataclasses.is_dataclass(self):
             return self.__class__(**newDict) # pyright:ignore
 
