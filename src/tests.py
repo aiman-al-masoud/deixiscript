@@ -149,8 +149,8 @@ def test_eval_sort_defs_by_descending_specificity():
 def test_eval_orphaned_property_names_in_definitions():
     x=parser.parse("a player is dead means: the player's life=0.0.").eval(KB())
     y=parser.parse('a player is dead means: the life=0.0.').eval(KB())
-    z=parser.parse('a player is dead means: life=0.0.').eval(KB())
-    assert x==y and y==z
+    # z=parser.parse('a player is dead means: life=0.0.').eval(KB())
+    assert x==y #and y==z
 
 def test_eval_and_operator_1():
     result=parser.parse('true and true')[0].eval(KB())
@@ -201,7 +201,7 @@ def test_eval_assign_property():
 
 def test_eval_idea():
     result=parser.parse("""
-        a player is dead means: health = 0.0.
+        a player is dead means: the health = 0.0.
         there is a player.
         the player is dead.
     """).eval(KB())
@@ -217,7 +217,7 @@ def test_eval_error_creating_identical_individuals():
 
 def test_eval_creating_similar_but_distinct_individuals():
     result=parser.parse("""
-        a player is dead means: health = 0.0.
+        a player is dead means: the health = 0.0.
         there is a player.
         there is a dead player.
     """).eval(KB())
@@ -239,8 +239,8 @@ def test_eval_pronoun_in_genitive_phrase():
 
 def test_eval_pronoun_in_idea_sentences():
     result=parser.parse("""
-        a player moves right means: x-coord = x-coord + 1.0.
-        a door opens means: state = 3.0.
+        a player moves right means: the x-coord = the x-coord + 1.0.
+        a door opens means: the state = 3.0.
 
         there is a player.
         the player's x-coord = 1.0.
@@ -255,32 +255,7 @@ def test_eval_pronoun_in_idea_sentences():
 # ----------------------------------------------------------------------
 
 def test_plan_enemy_should_ensure_player_is_dead():
-
-    maybe=parser.parse("""
-        x's y increments means: x's y = x's y + 1.0.
-        x's y decrements means: x's y = x's y - 1.0.
-
-        an enemy can hit a player, if the enemy is near the player.
-        
-        an enemy is near a player means: 
-            the enemy's x-coord = the player's x-coord.
-
-        an enemy hits the player means: 
-            the player's health decrements.
-
-        a player is dead, means: health = 0.0.
-        an enemy moves right means x-coord increments.
-        an enemy moves left means x-coord decrements.
-        an enemy can move right.
-        an enemy can move left.
-        there is an enemy.
-        there is a player.
-        the player's health = 4.0.
-        the player's x-coord = 3.0.
-        the enemy's x-coord = 1.0.
-
-    """).eval(KB())
-
+    maybe=parser.parse(open('./examples/player-enemy.txt').read()).eval(KB())
     assert not isinstance(maybe, Zorror)
     kb=maybe[0]
     from plan import  groupRepeated, plan

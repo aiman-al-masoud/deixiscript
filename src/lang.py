@@ -90,7 +90,7 @@ class ImplicitPhrase(NounPhrase):
             return kb2.updateStm(self), newId
         else:
             headIds=[Id(i) for i, thing in enumerate(kb.wm) if thing['type']==self.head]
-            if not headIds: return Zorror(f'Could not find any "{self.english()}.')
+            if not headIds: return Zorror(f'Could not find any "{self.english()}".')
             adjIds=[i for i in headIds if all([a.check(kb, TypeCast(i, self)) for a in self.adjectives])]
             if not adjIds: return Zorror(f'Found some {self.head}, but no "{[x.english() for x in self.adjectives]}" ones.')
             if len(adjIds)==1: return kb.updateStm(self), adjIds[0]
@@ -283,16 +283,6 @@ class Idea(Ast):
         engIdea = self.subject.english() + ' ' + self.predicate + " " + (self.object.english() if self.object else '') + ( '?' if not self.cmd else '')
         return engIdea.strip()
 
-def maybeOrphanedProps(ast:Ast)->List[ImplicitPhrase|Str]:
-    if not isinstance(ast, Ast): return []
-    if isinstance(ast, Genitive): return []
-    if isinstance(ast, ImplicitPhrase|Str): return [ast]
-    return [y for x in vars(ast).values() for y in maybeOrphanedProps(x)]
-
-def makeGenitive(owner:NounPhrase, prop:ImplicitPhrase|Str):
-    if isinstance(prop, ImplicitPhrase): return Genitive(owner, Str(prop.head))
-    return Genitive(owner, prop)
-
 @dataclass(frozen=True)
 class Def(Ast):
     definendum:Idea
@@ -318,12 +308,21 @@ class Def(Ast):
     def english(self):
         return self.definendum.english() + ", means: " + self.definition.english()
 
+def maybeOrphanedProps(ast:Ast)->List[ImplicitPhrase|Str]:
+    if not isinstance(ast, Ast): return []
+    if isinstance(ast, Genitive): return []
+    if isinstance(ast, ImplicitPhrase): return [ast]
+    return [y for x in vars(ast).values() for y in maybeOrphanedProps(x)]
+
+def makeGenitive(owner:NounPhrase, prop:ImplicitPhrase|Str):
+    if isinstance(prop, ImplicitPhrase): return Genitive(owner, Str(prop.head))
+    return Genitive(owner, prop)
+
 @dataclass(frozen=True)
 class Potential(Ast):
     event:Idea
     precondition:Ast=Bool(True)
     durationSeconds:float=0.1
-    # cmd:bool=True # for stuff like: "the enemy can hit the player?"
 
     def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
         return kb.copy(pots=(*kb.pots, self)), Bool(False)
@@ -332,6 +331,20 @@ class Potential(Ast):
 class Order(Ast):
     agent:NounPhrase
     goal:Ast
+    cmd:bool=True
+
+    def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
+        if self.cmd:
+            return kb.copy(ords=(*kb.ords, self)), Bool(False)
+        else:
+            from plan import plan, groupRepeated
+            maybe=plan(self, kb, 10)
+            if isinstance(maybe,Zorror): return maybe
+            steps=groupRepeated(maybe[0])
+            if not steps: return Zorror('The goal is already accomplished.')
+            pretty=reduce(lambda a,b:a+b+'\n\t',[x.english() for x in steps], '')
+            return Zorror(f'The plan (under {maybe[1]} seconds) is:\n\t{pretty}')
+
 
 @dataclass(frozen=True)
 class Repeat(Ast):

@@ -16,6 +16,8 @@ class Parser:
         return ast
 
 class Toast(Transformer[Any, Prog]):
+    
+    def verb(self, cs): return cleanVerb(str(cs[0]))
     def NEGATION(self, c): return 'non'
     def COPULA(self, c): return 'be'
     def IF(self, c): return 'if'
@@ -24,7 +26,6 @@ class Toast(Transformer[Any, Prog]):
     def MATHOP(self, c): return str(c)
     def LOGICOP(self, c): return cleanLogicOp(str(c))
     def COMPAREOP(self, c): return str(c)
-    def VERB(self, c): return cleanVerb(str(c))
     def BOOL(self, c): return Bool(str(c)=='true')
     def PRONOUN(self, c): return Pronoun()
     def NOUN(self, c): return Str(c) 
@@ -32,10 +33,11 @@ class Toast(Transformer[Any, Prog]):
     def genitive(self, cs): return Genitive(*cs)
     def defin(self, cs): return Def(*cs)
     def repeat(self, cs): return Repeat(*cs)
-    def order(self, cs):return Order(*cs)
     def idea(self, cs): return Idea(*cs)
     def question(self, cs:List[Ast]): return cs[0].ask()
     def command(self, cs:List[Ast]): return cs[0].tell()
+
+    def order(self, cs):return Order(*cs)
     
     def implicit_phrase(self, cs):
         if isinstance(cs[0], ImplicitPhrase): return cs[0] 
@@ -101,7 +103,7 @@ class Toast(Transformer[Any, Prog]):
 
 def cleanVerb(v:str):
     if v in {'go', 'goes'}: return 'go'
-    return v.rstrip('s')
+    return v
 
 def cleanLogicOp(op:str):
     if op==',': return 'and'

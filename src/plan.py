@@ -13,7 +13,8 @@ def plan(
 )->'Tuple[List[Idea], float]|Zorror':
 
     if durationSeconds > maxDurationSeconds:
-        return Zorror(f'Max duration exceeded!')
+        return steps, durationSeconds
+        # return Zorror(f'Max duration exceeded!')
     
     maybeGoalStatus=order.goal.ask().eval(kb)
     if isinstance(maybeGoalStatus, Zorror): return maybeGoalStatus

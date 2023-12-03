@@ -36,15 +36,18 @@ _parens: "(" _expression ")"
 implicit_phrase: _ARTICLE _noun
 genitive: _noun "'s" (NOUN|VARIABLE)
 attributive: (NEGATION "-")? NOUN _noun
-_event: _noun VERB _noun?
+_event: _noun verb _noun?
 _fact: _noun _COPULA NOUN _noun?
 idea:_event | _fact
 
-_potential: potential_core | potential_with_duration | potential_with_precondition
-potential_core: _noun "can" VERB _noun?
+_potential: 
+    | potential_core 
+    | potential_with_duration 
+    | potential_with_precondition 
+
+potential_core: _noun "can" verb _noun?
 potential_with_duration: _potential ","? "(" "duration"? ":"? NUMBER _TIME_UNIT ")"
 potential_with_precondition: _potential ","? (_IF _expression)
-_TIME_UNIT: "seconds" | "s"
 
 defin: idea ","? "means" ":"? _expression
 order: _noun "should" "ensure"? _expression
@@ -52,6 +55,7 @@ repeat: idea NUMBER "times"
 ?compare_exp: logic_exp | (logic_exp COMPAREOP compare_exp)
 ?logic_exp: _expression | (_expression LOGICOP logic_exp)
 ?math_exp: _noun | (_noun MATHOP math_exp)
+verb: VERB | VERB "s"
 // TODO: split eq/neq from compare and increase priority of compare w/ resp to logic
 
 _ARTICLE: "a" | "an" | "the"
@@ -61,11 +65,12 @@ COMPAREOP: "=" | "<=" | ">=" | "!=" | ">" | "<"
 VARIABLE: "x" | "y" | "z"
 PRONOUN: "it" | "he" | "she"
 NOUN: "player" | "enemy" | "location" | "life" | "x-coord" | "human" | "health" | "door" | "ok" | "state" | "right" | "left" | "y-coord" | "up" | "down" | "color" | "red" | "green" | "near" | "dead"
-VERB: "hit" | "die" | "hits" | "dies" | "move" | "moves" | "increment" | "increments" | "decrement" |  "decrements" | "open" | "change" | "opens" | "go" | "goes"  | "heal"
+VERB: "hit" | "die" | "move" | "increment" | "decrement" | "open" | "change" | "go" | "goes"  | "heal"
 _COPULA: "be" | "is" | "are"
 BOOL: "true" | "false"
 NEGATION: "non"
 _IF: "if"
+_TIME_UNIT: "seconds" | "s"
 
 %import common.WS
 %import common.ESCAPED_STRING -> STRING

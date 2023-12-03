@@ -1,0 +1,21 @@
+x's y increments means: x's y = x's y + 1.0.
+x's y decrements means: x's y = x's y - 1.0.
+
+an enemy can hit a player, if the enemy is near the player.
+
+an enemy is near a player means: 
+    the enemy's x-coord = the player's x-coord.
+
+an enemy hits the player means: 
+    the player's health decrements.
+
+a player is dead, means: the health = 0.0.
+an enemy moves right means the x-coord increments.
+an enemy moves left means the x-coord decrements.
+an enemy can move right.
+an enemy can move left.
+there is an enemy.
+there is a player.
+the player's health = 4.0.
+the player's x-coord = 3.0.
+the enemy's x-coord = 1.0.

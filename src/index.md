@@ -62,7 +62,7 @@ Each object can have a single value for a given property, while this is limiting
 
 # PLAN
 
-1. if max duration exceeded, return error!
+1. if max duration exceeded, return error (or return partial plan)!
 2. if goal is already accomplished, return list of steps.
 3. search for steps
 
@@ -76,7 +76,6 @@ Each object can have a single value for a given property, while this is limiting
 	1. if agent still can't do something, issue intermediate orders
 	1. if agent can do everything, just add events to list of steps and
 	update the plan's duration (get it from potentials).
-
 
 # MATCH
 
@@ -115,7 +114,7 @@ For instance:
 
 In case the sentence contains an object alongisde the subject, error out for ambiguity. More sophisticated strategies are also possible.
 
-Note that strings (not just implicit phrases) are also treated as props. **Problem: this also happens to strings that happen to be used as right values (they're expanded to SUBJECTS's STRING)**.
+<!-- Note that strings (not just implicit phrases) are also treated as props. **Problem: this also happens to strings that happen to be used as right values (they're expanded to SUBJECTS's STRING)**. -->
 
 # PRONOUNS (Deixis)
 
@@ -174,3 +173,4 @@ enemy's y-coord is 1.0.
 - There is no "which", therefore no transitive/intransitive verb gaps problem for now.
 - swapping r-val and l-val makes all the difference (also in planning) eg: the enemy's x-coord = the player's x-coord or vice versa.
 - rules need to be declared in order if they depend on each other
+- "near" enemy near player != player near enemy
