@@ -171,4 +171,6 @@ enemy's y-coord is 1.0.
 ```
 
 # MISCELANEOUS
-There is no "which", therefore no transitive/intransitive verb gaps problem for now.
+- There is no "which", therefore no transitive/intransitive verb gaps problem for now.
+- swapping r-val and l-val makes all the difference (also in planning) eg: the enemy's x-coord = the player's x-coord or vice versa.
+- rules need to be declared in order if they depend on each other

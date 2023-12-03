@@ -1,11 +1,5 @@
-# REPEAT
-	- to generate more readable plans
-
 # ASK MODE POTENTIAL
 	- to ask if possible to do something (debugging)
-
-# VARIABLES
-	- to define increment/decrement
 
 # VISUALIZE WM AS A GRAPH
     - graphviz

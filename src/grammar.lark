@@ -34,7 +34,7 @@ _noun:
 
 _parens: "(" _expression ")"
 implicit_phrase: _ARTICLE _noun
-genitive: _noun "'s" NOUN
+genitive: _noun "'s" (NOUN|VARIABLE)
 attributive: (NEGATION "-")? NOUN _noun
 _event: _noun VERB _noun?
 _fact: _noun _COPULA NOUN _noun?

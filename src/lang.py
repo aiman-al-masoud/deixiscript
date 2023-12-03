@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import dataclasses
 from functools import cmp_to_key, reduce
-from typing import Callable, List, Tuple, TypeVar
+from typing import Callable, List, Literal, Tuple, TypeVar
 from kb import KB
 from zorror import Zorror
 
@@ -38,6 +38,10 @@ class Id(Constant, int):
 class Num(Constant, float): pass
 
 class Str(Constant, str): pass
+
+@dataclass(frozen=True)
+class Var(NounPhrase):
+    name:str
 
 @dataclass(frozen=True)
 class Pronoun(NounPhrase):
@@ -102,7 +106,7 @@ class ImplicitPhrase(NounPhrase):
 @dataclass(frozen=True)
 class Genitive(NounPhrase):
     owner:NounPhrase
-    prop:str
+    prop:Constant
 
     def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
 
@@ -113,11 +117,12 @@ class Genitive(NounPhrase):
             if isinstance(maybe, Zorror): return maybe
             id=maybe[1]
             if not isinstance(id, Id): return Zorror(f"{self.owner} couldn't be resolved to an individual, only an individual can have properties (such as: '{self.prop}')")
+            if not isinstance(self.prop, Str): return Zorror(f'{self.prop} cannot be used, only a constant string is allowed')
             prop=kb.getProp(id, self.prop)
             if isinstance(prop, Zorror): return Zorror(f'What did you mean by "{self.prop}" of {self.owner.english()}')
             return kb.updateStm(prop), prop
         
-    def english(self): return self.owner.english() + "'s " + self.prop 
+    def english(self): return self.owner.english() + "'s " + self.prop.english() 
 
 def maybeDisambiguatePronoun(ast:Ast, kb:KB):
     from subst import subst
@@ -206,6 +211,7 @@ class EqExp(BinExp):
             if not isinstance(ownerId, Id): return Zorror(f'What did you mean by {self.left.owner.english()}?')
             right=self.right.eval(kb)
             if isinstance(right, Zorror): return right
+            if not isinstance(self.left.prop, Str): return Zorror(f'What is this property: "{self.left.prop}"? It must be a constant string')
             return kb.setProp(ownerId, self.left.prop, right[1]), right[1]
         else:
             left=self.left.ask().eval(kb)
@@ -285,7 +291,7 @@ def maybeOrphanedProps(ast:Ast)->List[ImplicitPhrase|Str]:
     return [y for x in vars(ast).values() for y in maybeOrphanedProps(x)]
 
 def makeGenitive(owner:NounPhrase, prop:ImplicitPhrase|Str):
-    if isinstance(prop, ImplicitPhrase): return Genitive(owner, prop.head)
+    if isinstance(prop, ImplicitPhrase): return Genitive(owner, Str(prop.head))
     return Genitive(owner, prop)
 
 @dataclass(frozen=True)
@@ -329,9 +335,12 @@ class Order(Ast):
     goal:Ast
 
 @dataclass(frozen=True)
-class Repeat:
+class Repeat(Ast):
     statement:Ast
     times:int
+
+    def english(self): 
+        return self.statement.english()+' '+str(self.times)+' times'
 
 @dataclass(frozen=True)
 class ExistentialQuantifier(Ast):

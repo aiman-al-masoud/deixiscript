@@ -19,6 +19,7 @@ class Toast(Transformer[Any, Prog]):
     def NEGATION(self, c): return 'non'
     def COPULA(self, c): return 'be'
     def IF(self, c): return 'if'
+    def VARIABLE(self, c): return Var(str(c))
     def NUMBER(self, c): return Num(str(c))
     def MATHOP(self, c): return str(c)
     def LOGICOP(self, c): return cleanLogicOp(str(c))

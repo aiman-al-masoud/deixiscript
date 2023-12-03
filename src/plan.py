@@ -34,7 +34,8 @@ def plan(
             newError=worldError(newKb, targetKb)
             if newError < error: couldDo.append(pot)
 
-        if not couldDo: return Zorror(f'Agent "{order.agent.english()}" cannot do: "{order.goal.english()}"')
+        if not couldDo: 
+            return Zorror(f'Agent "{order.agent.english()}" cannot do: "{order.goal.english()}"')
 
         cantDoYet=[p for p in couldDo if not p.precondition.ask().eval(kb)[1]] # pyright:ignore
 
@@ -73,4 +74,13 @@ def worldError(kb1:KB, kb2:KB):
 
     return totalError
 
-# def decreasesError(pot:Potential, ):
+def groupRepeated(steps:List[Idea]):
+    from itertools import groupby
+    newSteps:List[Idea|Repeat]=[]
+    for group in groupby(steps):
+        times=len(list(group[1]))
+        if times>1:
+            newSteps.append(Repeat(group[0], times))
+        else:
+            newSteps.append(group[0])    
+    return newSteps

@@ -19,7 +19,7 @@ def match(super:Ast, sub:Ast)->Dict[Ast, Ast]:
             if common!=supers: return {}
             return {super:sub}
         
-        case Genitive(), Genitive() if super.prop==sub.prop and match(super.owner, sub.owner):
+        case Genitive(), Genitive() if match(super.prop, sub.prop) and match(super.owner, sub.owner):
             return {super:sub}
 
         case Idea(), Idea() if super.predicate==sub.predicate:
@@ -48,6 +48,9 @@ def match(super:Ast, sub:Ast)->Dict[Ast, Ast]:
             return {super:sub}
 
         case Ast(), TypeCast() if match(super, sub.asType):
+            return {super:sub}
+        
+        case Var(), NounPhrase() if not (isinstance(sub, Var) and super.name!=sub.name):
             return {super:sub}
 
     return {}

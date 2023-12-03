@@ -30,7 +30,7 @@ def test_parse_fact_with_object():
 
 def test_parse_compare_with_math_formula():
     st=parser.parse("the player's health = 1 + 2 * 3")
-    assert st[0] == EqExp(Genitive(ImplicitPhrase('player'), 'health'), AddExp(Num(1), MulExp(Num(2), Num(3))))
+    assert st[0] == EqExp(Genitive(ImplicitPhrase('player'), Str('health')), AddExp(Num(1), MulExp(Num(2), Num(3))))
 
 def test_parse_events_with_comma():
     st=parser.parse("player moves, enemy moves")
@@ -125,6 +125,11 @@ def test_match_sentence_with_pronoun():
     nopro=parser.parse('the enemy hits the player')[0]
     pro=parser.parse('it hits the player')[0]
     assert match(nopro, pro) #and match(nopro, pro) 
+
+def test_match_variable_with_noun_phrase():
+    super=parser.parse("x's y")[0]
+    sub=parser.parse("player's health")[0]    
+    assert match(super, sub) and not match(sub, super)
 
 #---------------------------------------------------------------------------
 
@@ -247,45 +252,42 @@ def test_eval_pronoun_in_idea_sentences():
     assert result[0].wm[0] == {'type':'player', 'x-coord':2}
     assert result[0].wm[1] == {'type':'door', 'state': 3}
 
+# ----------------------------------------------------------------------
 
+def test_plan_enemy_should_ensure_player_is_dead():
 
-maybe=parser.parse("""
-    an enemy can hit a player, if the enemy is near the player.
-    
-    an enemy is near a player means: 
-        the enemy's x-coord = the player's x-coord.
+    maybe=parser.parse("""
+        x's y increments means: x's y = x's y + 1.0.
+        x's y decrements means: x's y = x's y - 1.0.
 
-    a player is dead, means: health = 0.0.
-    an enemy moves right means x-coord = x-coord + 1.0.
-    an enemy moves left means x-coord = x-coord - 1.0.
-    an enemy can move right.
-    an enemy can move left.
-    there is an enemy.
-    there is a player.
-    the player's health = 4.0.
-    the player's x-coord = 3.0.
-    the enemy's x-coord = 1.0.
+        an enemy can hit a player, if the enemy is near the player.
+        
+        an enemy is near a player means: 
+            the enemy's x-coord = the player's x-coord.
 
-    an enemy hits the player means: 
-        the player's health = the player's health - 1.0.
-""").eval(KB())
-# the non-dead player?.
-# the player is dead?
-# the enemy hits the player.
-# print(maybe[0].wm)
-# swapping them makes all the difference:
-# the enemy's x-coord = the player's x-coord.
+        an enemy hits the player means: 
+            the player's health decrements.
 
-assert not isinstance(maybe, Zorror)
-kb=maybe[0]
-# print(maybe)
+        a player is dead, means: health = 0.0.
+        an enemy moves right means x-coord increments.
+        an enemy moves left means x-coord decrements.
+        an enemy can move right.
+        an enemy can move left.
+        there is an enemy.
+        there is a player.
+        the player's health = 4.0.
+        the player's x-coord = 3.0.
+        the enemy's x-coord = 1.0.
 
-# print(kb.wm)
+    """).eval(KB())
 
-from plan import  plan
-order:Order=parser.parse('the enemy should ensure the player is dead')[0] # pyright:ignore
-x=plan(order, kb)
-# print(x)
-# print(len(x[0]))
-print([action.english() for action in x[0]]) # pyright:ignore
-
+    assert not isinstance(maybe, Zorror)
+    kb=maybe[0]
+    from plan import  groupRepeated, plan
+    order:Order=parser.parse('the enemy should ensure the player is dead')[0] # pyright:ignore
+    maybePlan=plan(order, kb)
+    assert not isinstance(maybePlan, Zorror)
+    steps=maybePlan[0]
+    groupedSteps=groupRepeated(steps)
+    assert groupedSteps==[parser.parse('an enemy moves right 2 times')[0], parser.parse('an enemy hits the player 4 times')[0]]
+    # print([x.english() for x in groupedSteps])
