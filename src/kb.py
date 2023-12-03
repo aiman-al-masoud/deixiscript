@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from types import MappingProxyType as MPT
-from typing import TYPE_CHECKING, Optional, Tuple, TypeVar
+from typing import TYPE_CHECKING, Tuple
 if TYPE_CHECKING: from lang import *
 from zorror import Zorror
 
@@ -45,10 +45,3 @@ class KB:
     def disambiguate(self, ast:'NounPhrase'):
         from match import match
         return next((noun for noun in self.stm if match(ast, noun)), None)
-
-    
-    # def getProp(self, ast:Genitive)->'Constant|Zorror':
-    # def setProp(self, ast:Genitive, value:NounPhrase)->KB|Zorror
-    # def __getThing(self, ast:NounPhrase)
-    # def createThing(self, ast:NounPhrase)->'KB|Zorror'
-    # def disambiguate(self, noun:NounPhrase)->'NounPhrase|Zorror':
