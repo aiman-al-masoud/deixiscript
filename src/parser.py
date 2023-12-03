@@ -32,12 +32,8 @@ class Toast(Transformer[Any, Prog]):
     def genitive(self, cs): return Genitive(*cs)
     def defin(self, cs): return Def(*cs)
     def repeat(self, cs): return Repeat(*cs)
-    
-    def order(self, cs:Tuple[NounPhrase, Ast]):
-        return Order(cs[0], cs[1].ask())
-    
+    def order(self, cs):return Order(*cs)
     def idea(self, cs): return Idea(*cs)
-
     def question(self, cs:List[Ast]): return cs[0].ask()
     def command(self, cs:List[Ast]): return cs[0].tell()
     
@@ -70,7 +66,6 @@ class Toast(Transformer[Any, Prog]):
         raise Exception
 
     def attributive(self, cs):
-        
         neg = 'non' in cs
         adjective=Adjective(cs[1] if neg else cs[0], neg)
         noun = cs[2] if neg else cs[1]
@@ -85,8 +80,7 @@ class Toast(Transformer[Any, Prog]):
                 noun.cmd,
             )
 
-    def potential_core(self, cs:List):
-        return Potential(Idea(*cs))
+    def potential_core(self, cs:List): return Potential(Idea(*cs))
     
     def potential_with_duration(self, cs:List):
         potential=cs[0]

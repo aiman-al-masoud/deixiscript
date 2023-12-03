@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 import dataclasses
+from zorror import Zorror
 from functools import cmp_to_key, reduce
 from typing import Callable, List, Tuple, TypeVar
 from kb import KB
-from zorror import Zorror
 
 
 class Ast:
