@@ -266,8 +266,8 @@ maybe=parser.parse("""
     the player's x-coord = 3.0.
     the enemy's x-coord = 1.0.
 
-    an enemy hits the player means: the player's health = the player's health - 1.0.
-
+    an enemy hits the player means: 
+        the player's health = the player's health - 1.0.
 """).eval(KB())
 # the non-dead player?.
 # the player is dead?

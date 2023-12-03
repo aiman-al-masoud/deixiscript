@@ -21,32 +21,18 @@ def plan(
     elif maybeGoalStatus[1]:
         return steps, durationSeconds
     else:
-        
-
         maybeTarget=order.goal.tell().eval(kb)
         if isinstance(maybeTarget, Zorror): return maybeTarget
         targetKb=maybeTarget[0]
-
-        # print('----------', order.goal.english())
-        # print(targetKb.wm[0]['x-coord'])
-
         error=worldError(kb, targetKb)
         couldDo:List[Potential]=[]
-
 
         for pot in whatAgentCanDo(order.agent, kb):
             maybeNew=pot.event.tell().eval(kb)
             if isinstance(maybeNew, Zorror): return maybeNew
             newKb=maybeNew[0]
             newError=worldError(newKb, targetKb)
-            
-            # print(pot.event.english(), newError, error, order.goal.english())
-            # print(pot.event.english(), kb.wm[0]['x-coord'], newKb.wm[0]['x-coord'])
-
             if newError < error: couldDo.append(pot)
-
-        # print(error)
-        # print(kb.wm)
 
         if not couldDo: return Zorror(f'Agent "{order.agent.english()}" cannot do: "{order.goal.english()}"')
 

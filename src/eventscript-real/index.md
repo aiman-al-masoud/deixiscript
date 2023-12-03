@@ -46,6 +46,8 @@ The world is modelled as entities and their properties. There is a list, the lis
 [{type:'cat', color:'red'}, {type:'cat', color:'black'}]
 ```
 
+Each object can have a single value for a given property, while this is limiting, it makes it easier to implement read/write buffers.
+
 # EXECUTION OF A PROGRAM
 
 1. Defs and Potentials hoisted up.
@@ -167,3 +169,6 @@ enemy's x-coord is 1.0.
 player's y-coord is 3.0.
 enemy's y-coord is 1.0.
 ```
+
+# MISCELANEOUS
+There is no "which", therefore no transitive/intransitive verb gaps problem for now.
