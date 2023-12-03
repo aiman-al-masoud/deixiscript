@@ -1,3 +1,6 @@
+# VOCABULARY
+    - put more words in (nouns vs verbs)
+
 # ASK MODE POTENTIAL
 	- to ask if possible to do something (debugging)
 
