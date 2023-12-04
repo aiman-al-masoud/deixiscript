@@ -149,32 +149,35 @@ Some "adjectives" such as near (we will be treating it as an adjective) support 
 
 Therefore, the system does not know whether an Idea represents an Event or a Fact from the Idea object itself. Every Idea is thought of as a Fact (i.e.: it cannot be performed by an agent) until proven otherwise, namely if there is an appropriate Potential.
 
-The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later.
+The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
 
+// ----------
 
+Up until now, we have always generically talked about the "subject" and the "object" of a simple sentence, we will now take some time to explain what we mean by those terms.
 
+In English, the subject and the object of a sentence are "noun phrases". A phrase is a syntactic structure that does not express a complete thought; in particular: a noun phrase is a phrase that performs the same function as a noun.
 
-// ---------------------------------------------------------------------------
-
-// The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
-
-As we have seen in the previous sections, envisioning a naturalistic programming system involves in part the description of a "programmatic semantics" /* @verbsasfuncs */, or mapping between the constructs of natural language and the constructs of one or more programming languages.
-
-We propose the following set of linguistic abstractions as the basic building blocks for our naturalistic system: noun phrases, simple sentences, definitions (a priori knowledge), laws (a posteriori knowledge), the question/command distinction and the possibility to negate noun phrases or sentences. In the following section we will present each of these abstractions and discuss their merits with regards to the domain of programming.
-
-== Noun Phrases
-
-A phrase is a linguistic structure that does not express a complete thought; in particular: a noun phrase is a phrase of arbitrary length that performs the same function as a noun; a general test for whether a part of a sentence counts as a noun phrase is to replace it with a pronoun and to see if the sentence still makes sense; for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "_it_ jumps over the lazy dog" or "the quick brown fox jumps over _it_".
-
-As we saw, a noun phrase can be of arbitrary length, the most trivial example is given by a single noun all by itself. A noun phrase also typically includes articles, adjectives and relative clauses with an arbitrary level of nesting. It is therefore possible for a noun phrase to incorporate a sentence (as a relative clause), such as "the fox _that jumped over the lazy dog_", where "that jumped over the lazy dog" is the relative clause.
+A general test for whether a part of a sentence counts as a noun phrase is to replace it with a pronoun and to see if the sentence still makes sense; for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "_it_ jumps over the lazy dog" or "the quick brown fox jumps over _it_", or even "_it_ jumps over _it_".
 
 A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or any smaller noun phrase). In the noun phrase "the lazy dog" the head is "dog".
 
-A noun phrase therefore generally represents things (material and immaterial objects) or types (categories of objects); a noun phrase can also be a proper noun (a name of a person or place).
+A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. 
 
-A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. For instance, if a person refers to "the cat" when they're at home, versus "the cat" when they're visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat". 
+For instance, if a person refers to "the cat" when they're at home, versus "the cat" when they're visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat".
 
-A noun phrase, as we only know too well, may be made arbitrarily long, and hence arbitrarily precise, (and hence exclude an arbitrarily large set of individual entities in a context); and this can be achieved through the use of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs". Moreover, a noun phrase may also refer to multiple entities at once: "the two cats", "the cat and the ocelot", "the 44 caracals".
+A noun phrase can be of arbitrary length, and of arbitrary precision (and thus include/exclude a higher number of individuals), the most trivial example is given by a single noun all by itself, but a noun phrase also typically includes articles, adjectives and even relative clauses with any arbitrary level of nesting, e.g.: "the agile calico cat that leaped on top of my desk holding a fresh kill (which she wanted me to have as a gift) in its fangs".
+
+
+
+// ------------------------------------------------------------------------------
+
+// The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
+
+// == Noun Phrases
+
+// A noun phrase therefore generally represents things (material and immaterial objects) or types (categories of objects); a noun phrase can also be a proper noun (a name of a person or place).
+
+// A noun phrase, as we only know too well, may be made arbitrarily long, and hence arbitrarily precise, (and hence exclude an arbitrarily large set of individual entities in a context); and this can be achieved through the use of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs". Moreover, a noun phrase may also refer to multiple entities at once: "the two cats", "the cat and the ocelot", "the 44 caracals".
 
 // == Simple, Compound and Complex Sentences
 
@@ -192,21 +195,10 @@ A noun phrase, as we only know too well, may be made arbitrarily long, and hence
 
 // Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent "verbful" sentence, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice!"
 
-== Questions vs Commands
 
-A simple declarative sentence generally stands for a logical proposition, in English these are generally known as sentences in the indicative mood, and often constrasted with sentences in the subjunctive mood, which refer to possible or unreal events.
+// == Negation
 
-Natural languages also typically include an imperative mood, a sentence in the imperative mood (an "order" or a "command") doesn't really correspond to a logical proposition, but it expresses nontheless the desire of the speaker for the world around them to change in some specific respect.
-
-Questions in English are generally stated in the indicative mood, with some slight syntactical differences and/or a different tone of voice in speech.
-
-== Negation
-
-For the sake of this work, we distinguish between two kinds of negation in natural language: the first applies to a simple sentence and asserts the falsity of the relative proposition (eg: "the sun doesn't rise from the west"), and the second applies to a noun phrase and serves to exclude individuals with a certain property from the scope of referents pointed to by the noun phrase (eg: "the non-resident visitors").
-
-== Programmatic Semantics
-
-Coming back to the subject of programmatic semantics, we propose that noun phrases be regarded as expressions, that simple and compound sentences be thought of mainly as procedure invocations, and that complex sentences be regareded as function/type definitions or event handlers.
+// For the sake of this work, we distinguish between two kinds of negation in natural language: the first applies to a simple sentence and asserts the falsity of the relative proposition (eg: "the sun doesn't rise from the west"), and the second applies to a noun phrase and serves to exclude individuals with a certain property from the scope of referents pointed to by the noun phrase (eg: "the non-resident visitors").
 
 === Noun Phrases
 
