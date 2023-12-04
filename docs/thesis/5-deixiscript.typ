@@ -165,8 +165,41 @@ A key insight from the study of natural language, is that people rarely ever use
 
 For instance, if a person refers to "the cat" when they're at home, versus "the cat" when they're visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat".
 
-A noun phrase can be of arbitrary length, and of arbitrary precision (and thus include/exclude a higher number of individuals), the most trivial example is given by a single noun all by itself, but a noun phrase also typically includes articles, adjectives and even relative clauses with any arbitrary level of nesting, e.g.: "the agile calico cat that leaped on top of my desk holding a fresh kill (which she wanted me to have as a gift) in its fangs".
+A noun phrase can be of arbitrary length, and of arbitrary precision (and thus include/exclude a higher number of individuals), the most trivial example is given by a single noun all by itself (e.g.: "cat"), but a noun phrase also typically includes articles, adjectives and even relative clauses with any arbitrary level of nesting, e.g.: "the agile calico cat that leaped on top of my desk holding a fresh kill (which she wanted me to have as a gift) in its fangs".
 
+The kinds of noun phrases supported by Deixiscript are: constants (numbers, strings, Booleans and IDs), "implicit phrases", "genitive phrases", pronouns and variables.
+
+Numbers, strings and Booleans work just like they do in any other programming language. IDs are mainly there for the system's own benefit (we will discuss them further when talking about the world model) and are not accessible to the user of the language. Variables are placeholders names ("x","y" and "z") that match any type, they can be useful when writing some kinds of general Definitions.
+
+What we call "implicit phrases" comprise of a noun and a list of adjectives. A noun is just a string representing a type (which doesn't have to be declared explicitly). The adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in Ideas (simple sentences) we discussed earlier.
+
+An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. In Deixiscript there is an equivalence between the two: once the meaning of an adjective is defined as a predicative adjective in a simple sentence (e.g.: "the cat is calico, means..."), it can be used as an attributive adjective in a noun phrase (e.g.: "the calico cat"). An attributive adjective can also be negated (e.g.: "a non-calico cat").
+
+What we call a "genitive phrase" is a noun phrase that refers to a property of an individual rather than to an individual itself. Syntactically, it is in the form:  "an individual's property" or "x's y" (using English's Saxon Genitive). It is also possible to implement an equivalent form using the preposition "of".
+
+We think that "possession" is an important part of how we model the world. All of the "useful work" that the system really does (everything it boils down to) is setting the value of properties on the dictionary-like data structures the system internally uses to represent "individuals". It is precisely because of this internal representation that the system is able to interface with the outside world (other programming languages, tools and libraries). We will come back to this idea later when discussing the Knowledge Base and World Model.
+
+The last kind of noun phrase we mentioned is the pronoun. This is perhaps the most elusive kind of syntactical element that we take for granted in natural language, but that is actually not so easy to approximate (with a hundred percent accuracy) in an artificial language.
+
+A personal pronoun (e.g.: "I", "you", "he/she", "it", etc) is a specific instance of a linguistic phenomenon known as "deixis". The "deictic" words are highly context-dependent words whose true meaning depends almost entirely on the state of the speaker who uses them. Deixis can be spatial (in words such as: "here", "there"), temporal (in words like: "yesterday", "before", "after") or personal (in words such as the personal pronouns).
+
+Deixiscript really only supports one kind of pronoun (third person singular). Pronouns in Deixiscript are a little special for another reason: they are the only kind of noun phrase that needs some external context to evaluate.
+
+We have already talked about how a simple sentence (Idea) may be treated as a conditional expression or as a statement with side-effects depending on the surrounding (syntactic) context (e.g.: the simple sentence "it is snowing" enclosed in the larger complex sentence: "if _it is snowing_ you put on a heavy coat"), but this is technically easier to achieve: the object that represents the larger syntactic structure (the complex sentence) _knows_ that its own conditional part has to be evaluated in "ASK" mood and not in "TELL" mood.
+
+On the other hand, with a pronoun that behaves somewhat "realistically", one should reserve the right to resolve the pronoun in different ways (to different concrete referents) based on the meaning of the surrounding context (the simple sentence that embeds the pronoun). 
+
+For instance: "the cat saw a table, and it jumped on it", it is obvious that the first instance of the pronoun "it" refers to "the cat" and that the second one refers to "the table", because we live in a world were cats are the sort of entities that can jump on tables, and not vice versa.
+
+Deixiscript supports a limited kind of context-dependent resolution of pronouns,  based on the Short Term Memory (STM) of the interpreter and the stored Definitions of the simple sentences, we will discuss the STM later alongside the Knowledge Base.
+
+
+
+
+
+// previously thought it could be implemented with "the thing"
+// There is really only one kind
+// pronouns
 
 
 // ------------------------------------------------------------------------------
