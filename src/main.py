@@ -1,4 +1,3 @@
-from re import S
 from typing import List
 from kb import KB
 from lang import *
@@ -81,15 +80,16 @@ def main():
 # ------------------------------------------
 
 import pygame
+from show import graphvizied
 
-def draw_circle_alpha(surface:pygame.Surface, color:Tuple[int,int,int, int], center, radius):
+def draw_circle_alpha(surface:pygame.Surface, color:Tuple[int,int,int,int], center, radius):
     target_rect = pygame.Rect(center, (0, 0)).inflate((radius * 2, radius * 2))
     shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
     pygame.draw.circle(shape_surf, color, (radius, radius), radius)
     surface.blit(shape_surf, target_rect)
 
 maybeKB=Parser().parse(open('./examples/player-enemy-2d.txt').read()).eval(KB())
-if isinstance(maybeKB, Zorror): 
+if isinstance(maybeKB, Zorror):
     print(maybeKB)
     exit()
 
@@ -104,27 +104,24 @@ def getColor(name:str)->Tuple[int,int,int]:
         'blue': (0,0,255),
     }[name]
 
-# def drawCircle(x:int, y:int, color:str, screen:pygame.Surface):
-#     pygame.draw.circle(screen, getColor(color), (x,y), 20)
-
 screen=pygame.display.set_mode([500, 500])
 running=True
 LOOP_FREQ_SECONDS=0.4
 
 while running:
 
+    print(graphvizied(kb))
     screen.fill((255,255,255))
 
     # update sprites (dots)
     for thing in kb.wm:
-        print(thing)
+        # print(thing)
         color=thing.get('color', Str('black'))
         x=thing.get('x-coord')
         y=thing.get('y-coord')
         assert isinstance(color, Str) and isinstance(x, Num) and isinstance(y,Num)
-        # drawCircle(int(x),int(y),color, screen)
         draw_circle_alpha(screen, (*getColor(color), 70), (int(x), int(y)), 20)
-
+    
     pygame.display.flip()
 
     # plan and update KB

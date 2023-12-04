@@ -114,8 +114,6 @@ For instance:
 
 In case the sentence contains an object alongisde the subject, error out for ambiguity. More sophisticated strategies are also possible.
 
-<!-- Note that strings (not just implicit phrases) are also treated as props. **Problem: this also happens to strings that happen to be used as right values (they're expanded to SUBJECTS's STRING)**. -->
-
 # PRONOUNS (Deixis)
 
 1. A pronoun **must** refer to one of the (max 4) noun phrases in the STM. When evalutating a sentence (Idea) with a pronoun, try substituting the pronoun by a noun phrase from the STM until you get a match. If there is no match, then the sentence is ambiguous!
@@ -148,26 +146,6 @@ When the Knowledge Base receives the order to create a new individual (with a no
 Similarly, Knowledge Base handles read/write accesses to properties.
 
 Problem: at the moment of creation, an individual "X THING" is still just a "THING", because ajectives are added later. But if there are other preexisting "THINGs", this prevents from ever selecting the right "THING" when trying to apply the adjectives!!! You can't use IDs to refer to the newly created individual, because you may not pick the right rule. Solution: Have a special wrapper AST "TypeCast"/"TreatAs" that matches the specified type but evaluates to whatever arbitrary noun phrase it was given (such as an ID).
-
-# EXAMPLE PROGRAM
-
-```
-after x's y increments, y = y + 1.
-after x's y decrements, y = y - 1.
-an enemy can move left/right/up/down.  // syntax sugar
-enemy can hit player, if enemy is near player.
-enemy is near player, means player's x-coord = enemy's x-coord, 
-                            player's y-coord = enemy's y-coord.
-player is dead, means health = 0.
-after enemy hits player, player's health decrements.
-after enemy moves right/left, x-coord increments/decrements.
-after enemy moves up|down, y-coord decrements|increments.
-player's health = 4.0.
-player's x-coord is 3.0.
-enemy's x-coord is 1.0.
-player's y-coord is 3.0.
-enemy's y-coord is 1.0.
-```
 
 # MISCELANEOUS
 - There is no "which", therefore no transitive/intransitive verb gaps problem for now.

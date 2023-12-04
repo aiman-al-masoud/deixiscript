@@ -1,9 +1,6 @@
 # VOCABULARY
     - put more words in (nouns vs verbs)
 
-# ASK-MODE FOR POTENTIAL
-	- to ask if possible to do something (debugging)
-
 # VISUALIZE WM AS A GRAPH
     - graphviz
     - visualize rules? how?
