@@ -209,9 +209,14 @@ At the end of the day, the goal behind implementing noun phrases was to have a s
 
 // --------------------
 
-
-
-
+// Knowledge Base & I/O
+// STM and disambiguation
+// syntactic matching
+// Orders and Planning
+// Example program
+// problems
+// futher work
+// conclusions
 
 // ------------------------------------------------------------------------------
 
