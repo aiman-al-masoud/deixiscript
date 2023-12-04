@@ -2,7 +2,151 @@
 
 = Deixiscript
 
-We will refer to the new computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality and indirect references) and Script (because this system is mainly intended as a scripting language). The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
+We will refer to the computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other programming language names).
+
+As is clear, our goal has never been to implement a production-grade programming environment (which would require many more man-months of effort and a higher level of practical expertise in the field of language implementation). Our goal was rather to build a working prototype of a naturalistic language, taking inspiration from the existing ones on the "market", and experimenting with some novel features which we shall discuss.
+
+== Implementation Details
+
+=== Language
+
+The implementation language is Python 3 (specifically version 3.10 or higher), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework.
+
+We think that the Python language offers great advantages for prototyping, due to its flexibility and regularity and due to the aboundance of third-party libraries that help perform a wide variety of tasks.
+
+=== Parser
+
+The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process.
+
+=== Graphical Tools
+
+The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the world models produced as a side effect of the interpreter's operation.
+
+// https://www.pygame.org/docs/tut/PygameIntro.html
+The Pygame library for interactive multimedia and game creation was used to show the evolution of some simulated processes graphically.
+
+=== Licensing
+
+All of the software used to develop Deixiscript is available for free and under the terms of an open source license (MIT for Pyright, Pytest, and Lark, CPL for Graphviz,  GNU LGPL version 2.1 for Pygame). Other than the aforementioned ones, the core components of Deixiscript require no further dependencies beyond Python's own standard library.
+
+Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We will suggest some possible further developments to the language in a later section of this work.
+
+=== Functional Style
+
+Regarding the code's style, an effort was made to follow (when possible) the Functional Paradigm's approach of data-immutability and function (or method) purity.
+
+We perceive that the advantage gained from following this style was a more predictable semantics in the business-logic. Most method calls do not modify an object directly: they return a copy of it if need be. This immutability of objects reduces the chances of an unforeseen side-effect happening (an unpredicted state mutation within an object which can be a cause for bugs).
+
+On the other hand, the disadvantage of this approach is that method return types can become a little too elaborate, because due to the lack of side-effects all changes have to be propagated through this mechanism (function returns).
+
+=== Interpreter Pattern
+
+The classes that represent the Abstract Syntax Trees (ASTs) follow the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages.
+
+Alternative approaches were tried (using a single, or multiple, eval function(s)) but the polymorphic nature of the Interpreter Pattern offers a higher degree of flexibility, also considering the fact that Python functions cannot be overloaded (unless done manually).
+
+The Interpreter Pattern defines a common interface (called "AST") with at least one method (usually called "eval", short for "evaluate"). The classes that implement the AST interface can either be "leafs" or "composites". A leaf (such as a number, a string, or a boolean literal) are typically constants, which means they always evaluate to themselves.
+
+Examples of composite types can be: an arithmetic expression, a logic expression, a function definition, a function invocation (or almost anything else one can think of, for that matter). A composite type typically evaluates its "children" first, then combines them however its logic dictates into a new evaluation result.
+
+The common interface ensures that all of the AST objects can be evaluated the same way: by calling the "eval" method and passing it as an argument the operating context (known as "environment", or "state").
+
+The "eval" method is expected to return the result of the evaluation of the AST object and to write the changes produced by its evaluation (if any) to the environment.
+
+In our case, since we are following a Functional approach, the eval method returns a new object that contains the updated context without changing the original.
+
+== Evolution of Deixiscript
+
+Our idea of what the language had to be (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time we have explored many different ideas, not all of them have made it into the final implementation.
+
+We initially started out with the vague notion of translating basic sentences in natural language to predicate logic (specifically Prolog) clauses, which could be then executed on a Prolog interpreter as either questions or statements. We eventually decided to change strategy when we realized that the process of translation was a little more involved than expected, and that the full power of Prolog's predicate logic was perhaps not really needed for our more modest purposes.
+
+After this initial experiment with predicate logic, we were initially inclined to go back to a more object-oriented approach, attaching both data and behavior to the entities in the world model; however, this comes with its own set of problems. We discussed some of these problems when we talked about Inform 7's approach in a previous chapter.
+
+We where then inspired by projects like Pegasus and by readings such as the book "Machines Like Us" (which we discussed in previous chapters) to take a more "rule-based" approach (though we still hadn't read about Inform 7's implementation to know it was called like that).
+
+As it stands, the current "version" of Deixiscript adopts a kind of rule-based programming. This makes types a little more flexible than classes, because they do not have to be declared as rigidly (or linked to their behavior as tightly) as in class-based programming. 
+
+In the pages that follow, we will describe the current version of Deixiscript, motivating some of the choices that were made and the philosophy behind them. Since Deixiscript is an English-based language, what follows will also incorporate a brief discussion of some (basic) aspects of the English grammar.
+
+// ------------------
+
+We begin from what we think is a central concept in any language (natural or artificial), and that is: propositions and their concrete representation. We came across propositions when discussing logic programming in a previous chapter; as we saw, in predicate logic propositions are represented by Well-Formed Formulas. In natural language, on the other hand, propositions are typically represented by sentences. In English, a sentence can be simple, compound or complex.
+
+=== Simple Sentences
+
+A common example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence can contain: a subject ("the quick brown fox"), a verb ("jumps"), a direct object (none in this case, since "jump" is typically used as an intransitive verb), and any number of complements ("the lazy dog" could be considered as the "location" of the fox's jump).
+
+The complements of a sentence can help specify the location or time of an action, they can also correspond to any other actors directly or indirectly involved in the action. In English, complements are generally introduced after a preposition such as: "over" (from the example), "to", "from", "by", and so on.
+
+The direct object of a sentence is a little special in English (and many other modern European languages) because, just like the subject, it is not preceded by any preposition. The subject and the object are generally distinguished by their order of appearance in the sentence (the subject typically precedes the object).
+
+Unlike English, some languages (even some modern Indo-European languages) rely more heavily on "case-markings" rather than prepositions and word-order to express grammatical relationships. A case-marking is typically a word inflection (such as a suffix, a prefix or an infix). In many such languages, English's "direct object" corresponds to an inflected noun in the "accusative case".
+
+A vestige of this grammatical case-system (which English inherited from an older proto-language) remains in modern English's personal pronouns, for instance: "I/he/she" are "nominative" (the grammatical case of the subject), "me/him/her" are "accusative" (the grammatical case of the direct object) or "dative" (e.g.: "I give _him_ the book").
+
+In any case, the verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
+
+Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him consul".
+
+Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the example sentence above would be just "piove", without any visible subject.
+
+Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent sentence with a verb, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice you are making!"
+
+=== Compound Sentences
+
+A compound sentence is a sentence made up of two or more simple or compound sentences joined together by a conjunction or disjunction. An example is: "the cat meowed loud, but she failed to obtain food"; it is important to note that the two simple sentences incorporated in the larger compound sentence remain "independent" of each other: you can rephrase the previous sentence by changing their order and the meaning is logically equivalent (if you ignore the time factor, at least).
+
+=== Complex Sentences
+
+A complex sentence creates a relation of dependence between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow loud enough" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing loud and obtaining food).
+
+But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the necessary (and somewhat trivial) relationship between them.
+
+// -----------------
+
+A choice was made in Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object. The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas. // cite inform 7
+
+So a proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. Another component of a Deixiscript Idea is a Boolean flag we will refer to as "CMD".
+
+The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the grammatical mood known as "indicative".
+
+There are other grammatical moods such as "subjunctive" (to express unreal or hypothetical situations) and "imperative" (to give orders). We won't be needing an explicit subjunctive mood (it is rarely used in English anyway), and we will be using a different kind of sentence all-together to express the "imperative mood" as we shall see.
+
+From a programming perspective, what is the difference between a question and a statement? We think that natural language "statements" (i.e.: declarations of knowledge assumed to be true) and programming language "statements" (i.e.: those constructs that are executed primarily for the side-effects they produce in the environment) are actually quite similar, because they both cause the "environment" to change its "beliefs" in some way.
+
+A programming statement, such as a variable assignment, (primarily) causes a change of state in the system, while a natural language statement in the indicative mood causes a person to change its beliefs about the world (or at least about the other person making the statement).
+
+On the other hand, we think that questions (and conditions) are more akin to programming language expressions, because their primary function (barring rethorical questions of course) is not that of modyfing someone else's beliefs about the world, but rather of eliciting a response from the interlocutor. In natural language, this response can be a simple "yes" or "no", or it can "point to a thing" (such as in "what", "where", "who" questions), or it can be an explanation of some phenomenon or behavior (such as in "why" questions).
+
+// https://stackoverflow.com/questions/19132/expression-versus-statement
+
+In most of the popular programming languages there is a syntactical distinction between a conditional expression and a statement. For instance, in C-like languages an assignment typically uses a single equal sign and an equality-comparison uses a double equals sign.
+
+We think that this distinction is mostly abstent from English (e.g.: the simple sentence "it is snowing" remains unchanged when embedded in the bigger complex sentence "if _it is snowing_, then wear a heavy coat"), and there is no reason why it must be otherwise in a programming language.
+
+So a sentence like "it is snowing" can be interpreted either as a statement (i.e.: "let it be known that it is snowing right now") or as a question or condition (i.e.: "is it snowing right now, yes or no?"). These two different interpretations, which we will call "TELL" and "ASK" respectively, are triggered by syntactic context. For instance, if a simple sentence is embedded within the condition part of a conditional statement (as we saw before), then it will be interpreted in "ASK" mood.
+
+A simple sentence all by itself (e.g.: "it is snowing") is interpreted in "TELL" mood, unless ended by a question mark (e.g.: "it is snowing?"). This syntax is a little off from the syntax of a "proper" question in English which in this case would require swapping the verb "to be" with the dummy subject "it" (i.e.: "is it snowing?") but we think that the two forms are still pretty close, and this issue could be fixed in the future by some slight additions to Deixiscript's concrete syntax.
+
+In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. Depending on the value of the CMD flag, the method "eval" behaves in one way (TELL) or in the other (ASK). However, some syntactic elements only have one kind of behavior: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
+
+
+
+// Sentences have no intrinsic meaning
+
+
+
+
+
+// The syntax of statment in Deixiscript is very similar to that of a statement in English. 
+// The syntax of a condition is also similar
+// The syntax of a question 
+
+
+// ---------------------------------------------------------------------------
+
+// The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
 
 As we have seen in the previous sections, envisioning a naturalistic programming system involves in part the description of a "programmatic semantics" /* @verbsasfuncs */, or mapping between the constructs of natural language and the constructs of one or more programming languages.
 
@@ -22,31 +166,21 @@ A key insight from the study of natural language, is that people rarely ever use
 
 A noun phrase, as we only know too well, may be made arbitrarily long, and hence arbitrarily precise, (and hence exclude an arbitrarily large set of individual entities in a context); and this can be achieved through the use of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs". Moreover, a noun phrase may also refer to multiple entities at once: "the two cats", "the cat and the ocelot", "the 44 caracals".
 
-== Simple, Compound and Complex Sentences
+// == Simple, Compound and Complex Sentences
 
-A declarative sentence expresses a complete thought; the meaning it carries corresponds to a logical proposition, and the latter is associated to a truth value. Having a truth value means that whatever construct carries it can be true or false: in the former case it would be describing how the world really is, and in the latter case it would contradict the actual state of affairs in the world.
+// A declarative sentence expresses a complete thought; the meaning it carries corresponds to a logical proposition, and the latter is associated to a truth value. Having a truth value means that whatever construct carries it can be true or false: in the former case it would be describing how the world really is, and in the latter case it would contradict the actual state of affairs in the world.
 
-In English, a sentence can be simple, compound or complex; an example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence generally has a subject (the doer of an action), a verb (the action) a direct object (the passive agent that receives the action) and any number of complements; such complements can help specify the location or time of the action, or can correspond to any other actors directly or indirectly involved in the action, in English they are generally introduced via a preposition such as: "to", "from", "by"...
+// In English, a sentence can be simple, compound or complex; an example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence generally has a subject (the doer of an action), a verb (the action) a direct object (the passive agent that receives the action) and any number of complements; such complements can help specify the location or time of the action, or can correspond to any other actors directly or indirectly involved in the action, in English they are generally introduced via a preposition such as: "to", "from", "by"...
 
-We will refer to the subject, direct object and complements in a sentence collectively as the "arguments" of the verb, because the number of arguments or "slots" to be filled can vary depending on the nature of the verb that is used. This number is known as the "transitivity" (or more generally the "valency") of a verb. These arguments we speak of are generally noun phrases.
+// We will refer to the subject, direct object and complements in a sentence collectively as the "arguments" of the verb, because the number of arguments or "slots" to be filled can vary depending on the nature of the verb that is used. This number is known as the "transitivity" (or more generally the "valency") of a verb. These arguments we speak of are generally noun phrases.
 
-The verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
+// The verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
 
-Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him a consul".
+// Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him a consul".
 
-Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the example sentence above would be just "piove", without any visible subject.
+// Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the example sentence above would be just "piove", without any visible subject.
 
-Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent "verbful" sentence, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice!"
-
-==== Compound Sentences
-
-A compound sentence is a sentence made up of two or more simple or compound sentences joined together by a conjunction or disjunction. An example is: "the cat meowed loud, but she failed to obtain food"; it is important to note that the two simple sentences incorporated in the larger compound sentence remain "independent" of each other: you can rephrase the previous sentence by changing their order and the meaning is logically equivalent (if you ignore the time factor, at least).
-
-==== Complex Sentences
-
-A complex sentence creates a relation of dependence between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow out loud enough" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing out loud and obtaining food).
-
-But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is very different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the (necessary, and somewhat trivial) relationship between them.
+// Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent "verbful" sentence, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice!"
 
 == Questions vs Commands
 
@@ -89,40 +223,6 @@ The question of whether "analytic" and "synthetic" knowledge really exhaust all 
 When it comes to a priori knowledge, we think that a computer program essentially presents us with defintions: function definitions, type definitions, class definitions; these are all examples of abstractions that the programmer essentially creates for their own comfort: to avoid having to repeat themselves and hence to improve code maintainability; the interpreter or compiler needs to know that when we say `abs(x)` we really mean `-x if x<0 else x`, but it would just as well directly accept `-x if x<0 else x`, or the equivalent machine code.
 
 On the other hand, we believe that the a posteriori knowledge contained in a program essentially corresponds with the "useful work" done by it, this knowledge is more correlated to the side-effects, intended as the desired output or external behavior of the program: it describes them. A perfect example of this, we think, are event handlers in an Event Driven programming language, when a programmer adds an event handler to a program (eg: "when the button is clicked, the counter increments"), they are essentially teaching the environment a new cause-and-effect relationship. You may also say that they are teaching it to react with a certain response to a given stimulus, or that they are teaching it to expect a certain kind of event to take place after another.
-
-== Implementation
-
-=== Language
-
-The implementation language of the code is Python 3 (specifically version 3.10), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework. 
-
-=== Parser
-
-The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process. 
-
-The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the knowledge graphs produced as a side effect of the interpreter's operation. 
-
-=== Licensing
-
-All of the software used to develop Deixiscript is available for free and under the terms of an open source license (MIT for Pyright, Pytest and Lark; CPL for Graphviz). Other than the aforementioned ones, the core components of Deixiscript will require no further dependencies beyond Python's own standard library.
-
-Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We welcome any further inspection and scrutiny of the code by anyone who is interested, as we hope that this openness will aid in improving the code's quality and conciseness, and in expanding its functionality. Regarding the latter, we will suggest some possible further developments later in this section.
-
-=== Code Style
-
-Regarding the code's style, an effort was made to follow the Functional Paradigm's approach of data-immutability and function (or method) purity whenever feasible (especially in the "core" module); the advantage being that of predictable semantics in the business-logic: method calls never directly modify an object, they rather return a new copy of it if need be; reducing the chances of an unforeseen side-effect (state mutation within an object) flying under the radar and causing harm.
-
-=== Modules
-
-The code is split into four modules: `core`, `main`, `parse` and `plot`. The module `main` houses the program's main entry point. The module `plot` defines a few utility functions to visualize graphs. The module `parse` defines the language's concrete grammar(s). And the module `core` contains the classes representing the AST types, and is independent of the rest of the code. Every module also includes a `tests.py` file which contains some unit tests that serve to test and showcase the module's functionalities.
-
-=== Interpreter Pattern
-
-The classes inside of the `core` module follow the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages. Alternative approaches were tried, but the advantage offered by the polymorphic overriding of methods in the classes representing the AST types was too tempting, and no alternative polymorphic mechanisms were offered by the Python language, as function overloading in Python must be done by hand and is a tedious business. 
-
-The Interpreter Pattern allows for greater flexibility in adding new AST types to the language, and in specializing the behavior of existing ones; and it does so by defining a common interface (usually at least an "eval" method) on every class representing an AST type. The classes representing the AST types are usually subdivided in "leaf" types and "composite" types. The former represent atomic entities (or constants) such as strings and numbers, and the latter represent anything else: from the simplest of boolean expressions to the messiest of function definitions. 
-
-The common interface ensures that each of these ASTs can be evaluated the same way: by calling its "eval" method and passing it the current operating context (also known as "environment", or "state"). The "eval" method is expected to return the result of the evaluation; in our case it returns a whole new updated context, without changing the original, in accordance with the general functional style of the codebase.
 
 == Abstract Syntax vs Concrete Syntax
 
