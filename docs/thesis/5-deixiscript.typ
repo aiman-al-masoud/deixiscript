@@ -129,19 +129,29 @@ So a sentence like "it is snowing" can be interpreted either as a statement (i.e
 
 A simple sentence all by itself (e.g.: "it is snowing") is interpreted in "TELL" mood, unless ended by a question mark (e.g.: "it is snowing?"). This syntax is a little off from the syntax of a "proper" question in English which in this case would require swapping the verb "to be" with the dummy subject "it" (i.e.: "is it snowing?") but we think that the two forms are still pretty close, and this issue could be fixed in the future by some slight additions to Deixiscript's concrete syntax.
 
-In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. Depending on the value of the CMD flag, the method "eval" behaves in one way (TELL) or in the other (ASK). However, some syntactic elements only have one kind of behavior: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
+In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. Depending on the value of the CMD flag, the method "eval" behaves in one way (TELL) or in the other (ASK). However, with some syntactic elements only one kind of behavior makes sense: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
+
+Most AST types have an intrinsic meaning which cannot be overridden/overloaded, for instance: arithmetic operators, logic operators, comparison operators, the equal sign (which works either as a comparison operator or as an assignment depending on the syntactic context); these all have a fixed meaning for the sake of simplicity.
+
+Simple sentences (Ideas), instead, don't have any predefined meaning: they must be defined by the programmer before being used, this can be done through a definition (or "Def") syntactic construct that looks a lot like a complex sentence in English.
+
+We will distinguish between two kinds of Ideas (and consequently two kinds of simple sentences) which are formally very similar (they are all represented by the same abstract syntactical structure) but they have a different meaning that can be discerned (as we will see).
+
+We will call these two categories of Ideas: "Facts" and "Events". We think of a Fact as just a regular proposition (a statement about how the world is or isn't at any particular point in time), and we think of an Event as an action that can be actively performed by an agent.
+
+Syntactically speaking, we will represent "Facts" as simple sentences with a copular verb (the verb "to be" in English), for instance the sentence: "the player is dead". We will think of Facts as "static" states of affairs, a sentence representing a Fact always refers to the present tense (there are no other tenses in Deixiscript), and describes the presence or absence of a particular situation "here and now" in the world model.
+
+Events on the other hand will be represented by simple sentences with any verb other than the copula (other than the verb "to be"). An Event does not describe a state of affairs that we think of as statically represented in the world model, but rather a dynamic action (performable by an agent) that produces certain kinds of changes to the world model when it is performed at any given time.
+
+As already mentioned, the AST type behind both Facts and Events is the one and same Idea AST type. Another thing we already mentioned is that the Idea AST type has a subject, an (optional) object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g.: to eat, to drink, to run), whereas in case of a Fact the predicate is an adjective (e.g.: red, dead, near).
+
+Some "adjectives" such as near (we will be treating it as an adjective) support an object (e.g.: "the cat is near _the mat_"), they are akin in this sense to transitive verbs (such as "to eat").
+
+Therefore, the system does not know whether an Idea represents an Event or a Fact from the Idea object itself. Every Idea is thought of as a Fact (i.e.: it cannot be performed by an agent) until proven otherwise, namely if there is an appropriate Potential.
+
+The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later.
 
 
-
-// Sentences have no intrinsic meaning
-
-
-
-
-
-// The syntax of statment in Deixiscript is very similar to that of a statement in English. 
-// The syntax of a condition is also similar
-// The syntax of a question 
 
 
 // ---------------------------------------------------------------------------
