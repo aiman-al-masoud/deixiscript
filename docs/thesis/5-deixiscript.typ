@@ -193,16 +193,32 @@ For instance: "the cat saw a table, and it jumped on it", it is obvious that the
 
 Deixiscript supports a limited kind of context-dependent resolution of pronouns,  based on the Short Term Memory (STM) of the interpreter and the stored Definitions of the simple sentences, we will discuss the STM later alongside the Knowledge Base.
 
+Deixiscript does not support realtive clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase came from the difficulties encountered in their implementation. 
+
+// https://en.wikipedia.org/wiki/English_relative_clauses
+
+A relative clause had to be introduced by a relativizer (such as: "that", "which", "who", etc) followed by a sentence. In English, the prevalent strategy to refer back to the nucleus (or head) of the enclosing noun phrase is that of "gapping", i.e.: leaving a "gap" in the place where the head would have stood had the relative clause been independent.
+
+For example: the noun phrase "the fish that the cat ate" has a relative clause ("that the cat ate") with an apparently missing direct object (the fish). As an independent sentence it would have looked like this: "the cat ate _the fish_".
+
+A possible implementation for this kind of relative clause involves substituting the head (in this example: "the fish") to the "gap" within the relative clause. The problem is that one has to know whether the verb that is used is transitive or not, to determine whether there is a gap in the sentence or not.
+
+While this is not an insurmountable problem in principle (the transitivity of a verb can be deduced from its usage in the Definitions) we thought that this feature (relative clauses) was not too central to our goals. 
+
+At the end of the day, the goal behind implementing noun phrases was to have a system to distinguish types from one another, to recognize some kinds of sub-type and compatibility relationships, and to pick out individuals from the world models based on their properties. For our basic prototyping purposes, one can get along well enough with the syntactic structures we have previously described (nouns, adjectives, genitives).
+
+// --------------------
 
 
 
-
-// previously thought it could be implemented with "the thing"
-// There is really only one kind
-// pronouns
 
 
 // ------------------------------------------------------------------------------
+
+// the near mat cat 
+// previously thought it could be implemented with "the thing"
+// There is really only one kind
+// pronouns
 
 // The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
 
