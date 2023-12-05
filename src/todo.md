@@ -6,10 +6,7 @@
     - visualize rules? how?
 
 # CLI
-    - read from file, analyze, show errors/warnings
     - hoist defs, pots up
-    - main loop simulation
-    - etc...
 
 # TEXT-POSITION IN ERRORS
 	- with meta from lark
