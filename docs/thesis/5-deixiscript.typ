@@ -229,6 +229,8 @@ An external tool could also write to the world model, for instance: to update th
 
 Another limitation put in place on the world model is this: the world model must not contain (at any time) any pair of individuals that are undistinguishable from their properties alone (and the ID, which is just an index in the list, does _not_ count as a property). 
 
+Obviously, this must be enforced by a check that is made whenever a new individual is about to be created with some properties: the system checks whether there is already an individual with all of the mentioned properties in the world model, and displays an error in case it already does.
+
 One might say that the system cannot "conceive" of any two "identical" individuals unless it (the system) knows of some actual (even slight) difference in their properties. The rationale behind this limitation is related to how the Short Term Memory (STM) works.
 
 // ----------------
@@ -257,6 +259,24 @@ The simple technique we are using to resolve pronouns is to try executing a sent
 
 // ------------
 
+Many of the higher-level operations we have talked about (using simple sentences, using adjectives, searching for relevant Definitions, etc.) depend on the functioning of a more basic low-level operation that we will call "match".
+
+Matching any two noun phrases or any two sentences (or, more generally, any two AST objects even of different types) is a purely syntactic operation that does not depend on the context i.e.: it is completely independent of the state of the Knowledge Base.
+
+Match is implemented as a function that takes two arguments: two Abstract Syntax Tree (AST) objects. The function "match" is "non-symmetric" i.e., the order of the arguments matters, the function cannot be expected to return the same result when the two arguments are swapped around.
+
+This is because one of the arguments is assumed to be the "super-type", and the other argument is assumed to be the "sub-type" of the comparison, to use some class-based programming jargon. Actually, the two arguments are not (as we have already hinted) limited to being noun phrases, they can be simple sentences, compound sentences, etc.
+
+What the function match does is trying to see if there is a valid substitution of symbols that will 
+
+
+// One is treated as 
+
+// one is treated as 
+
+// When any two syntactic elements are matched, one of them is treated as a 
+
+// "super-type" 
 
 
 
