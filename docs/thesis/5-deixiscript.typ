@@ -213,6 +213,7 @@ At the end of the day, the goal behind implementing noun phrases was to have a s
 // STM and disambiguation
 // syntactic matching
 // Orders and Planning
+// syntactic compression
 // Example program
 // problems
 // futher work
