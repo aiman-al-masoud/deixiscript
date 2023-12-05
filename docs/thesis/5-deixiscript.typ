@@ -301,17 +301,95 @@ The compare function we described can be readily built from the match function w
 
 Sorting the list of Definitions by descending specificity of the definendums ensures that the most specific Definition will be found first, but only if a sentence that is specific enough is used.
 
-There can still be some problem in case 
+The problem can still present itself if the noun phrase used is too generic for the actual shape of the object in the world model, however, it might be possible to overcome it for good by substituting ambiguous noun phrases by their more specific meaning in the STM before serching for a Definition. For instance, if we ask the system this questions: "the fish is dead?" the system may substitute the noun phrase "the fish" with the more specific noun phrase "the amphibious fish" (depending on the current state of the STM) before attempting to search for a definition of the predicate "is dead".
+
+// --------
+
+Now that we have formed a general idea (of most) of what the Deixiscript language is supposed to be (and before getting to the last aspect of Deixiscript, namely orders and planning) we wish to take a step back and give a short summary of the language's structure.
+
+We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance we have said that Definitions and Potentials would end up looking like complex sentences. In general, the syntax draws inspiration from English; however, it includes some mathematical symbols (like most other programming languages) for the sake of convenience.
+
+Now we will present (a little more formally) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description, we have discussed BNF in a previous chapter when talking about ALGOL 60. 
+
+The following presentation will omit some of the more technical details for the sake of clarity, the actual code that generates the parser is described in Lark's own dialect of BNF (Lark is the Python parsing toolkit we are using), and contains some extra caveats and technicalities compared to the following one.
+
+Firstly, any Deixiscript program contains at least a single statement, or more statements separated by a dot. We will express this in the equivalent BNF-like pseudo-code:
+
+`<program> := <statement> | (<program> "." <statement>)`
+
+A "statement" can be any of the following syntactic structures:
+
+`<statement> := <expression> | <definition> | <potential> | <order> | <question> |<repetition> | <existential-quantifier>`
+
+An "expression" is either a noun, or an idea or a binary expression:
+
+`<expression> := <noun> | <idea> | <binary-expression>`
+
+A "question" is just a statement followed by a question mark, there is definitely room for improvement on this rule (as we already stated in a previous section):
+
+`<question> := <statement> "?"`
+
+An idea is a fact or an event; we wish to note that the distinction here is a purely syntactical one i.e., after an event or fact is parsed it is transformed into the same Idea abstract tree:
+
+`<idea> := <event> | <fact>`
+
+This is how an event looks like, it is basically an English simple sentence with only a subject and an optional object (the question mark after the second occurrence of the noun means that it is optional):
+
+`<event> := <noun> <verb> <noun>?`
+
+A fact instead looks like a simple sentence with a copular verb (i.e. the verb "to be" in English). The first noun is the subject, the second is the predicative adjective, and the third is the (optional) object:
+
+`<fact> := <noun> <copula> <noun> <noun>?`
+
+A binary expression is two smaller expressions separated by a binary operator. The binary operator can be a logical operator ("and", "or"), a comparison operator (">", "<", etc.), an arithmetical operator ("+", "-", etc.) or the equal sign ("=") which (as already said) can be interpreted as an assignment or as an equality comparison depending on the surrounding syntactic context. The code below shows the binary expression as a single production rule, but in practice it would be split into several similar-looking rules (logic, arithmetic, comparison, etc.) for the purpose of defining operator precedence:
+
+`<binary-expression> := <expression> <binary-operator> <expression>`
+
+A definition is quite simply an "idea" (a simple sentence) followed by the harcoded verb "to mean", followed by any expression (the "meaning"):
+
+`<definition> := <idea> "means" <expression>`
+
+A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, followed by another (this time optional) noun (the direct object); there are two further optional parts of a potential: a duration in seconds and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true" i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
+
+`<potential> := <noun> "can" <verb> <noun>? ["(" <number> "seconds" ")"] ["if" <expression>]`
+
+An order (which we will discuss in a later section) is composed of a noun (the agent who receives the order), the harcoded verb phrase "should ensure" and an expression (the agents "goal").
+
+`<order> := <noun> "should ensure" <expression>`
+
+A repetition statement is not really recessary (and we had not really mentioned it before now), but we decided to add it just for convenience; it consists of an idea (a simple sentence) followed by a number, followed by the harcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
+
+`<repetition> := <idea> <number> "times"`
+
+A "noun" (or "noun phrase") can be any of the following things:
+
+`<noun> := <constant> | <article-phrase> | <genitive-phrase> | <attributive-phrase> | <pronoun> | <variable> | <number> | <parenthesized-phrase>`
+
+Constants are numbers, strings or Booleans; the ID type is not shown here because in principle it should not be accessible to the programmer (the ID of an individual is supposed to be used internally by the system) though the system could be easily extended to include a syntax for an "ID literal" which could be useful for debugging purposes:
+  
+`<constant> := <number> | <string> | <boolean>`
+
+A "real" noun (i.e. an implicit reference) is preceded by an English article (definite or indefinite):
+
+`<article-phrase> := <article> <noun>`
+
+An "attributive phrase" is just a noun phrase with an adjective. 
+
+// The adjective itself is just another noun, we wish to note that 
+
+`<attributive-phrase> := "non-"? <NOUN> <noun>`
+
+`<genitive-phrase> := <noun> "'s" <NOUN>`
+`<parenthesized-phrase> := "(" <expression> ")"`
 
 
-// This can be 
-// Since the noun phrases will be disambiguated...
+As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. After the parse tree is generated ... transform
 
 
-// syntactic matching
+
+// concrete syntax
 // Orders and Planning
 // syntactic compression
-// concrete syntax
 // Example program
 // problems
 // futher work
