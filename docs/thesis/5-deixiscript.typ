@@ -209,8 +209,57 @@ At the end of the day, the goal behind implementing noun phrases was to have a s
 
 // --------------------
 
-// Knowledge Base & I/O
-// STM and disambiguation
+We have repeatedly mentioned the "Knowledge Base", in the following paragraphs we will discuss the details behind this important component of the system. The Knowledge Base contains all of the state of the Deixiscript interpreter at any point in time, which comprises of: the World Model (WM), the lists of Definitions, Potentials and Orders (we will come to these latter ones later), and the Short Term Memory (STM).
+
+As we already said, the world is modelled as individual entities (or "individuals") and their associated properties. An "individual" in the world model is nothing more than a bundle of properties stored in a dictionary (associative array) data structure. Any one of these individuals (or bundles of properties) must contain at least one essential property that we call "type". There is a list of these individuals, and the index in the list of an individual is its "ID". For instance, we could have a world model like this one (represented in JSON notation):
+
+`[{"type":"cat", "color":"red", "age":10}, {"type":"cat", "claws":"sharp"}, {"type":"dog", "color":"brown"}]`
+
+This world model contains three individuals (two cats and one dog), and describes the property "color" of the first cat (ID number 0) as "red" and the same property of the only dog (ID number 2) as "brown". The second cat (ID number 1) does not have a property "color" (or better yet: the model does not have any information about it) but it has a property "claws" set to the value "sharp". The first cat (the red one) also has a property "age" that is set to the value 10.
+
+The "keys" are the names of the properties of the individuals ("type", "color", etc.) and they must be strings. The values assigned to the properties can be strings, numbers or Boolean values. One might also imagine to set the value of a property to an ID value (which is a distinct type in Deixiscript from the number type). 
+
+Setting the value of a property to an ID type might be useful for those properties that involve a permanent bond (more stable than an emphemeral interaction during an Event) between two individuals.
+
+This way of representing the world has its limitations. For example, given that the value of a property can only be a scalar constant (string, number, Boolean, and maybe ID) it cannot hold more than one value at a time, e.g. a cat cannot have two colors simultaneously (unless of course one decides to have both a "color-one" and a "color-two" properties, which would be two distinct properties anyway).
+
+This limitation however (ensuring that any given property has one single value at a time) is useful for interfacing with the outside world (other programming languages and software tools) because they (the external tools) can more easily read values from the properties of individuals in the world model, for instance: to redraw a graphical component based on the state of the world model. 
+
+An external tool could also write to the world model, for instance: to update the value of an input buffer after the user of a Deixiscript program enters some new input.
+
+Another limitation put in place on the world model is this: the world model must not contain (at any time) any pair of individuals that are undistinguishable from their properties alone (and the ID, which is just an index in the list, does _not_ count as a property). 
+
+One might say that the system cannot "conceive" of any two "identical" individuals unless it (the system) knows of some actual (even slight) difference in their properties. The rationale behind this limitation is related to how the Short Term Memory (STM) works.
+
+// ----------------
+
+The Short Term Memory (STM) is a part of the Knowledge Base, its purpose is essentially to disambiguate the implicit references and pronouns that may be used by the programmer in a given context.
+
+The STM behaves like a bounded queue (with some caveats as we will see). The STM can hold up to N (we experimented with N=4) noun phrases at any time, the size N of the STM should not be too big.
+
+The system tries updating the STM whenever a "noun phrase is used by the programmer", but STM may have to remain unchanged in some cases. We will illustrate its behavior with a simple example: suppose that there are two cats, one with color=red and the other with color=black (the two individuals can co-exist in the same world model because they are considered to be distinct by one property); suppose also that the STM is initially empty.
+
+When we (the programmers) say: "the cat", the system displays an error. This is because there are currently two individuals in the world model to whom the noun phrase "the cat" applies; furthermore, the STM is initially empty and it cannot provide any help (yet) at disambiguating this ambiguous phrase ("the cat").
+
+So we try being more specific; suppose that we have already defined what it means for a cat to be red (as having the "color" property set to the value "red"), so we say: "the red cat", using an attributive adjective to narrow down on the individual we would like to talk about. Now the system does not display an error, because the noun phrase we used is precise enough to pick out one single entity unambiguously from the world model. The system also prepends the noun phrase "the red cat" at the head of the STM queue.
+
+As a side-note, another limitation that was put in place, in the latest version of Deixiscript, was that a noun phrase can only "point to" a single individual at a time; in other words: a noun phrase may resolve at most to a single ID, given one state of the Knowledge Base. Previous versions of Deixiscript didn't have this limitation, but they had to check (for any sentence) if any of the noun phrases it contained would resolve to multiple IDs, and, if that was the case, "expand" the original sentence into multiple similar sentences each with a different ID. This also meant that noun phrases had to specify a cardinality (to distinguish singular from plural). //It would be interesting to 
+
+Going back to the example we were making, now the STM contains the noun phrase "the red cat". Suppose we _now_ say "the cat". The system does not display any error, because it is now able to use the STM to disambiguate, i.e. the system will assume that we are referring to "the red cat" in the STM. It is worth noting that, in this case, the system will _not_ insert the ambiguous phrase we just used ("the cat") into the STM, because it already contains a more precise one i.e.: "the red cat".
+
+Suppose we now say "the non-red cat" to the system. This will pick out the other cat in the world model, the one that does not have "red" as its color. The system will insert the new noun phrase "the non-red cat" into the queue; and, from now on, the ambiguous noun phrase "the cat" will be intended as "the non-red cat".
+
+One can then mention again "the red cat" and the STM will be updated accordingly. When the STM grows to its maximum length, the oldest element (noun phrase) will be removed from the queue to make space for the newest one.
+
+The STM is also useful for the resolution of pronouns. The stipulation here is that any pronoun must refer exclusively to some noun phrase that is currently in the STM. As we have said previously when talking about pronouns, a pronoun should be able to resolve differently based on the meaning of the sentence or phrase that surrounds it. 
+
+The simple technique we are using to resolve pronouns is to try executing a sentence (or phrase) that contains a pronoun multiple times, each time after having substituted the pronoun with a different noun phrase taken from the STM (they are very few, owing to the STM's limited capacity). When the sentence (or phrase) finally works (does not produce an error) then we stop, and we consider the pronoun to be resolved. Of course, it may be that none of the noun phrases in the STM succeeds at making sense of the sentence containing a pronoun, in that case the system just displays an error stating that the pronoun is used ambigiously in that context.
+
+// ------------
+
+
+
+
 // syntactic matching
 // Orders and Planning
 // syntactic compression
@@ -220,6 +269,8 @@ At the end of the day, the goal behind implementing noun phrases was to have a s
 // conclusions
 
 // ------------------------------------------------------------------------------
+
+// recall
 
 // the near mat cat 
 // previously thought it could be implemented with "the thing"
