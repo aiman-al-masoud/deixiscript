@@ -323,7 +323,7 @@ A "statement" can be any of the following syntactic structures:
 
 An "expression" is either a noun, or an idea or a binary expression:
 
-`<expression> := <noun> | <idea> | <binary-expression>`
+`<expression> := <noun-phrase> | <idea> | <binary-expression>`
 
 A "question" is just a statement followed by a question mark, there is definitely room for improvement on this rule (as we already stated in a previous section):
 
@@ -335,11 +335,11 @@ An idea is a fact or an event; we wish to note that the distinction here is a pu
 
 This is how an event looks like, it is basically an English simple sentence with only a subject and an optional object (the question mark after the second occurrence of the noun means that it is optional):
 
-`<event> := <noun> <verb> <noun>?`
+`<event> := <noun-phrase> <verb> <noun-phrase>?`
 
-A fact instead looks like a simple sentence with a copular verb (i.e. the verb "to be" in English). The first noun is the subject, the second is the predicative adjective, and the third is the (optional) object:
+A fact instead looks like a simple sentence with a copular verb (i.e. the verb "to be" in English). The first noun phrase is the subject, the second is the predicative adjective, and the third is the (optional) object:
 
-`<fact> := <noun> <copula> <noun> <noun>?`
+`<fact> := <noun-phrase> <copula> <noun-phrase> noun-phrase>?`
 
 A binary expression is two smaller expressions separated by a binary operator. The binary operator can be a logical operator ("and", "or"), a comparison operator (">", "<", etc.), an arithmetical operator ("+", "-", etc.) or the equal sign ("=") which (as already said) can be interpreted as an assignment or as an equality comparison depending on the surrounding syntactic context. The code below shows the binary expression as a single production rule, but in practice it would be split into several similar-looking rules (logic, arithmetic, comparison, etc.) for the purpose of defining operator precedence:
 
@@ -351,40 +351,55 @@ A definition is quite simply an "idea" (a simple sentence) followed by the harco
 
 A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, followed by another (this time optional) noun (the direct object); there are two further optional parts of a potential: a duration in seconds and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true" i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
 
-`<potential> := <noun> "can" <verb> <noun>? ["(" <number> "seconds" ")"] ["if" <expression>]`
+`<potential> := <noun-phrase> "can" <verb> <noun-phrase>? ["(" <number> "seconds" ")"] ["if" <expression>]`
 
 An order (which we will discuss in a later section) is composed of a noun (the agent who receives the order), the harcoded verb phrase "should ensure" and an expression (the agents "goal").
 
-`<order> := <noun> "should ensure" <expression>`
+`<order> := <noun-phrase> "should ensure" <expression>`
 
 A repetition statement is not really recessary (and we had not really mentioned it before now), but we decided to add it just for convenience; it consists of an idea (a simple sentence) followed by a number, followed by the harcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
 
 `<repetition> := <idea> <number> "times"`
 
-A "noun" (or "noun phrase") can be any of the following things:
+A noun phrase can be any of the following things:
 
-`<noun> := <constant> | <article-phrase> | <genitive-phrase> | <attributive-phrase> | <pronoun> | <variable> | <number> | <parenthesized-phrase>`
+`<noun-phrase> := <constant> | <noun> | <article-phrase> | <genitive-phrase> | <attributive-phrase> | <pronoun> | <variable> | <number> | <parenthesized-phrase>`
 
 Constants are numbers, strings or Booleans; the ID type is not shown here because in principle it should not be accessible to the programmer (the ID of an individual is supposed to be used internally by the system) though the system could be easily extended to include a syntax for an "ID literal" which could be useful for debugging purposes:
   
 `<constant> := <number> | <string> | <boolean>`
 
-A "real" noun (i.e. an implicit reference) is preceded by an English article (definite or indefinite):
+A `<noun>` is just a simple, basic English noun (actually any "non-verb word") among the ones that the parser recognizes. By itself, it is actually just treated as a string, and could in fact be considered a constant.
 
-`<article-phrase> := <article> <noun>`
+A "real" noun (i.e. an implicit reference) is preceded by an English article (definite or indefinite); this is the kind of noun that will resolve to an ID when evaluated by the system:
 
-An "attributive phrase" is just a noun phrase with an adjective. 
+`<article-phrase> := <article> <noun-phrase>`
 
-// The adjective itself is just another noun, we wish to note that 
+An "attributive phrase" adds an adjective to that kind of noun phrase. The adjective itself is another single noun, and can be preceded by a negative particle ("non"):
 
-`<attributive-phrase> := "non-"? <NOUN> <noun>`
+`<attributive-phrase> := "non-"? <noun> <noun-phrase>`
 
-`<genitive-phrase> := <noun> "'s" <NOUN>`
+A "genitive phrase" contains a noun phrase followed by a genitive particle ("apostrophe s") and a simple noun.
+
+`<genitive-phrase> := <noun-phrase> "'s" <noun>`
+
+And finally, a "parenthesized phrase" is also a noun phrase, and it consists of an expression enclosed by parentheses. It can be useful to better specify the order of evaluation in mathematical formulas and the like:
+
 `<parenthesized-phrase> := "(" <expression> ")"`
 
+// ---------
 
-As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. After the parse tree is generated ... transform
+As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e. written text, or even spoken sound) into a bidimensional, tree-like structure that clearly highlights the hierarchical relationship between the expression's constituents.
 
+Parsing however is just the first step of this process, after an initial (intermediate) "parse tree" is generated, this is in turn converted (transformed) into an abstract syntax tree, which is a more convenient and easier to work with representation of the latter, as it leaves out many of the unimportant details.
+
+These "unimportant details" may specify whether the user took advantage of the "sugared" version of a construct or not; syntax sugar is a more appealing (terser, more expressive, easier to read) syntax that is usually implemented on top of a less appealing (more verbose, less expressive, harder to read) one.
+
+Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precendence of operators.
+
+Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. 
+
+// bottom up traversal
 
 
 // concrete syntax
