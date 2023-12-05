@@ -397,12 +397,10 @@ These "unimportant details" may specify whether the user took advantage of the "
 
 Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precendence of operators.
 
-Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. 
+Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. The "Transformer" class it provides (completely unrelated to the "Transformer" neural network architecture in AI) performs a bottom up traversal of the parse tree, allowing us to define some further logic that converts the parse tree into a proper abstract syntax tree.
 
-// bottom up traversal
+// ------
 
-
-// concrete syntax
 // Orders and Planning
 // syntactic compression
 // Example program
