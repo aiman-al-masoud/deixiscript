@@ -285,17 +285,33 @@ Syntactic matching plays a crucial role when the system needs to lookup the defi
 
 When an Idea has to be executed, the system goes through the list of Definitions and attempts to match the Idea to a definendum. If the end of the list is reached and no suitable match was found, the system displays an error, telling the programmer that the verb or predicate they have attempted to use is not defined for the given kinds of arguments (it may be defined for others).
 
-If a suitable match is indeed found, then the search stops. The system takes the result of the match function (the dictionary or "mapping") and "plugs it into" the right-hand side of the Definition. To do this, a very simple function called "subst" is invoked. The function subst simply takes an "original AST" and an AST-to-AST dictionary, and substitues the keys of the dictionary with the values whenever it finds them on the "original AST" callings itself recursively.
+If a suitable match is indeed found, then the search stops. The system takes the result of the match function (the dictionary or "mapping") and "plugs it into" the right-hand side of the Definition. 
+
+To do this, a very simple function called "subst" is invoked. The function subst simply takes an "original AST" and an AST-to-AST dictionary, and substitues the keys of the dictionary with the values whenever it finds them on the "original AST" callings itself recursively.
 
 When subst is done, the new AST that it produces is executed, this is akin to running the body of a function. This argument passing strategy is similar to "pass by name", which we discussed in the chapter on programming languages.
 
-// sort by specificity
-A problem with this kind Definition lookup proceudre, is this: suppose that 
+A problem with this kind Definition lookup proceudre is this: suppose that the system needs to answer a question like: "the amphibious fish is dead?". Let us suppose that the Knowledge Base contains two Definitions for the predicate "is dead", the first Definition in the list generically applies to any kind of fish (i.e. "a fish is dead means ...") and the second applies specifically to amphibious ones.
+
+Since an "amphibious fish" is a kind of "fish", then the question we are trying to answer ("the amphibious fish is dead?") will match the definendum of the first (general) Definition, the one that applies to a _generic_ kind of fish. This means that the amphibious fish will be (wrongly) treated as any other regular fish. 
+
+The solution we adopted to this problem is to keep the list of Definitions sorted by descending "specificity" of the definendums. To do this, it is possible to define a special "compare function" to be used by the sorting algorithm. This compare function will return a positive number (+1) in case the first argument is more specific than the second, a negative number (-1) in case the opposite is true, and exactly zero in case the two arguments are completely equivalent (or completely unrelated, which makes no difference to the sorting logic).
+
+The compare function we described can be readily built from the match function we previously talked about. One simply needs to invoke match twice, swapping the arguments around the second time, and comparing the two results as Booleans.
+
+Sorting the list of Definitions by descending specificity of the definendums ensures that the most specific Definition will be found first, but only if a sentence that is specific enough is used.
+
+There can still be some problem in case 
+
+
+// This can be 
+// Since the noun phrases will be disambiguated...
 
 
 // syntactic matching
 // Orders and Planning
 // syntactic compression
+// concrete syntax
 // Example program
 // problems
 // futher work
