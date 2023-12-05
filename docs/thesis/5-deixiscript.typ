@@ -107,9 +107,13 @@ But cause-and-effect relationships aren't the only kind of relationships that ca
 
 A choice was made in Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object. The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas. // cite inform 7
 
-So a proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. Another component of a Deixiscript Idea is a Boolean flag we will refer to as "CMD".
+So a proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object.
 
-The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the grammatical mood known as "indicative".
+From now on, we will speak of "simple sentences", of "Ideas" and of "propositions" almost interchangeably in the context of the Deixiscript language, while keeping in mind that: a proposition is really an abstract (mental) concept, that an English simple sentence is best thought of as a feature of the (concrete) syntax of the English language, and that an "Idea" (as we are using the term) is an element of the abstract syntax (i.e. an Abstract Syntax Tree type) of our implementation of the Deixiscript language. 
+
+Also, we must keep in mind that a proposition is the meaning of any sentence (not just simple sentences), hence the term "atomic proposition" would be more appropriate when referring to the meaning represented by a Deixiscript "Idea" specifically.
+
+Another component of a Deixiscript Idea is a Boolean flag we will refer to as "CMD". The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the grammatical mood known as "indicative".
 
 There are other grammatical moods such as "subjunctive" (to express unreal or hypothetical situations) and "imperative" (to give orders). We won't be needing an explicit subjunctive mood (it is rarely used in English anyway), and we will be using a different kind of sentence all-together to express the "imperative mood" as we shall see.
 
@@ -265,19 +269,28 @@ Matching any two noun phrases or any two sentences (or, more generally, any two 
 
 Match is implemented as a function that takes two arguments: two Abstract Syntax Tree (AST) objects. The function "match" is "non-symmetric" i.e., the order of the arguments matters, the function cannot be expected to return the same result when the two arguments are swapped around.
 
-This is because one of the arguments is assumed to be the "super-type", and the other argument is assumed to be the "sub-type" of the comparison, to use some class-based programming jargon. Actually, the two arguments are not (as we have already hinted) limited to being noun phrases, they can be simple sentences, compound sentences, etc.
+When comparing noun phrases, one of the arguments can be thought of as the "super-type" and the other can be regarded as the "sub-type" of the type comparison, to use some class-based programming jargon. For instance: when comparing the structure that represent the noun phrase "the cat" to the one that represents the noun phrase "the red cat", "match" will return a "positive result" if "the cat" is used as the first argument (in the "super-type" position), this is because "the red cat" is regarded as a special case of "the cat".
 
-What the function match does is trying to see if there is a valid substitution of symbols that will 
+Obviously, if the arguments are swapped around and "the red cat" takes the argument position reserved to the "super-type" the "match" function returns a "negative result" ("the cat" is obviously _not_ a special case of "the red cat"). 
 
+Used on noun phrases, the match function behaves very much like the "instanceof" operator of some object-oriented languages that produces a Boolean value based on the inheritance hierarchy of the operands. But what the match function actually returns is a mapping (an AST-to-AST dictionary), which is just empty in case of a "negative result".
 
-// One is treated as 
+This is because the two arguments of the match function are not (as we have already hinted to) limited to being noun phrases. They can be simple sentences, compound sentences, etc. The match function needs to return a mapping when comparing together two simple sentences (two Ideas), because the goal is to determine if the subject and the object of the more specific sentence (the "sub-type") can be substituted into the subject and object of the more general sentence (the "super-type").
 
-// one is treated as 
+It is also useful to allow different AST types to compare together, it makes sense for instance to able to compare a "genitive" noun phrase to an "implicit" phrase (they are treated as two different AST types as we have seen before).
 
-// When any two syntactic elements are matched, one of them is treated as a 
+It may also make sense to compare a compound sentence (techically an "and expression" or an "or expression") to a simple sentence (an Idea).
 
-// "super-type" 
+Syntactic matching plays a crucial role when the system needs to lookup the definition of an Idea. As we said, an Idea is the sort of AST that does not have an intrinsic meaning: it needs to be defined before it is used, and the Definitions are stored as a list in the Knowledge Base. Each Definition has two parts: a "definendum" (or left-hand side) and a "definition" (or "meaning", or right-hand side).
 
+When an Idea has to be executed, the system goes through the list of Definitions and attempts to match the Idea to a definendum. If the end of the list is reached and no suitable match was found, the system displays an error, telling the programmer that the verb or predicate they have attempted to use is not defined for the given kinds of arguments (it may be defined for others).
+
+If a suitable match is indeed found, then the search stops. The system takes the result of the match function (the dictionary or "mapping") and "plugs it into" the right-hand side of the Definition. To do this, a very simple function called "subst" is invoked. The function subst simply takes an "original AST" and an AST-to-AST dictionary, and substitues the keys of the dictionary with the values whenever it finds them on the "original AST" callings itself recursively.
+
+When subst is done, the new AST that it produces is executed, this is akin to running the body of a function. This argument passing strategy is similar to "pass by name", which we discussed in the chapter on programming languages.
+
+// sort by specificity
+A problem with this kind Definition lookup proceudre, is this: suppose that 
 
 
 // syntactic matching
@@ -291,40 +304,6 @@ What the function match does is trying to see if there is a valid substitution o
 // ------------------------------------------------------------------------------
 
 // recall
-
-// the near mat cat 
-// previously thought it could be implemented with "the thing"
-// There is really only one kind
-// pronouns
-
-// The term "Deixis" is used here, perhaps in a slightly inaccurate fashion, to refer to the more general concept of indirect references in language, and not to the more specific idea of deictic words (personal pronouns, temporal and spatial adverbs).
-
-// == Noun Phrases
-
-// A noun phrase therefore generally represents things (material and immaterial objects) or types (categories of objects); a noun phrase can also be a proper noun (a name of a person or place).
-
-// A noun phrase, as we only know too well, may be made arbitrarily long, and hence arbitrarily precise, (and hence exclude an arbitrarily large set of individual entities in a context); and this can be achieved through the use of modifiers such as: adjectives, relative clauses and ordinal numbers: "the cat", "the agile calico cat", "the first agile calico cat which leaped on top of the desk holding a fresh kill in its fangs". Moreover, a noun phrase may also refer to multiple entities at once: "the two cats", "the cat and the ocelot", "the 44 caracals".
-
-// == Simple, Compound and Complex Sentences
-
-// A declarative sentence expresses a complete thought; the meaning it carries corresponds to a logical proposition, and the latter is associated to a truth value. Having a truth value means that whatever construct carries it can be true or false: in the former case it would be describing how the world really is, and in the latter case it would contradict the actual state of affairs in the world.
-
-// In English, a sentence can be simple, compound or complex; an example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence generally has a subject (the doer of an action), a verb (the action) a direct object (the passive agent that receives the action) and any number of complements; such complements can help specify the location or time of the action, or can correspond to any other actors directly or indirectly involved in the action, in English they are generally introduced via a preposition such as: "to", "from", "by"...
-
-// We will refer to the subject, direct object and complements in a sentence collectively as the "arguments" of the verb, because the number of arguments or "slots" to be filled can vary depending on the nature of the verb that is used. This number is known as the "transitivity" (or more generally the "valency") of a verb. These arguments we speak of are generally noun phrases.
-
-// The verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
-
-// Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him a consul".
-
-// Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the example sentence above would be just "piove", without any visible subject.
-
-// Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent "verbful" sentence, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice!"
-
-
-// == Negation
-
-// For the sake of this work, we distinguish between two kinds of negation in natural language: the first applies to a simple sentence and asserts the falsity of the relative proposition (eg: "the sun doesn't rise from the west"), and the second applies to a noun phrase and serves to exclude individuals with a certain property from the scope of referents pointed to by the noun phrase (eg: "the non-resident visitors").
 
 === Noun Phrases
 
@@ -405,69 +384,6 @@ When an entity has outlived its usefulness, it can be purged from the world mode
 To increase the flexibility of implicit references, Deixiscript also provides the option to use an "and" or an "or" conjunction to enumerate many basic implicit references; for instance one could refer to "the bobcat and the panther" simultaneously; this "compound implicit reference" of sorts can be used as an argument inside of a simple sentence, and in this case it triggers the automatic expansion of that sentence into multiple sentences based on the number of resolved referents and the kind of conjunction used.
 
 
-// ------------
-
-
-// === SimpleSentence
-
-// This AST type contains: a verb, a subject, a direct object and some complements. The verb is a string, and the rest of its "arguments" are noun phrase types. Contrary to the English grammar concept of "simple sentence", a SimpleSentence's subject or object or complements can all contain relative clauses.
-
-// A SimpleSentence AST models one or more relationship(s) between two or more entities (individuals or concepts). Just like an Implicit it can be interpreted as a positive or negative order, which will result, respectively, in the creation or destruction of relations (edges) in the knowledge graph; because of the closed world assumption a negative relation cannot be interpreted otherwise.
-
-// A basic SimpleSentence is a SimpleSentence whose verb is the verb "to have" or the verb "to be".
-
-// Before being executed, any non-basic SimpleSentence is converted into an Implicit AST representing an event. The Implicit representing the event is what is actually executed, either to create/destroy an event or to search for it (or for the absence of it). In fact, a non basic SimpleSentence could be seen as syntactic sugar for the direct creation of an event through a noun phrase describing it.
-
-// An event individual in the world model is a node with outgoing edges poiting towards verb, a subject and a number of optional complements.
-
-// As a cursory remark, all of the relations handled by the system, from simple "be" relations to the huge set of relations describing a complex event, can be broken down to very simple "have" relations, more specifically, in the form: "x has y as z", where x and y correspond to nodes and z corresponds to the label of the directed edge (from x to y) connecting them in a graph. 
-
-// Searching for any non basic SimpleSentence thus evaluates to an event individual's string ID, rather than the boolean value of "true" returned by the successful evaluation of a basic SimpleSentence in search mode.
-
-// //This approach is inspired by the one discussed in this book @brachman2022machines.
-
-// === BinExp
-
-// Binexp, or "binary expression", is perhaps the most proteiform component of Deixiscript's abstract syntax; it is inspired partly  by the usage of connectives (and syntactic compression, discussed in @pegasus) in natural language, and partly by the binary operators of more traditional programming languages.
-
-// What all BinExps have in common is three things: an operator string, a left and a right operand.
-
-// The operator may be one of the two logical operators: (`and`, `or`), or one of the arithmetic operators (`+`, `-`, `*`, `/`). 
-
-// Unlike any other AST type, A BinExp may be interpreted either as a "noun phrase" or as a "sentence", depending on its operator and its operands.
-
-// If the operator is arithmetic, the BinExp is always to be interpreted as a noun phrase, because numbers are "nouns", any operation involving them evaluates to a value, and hence is an expression.
-
-// If the operator is logical, then it depends on the operands; if both operands are noun phrases then the whole BinExp is a noun phrase and it points to some entities, for instance: `the bobcat and the panther`. Otherwise, if both operands are sentences then the BinExp is interpreted as a sentence (analogous to a compound sentence in traditional English grammar) such as: `the bobcat hunts and the panther eats`.
-
-// There is probably little sense in having a BinExp where the left operand is a sentence but the right operand is a noun phrase, or viceversa.
-
-// BinExps are essential to the system for three main reasons: they work as traditional logical and arithmetic operations like in most other programming languages, they replace the lists or sequences of a traditional programming language, and they enable syntactic compression.
-
-// They work as lists because they can carry around multiple (implicit or explicit) references in one unique bundle, which can be "unrolled" into a sequence by the interpreter when it needs to perform a sequential calculation on them.
-
-// They enable syntactic de/compression, because any SimpleSentence that contains a BinExp as a subject, object or complement can be expanded into two or more SimpleSentences. For example, a SimpleSentence like `the cat and the lion dream` can be expanded into the BinExp: `the cat dreams and the lion dreams`, saving the user some time and effort. This "syntactic decompression" has to take into account some simple rules to preserve the equivalence between the compressed and the decompressed versions of the sentence, embodied in De Morgan's laws. For instance, the sentence `the cat or the lion don't like the raven` has to be expanded into something like: `it is false that ((the cat likes the raven) and (the lion likes the raven))`, switching from an `or` to an `and`.
-
-
-
-// === Explicit
-// // Another thing to keep in mind is that the system (as we will see) follows a closed world assumption, it is therefore quite natural to associate the value "false" with the idea of "nothingness": if it is not in the system then it is "false".
-
-
-// // === Def// === Law
-
-
-// // ==== Core
-
-// // The classes in the "core" module represent AST types, except for the classes EB (which stands for "Expression Builder") and KB (which stands for "Knowledge Base"). 
-
-// // ===== Expression Builder
-
-// // The Expression Builder is a utility class that helps to build language expressions (phrases and sentences) from the AST classes without interacting directly with the latter. It makes use of the Builder GoF pattern, and adopts the Fluent Interface style: a way of designing Object Oriented Application Programming Interfaces (APIs), whose goal is to increase code readability by emulating a Domain Specific Language (DSL) through the usage of method chaining and informative method names. In practice it is useful to test the core logic of the language independently of the parser.
-
-// // ===== Knowledge Base
-
-// // This is the equivalent of the context/environment of the Interpreter Pattern. It holds all of the state at any point during the execution of the program, which mainly consists of three kinds of information: the World Model (or Knowledge Graph), the Deictic Dictionary and the list of Defs and Laws.
 
 
 // ----------------
@@ -476,9 +392,7 @@ To increase the flexibility of implicit references, Deixiscript also provides th
 
 // // Were a language ever completely "grammatical" it would be a perfect engine of  conceptual expression. Unfortunately, or luckily, no language is tyrannically consistent. All grammars leak @sapir1921language.
 
-
 // // == Compositionality
-
 
 // // Simple statement: "The meaning of a complex expression is determined by its structure and the meanings of its constituents."
 // // It certainly holds for many artificial languages
