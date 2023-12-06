@@ -390,7 +390,7 @@ And finally, a "parenthesized phrase" is also a noun phrase, and it consists of 
 
 // ---------
 
-As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e. written text, or even spoken sound) into a bidimensional, tree-like structure that clearly highlights the hierarchical relationship between the expression's constituents.
+As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e. written text, or even spoken sound) into a bidimensional, tree-like structure that clearly reflects the hierarchical relationship between the expression's constituents.
 
 Parsing however is just the first step of this process, after an initial (intermediate) "parse tree" is generated, this is in turn converted (transformed) into an abstract syntax tree, which is a more convenient and easier to work with representation of the latter, as it leaves out many of the unimportant details.
 
@@ -402,7 +402,31 @@ Lark provides some useful facilities to further transform the parse trees it gen
 
 // ------
 
+We have seen how it is possible to add Definitions that determine the effects of executing a simple sentence; this makes the execution of a simple sentence akin to a "function" (or rather: a procedure) invocation in more traditional languages.
+
+// contra CAL
+However, one must also keep in mind that any sentence may be subject to two interpretations (the "ASK" mood and the "TELL" mood, also mentioned previously), with the difference that the former ("ASK") thinks of the function as a "getter" or "predicate" i.e., it tries to verify if a condition is true in the world model, and the latter ("TELL") is the mood that actively changes the world model according to a sentence's Definition.
+
+This duality makes sense for Facts (the same Fact can be "checked" or can be "learned" by the world model), but it makes a little less sense for Events. As we have already said, an Event in Deixiscript (although it has a duration) is still modelled as an ephemeral, transitional concept, so the "ASK" mood (which presumes a static state of affairs in the world model) does not make sense applied to an Event.
+
+As we have stated though, Facts and Events in Deixiscript are basically represented by the same underlying structure (the Idea), so an Event might indeed risk getting executed in ASK mood. One could add a check to make sure this does not happen, however, we are relying on the programmer's understanding of the difference between Facts and Events, and on the syntactic distinction (between copular simple sentences and simple sentences with a regular verb) to make sure this does not happen.
+
+Given the analogy we have made with procedure Definitions, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript statement, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
+
+In a way this is true, one can even define the meaning of a simple sentence as a sequence of steps, this can be achieved by joining together (through the `and` operator) multiple atomic statements (like simple sentences or variable assignments). The comma symbol (',') can also be used for the same purpose, and it behaves exactly like (indeed, it is aliased to) the `and` operator.
+
 // Orders and Planning
+// http://www.cs.toronto.edu/~hector/pcr.html
+// https://github.com/ssardina/ergo
+// https://en.wikipedia.org/wiki/Agent-oriented_programming
+// cognitive robotics precedent
+
+
+
+
+// Deixiscript's
+// overlook
+
 // syntactic compression
 // Example program
 // problems

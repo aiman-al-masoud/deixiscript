@@ -145,7 +145,7 @@ When the Knowledge Base receives the order to create a new individual (with a no
 
 Similarly, Knowledge Base handles read/write accesses to properties.
 
-Problem: at the moment of creation, an individual "X THING" is still just a "THING", because ajectives are added later. But if there are other preexisting "THINGs", this prevents from ever selecting the right "THING" when trying to apply the adjectives!!! You can't use IDs to refer to the newly created individual, because you may not pick the right rule. Solution: Have a special wrapper AST "TypeCast"/"TreatAs" that matches the specified type but evaluates to whatever arbitrary noun phrase it was given (such as an ID).
+Problem: at the moment of creation, an individual "X THING" is still just a "THING", because adjectives are added later. But if there are other preexisting "THINGs", this prevents from ever selecting the right "THING" when trying to apply the adjectives!!! You can't use IDs to refer to the newly created individual, because you may not pick the right rule. Solution: Have a special wrapper AST "TypeCast"/"TreatAs" that matches the specified type but evaluates to whatever arbitrary noun phrase it was given (such as an ID).
 
 # MISCELANEOUS
 - There is no "which", therefore no transitive/intransitive verb gaps problem for now.
