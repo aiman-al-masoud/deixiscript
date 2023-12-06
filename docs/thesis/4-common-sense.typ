@@ -166,9 +166,13 @@ But "plain" predicate logic is monotonic, as already said: it doesn't allow us t
 
 The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has sparked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing one thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak here of this problem any further.
 
-== Common Sense and Natural Language <commonSenseAndNatlang>
+== Common Sense and Natural Language Programming
 
-Of specific interest to us is the fact that cracking the problem of Common Sense is also an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because it was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because it was made of _wood_" (emphasis added), then "it" would naturally be taken to refer to the table, not the ball.
+There are a few topics from the field of Common Sense in AI that are relevant to the field of naturalistic programming.
+
+=== Disambiguation <commonSenseAndNatlang>
+
+Cracking the problem of Common Sense is an important step in achieving a complete understanding of natural language. Natural language, as we know, is highly context dependent; even in short sentences such as the example made in the book by Brachman and Levesque: "The large ball crashed through the table because it was made of steel", resolving the referent of the pronoun "it" (the ball), necessitates some generic knowledge of the world: namely that tables are usually made out of wood, and that steel is a heavier material than wood. Were the sentence to change to: "The large ball crashed through the table because it was made of _wood_" (emphasis added), then "it" would naturally be taken to refer to the table, not the ball.
 
 === Defeasible Rules
 
@@ -176,11 +180,11 @@ We think that the defeasibility (or revisability) of general rules is a recurren
 
 The annotations they talk about concern the cancellation of restrictions (for example, on the value or number of a role in a relationship), but they (annotations) also concern the assignment of default fillers for a role, and perhaps even the management of metadata such as "source of belief", and "strength of belief" in a proposition.
 
-=== Automatic Planning
+=== Automated Planning
 
-An key concept that is also discussed in "Machines Like Us", is that of automated planning. We have previously referred to the example that Brachman and Levesque make (about the self driving car, deciding to change route based on its terminal goal of getting the groceries); to posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
+An concept related to Common Sense and discussed in "Machines Like Us", is that of automated planning. We have previously cited the example that Brachman and Levesque make in their book (about the self driving car, deciding to change route based on its terminal goal of getting the groceries). 
 
-We think that introducing this concept (automated planning) to a naturalistic programming language would present an improvement over prior work, and there is a precedent for this in the broader scope of programming languages: the so called "Constraint programming languages".
+To posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
 
 ==== Constraint Programming
 
@@ -190,6 +194,23 @@ The solution of a constraint problem can be guided by a more or less exact algor
 
 We think this is an interesting paradigm, because it could be extended to systems with various "agents" (similar to objects in OOP) @laffra1991constraints, these independent actors could all be trying to fullfill their own goal (constraint) different from the goals of the others, by executing some basic actions declared procedurally by the programmer or perhaps learned through the concatenation of more basic actions, and abiding by the rules (or circumstances) declared by the programmer in natural language.
 
+==== Programming Cognitive Robots
+
+The 2019 e-book "Programming Cognitive Robots" @programmingCognitiveRobots by Levesque is structured as an introduction to the ERGO programming language, which is implemented and embedded in Scheme (a dialect of Lisp). The language ERGO (whose implementation is available on GitHub) is specialized for the task of programming "cognitive robots".
+
+A "cognitive" robot is a software or hardware agent that exploits its knowledge of the world to deliberate a course of action that furthers its goals. The author cites the work of computer scientist and logician Ray Reiter (1939-2002) as influential for the mathematical theory behind ERGO.
+
+The focus of programming a cognitive robot (which could just be a software agent, as we said) is not on the more classical low-level problem of controlling the robot's actuators: those capabilities are taken for granted (they can be seen as "primitive actions"). The focus is on the high-level problem of ensuring that the robot can automatically plan a course of action (and readjust this plan, if the relevant conditions of the environment change) based on a desired state of the world (a goal) that is assigned to the robot.
+
+As we have already seen in the previous chapters, every programming paradigm sees the process of program-writing in a different light. In procedural programming, for instance, the goal of the programmer is to list out a detailed "recipe" of the steps to take to solve a problem. In logic programming, the programmer's goal is to declare the facts and inference rules.
+
+Programming a cognitive robot amounts to specifying a Basic Action Theory (BAT) for a dynamic world. A BAT is a specification of all of the fluents (properties of the world that may be changed by an action), the state of the world (i.e. the values of all of the fluents), and the primitive actions that are available to the robot (which can have an effect on the fluents).
+
+As such, this paradigm presents us with a peculiar mix of declarative and imperative approaches. It is (mostly) declarative because the robot is only told about its goals and of the ways in which the world can change following the occurrence of events, and has to compute a strategy automatically; and it is imperative because some knowledge (knowledge of the primitive actions for instance) can be presented in procedural form.
+
+In the author's own words, the essence of programming a cognitive robot is: "Giving the system enough knowledge about the world, its actions, and what needs to be done for it to be able to calculate the appropriate primitive actions to perform."
+
+We think that introducing this concept (automated planning) to a naturalistic programming language would present an improvement over prior work.
 
 
 // design langs to decrease semantic gap, rather than LLMs to translate

@@ -415,44 +415,22 @@ Given the analogy we have made with procedure Definitions, and despite the actua
 
 In a way this is true, one can even define the meaning of a simple sentence as a sequence of steps, this can be achieved by joining together (through the `and` operator) multiple atomic statements (like simple sentences or variable assignments). The comma symbol (',') can also be used for the same purpose, and it behaves exactly like (indeed, it is aliased to) the `and` operator.
 
+This however would overlook the last aspect of the language that we still have not really explained: automatic planning. 
+
 // Orders and Planning
 // http://www.cs.toronto.edu/~hector/pcr.html
 // https://github.com/ssardina/ergo
 // https://en.wikipedia.org/wiki/Agent-oriented_programming
 // cognitive robotics precedent
 
-
-
-
-// Deixiscript's
-// overlook
-
 // syntactic compression
 // Example program
 // problems
-// further work
 // conclusions
 
 // ------------------------------------------------------------------------------
 
 // recall
-
-// === Noun Phrases
-
-// A noun phrase generally represents things (material and immaterial objects) or types (categories of objects), and this makes it a good candidate, in the context of programming, to play the role of strings, numbers, records and data structures in general, as was also discussed in a previous section //@verbsasfuncs .
-
-// Besides data structures, we believe that the noun phrase captures a more general programming construct known as the "expression"; an expression in programming languages is any piece of code that evaluates to (or returns) a value. It is generally contrasted to a "statement" (or "instruction"), which does not evaluate to anything, and is hence executed purely for its side-effects (state mutations it produces in the execution environment).
-
-// An important property of expressions is composability: a number, boolean, string, record or object literal is an example of an expression in most programming languages, and so are mathematical expressions, function calls and any combination of the former; just like noun phrases, programming expressions can grow up to an arbitrary length and can contain nested expressions.
-
-// Some programming languages are known as Expression Oriented, because almost every construct they provide returns a value and is composable, even constructs that are traditionally seen as statements such as for loops or if-else "statements", an example of this is the Scala Language @alexander2017functional.
-
-// === Simple and Compound Sentences
-
-// The tendency will be to regard these as either assertions: which add knowledge to the world model or as yes-or-no questions: which evaluate to a truth value, depending on the current state of the knowledge base.
-
-// As we saw, an assertion doesn't precisely correspond to an imperative sentence in English, but it is the closest thing there will be to a "command", we will therefore use these terms interchangeably. 
-
 // === Complex Sentences
 
 // We mentioned the fact that complex sentences allow the speaker to express a relation of subordination between two ideas; and we mentioned the philosophical distinction between "analytic" (or "a priori") and "synthetic" (or "a posteriori") knowledge, and how a valid option to verbalize this kind of knowledge in natural language is indeed through the use of a complex sentence. We think that two useful parallels with the domain of programming can be drawn here.
@@ -463,75 +441,8 @@ In a way this is true, one can even define the meaning of a simple sentence as a
 
 // On the other hand, we believe that the a posteriori knowledge contained in a program essentially corresponds with the "useful work" done by it, this knowledge is more correlated to the side-effects, intended as the desired output or external behavior of the program: it describes them. A perfect example of this, we think, are event handlers in an Event Driven programming language, when a programmer adds an event handler to a program (eg: "when the button is clicked, the counter increments"), they are essentially teaching the environment a new cause-and-effect relationship. You may also say that they are teaching it to react with a certain response to a given stimulus, or that they are teaching it to expect a certain kind of event to take place after another.
 
-// == Abstract Syntax vs Concrete Syntax
-
-// The abstract syntax of a language is the set of Abstract Syntax Tree (ASTs) that are used internally to carry around meaning, and undergo transformations (symbolic manipulations); the abstract syntax is distinct from the concrete syntax.
-
-// The concrete syntax consists in a set of production rules that describe a Context Free Grammar (CFG) and are captured by meta-languages such as the Extended Backus-Naur Form (EBNF). The concrete syntax  is closely related to the "front end" of the interpreter, therefore to the particular way the user chooses to write/speak (or "linearize") the language. This is manifested, for instance, in the difference between infix and prefix style of writing a mathematical operator, or in the preference of English speakers for the Subject Verb Object (SVO) word order in unmarked sentences, above all other equally available word orders.
-
-// There is obviously a correspondence between the two kinds of syntaxes: a concrete grammar describes how a string of text (a linear representation of an idea) has to be turned into a parse tree (a hierarchical, bidimensional, representation of the same idea); this parse tree can be further transformed, and when the "unimportant" details related to the concrete syntax are discarded, an AST is produced.
-
-// These "unimportant" details may include the fact of whether the user took advantage of the "sugared" version of a construct or not; syntax sugar is a more appealing (terser, more expressive, easier to read) syntax that is usually implemented on top of a less appealing (more verbose, less expressive, harder to read) construct, with the latter usually being easier for the system to manipulate.
-
-// Another example may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user intended) precendence of operators.
-
-// In this implementation of Deixiscript, we chose to stick to one concrete syntax, inspired by English; but in principle the language could be extended to support multiple concrete syntaxes insipred by different natural languages; this is possible because the underlying abstract syntax, while also inspired by English, is probably general enough to be applicable to many other languages too.
-
-// == Abstract Syntax
-
-// For the types of ASTs supported by Deixiscript we chose to draw inspiration from the linguistic abstractions we discussed earlier: noun phrases, simple sentences and compound sentences. For what concerns complex sentences, we split them into two kinds we call: Defs and Laws, corresponding to the two kinds of knowledge we previously discussed: a priori and a posteriori respectively.
-
-// We chose not to create specific AST types for questions (or commands/assertions) and for negations; instead, these distinctions are signalled by two flags (boolean attributes) that can be used to mark (almost) any AST object as a command/question or as positive/negative.
-
-// === Noun Phrases
-
-// Noun phrases come in different flavors, an initial distinction can be made between explicit and implicit noun phrases. As we have seen, people tend to use implicit references most of the time when speaking naturally, but it was useful for us to include support for explicit references too.
-
-// ==== Explicit References
-
-// An explicit AST type in Deixiscript corresponds to the "leaf" components of the framework described by the traditional Interpreter Pattern; they are constants, and constants (as the name implies) can only ever evaluate to themselves. It would have made little sense, therefore, to allow them to be negated or marked as commands. A constant in Deixiscript can be: a string, a boolean or a number (only integers are supported as of the time of writing).
-
-// Booleans are kept distinct from integers for two reasons: the system needs to have a special value that always syntactically matches anything (we will return to this point later) and another special value which points to no entity whatsoever ("nothing"). These special values are identified with the boolean values of true and false (only false, there is no need for a separate null pointer). To implement these two special constants through integers would mean to force 0 to point to nothing (which is clearly not the desired case, 0 should point to the number zero, which is a thing), and to force 1 to point to the value which syntactically matches any other construct, which again isn't right. Both of these choices would sooner or later lead to bugs, so booleans and integers are kept distinct.
-
-// Strings have a triple purpose in Deixiscript: they all behave the same way as far as the system is concerned, but some of them are supposed to be considered "just strings" and others are supposed to be considered as symbols that represent more complex entities (individuals or concepts). What keeps them apart is the convention that "individual strings" contain a pound sign (`#`), for example: `"cat#1"` or `"puma#33"`, which probably refer to an individual cat and an individual puma respectively. Strings that don't have a pound sign can either be thought of as concepts (especially when they don't contain any spaces, such as: `cat` or `puma`) or as "just strings" (like strings in any other programming language).
-
-// Explicit references are important implementation wise (only Explicits are allowed into the world model), but their direct usage by the end-user (although allowed) is discouraged, as it goes against the principles of naturalistic programming that are hereby being proposed.
-
-// ==== Implicit References
-
-// Implicit references exist to simulate the flexibility of noun phrases in real natural languages; an implicit reference is essentially a description; the basic kind of implicit reference in Deixiscript includes a head, which is usually a common noun, and a relative clause. The relative clause can contain an arbitrarily long sentence which further describes the referent(s). Adjectives are implemented as syntax sugar on top of relative clauses, by expanding them to relative clauses with a copula, for example something like: "the corageous cat" would de-sugar to "the cat that is corageous".
-
-// A basic implicit reference also contains numerical information relative to the cardinality (how many referents should be matched) and to the ordinality (or position in short term memory) which is implemented as a function of the point in time an individual thing was last mentioned, following the simplifying assumption that an individual that was mentioned lately is likely to be mentioned again after a short amount of time.
-
-// A basic implicit reference also supports two distinct flags to mark it as a command or as negative respectively; there are four possible combinations of these two flags' values: positive question (search), negative question (inverted search), positive command (create) and negative command (destroy).
-
-// The life cycle of an individual starts when a "create" statement is made about it, this triggers the creation in the world model of a new node with a pound-sign ID and a connection to a concept node (corresponding to the head of the noun phrase), plus any additional connections (corresponding to the realtive clause of the noun phrase) to other nodes. This is the usage of noun phrases akin to a that of a constructor in OOP languages.
-
-// Once created, an existing entity can be retrieved (hoisted on top of the short term memory, or used as an argument of a simple sentence) by using "search" mode, which will be interpreted as a search over the whole world model for (one or more) individual(s) matching the type constraints specified by the head and relative clause.
-
-// When the "inverted search" option is used, the search will resolve in (one or more of) the individuals which do _not_ match the type constraints. This is defined as the difference between the global set of individuals and the set of individuals matching the positive equivalent of the expression; taking care of the numerical constraints separately.
-
-// When an entity has outlived its usefulness, it can be purged from the world model (or "forgotten") with a negative command about it.
-
-// To increase the flexibility of implicit references, Deixiscript also provides the option to use an "and" or an "or" conjunction to enumerate many basic implicit references; for instance one could refer to "the bobcat and the panther" simultaneously; this "compound implicit reference" of sorts can be used as an argument inside of a simple sentence, and in this case it triggers the automatic expansion of that sentence into multiple sentences based on the number of resolved referents and the kind of conjunction used.
-
-
-
-
 // // ----------------
 
 // // // Edward Sapir (1884-1939) linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
 
 // // // Were a language ever completely "grammatical" it would be a perfect engine of  conceptual expression. Unfortunately, or luckily, no language is tyrannically consistent. All grammars leak @sapir1921language.
-
-// // // == Compositionality
-
-// // // Simple statement: "The meaning of a complex expression is determined by its structure and the meanings of its constituents."
-// // // It certainly holds for many artificial languages
-// // // variations to account for indexicality (occasional vs standing meaning)
-// // // The principle remains controversial
-// // // related principles: Substitutivity, 
-// // // "If two meaningful expressions differ only in that one is the result of substituting a synonym for a constituent within the other then the two expressions are synonyms." (Ssingular)
-// // // this is a stronger assumption than Compositionality, number of planets vs eight example
-// // // https://plato.stanford.edu/entries/compositionality/
-
