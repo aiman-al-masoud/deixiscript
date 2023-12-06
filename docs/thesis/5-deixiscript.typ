@@ -2,7 +2,7 @@
 
 = Deixiscript
 
-We will refer to the computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other programming language names).
+We will refer to the programming language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other programming language names).
 
 As is clear, our goal has never been to implement a production-grade programming environment, a task that would require many more man-months of effort and a higher level of practical expertise in the field of language implementation. 
 
