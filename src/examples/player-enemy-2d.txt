@@ -10,7 +10,7 @@ an enemy is near a player means:
 an enemy hits the player means: 
     the player's health decrements.
 
-a player is dead, means: the health = 0.0.
+a player is dead, means the health = 0.0.
 
 an enemy moves right means the x-coord increments.
 an enemy moves left means the x-coord decrements.
@@ -28,7 +28,6 @@ the player's x-coord = 300.0.
 the enemy's x-coord = 100.0.
 the player's y-coord = 300.0.
 the enemy's y-coord = 100.0.
+the enemy's color = red.
 
 the enemy should ensure the player is dead.
-
-the enemy's color =red.

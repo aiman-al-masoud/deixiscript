@@ -10,3 +10,4 @@ docs/attachments/
 *.pdf
 *.blg
 *.bbl
+*tmp*

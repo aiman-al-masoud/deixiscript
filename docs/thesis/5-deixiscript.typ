@@ -22,11 +22,12 @@ The Lark parsing toolkit for Python is used for the front end of the interpreter
 
 The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the world models produced as a side effect of the interpreter's operation.
 
+// TODO: matplotlib
 // https://www.pygame.org/docs/tut/PygameIntro.html
 The Pygame library for interactive multimedia and game creation was used to show the evolution of some simulated processes graphically.
 
 === Licensing
-
+//TODO: matplotlib
 All of the software used to develop Deixiscript is available for free and under the terms of an open source license (MIT for Pyright, Pytest, and Lark, CPL for Graphviz,  GNU LGPL version 2.1 for Pygame). Other than the aforementioned ones, the core components of Deixiscript require no further dependencies beyond Python's own standard library.
 
 Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We will suggest some possible further developments to the language in a later section of this work.
@@ -405,7 +406,7 @@ Lark provides some useful facilities to further transform the parse trees it gen
 // syntactic compression
 // Example program
 // problems
-// futher work
+// further work
 // conclusions
 
 // ------------------------------------------------------------------------------
