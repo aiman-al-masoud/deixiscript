@@ -1,14 +1,46 @@
-
-
 = Deixiscript
 
-We will refer to the programming language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other programming language names).
+We will refer to the programming language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other popular programming language names).
 
-As is clear, our goal has never been to implement a production-grade programming environment, a task that would require many more man-months of effort and a higher level of practical expertise in the field of language implementation. 
+== Goals and Non-goals
 
-Our goal was rather to build a working prototype of a naturalistic language, that could showcase some of the ideas from the existing naturalistic languages on the "market", to get a feel of some of the practical difficulties involved in making a naturalistic programming system, and to propose and experiment with the addition of some slightly more novel features that we shall discuss.
+=== Goals
+
+Our goal in relation to Deixiscript was to design and build a working prototype of a naturalistic language, that could showcase some of the ideas from the existing naturalistic languages on the "market", to get a feel of some of the practical difficulties involved in making a naturalistic programming system, and to propose and experiment with the addition of some slightly more novel features that we shall discuss.
+
+=== Non-goals
+
+As is maybe clear by now, our goal has never been to implement a production-grade programming environment, a task that would require a higher level of practical expertise in the field of language implementation and many more man-months of effort.
+
+We also did not pay much attention to issues related to performance and code-optimization (_"premature optimization is the root of all evil"_ @prematureOptimization); and we were in general more interested in code-readability than execution speed.
+
+== Evolution of Deixiscript
+
+Our idea of what the language had to be like (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time we have explored many different ideas, not all of them have made it into the final implementation.
+
+=== Initial Stage
+
+We initially started out with the vague notion of translating basic sentences in natural language to predicate logic (specifically to Prolog) clauses, which could be then executed on a Prolog interpreter as either questions or statements. We eventually decided to change strategy when we realized that the process of translation was a little more involved than expected, and that the full power of Prolog's predicate logic was perhaps not really needed for our more modest purposes.
+
+=== Rule Orientation
+
+After this initial experiment with predicate logic, we were initially inclined to go back to a more object-oriented approach. This meant rigidly attaching both data and behavior to the entities in the world model. This approach, however, comes with its own set of problems. We discussed some of these problems when we talked about Inform 7's approach in a previous chapter @inform7RuleOrientation.
+
+We where then inspired by projects like Pegasus and by readings such as the book "Machines Like Us" (which we also discussed in a previous chapter @commonSenseACentralProblem) to take a more "rule-based" approach (though we still had not read about Inform 7's implementation to know it was called like that there).
+
+As it stands, the current version of Deixiscript adopts a kind of rule-based programming approach. This makes types a little more flexible than classes, because they do not have to be declared as rigidly (or linked to their behavior as tightly) as in class-based programming.
+
+=== Automated Planning (limited)
+
+The current version of Deixiscript also tries to introduce a limited kind of automatic planning (which we encountered in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability can be used to issue declarative "orders" to individuals in the world model known as "agents", as we will see. 
 
 == Implementation Details
+
+In the current section, we we will begin by discussing some high-level implementation details, including the programming language, libraries, code-style and software design pattern that were used.
+
+In the later sections we will then move on to describe the current version of Deixiscript, detailing and motivating the choices that were made and the philosophy behind them. 
+
+Since Deixiscript is an English-based language, what follows will also include some inevitable digressions into some (basic) aspects of the English grammar.
 
 === Language
 
@@ -62,25 +94,9 @@ The "eval" method is expected to return the result of the evaluation of the AST 
 
 In our case, since we are following a Functional approach, the eval method returns a new object that contains the updated context without changing the original.
 
-== Evolution of Deixiscript
-
-Our idea of what the language had to be like (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time we have explored many different ideas, not all of them have made it into the final implementation.
-
-We initially started out with the vague notion of translating basic sentences in natural language to predicate logic (specifically to Prolog) clauses, which could be then executed on a Prolog interpreter as either questions or statements. We eventually decided to change strategy when we realized that the process of translation was a little more involved than expected, and that the full power of Prolog's predicate logic was perhaps not really needed for our more modest purposes.
-
-After this initial experiment with predicate logic, we were initially inclined to go back to a more object-oriented approach. This meant rigidly attaching both data and behavior to the entities in the world model. This approach, however, comes with its own set of problems. We discussed some of these problems when we talked about Inform 7's approach in a previous chapter @inform7RuleOrientation.
-
-We where then inspired by projects like Pegasus and by readings such as the book "Machines Like Us" (which we also discussed in a previous chapter @commonSenseACentralProblem) to take a more "rule-based" approach (though we still had not read about Inform 7's implementation to know it was called like that there).
-
-As it stands, the current version of Deixiscript adopts a kind of rule-based programming approach. This makes types a little more flexible than classes, because they do not have to be declared as rigidly (or linked to their behavior as tightly) as in class-based programming.
-
-The current version of Deixiscript also tries to introduce a limited kind of automatic planning (which we encountered in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability can be used to issue declarative "orders" to individuals in the world model known as "agents", as we will see. 
-
-In the pages that follow, we will describe the current version of Deixiscript, describing and motivating the choices that were made and the philosophy behind them. Since Deixiscript is an English-based language, what follows will also inevitably incorporate a brief discussion of some (basic) aspects of the English grammar.
-
 == Representing Propositions
 
-We begin from what we think is a central concept in any language (natural or artificial), and that is: propositions and their concrete representation. We came across propositions when discussing logic programming in a previous chapter; as we saw, in predicate logic propositions are represented by Well-Formed Formulas. In natural language, on the other hand, propositions are typically represented by sentences. In English, a sentence can be simple, compound or complex.
+We think that a central theme in any language (natural or artificial) is about propositions and their concrete representation. We came across propositions when discussing logic programming in a previous chapter; as we saw, in predicate logic propositions are represented by Well-Formed Formulas. In natural language, on the other hand, propositions are typically represented by sentences. In English, a sentence can be simple, compound or complex.
 
 === Simple Sentences
 
