@@ -125,7 +125,7 @@ if __name__ == '__main__':
     # screen=pygame.display.set_mode([500, 500])
     # cli=CLI(screen)
     cli=CLI()
-    cli.load('./examples/player-enemy-2d.txt')
+    # cli.load('./examples/player-enemy-2d.txt')
 
     def cliLoop():
         while True: cli.runCmd(input('> '))

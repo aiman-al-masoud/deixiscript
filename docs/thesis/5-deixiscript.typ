@@ -32,7 +32,7 @@ As it stands, the current version of Deixiscript adopts a kind of rule-based pro
 
 === Automated Planning (limited)
 
-The current version of Deixiscript also tries to introduce a limited kind of automatic planning (which we encountered in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability can be used to issue declarative "orders" to individuals in the world model known as "agents", as we will see. 
+The current version of Deixiscript also tries to introduce a limited kind of automatic planning (we have encountered the topic of automated planning in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability can be used to issue declarative "orders" to individuals in the world model known as "agents", as we will see. 
 
 == Implementation Details
 
@@ -134,7 +134,7 @@ But cause-and-effect relationships aren't the only kind of relationships that ca
 
 === Deixiscript Ideas 
 
-A proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object.
+Now we have an idea of how propositions are represented in English. In Deixiscript, a proposition (or "Idea") has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object.
 
 The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas @nelson2006natural.
 
@@ -200,6 +200,8 @@ Simple sentences (Ideas), don't have any predefined meaning: just like functions
 
 
 
+
+
 We will distinguish between two kinds of Ideas (and consequently two kinds of simple sentences) which are formally very similar (they are all represented by the same abstract syntactical structure) but they have a different meaning that can be discerned (as we will see).
 
 We will call these two categories of Ideas: "Facts" and "Events". We think of a Fact as just a regular proposition (a statement about how the world is or isn't at any particular point in time), and we think of an Event as an action that can be actively performed by an agent.
@@ -222,13 +224,13 @@ The Potential AST type was introduced just for this: to mark certain kinds of Id
 
 == Representing Entities
 
-Up until now, we have always generically talked about the "subject" and the "object" of a simple sentence, we will now take some time to explain what we mean by those terms.
+Up until now, we have always generically talked about the "subject" and the "object" of a simple sentence, it is now time to explain exactly what we mean by those terms.
 
 ==== Noun Phrases
 
-In English, the subject and the object of a sentence are "noun phrases". A phrase is a syntactic structure that does not express a complete thought; in particular: a noun phrase is a phrase that performs the same function as a noun.
+In English, the subject and the object of a sentence are "noun phrases". A phrase is a syntactic structure that (unlike a sentence) does not express a complete thought; in particular: a noun phrase is a phrase that performs the same function as a noun.
 
-A general test for whether a part of a sentence counts as a noun phrase is to replace it with a pronoun and to see if the sentence still makes sense; for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "_it_ jumps over the lazy dog" or "the quick brown fox jumps over _it_", or even "_it_ jumps over _it_".
+A general test for whether a part of a sentence counts as a noun phrase is to replace it with a pronoun and to see if the sentence still makes sense; for instance in the sentence "the quick brown fox jumps over the lazy dog" there are two noun phrases: "the quick brown fox" and "the lazy dog", the sentence's structure is equivalent to: "_it_ jumps over the lazy dog" or to: "the quick brown fox jumps over _it_", or even to: "_it_ jumps over _it_".
 
 A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or any smaller noun phrase). In the noun phrase "the lazy dog" the head is "dog".
 
@@ -404,6 +406,8 @@ Now that we have formed a general idea (of most) of what the Deixiscript languag
 
 We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance we have said that Definitions and Potentials would end up looking like complex sentences. In general, the syntax draws inspiration from English; however, it includes some mathematical symbols (like most other programming languages) for the sake of convenience.
 
+
+// TODO: put AFTER orders and planning?
 === Backus-Naur Form (BNF)
 
 Now we will present (a little more formally) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description, we have discussed BNF in a previous chapter when talking about ALGOL 60. 
