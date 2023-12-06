@@ -4,7 +4,9 @@
 
 We will refer to the computer language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other programming language names).
 
-As is clear, our goal has never been to implement a production-grade programming environment (which would require many more man-months of effort and a higher level of practical expertise in the field of language implementation). Our goal was rather to build a working prototype of a naturalistic language, taking inspiration from the existing ones on the "market", and experimenting with some novel features which we shall discuss.
+As is clear, our goal has never been to implement a production-grade programming environment, a task that would require many more man-months of effort and a higher level of practical expertise in the field of language implementation. 
+
+Our goal was rather to build a working prototype of a naturalistic language, that could showcase some of the ideas from the existing naturalistic languages on the "market", to get a feel of some of the practical difficulties involved in making a naturalistic programming system, and to propose and experiment with the addition of some slightly more novel features that we shall discuss.
 
 == Implementation Details
 
@@ -12,39 +14,43 @@ As is clear, our goal has never been to implement a production-grade programming
 
 The implementation language is Python 3 (specifically version 3.10 or higher), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework.
 
-We think that the Python language offers great advantages for prototyping, due to its flexibility and regularity and due to the aboundance of third-party libraries that help perform a wide variety of tasks.
+We have experimented with other programming languages (TypeScript/JavaScript) for Deixiscript's implementation, but we decided to stick to Python at the end.
+
+We think that Python is a great language for prototyping, due to its flexibility and regularity, due to the aboundance of third-party libraries that help perform a wide variety of complex tasks easily, and also due to the richness of its included standard library.
 
 === Parser
 
-The Lark parsing toolkit for Python is used for the front end of the interpreter: to turn the strings of source code into parse trees and to further apply some transformations and obtain Abstract Syntax Trees (ASTs), which the interpreter can process.
+The Lark @larkwebsite parsing toolkit for Python is used for the "front end" of the Deixiscript interpreter: to turn the strings of source code into parse trees and to further apply some transformations to obtain Abstract Syntax Trees (ASTs), which the interpreter can process.
+
+The Lark parsing toolkit is available for free under the terms of the MIT opensource software license.
 
 === Graphical Tools
 
-The Graphviz graph visualization software and relative Python wrapper are used as a testing tool, to visually inspect the world models produced as a side effect of the interpreter's operation.
+The Graphviz @graphviz graph visualization software and relative Python wrapper  @graphvizPythonWrapper were used as a testing tool, to visually inspect the world models produced as a side effect of the interpreter's operation.
 
-// TODO: matplotlib
-// https://www.pygame.org/docs/tut/PygameIntro.html
-The Pygame library for interactive multimedia and game creation was used to show the evolution of some simulated processes graphically.
+The Matplotlib @matplotlib visualization tool and Python library was used to display the evolution of some simulated processes graphically.
+
+// (MIT for Pyright, Pytest, and Lark, CPL for Graphviz,)
 
 === Licensing
-//TODO: matplotlib
-All of the software used to develop Deixiscript is available for free and under the terms of an open source license (MIT for Pyright, Pytest, and Lark, CPL for Graphviz,  GNU LGPL version 2.1 for Pygame). Other than the aforementioned ones, the core components of Deixiscript require no further dependencies beyond Python's own standard library.
 
-Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We will suggest some possible further developments to the language in a later section of this work.
+All of the software that was used to develop Deixiscript is available for free and under the terms of an opensource license. Other than the aforementioned ones, the core components of Deixiscript require no further dependencies beyond Python's own standard library.
+
+Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We will suggest some possible further developments for the language in a later section of this work.
 
 === Functional Style
 
-Regarding the code's style, an effort was made to follow (when possible) the Functional Paradigm's approach of data-immutability and function (or method) purity.
+Regarding the code's general style, an effort was made to follow (when possible) the Functional Paradigm's approach of data-immutability and function (or method) purity.
 
 We perceive that the advantage gained from following this style was a more predictable semantics in the business-logic. Most method calls do not modify an object directly: they return a copy of it if need be. This immutability of objects reduces the chances of an unforeseen side-effect happening (an unpredicted state mutation within an object which can be a cause for bugs).
 
-On the other hand, the disadvantage of this approach is that method return types can become a little too elaborate, because due to the lack of side-effects all changes have to be propagated through this mechanism (function returns).
+On the other hand, the disadvantage of this approach is that method return types can become a little too elaborate, because due to the lack of side-effects all changes have to be propagated through the mechanism of function returns.
 
 === Interpreter Pattern
 
 The classes that represent the Abstract Syntax Trees (ASTs) follow the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages.
 
-Alternative approaches were tried (using a single, or multiple, eval function(s)) but the polymorphic nature of the Interpreter Pattern offers a higher degree of flexibility, also considering the fact that Python functions cannot be overloaded (unless done manually).
+Alternative approaches were tried (using a single or multiple eval functions) but the polymorphic nature of the Interpreter Pattern offers a higher degree of flexibility, also considering the fact that Python functions cannot be overloaded (unless done manually).
 
 The Interpreter Pattern defines a common interface (called "AST") with at least one method (usually called "eval", short for "evaluate"). The classes that implement the AST interface can either be "leafs" or "composites". A leaf (such as a number, a string, or a boolean literal) are typically constants, which means they always evaluate to themselves.
 
@@ -58,25 +64,29 @@ In our case, since we are following a Functional approach, the eval method retur
 
 == Evolution of Deixiscript
 
-Our idea of what the language had to be (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time we have explored many different ideas, not all of them have made it into the final implementation.
+Our idea of what the language had to be like (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time we have explored many different ideas, not all of them have made it into the final implementation.
 
-We initially started out with the vague notion of translating basic sentences in natural language to predicate logic (specifically Prolog) clauses, which could be then executed on a Prolog interpreter as either questions or statements. We eventually decided to change strategy when we realized that the process of translation was a little more involved than expected, and that the full power of Prolog's predicate logic was perhaps not really needed for our more modest purposes.
+We initially started out with the vague notion of translating basic sentences in natural language to predicate logic (specifically to Prolog) clauses, which could be then executed on a Prolog interpreter as either questions or statements. We eventually decided to change strategy when we realized that the process of translation was a little more involved than expected, and that the full power of Prolog's predicate logic was perhaps not really needed for our more modest purposes.
 
-After this initial experiment with predicate logic, we were initially inclined to go back to a more object-oriented approach, attaching both data and behavior to the entities in the world model; however, this comes with its own set of problems. We discussed some of these problems when we talked about Inform 7's approach in a previous chapter.
+After this initial experiment with predicate logic, we were initially inclined to go back to a more object-oriented approach. This meant rigidly attaching both data and behavior to the entities in the world model. This approach, however, comes with its own set of problems. We discussed some of these problems when we talked about Inform 7's approach in a previous chapter @inform7RuleOrientation.
 
-We where then inspired by projects like Pegasus and by readings such as the book "Machines Like Us" (which we discussed in previous chapters) to take a more "rule-based" approach (though we still hadn't read about Inform 7's implementation to know it was called like that).
+We where then inspired by projects like Pegasus and by readings such as the book "Machines Like Us" (which we also discussed in a previous chapter @commonSenseACentralProblem) to take a more "rule-based" approach (though we still had not read about Inform 7's implementation to know it was called like that there).
 
-As it stands, the current "version" of Deixiscript adopts a kind of rule-based programming. This makes types a little more flexible than classes, because they do not have to be declared as rigidly (or linked to their behavior as tightly) as in class-based programming. 
+As it stands, the current version of Deixiscript adopts a kind of rule-based programming approach. This makes types a little more flexible than classes, because they do not have to be declared as rigidly (or linked to their behavior as tightly) as in class-based programming.
 
-In the pages that follow, we will describe the current version of Deixiscript, motivating some of the choices that were made and the philosophy behind them. Since Deixiscript is an English-based language, what follows will also incorporate a brief discussion of some (basic) aspects of the English grammar.
+The current version of Deixiscript also tries to introduce a limited kind of automatic planning (which we encountered in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability can be used to issue declarative "orders" to individuals in the world model known as "agents", as we will see. 
 
-// ------------------
+In the pages that follow, we will describe the current version of Deixiscript, describing and motivating the choices that were made and the philosophy behind them. Since Deixiscript is an English-based language, what follows will also inevitably incorporate a brief discussion of some (basic) aspects of the English grammar.
+
+== Representing Propositions
 
 We begin from what we think is a central concept in any language (natural or artificial), and that is: propositions and their concrete representation. We came across propositions when discussing logic programming in a previous chapter; as we saw, in predicate logic propositions are represented by Well-Formed Formulas. In natural language, on the other hand, propositions are typically represented by sentences. In English, a sentence can be simple, compound or complex.
 
 === Simple Sentences
 
 A common example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence can contain: a subject ("the quick brown fox"), a verb ("jumps"), a direct object (none in this case, since "jump" is typically used as an intransitive verb), and any number of complements ("the lazy dog" could be considered as the "location" of the fox's jump).
+
+==== Complements & Grammatical Cases
 
 The complements of a sentence can help specify the location or time of an action, they can also correspond to any other actors directly or indirectly involved in the action. In English, complements are generally introduced after a preposition such as: "over" (from the example), "to", "from", "by", and so on.
 
@@ -85,6 +95,8 @@ The direct object of a sentence is a little special in English (and many other m
 Unlike English, some languages (even some modern Indo-European languages) rely more heavily on "case-markings" rather than prepositions and word-order to express grammatical relationships. A case-marking is typically a word inflection (such as a suffix, a prefix or an infix). In many such languages, English's "direct object" corresponds to an inflected noun in the "accusative case".
 
 A vestige of this grammatical case-system (which English inherited from an older proto-language) remains in modern English's personal pronouns, for instance: "I/he/she" are "nominative" (the grammatical case of the subject), "me/him/her" are "accusative" (the grammatical case of the direct object) or "dative" (e.g.: "I give _him_ the book").
+
+==== Verbs and Transitivity
 
 In any case, the verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
 
@@ -104,15 +116,15 @@ A complex sentence creates a relation of dependence between two simple sentences
 
 But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the necessary (and somewhat trivial) relationship between them.
 
-// -----------------
+=== Deixiscript Ideas 
 
-A choice was made in Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object. The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas. // cite inform 7
+A proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object.
 
-So a proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object.
+A choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object. The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas @nelson2006natural.
 
-From now on, we will speak of "simple sentences", of "Ideas" and of "propositions" almost interchangeably in the context of the Deixiscript language, while keeping in mind that: a proposition is really an abstract (mental) concept, that an English simple sentence is best thought of as a feature of the (concrete) syntax of the English language, and that an "Idea" (as we are using the term) is an element of the abstract syntax (i.e. an Abstract Syntax Tree type) of our implementation of the Deixiscript language. 
+From now on, we will speak of "simple sentences", of "Ideas" and of "propositions" almost interchangeably in the context of the Deixiscript language, while keeping in mind that: a proposition is really an abstract (mental) concept, that an English simple sentence is best thought of as a feature of the (concrete) syntax of the English language, and that an "Idea" (as we are using the term) is an element of the abstract syntax of our implementation of Deixiscript. 
 
-Also, we must keep in mind that a proposition is the meaning of any sentence (not just simple sentences), hence the term "atomic proposition" would be more appropriate when referring to the meaning represented by a Deixiscript "Idea" specifically.
+Also, we must keep in mind that a proposition is the meaning of any sentence (not just simple sentences), hence the term "atomic proposition" would be more appropriate when referring to the meaning represented by a Deixiscript Idea.
 
 Another component of a Deixiscript Idea is a Boolean flag we will refer to as "CMD". The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the grammatical mood known as "indicative".
 
@@ -156,9 +168,11 @@ Therefore, the system does not know whether an Idea represents an Event or a Fac
 
 The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
 
-// ----------
+== Representing Entities
 
 Up until now, we have always generically talked about the "subject" and the "object" of a simple sentence, we will now take some time to explain what we mean by those terms.
+
+==== Noun Phrases
 
 In English, the subject and the object of a sentence are "noun phrases". A phrase is a syntactic structure that does not express a complete thought; in particular: a noun phrase is a phrase that performs the same function as a noun.
 
@@ -166,23 +180,41 @@ A general test for whether a part of a sentence counts as a noun phrase is to re
 
 A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or any smaller noun phrase). In the noun phrase "the lazy dog" the head is "dog".
 
+==== Implicit References
+
 A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. 
 
 For instance, if a person refers to "the cat" when they're at home, versus "the cat" when they're visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat".
 
 A noun phrase can be of arbitrary length, and of arbitrary precision (and thus include/exclude a higher number of individuals), the most trivial example is given by a single noun all by itself (e.g.: "cat"), but a noun phrase also typically includes articles, adjectives and even relative clauses with any arbitrary level of nesting, e.g.: "the agile calico cat that leaped on top of my desk holding a fresh kill (which she wanted me to have as a gift) in its fangs".
 
+==== Deixiscript Noun Phrases
+
 The kinds of noun phrases supported by Deixiscript are: constants (numbers, strings, Booleans and IDs), "implicit phrases", "genitive phrases", pronouns and variables.
 
-Numbers, strings and Booleans work just like they do in any other programming language. IDs are mainly there for the system's own benefit (we will discuss them further when talking about the world model) and are not accessible to the user of the language. Variables are placeholders names ("x","y" and "z") that match any type, they can be useful when writing some kinds of general Definitions.
+===== Constants
+
+Numbers, strings and Booleans work just like they do in any other programming language. IDs are mainly there for the system's own benefit (we will discuss them further when talking about the world model) and are not accessible to the user of the language. 
+
+===== Variables
+
+Variables are placeholders names ("x","y" and "z") that match any type, they can be useful when writing some kinds of general Definitions.
+
+===== Implicit Phrases
 
 What we call "implicit phrases" comprise of a noun and a list of adjectives. A noun is just a string representing a type (which doesn't have to be declared explicitly). The adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in Ideas (simple sentences) we discussed earlier.
 
+===== Attributive Adjectives
+
 An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. In Deixiscript there is an equivalence between the two: once the meaning of an adjective is defined as a predicative adjective in a simple sentence (e.g.: "the cat is calico, means..."), it can be used as an attributive adjective in a noun phrase (e.g.: "the calico cat"). An attributive adjective can also be negated (e.g.: "a non-calico cat").
+
+===== Genitives and Possession
 
 What we call a "genitive phrase" is a noun phrase that refers to a property of an individual rather than to an individual itself. Syntactically, it is in the form:  "an individual's property" or "x's y" (using English's Saxon Genitive). It is also possible to implement an equivalent form using the preposition "of".
 
 We think that "possession" is an important part of how we model the world. All of the "useful work" that the system really does (everything it boils down to) is setting the value of properties on the dictionary-like data structures the system internally uses to represent "individuals". It is precisely because of this internal representation that the system is able to interface with the outside world (other programming languages, tools and libraries). We will come back to this idea later when discussing the Knowledge Base and World Model.
+
+===== Pronouns
 
 The last kind of noun phrase we mentioned is the pronoun. This is perhaps the most elusive kind of syntactical element that we take for granted in natural language, but that is actually not so easy to approximate (with a hundred percent accuracy) in an artificial language.
 
@@ -198,7 +230,9 @@ For instance: "the cat saw a table, and it jumped on it", it is obvious that the
 
 Deixiscript supports a limited kind of context-dependent resolution of pronouns,  based on the Short Term Memory (STM) of the interpreter and the stored Definitions of the simple sentences, we will discuss the STM later alongside the Knowledge Base.
 
-Deixiscript does not support realtive clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase came from the difficulties encountered in their implementation. 
+===== Relative Clauses (not included)
+
+Deixiscript does not support realtive clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase came from the difficulties encountered in their implementation.
 
 // https://en.wikipedia.org/wiki/English_relative_clauses
 
@@ -212,9 +246,11 @@ While this is not an insurmountable problem in principle (the transitivity of a 
 
 At the end of the day, the goal behind implementing noun phrases was to have a system to distinguish types from one another, to recognize some kinds of sub-type and compatibility relationships, and to pick out individuals from the world models based on their properties. For our basic prototyping purposes, one can get along well enough with the syntactic structures we have previously described (nouns, adjectives, genitives).
 
-// --------------------
+== Knowledge Base (KB)
 
 We have repeatedly mentioned the "Knowledge Base", in the following paragraphs we will discuss the details behind this important component of the system. The Knowledge Base contains all of the state of the Deixiscript interpreter at any point in time, which comprises of: the World Model (WM), the lists of Definitions, Potentials and Orders (we will come to these latter ones later), and the Short Term Memory (STM).
+
+=== World Model (WM)
 
 As we already said, the world is modelled as individual entities (or "individuals") and their associated properties. An "individual" in the world model is nothing more than a bundle of properties stored in a dictionary (associative array) data structure. Any one of these individuals (or bundles of properties) must contain at least one essential property that we call "type". There is a list of these individuals, and the index in the list of an individual is its "ID". For instance, we could have a world model like this one (represented in JSON notation):
 
@@ -238,7 +274,7 @@ Obviously, this must be enforced by a check that is made whenever a new individu
 
 One might say that the system cannot "conceive" of any two "identical" individuals unless it (the system) knows of some actual (even slight) difference in their properties. The rationale behind this limitation is related to how the Short Term Memory (STM) works.
 
-// ----------------
+=== Short Term Memory (STM)
 
 The Short Term Memory (STM) is a part of the Knowledge Base, its purpose is essentially to disambiguate the implicit references and pronouns that may be used by the programmer in a given context.
 
@@ -262,17 +298,19 @@ The STM is also useful for the resolution of pronouns. The stipulation here is t
 
 The simple technique we are using to resolve pronouns is to try executing a sentence (or phrase) that contains a pronoun multiple times, each time after having substituted the pronoun with a different noun phrase taken from the STM (they are very few, owing to the STM's limited capacity). When the sentence (or phrase) finally works (does not produce an error) then we stop, and we consider the pronoun to be resolved. Of course, it may be that none of the noun phrases in the STM succeeds at making sense of the sentence containing a pronoun, in that case the system just displays an error stating that the pronoun is used ambigiously in that context.
 
-// ------------
+== Syntactic Matching
 
 Many of the higher-level operations we have talked about (using simple sentences, using adjectives, searching for relevant Definitions, etc.) depend on the functioning of a more basic low-level operation that we will call "match".
 
 Matching any two noun phrases or any two sentences (or, more generally, any two AST objects even of different types) is a purely syntactic operation that does not depend on the context i.e.: it is completely independent of the state of the Knowledge Base.
 
-Match is implemented as a function that takes two arguments: two Abstract Syntax Tree (AST) objects. The function "match" is "non-symmetric" i.e., the order of the arguments matters, the function cannot be expected to return the same result when the two arguments are swapped around.
+=== The `match()` Function
 
-When comparing noun phrases, one of the arguments can be thought of as the "super-type" and the other can be regarded as the "sub-type" of the type comparison, to use some class-based programming jargon. For instance: when comparing the structure that represent the noun phrase "the cat" to the one that represents the noun phrase "the red cat", "match" will return a "positive result" if "the cat" is used as the first argument (in the "super-type" position), this is because "the red cat" is regarded as a special case of "the cat".
+Match is implemented as a function that takes two arguments: two Abstract Syntax Tree (AST) objects. The function `match()` is "non-symmetric" i.e., the order of the arguments matters, the function cannot be expected to return the same result when the two arguments are swapped around.
 
-Obviously, if the arguments are swapped around and "the red cat" takes the argument position reserved to the "super-type" the "match" function returns a "negative result" ("the cat" is obviously _not_ a special case of "the red cat"). 
+When comparing noun phrases, one of the arguments can be thought of as the "super-type" and the other can be regarded as the "sub-type" of the type comparison, to use some class-based programming jargon. For instance: when comparing the structure that represent the noun phrase "the cat" to the one that represents the noun phrase "the red cat", `match()` will return a "positive result" if "the cat" is used as the first argument (in the "super-type" position), this is because "the red cat" is regarded as a special case of "the cat".
+
+Obviously, if the arguments are swapped around and "the red cat" takes the argument position reserved to the "super-type" the `match()` function returns a "negative result" ("the cat" is obviously _not_ a special case of "the red cat"). 
 
 Used on noun phrases, the match function behaves very much like the "instanceof" operator of some object-oriented languages that produces a Boolean value based on the inheritance hierarchy of the operands. But what the match function actually returns is a mapping (an AST-to-AST dictionary), which is just empty in case of a "negative result".
 
@@ -281,6 +319,8 @@ This is because the two arguments of the match function are not (as we have alre
 It is also useful to allow different AST types to compare together, it makes sense for instance to able to compare a "genitive" noun phrase to an "implicit" phrase (they are treated as two different AST types as we have seen before).
 
 It may also make sense to compare a compound sentence (techically an "and expression" or an "or expression") to a simple sentence (an Idea).
+
+=== Definition Lookup
 
 Syntactic matching plays a crucial role when the system needs to lookup the definition of an Idea. As we said, an Idea is the sort of AST that does not have an intrinsic meaning: it needs to be defined before it is used, and the Definitions are stored as a list in the Knowledge Base. Each Definition has two parts: a "definendum" (or left-hand side) and a "definition" (or "meaning", or right-hand side).
 
@@ -291,6 +331,8 @@ If a suitable match is indeed found, then the search stops. The system takes the
 To do this, a very simple function called "subst" is invoked. The function subst simply takes an "original AST" and an AST-to-AST dictionary, and substitues the keys of the dictionary with the values whenever it finds them on the "original AST" callings itself recursively.
 
 When subst is done, the new AST that it produces is executed, this is akin to running the body of a function. This argument passing strategy is similar to "pass by name", which we discussed in the chapter on programming languages.
+
+=== Specificity and Matching
 
 A problem with this kind Definition lookup proceudre is this: suppose that the system needs to answer a question like: "the amphibious fish is dead?". Let us suppose that the Knowledge Base contains two Definitions for the predicate "is dead", the first Definition in the list generically applies to any kind of fish (i.e. "a fish is dead means ...") and the second applies specifically to amphibious ones.
 
@@ -304,7 +346,7 @@ Sorting the list of Definitions by descending specificity of the definendums ens
 
 The problem can still present itself if the noun phrase used is too generic for the actual shape of the object in the world model, however, it might be possible to overcome it for good by substituting ambiguous noun phrases by their more specific meaning in the STM before serching for a Definition. For instance, if we ask the system this questions: "the fish is dead?" the system may substitute the noun phrase "the fish" with the more specific noun phrase "the amphibious fish" (depending on the current state of the STM) before attempting to search for a definition of the predicate "is dead".
 
-// --------
+== Concrete Syntax
 
 Now that we have formed a general idea (of most) of what the Deixiscript language is supposed to be (and before getting to the last aspect of Deixiscript, namely orders and planning) we wish to take a step back and give a short summary of the language's structure.
 
@@ -388,7 +430,7 @@ And finally, a "parenthesized phrase" is also a noun phrase, and it consists of 
 
 `<parenthesized-phrase> := "(" <expression> ")"`
 
-// ---------
+== AST Transformations
 
 As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e. written text, or even spoken sound) into a bidimensional, tree-like structure that clearly reflects the hierarchical relationship between the expression's constituents.
 

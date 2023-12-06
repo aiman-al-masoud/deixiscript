@@ -48,6 +48,8 @@ An advantage of spoken systems is that speech is generally considered to be a fa
 
 // spoken ambiguous grammar recognition, ALVIN
 // past tense
+// experimental studies on usability
+// game writing
 
 // % TODO: cite ALVIN 
 // % TODO

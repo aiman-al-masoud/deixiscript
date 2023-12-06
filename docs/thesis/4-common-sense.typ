@@ -2,7 +2,7 @@
 
 It is puzzling to think how easy it is to program a machine to perform a task that is extremely difficult for a human being (such as beating the world-champion in chess @deepBlue), and yet apparently so hard to get the same machine to do something that most of us do on a daily basis, without even thinking too hard: using common sense.
 
-== A Central Problem
+== A Central Problem <commonSenseACentralProblem>
 
 The book "Machines like Us: Toward AI with Common Sense" @brachman2022machines from 2022 presents us with an invaluable overview of this problem, its historical background and its practical and ethical ramifications; it was authored by Ronald J. Brachman and Hector J. Levesque, two eminent researchers in the field of Artificial Intelligence (AI); who are known for their contributions in the fields of semantic networks and logic-based reasoning about beliefs and plans, respectively @kautz2023ronald.
 
@@ -180,7 +180,7 @@ We think that the defeasibility (or revisability) of general rules is a recurren
 
 The annotations they talk about concern the cancellation of restrictions (for example, on the value or number of a role in a relationship), but they (annotations) also concern the assignment of default fillers for a role, and perhaps even the management of metadata such as "source of belief", and "strength of belief" in a proposition.
 
-=== Automated Planning
+=== Automated Planning <automaticPlanning>
 
 An concept related to Common Sense and discussed in "Machines Like Us", is that of automated planning. We have previously cited the example that Brachman and Levesque make in their book (about the self driving car, deciding to change route based on its terminal goal of getting the groceries). 
 

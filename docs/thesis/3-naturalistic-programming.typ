@@ -236,7 +236,7 @@ As an example of rule number (3) in action, one of the data structures in Inform
 
 The rationale behind rule number (4) is that the language can be more flexible, and bend better to the needs of the programmer, without the presence of a built-in database of semantic knowledge. However, is not an absolute rule: there are indeed some (few) semantical concepts that are built into the language, such as the spatial concept of "containment" which is deemed important by programmers of IF.
 
-==== Rule-Orientation
+==== Rule-Orientation <inform7RuleOrientation>
 
 Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that Interactive Fiction is a domain where "unintended consequences" and "unplanned relationships" abound; there are no clearcut "server-client" relationships between the objects: there are no "master" classes and "slave" classes which exist solely for the purpose of the former, and hence it is simply not feasible to manually define rules of interaction between every two pair of classes (or even interfaces) in the program; he gives the example of a "tortoise" and an "arrow" as two kinds of very different things that are probably not going to be thought of as interacting together when writing the game, but may end up doing so anyway in game-play, and it is simply not feasible to go around defining "tortoise-arrow protocols".
 
