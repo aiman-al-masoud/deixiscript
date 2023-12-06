@@ -134,39 +134,71 @@ But cause-and-effect relationships aren't the only kind of relationships that ca
 
 === Deixiscript Ideas 
 
-A proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object.
+A proposition (or "Idea") in Deixiscript has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object.
 
-A choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object. The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas @nelson2006natural.
+The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas @nelson2006natural.
 
 From now on, we will speak of "simple sentences", of "Ideas" and of "propositions" almost interchangeably in the context of the Deixiscript language, while keeping in mind that: a proposition is really an abstract (mental) concept, that an English simple sentence is best thought of as a feature of the (concrete) syntax of the English language, and that an "Idea" (as we are using the term) is an element of the abstract syntax of our implementation of Deixiscript. 
 
 Also, we must keep in mind that a proposition is the meaning of any sentence (not just simple sentences), hence the term "atomic proposition" would be more appropriate when referring to the meaning represented by a Deixiscript Idea.
 
-Another component of a Deixiscript Idea is a Boolean flag we will refer to as "CMD". The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the grammatical mood known as "indicative".
+=== The CMD flag
 
-There are other grammatical moods such as "subjunctive" (to express unreal or hypothetical situations) and "imperative" (to give orders). We won't be needing an explicit subjunctive mood (it is rarely used in English anyway), and we will be using a different kind of sentence all-together to express the "imperative mood" as we shall see.
+The last component of a Deixiscript Idea is a Boolean attribute we will refer to as the "CMD" flag. The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the same grammatical mood, known as the indicative mood.
 
-From a programming perspective, what is the difference between a question and a statement? We think that natural language "statements" (i.e.: declarations of knowledge assumed to be true) and programming language "statements" (i.e.: those constructs that are executed primarily for the side-effects they produce in the environment) are actually quite similar, because they both cause the "environment" to change its "beliefs" in some way.
+There are other grammatical moods in English, such as: subjunctive (to express unreal or hypothetical situations) and imperative (to give orders). We won't be needing an explicit subjunctive mood (as it is rarely used in English anyway), and we will be using a different kind of sentence all together (the "Order") to express a kind of "imperative mood" as we shall see in the later sections.
 
-A programming statement, such as a variable assignment, (primarily) causes a change of state in the system, while a natural language statement in the indicative mood causes a person to change its beliefs about the world (or at least about the other person making the statement).
+=== Statements versus Expressions
 
-On the other hand, we think that questions (and conditions) are more akin to programming language expressions, because their primary function (barring rethorical questions of course) is not that of modyfing someone else's beliefs about the world, but rather of eliciting a response from the interlocutor. In natural language, this response can be a simple "yes" or "no", or it can "point to a thing" (such as in "what", "where", "who" questions), or it can be an explanation of some phenomenon or behavior (such as in "why" questions).
+We think that natural language "statements" (i.e.: declarations of knowledge assumed to be true) and programming language "statements" (i.e.: those syntactic constructs that are executed primarily for the side-effects they produce in the environment) are actually quite similar, because (at least at a first approximation) they both cause the "recipient" to change its "internal state" in some way.
+
+A programming statement (such as a variable assignment) primarily causes a change of state in the system, for instance: by binding the name of a variable to a value in some variable scope.
+
+A natural language statement in the indicative mood usually causes a person who hears it to change his/her beliefs. A person "Alice" who hears a statement made by another person "Bob" may not actually believe in the "content" of the statement (perhaps Bob is a liar, or a deluded individual), but she will certainly believe that Bob made the statement. 
+
+If Bob happens to be some kind of authoritative figure (a doctor, a professor, etc.), Alice may actually change her beliefs according to the actual "content" of the statement made by Bob, accepting it (perhaps even just partially) as a true fact about the world.
+
+On the other hand, we think that questions (and conditions) are more akin to programming language expressions, because their primary effect on the hearer (barring rethorical questions of course) is not that of modyfing someone else's beliefs about the world, but rather of eliciting a response from an interlocutor.
+
+In natural language, this response can be a simple "yes" or "no", or it can be a "pointer to a thing" (such as in the responses to "what", "where", "who" questions), or it can be an explanation of some phenomenon or behavior (such as in the response to a "why" questions).
 
 // https://stackoverflow.com/questions/19132/expression-versus-statement
 
-In most of the popular programming languages there is a syntactical distinction between a conditional expression and a statement. For instance, in C-like languages an assignment typically uses a single equal sign and an equality-comparison uses a double equals sign.
+=== Statements versus Conditions
 
-We think that this distinction is mostly abstent from English (e.g.: the simple sentence "it is snowing" remains unchanged when embedded in the bigger complex sentence "if _it is snowing_, then wear a heavy coat"), and there is no reason why it must be otherwise in a programming language.
+In most of the popular programming languages there is some kind of syntactical distinction between a conditional expression and a statement. For instance, in C-like languages an assignment typically uses a single equal sign and an equality-comparison uses a double equals sign.
 
-So a sentence like "it is snowing" can be interpreted either as a statement (i.e.: "let it be known that it is snowing right now") or as a question or condition (i.e.: "is it snowing right now, yes or no?"). These two different interpretations, which we will call "TELL" and "ASK" respectively, are triggered by syntactic context. For instance, if a simple sentence is embedded within the condition part of a conditional statement (as we saw before), then it will be interpreted in "ASK" mood.
+This is because C-like languages the distinction between a statement and an expression is a little bit blurred, and the assignment (expression) is generally allowed to return a value (the value of the right-hand side of the assignment).
 
-A simple sentence all by itself (e.g.: "it is snowing") is interpreted in "TELL" mood, unless ended by a question mark (e.g.: "it is snowing?"). This syntax is a little off from the syntax of a "proper" question in English which in this case would require swapping the verb "to be" with the dummy subject "it" (i.e.: "is it snowing?") but we think that the two forms are still pretty close, and this issue could be fixed in the future by some slight additions to Deixiscript's concrete syntax.
+However, some programming languages lack this distinction, for instance: the (ancient) "GW-BASIC" dialect of the popular BASIC (Beginners' All-purpose Symbolic Instruction Code) programming language developed by Microsoft and first released in 1983. In GW-BASIC, the same symbol (a single equal sign) is used both as an assignment operator, as well as a comparison operator (depending on the syntactic context of its usage) @gwBasic.
 
-In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. Depending on the value of the CMD flag, the method "eval" behaves in one way (TELL) or in the other (ASK). However, with some syntactic elements only one kind of behavior makes sense: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
+We think that this distinction is also mostly absent from English (e.g.: the simple sentence "it is alive" remains unchanged when embedded in the bigger complex sentence "if _it is alive_, then run away!").
+
+=== ASK/TELL Distinction
+
+Hence, in Deixiscript, we will want a sentence like "it is alive" to be interpreted either as a statement (i.e. "let it be known that it is alive") or as a question or condition (i.e. "is it alive right now, yes or no?").
+
+These two different interpretations, which we will call "TELL" and "ASK" respectively, are triggered by syntactic context. For instance, if a simple sentence is embedded within the condition part of a conditional statement (as we saw before), then it will be interpreted in "ASK" mood.
+
+A simple sentence all by itself (e.g. "it is snowing") is interpreted in "TELL" mood, unless ended by a question mark (e.g. "it is snowing?"). This syntax diverges just a little from the syntax of a "real" question in English, which in this case would require swapping the verb "to be" with the dummy subject "it" (i.e. "is it snowing?") but we think that the two forms are still pretty close, and this issue could probably be fixed in the future by some slight additions to Deixiscript's concrete syntax.
+
+In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. Depending on the value of the CMD flag that they carry, the method "eval" behaves in one way (TELL) or in the other (ASK). 
+
+However, with some syntactic elements only one kind of behavior makes sense, for instance: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
+
+=== Defining Meaning
 
 Most AST types have an intrinsic meaning which cannot be overridden/overloaded, for instance: arithmetic operators, logic operators, comparison operators, the equal sign (which works either as a comparison operator or as an assignment depending on the syntactic context); these all have a fixed meaning for the sake of simplicity.
 
-Simple sentences (Ideas), instead, don't have any predefined meaning: they must be defined by the programmer before being used, this can be done through a definition (or "Def") syntactic construct that looks a lot like a complex sentence in English.
+As a side note: the copula (the verb "to be") is _not_ treated the same as the equal sign. The equal sign strictly compares identity, while the copula can be used with "various meanings" (with adjectives) as we will see.
+
+Simple sentences (Ideas), don't have any predefined meaning: just like functions in other programming languages, they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English.
+
+
+
+
+
+
 
 We will distinguish between two kinds of Ideas (and consequently two kinds of simple sentences) which are formally very similar (they are all represented by the same abstract syntactical structure) but they have a different meaning that can be discerned (as we will see).
 
@@ -183,6 +215,10 @@ Some "adjectives" such as near (we will be treating it as an adjective) support 
 Therefore, the system does not know whether an Idea represents an Event or a Fact from the Idea object itself. Every Idea is thought of as a Fact (i.e.: it cannot be performed by an agent) until proven otherwise, namely if there is an appropriate Potential.
 
 The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
+
+
+
+
 
 == Representing Entities
 
