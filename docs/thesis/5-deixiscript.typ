@@ -352,25 +352,37 @@ Now that we have formed a general idea (of most) of what the Deixiscript languag
 
 We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance we have said that Definitions and Potentials would end up looking like complex sentences. In general, the syntax draws inspiration from English; however, it includes some mathematical symbols (like most other programming languages) for the sake of convenience.
 
+=== Backus-Naur Form (BNF)
+
 Now we will present (a little more formally) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description, we have discussed BNF in a previous chapter when talking about ALGOL 60. 
 
 The following presentation will omit some of the more technical details for the sake of clarity, the actual code that generates the parser is described in Lark's own dialect of BNF (Lark is the Python parsing toolkit we are using), and contains some extra caveats and technicalities compared to the following one.
+
+==== Program
 
 Firstly, any Deixiscript program contains at least a single statement, or more statements separated by a dot. We will express this in the equivalent BNF-like pseudo-code:
 
 `<program> := <statement> | (<program> "." <statement>)`
 
+==== Statement
+
 A "statement" can be any of the following syntactic structures:
 
 `<statement> := <expression> | <definition> | <potential> | <order> | <question> |<repetition> | <existential-quantifier>`
+
+==== Expression
 
 An "expression" is either a noun, or an idea or a binary expression:
 
 `<expression> := <noun-phrase> | <idea> | <binary-expression>`
 
+==== Question
+
 A "question" is just a statement followed by a question mark, there is definitely room for improvement on this rule (as we already stated in a previous section):
 
 `<question> := <statement> "?"`
+
+==== Idea
 
 An idea is a fact or an event; we wish to note that the distinction here is a purely syntactical one i.e., after an event or fact is parsed it is transformed into the same Idea abstract tree:
 
@@ -384,35 +396,53 @@ A fact instead looks like a simple sentence with a copular verb (i.e. the verb "
 
 `<fact> := <noun-phrase> <copula> <noun-phrase> noun-phrase>?`
 
-A binary expression is two smaller expressions separated by a binary operator. The binary operator can be a logical operator ("and", "or"), a comparison operator (">", "<", etc.), an arithmetical operator ("+", "-", etc.) or the equal sign ("=") which (as already said) can be interpreted as an assignment or as an equality comparison depending on the surrounding syntactic context. The code below shows the binary expression as a single production rule, but in practice it would be split into several similar-looking rules (logic, arithmetic, comparison, etc.) for the purpose of defining operator precedence:
+==== Binary Expression
+
+A binary expression is two smaller expressions separated by a binary operator. The binary operator can be a logical operator ("and", "or"), a comparison operator (">", "<", etc.), an arithmetical operator ("+", "-", etc.) or the equal sign ("=") which (as already said) can be interpreted as an assignment or as an equality comparison depending on the surrounding syntactic context. 
+
+The BNF code below shows the binary expression as a single production rule, but in practice it would be split into several similar-looking rules (logic, arithmetic, comparison, etc.) for the purpose of defining operator precedence:
 
 `<binary-expression> := <expression> <binary-operator> <expression>`
+
+==== Definition
 
 A definition is quite simply an "idea" (a simple sentence) followed by the harcoded verb "to mean", followed by any expression (the "meaning"):
 
 `<definition> := <idea> "means" <expression>`
 
+==== Potential
+
 A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, followed by another (this time optional) noun (the direct object); there are two further optional parts of a potential: a duration in seconds and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true" i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
 
 `<potential> := <noun-phrase> "can" <verb> <noun-phrase>? ["(" <number> "seconds" ")"] ["if" <expression>]`
+
+==== Order
 
 An order (which we will discuss in a later section) is composed of a noun (the agent who receives the order), the harcoded verb phrase "should ensure" and an expression (the agents "goal").
 
 `<order> := <noun-phrase> "should ensure" <expression>`
 
+==== Repetition
+
 A repetition statement is not really recessary (and we had not really mentioned it before now), but we decided to add it just for convenience; it consists of an idea (a simple sentence) followed by a number, followed by the harcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
 
 `<repetition> := <idea> <number> "times"`
+
+==== Noun Phrase
 
 A noun phrase can be any of the following things:
 
 `<noun-phrase> := <constant> | <noun> | <article-phrase> | <genitive-phrase> | <attributive-phrase> | <pronoun> | <variable> | <number> | <parenthesized-phrase>`
 
 Constants are numbers, strings or Booleans; the ID type is not shown here because in principle it should not be accessible to the programmer (the ID of an individual is supposed to be used internally by the system) though the system could be easily extended to include a syntax for an "ID literal" which could be useful for debugging purposes:
+
+==== Constant
   
 `<constant> := <number> | <string> | <boolean>`
 
 A `<noun>` is just a simple, basic English noun (actually any "non-verb word") among the ones that the parser recognizes. By itself, it is actually just treated as a string, and could in fact be considered a constant.
+
+==== Article Phrase
 
 A "real" noun (i.e. an implicit reference) is preceded by an English article (definite or indefinite); this is the kind of noun that will resolve to an ID when evaluated by the system:
 
@@ -420,17 +450,23 @@ A "real" noun (i.e. an implicit reference) is preceded by an English article (de
 
 An "attributive phrase" adds an adjective to that kind of noun phrase. The adjective itself is another single noun, and can be preceded by a negative particle ("non"):
 
+==== Attributive Phrase
+
 `<attributive-phrase> := "non-"? <noun> <noun-phrase>`
 
 A "genitive phrase" contains a noun phrase followed by a genitive particle ("apostrophe s") and a simple noun.
 
+==== Genitive Phrase
+
 `<genitive-phrase> := <noun-phrase> "'s" <noun>`
+
+==== Parenthesized Phrase
 
 And finally, a "parenthesized phrase" is also a noun phrase, and it consists of an expression enclosed by parentheses. It can be useful to better specify the order of evaluation in mathematical formulas and the like:
 
 `<parenthesized-phrase> := "(" <expression> ")"`
 
-== AST Transformations
+=== AST Transformations
 
 As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e. written text, or even spoken sound) into a bidimensional, tree-like structure that clearly reflects the hierarchical relationship between the expression's constituents.
 
