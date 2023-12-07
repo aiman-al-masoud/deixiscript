@@ -400,14 +400,13 @@ Sorting the list of Definitions by descending specificity of the definendums ens
 
 The problem can still present itself if the noun phrase used is too generic for the actual shape of the object in the world model, however, it might be possible to overcome it for good by substituting ambiguous noun phrases by their more specific meaning in the STM before serching for a Definition. For instance, if we ask the system this questions: "the fish is dead?" the system may substitute the noun phrase "the fish" with the more specific noun phrase "the amphibious fish" (depending on the current state of the STM) before attempting to search for a definition of the predicate "is dead".
 
+// TODO: put AFTER orders and planning?
 == Concrete Syntax
 
 Now that we have formed a general idea (of most) of what the Deixiscript language is supposed to be (and before getting to the last aspect of Deixiscript, namely orders and planning) we wish to take a step back and give a short summary of the language's structure.
 
 We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance we have said that Definitions and Potentials would end up looking like complex sentences. In general, the syntax draws inspiration from English; however, it includes some mathematical symbols (like most other programming languages) for the sake of convenience.
 
-
-// TODO: put AFTER orders and planning?
 === Backus-Naur Form (BNF)
 
 Now we will present (a little more formally) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description, we have discussed BNF in a previous chapter when talking about ALGOL 60. 
