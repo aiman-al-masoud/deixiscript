@@ -1,6 +1,22 @@
 = Future Work & Conclusions
 
+We wish to dedicate the last chapter of this work to discussing only some of the (many) possible improvements that could be made to the work we have made until now in Deixiscript.
+
+We will end the chapter by some brief considerations and conclusions about this work.
+
+
+// spoken ambiguous grammar recognition, ALVIN
+// syntactic compression (moves left/right...)
+// semantic compression (near)
+// relative clauses
+// past tense
+// experimental studies on usability
+// game writing
+
+
 == Voice Interfaces
+
+// We think that a spoken programming language ...
 
 Programming by voice has received attention in the last years from both the commercial and the research sector, as an alternative to the widely popular approach of text-based programming @lagergren2021programming, @arnold2000programming.
 
@@ -44,14 +60,7 @@ Speech output, especially when enumerating avaiable options, can be slow and ted
 
 An advantage of spoken systems is that speech is generally considered to be a faster input method than typing: most pepople can speak faster than they can type, at least when speking a natural language.
 
-// We think that a spoken programming language ...
 
-// spoken ambiguous grammar recognition, ALVIN
-// syntactic and semantic compression
-// relative clauses
-// past tense
-// experimental studies on usability
-// game writing
 
 // % TODO: cite ALVIN 
 // % TODO

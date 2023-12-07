@@ -790,18 +790,19 @@ the player's color = green.
 the enemy should ensure the player is dead.
 ```
 
-The first thing to note is that this code is quite verbose, there is a lot of unnecessary repetition; we will try offering a solution to this problem in the next chapter.
-
 The program declares several capabilities of an "enemy". An enemy can move in a variety of directions (left, right, up, down) at will; an enemy can also "hit" a player, but only if it is "near the player". The interpreter is told what it means for the enemy to be near the player (in terms of x and y coordinates) and what it means for it to hit the player (the player's health decreases). The interpreter is also told what it means for a player to be dead (in terms of its "health"). Then the enemy is given the order to "ensure the player is dead".
+
+One thing to note, unfortunately, is that this code is quite verbose, there seems to be a lot of unnecessary repetition; we will try offering a solution to maybe fix this problem in the next chapter.
 
 The overall effect of the program, when run in simulation mood, is to show a static green dot (the player), and a moving red dot (the enemy) that attempts to reach the green dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will "reawaken" and resume "chasing" the player.
 
 This behavior of the enemy is achieved without telling the enemy explicitly what to do, it is rather through the `plan()` function (which we have discussed earlier) that a strategy for the enemy is automatically computed.
 
-A strategy is expressed in terms of the actions that are available to the enemy, for instance: "enemy moves right, enemy moves up, enemy hits player, enemy hits player", this would work (for example) if the enemy was at position (1,2) on the Cartesian plane and the player was at position (2,3) and had 2 health points. Of course, as we have said before, what is actually computed during a simulation session is generally a partial plan, that only gets the enemy closer to accomplishing the goal (and in this case, this literally means getting _closer_ to the player).
+A strategy is expressed in terms of the actions that are available to the enemy, for instance: "enemy moves right, enemy moves up, enemy hits player, enemy hits player", this would work (for example) if the enemy was at position (1,2) on the Cartesian plane and the player was at position (2,3) and had 2 health points. 
+
+Of course, as we have said before, what is actually computed during a simulation session is generally a partial plan, that only gets the enemy closer to accomplishing the goal (and in this case, this literally means getting _closer_ to the player).
 
 Another thing to note about the program is that the way the rule for the predicate "near" is defined introduces a problem that we will also discuss (and propose a tentative solution for) in the next chapter.
-
 
 
 
@@ -810,26 +811,3 @@ Another thing to note about the program is that the way the rule for the predica
 // https://github.com/ssardina/ergo
 // https://en.wikipedia.org/wiki/Agent-oriented_programming
 // cognitive robotics precedent
-
-// Example program
-// problems
-// conclusions
-
-// ------------------------------------------------------------------------------
-
-// recall
-// === Complex Sentences
-
-// We mentioned the fact that complex sentences allow the speaker to express a relation of subordination between two ideas; and we mentioned the philosophical distinction between "analytic" (or "a priori") and "synthetic" (or "a posteriori") knowledge, and how a valid option to verbalize this kind of knowledge in natural language is indeed through the use of a complex sentence. We think that two useful parallels with the domain of programming can be drawn here.
-
-// The question of whether "analytic" and "synthetic" knowledge really exhaust all of human knowledge is an open issue in philosophy; and there are indications that this is not the case, specifically in the existence of unfalsifiable (like analytic) knowledge that nontheless depends on real world experience (like synthetic), for instance the general notion that "things change"; this third kind of knowledge can't be neatly classified in the binary scheme presented to us by the analytic/synthetic distinction. But regardless of this problem with the distinction, we will assume that all of the knowledge contained in a computer program falls exclusively under one of these two categories.
-
-// When it comes to a priori knowledge, we think that a computer program essentially presents us with defintions: function definitions, type definitions, class definitions; these are all examples of abstractions that the programmer essentially creates for their own comfort: to avoid having to repeat themselves and hence to improve code maintainability; the interpreter or compiler needs to know that when we say `abs(x)` we really mean `-x if x<0 else x`, but it would just as well directly accept `-x if x<0 else x`, or the equivalent machine code.
-
-// On the other hand, we believe that the a posteriori knowledge contained in a program essentially corresponds with the "useful work" done by it, this knowledge is more correlated to the side-effects, intended as the desired output or external behavior of the program: it describes them. A perfect example of this, we think, are event handlers in an Event Driven programming language, when a programmer adds an event handler to a program (eg: "when the button is clicked, the counter increments"), they are essentially teaching the environment a new cause-and-effect relationship. You may also say that they are teaching it to react with a certain response to a given stimulus, or that they are teaching it to expect a certain kind of event to take place after another.
-
-// // ----------------
-
-// // // Edward Sapir (1884-1939) linguist famous for the Sapir-Whorf hypothesis on linguistic relativity once wrote: 
-
-// // // Were a language ever completely "grammatical" it would be a perfect engine of  conceptual expression. Unfortunately, or luckily, no language is tyrannically consistent. All grammars leak @sapir1921language.
