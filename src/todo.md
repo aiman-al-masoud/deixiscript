@@ -11,11 +11,10 @@
 # TEXT-POSITION IN ERRORS
 	- with meta from lark
 
-# SYNTACTIC COMPRESSION?
-an enemy moves right/left means the x-coord increments/decrements.
-an enemy moves down/up means the y-coord increments/decrements.
-an enemy can move right/left/up/down.
-
+# SYNTACTIC AND SEMANTIC COMPRESSION?
+- an enemy moves right/left means the x-coord increments/decrements.
+- an enemy can move right/left/up/down.
+- an enemy is near a player (and viceversa) means:...
 --------------------
 
 # FIXING UP KB/ZORROR/RETURN-VALUE MESS
