@@ -102,7 +102,7 @@ We think that a central theme in any language (natural or artificial) is about p
 
 A common example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence can contain: a subject ("the quick brown fox"), a verb ("jumps"), a direct object (none in this case, since "jump" is typically used as an intransitive verb), and any number of complements ("the lazy dog" could be considered as the "location" of the fox's jump).
 
-==== Complements & Grammatical Cases
+=== Complements & Grammatical Cases
 
 The complements of a sentence can help specify the location or time of an action, they can also correspond to any other actors directly or indirectly involved in the action. In English, complements are generally introduced after a preposition such as: "over" (from the example), "to", "from", "by", and so on.
 
@@ -112,7 +112,7 @@ Unlike English, some languages (even some modern Indo-European languages) rely m
 
 A vestige of this grammatical case-system (which English inherited from an older proto-language) remains in modern English's personal pronouns, for instance: "I/he/she" are "nominative" (the grammatical case of the subject), "me/him/her" are "accusative" (the grammatical case of the direct object) or "dative" (e.g.: "I give _him_ the book").
 
-==== Verbs and Transitivity
+=== Verbs and Transitivity
 
 In any case, the verbs that require a direct object are known as transitive verbs, for instance the verb "to eat" in the sentence: "the cat eats fish", where "fish" is the direct object. Some verbs do not require a direct object, such verbs are known as intransitive verbs, the verb "to exist" is an example of an intransitive verb in English.
 
@@ -124,7 +124,9 @@ Some simple sentences in English can have no verb at all: verbless sentences can
 
 === Compound Sentences
 
-A compound sentence is a sentence made up of two or more simple or compound sentences joined together by a conjunction or disjunction. An example is: "the cat meowed loud, but she failed to obtain food"; it is important to note that the two simple sentences incorporated in the larger compound sentence remain "independent" of each other: you can rephrase the previous sentence by changing their order and the meaning is logically equivalent (if you ignore the time factor, at least).
+A compound sentence is a sentence made up of two or more simple or compound sentences joined together by a conjunction or disjunction. An example is: "the cat meowed loud, but she failed to obtain food".
+
+It is important to note that the two simple sentences incorporated in the larger compound sentence remain "independent" of each other: you can rephrase the previous sentence by changing their order and the meaning is logically equivalent (if you ignore the time factor, at least).
 
 === Complex Sentences
 
@@ -132,9 +134,9 @@ A complex sentence creates a relation of dependence between two simple sentences
 
 But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the necessary (and somewhat trivial) relationship between them.
 
-=== Deixiscript Ideas 
+=== Deixiscript Ideas
 
-Now we have an idea of how propositions are represented in English. In Deixiscript, a proposition (or "Idea") has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two: a (necessary) subject and an (optional) direct object.
+Now we have a feeling for how propositions are represented in English. In Deixiscript, a proposition (or "Idea") has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two (the subject and the object).
 
 The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas @nelson2006natural.
 
@@ -142,25 +144,23 @@ From now on, we will speak of "simple sentences", of "Ideas" and of "proposition
 
 Also, we must keep in mind that a proposition is the meaning of any sentence (not just simple sentences), hence the term "atomic proposition" would be more appropriate when referring to the meaning represented by a Deixiscript Idea.
 
-=== The CMD flag
+There are two complementary ways to interpret a simple sentence, as we shall see, one is related to "statements" (we will clarify what we mean by that) and the other is related to "questions" or "conditions".
 
-The last component of a Deixiscript Idea is a Boolean attribute we will refer to as the "CMD" flag. The CMD flag is there because simple sentences in natural language can be "statements" (matters of fact, acritical declarations of some knowledge assumed to be true) or "questions" (expressions of the desire to learn about a specific fact or facts in the world). In English, both statements and questions are expressed in the same grammatical mood, known as the indicative mood.
+=== Statements versus Questions
 
-There are other grammatical moods in English, such as: subjunctive (to express unreal or hypothetical situations) and imperative (to give orders). We won't be needing an explicit subjunctive mood (as it is rarely used in English anyway), and we will be using a different kind of sentence all together (the "Order") to express a kind of "imperative mood" as we shall see in the later sections.
+We think that natural language "statements" (i.e.: "acritical" declarations of knowledge assumed to be true) and programming language "statements" (i.e.: those syntactic constructs that are executed primarily for the side-effects they produce in the environment) are actually quite similar, not just in name, because (at least at a first approximation) they both cause the "recipient" to change its "internal state" in some way.
 
-=== Statements versus Expressions
+A programming statement (such as a variable assignment) primarily causes a change of state in the system, for instance: by binding the name of a new variable to some value in a variable scope.
 
-We think that natural language "statements" (i.e.: declarations of knowledge assumed to be true) and programming language "statements" (i.e.: those syntactic constructs that are executed primarily for the side-effects they produce in the environment) are actually quite similar, because (at least at a first approximation) they both cause the "recipient" to change its "internal state" in some way.
+Analogously, a natural language statement in the indicative mood usually causes a person who hears it to change his/her beliefs. A person "Alice" who hears a statement made by another person "Bob" may not actually believe in the "content" of the statement (perhaps Bob is a liar, or a deluded individual), but she will certainly (at least) come to believe that Bob made the statement.
 
-A programming statement (such as a variable assignment) primarily causes a change of state in the system, for instance: by binding the name of a variable to a value in some variable scope.
+If Bob also happens to be some kind of authoritative figure (a doctor, a professor, etc.) Alice may actually change her beliefs according to the actual "content" of the statement made by Bob, accepting it (perhaps even just partially) as a true fact about the world.
 
-A natural language statement in the indicative mood usually causes a person who hears it to change his/her beliefs. A person "Alice" who hears a statement made by another person "Bob" may not actually believe in the "content" of the statement (perhaps Bob is a liar, or a deluded individual), but she will certainly believe that Bob made the statement. 
+On the other hand, a question is an expression of the desire to learn about a specific fact or facts in the world. A condition represents a piece of knowledge whose truth value is not asserted, but rather just taken as hypothetical.
 
-If Bob happens to be some kind of authoritative figure (a doctor, a professor, etc.), Alice may actually change her beliefs according to the actual "content" of the statement made by Bob, accepting it (perhaps even just partially) as a true fact about the world.
+We think that questions (and conditions) are more akin to programming language expressions, because their primary effect on the recipient (barring rethorical questions of course) is not that of modyfing the recipient's beliefs about the world, but rather of eliciting a response from the interlocutor.
 
-On the other hand, we think that questions (and conditions) are more akin to programming language expressions, because their primary effect on the hearer (barring rethorical questions of course) is not that of modyfing someone else's beliefs about the world, but rather of eliciting a response from an interlocutor.
-
-In natural language, this response can be a simple "yes" or "no", or it can be a "pointer to a thing" (such as in the responses to "what", "where", "who" questions), or it can be an explanation of some phenomenon or behavior (such as in the response to a "why" questions).
+In natural language, this response can be a simple "yes" or "no" (a condition also typically "evaluates" to a "yes" or a "no"), or it can be a "pointer to a thing" (such as in the responses to "what", "where", "who" questions), or it can be an explanation of some phenomenon or behavior (such as in the response to a "why" questions).
 
 // https://stackoverflow.com/questions/19132/expression-versus-statement
 
@@ -168,9 +168,17 @@ In natural language, this response can be a simple "yes" or "no", or it can be a
 
 In most of the popular programming languages there is some kind of syntactical distinction between a conditional expression and a statement. For instance, in C-like languages an assignment typically uses a single equal sign and an equality-comparison uses a double equals sign.
 
-This is because C-like languages the distinction between a statement and an expression is a little bit blurred, and the assignment (expression) is generally allowed to return a value (the value of the right-hand side of the assignment).
+This is because C-like languages the general distinction between a statement and an expression is a little bit blurred, and the assignment (expression) is generally allowed to return a value (the value of the right-hand side of the assignment); hence an assignment could appear within the condition of an if-statement, and there is a need to distinguish it syntactically from a comparison.
 
-However, some programming languages lack this distinction, for instance: the (ancient) "GW-BASIC" dialect of the popular BASIC (Beginners' All-purpose Symbolic Instruction Code) programming language developed by Microsoft and first released in 1983. In GW-BASIC, the same symbol (a single equal sign) is used both as an assignment operator, as well as a comparison operator (depending on the syntactic context of its usage) @gwBasic.
+The following is an example of a conditional statement in a C-like language, the function `do_something()` will be invoked if and only if the value of the variable `x` is equal to the integer `1`: 
+
+`if (x == 1) do_something();`
+
+The following is (de facto) _not_ a conditional statement in a C-like language, because the single equals denotes an assignment, and the whole assignment expression evaluates to the right-hand side (i.e. to the integer `1`). Any number that is not equal to `0` is considered to be "truthy", so the function `do_something()` will always (unconditionally) be executed in this case:
+
+`if (x = 1) do_something();`
+
+However, some programming languages lack this somewhat tricky distinction, for instance: the old "GW-BASIC" dialect of the popular BASIC (Beginners' All-purpose Symbolic Instruction Code) programming language developed by Microsoft and first released in 1983. In GW-BASIC, the same symbol (a single equal sign) is used both as an assignment operator, as well as a comparison operator (depending on the syntactic context of its usage) @gwBasic.
 
 We think that this distinction is also mostly absent from English (e.g.: the simple sentence "it is alive" remains unchanged when embedded in the bigger complex sentence "if _it is alive_, then run away!").
 
@@ -182,51 +190,31 @@ These two different interpretations, which we will call "TELL" and "ASK" respect
 
 A simple sentence all by itself (e.g. "it is snowing") is interpreted in "TELL" mood, unless ended by a question mark (e.g. "it is snowing?"). This syntax diverges just a little from the syntax of a "real" question in English, which in this case would require swapping the verb "to be" with the dummy subject "it" (i.e. "is it snowing?") but we think that the two forms are still pretty close, and this issue could probably be fixed in the future by some slight additions to Deixiscript's concrete syntax.
 
-In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. Depending on the value of the CMD flag that they carry, the method "eval" behaves in one way (TELL) or in the other (ASK). 
+In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. 
 
 However, with some syntactic elements only one kind of behavior makes sense, for instance: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
 
+The way this is technically handled is through the addition of an extra component to a Deixiscript Idea (and to the other AST types that need it): a Boolean attribute that we will call "CMD" flag. Depending on its value, an AST object's eval method will behave in one way (TELL) or in the other (ASK). A new copy (following the code's functional approach) of an AST object can be made with a different value of the CMD flag.
+
+=== Other Grammatical Moods
+
+Both statements and questions in English are expressed with the same grammatical mood, the one known as the indicative mood. There are other grammatical moods in English, such as: subjunctive (to express unreal or hypothetical situations) and imperative (to give orders). 
+
+We won't be needing an explicit subjunctive mood (as it is rarely used in modern English anyway), and we will be using a different kind of sentence all together (the "Order") to express a kind of "imperative mood" as we shall see in the later sections.
+
 === Defining Meaning
 
-Most AST types have an intrinsic meaning which cannot be overridden/overloaded, for instance: arithmetic operators, logic operators, comparison operators, the equal sign (which works either as a comparison operator or as an assignment depending on the syntactic context); these all have a fixed meaning for the sake of simplicity.
+Simple sentences (Ideas), don't have any predefined meaning in the current version Deixiscript: just like functions in other programming languages, they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English (as we will see).
 
-As a side note: the copula (the verb "to be") is _not_ treated the same as the equal sign. The equal sign strictly compares identity, while the copula can be used with "various meanings" (with adjectives) as we will see.
+Most other AST types have an intrinsic meaning which cannot be overridden/overloaded, for instance: arithmetic operators, logic operators, comparison operators, the equal sign (which works either as a comparison operator or as an assignment depending on the syntactic context); these all have a fixed meaning for the sake of simplicity.
 
-Simple sentences (Ideas), don't have any predefined meaning: just like functions in other programming languages, they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English.
-
-
-
-
-
-
-
-
-
-We will distinguish between two kinds of Ideas (and consequently two kinds of simple sentences) which are formally very similar (they are all represented by the same abstract syntactical structure) but they have a different meaning that can be discerned (as we will see).
-
-We will call these two categories of Ideas: "Facts" and "Events". We think of a Fact as just a regular proposition (a statement about how the world is or isn't at any particular point in time), and we think of an Event as an action that can be actively performed by an agent.
-
-Syntactically speaking, we will represent "Facts" as simple sentences with a copular verb (the verb "to be" in English), for instance the sentence: "the player is dead". We will think of Facts as "static" states of affairs, a sentence representing a Fact always refers to the present tense (there are no other tenses in Deixiscript), and describes the presence or absence of a particular situation "here and now" in the world model.
-
-Events on the other hand will be represented by simple sentences with any verb other than the copula (other than the verb "to be"). An Event does not describe a state of affairs that we think of as statically represented in the world model, but rather a dynamic action (performable by an agent) that produces certain kinds of changes to the world model when it is performed at any given time.
-
-As already mentioned, the AST type behind both Facts and Events is the one and same Idea AST type. Another thing we already mentioned is that the Idea AST type has a subject, an (optional) object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g.: to eat, to drink, to run), whereas in case of a Fact the predicate is an adjective (e.g.: red, dead, near).
-
-Some "adjectives" such as near (we will be treating it as an adjective) support an object (e.g.: "the cat is near _the mat_"), they are akin in this sense to transitive verbs (such as "to eat").
-
-Therefore, the system does not know whether an Idea represents an Event or a Fact from the Idea object itself. Every Idea is thought of as a Fact (i.e.: it cannot be performed by an agent) until proven otherwise, namely if there is an appropriate Potential.
-
-The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
-
-
-
-
+As a side note: the copula (i.e. the verb "to be") is _not_ treated the same as the equal sign. The equal sign strictly compares identity, while the copula can be used with "various meanings" (with adjectives) as we will see.
 
 == Representing Entities
 
 Up until now, we have always generically talked about the "subject" and the "object" of a simple sentence, it is now time to explain exactly what we mean by those terms.
 
-==== Noun Phrases
+=== Noun Phrases
 
 In English, the subject and the object of a sentence are "noun phrases". A phrase is a syntactic structure that (unlike a sentence) does not express a complete thought; in particular: a noun phrase is a phrase that performs the same function as a noun.
 
@@ -234,7 +222,7 @@ A general test for whether a part of a sentence counts as a noun phrase is to re
 
 A linguistic head (or nucleus) of a phrase is the part that determines the syntactic category of that phrase, in the case of a noun phrase the head would be a noun (or any smaller noun phrase). In the noun phrase "the lazy dog" the head is "dog".
 
-==== Implicit References
+=== Implicit References
 
 A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. 
 
@@ -242,33 +230,33 @@ For instance, if a person refers to "the cat" when they're at home, versus "the 
 
 A noun phrase can be of arbitrary length, and of arbitrary precision (and thus include/exclude a higher number of individuals), the most trivial example is given by a single noun all by itself (e.g.: "cat"), but a noun phrase also typically includes articles, adjectives and even relative clauses with any arbitrary level of nesting, e.g.: "the agile calico cat that leaped on top of my desk holding a fresh kill (which she wanted me to have as a gift) in its fangs".
 
-==== Deixiscript Noun Phrases
+=== Deixiscript Noun Phrases
 
 The kinds of noun phrases supported by Deixiscript are: constants (numbers, strings, Booleans and IDs), "implicit phrases", "genitive phrases", pronouns and variables.
 
-===== Constants
+==== Constants
 
 Numbers, strings and Booleans work just like they do in any other programming language. IDs are mainly there for the system's own benefit (we will discuss them further when talking about the world model) and are not accessible to the user of the language. 
 
-===== Variables
+==== Variables
 
 Variables are placeholders names ("x","y" and "z") that match any type, they can be useful when writing some kinds of general Definitions.
 
-===== Implicit Phrases
+==== Implicit Phrases
 
 What we call "implicit phrases" comprise of a noun and a list of adjectives. A noun is just a string representing a type (which doesn't have to be declared explicitly). The adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in Ideas (simple sentences) we discussed earlier.
 
-===== Attributive Adjectives
+==== Attributive Adjectives
 
 An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. In Deixiscript there is an equivalence between the two: once the meaning of an adjective is defined as a predicative adjective in a simple sentence (e.g.: "the cat is calico, means..."), it can be used as an attributive adjective in a noun phrase (e.g.: "the calico cat"). An attributive adjective can also be negated (e.g.: "a non-calico cat").
 
-===== Genitives and Possession
+==== Genitives and Possession
 
 What we call a "genitive phrase" is a noun phrase that refers to a property of an individual rather than to an individual itself. Syntactically, it is in the form:  "an individual's property" or "x's y" (using English's Saxon Genitive). It is also possible to implement an equivalent form using the preposition "of".
 
 We think that "possession" is an important part of how we model the world. All of the "useful work" that the system really does (everything it boils down to) is setting the value of properties on the dictionary-like data structures the system internally uses to represent "individuals". It is precisely because of this internal representation that the system is able to interface with the outside world (other programming languages, tools and libraries). We will come back to this idea later when discussing the Knowledge Base and World Model.
 
-===== Pronouns
+==== Pronouns
 
 The last kind of noun phrase we mentioned is the pronoun. This is perhaps the most elusive kind of syntactical element that we take for granted in natural language, but that is actually not so easy to approximate (with a hundred percent accuracy) in an artificial language.
 
@@ -284,7 +272,7 @@ For instance: "the cat saw a table, and it jumped on it", it is obvious that the
 
 Deixiscript supports a limited kind of context-dependent resolution of pronouns,  based on the Short Term Memory (STM) of the interpreter and the stored Definitions of the simple sentences, we will discuss the STM later alongside the Knowledge Base.
 
-===== Relative Clauses (not included)
+==== Relative Clauses (not included)
 
 Deixiscript does not support realtive clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase came from the difficulties encountered in their implementation.
 
@@ -366,7 +354,7 @@ When comparing noun phrases, one of the arguments can be thought of as the "supe
 
 Obviously, if the arguments are swapped around and "the red cat" takes the argument position reserved to the "super-type" the `match()` function returns a "negative result" ("the cat" is obviously _not_ a special case of "the red cat"). 
 
-Used on noun phrases, the match function behaves very much like the "instanceof" operator of some object-oriented languages that produces a Boolean value based on the inheritance hierarchy of the operands. But what the match function actually returns is a mapping (an AST-to-AST dictionary), which is just empty in case of a "negative result".
+Used on noun phrases, the match function behaves very much like the `instanceof` operator of some object-oriented languages that produces a Boolean value based on the inheritance hierarchy of the operands. But what the match function actually returns is a mapping (an AST-to-AST dictionary), which is just empty in case of a "negative result".
 
 This is because the two arguments of the match function are not (as we have already hinted to) limited to being noun phrases. They can be simple sentences, compound sentences, etc. The match function needs to return a mapping when comparing together two simple sentences (two Ideas), because the goal is to determine if the subject and the object of the more specific sentence (the "sub-type") can be substituted into the subject and object of the more general sentence (the "super-type").
 
@@ -399,6 +387,12 @@ The compare function we described can be readily built from the match function w
 Sorting the list of Definitions by descending specificity of the definendums ensures that the most specific Definition will be found first, but only if a sentence that is specific enough is used.
 
 The problem can still present itself if the noun phrase used is too generic for the actual shape of the object in the world model, however, it might be possible to overcome it for good by substituting ambiguous noun phrases by their more specific meaning in the STM before serching for a Definition. For instance, if we ask the system this questions: "the fish is dead?" the system may substitute the noun phrase "the fish" with the more specific noun phrase "the amphibious fish" (depending on the current state of the STM) before attempting to search for a definition of the predicate "is dead".
+
+
+
+
+
+
 
 // TODO: put AFTER orders and planning?
 == Concrete Syntax
@@ -532,23 +526,112 @@ These "unimportant details" may specify whether the user took advantage of the "
 Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precendence of operators.
 
 Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. The "Transformer" class it provides (completely unrelated to the "Transformer" neural network architecture in AI) performs a bottom up traversal of the parse tree, allowing us to define some further logic that converts the parse tree into a proper abstract syntax tree.
+// -------------------------
 
-// ------
 
-We have seen how it is possible to add Definitions that determine the effects of executing a simple sentence; this makes the execution of a simple sentence akin to a "function" (or rather: a procedure) invocation in more traditional languages.
+
+== Orders and Planning
+
+We have seen how it is possible to add Definitions that determine the effects of executing a simple sentence; this makes the execution of a simple sentence akin to a "function" invocation (or rather: a _procedure_ call) in more traditional languages.
 
 // contra CAL
-However, one must also keep in mind that any sentence may be subject to two interpretations (the "ASK" mood and the "TELL" mood, also mentioned previously), with the difference that the former ("ASK") thinks of the function as a "getter" or "predicate" i.e., it tries to verify if a condition is true in the world model, and the latter ("TELL") is the mood that actively changes the world model according to a sentence's Definition.
-
-This duality makes sense for Facts (the same Fact can be "checked" or can be "learned" by the world model), but it makes a little less sense for Events. As we have already said, an Event in Deixiscript (although it has a duration) is still modelled as an ephemeral, transitional concept, so the "ASK" mood (which presumes a static state of affairs in the world model) does not make sense applied to an Event.
-
-As we have stated though, Facts and Events in Deixiscript are basically represented by the same underlying structure (the Idea), so an Event might indeed risk getting executed in ASK mood. One could add a check to make sure this does not happen, however, we are relying on the programmer's understanding of the difference between Facts and Events, and on the syntactic distinction (between copular simple sentences and simple sentences with a regular verb) to make sure this does not happen.
+One must also keep in mind that any sentence may be subject to two interpretations (the "ASK" mood and the "TELL" mood introduced previously), with the difference that the former ("ASK") thinks of the function as a "getter" or "predicate" i.e., it tries to verify if a condition is true in the world model, and the latter ("TELL") is the mood that actively changes the world model according to a sentence's Definition.
 
 Given the analogy we have made with procedure Definitions, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript statement, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
 
 In a way this is true, one can even define the meaning of a simple sentence as a sequence of steps, this can be achieved by joining together (through the `and` operator) multiple atomic statements (like simple sentences or variable assignments). The comma symbol (',') can also be used for the same purpose, and it behaves exactly like (indeed, it is aliased to) the `and` operator.
 
-This however would overlook the last aspect of the language that we still have not really explained: automatic planning. 
+This however would overlook the last aspect of the language that we still have not really explained: automatic planning.
+
+We will now introduce a distinction between two kinds of Ideas (and consequently two kinds of simple sentences) which are formally very similar (they are all represented by the same abstract syntax tree) but they have a different meaning and are distinguished by their usage.
+
+We will call these two categories of Ideas: "Facts" and "Events". We think of a Fact as just a regular proposition (a statement about how the world is or isn't at any particular point in time), and we think of an Event as an action that can be actively performed by an agent (the subject, for simplicity).
+
+Syntactically speaking, we will represent "Facts" as simple sentences with a copular verb (i.e. the verb "to be"), for instance the sentence: "the player is dead". 
+
+We will think of Facts as "static" states of affairs, a sentence representing a Fact describes the presence or absence of a particular situation "here and now" in the world model and always refers to the present tense (there are no other tenses in Deixiscript).
+
+Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e. other than the verb "to be"), for instance: "the player moves right".
+
+An Event does not describe a static state of affairs, but rather a dynamic action (performable by an agent) that produces certain kinds of changes to the world model when it is performed at any given time.
+
+As a side note, we should say that ASK and TELL moods both make sense when applied to Facts (the system can "learn" a fact, or it can "check" a fact, respectively). But the same distinction does not make much sense (in our current system) when applied to Events; an Event as described above only makes sense when executed purely for its side-effects (in TELL mood).
+
+As already mentioned, the AST type behind both Facts and Events is the one and same Idea AST type. Another thing we already mentioned is that the Idea AST type has a subject, an (optional) object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g.: to eat, to drink, to run), whereas in case of a Fact the predicate is an adjective (e.g.: red, dead, near).
+
+Some "adjectives" such as near (we will be treating it as an adjective) support an object (e.g.: "the cat is near _the mat_"), they are akin in this sense to transitive verbs (such as "to eat").
+
+Therefore, the system does not know whether an Idea represents an Event or a Fact from the Idea object itself. Every Idea is thought of as a Fact (i.e.: it cannot be performed by an agent) until proven otherwise, namely if there is an appropriate Potential.
+
+The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
+
+These (Facts, Events and Potentials) are the three basic ingredients for Deixiscript's limited notion of automated planning. The fourth ingredient is the "Order". An Order is a syntactical structure that just consists of a noun phrase that represents an agent and an expression (such as a Fact) that represents a goal to be accomplished by the aforementioned agent. Syntactically speaking, an Order will also end up looking like a complex sentence of sorts.
+
+// == search heuristic
+
+The search heuristic tries to find a finite sequence of Events (actions) that can be performed by an agent and that will result in (or get the agent "closer" to) the accomplishment of a goal.
+
+This search relies on the presence in the Knowledge Base of: (1) Definitions that detail the effects of an Event alongside the kind of doer, and also on (2) the presence of Potentials that specify the possibility of an Event under a given circumstance and its duration.
+
+The function `plan()` is responsible for carrying out this kind of heuristic search when needed.
+
+The function `plan()` takes an Order (agent and goal), a Knowledge Base, and a maximum duration (in seconds) of the plan to be found.
+
+Searching for the plan's steps works like this: (1) the goal expression is applied to the Knowledge Base (TELL) to produce a new "target" Knowledge Base that represents the world "as it should be". (2) a numerical error term is computed, this represents the difference between the desired state of the world model (contained in the target Knowledge Base) and the current state of the world model (contained in the old, original Knowledge Base). (3) all of the actions that the agent could perform are retrieved. For simplicity, it is assumed that they coincide with the Potentials where "the agent appears as a subject". (4) each of these (possibly useful) actions is tried separately for effectiveness. An action is applied to the old Knowledge Base (TELL) and the error term is recomputed. If the new error term is less than the old one, then the action is deemed "useful", else it is not. (5) if the list of "useful" actions is empty, then the function errors out. (6) If the _precondition_ for any of the "useful" actions is still false, then the precondition is issued as an intermediate order (`plan()` is a recursive function). (7) Else every "useful" action can already be performed by the agent, the list of steps, the plan duration and the Knowledge Base are updated.
+
+The `plan()` function also foresees two special (but important) cases: (1) if the goal is already accomplished then the function returns the list of accumulated steps, this is the base case of the recursive algorithm; and (2) if the maximum duration set for the plan is ever exceeded, then the function also returns the accumulated list of steps, even if they do not accomplish the goal in this case.
+
+#pagebreak()
+
+The following pseudo-code better summarizes the operation of the `plan()` function, omitting the technical details and some of the error handling:
+
+```
+
+if goal is accomplished then: return steps.
+if duration > max_duration then: return steps.
+
+compute target kb (by TELLing goal to kb).
+compute error term between target kb and kb.
+
+for each potential in kb:
+	
+	action = potential.action.
+	compute "new kb" (by TELLing action to kb).
+	compute new error term between target kb and "new kb".
+	
+	if new error term < old error term then:
+		the potential is useful.
+		
+if there are no useful potentials then: error out.
+
+if for some useful potentials precondition is still false in kb then:
+	try planning for the preconditions.
+	then resume planning for the terminal (main) goal.
+else:
+	add each potential.action to the list of steps.
+	then resume planning for the terminal goal.
+```
+
+The reader will note that we have skipped over a few details, specifically: the detail of how the "error term" between two Knowledge Bases (between the respective two World Models) is computed. 
+
+In our actual Python prototype, the error term is computed as the sum of the absolute values of the differences between the values of each key in target World Model versus current World Model (recall that a World Model, for us, is a list of dictionary objects containing key-value pairs). Therefore the error term is computed by cycling through each individual in the World Model and each key in an individual:
+
+$ sum_(i=0,k=0)^(i="#individuals", k="#keys") abs("WM"_("target")[i][k] - "WM"_("current")[i][k]) $
+
+As can be evinced, there are two ways in which the `plan()` function can be used. One way is analogous to what Hector Levesque calls "offline execution" in his book "Programming Cognitive Robots", and the other is analogous to what he calls "online execution".
+
+In offline execution all of the steps of the plan (the whole plan) are computed in advance, and in online execution only the next step is. Actually, in our case, more than one step is computed even in online mode, but the computation stops as soon as the maximum duration (of the sequenced actions) that `plan()` was given is reached.
+
+In our prototype, offline execution is mostly intended for debugging purposes, to test whether a plan can be successfully computed; while online execution is useful for "graphical simulations".
+
+The kind of graphical simulations we have tried out, involve a 2D world where the individuals in the World Model that have the x-coordinate and the y-coordinate properties are displayed as colored points on a 2D Cartesian graph.
+
+Before the simulation starts, "time is frozen". As soon as the simulation starts, the individuals in the World Model that have been given orders start behaving accordingly.
+
+There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order. Each partial plan should not exceed in duration the frequency of the loop. After the partial plans are computed, they are executed, and the graphics are updated, then the loop waits for $N$ milliseconds before proceeding to the next iteration.
+
+
+
 
 // Orders and Planning
 // http://www.cs.toronto.edu/~hector/pcr.html
