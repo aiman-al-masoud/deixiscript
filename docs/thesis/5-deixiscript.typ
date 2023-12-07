@@ -6,17 +6,19 @@ We will refer to the programming language developed in the present work and desc
 
 === Goals
 
-Our goal in relation to Deixiscript was to design and build a working prototype of a naturalistic language, that could showcase some of the ideas from the existing naturalistic languages on the "market", to get a feel of some of the practical difficulties involved in making a naturalistic programming system, and to propose and experiment with the addition of some slightly more novel features that we shall discuss.
+Our goal in relation to Deixiscript was to design and build a working prototype of a naturalistic language, that could showcase some of the ideas from the existing naturalistic languages on the "market". 
+
+We wanted to get a feel of some of the more practical challenges involved in making a naturalistic programming system, and to propose (and experiment with) the addition of some slightly more novel features that we shall discuss.
 
 === Non-goals
 
-As is maybe clear by now, our goal has never been to implement a production-grade programming environment, a task that would require a higher level of practical expertise in the field of language implementation and many more man-months of effort.
+As is maybe clear by now, our goal was not to implement a production-grade (or even complete) programming environment, a task that would require a higher level of practical expertise in the field of language implementation and many more man-months of effort.
 
-We also did not pay much attention to issues related to performance and code-optimization (_"premature optimization is the root of all evil"_ @prematureOptimization); and we were in general more interested in code-readability than execution speed.
+We also did not pay much attention to issues related to performance and code-optimization (_"premature optimization is the root of all evil"_ @prematureOptimization); and we were generally more interested in code-readability than execution speed.
 
 == Evolution of Deixiscript
 
-Our idea of what the language had to be like (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time we have explored many different ideas, not all of them have made it into the final implementation.
+Our idea of what the language had to be like (and how it had to be implemented) has changed and evolved significantly throughout the arc of time we had at our disposal. During this period of time, we have explored many different ideas and not all of them have made it into the final implementation.
 
 === Initial Stage
 
@@ -32,27 +34,25 @@ As it stands, the current version of Deixiscript adopts a kind of rule-based pro
 
 === Automated Planning (limited)
 
-The current version of Deixiscript also tries to introduce a limited kind of automatic planning (we have encountered the topic of automated planning in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability can be used to issue declarative "orders" to individuals in the world model known as "agents", as we will see. 
+The current version of Deixiscript also tries to introduce a limited kind of automatic planning (we have encountered the topic of automated planning in the previous chapter @automaticPlanning) in the context of a rule-based naturalistic programming language. This capability (as we will see) can be used to issue declarative "orders" to individuals in the world model known as "agents", who will have to figure out how to execute these orders.
 
 == Implementation Details
 
 In the current section, we we will begin by discussing some high-level implementation details, including the programming language, libraries, code-style and software design pattern that were used.
 
-In the later sections we will then move on to describe the current version of Deixiscript, detailing and motivating the choices that were made and the philosophy behind them. 
+In the later sections we will then move on to describe the current version of Deixiscript, detailing and motivating the choices that were made and the philosophy behind them. Since Deixiscript is an English-based language, what follows will also inevitably include digressions into some (basic) aspects of the English grammar.
 
-Since Deixiscript is an English-based language, what follows will also include some inevitable digressions into some (basic) aspects of the English grammar.
+=== Implementation Language
 
-=== Language
+The implementation language is Python 3 (specifically version 3.10 or higher), annotated with type-hints and type checked by the Pyright @pyright static type checker. Unit tests are performed with the help of the Pytest @pytest testing framework.
 
-The implementation language is Python 3 (specifically version 3.10 or higher), annotated with type-hints and type checked by the Pyright static type checker. Unit tests are performed with the help of the Pytest testing framework.
-
-We have experimented with other programming languages (TypeScript/JavaScript) for Deixiscript's implementation, but we decided to stick to Python at the end.
+We have experimented for some time with other programming languages (TypeScript/JavaScript) for Deixiscript's implementation, but we decided to stick to Python at the end.
 
 We think that Python is a great language for prototyping, due to its flexibility and regularity, due to the aboundance of third-party libraries that help perform a wide variety of complex tasks easily, and also due to the richness of its included standard library.
 
 === Parser
 
-The Lark @larkwebsite parsing toolkit for Python is used for the "front end" of the Deixiscript interpreter: to turn the strings of source code into parse trees and to further apply some transformations to obtain Abstract Syntax Trees (ASTs), which the interpreter can process.
+The Lark @larkwebsite parsing toolkit for Python is used for the "front end" of the Deixiscript interpreter: to turn the strings of source code into parse trees and to further apply some transformations, obtaining Abstract Syntax Trees (ASTs), which the "back end" of the interpreter can then process.
 
 The Lark parsing toolkit is available for free under the terms of the MIT opensource software license.
 
@@ -66,9 +66,9 @@ The Matplotlib @matplotlib visualization tool and Python library was used to dis
 
 === Licensing
 
-All of the software that was used to develop Deixiscript is available for free and under the terms of an opensource license. Other than the aforementioned ones, the core components of Deixiscript require no further dependencies beyond Python's own standard library.
+All of the software that was used to develop Deixiscript is available for free and under the terms of (different) opensource licenses. Other than the aforementioned ones, the core components of Deixiscript require no further dependencies outside of Python's own standard library.
 
-Deixiscript itself is free software, and will be made available under the terms of the GPLv3 license by the time this document is published. We will suggest some possible further developments for the language in a later section of this work.
+Deixiscript itself is free software, and its code will be made available under the terms of the GPLv3 license. We will suggest some possible further developments for the language in a later section.
 
 === Functional Style
 
@@ -82,17 +82,17 @@ On the other hand, the disadvantage of this approach is that method return types
 
 The classes that represent the Abstract Syntax Trees (ASTs) follow the Interpreter Pattern, one of the well-known 23 GoF Software Design Patterns for OOP languages.
 
-Alternative approaches were tried (using a single or multiple eval functions) but the polymorphic nature of the Interpreter Pattern offers a higher degree of flexibility, also considering the fact that Python functions cannot be overloaded (unless done manually).
+Alternative approaches were tried (using a single or multiple "eval" functions) but the polymorphic nature of the Interpreter Pattern offers a higher degree of flexibility, also considering the fact that Python functions cannot be overloaded (unless done manually).
 
-The Interpreter Pattern defines a common interface (called "AST") with at least one method (usually called "eval", short for "evaluate"). The classes that implement the AST interface can either be "leafs" or "composites". A leaf (such as a number, a string, or a boolean literal) are typically constants, which means they always evaluate to themselves.
+The Interpreter Pattern defines a common interface (called "AST") with at least one method (usually called "eval", short for "evaluate"). The classes that implement the AST interface can either be "leafs" or "composites". A leaf (such as a number, a string, or a Boolean literal) is a constant, which means it always evaluates to itself.
 
-Examples of composite types can be: an arithmetic expression, a logic expression, a function definition, a function invocation (or almost anything else one can think of, for that matter). A composite type typically evaluates its "children" first, then combines them however its logic dictates into a new evaluation result.
+Examples of composite types can be: an arithmetic expression, a logic expression, a function definition, a function invocation, or almost anything else one can imagine. A composite type typically evaluates its "children" first, then combines them however its logic dictates into a new evaluation result, which it returns.
 
-The common interface ensures that all of the AST objects can be evaluated the same way: by calling the "eval" method and passing it as an argument the operating context (known as "environment", or "state").
+The common interface ensures that all of the AST objects can be evaluated in the same way: by calling the `eval()` method and passing it as an argument the operating context (known as "environment", or "state").
 
-The "eval" method is expected to return the result of the evaluation of the AST object and to write the changes produced by its evaluation (if any) to the environment.
+The `eval()` method is expected to return the result of the evaluation of the AST object and to write the changes produced by its evaluation (if any) to the environment.
 
-In our case, since we are following a Functional approach, the eval method returns a new object that contains the updated context without changing the original.
+In our case, since we are following a Functional approach, the `eval()` method returns a new object (that contains the updated context) without changing the original.
 
 == Representing Propositions
 
@@ -100,7 +100,7 @@ We think that a central theme in any language (natural or artificial) is about p
 
 === Simple Sentences
 
-A common example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence can contain: a subject ("the quick brown fox"), a verb ("jumps"), a direct object (none in this case, since "jump" is typically used as an intransitive verb), and any number of complements ("the lazy dog" could be considered as the "location" of the fox's jump).
+A common example of a simple sentence in English is: "the quick brown fox jumps over the lazy dog". A simple sentence can contain: a subject ("the quick brown fox"), a verb ("jumps"), a direct object (none in this case, since "jump" is typically used as an intransitive verb), and any number of complements ("the lazy dog" could be considered the "location" of the fox's jump).
 
 === Complements & Grammatical Cases
 
@@ -108,9 +108,9 @@ The complements of a sentence can help specify the location or time of an action
 
 The direct object of a sentence is a little special in English (and many other modern European languages) because, just like the subject, it is not preceded by any preposition. The subject and the object are generally distinguished by their order of appearance in the sentence (the subject typically precedes the object).
 
-Unlike English, some languages (even some modern Indo-European languages) rely more heavily on "case-markings" rather than prepositions and word-order to express grammatical relationships. A case-marking is typically a word inflection (such as a suffix, a prefix or an infix). In many such languages, English's "direct object" corresponds to an inflected noun in the "accusative case".
+Unlike English, some languages (even some modern Indo-European languages) rely more heavily on grammatical cases rather than prepositions and/or word-order to express grammatical relationships. A case-marking is typically a word inflection (such as a suffix, a prefix or an infix). In many such languages, English's direct object corresponds to an inflected noun in the accusative case.
 
-A vestige of this grammatical case-system (which English inherited from an older proto-language) remains in modern English's personal pronouns, for instance: "I/he/she" are "nominative" (the grammatical case of the subject), "me/him/her" are "accusative" (the grammatical case of the direct object) or "dative" (e.g.: "I give _him_ the book").
+A vestige of the system of grammatical cases (which English inherited from an older proto-language) remains in modern English's personal pronouns, for instance: "I/he/she" are "nominative" (the grammatical case of the subject), "me/him/her" are "accusative" (the grammatical case of the direct object) or "dative" (e.g.: "I give _him_ the book").
 
 === Verbs and Transitivity
 
@@ -118,13 +118,13 @@ In any case, the verbs that require a direct object are known as transitive verb
 
 Some verbs are traditionally regarded as optionally accepting two direct objects and are known as ditransitive verbs, such as the verb "to make" in the sentence: "the senate made him consul".
 
-Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled, except in informal speech, the existence of such verbs isn't so obvious as in other languages which can drop the subject, such as Italian where the translation of the example sentence above would be just "piove", without any visible subject.
+Some other verbs can be seen as requiring no subject at all, and are known as impersonal verbs, such as the verb "to rain" in the sentence "it rains". Since English always (syntactically) requires the subject slot to be filled (except in informal speech) the existence of such verbs is not so obvious as in languages that can drop the subject. An example of such language is Italian, where the translation of "it rains" would be just "piove", without any visible subject.
 
-Some simple sentences in English can have no verb at all: verbless sentences can be seen as alternative forms of an equivalent sentence with a verb, and are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice you are making!"
+Some simple sentences in English can have no verb at all: a verbless sentence can be seen as an alternative form to an equivalent sentence with a verb. They are typically used for the sake of brevity or to achieve some special rethorical effect, common examples include exclamations such as: "good job!" in lieu of "you did a good job!" or "excellent choice!" in place of: "this is an excellent choice you are making!".
 
 === Compound Sentences
 
-A compound sentence is a sentence made up of two or more simple or compound sentences joined together by a conjunction or disjunction. An example is: "the cat meowed loud, but she failed to obtain food".
+A compound sentence is a sentence made up of at least two or more simple sentences, joined together by a conjunction or disjunction ("and", "but", "or", etc). An example is: "the cat meowed loud, but she failed to obtain food".
 
 It is important to note that the two simple sentences incorporated in the larger compound sentence remain "independent" of each other: you can rephrase the previous sentence by changing their order and the meaning is logically equivalent (if you ignore the time factor, at least).
 
@@ -132,19 +132,21 @@ It is important to note that the two simple sentences incorporated in the larger
 
 A complex sentence creates a relation of dependence between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow loud enough" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing loud and obtaining food).
 
-But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the words "bachelor" and "married" and the necessary (and somewhat trivial) relationship between them.
+But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the word "bachelor" and of the word "married" and the necessary (and somewhat trivial) relationship between them.
 
-=== Deixiscript Ideas
+=== Simple Sentences in Deixiscript
 
-Now we have a feeling for how propositions are represented in English. In Deixiscript, a proposition (or "Idea") has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a sentence to only two (the subject and the object).
+Now we have a feeling for how propositions are represented in English. In Deixiscript, a "simple sentence" has: a (necessary) subject, a (necessary) predicate (we will come to this later) and an (optional) object. The choice was made in the current version of Deixiscript to limit the maximum number of "slots" of a verb in a simple sentence to only two (the subject and the object).
 
-The language could be easily extended to include more (optional) complements in a sentence (older "versions" of the language had them indeed), but we chose to avoid them at the end because they may be more confusing than helpful at this stage (how many prepositions do we have to support? Is "in" a synonym of "on"?) and because binary relations (subject, direct object) are already quite powerful and allow one to express a large range of ideas @nelson2006natural.
+The language could be easily extended to support multiple (optional) complements in a simple sentence (older "versions" of the language had them indeed), but then the choice was made to avoid them, because they may be more confusing than helpful at this stage of development (there are many prepositions in English, how many do we choose to support? Is "in" always a synonym of "on"? Is "on" a synonym of "over"?) and because binary relations (such as between a subject and a direct object) are already quite powerful and allow one to express a sufficiently large range of ideas @nelson2006natural.
 
-From now on, we will speak of "simple sentences", of "Ideas" and of "propositions" almost interchangeably in the context of the Deixiscript language, while keeping in mind that: a proposition is really an abstract (mental) concept, that an English simple sentence is best thought of as a feature of the (concrete) syntax of the English language, and that an "Idea" (as we are using the term) is an element of the abstract syntax of our implementation of Deixiscript. 
+From now on, we may occasionally speak of "simple sentences" and of "propositions" almost interchangeably in the context of Deixiscript. However, we have to keep in mind that a proposition is really an abstract (mental) concept, and a simple sentence in English is usually seen as a feature of the (concrete) syntax of the English language, which includes word order and other (concrete) features of a physical string of text (or sound).
 
-Also, we must keep in mind that a proposition is the meaning of any sentence (not just simple sentences), hence the term "atomic proposition" would be more appropriate when referring to the meaning represented by a Deixiscript Idea.
+What we are really referring to when we use both of these two terms loosely is to the abstract syntactic structure of the implementation of Deixiscript (the type of Abstract Syntax Tree) that corresponds to a simple sentence in English and to a proposition (the meaning of that sentence).
 
-There are two complementary ways to interpret a simple sentence, as we shall see, one is related to "statements" (we will clarify what we mean by that) and the other is related to "questions" or "conditions".
+Another thing that we must keep in mind is that a proposition is the meaning of any sentence (not just a simple sentence), hence the term "atomic proposition" would be even more appropriate when referring to the meaning of a simple sentence in Deixiscript.
+
+In any case, there are two complementary ways to interpret a simple sentence, as we shall see, one is related to "statements" (we will clarify what we mean by that term) and the other is related to "questions" or "conditions".
 
 === Statements versus Questions
 
@@ -152,15 +154,17 @@ We think that natural language "statements" (i.e.: "acritical" declarations of k
 
 A programming statement (such as a variable assignment) primarily causes a change of state in the system, for instance: by binding the name of a new variable to some value in a variable scope.
 
-Analogously, a natural language statement in the indicative mood usually causes a person who hears it to change his/her beliefs. A person "Alice" who hears a statement made by another person "Bob" may not actually believe in the "content" of the statement (perhaps Bob is a liar, or a deluded individual), but she will certainly (at least) come to believe that Bob made the statement.
+Analogously, a natural language statement in the indicative mood usually causes a person who hears it to change his/her beliefs. A person "Alice" who hears a statement made by another person "Bob" will change some of her beliefs.
 
-If Bob also happens to be some kind of authoritative figure (a doctor, a professor, etc.) Alice may actually change her beliefs according to the actual "content" of the statement made by Bob, accepting it (perhaps even just partially) as a true fact about the world.
+Of course, she may not actually believe in the "content" of the statement (perhaps Bob is a liar, or a deluded individual), but she will certainly (at least) come to believe that Bob made the statement.
 
-On the other hand, a question is an expression of the desire to learn about a specific fact or facts in the world. A condition represents a piece of knowledge whose truth value is not asserted, but rather just taken as hypothetical.
+However, if Bob happens to be some kind of authoritative figure (a doctor, a professor, etc.) Alice may indeed change her beliefs according to the actual "content" of the statement made by Bob, accepting it (maybe just partially) as a true fact about the world.
+
+On the other hand, a question is an expression of the desire to learn about a specific fact or facts in the world, and a condition represents a piece of knowledge whose truth value is not asserted, but rather just taken as hypothetical.
 
 We think that questions (and conditions) are more akin to programming language expressions, because their primary effect on the recipient (barring rethorical questions of course) is not that of modyfing the recipient's beliefs about the world, but rather of eliciting a response from the interlocutor.
 
-In natural language, this response can be a simple "yes" or "no" (a condition also typically "evaluates" to a "yes" or a "no"), or it can be a "pointer to a thing" (such as in the responses to "what", "where", "who" questions), or it can be an explanation of some phenomenon or behavior (such as in the response to a "why" questions).
+In natural language, this response can be a simple "yes" or "no" (a condition also typically "evaluates" to a "yes" or a "no"), or it can be a "pointer to a thing" (such as in a reply to a "what", a "where" or a "who" question), or it can be an explanation of some phenomenon or behavior (such as in response to a "why" question).
 
 // https://stackoverflow.com/questions/19132/expression-versus-statement
 
@@ -168,19 +172,23 @@ In natural language, this response can be a simple "yes" or "no" (a condition al
 
 In most of the popular programming languages there is some kind of syntactical distinction between a conditional expression and a statement. For instance, in C-like languages an assignment typically uses a single equal sign and an equality-comparison uses a double equals sign.
 
-This is because C-like languages the general distinction between a statement and an expression is a little bit blurred, and the assignment (expression) is generally allowed to return a value (the value of the right-hand side of the assignment); hence an assignment could appear within the condition of an if-statement, and there is a need to distinguish it syntactically from a comparison.
+This extra operator is necessary because of the way C-like languages blur the distinction between an expression and a statement: they allow expressions to have side effects and they treat some "statements" like expressions.
 
-The following is an example of a conditional statement in a C-like language, the function `do_something()` will be invoked if and only if the value of the variable `x` is equal to the integer `1`: 
+For instance, the assignment (which is an expression) is allowed to return a value (the value of the right-hand side of the assignment). This means that an assignment could appear within the condition of an if-statement, hence there is a need to distinguish it syntactically from a comparison:
 
 `if (x == 1) do_something();`
 
-The following is (de facto) _not_ a conditional statement in a C-like language, because the single equals denotes an assignment, and the whole assignment expression evaluates to the right-hand side (i.e. to the integer `1`). Any number that is not equal to `0` is considered to be "truthy", so the function `do_something()` will always (unconditionally) be executed in this case:
+The one above is an example of a conditional statement in a C-like language, `x == 1` is a comparison, so the function `do_something()` will be invoked if and only if the value of the variable `x` is equal to the integer `1`.
 
 `if (x = 1) do_something();`
 
-However, some programming languages lack this somewhat tricky distinction, for instance: the old "GW-BASIC" dialect of the popular BASIC (Beginners' All-purpose Symbolic Instruction Code) programming language developed by Microsoft and first released in 1983. In GW-BASIC, the same symbol (a single equal sign) is used both as an assignment operator, as well as a comparison operator (depending on the syntactic context of its usage) @gwBasic.
+This second statement is (de facto) _not_ a conditional statement in a C-like language. The expression `x = 1` is an assignment. An assignment expression evaluates to the value of the right-hand side (i.e. to the integer `1`). Any number that is not equal to `0` is considered to be "truthy". Hence, the function `do_something()` will always (unconditionally) be executed.
 
-We think that this distinction is also mostly absent from English (e.g.: the simple sentence "it is alive" remains unchanged when embedded in the bigger complex sentence "if _it is alive_, then run away!").
+Some programming languages (e.g. Java) mitigate this source of errors by stipulating that only Booleans appear in the condition of an if-statement; in such languages only Booleans can be "truthy/falsy".
+
+Some other programming languages completely lack this somewhat "tricky" distinction between the "two kinds of equal", for instance: the "GW-BASIC" dialect of the BASIC (Beginners' All-purpose Symbolic Instruction Code) programming language developed by Microsoft and first released in 1983. In GW-BASIC, the same symbol (a single equal sign) is used both as an assignment operator, as well as a comparison operator (depending on the syntactic context of its usage) @gwBasic.
+
+We think that this kind of distinction is also mostly absent from English (e.g.: the simple sentence "it is alive" remains unchanged when embedded in the bigger complex sentence "if _it is alive_, then run away!").
 
 === ASK/TELL Distinction
 
@@ -190,23 +198,25 @@ These two different interpretations, which we will call "TELL" and "ASK" respect
 
 A simple sentence all by itself (e.g. "it is snowing") is interpreted in "TELL" mood, unless ended by a question mark (e.g. "it is snowing?"). This syntax diverges just a little from the syntax of a "real" question in English, which in this case would require swapping the verb "to be" with the dummy subject "it" (i.e. "is it snowing?") but we think that the two forms are still pretty close, and this issue could probably be fixed in the future by some slight additions to Deixiscript's concrete syntax.
 
-In general almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. 
+In general, almost all syntactic elements of Deixiscript can be interpreted as either "TELL" statements or "ASK" expressions. 
 
-However, with some syntactic elements only one kind of behavior makes sense, for instance: strings, numbers, Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
+However, concerning some syntactic elements, only one or the other kind of behavior makes any real sense, for instance: strings, numbers and Booleans are only meant to evaluate to themselves (they are constants after all), so they do not have a TELL mood.
 
-The way this is technically handled is through the addition of an extra component to a Deixiscript Idea (and to the other AST types that need it): a Boolean attribute that we will call "CMD" flag. Depending on its value, an AST object's eval method will behave in one way (TELL) or in the other (ASK). A new copy (following the code's functional approach) of an AST object can be made with a different value of the CMD flag.
+The way this is technically handled is through the addition of an extra component to a Deixiscript simple sentence (and to the other AST types that need it): a Boolean attribute that we will call the "TELL flag". Depending on its value, an AST object's `eval()` method will behave in one way (TELL) or in the other (ASK). A brand new copy (following the code's functional approach) of an AST object can be made with a different value of the TELL flag.
 
 === Other Grammatical Moods
 
-Both statements and questions in English are expressed with the same grammatical mood, the one known as the indicative mood. There are other grammatical moods in English, such as: subjunctive (to express unreal or hypothetical situations) and imperative (to give orders). 
+Both statements and questions in English are expressed in the same grammatical mood, the one known as the indicative mood. There are other grammatical moods in English, such as: subjunctive (to express unreal or hypothetical situations) and imperative (to give orders). 
 
 We won't be needing an explicit subjunctive mood (as it is rarely used in modern English anyway), and we will be using a different kind of sentence all together (the "Order") to express a kind of "imperative mood" as we shall see in the later sections.
 
 === Defining Meaning
 
-Simple sentences (Ideas), don't have any predefined meaning in the current version Deixiscript: just like functions in other programming languages, they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English (as we will see).
+Simple sentences don't have any predefined meaning in the current version Deixiscript: just like functions in other programming languages they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English (as we will see). 
 
-Most other AST types have an intrinsic meaning which cannot be overridden/overloaded, for instance: arithmetic operators, logic operators, comparison operators, the equal sign (which works either as a comparison operator or as an assignment depending on the syntactic context); these all have a fixed meaning for the sake of simplicity.
+For instance, a Definition could look like this: "a tablecloth is red means the color = red", this would define the meaning of the predicate "red" in relation to the subject "tablecloth", which could be very different from the meaning of the same predicate applied to some other kind of entity (e.g. "a guard is red means the political-affiliation = USSR").
+
+Most other AST types have an intrinsic meaning which cannot be overridden/overloaded, for instance: arithmetic operators, logic operators, comparison operators, the equal sign (which works either as a comparison operator or as an assignment depending on the syntactic context). All of these operators have a fixed meaning (for the sake of simplicity).
 
 As a side note: the copula (i.e. the verb "to be") is _not_ treated the same as the equal sign. The equal sign strictly compares identity, while the copula can be used with "various meanings" (with adjectives) as we will see.
 
@@ -226,63 +236,67 @@ A linguistic head (or nucleus) of a phrase is the part that determines the synta
 
 A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. 
 
-For instance, if a person refers to "the cat" when they're at home, versus "the cat" when they're visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat".
+For instance, if a person refers to "the cat" when they are at home, versus "the cat" when they are visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat".
 
 A noun phrase can be of arbitrary length, and of arbitrary precision (and thus include/exclude a higher number of individuals), the most trivial example is given by a single noun all by itself (e.g.: "cat"), but a noun phrase also typically includes articles, adjectives and even relative clauses with any arbitrary level of nesting, e.g.: "the agile calico cat that leaped on top of my desk holding a fresh kill (which she wanted me to have as a gift) in its fangs".
 
 === Deixiscript Noun Phrases
 
-The kinds of noun phrases supported by Deixiscript are: constants (numbers, strings, Booleans and IDs), "implicit phrases", "genitive phrases", pronouns and variables.
+The kinds of noun phrases supported by Deixiscript are: constants (numbers, strings, Booleans and IDs), "implicit phrases", "genitive phrases", variables and pronouns.
 
 ==== Constants
 
-Numbers, strings and Booleans work just like they do in any other programming language. IDs are mainly there for the system's own benefit (we will discuss them further when talking about the world model) and are not accessible to the user of the language. 
+Numbers, strings and Booleans work just like they do in any other programming language. IDs are there mainly for the system's own benefit (we will discuss them in a further section when talking about the world model) and are not accessible to the user of the language. 
 
 ==== Variables
 
-Variables are placeholders names ("x","y" and "z") that match any type, they can be useful when writing some kinds of general Definitions.
+Variables are single-letter placeholder names (such as "x", "y" and "z") that "match" any type (see the section on syntactic matching: @syntaxMatch), they can be useful when writing some kinds of general Definitions, but we will not have much more to say about them.
 
 ==== Implicit Phrases
 
-What we call "implicit phrases" comprise of a noun and a list of adjectives. A noun is just a string representing a type (which doesn't have to be declared explicitly). The adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in Ideas (simple sentences) we discussed earlier.
+What we call an "implicit phrase" comprises of a "head" and a list of adjectives. The head (or noun) is just a string representing a type (which does not have to be declared explicitly).
 
-==== Attributive Adjectives
+The (attributive) adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in Ideas (simple sentences) we discussed earlier. An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. 
 
-An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. In Deixiscript there is an equivalence between the two: once the meaning of an adjective is defined as a predicative adjective in a simple sentence (e.g.: "the cat is calico, means..."), it can be used as an attributive adjective in a noun phrase (e.g.: "the calico cat"). An attributive adjective can also be negated (e.g.: "a non-calico cat").
+In Deixiscript there is an equivalence between the two kinds of adjectives: once the meaning of a predicative adjective is defined in a simple sentence (e.g.: "the cat is calico, means..."), it can be used as an attributive adjective in a noun phrase (e.g.: "the calico cat"). An attributive adjective can also be negated (e.g.: "a non-calico cat").
+
+When used inside of a sentence or by itself, an implicit phrase evaluates to (at most) a single ID, as we shall see later.
 
 ==== Genitives and Possession
 
-What we call a "genitive phrase" is a noun phrase that refers to a property of an individual rather than to an individual itself. Syntactically, it is in the form:  "an individual's property" or "x's y" (using English's Saxon Genitive). It is also possible to implement an equivalent form using the preposition "of".
+What we call a "genitive phrase" is a noun phrase that refers to a property of an individual rather than to the individual itself. Syntactically, it is in the form:  "an individual's property" or "x's y" (using English_'s_ Saxon Genitive). It is also possible to implement an alternative syntactic form using the preposition "of".
 
-We think that "possession" is an important part of how we model the world. All of the "useful work" that the system really does (everything it boils down to) is setting the value of properties on the dictionary-like data structures the system internally uses to represent "individuals". It is precisely because of this internal representation that the system is able to interface with the outside world (other programming languages, tools and libraries). We will come back to this idea later when discussing the Knowledge Base and World Model.
+We think that "possession" is an important part of how we model the world. All of the "useful work" that the system really does (everything it really boils down to) is setting the value of properties on the dictionary-like data structures the system internally uses to represent "individuals". It is precisely because of this internal representation that the system is able to interface with the outside world (other programming languages, tools and libraries). We will come back to this idea later when discussing the Knowledge Base and World Model.
 
 ==== Pronouns
 
-The last kind of noun phrase we mentioned is the pronoun. This is perhaps the most elusive kind of syntactical element that we take for granted in natural language, but that is actually not so easy to approximate (with a hundred percent accuracy) in an artificial language.
+The last kind of noun phrase we mentioned is the pronoun. This is perhaps the most elusive kind of syntactic element. We take it for granted in natural language, but it is actually not so easy to approximate it (with a hundred percent accuracy) in an artificial language.
 
-A personal pronoun (e.g.: "I", "you", "he/she", "it", etc) is a specific instance of a linguistic phenomenon known as "deixis". The "deictic" words are highly context-dependent words whose true meaning depends almost entirely on the state of the speaker who uses them. Deixis can be spatial (in words such as: "here", "there"), temporal (in words like: "yesterday", "before", "after") or personal (in words such as the personal pronouns).
+A personal pronoun (e.g.: "I", "you", "he/she", "it", etc) is a specific instance of a more general linguistic phenomenon known as "deixis". The "deictic" words are highly context-dependent words whose referrent depends entirely on the state of the speaker who uses them. Deixis can be spatial (in words such as: "here", "there"), temporal (in words like: "yesterday", "before", "after") or personal (in words such as the personal pronouns).
 
-Deixiscript really only supports one kind of pronoun (third person singular). Pronouns in Deixiscript are a little special for another reason: they are the only kind of noun phrase that needs some external context to evaluate.
+Deixiscript really only supports one kind of pronoun (third person singular). Pronouns in Deixiscript are a little special for a reason: they are the only kind of noun phrase that needs some external context to evaluate.
 
-We have already talked about how a simple sentence (Idea) may be treated as a conditional expression or as a statement with side-effects depending on the surrounding (syntactic) context (e.g.: the simple sentence "it is snowing" enclosed in the larger complex sentence: "if _it is snowing_ you put on a heavy coat"), but this is technically easier to achieve: the object that represents the larger syntactic structure (the complex sentence) _knows_ that its own conditional part has to be evaluated in "ASK" mood and not in "TELL" mood.
+We have already talked about how a simple sentence may be treated as a conditional expression or as a statement with side-effects depending on the surrounding (syntactic) context (e.g.: the simple sentence "it is snowing" enclosed in the larger complex sentence: "if _it is snowing_ you put on a heavy coat"). 
 
-On the other hand, with a pronoun that behaves somewhat "realistically", one should reserve the right to resolve the pronoun in different ways (to different concrete referents) based on the meaning of the surrounding context (the simple sentence that embeds the pronoun). 
+This is technically easy to achieve: the object that represents the larger syntactic structure (the complex sentence) obviously _knows_ that its own conditional part has to be evaluated in "ASK" mood and not in "TELL" mood.
 
-For instance: "the cat saw a table, and it jumped on it", it is obvious that the first instance of the pronoun "it" refers to "the cat" and that the second one refers to "the table", because we live in a world were cats are the sort of entities that can jump on tables, and not vice versa.
+On the other hand, a pronoun that behaves somewhat "realistically" reserves the right to resolve to different values (to point to different things) based on the _meaning_ of the surrounding context (the simple sentence that embeds the pronoun).
+
+For instance, in the sentence: "the cat saw a table, and it jumped on it" the first instance of the pronoun "it" obviously refers to "the cat" and the second one refers to "the table". This is so obvious to us, because we live in a world were cats are the sort of entities that can jump on tables, and not vice versa.
 
 Deixiscript supports a limited kind of context-dependent resolution of pronouns,  based on the Short Term Memory (STM) of the interpreter and the stored Definitions of the simple sentences, we will discuss the STM later alongside the Knowledge Base.
 
 ==== Relative Clauses (not included)
 
-Deixiscript does not support realtive clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase came from the difficulties encountered in their implementation.
+Deixiscript does not support realtive clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase (e.g. adjectives) came from the difficulties encountered in their implementation.
 
 // https://en.wikipedia.org/wiki/English_relative_clauses
 
-A relative clause had to be introduced by a relativizer (such as: "that", "which", "who", etc) followed by a sentence. In English, the prevalent strategy to refer back to the nucleus (or head) of the enclosing noun phrase is that of "gapping", i.e.: leaving a "gap" in the place where the head would have stood had the relative clause been independent.
+A relative clause is introduced by a relativizer (such as: "that", "which", "who", etc) followed by a sentence. In English, the prevalent strategy to refer back to the nucleus (or head) of the enclosing noun phrase is that of "gapping", i.e.: leaving a "gap" in the place where the head would have stood, had the relative clause been an independent sentence instead.
 
-For example: the noun phrase "the fish that the cat ate" has a relative clause ("that the cat ate") with an apparently missing direct object (the fish). As an independent sentence it would have looked like this: "the cat ate _the fish_".
+For example: the noun phrase "the fish that the cat ate" has a relative clause ("the cat ate") with an apparently missing direct object (_what_ did the cat eat?). As an independent sentence it would have looked like this: "the cat ate _the fish_".
 
-A possible implementation for this kind of relative clause involves substituting the head (in this example: "the fish") to the "gap" within the relative clause. The problem is that one has to know whether the verb that is used is transitive or not, to determine whether there is a gap in the sentence or not.
+A possible implementation for this kind of relative clause involves substituting the head (in this example: "the fish") to the "gap" within the relative clause. The problem is that one has to know whether the verb is transitive or not, to determine whether there is a gap in the sentence or not.
 
 While this is not an insurmountable problem in principle (the transitivity of a verb can be deduced from its usage in the Definitions) we thought that this feature (relative clauses) was not too central to our goals. 
 
@@ -290,57 +304,73 @@ At the end of the day, the goal behind implementing noun phrases was to have a s
 
 == Knowledge Base (KB)
 
-We have repeatedly mentioned the "Knowledge Base", in the following paragraphs we will discuss the details behind this important component of the system. The Knowledge Base contains all of the state of the Deixiscript interpreter at any point in time, which comprises of: the World Model (WM), the lists of Definitions, Potentials and Orders (we will come to these latter ones later), and the Short Term Memory (STM).
+We have repeatedly mentioned the "Knowledge Base", in the following paragraphs we will discuss the details behind this important component of the system. The Knowledge Base contains all of the state of the Deixiscript interpreter at any point in time, which comprises of: the World Model (WM), the lists of Definitions, Potentials and Orders (we will talk about these latter two in a later section), and the Short Term Memory (STM).
 
 === World Model (WM)
 
-As we already said, the world is modelled as individual entities (or "individuals") and their associated properties. An "individual" in the world model is nothing more than a bundle of properties stored in a dictionary (associative array) data structure. Any one of these individuals (or bundles of properties) must contain at least one essential property that we call "type". There is a list of these individuals, and the index in the list of an individual is its "ID". For instance, we could have a world model like this one (represented in JSON notation):
+As we already said, the world is modelled as individual entities (or "individuals") and their associated properties. To the World Model, an "individual" is nothing more than a bundle of properties stored in a dictionary (associative array) data structure. 
+
+Anyone of these individuals (or bundles of properties) must contain at least one essential property that we call the "type". The world model is essentially list of these individuals, and the index in the list of an individual is its "ID". For instance, we could have a world model like this one (represented in JavaScript Object Notation (JSON)):
 
 `[{"type":"cat", "color":"red", "age":10}, {"type":"cat", "claws":"sharp"}, {"type":"dog", "color":"brown"}]`
 
-This world model contains three individuals (two cats and one dog), and describes the property "color" of the first cat (ID number 0) as "red" and the same property of the only dog (ID number 2) as "brown". The second cat (ID number 1) does not have a property "color" (or better yet: the model does not have any information about it) but it has a property "claws" set to the value "sharp". The first cat (the red one) also has a property "age" that is set to the value 10.
+This world model contains three individuals (two cats and one dog), and describes the property "color" of the first cat (`ID#0`) as "red" and the same property of the only dog (`ID#2`) as "brown". The second cat (`ID#1`) does not have a property "color" (the model does not have any information about it) but it has a property "claws" set to the value "sharp". The first cat (the red one, `ID#0`) also has a property "age" that is set to the value 10.
 
-The "keys" are the names of the properties of the individuals ("type", "color", etc.) and they must be strings. The values assigned to the properties can be strings, numbers or Boolean values. One might also imagine to set the value of a property to an ID value (which is a distinct type in Deixiscript from the number type). 
+The "keys" are the names of the properties of the individuals ("type", "color", etc.) and they are strings. The values assigned to the properties can be strings, numbers or Boolean values. One might also imagine to set the value of a property to an ID value (which is distinct from the number type in Deixiscript).
 
 Setting the value of a property to an ID type might be useful for those properties that involve a permanent bond (more stable than an emphemeral interaction during an Event) between two individuals.
 
-This way of representing the world has its limitations. For example, given that the value of a property can only be a scalar constant (string, number, Boolean, and maybe ID) it cannot hold more than one value at a time, e.g. a cat cannot have two colors simultaneously (unless of course one decides to have both a "color-one" and a "color-two" properties, which would be two distinct properties anyway).
+==== Limitations of the World Model
 
-This limitation however (ensuring that any given property has one single value at a time) is useful for interfacing with the outside world (other programming languages and software tools) because they (the external tools) can more easily read values from the properties of individuals in the world model, for instance: to redraw a graphical component based on the state of the world model. 
+Of course, this way of representing the world has its big limitations. For example, given that the value of a property can only be a scalar (string, number, Boolean, and maybe ID) it cannot hold more than one value at a time. For example: a cat may not have two colors simultaneously (unless of course one decides to model that as a "color-one" and a "color-two" properties, which would then count as two distinct properties).
+
+This limitation however (ensuring that any given property has one single value at a time) is useful for interfacing with the outside world (other programming languages and software tools) because they (the external tools) can more easily read values from the properties of individuals in the world model, for instance: to redraw a graphical component of some user interface based on the state of the world model. 
 
 An external tool could also write to the world model, for instance: to update the value of an input buffer after the user of a Deixiscript program enters some new input.
 
-Another limitation put in place on the world model is this: the world model must not contain (at any time) any pair of individuals that are undistinguishable from their properties alone (and the ID, which is just an index in the list, does _not_ count as a property). 
+Another limitation put in place on the world model is this: the world model must not contain (at any time) any pair of individuals that are undistinguishable from their properties alone (and the ID, which is just an index in the list, does _not_ count as a property).
 
-Obviously, this must be enforced by a check that is made whenever a new individual is about to be created with some properties: the system checks whether there is already an individual with all of the mentioned properties in the world model, and displays an error in case it already does.
+This property has to be enforced by a check that is made whenever a new individual is about to be created with some properties: the system checks whether there is already an individual with all of the mentioned properties in the world model, and displays an error in case it already does.
 
-One might say that the system cannot "conceive" of any two "identical" individuals unless it (the system) knows of some actual (even slight) difference in their properties. The rationale behind this limitation is related to how the Short Term Memory (STM) works.
+One might say that the system cannot "conceive" of any two "identical" individuals unless it (the system) is told of some actual (even slight) difference in their properties (and again, the ID does not count). The rationale behind this limitation is related to how the Short Term Memory (STM) works.
 
 === Short Term Memory (STM)
 
 The Short Term Memory (STM) is a part of the Knowledge Base, its purpose is essentially to disambiguate the implicit references and pronouns that may be used by the programmer in a given context.
 
-The STM behaves like a bounded queue (with some caveats as we will see). The STM can hold up to N (we experimented with N=4) noun phrases at any time, the size N of the STM should not be too big.
+The STM behaves like a bounded queue (with some caveats as we will see). The STM can hold up to N (we set N=4) noun phrases at any time, the size N of the STM should not be too big. This approach was inspired by project Pegasus (we discussed about it in a previous chapter @pegasusArchitecture).
 
-The system tries updating the STM whenever a "noun phrase is used by the programmer", but STM may have to remain unchanged in some cases. We will illustrate its behavior with a simple example: suppose that there are two cats, one with color=red and the other with color=black (the two individuals can co-exist in the same world model because they are considered to be distinct by one property); suppose also that the STM is initially empty.
+The system tries updating the STM whenever a "noun phrase is used by the programmer", but the STM may have to remain unchanged in some cases. 
+
+==== Example of STM's working
+
+We will illustrate the STM's behavior with a simple example: suppose that there are two cats, one with color=red and the other with color=black (the two individuals can co-exist in the same world model because they are distinct by one property); suppose also that the STM is initially empty.
 
 When we (the programmers) say: "the cat", the system displays an error. This is because there are currently two individuals in the world model to whom the noun phrase "the cat" applies; furthermore, the STM is initially empty and it cannot provide any help (yet) at disambiguating this ambiguous phrase ("the cat").
 
-So we try being more specific; suppose that we have already defined what it means for a cat to be red (as having the "color" property set to the value "red"), so we say: "the red cat", using an attributive adjective to narrow down on the individual we would like to talk about. Now the system does not display an error, because the noun phrase we used is precise enough to pick out one single entity unambiguously from the world model. The system also prepends the noun phrase "the red cat" at the head of the STM queue.
+We can try being more specific. Suppose that we have already defined what it means for a cat to be red (as having the "color" property set to the value "red"), so we say: "the red cat", using an attributive adjective to narrow down on the individual we would like to talk about. 
 
-As a side-note, another limitation that was put in place, in the latest version of Deixiscript, was that a noun phrase can only "point to" a single individual at a time; in other words: a noun phrase may resolve at most to a single ID, given one state of the Knowledge Base. Previous versions of Deixiscript didn't have this limitation, but they had to check (for any sentence) if any of the noun phrases it contained would resolve to multiple IDs, and, if that was the case, "expand" the original sentence into multiple similar sentences each with a different ID. This also meant that noun phrases had to specify a cardinality (to distinguish singular from plural). //It would be interesting to 
+Now the system does not display an error, because the noun phrase we used is precise enough to pick out one single entity unambiguously from the world model. The system also adds the noun phrase "the red cat" to the queue.
 
-Going back to the example we were making, now the STM contains the noun phrase "the red cat". Suppose we _now_ say "the cat". The system does not display any error, because it is now able to use the STM to disambiguate, i.e. the system will assume that we are referring to "the red cat" in the STM. It is worth noting that, in this case, the system will _not_ insert the ambiguous phrase we just used ("the cat") into the STM, because it already contains a more precise one i.e.: "the red cat".
+Now the STM contains the noun phrase "the red cat". Suppose we _now_ say "the cat". The system does not display any error, because it is now able to use the STM to disambiguate, i.e. the system will assume that we are referring to "the red cat" in the STM. It is worth noting that, in this case, the system will _not_ insert the ambiguous phrase we just used ("the cat") into the STM, because it already contains a more precise one i.e.: "the red cat".
 
 Suppose we now say "the non-red cat" to the system. This will pick out the other cat in the world model, the one that does not have "red" as its color. The system will insert the new noun phrase "the non-red cat" into the queue; and, from now on, the ambiguous noun phrase "the cat" will be intended as "the non-red cat".
 
-One can then mention again "the red cat" and the STM will be updated accordingly. When the STM grows to its maximum length, the oldest element (noun phrase) will be removed from the queue to make space for the newest one.
+One can then mention "the red cat" again and the STM will be updated accordingly. When the STM grows to its maximum length, the oldest element (noun phrase) will be removed from the queue to make space for the newest one.
 
-The STM is also useful for the resolution of pronouns. The stipulation here is that any pronoun must refer exclusively to some noun phrase that is currently in the STM. As we have said previously when talking about pronouns, a pronoun should be able to resolve differently based on the meaning of the sentence or phrase that surrounds it. 
+==== One ID per noun phrase
 
-The simple technique we are using to resolve pronouns is to try executing a sentence (or phrase) that contains a pronoun multiple times, each time after having substituted the pronoun with a different noun phrase taken from the STM (they are very few, owing to the STM's limited capacity). When the sentence (or phrase) finally works (does not produce an error) then we stop, and we consider the pronoun to be resolved. Of course, it may be that none of the noun phrases in the STM succeeds at making sense of the sentence containing a pronoun, in that case the system just displays an error stating that the pronoun is used ambigiously in that context.
+An important note: a limitation that was put in place in the latest version of Deixiscript was that a noun phrase can only "point to" a single individual at a time; in other words: a noun phrase may resolve at most to a single ID, given one state of the Knowledge Base. Previous versions of Deixiscript didn't have this limitation, but they had to check (for any sentence) if any of the noun phrases it contained would resolve to multiple IDs, and, if that was the case, "expand" the original sentence into multiple similar sentences each with a different ID. This also meant that noun phrases had to specify a cardinality (to distinguish singular from plural).
 
-== Syntactic Matching
+==== STM and pronouns
+
+The STM is also useful for the resolution of pronouns. The assumption here is that any pronoun must refer exclusively to some noun phrase that is currently in the STM. As we have said previously when talking about pronouns, a pronoun should be able to resolve differently based on the meaning of the sentence or phrase that surrounds it. 
+
+The simple technique we are using to resolve pronouns is to try executing a sentence (or phrase) that contains a pronoun multiple times, each time after having substituted the pronoun with a different noun phrase taken from the STM (they are very few, owing to the STM's limited capacity). 
+
+When the sentence (or phrase) finally works (does not produce an error) then we stop, and we consider the pronoun to be resolved. Of course, it may be that none of the noun phrases in the STM succeeds at making sense of the sentence containing a pronoun, in that case the system just displays an error, complaning that the pronoun is used ambigiously in that context.
+
+== Syntactic Matching <syntaxMatch>
 
 Many of the higher-level operations we have talked about (using simple sentences, using adjectives, searching for relevant Definitions, etc.) depend on the functioning of a more basic low-level operation that we will call "match".
 

@@ -47,6 +47,8 @@ An advantage of spoken systems is that speech is generally considered to be a fa
 // We think that a spoken programming language ...
 
 // spoken ambiguous grammar recognition, ALVIN
+// syntactic and semantic compression
+// relative clauses
 // past tense
 // experimental studies on usability
 // game writing

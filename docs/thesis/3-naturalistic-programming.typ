@@ -132,7 +132,7 @@ Every idea, they assert, can have a concrete representation as: an entity, an ac
 
 The authors then describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
 
-==== Architecture
+==== Architecture <pegasusArchitecture>
 
 The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory.
 
