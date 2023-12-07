@@ -698,7 +698,7 @@ Lark provides some useful facilities to further transform the parse trees it gen
 
 == Example Programs
 
-We will discuss three short example programs that showcase some of Deixiscript's capabilities as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions, in the next section (about the possible improvements to the language).
+We will discuss three short example programs that showcase some of Deixiscript's capabilities as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions in the next chapter (about the possible improvements to the language).
 
 For the sake of convenience, we will assume that the following two Definitions have already been loaded (or typed) into the interactive environment, and are available for use at all times:
 
@@ -707,7 +707,7 @@ x's y increments means: x's y = x's y + 1.0.
 x's y decrements means: x's y = x's y - 1.0.
 ```
 
-=== Pronouns
+=== 1. Pronouns
 
 The first of the examples showcases the functioning of pronouns in Deixiscript. The following is the code:
 
@@ -728,7 +728,7 @@ As a side note: as of now there is no distinction between the pronouns (between 
 
 The world model's state after the execution of that last sentence will be one where the door has the property "state" set to the value "open", and the player has the property "x-coord" set to the numerical value 1.0.
 
-=== Fish
+=== 2. Fish
 
 The second example shows that the system of revisable rules work, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
 
@@ -752,8 +752,46 @@ A fish and an amphibious fish were created. The amphibious fish's health was set
 
 Of course, changing the values of their attributes (e.g. setting the normal fish's location to "water") would change the values of the answers to the previous questions.
 
-=== Player and Enemy
+=== 3. Player/Enemy
 
+The last of the three examples is about the automated planning of a (very simple) strategy that one of the individuals will "carry out" to fullfil its goal. The code is the following (we will comment on it below):
+
+```
+an enemy can hit a player, if the enemy is near the player.
+
+an enemy is near a player means: 
+    the enemy's x-coord = the player's x-coord, 
+    the enemy's y-coord = the player's y-coord.
+
+an enemy hits the player means: 
+    the player's health decrements.
+
+a player is dead, means the health = 0.0.
+
+an enemy moves right means the x-coord increments.
+an enemy moves left means the x-coord decrements.
+an enemy moves down means the y-coord increments.
+an enemy moves up means the y-coord decrements.
+an enemy can move right.
+an enemy can move left.
+an enemy can move up.
+an enemy can move down.
+
+there is an enemy.
+there is a player.
+the player's health = 400.0.
+the player's x-coord = 300.0.
+the enemy's x-coord = 100.0.
+the player's y-coord = 300.0.
+the enemy's y-coord = 100.0.
+the enemy's color = red.
+
+the enemy should ensure the player is dead.
+```
+
+The first thing to note is that this code is quite verbose, there is a lot of unnecessary repetition; we will try offering a solution to this problem in the next chapter.
+
+The second thing to note is the way the rule for the predicate "near" is defined, 
 
 
 
