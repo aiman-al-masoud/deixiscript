@@ -1,78 +1,78 @@
 = Naturalistic Programming
 
-We think that the upshot of the previous chapter about programming languages, is that these kinds of formal languages are "precise" and "simple".
+We think that the upshot of the previous chapter about programming languages is that these kinds of formal languages are "precise" and "simple".
 
-They're precise, because they (like mathematical notation) have a clearly defined syntax and semantics; and they're "simple" because their core should contain as few elements as possible, and these elements should be orthogonal (as free to combine with one another as feasible). Precision makes the meaning of code in a programming language as directly dependent on syntax as possible, and simplicity makes a programming language "easy" to implement on a computer (as compared to a natural language).
+They are precise because they (like mathematical notation) have a clearly defined syntax and semantics; and they are "simple" because their core should contain as few elements as possible, and these elements should be orthogonal (as free to combine with one another as feasible). Precision makes the meaning of code in a programming language as directly dependent on syntax as possible, and simplicity makes a programming language "easy" to use with a computer (as compared to a natural language).
 
-Given these advantages of programming languages, what would the benefit of writing code using natural language be, if any? This is what we shall discuss in the following pages, together with four examples of currently existing naturalistic programming languages. We shall also make a brief digression about LLMs, Prompt Engineering and AI-assisted coding (in natural language); we shall follow that with some criticism that can be made about using natural languages in code, and we shall conclude the chapter with what (we think) are the distinguisihing characteristics of the naturalistic languages we studied, that give them an edge over the traditional programming languages.
+Given these advantages of programming languages, what would the benefit of writing code using natural language be, if any? This is what we shall discuss in the following pages, together with four examples of currently existing naturalistic programming languages. We shall also make a brief digression about LLMs, Prompt Engineering and AI-assisted coding (in natural language); we shall propose some criticism about using natural languages in code, and we shall conclude the chapter with what (we think) are the distinguishing characteristics of the naturalistic languages we studied, that give them an edge over traditional programming languages.
 
 == Precision and Expressiveness: a tradeoff
 
-A general trend in languages, is that there tends to be a tradeoff between naturalness and expressiveness on the one side, versus precision and ease of implementation on the other.
+A general trend in languages is that there tends to be a tradeoff between naturalness and expressiveness on the one side, versus precision and ease of implementation on the other.
 
-Within the PENS (Precision, Expressiveness, Naturalness and Simplicity) language classification scheme @kuhn2014survey, a diverse set of Controlled Natural Languages (CNLs), all based on English, were classified by 4 metrics: Precision, Expressiveness, Naturalness and Simplicity.
+Within the PENS (Precision, Expressiveness, Naturalness and Simplicity) language classification scheme @kuhn2014survey, a diverse set of Controlled Natural Languages (CNLs), all based on English, were classified by four metrics: Precision, Expressiveness, Naturalness and Simplicity.
 
 This is roughly what these four metrics mean, respectively: the level of independence from context (Precision), the amount of expressible propositions (Expressiveness), the similarity to natural language (Naturalness) and the ease of implementation as a computer program (Simplicity).
 
 The study found, among the other results, that Precision and Simplicity are positively correlated, Expressiveness and Simplicity are negatively correlated, and Naturalness and Expressiveness are positively correlated.
 
-In other words: in the last chapter we had been talking about how imprecise natural language is, but now we must acknowledge the other side of the medal, namely that: natural language has an exceptional level of expressiveness, as compared to the formal languages. You can say almost anything in natural language, or better yet: it is hard to think of an idea that you can't express, using plain English or any other human tongue.
+In other words: in the previous chapters we had been talking about how imprecise natural language is, but now we must acknowledge the other side of the medal, namely that natural language has an exceptional level of expressiveness, as compared to formal languages. You can say almost anything in natural language, or better yet: it is hard to think of an idea that you cannot express using plain English or any other human tongue.
 
-== Shortcomings of programming languages
+== Shortcomings of traditional programming languages
 
-Does the lack of expressiveness represent a problem in traditional programming languages? We think a lot of the evidence points to that conclusion; beginning from the very existence of reaserch into naturalistic programming, which seems to stem from the shortcomings of contemporary programming languages, at adequately describing certain classes of problems @knoll2006pegasus, @knoll2011naturalistic, @lopes2003beyond, @pulido2017survey.
+Does the lack of expressiveness represent a problem in traditional programming languages? We think this is evident, beginning from the very existence of research in naturalistic programming, which seems to stem from the limitations of contemporary programming languages at adequately describing certain classes of problems @knoll2006pegasus, @knoll2011naturalistic, @lopes2003beyond, @pulido2017survey.
 
 In these works, it is argued that the abstractions that power the current generation of programming languages often tend to result in verbose, repetitive and brittle code.
 
 === The Issue of Semantic Gap
 
-The important issue of "_Semantic Gap_" is brought up in a paper from 2011 which proposes and discusses the possibility of designing a language with "naturalistic types" @knoll2011naturalistic. There is a _Semantic Gap_ between the desired behavior of a program, and the code that is written to produce it; this results in the "scattering of ideas" we sometimes see in traditional programming languages, when the need arises to express a concept that isn't directly supported by the programming language in question.
+The important issue of "_Semantic Gap_" is brought up in a 2011 paper which proposes and discusses the possibility of designing a language with "naturalistic types" @knoll2011naturalistic. There is a _Semantic Gap_ between the desired behavior of a program, and the code that is written to produce it; this results in the "scattering of ideas" we sometimes see in traditional programming languages, when the need arises to express a concept that is not directly supported by the programming language in question.
 
-A concrete example of this "scattering of ideas" is reflected in the use of _flags_ (boolean variables) that are conditionally altered in a loop, and then read elsewhere in the code; the logic behind any particular use of such flags may be trivial when explained out loud in natural language, while being entirely opaque at a first reading of the code.
+A concrete example of this "scattering of ideas" is reflected by the use of _flags_ (Boolean variables) that are conditionally altered in a loop, and then read elsewhere in the code; the logic behind any particular use of such flags may be trivial when explained in natural language, while being entirely opaque at a first reading of the code.
 
-This means that the logic that these flags express, may have to be painstakingly pieced back together by the people that read the code, potentially many times over. Code comments, which consist essentially of short natural language explanations of the code's behavior, may help add clarity to such obscure pieces of code; but one must be careful to avoid the usage of comments in excess, as they (the comments) may become obsolete, moreover they are not checked by the compiler.
+This means that the logic that these flags express may have to be painstakingly pieced back together by the people that read the code, potentially many times over. Code comments, which consist essentially of short natural language explanations of the code behavior, may help add clarity to such obscure pieces of code; but one must be careful to avoid the usage of comments in excess, as they (the comments) may become obsolete and they are not checked by the compiler.
 
 === Aspect Oriented Programming (AOP)
 
-The paper "Beyond AOP: toward naturalistic programming" @lopes2003beyond (from 2003) argues that language designers should start taking inspiration from natural language, just as they took inspiration from mathematics (Functional Programming), and what they call: "ad-hoc metaphors such as Objects" (OOP) in the past. The paper talks about the emergence of Aspect Oriented Programming (AOP), as a positive example of a step in the right direction.
+The 2003 paper "Beyond AOP: toward naturalistic programming" @lopes2003beyond argues that language designers should start taking inspiration from natural language, just as they took inspiration from mathematics (Functional Programming), and what they call: "ad-hoc metaphors such as Objects" (OOP) in the past. The paper talks about the emergence of Aspect Oriented Programming (AOP), as a positive example of a step in the right direction.
 
 AOP is a programming paradigm that aims at increasing the modularity of code by addressing the problem of cross-cutting concerns, and does so by advocating their separation from the core business-logic. A cross-cutting concern, in software development, is an aspect of a program that affects various modules at the same time, without the possibility (in non-AOP languages) of being encapsulated in any single one of them.
 
-A most obvious cross-cutting concern is logging. For instance: the problem of logging all of the calls to functions with such and such characteristics, and only those. In a traditional OOP language, one would have to insert a call to the logger at the beginning or at the end of every function that one wished to track.
+A most obvious cross-cutting concern is logging. For instance: the problem of logging all of the calls to functions with specific characteristics, and only those. In a traditional OOP language, one would have to insert a call to the logger at the beginning or at the end of every function that one wished to track.
 
-In a language that supports AOP, this concern can be handled by an Aspect: a separate section of the program that neatly encapsulates that cross-cutting concern (logging all such-and-such functions); similar to how we could write a "chapter about logging" if we were describing the behavior of the same application using the referential capabilities afforded to us by the natural language in a printed book; the way people have always been describing (even very complex) ideas and processes for centuries.
+In a language that supports AOP, this concern can be handled by an Aspect: a separate section of the program that neatly encapsulates that cross-cutting concern (logging all such-and-such functions); similar to how we could write a "chapter about logging" if we were describing the behavior of the same application using the referential capabilities afforded to us by the natural language in a printed book; that is the way people have always been describing (even very complex) ideas and processes for centuries.
 
 == Natural Style <the80s>
 
-But then, how do people normally describe problems and their solutions, in natural language? It is telling that the manner, style, and train of thought in describing an algorithmic procedure employed by a regular person, or even by a programmer when elaborating an idea in the abstract, can be very different from the style employed by the same programmer when translating his/her ideas into executable code @knoll2006pegasus, @miller1981natural.
+But then, how do people normally describe problems and their solutions in natural language? The manner, style, and train of thought in describing an algorithmic procedure employed by a regular person, or even by a programmer when elaborating an idea in the abstract, can be very different from the style employed by the same programmer when translating his/her ideas into executable code @knoll2006pegasus, @miller1981natural.
 
-An early and oft-cited study in this respect is the one conducted by L. A. Miller in 1981 @miller1981natural. A group of college students who were not familiar with computers were asked to provide solutions to six file manipulation problems, and their proposed solutions (all written in natural language) were evaluated for metrics such as: preference of expression, presence of contextual referencing, etc...
+An early and oft-cited study in this respect is the one conducted by L. A. Miller in 1981 @miller1981natural. A group of college students who were not familiar with computers were asked to provide solutions to six file manipulation problems, and their proposed solutions (all written in natural language) were evaluated through metrics such as preference of expression, presence of contextual referencing, etc.
 
 === Implicit References
 
-It was found that the students were quite often prone to using contextual references such as pronouns and context-dependent phrases like: "the previous" and "the next"; this is a linguistic phenomenon broadly known as Deixis. Explicit variable assignments were _not_ used. 
+It was found that the students were quite often prone to using contextual references such as pronouns and context-dependent phrases such as "the previous" and "the next"; this is a linguistic phenomenon broadly known as Deixis. Explicit variable assignments were _not_ used. 
 
 === Universal Quantification
 
-The students preferred to treat data structures in a cumulative way, using universal quantifiers, rather than loops, to express operations that had to be carried out on multiple instances of a data structure. They avoided using any of the traditional structured programming constructs (if-then-else, while, for...), let alone the even more unnatural unstructured programming constructs (goto statements).
+The students preferred to treat data structures in a cumulative way, using universal quantifiers, rather than loops, to express operations that had to be carried out on multiple instances of a data structure. They avoided using the traditional structured programming constructs (if-then-else, while, for, etc.), let alone the even more unnatural unstructured programming constructs ('goto' statements).
 
 === Blunt (but Revisable) General Statements
 
-One of those historic (2006-2009) "Get a Mac" commercials @getAMac by Apple (the company) comes to mind, when talking about this aspect of natural language. The espisode in question begins with the character interpreting "PC" making a very blunt statement about how easy it is to use a PC, and then some small, hard to read text suddenly appears down at the bottom of the screen. We are told that this is just some "legal copy" (a kind of legal disclaimer), because apparently the claim about how "easy" it is to use PC requires a "little more" explanation. PC goes on to make more and more of such "bold" claims, and the legal copy promptly grows, until it floods the entirety of the screen.
+One of those historic (2006-2009) "Get a Mac" commercials @getAMac by Apple (the company) comes to mind when talking about this aspect of natural language. The episode in question begins with the character interpreting a "PC" making a very blunt statement about how easy it is to use a PC, and then some small, hard to read text suddenly appears down at the bottom of the screen. We are told that this is just some "legal copy" (a kind of legal disclaimer), because apparently the claim about how "easy" it is to use a PC requires a "little more" explanation. PC goes on to make more and more of such "bold" claims, and the legal copy promptly grows, until it floods the entirety of the screen.
 
 In any case, when describing an algorithm, the students from the experiment by Miller tended to begin by the most general and crucial step of the procedure, to only then deal with those special cases which required a different sort of treatment. This strategy of dealing with complexity: the further refinement, or "annotation" of a blunt initial general statement, seems to be a pervasive idea; and we will encounter it again later.
 
-It is often not how we do things in traditional programming language code, where the crucial step of a function may be delayed until after all of the guard clauses and early returns that check for the edge cases are visited; or, worse: the crucial step may be buried deep within a hierarchy of nested if-statements.
+It is often not how we do things in traditional programming language code, where the crucial step of a function may be delayed until after all of the guard clauses and early returns that check for the edge cases are visited; or, worse, the crucial step may be buried deep within a hierarchy of nested if-statements.
 
-Perhaps the success of the exception handling model (which itself is not perfect, by any means) is owed in part to the philosophy of tackling the most important step first, and handling the edge cases (as exceptions) later.
+Perhaps, the success of the exception handling model (which itself is not perfect, by any means) is owed in part to the philosophy of tackling the most important step first, and handling the edge cases (as exceptions) later.
 
 === Implied Knowledge
 
-The subjects of the experiment also expected the computer to possess some pragmatic, contextual knowledge of the world and of their intentions, expecting it to fill in the semantic gaps whenever needed. As Dijkstra would've put it: "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" @foolishnessnatprogramming.
+The subjects of the experiment also expected the computer to possess some pragmatic, contextual knowledge of the world and of their intentions, expecting it to fill in the semantic gaps whenever needed. As Dijkstra would have put it: "They blamed the mechanical slave for its strict obedience with which it carried out its given instructions, even if a moment's thought would have revealed that those instructions contained an obvious mistake" @foolishnessnatprogramming.
 
 === Size of Vocabulary
 
-Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time. Besides, studies have shown that to understand novels and newspaper articles a non-native English speaker needs to know just about 8000 to 9000 of the most common lemmas (root-words, or "word families"), and to understant dialogue on TV shows or movies that number is even less: only about 3000 lemmas @bbcWords. The problem of vocabulary doesn't appear great, of course we must remember that a human speaker can often make up for the words he/she doesn't know from contextual information and implied world knowledge, which is definitely a bigger problem for a machine.
+Another finding was that the subjects tended to use a relatively restricted vocabulary, though they still liked to use synonyms from time to time. Besides, studies have shown that to understand novels and newspaper articles a non-native English speaker needs to know just about 8000 to 9000 of the most common lemmas (root-words, or "word families"), and to understand dialogue on TV shows or movies that number is even less: only about 3000 lemmas @bbcWords. The problem of vocabulary does not appear great, as we must remember that a human speaker can often make up for the words he/she does not know from contextual information and implied world knowledge, which is definitely a bigger problem for a machine.
 
 == Literate Programming <literate>
 
@@ -80,23 +80,23 @@ Donald Knuth (1938-), a computer scientist known for his foundational work in ti
 
 Knuth designed a language called "WEB"; apparently back when he chose this name for it, the word "web" was still "one of the few three-letter words of English that hadn't already been applied to computers" @knuth1984literate.
 
-The language WEB combines together a markup language with a traditional general purpose programming language (TEX and PASCAL respectively, in Knuth's original work); the idea is that a program can be seen as a web of components, and that it is best to describe the links between these components using a mixture of natural language descriptions (with TEX) and formal notation (with PASCAL).
+The WEB language combines together a markup language and a traditional general purpose programming language (TEX and PASCAL, respectively, in Knuth's original work); the idea is that a program can be seen as a web of components, and that it is best to describe the links between these components using a mixture of natural language descriptions (with TEX) and formal notation (with PASCAL).
 
-According to this philosophy, the program should make sense to a human being first and foremost, so the majority of it is composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language.
+According to this philosophy, the program should make sense to a human being first and foremost, so it is mostly composed of natural language sentences and phrases, interspersed with (relatively little) definitions in formal language.
 
 == Stories and Code <metafor>
 
-What do computer programming and story telling have in common? A lot, according to a study from 2005 by Hugo Liu and Henry Lieberman. The study involved a system which automatically translated user stories to Python code fragments @liu2005metafor, @liu2005programmatic.
+What do computer programming and story telling have in common? A lot, according to a 2005 study by Hugo Liu and Henry Lieberman. The study involved a system which automatically translated user stories to Python code fragments @liu2005metafor, @liu2005programmatic.
 
 The program, which can be seen as a very peculiar kind of transpiler, called Metafor, was integrated with a large Common Sense Knowledge base called Concept-Net, derived from the Open Mind corpus of natural language Common Sense statements.
 
-The code generated was "scaffolding", or underspecified code, that in fact wasn't meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity isn't always a negative aspect of natural language, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. 
+The code generated was "scaffolding", or underspecified code, that in fact was not meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity is not always a negative aspect of natural language, but, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. 
 
 // This ties in well with the idea of "successive refinements" we mentioned earlier.
 
 The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same two authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on. <verbsasfuncs>
 
-As we already saw, the code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate the task of outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students, some of which with novice and some of which with intermediate programming skills. The students responded to the question of whether they'd be likely to use it as a brainstorming tool, in lieu of more traditional pen-and-paper methods @liu2005metafor.
+As we already saw, the code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate the task of outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students, some of which with novice and some of which with intermediate programming skills. The students responded to the question of whether they would be likely to use it as a brainstorming tool, in lieu of more traditional pen-and-paper methods @liu2005metafor.
 
 //  STORIES! inform 7!!!
 
@@ -106,29 +106,29 @@ There have been some pretty complete attempts at creating comprehensive natural 
 
 === Pegasus <pegasus>
 
-The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting via e-mail, and who has confirmed that the project and related work are still under active development although the official webpage hasn't been updated since 2018, on the date of writing @pegasuswebsite.
+The original implementation of Pegasus is outlined in a 2006 paper @knoll2006pegasus by Roman Knöll and Mira Mezini, the former of which I had the pleasure of contacting via e-mail, and who has confirmed that the project and related work are still under active development, although the official webpage has not been updated since 2018, on the date of writing @pegasuswebsite.
 
 ==== Implicit Referencing, Compression and Context Dependence
 
 According to the authors, the main features that distinguish natural language from programming languages are: implicit referencing, compression and context dependence.
 
-Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" are all words clearly exemplify this phenomenon.
+Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" - all words clearly exemplifying this phenomenon.
 
-Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "he pets the cat and the cheetah" understood as an abbreviation for "he pets the cat and he pets the cheetah". An example of semantic compression would be the in sentence "first go from left to right, then viceversa", where "viceversa", in this case, would mean: "from right to left".
+Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "he pets the cat and the cheetah" understood as an abbreviation for "he pets the cat and he pets the cheetah". An example of semantic compression would be the sentence "first go from left to right, then viceversa", where "viceversa", in this case, would mean: "from right to left".
 
-Context Dependence refers to the fact that, contra most programming languages, the same string in natural language can be reduced in different ways depending on the surrounding context, not only on the string itself. In the sentence: "the mouse runs, then it jumps, the cat kills it, then it jumps" there are two identical instances of the phrase "then it jumps": in the former the pronoun "it" refers to the mouse, in the latter the pronoun "it" refers to the cat.
+Context Dependence refers to the fact that, contra most programming languages, the same string in natural language can be reduced in different ways depending on the surrounding context, not only on the string itself. In the sentence: "the mouse runs, then it jumps, the cat kills it, then it jumps" there are two identical instances of the phrase "then it jumps". In the former the pronoun "it" refers to the mouse, in the latter the pronoun "it" refers to the cat.
 
 These three mechanisms, in the authors' opinion, all help in reducing the amount of redundancy in our spoken and written communication.
 
 ==== Idea Notation
 
-The authors discuss of a possible formalization of human thought; it may or may not be possible for a computer to "experience" the same thoughts and feelings as a human being, but, according to the authors, it is should be possible to describe the structure of human thought formally enough for it to be imitated mechanically.
+The authors discuss of a possible formalization of human thought; it may or may not be possible for a computer to "experience" the same thoughts and feelings as a human being, but, according to the authors, it should be possible to describe the structure of human thought formally enough for it to be imitated mechanically. // human THOUGHT
 
 They propose a distinction between what they call "Atomic" versus "Complex" ideas, the former stemming directly from human perception (such as "the smell of wood", or "the warmth of wood"), and the latter being a combination of the former (such as the very idea of "wood").
 
-They also recognize a third category of ideas they call "Composed", which "combine several Complex ideas for a short moment" @knoll2006pegasus, effectively corresponding with propositions, such as the meaning of the sentence: "the car drives on the street".
+They also recognize a third category of ideas they call "Composed", which "combine several Complex ideas for a short moment" @knoll2006pegasus, effectively corresponding with propositions, such as the meaning of the sentence "the car drives on the street".
 
-Every idea, they assert, can have a concrete representation as: an entity, an action or a property; corresponding to a noun, a verb or an adjective/adverb respectively, in most natural languages.
+Every idea, they assert, can have a concrete representation as: an entity, an action or a property, corresponding to a noun, a verb or an adjective/adverb respectively, in most natural languages.
 
 The authors then describe a formalism they call "the idea notation" to express concepts and thoughts in this framework, and to perform automatic computations on them.
 
@@ -136,51 +136,51 @@ The authors then describe a formalism they call "the idea notation" to express c
 
 The architecture of Pegasus is described as being composed of three parts: the Mind, the Short Term Memory and the Long Term Memory.
 
-The Mind is what matches ideas to idea-patterns stored in Pegasus's long term semantic network. An idea-pattern is associated to an action, which is performed when the Mind determines that it matches an idea recevied as an input.
+The Mind is what matches ideas to idea-patterns stored in Pegasus's long term semantic network. An idea-pattern is associated to an action, which is performed when the Mind determines that it matches an idea received as an input.
 
 The Short Term Memory is what enables Pegasus to contextually resolve pronouns such as "it", and other deictic words and phrases. It is implemented as a bounded queue, and purposefully limited to 8 memory cells, corresponding to eight recently mentioned entities, as the authors believe this is optimal number for operation by human beings (cf: @miller1956magical).
 
 Lastly, the Long Term Memory stores Pegasus's semantic knowledge, for example is-a relationships between concepts.
 
-When an idea and its sub-ideas are fully resolved, such a system can take action directly (as an interpreter), or generate the equivalent code in a given programming language (as a compiler), the paper mentions Java as an example.
+When an idea and its sub-ideas are fully resolved, such a system can take action directly (as an interpreter), or generate the equivalent code in a given programming language (as a compiler) - the paper mentions Java as an example.
 
 ==== Translatability
 
-The paper brings up the of a "translatable programming language". We've already seen how there's a precedent for this in AGOL 68, and this paper also mentions AppleScript as a newer language that adopted this idea, at least for a period of time in the past; this really meant that AppleScript's keywords had translations in multiple natural languages. In any case, AppleScript took the more popular (and less naturalistic) approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
+The paper brings up the idea of a "translatable programming language". We have already seen how there is a precedent for this in AGOL 68, and this paper also mentions AppleScript as a newer language that adopted this idea, at least for a period of time in the past; this really meant that AppleScript's keywords had translations in multiple natural languages. In any case, AppleScript took the more popular (and less naturalistic) approach of "masking" the rather traditional structured programming constructs with a thin natural language mask.
 
-Pegasus is designed to be language-independent at its core, this means that many different front-ends, corresponding to different concrete grammars, in turn corresponding to different human languages, can be implemented for it. For instance, the paper mentions Pegasus's capability of reading both English and German, and of freely translating between a language and the other.
+Pegasus is designed to be language-independent at its core, which means that many different front-ends, corresponding to different concrete grammars, in turn corresponding to different human languages, can be implemented for it. For instance, the paper mentions Pegasus's capability of reading both English and German, and of freely translating between a language and the other.
 
 ==== Drawbacks
 
 Some of the drawbacks of the approach taken by Pegasus (and of naturalistic programming in general) are discussed in the final part of the paper. The general problems are said to be: varying choice of expression, vagueness inherent in natural language specifications (cf. @fantechi2021language), the convenience of mathematical notation over natural language descriptions (cf. @foolishnessnatprogramming) and the limitation in expressivity imposed on the naturalistic language by the underlying programming language when transpiling to it.
 
-Drawbacks related to Pegasus, or at least to the original version, include performance issues related to some of the implementation choices, the problem of having to manage an extensive database due to the choice to support a language's full natural inflection and conjugation patterns, and the limited expressivity of the initial implementation of the Pegasus language itself.
+Drawbacks related to Pegasus, or at least to its original version, include performance issues related to some of the implementation choices, the problem of having to manage an extensive database due to the choice to support a language's full natural inflection and conjugation patterns, and the limited expressivity of the initial implementation of the Pegasus language itself.
 
 All in all, Pegasus remains a valid example of a general purpose naturalistic programming system; the product is, to our knowledge as of writing, not yet available to the public, but one can see examples of its usage on the project's official website @pegasuswebsite.
 
 === CAL <cal>
 
-Another example of general purpose naturalistic programming language, also originally from 2006 with further developments up until recently, is presented by the interestingly called "Osmosian Order of Plain English Programmers" @osmosianblog.
+Another example of general purpose naturalistic programming language, also originally created in 2006 with further developments up until recently, is presented by the interestingly called "Osmosian Order of Plain English Programmers" @osmosianblog.
 
-A motivation behind this project, as explained by the authors (Gerry and Dan Rzeppa, father and son), is to eliminate the intermediate translation step from natural language pseudo-code to rigorous programming language notation (cf:  @knoll2006pegasus).
+A motivation behind this project, as explained by the authors (Gerry and Dan Rzeppa, father and son), is to eliminate the intermediate translation step from natural language pseudo-code to rigorous programming language notation (cf.  @knoll2006pegasus).
 
-Another motivating factor was to answer the question of whether natural language could be parsed in a sufficiently "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
+Another motivating factor was to answer the question of whether natural language could be parsed in a sufficiently "sloppy" (partial) manner (as the authors suspect human beings do, or at least infants when growing up) as to allow for flexibility in choice of expression and for a stable programming environment.
 
 And finally, to determine whether low-level programs could conveniently be written in such a subset of the English language.
 
 The authors seem to have come to the conclusion that all of this is indeed possible, using their system.
 
-The authors draw a parallel between the "pictures" (we assume they're talking about mental images in human beings) and the "types" (programming language types), and between the skills that a young (or old) human being may acquire and the traditional routines of a programming language.
+The authors draw a parallel between the "pictures" (we assume they are talking about mental images in human beings) and the "types" (programming language types), and between the skills that a young (or old) human being may acquire and the traditional routines of a programming language.
 
-Most of the code in most of the programs, they claim, represents simple enough logic that it is most convenient to express it in natural language. However, high-level (natural language) and low-level (programming language) code can and should coexist in certain scenarios; the authors use the metaphor of a math text-book to support this idea: mathemathical formulas in formal notation, when convenient, interspersed in a text mostly made up of natural language; an idea akin to the philosophy behind Literate Programming we discussed earlier @literate.
+Most of the code in most of the programs, they claim, represents simple enough logic that is most convenient to express in natural language. However, high-level (natural language) and low-level (programming language) code can and should coexist in certain scenarios; the authors use the metaphor of a math text-book to support this idea: mathematical formulas in formal notation, when convenient, interspersed in a text mostly made up of natural language; an idea akin to the philosophy behind Literate Programming we discussed earlier @literate.
 
-What's striking about this language is that, albeit very English-like in syntax, there is a markedly procedural taste to it, complete with variables, loops and routines. There are something like three kinds of routines: procedures, deciders and functions. The procedures, just like classical procedures, are routines with side effects that "simply do something" without returning a value. Deciders and functions on the other hand can resolve to a value; the former being used to define when a condition is true (also allowing the system to infer when it is false), and the latter being used to derive a value from a passed parameter and also usable with possessives (such as "the triangle's area") in a fashion reminiscent of getter methods or derived properties in OOP.
+What is striking about this language is that, albeit very English-like in syntax, there is a markedly procedural taste to it, complete with variables, loops and routines. There are something like three kinds of routines: procedures, deciders and functions. The procedures, just like classical procedures, are routines with side effects that "simply do something" without returning a value. Deciders and functions, on the other hand, can resolve to a value; the former being used to define when a condition is true (also allowing the system to infer when it is false), and the latter being used to derive a value from a passed parameter and also usable with possessives (such as "the triangle's area") in a fashion reminiscent of getter methods or derived properties in OOP.
 
-It is possible to define custom data types, using natural language syntax to define the fields and the respective types thereof. Among the custom types that can be defined are "records" and "things" (a kind of dynamic structure). Units of measurments and the conversion between them are also supported. 
+It is possible to define custom data types, using natural language syntax to define the fields and the respective types thereof. Among the custom types that can be defined are "records" and "things" (a kind of dynamic structure). Units of measurement and the conversion between them are also supported. 
 
 The language also supports event driven programming, and has various I/O capabilities such as timers, audio output and even a 2D graphics system which can be used to draw and plot shapes.
 
-The CAL compiler is freely downloadable (and can re-compile itself in about 3 seconds), together with the instructions manual available as a pdf file, all on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing. The 100 page manual gives a comprehensive overview of the language with plenty of examples @osmosianblog.
+The CAL compiler is freely downloadable (and can re-compile itself in about 3 seconds), together with the instructions manual available as a PDF file, all on the Osmosian Order's website; however, it is only available for Microsoft Windows systems at the time of writing. The 100-page manual gives a comprehensive overview of the language with plenty of examples @osmosianblog.
 
 === SN
 
@@ -188,17 +188,17 @@ A slightly newer example of a full fledged naturalistic programming language is 
 
 The authors cite a distinction made by others between what is called the "formalist" versus the "naturalist" approach to programming languages based on natural language. The formalist approach focuses on correct execution, thus favoring an unambiguous grammars, while the naturalist approach tolerates ambiguous grammars and attempts to resolve the remaining ambiguities using techniques from artificial intelligence @pulido2019model.
 
-The authors state that their approach is closer to the formalist camp; and interestingly, while the philosophy and style of the language is novel, and differs significantly from a typical object oriented language, and while many of the syntax does try to imitate English to a certain extent, the syntax overall is a little less close to English's than the two previously surveyed projects (@pegasus, @cal).
+The authors state that their approach is closer to the formalist camp. The philosophy and style of the language is novel, and differs significantly from a typical object oriented language, and much of the syntax does try to imitate English, but it is perhaps a little less close to that of English than the two previously surveyed projects (@pegasus, @cal).
 
 The authors discuss what they believe are the basic elements that should allow a naturalistic system to function as a general purpose programming language, and come to the conclusion that the required building blocks for such a system are: nouns, adjectives, verbs, circumstances, phrases, anaphors, explicit and static types and formalized syntax and rules (in accordance with the formalist approach).
 
 A SN Noun roughly corresponds to a class in OOP as it can inherit from another noun (only single inheritance is allowed) and can posses attributes. An Adjective, on the other hand, supports multiple inheritance, and can be applied to a Noun to specialize it. A verb is defined on either a Noun or an adjective, similar to how a method can be defined on a class or on a trait (such as in the language Scala).
 
-Circumstances are a special construct that can apply to either attributes or verbs, they serve to specify the applicability (or unapplicability) of adjectives to Nouns, or the conditions and time of execution of a verb. For instance, one could specify that an Adjective mutually excludes another, or that a verb should be executed before or after another, for example to log the creation of all instances of a certain kind of Noun.
+Circumstances are a special construct that can apply to either attributes or verbs, they serve to specify the applicability (or inapplicability) of adjectives to Nouns, or the conditions and time of execution of a verb. For instance, one could specify that an Adjective mutually excludes another, or that a verb should be executed before or after another, for example to log the creation of all instances of a certain kind of Noun.
 
 Noun phrases, which can be a combination of Nouns, Adjectives, and "with/as" clauses, and can support plurals, have a dual usage in SN: they can either be used as constructors to create new instances of a certain kind (with the "a/an" keyword) or to refer to already existing instances of such a kind (with the "the" keyword).
 
-The language also introduces the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", this is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by making such statements: `repeat the next 2 instructions until i > 10`.
+The language also introduces the concept of "Naturalistic Iterators" and "Naturalistic Conditionals", which is accomplished with the use of reflection to refer to the instructions of the program themselves, for example by making statements such as: `repeat the next 2 instructions until i > 10`.
 
 The compiler can produce Java Bytecode or even transpile snippets of code in the language to Scala.
 
@@ -206,29 +206,31 @@ The compiler can produce Java Bytecode or even transpile snippets of code in the
 
 Inform 7 is perhaps the most advanced naturalistic programming language we know of, and certainly the only one that has been widely (by naturalistic language standards) used among the ones we surveyed.
 
-==== History (Inform 6)
+==== Inform 6
 
-Designed by British mathematician and poet Graham Nelson (1968-), as a successor to the more traditional Inform 6 programming language (also created by him), Inform 7 is a domain specific language for the creation of Interactive Fiction (IF).
-
-IF can be thought of as a form of (interactive) literature, where a reader can interact (chiefly through text) with the characters and environments in the narrative, which can include graphics and puzzles; IF can also be thought of as a kind of video-game, or "text-adventure". This typically involves the simulation of environments (called "rooms"), objects and characters and the interaction of these together.
+Designed by the British mathematician and poet Graham Nelson (1968-), as a successor to the more traditional Inform 6 programming language (also created by him), Inform 7 is a domain specific language for the creation of Interactive Fiction (IF).
 
 ==== Interactive Fiction
 
-All Interactive Fiction products before Inform 7 were typically authored in classical (procedural or OOP) programming languages; and indeed: Inform 6, Inform 7's predecessor, was one such language: a C-style procedural language with Object-Orientation, and some extra features (like "hooks") geared towards IF creation specifically.
+IF can be thought of as a form of (interactive) literature, where a reader can interact (chiefly through text) with the characters and environments in the narrative, which can include graphics and puzzles; IF can also be thought of as a kind of video-game, or "text-adventure". This typically involves the simulation of environments (called "rooms"), objects and characters and the interaction of these together.
+
+All Interactive Fiction products before Inform 7 were typically authored in classical (procedural or OOP) programming languages; and indeed, Inform 6, the predecessor of Inform 7, was one such language: a C-style procedural language with Object-Orientation, and some extra features (like "hooks") geared towards IF creation, specifically.
 
 ==== Unusual Features
 
-Inform 7 almost reads like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see later what this means); it can also infer the type of a "variable" from its usage, but that doesn't refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensitivity.
+Inform 7 almost reads like English, and boasts quite an unusual feature-set compared to mainstream programming languages. Unlike its predecessor, it is not Object-Oriented but rather "Rule-Oriented" (we will see later what this means); it can also infer the type of a "variable" from its usage, but that does not refer to type inference in classical variable assignments or return types (as in traditional languages), but rather to what could be seen as a limited form of context sensitivity.
 
-Inform 7 can perform inference of a the category (or "kind") of the referent of a noun phrase; for instance: if a rule is declared that states that only people can "wear" things, and a variable (say "John") is declared to be "wearing a hat", then John will be created as a person.
+Inform 7 can infer the category (or "kind") of a referent of a noun phrase; for instance, if a rule is declared that states that only people can "wear" things, and a variable (say "John") is declared to be "wearing a hat", then John will be created as a person.
 
-It is a language with a past tense! This feature is useful at capturing "past game state", something that in other languages is achieved through flags and counter variables; the need for the latter is minimized in Inform 7.
+It is a language with a past tense. This feature is useful at capturing "past game states", something that in other languages is achieved through flags and counter variables; the need for the latter is minimized in Inform 7.
 
 ==== Open-Sourced
 
-In the 2005 (revised in 2006) paper titled: "Natural Language, Semantic Analysis and Interactive Fiction" @nelson2006natural, Nelson explains what strategies were used in the implementation of Inform 7, and what difficulties were encountered (mainly in the broad subject of Semantics). As a side note, the language was recently open-sourced @inform7opensourced (in 2022), and the source-code is available on GitHub @inform7github, as of the date of writing. The paper also argues that "natural language is the _natural_ language" for the creation of IF content.
+The language was recently open-sourced @inform7opensourced (in 2022), and the source-code is available on GitHub @inform7github, as of the date of writing. The paper also argues that "natural language is the _natural_ language" for the creation of IF content.
 
 ==== Design Rules of Inform 7
+
+In the 2005 (revised in 2006) paper titled "Natural Language, Semantic Analysis and Interactive Fiction" @nelson2006natural, Nelson explains what strategies were used in the implementation of Inform 7, and what difficulties were encountered (mainly in the broad subject of Semantics).
 
 The paper states that the four rules that were followed in the design and implementation of the language were that: (1) A casual reader should be able to (correctly) guess the meaning of Inform 7 source code; (2) The implementation has to be (computationally) economical, but not at the price of intelligibility; (3) if in doubt as to syntax, the language should imitate books or newspapers; (4) contextual knowledge is (mainly) supplied by the author of a program, not built into the language.
 
@@ -242,12 +244,12 @@ Inform 7, as already stated, emphasizes Rules over Objects. Nelson observes that
 
 The strong distinction between "specific" and "general" rules that exists in OOP is seen as inadequate for this kind of application. Class and method definition are what he calls "general" rules, and object creation with specific attributes and values for the sake of the concrete program or game are what he refers to as "specific".
 
-An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermeable (the player can't stick a hand through to grab the apple stored inside, just like he/she can't walk through walls); but it is further stipulated that a player wearing a magical ring should be able to.
+An example of how this is an issue is given by the (code organization) problem of the apple in the box and the magical ring. Suppose there is a general rule in the game about boxes being impermeable (the player cannot stick a hand through to grab the apple stored inside, just like he/she cannot walk through walls); but it is further stipulated that a player wearing a magical ring should be able to.
 
-The solution to this problem in Inform 6 (which is an OOP language) was either to add a general rule, which was deemed a little over-the-top for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple!
+The solution to this problem in Inform 6 (which is an OOP language) was either to add a general rule, which was deemed a little over-the-top for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple.
 
 The solution in Inform 7 involves the introduction of a new kind of rule, which specifies the circumstances under which other rules have to be ignored. // cf: machines like us 
-In general, specific rules take precedence over more general ones, and the order of declaration of the rules in the source code is irrelevant, because rule-precendence is handled automatically.
+In general, specific rules take precedence over more general ones, and the order of declaration of the rules in the source code is irrelevant, because rule-precedence is handled automatically.
 
 This system of so called "gradation of rules" needs: (1) a working system of types that can recognize and match subtypes to general types; and (2) a mechanism to declare "circumstances" in which different rules apply (or don't).
 
