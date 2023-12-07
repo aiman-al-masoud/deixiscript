@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 import dataclasses
+
+from numpy import isin
 from zorror import Zorror
 from functools import cmp_to_key, reduce
 from typing import Callable, List, Tuple, TypeVar
@@ -33,6 +35,7 @@ class Constant(NounPhrase):
 
 class Id(Constant, int):
     def english(self): return 'ID#'+str(self)
+    def __bool__(self): return True
 
 class Num(Constant, float): pass
 
@@ -57,9 +60,16 @@ class Adjective(Ast):
     value:str
     negation:bool
 
-    def check(self, kb: 'KB', subject:'NounPhrase') -> bool: #'Bool|Zorror':
+    def check(self, kb: 'KB', subject:'NounPhrase') -> bool:
+        
+        # print(Idea(subject, self.value))
         result=Idea(subject, self.value).ask().eval(kb)
-        if isinstance(result, Zorror): return False
+        
+        # print('subject=', subject, result)
+
+        if isinstance(result, Zorror): return False!=self.negation
+        
+        # print('subject=', subject,  'value=', self.value, 'negation=', self.negation, 'result=', result[1])
         return bool(result[1])!=self.negation
 
     def make(self, kb:'KB', subject:'NounPhrase')->'KB|Zorror':
@@ -77,6 +87,7 @@ class ImplicitPhrase(NounPhrase):
     cmd:bool=False
 
     def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
+
         if self.cmd:
             isAlreadyThere = not isinstance(self.ask().eval(kb), Zorror)
             if isAlreadyThere: return Zorror(f'{self.english()} already exists'.capitalize())
@@ -91,10 +102,16 @@ class ImplicitPhrase(NounPhrase):
         else:
             headIds=[Id(i) for i, thing in enumerate(kb.wm) if thing['type']==self.head]
             if not headIds: return Zorror(f'Could not find any "{self.english()}".')
-            adjIds=[i for i in headIds if all([a.check(kb, TypeCast(i, self)) for a in self.adjectives])]
+            
+            # print('headIds=', headIds, 'adjectives=', self.adjectives)
+            # print(kb.wm)
+
+            adjIds=[i for i in headIds 
+                if all([a.check(kb, TypeCast(i, ImplicitPhrase(self.head))) for a in self.adjectives])  ]
+
             if not adjIds: return Zorror(f'Found some {self.head}, but no "{[x.english() for x in self.adjectives]}" ones.')
             if len(adjIds)==1: return kb.updateStm(self), adjIds[0]
-            disambiguated=kb.disambiguate(self)
+            disambiguated=kb.disambiguate(self)            
             if disambiguated is not None: return disambiguated.eval(kb)
             return Zorror(f'Found multiple: "{self.english()}", try specifying?')
 
@@ -371,6 +388,7 @@ class Prog(Ast, Tuple[Ast, ...]):
     def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
         newKb=kb
         result=Bool(False)
+
 
         for x in self:
             tmp=x.eval(newKb)

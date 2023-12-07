@@ -252,6 +252,11 @@ def test_eval_pronoun_in_idea_sentences():
     assert result[0].wm[0] == {'type':'player', 'x-coord':2}
     assert result[0].wm[1] == {'type':'door', 'state': 3}
 
+def test_eval_fish():
+    maybe=parser.parse(open('./examples/fish.txt').read()).eval(KB())
+    assert not isinstance(maybe, Zorror)
+    assert maybe[1]
+
 # ----------------------------------------------------------------------
 
 def test_plan_enemy_should_ensure_player_is_dead():

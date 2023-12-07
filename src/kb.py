@@ -23,7 +23,7 @@ class KB:
         if any([match(noun, sub) for sub in self.stm]):
             return self
 
-        return self.copy(stm=(noun, *self.stm)[:self.STM_SIZE])
+        return self.copy(stm=(noun.ask(), *self.stm)[:self.STM_SIZE])
 
     def getProp(self, id:'Id', prop:str):
         thing=self.wm[id]

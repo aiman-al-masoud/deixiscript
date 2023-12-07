@@ -49,7 +49,9 @@ class CLI:
             return
         if maybe[0]!=self.history[-1]:
             self.history.append(maybe[0])
-        
+        if maybe[1]:
+            print(maybe[1].english())
+
     def load(self, filename:str):
         try: code=open(filename).read()
         except Exception as e:
@@ -68,6 +70,7 @@ class CLI:
         plt.axis([0, 500, 0, 500])
 
         for thing in self.history[-1].wm:
+            if 'x-coord' not in thing: continue
             x,y=thing['x-coord'],thing['y-coord']
             color=thing.get('color', 'black')
             colorCode=colorCodeOf(str(color))
