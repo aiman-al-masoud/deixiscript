@@ -252,7 +252,7 @@ Numbers, strings and Booleans work just like they do in any other programming la
 
 Variables are single-letter placeholder names (such as "x", "y" and "z") that "match" any type (see the section on syntactic matching: @syntaxMatch), they can be useful when writing some kinds of general Definitions, but we will not have much more to say about them.
 
-==== Implicit Phrases
+==== Implicit Phrases <implicitPhrases>
 
 What we call an "implicit phrase" comprises of a "head" and a list of adjectives. The head (or noun) is just a string representing a type (which does not have to be declared explicitly).
 
@@ -262,7 +262,7 @@ In Deixiscript there is an equivalence between the two kinds of adjectives: once
 
 When used inside of a sentence or by itself, an implicit phrase evaluates to (at most) a single ID, as we shall see later.
 
-==== Genitives and Possession
+==== Genitives and Possession <genitivePhrases>
 
 What we call a "genitive phrase" is a noun phrase that refers to a property of an individual rather than to the individual itself. Syntactically, it is in the form:  "an individual's property" or "x's y" (using English_'s_ Saxon Genitive). It is also possible to implement an alternative syntactic form using the preposition "of".
 
@@ -374,68 +374,195 @@ When the sentence (or phrase) finally works (does not produce an error) then we 
 
 Many of the higher-level operations we have talked about (using simple sentences, using adjectives, searching for relevant Definitions, etc.) depend on the functioning of a more basic low-level operation that we will call "match".
 
-Matching any two noun phrases or any two sentences (or, more generally, any two AST objects even of different types) is a purely syntactic operation that does not depend on the context i.e.: it is completely independent of the state of the Knowledge Base.
+Matching any two noun phrases or any two sentences (or, more generally, any two AST objects) is a purely syntactic operation that does not depend on the semantic context i.e.: it is completely independent of the state of the Knowledge Base.
 
 === The `match()` Function
 
-Match is implemented as a function that takes two arguments: two Abstract Syntax Tree (AST) objects. The function `match()` is "non-symmetric" i.e., the order of the arguments matters, the function cannot be expected to return the same result when the two arguments are swapped around.
+Match is implemented as a function that takes two arguments: two Abstract Syntax Tree (AST) objects. The function `match()` is non-symmetric i.e., the order of the arguments matters. The match function cannot be expected to return the same result when the two arguments are swapped around.
 
-When comparing noun phrases, one of the arguments can be thought of as the "super-type" and the other can be regarded as the "sub-type" of the type comparison, to use some class-based programming jargon. For instance: when comparing the structure that represent the noun phrase "the cat" to the one that represents the noun phrase "the red cat", `match()` will return a "positive result" if "the cat" is used as the first argument (in the "super-type" position), this is because "the red cat" is regarded as a special case of "the cat".
+When comparing noun phrases, one of the arguments can be thought of as the "super-type" and the other can be regarded as the "sub-type" of the comparison, to use some class-based programming jargon. For instance: when comparing (the abstract structure of) "the cat" to "the red cat", `match()` will return a _positive result_ if "the cat" is used as the first argument (in the "super-type" position), this is because "the red cat" is regarded as a special case of "the cat".
 
-Obviously, if the arguments are swapped around and "the red cat" takes the argument position reserved to the "super-type" the `match()` function returns a "negative result" ("the cat" is obviously _not_ a special case of "the red cat"). 
+Obviously, if the arguments are swapped around and "the red cat" takes the argument position reserved to the "super-type" the `match()` function returns a _negative result_ ("the cat" is obviously _not_ a special case of "the red cat"). 
 
-Used on noun phrases, the match function behaves very much like the `instanceof` operator of some object-oriented languages that produces a Boolean value based on the inheritance hierarchy of the operands. But what the match function actually returns is a mapping (an AST-to-AST dictionary), which is just empty in case of a "negative result".
+Used on noun phrases, the `match()` function behaves very much like the `instanceof` operator of some object-oriented languages. The `instanceof` operator produces a Boolean value based on the inheritance hierarchy of the operands. But what the match function actually returns is a mapping (an AST-to-AST dictionary), which just happens to be empty in case of a _negative result_.
 
-This is because the two arguments of the match function are not (as we have already hinted to) limited to being noun phrases. They can be simple sentences, compound sentences, etc. The match function needs to return a mapping when comparing together two simple sentences (two Ideas), because the goal is to determine if the subject and the object of the more specific sentence (the "sub-type") can be substituted into the subject and object of the more general sentence (the "super-type").
+The return type is a mapping, because the two arguments of the `match()` function are not (as we have hinted to) limited to being noun phrases. They can be simple sentences, compound sentences, etc. The `match()` function needs to return a mapping when comparing together two simple sentences, because its job is to determine if the subject (or object) of the more specific sentence can be substituted into the subject (or object) of the more general sentence.
 
-It is also useful to allow different AST types to compare together, it makes sense for instance to able to compare a "genitive" noun phrase to an "implicit" phrase (they are treated as two different AST types as we have seen before).
+Sometimes it is also useful to allow different AST types to compare together, it makes sense, for instance: to able to compare a "genitive phrase" @genitivePhrases to an "implicit phrase" @implicitPhrases.
 
-It may also make sense to compare a compound sentence (techically an "and expression" or an "or expression") to a simple sentence (an Idea).
+It may also make sense to compare a compound sentence (implemented as an "and/or expression") to a simple sentence.
 
 === Definition Lookup
 
-Syntactic matching plays a crucial role when the system needs to lookup the definition of an Idea. As we said, an Idea is the sort of AST that does not have an intrinsic meaning: it needs to be defined before it is used, and the Definitions are stored as a list in the Knowledge Base. Each Definition has two parts: a "definendum" (or left-hand side) and a "definition" (or "meaning", or right-hand side).
+Syntactic matching plays a crucial role when the system needs to lookup the definition of an simple sentence. As we said, a simple sentence is the sort of AST that does not have an intrinsic meaning: it needs to be defined before it is used, and the Definitions are stored as a list in the Knowledge Base. Each Definition has two parts: a "definendum" (the left-hand side, what has to be defined) and a "definition" (or "meaning", or right-hand side).
 
-When an Idea has to be executed, the system goes through the list of Definitions and attempts to match the Idea to a definendum. If the end of the list is reached and no suitable match was found, the system displays an error, telling the programmer that the verb or predicate they have attempted to use is not defined for the given kinds of arguments (it may be defined for others).
+When a simple sentence has to be executed, the system goes through the list of Definitions and attempts to match the simple sentence to a definendum. If the end of the list is reached and no suitable match was found, then the system displays an error, telling the programmer that the verb or predicate they have attempted to use is not defined for the given kinds of arguments (it may be defined for others).
+
+=== Argument Passing
 
 If a suitable match is indeed found, then the search stops. The system takes the result of the match function (the dictionary or "mapping") and "plugs it into" the right-hand side of the Definition. 
 
-To do this, a very simple function called "subst" is invoked. The function subst simply takes an "original AST" and an AST-to-AST dictionary, and substitues the keys of the dictionary with the values whenever it finds them on the "original AST" callings itself recursively.
+To do this, a very simple function called `subst()` is invoked. The function `subst()` simply takes an "original AST" and an AST-to-AST mapping, and replaces any sub-AST that is included in the keys of the mapping by the values of the mapping, calling itself recursively.
 
-When subst is done, the new AST that it produces is executed, this is akin to running the body of a function. This argument passing strategy is similar to "pass by name", which we discussed in the chapter on programming languages.
+When `subst()` is done, the new AST that it produces is executed, this is akin to running the body of a function. This argument passing strategy is similar to "pass by name", which we discussed in the chapter on programming languages @algolAndArgumentPassing.
 
 === Specificity and Matching
 
-A problem with this kind Definition lookup proceudre is this: suppose that the system needs to answer a question like: "the amphibious fish is dead?". Let us suppose that the Knowledge Base contains two Definitions for the predicate "is dead", the first Definition in the list generically applies to any kind of fish (i.e. "a fish is dead means ...") and the second applies specifically to amphibious ones.
+A problem with this Definition lookup proceudre is this: suppose that the system needs to answer a question like: "the amphibious fish is dead?". Let us suppose that the Knowledge Base contains two Definitions for the predicate "is dead", the first one in the list generically applies to any kind of fish (i.e. "a fish is dead means ...") and the second applies specifically to amphibious ones (i.e. "an _amphibious_ fish is dead means ...").
 
-Since an "amphibious fish" is a kind of "fish", then the question we are trying to answer ("the amphibious fish is dead?") will match the definendum of the first (general) Definition, the one that applies to a _generic_ kind of fish. This means that the amphibious fish will be (wrongly) treated as any other regular fish. 
+Since an "amphibious fish" is a kind of "fish", then the question we are trying to answer ("the amphibious fish is dead?") will match the definendum of the first (general) Definition ("a fish is dead means...") which applies to a _generic_ kind of fish. This means that the amphibious fish will be (wrongly) treated as any other regular fish.
 
-The solution we adopted to this problem is to keep the list of Definitions sorted by descending "specificity" of the definendums. To do this, it is possible to define a special "compare function" to be used by the sorting algorithm. This compare function will return a positive number (+1) in case the first argument is more specific than the second, a negative number (-1) in case the opposite is true, and exactly zero in case the two arguments are completely equivalent (or completely unrelated, which makes no difference to the sorting logic).
+The solution we adopted to this problem is to keep the list of Definitions sorted by descending "specificity" of the definendums. To do this, it is possible to define a special "comparison function" to be used by the sorting algorithm. 
 
-The compare function we described can be readily built from the match function we previously talked about. One simply needs to invoke match twice, swapping the arguments around the second time, and comparing the two results as Booleans.
+This comparison function will return a positive number (+1) in case the first argument is more specific than the second, a negative number (-1) in case the opposite is true, and exactly zero in case the two arguments are completely equivalent (or completely unrelated, which makes no difference to the sorting logic).
+
+The comparison function we described can be readily built from the match function we previously talked about. One simply needs to invoke match twice, swapping the arguments around the second time, and comparing the two results as Booleans.
 
 Sorting the list of Definitions by descending specificity of the definendums ensures that the most specific Definition will be found first, but only if a sentence that is specific enough is used.
 
-The problem can still present itself if the noun phrase used is too generic for the actual shape of the object in the world model, however, it might be possible to overcome it for good by substituting ambiguous noun phrases by their more specific meaning in the STM before serching for a Definition. For instance, if we ask the system this questions: "the fish is dead?" the system may substitute the noun phrase "the fish" with the more specific noun phrase "the amphibious fish" (depending on the current state of the STM) before attempting to search for a definition of the predicate "is dead".
+The problem can persist if the noun phrase that is used is too generic for the actual shape of the object in the world model (e.g. "the fish" for "the amphibious fish"). It may be possible to overcome the problem for good by substituting ambiguous noun phrases by their more specific meaning in the STM _before_ serching for a Definition. 
 
+For instance, if we ask the system this question: "the fish is dead?" the system may substitute the noun phrase "the fish" with the more specific noun phrase "the amphibious fish" (because of what the STM contains) before even attempting to search for a definition of the predicate "is dead".
 
+== Orders and Planning
 
+We have seen how it is possible to add Definitions that determine the effects of executing a simple sentence. This makes the execution of a simple sentence akin to a function invocation (an sometimes to a _procedure_ call) in more traditional languages.
 
+// contra CAL
+One must always keep in mind that any simple sentence may be subject to two interpretations ("ASK" mood and "TELL" mood) with the difference we discussed before: that the former (ASK) thinks of the simple sentence as an expression i.e., it tries to verify if the condition it describes is true in the world model; and the latter (TELL) treats it as a statement: procedurally changing the world model according to what the sentence says it should look like.
 
+Given the analogy we have made with procedures, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript statement, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
 
+In a way this is true, one can even define the meaning of a simple sentence as a sequence of steps, this can be achieved by joining together (through the `and` operator) multiple atomic statements (like simple sentences or variable assignments). The comma symbol (',') can also be used for the same purpose, and it behaves exactly like (indeed, it is aliased to) the `and` operator.
 
-// TODO: put AFTER orders and planning?
+This however would overlook the last aspect of the language that we still need to discuss: automatic planning.
+
+=== Facts versus Events
+
+We will now introduce a distinction between two kinds of simple sentences. The two kinds are formally very similar (they are all represented by the same abstract syntax tree) but they have different syntax and semantics. We will call these two categories of simple sentences: "Facts" and "Events". 
+
+We think of a Fact as just a regular proposition; a statement about how the world is at any particular point in time, and we instead think of an Event as an action that can be performed by an agent (the grammatical subject of the sentence, for simplicity).
+
+Syntactically speaking, we will represent Facts as simple sentences with a copular verb (i.e. the verb "to be"). For instance, the sentence: "the fish is dead" falls under this category. 
+
+A Fact is a "static" state of affairs, a sentence representing a Fact describes the presence or absence of a particular situation "here and now" in the world model and always refers to the present tense (there are no other tenses in Deixiscript).
+
+Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e. other than the verb "to be"), for instance: "the player moves right".
+
+An Event does not describe a static state of affairs, but rather a dynamic action (performable by an agent) that causes certain kinds of changes to the world model when it is performed by the agent.
+
+As a side note, we should say that the ASK and TELL moods both make sense when applied to Facts; the system can "learn" (TELL) a fact, or it can "check" (ASK) a Fact. But the same distinction does not make much sense (in our current system) when applied to Events; the purpose behind performing an Event is purely to cause side-effects (TELL).
+
+We already said that the abstract structure behind Facts and Events is the same; they both have a subject, an object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g.: to eat, to drink, to run), whereas in case of a Fact this predicate is an adjective (e.g.: red, dead, near).
+
+Some "adjectives" such as "near" (we will treat it as an adjective) are binary predicates because they require an object (e.g.: "the cat is near _the mat_"), they are akin in this sense to transitive verbs (such as the verb "to eat").
+
+=== Potentials
+
+There are two kinds of simple sentences, as we have seen; so how does the system tell a "Fact" from an "Event"? The Potential AST type was introduced just for this: to mark certain kinds of simple sentences as a _potential_ action for a certain kind of agent, under a certain kind of circumstance.
+
+A Potential specifies the condition under which a kind of Event can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
+
+These (Facts, Events and Potentials) are the three basic ingredients for Deixiscript's limited notion of automated planning. The fourth ingredient is the "Order". An Order is a syntactical structure that consists of a noun phrase that represents an agent and of an expression (such as a Fact) that represents a goal to be accomplished by the aforementioned agent. Syntactically speaking, an Order will also end up looking like a complex sentence of sorts.
+
+=== Search Heuristic
+
+The search heuristic tries to find a finite sequence of Events (actions) that can be performed by an agent and that will result in (or at least get the agent "closer" to) the accomplishment of a goal.
+
+This search relies on the presence in the Knowledge Base of: (1) Definitions that detail the effects of an Event alongside the kind of doer, and also on (2) the presence of Potentials that specify the possibility of an Event under a given circumstance and its duration.
+
+=== The `plan()` function
+
+The function `plan()` is responsible for carrying out this kind of heuristic search when needed; `plan()` takes an Order (agent and goal), a Knowledge Base, and a maximum duration (in seconds) of the plan to be found.
+
+Searching for the plan's steps works like this: (1) the goal expression is applied to the Knowledge Base (TELL) to produce a new "target" Knowledge Base that represents the world "as it should be". (2) a numerical error term is computed, this represents the difference between the desired state of the world model (contained in the target Knowledge Base) and the current state of the world model (contained in the old, original Knowledge Base). (3) all of the actions that the agent could perform are retrieved. For simplicity, it is assumed that they coincide with the Potentials where the (kind of the) agent appears as a subject. (4) each of these (possibly useful) actions is tried separately for effectiveness. An action is applied to the old Knowledge Base (TELL) and the error term is recomputed. If the new error term is less than the old one, then the action is deemed "useful", else it is not. (5) if the list of "useful" actions is empty, then the function errors out. (6) If the _precondition_ for any of the "useful" actions is still false, then the precondition is issued as an intermediate order (`plan()` is a recursive function). (7) Else every "useful" action can already be performed by the agent. We update the list of steps, the duration of the plan and the Knowledge Base.
+
+The `plan()` function also has to foresee two special (but important) cases: (1) if the goal is already accomplished then the function returns the list of accumulated steps, this is the base case of the recursive algorithm; and (2) if the maximum duration set for the plan is ever exceeded, then the function also returns the accumulated list of steps, even if they do not accomplish the goal in this case.
+
+#pagebreak()
+
+The following pseudo-code better summarizes the operation of the `plan()` function, omitting the technical details and some of the error handling:
+
+```
+
+if goal is accomplished then: return steps.
+if duration > max_duration then: return steps.
+
+compute target kb (by TELLing goal to kb).
+compute error term between target kb and kb.
+
+for each potential in kb:
+	
+	action = potential.action.
+	compute "new kb" (by TELLing action to kb).
+	compute new error term between target kb and "new kb".
+	
+	if new error term < old error term then:
+		the potential is useful.
+		
+if there are no useful potentials then: error out.
+
+if for some useful potentials precondition is still false in kb then:
+	try planning for the preconditions.
+	then resume planning for the terminal (main) goal.
+else:
+	add each potential.action to the list of steps.
+	then resume planning for the terminal goal.
+```
+
+=== Error Term ("Cost Function")
+
+The reader will note that we have skipped over a few details, specifically: the detail of how the "error term" between two Knowledge Bases (between the respective two World Models) is computed.
+
+It is to be recalled that a World Model (for us) just means a list of dictionary objects containing key-value pairs. Therefore the error term is computed by cycling through each individual in the World Model and each key in an individual.
+
+The error term is the sum of the absolute values of the differences between the values of each key in target World Model versus its value in the current World Model:
+
+$ sum_(i=0,k=0)^(i="#individuals", k="#keys") abs("WM"_("target")[i][k] - "WM"_("current")[i][k]) $
+
+=== Offline versus Online Planning
+
+As can be evinced, there are two ways in which the `plan()` function can be used. One way is analogous to what Hector Levesque calls "offline execution" in his book "Programming Cognitive Robots" (which we mentioned at the end of the previous chapter @chapterFourCognitiveRobots), and the other is analogous to what he calls "online execution".
+
+In offline execution all of the steps of the plan (the whole plan) are computed in advance, whereas in online execution only one step (the next) is computed at a time. Actually, in our case, more than one step is computed even in online mode, but the computation stops as soon as the maximum tolerated duration is reached (the duration of the sequenced actions, not of the time taken to compute them).
+
+In our prototype, offline execution is mostly intended for debugging purposes, to test whether a plan can be successfully computed; while online execution is useful to graphically simulate the interaction between agents.
+
+=== The Main Loop
+
+The kind of graphical simulations we have tried out involve a 2D world, where the individuals that have an x and a y coordinate as properties are displayed as colored points on a 2D Cartesian graph (we use Matplotlib to plot the graphs).
+
+Before the simulation starts, "time is frozen". As soon as the simulation starts, the individuals in the World Model that have been given orders start behaving accordingly.
+
+There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order. 
+
+Each partial plan should not exceed in duration the period $N$ of the loop. After the partial plans are computed, they are executed, the graphics are updated, and the loop waits for $N$ milliseconds before proceeding to the next iteration.
+
+The main loop is approximately described by the following piece of pseudo-code:
+
+```
+while true:
+	for each order:
+		steps=plan(order, kb, PERIOD)
+		tell(steps, kb)
+	
+	for each individual in kb.world_model:
+		draw(individual)
+	
+	wait(PERIOD)
+```
+
 == Concrete Syntax
 
-Now that we have formed a general idea (of most) of what the Deixiscript language is supposed to be (and before getting to the last aspect of Deixiscript, namely orders and planning) we wish to take a step back and give a short summary of the language's structure.
+Now that we have painted a picture of what each part of the Deixiscript language is supposed to do, we wish to take a step back and look at the whole from a different perspective.
 
-We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance we have said that Definitions and Potentials would end up looking like complex sentences. In general, the syntax draws inspiration from English; however, it includes some mathematical symbols (like most other programming languages) for the sake of convenience.
+We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance: we have said that Definitions, Potentials and Orders would end up looking like complex sentences. We have also said that (in general) the syntax would draw inspiration from English. However, we will say that it should also include some mathematical symbols (like most other programming languages) for the sake of convenience.
 
 === Backus-Naur Form (BNF)
 
-Now we will present (a little more formally) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description, we have discussed BNF in a previous chapter when talking about ALGOL 60. 
+We will now present (in a slightly more formal fashion) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description; we have discussed BNF in a previous chapter when talking about ALGOL 60 @algol. 
 
-The following presentation will omit some of the more technical details for the sake of clarity, the actual code that generates the parser is described in Lark's own dialect of BNF (Lark is the Python parsing toolkit we are using), and contains some extra caveats and technicalities compared to the following one.
+The following presentation will omit some of the more technical details for the sake of clarity, the actual code that generates the parser is written in Lark's own dialect of BNF (Lark, as we said at the beginning of this chapter, is the parsing toolkit for Python that we are using), and contains some extra caveats and technicalities compared to the following simplified one.
 
 ==== Program
 
@@ -451,27 +578,27 @@ A "statement" can be any of the following syntactic structures:
 
 ==== Expression
 
-An "expression" is either a noun, or an idea or a binary expression:
+An "expression" is either a noun, or an simple sentence, or a binary expression:
 
-`<expression> := <noun-phrase> | <idea> | <binary-expression>`
+`<expression> := <noun-phrase> | <simple-sentence> | <binary-expression>`
 
 ==== Question
 
-A "question" is just a statement followed by a question mark, there is definitely room for improvement on this rule (as we already stated in a previous section):
+A "question" is just a statement followed by a question mark, there is definitely room for improvement on this rule (as we have already observed in a previous section):
 
 `<question> := <statement> "?"`
 
-==== Idea
+==== Simple Sentence
 
-An idea is a fact or an event; we wish to note that the distinction here is a purely syntactical one i.e., after an event or fact is parsed it is transformed into the same Idea abstract tree:
+A simple sentence is a fact or an event; we wish to note that the distinction here is a purely syntactical one i.e., after an event or fact is parsed it is transformed into the same simple sentence abstract tree:
 
-`<idea> := <event> | <fact>`
+`<simple-sentence> := <event> | <fact>`
 
 This is how an event looks like, it is basically an English simple sentence with only a subject and an optional object (the question mark after the second occurrence of the noun means that it is optional):
 
 `<event> := <noun-phrase> <verb> <noun-phrase>?`
 
-A fact instead looks like a simple sentence with a copular verb (i.e. the verb "to be" in English). The first noun phrase is the subject, the second is the predicative adjective, and the third is the (optional) object:
+A fact, instead, looks like a simple sentence with a copular verb (i.e. the verb "to be" in English). The first noun phrase is the subject, the second is the predicative adjective, and the third is the (optional) object:
 
 `<fact> := <noun-phrase> <copula> <noun-phrase> noun-phrase>?`
 
@@ -485,9 +612,9 @@ The BNF code below shows the binary expression as a single production rule, but 
 
 ==== Definition
 
-A definition is quite simply an "idea" (a simple sentence) followed by the harcoded verb "to mean", followed by any expression (the "meaning"):
+A definition is quite simply a simple sentence followed by the harcoded verb "to mean", followed by any expression (the "meaning"):
 
-`<definition> := <idea> "means" <expression>`
+`<definition> := <simple-sentence> "means" <expression>`
 
 ==== Potential
 
@@ -503,9 +630,9 @@ An order (which we will discuss in a later section) is composed of a noun (the a
 
 ==== Repetition
 
-A repetition statement is not really recessary (and we had not really mentioned it before now), but we decided to add it just for convenience; it consists of an idea (a simple sentence) followed by a number, followed by the harcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
+A repetition statement is not really recessary (and we had not really mentioned it before now), but we decided to add it just for convenience; it consists of a simple sentence followed by a number, followed by the harcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
 
-`<repetition> := <idea> <number> "times"`
+`<repetition> := <simple-sentence> <number> "times"`
 
 ==== Noun Phrase
 
@@ -556,110 +683,6 @@ These "unimportant details" may specify whether the user took advantage of the "
 Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precendence of operators.
 
 Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. The "Transformer" class it provides (completely unrelated to the "Transformer" neural network architecture in AI) performs a bottom up traversal of the parse tree, allowing us to define some further logic that converts the parse tree into a proper abstract syntax tree.
-// -------------------------
-
-
-
-== Orders and Planning
-
-We have seen how it is possible to add Definitions that determine the effects of executing a simple sentence; this makes the execution of a simple sentence akin to a "function" invocation (or rather: a _procedure_ call) in more traditional languages.
-
-// contra CAL
-One must also keep in mind that any sentence may be subject to two interpretations (the "ASK" mood and the "TELL" mood introduced previously), with the difference that the former ("ASK") thinks of the function as a "getter" or "predicate" i.e., it tries to verify if a condition is true in the world model, and the latter ("TELL") is the mood that actively changes the world model according to a sentence's Definition.
-
-Given the analogy we have made with procedure Definitions, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript statement, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
-
-In a way this is true, one can even define the meaning of a simple sentence as a sequence of steps, this can be achieved by joining together (through the `and` operator) multiple atomic statements (like simple sentences or variable assignments). The comma symbol (',') can also be used for the same purpose, and it behaves exactly like (indeed, it is aliased to) the `and` operator.
-
-This however would overlook the last aspect of the language that we still have not really explained: automatic planning.
-
-We will now introduce a distinction between two kinds of Ideas (and consequently two kinds of simple sentences) which are formally very similar (they are all represented by the same abstract syntax tree) but they have a different meaning and are distinguished by their usage.
-
-We will call these two categories of Ideas: "Facts" and "Events". We think of a Fact as just a regular proposition (a statement about how the world is or isn't at any particular point in time), and we think of an Event as an action that can be actively performed by an agent (the subject, for simplicity).
-
-Syntactically speaking, we will represent "Facts" as simple sentences with a copular verb (i.e. the verb "to be"), for instance the sentence: "the player is dead". 
-
-We will think of Facts as "static" states of affairs, a sentence representing a Fact describes the presence or absence of a particular situation "here and now" in the world model and always refers to the present tense (there are no other tenses in Deixiscript).
-
-Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e. other than the verb "to be"), for instance: "the player moves right".
-
-An Event does not describe a static state of affairs, but rather a dynamic action (performable by an agent) that produces certain kinds of changes to the world model when it is performed at any given time.
-
-As a side note, we should say that ASK and TELL moods both make sense when applied to Facts (the system can "learn" a fact, or it can "check" a fact, respectively). But the same distinction does not make much sense (in our current system) when applied to Events; an Event as described above only makes sense when executed purely for its side-effects (in TELL mood).
-
-As already mentioned, the AST type behind both Facts and Events is the one and same Idea AST type. Another thing we already mentioned is that the Idea AST type has a subject, an (optional) object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g.: to eat, to drink, to run), whereas in case of a Fact the predicate is an adjective (e.g.: red, dead, near).
-
-Some "adjectives" such as near (we will be treating it as an adjective) support an object (e.g.: "the cat is near _the mat_"), they are akin in this sense to transitive verbs (such as "to eat").
-
-Therefore, the system does not know whether an Idea represents an Event or a Fact from the Idea object itself. Every Idea is thought of as a Fact (i.e.: it cannot be performed by an agent) until proven otherwise, namely if there is an appropriate Potential.
-
-The Potential AST type was introduced just for this: to mark certain kinds of Ideas as a _potential_ action for a certain kind of agent under some kind of circumstance. A Potential specifies the condition under which a kind of Idea (which implicitly becomes a kind of Event) can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
-
-These (Facts, Events and Potentials) are the three basic ingredients for Deixiscript's limited notion of automated planning. The fourth ingredient is the "Order". An Order is a syntactical structure that just consists of a noun phrase that represents an agent and an expression (such as a Fact) that represents a goal to be accomplished by the aforementioned agent. Syntactically speaking, an Order will also end up looking like a complex sentence of sorts.
-
-// == search heuristic
-
-The search heuristic tries to find a finite sequence of Events (actions) that can be performed by an agent and that will result in (or get the agent "closer" to) the accomplishment of a goal.
-
-This search relies on the presence in the Knowledge Base of: (1) Definitions that detail the effects of an Event alongside the kind of doer, and also on (2) the presence of Potentials that specify the possibility of an Event under a given circumstance and its duration.
-
-The function `plan()` is responsible for carrying out this kind of heuristic search when needed.
-
-The function `plan()` takes an Order (agent and goal), a Knowledge Base, and a maximum duration (in seconds) of the plan to be found.
-
-Searching for the plan's steps works like this: (1) the goal expression is applied to the Knowledge Base (TELL) to produce a new "target" Knowledge Base that represents the world "as it should be". (2) a numerical error term is computed, this represents the difference between the desired state of the world model (contained in the target Knowledge Base) and the current state of the world model (contained in the old, original Knowledge Base). (3) all of the actions that the agent could perform are retrieved. For simplicity, it is assumed that they coincide with the Potentials where "the agent appears as a subject". (4) each of these (possibly useful) actions is tried separately for effectiveness. An action is applied to the old Knowledge Base (TELL) and the error term is recomputed. If the new error term is less than the old one, then the action is deemed "useful", else it is not. (5) if the list of "useful" actions is empty, then the function errors out. (6) If the _precondition_ for any of the "useful" actions is still false, then the precondition is issued as an intermediate order (`plan()` is a recursive function). (7) Else every "useful" action can already be performed by the agent, the list of steps, the plan duration and the Knowledge Base are updated.
-
-The `plan()` function also foresees two special (but important) cases: (1) if the goal is already accomplished then the function returns the list of accumulated steps, this is the base case of the recursive algorithm; and (2) if the maximum duration set for the plan is ever exceeded, then the function also returns the accumulated list of steps, even if they do not accomplish the goal in this case.
-
-#pagebreak()
-
-The following pseudo-code better summarizes the operation of the `plan()` function, omitting the technical details and some of the error handling:
-
-```
-
-if goal is accomplished then: return steps.
-if duration > max_duration then: return steps.
-
-compute target kb (by TELLing goal to kb).
-compute error term between target kb and kb.
-
-for each potential in kb:
-	
-	action = potential.action.
-	compute "new kb" (by TELLing action to kb).
-	compute new error term between target kb and "new kb".
-	
-	if new error term < old error term then:
-		the potential is useful.
-		
-if there are no useful potentials then: error out.
-
-if for some useful potentials precondition is still false in kb then:
-	try planning for the preconditions.
-	then resume planning for the terminal (main) goal.
-else:
-	add each potential.action to the list of steps.
-	then resume planning for the terminal goal.
-```
-
-The reader will note that we have skipped over a few details, specifically: the detail of how the "error term" between two Knowledge Bases (between the respective two World Models) is computed. 
-
-In our actual Python prototype, the error term is computed as the sum of the absolute values of the differences between the values of each key in target World Model versus current World Model (recall that a World Model, for us, is a list of dictionary objects containing key-value pairs). Therefore the error term is computed by cycling through each individual in the World Model and each key in an individual:
-
-$ sum_(i=0,k=0)^(i="#individuals", k="#keys") abs("WM"_("target")[i][k] - "WM"_("current")[i][k]) $
-
-As can be evinced, there are two ways in which the `plan()` function can be used. One way is analogous to what Hector Levesque calls "offline execution" in his book "Programming Cognitive Robots", and the other is analogous to what he calls "online execution".
-
-In offline execution all of the steps of the plan (the whole plan) are computed in advance, and in online execution only the next step is. Actually, in our case, more than one step is computed even in online mode, but the computation stops as soon as the maximum duration (of the sequenced actions) that `plan()` was given is reached.
-
-In our prototype, offline execution is mostly intended for debugging purposes, to test whether a plan can be successfully computed; while online execution is useful for "graphical simulations".
-
-The kind of graphical simulations we have tried out, involve a 2D world where the individuals in the World Model that have the x-coordinate and the y-coordinate properties are displayed as colored points on a 2D Cartesian graph.
-
-Before the simulation starts, "time is frozen". As soon as the simulation starts, the individuals in the World Model that have been given orders start behaving accordingly.
-
-There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order. Each partial plan should not exceed in duration the frequency of the loop. After the partial plans are computed, they are executed, and the graphics are updated, then the loop waits for $N$ milliseconds before proceeding to the next iteration.
-
 
 
 
@@ -669,7 +692,6 @@ There is a main loop with a fixed frequency (with a duration of some hundreds of
 // https://en.wikipedia.org/wiki/Agent-oriented_programming
 // cognitive robotics precedent
 
-// syntactic compression
 // Example program
 // problems
 // conclusions

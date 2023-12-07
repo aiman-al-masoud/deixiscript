@@ -151,7 +151,7 @@ All in all, the effect of Lisp on the programming language landscape has been si
 
 The performance of purely functional languages has improved over the years, making them a viable alternative to their imperative counterparts in many cases. The debate over the purported "naturalness" of the imperative approach over the functional one, or vice versa, is still very much alive today.
 
-== ALGOL
+== ALGOL <algol>
 
 The first versions of ALGOL were developed during the late 1950s to early 1960s, in an effort to create a machine-independent standard for scientific computation, and to provide a universal alternative to Fortran, which initially ran only on IBM hardware @sebesta2012concepts.
 
@@ -161,7 +161,7 @@ BNF, and its variants such as Extended BNF (EBNF), still remains the most popula
 
 ALGOL 60 is also notable for having introduced the block structure for managing nested scopes, for being among the first imperative languages to support recursion, and for having had (alongside the more common "pass by value") an additional and peculiar "pass by name" mechanism for argument passing @passbyname.
 
-=== Argument Passing
+=== Argument Passing <algolAndArgumentPassing>
 
 Passing an argument to a function or procedure (or more generally, to a "routine") is an essential part of invoking it. As is often the case, there are different possible ways to do it. The most common are: "pass by reference" and "pass by value".
 

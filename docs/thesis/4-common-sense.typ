@@ -194,7 +194,7 @@ The solution of a constraint problem can be guided by a more or less exact algor
 
 We think this is an interesting paradigm, because it could be extended to systems with various "agents" (similar to objects in OOP) @laffra1991constraints, these independent actors could all be trying to fullfill their own goal (constraint) different from the goals of the others, by executing some basic actions declared procedurally by the programmer or perhaps learned through the concatenation of more basic actions, and abiding by the rules (or circumstances) declared by the programmer in natural language.
 
-==== Programming Cognitive Robots
+==== Programming Cognitive Robots <chapterFourCognitiveRobots>
 
 The 2019 e-book "Programming Cognitive Robots" @programmingCognitiveRobots by Levesque is structured as an introduction to the ERGO programming language, which is implemented and embedded in Scheme (a dialect of Lisp). The language ERGO (whose implementation is available on GitHub) is specialized for the task of programming "cognitive robots".
 
