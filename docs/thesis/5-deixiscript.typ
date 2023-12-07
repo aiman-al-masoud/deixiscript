@@ -552,6 +552,10 @@ while true:
 	wait(PERIOD)
 ```
 
+=== REPL
+
+The simulation can be started from the interpreter's custom Read Eval Print Loop (REPL) using the `:start-simulation` metacommand. Also within the REPL, the programmer can load a text file that contains Deixiscript source code using the `:load` metacommand (which takes the file path as an argument); or he/she can directly "inject" Deixiscript code into the environment by simply writing it to the command line and hitting enter. The programmer can also go back to a previous state of the Knowledge Base (actually, to a previous Knowledge Base) using the `:undo` metacommand.
+
 == Concrete Syntax
 
 Now that we have painted a picture of what each part of the Deixiscript language is supposed to do, we wish to take a step back and look at the whole from a different perspective.
@@ -634,6 +638,14 @@ A repetition statement is not really recessary (and we had not really mentioned 
 
 `<repetition> := <simple-sentence> <number> "times"`
 
+==== Existential Quantifier
+
+The existential quantifier consists of the hard-coded string "there is" followed by a noun phrase:
+
+`<existential-quantifier> := "there is" <noun-phrase>`
+
+The existential quantifier supports both moods (ASK and TELL). In case of ASK, it will return true if an individual corresponding to the noun phrase's description exists; and in case of TELL it will attempt creating such an individual in the world model (acting like a "constructor" of sorts).
+
 ==== Noun Phrase
 
 A noun phrase can be any of the following things:
@@ -683,6 +695,65 @@ These "unimportant details" may specify whether the user took advantage of the "
 Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precendence of operators.
 
 Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. The "Transformer" class it provides (completely unrelated to the "Transformer" neural network architecture in AI) performs a bottom up traversal of the parse tree, allowing us to define some further logic that converts the parse tree into a proper abstract syntax tree.
+
+== Example Programs
+
+We will discuss three short example programs that showcase some of Deixiscript's capabilities as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions, in the next section (about the possible improvements to the language).
+
+For the sake of convenience, we will assume that the following two Definitions have already been loaded (or typed) into the interactive environment, and are available for use at all times:
+
+```
+x's y increments means: x's y = x's y + 1.0.
+x's y decrements means: x's y = x's y - 1.0.
+```
+
+=== Pronouns
+
+The first of the examples showcases the functioning of pronouns in Deixiscript. The following is the code:
+
+```
+
+a player moves right means: the x-coord increments.
+a door opens means: the state = open.
+
+there is a player.
+the player's x-coord = 0.0.
+there is a door.
+he moves right and it opens.
+```
+
+The code defines the meaning of two kinds of actions (Events), one of which applies to a player, and the other applies to a door. In the sentence `he moves right and it opens` the first pronoun ("he") resolves to the player because it is used as the subject of the verb "to move", whereas the second pronoun "it" resolves to the door because it is used as the subject of the verb "to open".
+
+As a side note: as of now there is no distinction between the pronouns (between the strings) "he" and "it", they are just synonyms to the interpreter. The example would have worked the same if those two pronouns had been swapped around.
+
+The world model's state after the execution of that last sentence will be one where the door has the property "state" set to the value "open", and the player has the property "x-coord" set to the numerical value 1.0.
+
+=== Fish
+
+The second example shows that the system of revisable rules work, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
+
+```
+
+a fish is amphibious means the kind = amphibious.
+a fish is dead means the location != water.
+an amphibious fish is dead means the health <= 0.0.
+
+there is a fish.
+there is an amphibious fish.
+the amphibious fish's health = 10.0.
+the non-amphibious fish's location = land.
+```
+
+Here we are defining three rules. The first is just a "dummy rule" to enable us to talk of the category of "amphibious" fish; the system needs a way (i.e. a property) to recognize an amphibious fish in the world model, and we could not think of anything nicer than just a somewhat boring "kind = amphibious" key/value pair.
+
+The second rule defines "what it means to be dead for a generic fish" as being a fish out of the water (`location != water`). The third rule overrules the second by defining the death of an amphibious fish in other terms, in terms of a new "health" attribute having a value less than or equal to 0.
+
+A fish and an amphibious fish were created. The amphibious fish's health was set to a positive number and the (normal) fish's location was set to "land". Now, if we asked the interpreter the following question: `the amphibious fish is dead?` it would return a `false`, and if we asked it whether: `the non-amphibious fish is dead?` it would return a `true`.
+
+Of course, changing the values of their attributes (e.g. setting the normal fish's location to "water") would change the values of the answers to the previous questions.
+
+=== Player and Enemy
+
 
 
 
