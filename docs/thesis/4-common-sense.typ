@@ -166,6 +166,8 @@ But "plain" predicate logic is monotonic, as already said: it doesn't allow us t
 
 The frame problem is generally considered to be solved in the narrow context of classical AI and predicate logic, where it originally arose; but it has sparked debate in the broader contexts of philosophy and cognitive science; for example: the very assumption behind the common sense law of inertia, namely that: "most things don't change when an action or event occurs" has been challenged; there are many cases were it simply isn't true that changing one thing leaves the rest unchanged (eg: exploding a bomb in a room), how to distinguish them from the others @sep-frame-problem? We will not speak here of this problem any further.
 
+#pagebreak()
+
 == Common Sense and Natural Language Programming
 
 There are a few topics from the field of Common Sense in AI that are relevant to the field of naturalistic programming.
@@ -182,7 +184,7 @@ The annotations they talk about concern the cancellation of restrictions (for ex
 
 === Automated Planning <automaticPlanning>
 
-An concept related to Common Sense and discussed in "Machines Like Us", is that of automated planning. We have previously cited the example that Brachman and Levesque make in their book (about the self driving car, deciding to change route based on its terminal goal of getting the groceries). 
+A concept related to Common Sense and discussed in "Machines Like Us", is that of automated planning. We have previously cited the example that Brachman and Levesque make in their book (about the self driving car, deciding to change route based on its terminal goal of getting the groceries). 
 
 To posses this ability it is important that an agent possess (or at least approximate) some notion of "consequence" of the actions it contemplates taking, to make sure that they correspond to the goal it is trying to achieve.
 
@@ -196,13 +198,13 @@ We think this is an interesting paradigm, because it could be extended to system
 
 ==== Programming Cognitive Robots <chapterFourCognitiveRobots>
 
-The 2019 e-book "Programming Cognitive Robots" @programmingCognitiveRobots by Levesque is structured as an introduction to the ERGO programming language, which is implemented and embedded in Scheme (a dialect of Lisp). The language ERGO (whose implementation is available on GitHub) is specialized for the task of programming "cognitive robots".
+The 2019 e-book "Programming Cognitive Robots" @programmingCognitiveRobots by Levesque is structured as an introduction to the ERGO programming language, which is implemented and embedded in Scheme (a dialect of Lisp). The ERGO language (whose implementation is available on GitHub) is specialized for the task of programming "cognitive robots".
 
 A "cognitive" robot is a software or hardware agent that exploits its knowledge of the world to deliberate a course of action that furthers its goals. The author cites the work of computer scientist and logician Ray Reiter (1939-2002) as influential for the mathematical theory behind ERGO.
 
 The focus of programming a cognitive robot (which could just be a software agent, as we said) is not on the more classical low-level problem of controlling the robot's actuators: those capabilities are taken for granted (they can be seen as "primitive actions"). The focus is on the high-level problem of ensuring that the robot can automatically plan a course of action (and readjust this plan, if the relevant conditions of the environment change) based on a desired state of the world (a goal) that is assigned to the robot.
 
-As we have already seen in the previous chapters, every programming paradigm sees the process of program-writing in a different light. In procedural programming, for instance, the goal of the programmer is to list out a detailed "recipe" of the steps to take to solve a problem. In logic programming, the programmer's goal is to declare the facts and inference rules.
+As we have already seen in the previous chapters, every programming paradigm sees the process of program-writing under a different light. In procedural programming, for instance, the goal of the programmer is to list out a detailed "recipe" of the steps to take to solve a problem. In logic programming, the programmer's goal is to declare the facts and inference rules.
 
 Programming a cognitive robot amounts to specifying a Basic Action Theory (BAT) for a dynamic world. A BAT is a specification of all of the fluents (properties of the world that may be changed by an action), the state of the world (i.e. the values of all of the fluents), and the primitive actions that are available to the robot (which can have an effect on the fluents).
 

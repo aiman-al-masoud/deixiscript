@@ -1,6 +1,6 @@
 = Deixiscript
 
-We will refer to the programming language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a protmonteau of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other popular programming language names).
+We will refer to the programming language developed in the present work and described in the following pages with the name: "Deixiscript". The name is a _portmanteau_ of the words: Deixis (a linguistic concept related to indexicality) and Script (on the model of many other popular programming language names).
 
 == Goals and Non-goals
 
@@ -38,7 +38,7 @@ The current version of Deixiscript also tries to introduce a limited kind of aut
 
 == Implementation Details
 
-In the current section, we we will begin by discussing some high-level implementation details, including the programming language, libraries, code-style and software design pattern that were used.
+In the current section, we will begin by discussing some high-level implementation details, including the programming language, libraries, code-style and software design pattern that were used.
 
 In the later sections we will then move on to describe the current version of Deixiscript, detailing and motivating the choices that were made and the philosophy behind them. Since Deixiscript is an English-based language, what follows will also inevitably include digressions into some (basic) aspects of the English grammar.
 
@@ -68,7 +68,7 @@ The Matplotlib @matplotlib visualization tool and Python library was used to dis
 
 All of the software that was used to develop Deixiscript is available for free and under the terms of (different) opensource licenses. Other than the aforementioned ones, the core components of Deixiscript require no further dependencies outside of Python's own standard library.
 
-Deixiscript itself is free software, and its code will be made available under the terms of the GPLv3 license. We will suggest some possible further developments for the language in a later section.
+Deixiscript itself is free software, and its code will be made available under the terms of the GPLv3 license. We will suggest some possible further developments for the language in the next chapter.
 
 === Functional Style
 
@@ -106,7 +106,7 @@ A common example of a simple sentence in English is: "the quick brown fox jumps 
 
 The complements of a sentence can help specify the location or time of an action, they can also correspond to any other actors directly or indirectly involved in the action. In English, complements are generally introduced after a preposition such as: "over" (from the example), "to", "from", "by", and so on.
 
-The direct object of a sentence is a little special in English (and many other modern European languages) because, just like the subject, it is not preceded by any preposition. The subject and the object are generally distinguished by their order of appearance in the sentence (the subject typically precedes the object).
+The direct object of a sentence is a little special in English (and in other modern European languages) because, just like the subject, it is not preceded by any preposition. The subject and the object are generally distinguished by their order of appearance in the sentence (the subject typically precedes the object).
 
 Unlike English, some languages (even some modern Indo-European languages) rely more heavily on grammatical cases rather than prepositions and/or word-order to express grammatical relationships. A case-marking is typically a word inflection (such as a suffix, a prefix or an infix). In many such languages, English's direct object corresponds to an inflected noun in the accusative case.
 
@@ -130,9 +130,9 @@ It is important to note that the two simple sentences incorporated in the larger
 
 === Complex Sentences
 
-A complex sentence creates a relation of dependence between two simple sentences, in the example: "the cat failed to obtain food, because she didn't meow loud enough" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing loud and obtaining food).
+A complex sentence creates a relation of dependence between two simple sentences, in the example: "the cat failed to obtain food, because she did not meow loud enough" the two simple sentences cannot be swapped around without changing the logical meaning of the statement. The word "because" is a subordinating conjunction, and in this example it serves to highlight a cause-and-effect relationship between two actions of the cat (meowing loud and obtaining food).
 
-But cause-and-effect relationships aren't the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he isn't married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it isn't knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the word "bachelor" and of the word "married" and the necessary (and somewhat trivial) relationship between them.
+But cause-and-effect relationships are not the only kind of relationships that can be expressed by a complex sentence; take the example: "the man is a bachelor, because he is not married", the linguistic structure is similar but the idea is a little different: this is an example of what is known in philosophy as "analytic" or "a priori" knowledge, it is not knowledge of the laws (observable regularities) that govern the world, but rather of the meanings of the word "bachelor" and of the word "married" and the necessary (and somewhat trivial) relationship between them.
 
 === Simple Sentences in Deixiscript
 
@@ -180,6 +180,8 @@ For instance, the assignment (which is an expression) is allowed to return a val
 
 The one above is an example of a conditional statement in a C-like language, `x == 1` is a comparison, so the function `do_something()` will be invoked if and only if the value of the variable `x` is equal to the integer `1`.
 
+#pagebreak()
+
 `if (x = 1) do_something();`
 
 This second statement is (de facto) _not_ a conditional statement in a C-like language. The expression `x = 1` is an assignment. An assignment expression evaluates to the value of the right-hand side (i.e. to the integer `1`). Any number that is not equal to `0` is considered to be "truthy". Hence, the function `do_something()` will always (unconditionally) be executed.
@@ -208,11 +210,11 @@ The way this is technically handled is through the addition of an extra componen
 
 Both statements and questions in English are expressed in the same grammatical mood, the one known as the indicative mood. There are other grammatical moods in English, such as: subjunctive (to express unreal or hypothetical situations) and imperative (to give orders). 
 
-We won't be needing an explicit subjunctive mood (as it is rarely used in modern English anyway), and we will be using a different kind of sentence all together (the "Order") to express a kind of "imperative mood" as we shall see in the later sections.
+We will not be needing an explicit subjunctive mood (as it is rarely used in modern English anyway), and we will be using a different kind of sentence all together (the "Order") to express a kind of "imperative mood" as we shall see in the later sections.
 
 === Defining Meaning
 
-Simple sentences don't have any predefined meaning in the current version Deixiscript: just like functions in other programming languages they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English (as we will see). 
+Simple sentences do not have any predefined meaning in the current version Deixiscript: just like functions in other programming languages they must be defined before they can be used, this can be done through the "Definition" syntactic construct that looks a lot like a complex sentence in English (as we will see). 
 
 For instance, a Definition could look like this: "a tablecloth is red means the color = red", this would define the meaning of the predicate "red" in relation to the subject "tablecloth", which could be very different from the meaning of the same predicate applied to some other kind of entity (e.g. "a guard is red means the political-affiliation = USSR").
 
@@ -234,7 +236,7 @@ A linguistic head (or nucleus) of a phrase is the part that determines the synta
 
 === Implicit References
 
-A key insight from the study of natural language, is that people rarely ever use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities @the80s; they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. 
+A key insight from the study of natural language, is that people rarely use explicit references (proper nouns, IDs, numbers...) even when talking about individual entities (as we saw in @the80s); they instead make use of the "type" of these individual entities (common nouns) leveraging a phenomenon known as the indexicality of language. 
 
 For instance, if a person refers to "the cat" when they are at home, versus "the cat" when they are visiting a zoo (a different "context"), they may be referring to two very different individuals (a house cat vs a mountain lion, for example). But the phrase they may decide to use in both cases is the same: "the cat".
 
@@ -256,7 +258,7 @@ Variables are single-letter placeholder names (such as "x", "y" and "z") that "m
 
 What we call an "implicit phrase" comprises of a "head" and a list of adjectives. The head (or noun) is just a string representing a type (which does not have to be declared explicitly).
 
-The (attributive) adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in Ideas (simple sentences) we discussed earlier. An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. 
+The (attributive) adjectives do not carry an intrinsic meaning, they are tied to the adjectives used in simple sentences that we discussed earlier. An adjective in a noun phrase is referred to as an "attributive" adjective, whereas an adjective in a sentence with a copula is referred to as a "predicative" adjective. 
 
 In Deixiscript there is an equivalence between the two kinds of adjectives: once the meaning of a predicative adjective is defined in a simple sentence (e.g.: "the cat is calico, means..."), it can be used as an attributive adjective in a noun phrase (e.g.: "the calico cat"). An attributive adjective can also be negated (e.g.: "a non-calico cat").
 
@@ -312,7 +314,11 @@ As we already said, the world is modelled as individual entities (or "individual
 
 Anyone of these individuals (or bundles of properties) must contain at least one essential property that we call the "type". The world model is essentially list of these individuals, and the index in the list of an individual is its "ID". For instance, we could have a world model like this one (represented in JavaScript Object Notation (JSON)):
 
+#linebreak()
+
 `[{"type":"cat", "color":"red", "age":10}, {"type":"cat", "claws":"sharp"}, {"type":"dog", "color":"brown"}]`
+
+#linebreak()
 
 This world model contains three individuals (two cats and one dog), and describes the property "color" of the first cat (`ID#0`) as "red" and the same property of the only dog (`ID#2`) as "brown". The second cat (`ID#1`) does not have a property "color" (the model does not have any information about it) but it has a property "claws" set to the value "sharp". The first cat (the red one, `ID#0`) also has a property "age" that is set to the value 10.
 
@@ -360,7 +366,7 @@ One can then mention "the red cat" again and the STM will be updated accordingly
 
 ==== One ID per noun phrase
 
-An important note: a limitation that was put in place in the latest version of Deixiscript was that a noun phrase can only "point to" a single individual at a time; in other words: a noun phrase may resolve at most to a single ID, given one state of the Knowledge Base. Previous versions of Deixiscript didn't have this limitation, but they had to check (for any sentence) if any of the noun phrases it contained would resolve to multiple IDs, and, if that was the case, "expand" the original sentence into multiple similar sentences each with a different ID. This also meant that noun phrases had to specify a cardinality (to distinguish singular from plural).
+An important note: a limitation that was put in place in the latest version of Deixiscript was that a noun phrase can only "point to" a single individual at a time; in other words: a noun phrase may resolve at most to a single ID, given one state of the Knowledge Base. Previous versions of Deixiscript did not have this limitation, but they had to check (for any sentence) if any of the noun phrases it contained would resolve to multiple IDs, and, if that was the case, "expand" the original sentence into multiple similar sentences each with a different ID. This also meant that noun phrases had to specify a cardinality (to distinguish singular from plural).
 
 ==== STM and pronouns
 
@@ -368,7 +374,7 @@ The STM is also useful for the resolution of pronouns. The assumption here is th
 
 The simple technique we are using to resolve pronouns is to try executing a sentence (or phrase) that contains a pronoun multiple times, each time after having substituted the pronoun with a different noun phrase taken from the STM (they are very few, owing to the STM's limited capacity). 
 
-When the sentence (or phrase) finally works (does not produce an error) then we stop, and we consider the pronoun to be resolved. Of course, it may be that none of the noun phrases in the STM succeeds at making sense of the sentence containing a pronoun, in that case the system just displays an error, complaning that the pronoun is used ambigiously in that context.
+When the sentence (or phrase) finally works (does not produce an error) then we stop, and we consider the pronoun to be resolved. Of course, it may be that none of the noun phrases in the STM succeeds at making sense of the sentence containing a pronoun, in that case the system just displays an error, complaning that the pronoun is used ambiguously in that context.
 
 == Syntactic Matching <syntaxMatch>
 
@@ -388,7 +394,7 @@ Used on noun phrases, the `match()` function behaves very much like the `instanc
 
 The return type is a mapping, because the two arguments of the `match()` function are not (as we have hinted to) limited to being noun phrases. They can be simple sentences, compound sentences, etc. The `match()` function needs to return a mapping when comparing together two simple sentences, because its job is to determine if the subject (or object) of the more specific sentence can be substituted into the subject (or object) of the more general sentence.
 
-Sometimes it is also useful to allow different AST types to compare together, it makes sense, for instance: to able to compare a "genitive phrase" @genitivePhrases to an "implicit phrase" @implicitPhrases.
+Sometimes it is also useful to allow different AST types to compare together, it makes sense, for instance: to able to compare a "genitive phrase" (@genitivePhrases) to an "implicit phrase" (@implicitPhrases).
 
 It may also make sense to compare a compound sentence (implemented as an "and/or expression") to a simple sentence.
 
@@ -408,7 +414,7 @@ When `subst()` is done, the new AST that it produces is executed, this is akin t
 
 === Specificity and Matching
 
-A problem with this Definition lookup proceudre is this: suppose that the system needs to answer a question like: "the amphibious fish is dead?". Let us suppose that the Knowledge Base contains two Definitions for the predicate "is dead", the first one in the list generically applies to any kind of fish (i.e. "a fish is dead means ...") and the second applies specifically to amphibious ones (i.e. "an _amphibious_ fish is dead means ...").
+A problem with this Definition lookup procedure is this: suppose that the system needs to answer a question like: "the amphibious fish is dead?". Let us suppose that the Knowledge Base contains two Definitions for the predicate "is dead", the first one in the list generically applies to any kind of fish (i.e. "a fish is dead means ...") and the second applies specifically to amphibious ones (i.e. "an _amphibious_ fish is dead means ...").
 
 Since an "amphibious fish" is a kind of "fish", then the question we are trying to answer ("the amphibious fish is dead?") will match the definendum of the first (general) Definition ("a fish is dead means...") which applies to a _generic_ kind of fish. This means that the amphibious fish will be (wrongly) treated as any other regular fish.
 
@@ -431,7 +437,7 @@ We have seen how it is possible to add Definitions that determine the effects of
 // contra CAL
 One must always keep in mind that any simple sentence may be subject to two interpretations ("ASK" mood and "TELL" mood) with the difference we discussed before: that the former (ASK) thinks of the simple sentence as an expression i.e., it tries to verify if the condition it describes is true in the world model; and the latter (TELL) treats it as a statement: procedurally changing the world model according to what the sentence says it should look like.
 
-Given the analogy we have made with procedures, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript statement, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
+Given the analogy we have made with procedures, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript AST, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
 
 In a way this is true, one can even define the meaning of a simple sentence as a sequence of steps, this can be achieved by joining together (through the `and` operator) multiple atomic statements (like simple sentences or variable assignments). The comma symbol (',') can also be used for the same purpose, and it behaves exactly like (indeed, it is aliased to) the `and` operator.
 
@@ -518,7 +524,10 @@ It is to be recalled that a World Model (for us) just means a list of dictionary
 
 The error term is the sum of the absolute values of the differences between the values of each key in target World Model versus its value in the current World Model:
 
+#linebreak()
+
 $ sum_(i=0,k=0)^(i="#individuals", k="#keys") abs("WM"_("target")[i][k] - "WM"_("current")[i][k]) $
+
 
 === Offline versus Online Planning
 
@@ -537,6 +546,8 @@ Before the simulation starts, "time is frozen". As soon as the simulation starts
 There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order. 
 
 Each partial plan should not exceed in duration the period $N$ of the loop. After the partial plans are computed, they are executed, the graphics are updated, and the loop waits for $N$ milliseconds before proceeding to the next iteration.
+
+#pagebreak()
 
 The main loop is approximately described by the following piece of pseudo-code:
 
@@ -564,7 +575,7 @@ We have sometimes hinted at the concrete representation that the abstract syntac
 
 === Backus-Naur Form (BNF)
 
-We will now present (in a slightly more formal fashion) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description; we have discussed BNF in a previous chapter when talking about ALGOL 60 @algol. 
+We will now present (in a slightly more formal fashion) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description; we have discussed BNF in a previous chapter when talking about ALGOL 60 (@algol). 
 
 The following presentation will omit some of the more technical details for the sake of clarity, the actual code that generates the parser is written in Lark's own dialect of BNF (Lark, as we said at the beginning of this chapter, is the parsing toolkit for Python that we are using), and contains some extra caveats and technicalities compared to the following simplified one.
 
@@ -628,7 +639,7 @@ A potential is a noun followed by the hardcoded modal verb "can", followed by an
 
 ==== Order
 
-An order (which we will discuss in a later section) is composed of a noun (the agent who receives the order), the harcoded verb phrase "should ensure" and an expression (the agents "goal").
+An Order is composed of a noun (the agent who receives the order), the harcoded verb phrase "should ensure" and an expression (the agents "goal").
 
 `<order> := <noun-phrase> "should ensure" <expression>`
 
@@ -666,15 +677,16 @@ A "real" noun (i.e. an implicit reference) is preceded by an English article (de
 
 `<article-phrase> := <article> <noun-phrase>`
 
-An "attributive phrase" adds an adjective to that kind of noun phrase. The adjective itself is another single noun, and can be preceded by a negative particle ("non"):
 
 ==== Attributive Phrase
 
+An "attributive phrase" adds an adjective to that kind of noun phrase. The adjective itself is another single noun, and can be preceded by a negative particle ("non"):
+
 `<attributive-phrase> := "non-"? <noun> <noun-phrase>`
 
-A "genitive phrase" contains a noun phrase followed by a genitive particle ("apostrophe s") and a simple noun.
-
 ==== Genitive Phrase
+
+A "genitive phrase" contains a noun phrase followed by a genitive particle ("apostrophe s") and a simple noun.
 
 `<genitive-phrase> := <noun-phrase> "'s" <noun>`
 
@@ -698,7 +710,7 @@ Lark provides some useful facilities to further transform the parse trees it gen
 
 == Example Programs
 
-We will discuss three short example programs that showcase some of Deixiscript's capabilities as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions in the next chapter (about the possible improvements to the language).
+We will discuss three short example programs that showcase some of Deixiscript's capabilities as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions in the next chapter, about the possible improvements to the language.
 
 For the sake of convenience, we will assume that the following two Definitions have already been loaded (or typed) into the interactive environment, and are available for use at all times:
 
@@ -794,7 +806,7 @@ The program declares several capabilities of an "enemy". An enemy can move in a 
 
 One thing to note, unfortunately, is that this code is quite verbose, there seems to be a lot of unnecessary repetition; we will try offering a solution to maybe fix this problem in the next chapter.
 
-The overall effect of the program, when run in simulation mood, is to show a static green dot (the player), and a moving red dot (the enemy) that attempts to reach the green dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will "reawaken" and resume "chasing" the player.
+The overall effect of the program, when run in simulation mood, is to show a static green dot (the player), and a moving red dot (the enemy) that attempts to reach the green dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will cause the enemy to "reawaken" and resume "chasing" the player.
 
 This behavior of the enemy is achieved without telling the enemy explicitly what to do, it is rather through the `plan()` function (which we have discussed earlier) that a strategy for the enemy is automatically computed.
 
