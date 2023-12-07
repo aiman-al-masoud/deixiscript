@@ -785,13 +785,23 @@ the enemy's x-coord = 100.0.
 the player's y-coord = 300.0.
 the enemy's y-coord = 100.0.
 the enemy's color = red.
+the player's color = green.
 
 the enemy should ensure the player is dead.
 ```
 
 The first thing to note is that this code is quite verbose, there is a lot of unnecessary repetition; we will try offering a solution to this problem in the next chapter.
 
-The second thing to note is the way the rule for the predicate "near" is defined, 
+The program declares several capabilities of an "enemy". An enemy can move in a variety of directions (left, right, up, down) at will; an enemy can also "hit" a player, but only if it is "near the player". The interpreter is told what it means for the enemy to be near the player (in terms of x and y coordinates) and what it means for it to hit the player (the player's health decreases). The interpreter is also told what it means for a player to be dead (in terms of its "health"). Then the enemy is given the order to "ensure the player is dead".
+
+The overall effect of the program, when run in simulation mood, is to show a static green dot (the player), and a moving red dot (the enemy) that attempts to reach the green dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will "reawaken" and resume "chasing" the player.
+
+This behavior of the enemy is achieved without telling the enemy explicitly what to do, it is rather through the `plan()` function (which we have discussed earlier) that a strategy for the enemy is automatically computed.
+
+A strategy is expressed in terms of the actions that are available to the enemy, for instance: "enemy moves right, enemy moves up, enemy hits player, enemy hits player", this would work (for example) if the enemy was at position (1,2) on the Cartesian plane and the player was at position (2,3) and had 2 health points. Of course, as we have said before, what is actually computed during a simulation session is generally a partial plan, that only gets the enemy closer to accomplishing the goal (and in this case, this literally means getting _closer_ to the player).
+
+Another thing to note about the program is that the way the rule for the predicate "near" is defined introduces a problem that we will also discuss (and propose a tentative solution for) in the next chapter.
+
 
 
 
