@@ -764,7 +764,7 @@ A fish and an amphibious fish were created. The amphibious fish's health was set
 
 Of course, changing the values of their attributes (e.g. setting the normal fish's location to "water") would change the values of the answers to the previous questions.
 
-=== 3. Player/Enemy
+=== 3. Player/Enemy <playerEnemy>
 
 The last of the three examples is about the automated planning of a (very simple) strategy that one of the individuals will "carry out" to fullfil its goal. The code is the following (we will comment on it below):
 

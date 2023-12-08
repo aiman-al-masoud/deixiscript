@@ -1,12 +1,85 @@
 = Future Work & Conclusions
 
-We wish to dedicate the last chapter of this work to discussing only some of the (many) possible improvements that could be made to the work we have made until now in Deixiscript.
+We wish to dedicate the last chapter of this work to discussing only some (of the many) possible improvements that could be made to the work we have detailed until now in Deixiscript.
 
 We will end the chapter by some brief considerations and conclusions about this work.
 
+== Syntactic Compression
+
+As we have seen in one of the code examples of last chapter (@playerEnemy) the current version of Deixiscript can produce code that tends to be a little verbose.
+
+We had encountered in the chapter about naturalistic programming (@pegasusCompression) about the concept of syntactic compression, which is listed as one of the mechanisms employed by natural language for redundancy avoidance. 
+
+We think that introducing some syntactic compression capabilities to Deixiscript could help decrease its current verbosity and improve its readability. For instance, instead of writing four almost identical Potential-rules (that differ only in their last word) like the following:
+
+```
+an enemy can move right.
+an enemy can move left.
+an enemy can move up.
+an enemy can move down.
+```
+
+Deixiscript could instead only accept the following (single) rule, expanding it automatically into the previous four:
+
+```
+an enemy can move right/left/up/down.
+```
+
+A slightly different kind of expansion could be performed on rules that differ in more than one position, for example the following two rules which differ in two positions (_left_ versus _right_, _increments_ versus _decrements_):
+
+```
+an enemy moves right means the x-coord increments.
+an enemy moves left means the x-coord decrements.
+```
+
+These two rules could be collapsed into the following one alone:
+
+```
+an enemy moves right/left means the x-coord increments/decrements.
+```
+
+We think that these expansions could be treated as "syntax sugar", so the right place to perform them would be when preprocessing the parse tree (or partially generated Abstract Syntax Tree) before it is really executed by the interpreter.
+
+Perhaps the system could also turn the (expanded) ASTs into some intermediate (human readable) human-readable, expanded version of the code, so that the programmer could verify that the expansion was done correctly.
+
+== Semantic Compression
+
+Another thing that we have looked at critically (but still have not explained why)  is the manner in which the predicate "near" was defined in the last code example of the previous chapter (@playerEnemy).
+
+The rule defines the relationship "an enemy is near a player" like so:
+
+```
+an enemy is near a player means: 
+    the enemy's x-coord = the player's x-coord, 
+    the enemy's y-coord = the player's y-coord.
+```
+
+The number one problem (looking at this code from a Common Sense perspective) is that the user might expect this predicate to behave "symmetrically" i.e., if it is true at any point that _the enemy is near the player_, it should also be true that the _player is near the enemy_.
+
+Unfortunately, this is not the way Definitions work in Deixiscript. This could _not_ be the way they generally work, given that many more predicates other than "near" have a meaning that is non-symmetrical (e.g. "x is loved by y" does not automatically entail that "y is loved by x").
+
+One could say that the equal sign in the Definition of the predicate "near" is a pretty good indication that the predicate should be symmtrical. This is true, but (as we know) the equal sign has two interpretations in Deixiscript.
+
+When the sentence "the enemy is near the player" is used as a statement (i.e. in TELL mood) we would want/expect that it is the enemy to "move closer" to the player and not vice versa. 
+
+We want this behavior because (in the full example detailed in @playerEnemy) the sentence "the enemy is near the player" is used as a precondition for "the enemy can hit the player", so the most obvious expectation is that it is the enemy to move towards the player and not the player to come closer to the enemy 
+
+If the enemy tries to achieve the goal "the enemy is near the player" by trying to get the player to move and not vice versa, the enemy will never be able to achive its goal of making sure "the player is dead". Although of course if one had the proper kinds of rules, the enemy's strategy could be precisely that of luring in the player maybe using some kind of bait.
+
+We think that a partial solution to this problem could be in two words that we have used repeatedly in the previous paragraphs ("vice versa"). The rule could be written with an extra "vice versa" (optional) clause, i.e.:
+
+```
+an enemy is near a player means (and vice versa): 
+    the enemy's x-coord = the player's x-coord, 
+    the enemy's y-coord = the player's y-coord.
+```
+
+This could be used by the 
+
+
+
 
 // spoken ambiguous grammar recognition, ALVIN
-// syntactic compression (moves left/right...)
 // semantic compression (near)
 // relative clauses
 // past tense
