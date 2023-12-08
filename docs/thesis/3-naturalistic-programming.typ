@@ -300,7 +300,7 @@ Following the recommendation of the Liskov principle @liskov1994behavioral for O
 
 So if the "Penguin" class can't fly, neither can the "Bird" superclass. The "Sparrow" class might. But it is "natural" to say that "birds (generally) don't fly"? As it is argued in other places @brachman2022machines: no, this isn't the natural way humans organize concepts. A more naturalistic approach, would be to (somehow) declare a set of defeasible (revisable) defaults for the concepts at hand; in other words: any bird can fly, until proven that it can't.
 
-== Prompt Engineering
+== Prompt Engineering <promptEngineering>
 
 We couldn't have a meaningful discussion on "natural language programming" in the year 2023, without making a brief digression about Large Language Models (LLMs), and the nascent discipline of "Prompt Engineering".
 
@@ -410,7 +410,7 @@ While it is a great thing to have a black-box that works as an automatic natural
 
 Despite the advantages, and independently of the implementational difficulties, there are some strong negative points to be made about natural language (used as a programming language).
 
-=== A Lack of Precision
+=== A Lack of Precision <lackOfPrecision>
 
 As we have seen, there exists a Precision/Expressivity tradeoff @kuhn2014survey. We have also already mentioned in the introduction, that Dijkstra wrote a short piece in 1978 in which he was critical of what he called: "natural language programming". According to him, not only was natural language programming technically difficult to achieve, but even supposing (ad absurdum) that it had been achieved long before modern computers were invented, it would have _harmed_ rather than _benefitted_ us programmers, and more generally the field of computer science @foolishnessnatprogramming.
 

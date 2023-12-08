@@ -2,8 +2,6 @@
 
 Before getting to the conclusions, we wish to dedicate part of the last chapter to discussing only some (of the many) possible improvements and extensions that could be made to the current version of Deixiscript.
 
-// We will then conclude the chapter by some brief general considerations about our work.
-
 == Possible Improvements
 
 We propose the addition of Syntactic and Semantic Compression facilities as possible improvements to the Deixiscript language.
@@ -66,13 +64,7 @@ A possible solution to indicate that a predicate is supposed to be applied symme
 
 We would also have to figure out what happens to the body of the Definition in TELL mood, i.e. when "the enemy is near the player" is used as a statement, does it cause the position of the enemy to change to that of the player, or vice versa?
 
-
 == Possible Extensions: speech
-// spoken ambiguous grammar recognition, ALVIN
-// relative clauses
-// past tense
-// experimental studies on usability
-// game writing
 
 We suggest that a possible extension to the language that we have designed might be to adapt it to speech, by embedding it into a Voice User Interface (VUI). We have reasons to believe that a spoken programming language could benefit from being built around the principles of naturalistic programming. 
 
@@ -132,23 +124,25 @@ Moreover, those words contained a higher percentage of English-dictionary words,
 
 === Natural Language and Voice
 
-The authors of the paper "Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly"
+It is suggested by the authors of a 2005 paper "Voice-commanded Scripting Language for Programming Navigation Strategies On-the-fly" @nichols2005voice that an ideal spoken scripting language should draw inspiration from natural language.
 
-We think that natural language would be the _natural_ choice for a spoken programming language. 
+An aspect of natural language that we have briefly encountered when discussing the disadvantages of its usage in the context of programming (@lackOfPrecision) involves the topic of syntactic ambiguity; the same sentence in natural language can be associated to multiple parse trees.
 
-As the authors of 
+An important suggestion made by the authors of the paper relates to ambiguity detection. A voice interface that employs natural language could use mixed iniative prompts to try disambiguating user statements by asking the user for clarifications.
 
+All in all, we think that experimenting with natural language in spoken programming would be an interesting (yet challenging) extension to our present work.
 
 == Conclusions
 
-All in all, we think that the importance of natural language in the field of programming (and computer science as a whole) will grow in the years to come
+Whether a programming language built on top of the principles of naturalistic programming that we have explored will ever become mainstream is a question well beyond the scope of our research. We will just say that further research is needed, and a lot of that research will have to collect empirical data and focus on the actual usage that programmers make of these naturalistic languages.
+
+In any case, we think that the importance of natural language in the field of programming (and computer science as a whole) is destined to grow in the years to come; whether that happens as a result of the adoption of new naturalistic features to traditional programming languages, or (more likely) through the perfection of the techniques of interaction with Large Language Models (LLMs) such as Prompt Engineering and AI-assisted coding (@promptEngineering).
+
+We believe that a deeper insight into the mechanisms afforded to us by natural language to describe natural and artificial processes (together with a clear understanding of its limitations and pitfalls) will ultimately benefit the next generation of _people who interact with computers_, whether they will be called "engineers", "programmers", "computer educators" or simply "natural language speakers".
+
+
 
 // Usability Tests are necessary
-
-
-
-
-// % TODO: cite ALVIN 
 // % TODO
 // % https://www.typingmaster.com/speech-speed-test/
 // % https://en.wikipedia.org/wiki/Speech_tempo
