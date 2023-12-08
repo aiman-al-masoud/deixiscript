@@ -22,6 +22,6 @@
 #pagebreak()
 #include "5-deixiscript.typ"
 #pagebreak()
-// #include "6-future-work.typ"
-// #pagebreak()
+#include "6-future-work.typ"
+#pagebreak()
 #bibliography("bib.bib")

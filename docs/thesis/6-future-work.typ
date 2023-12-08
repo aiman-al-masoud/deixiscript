@@ -12,7 +12,11 @@ As we have seen in one of the code examples of last chapter (@playerEnemy) the c
 
 We had encountered in the chapter about naturalistic programming (@pegasusCompression) about the concept of syntactic compression, which is listed as one of the mechanisms employed by natural language for redundancy avoidance. 
 
+#pagebreak()
+
 We think that introducing some syntactic compression capabilities to Deixiscript could help decrease its current verbosity and improve its readability. For instance, instead of writing four almost identical Potential-rules (that differ only in their last word) like the following:
+
+#linebreak()
 
 ```
 an enemy can move right.
@@ -21,28 +25,41 @@ an enemy can move up.
 an enemy can move down.
 ```
 
+#linebreak()
+
 Deixiscript could instead only accept the following (single) rule, expanding it automatically into the previous four:
+
+#linebreak()
 
 ```
 an enemy can move right/left/up/down.
 ```
 
+#linebreak()
+
 A slightly different kind of expansion could be performed on rules that differ in more than one position, for example the following two rules which differ in two positions (_left_ versus _right_, _increments_ versus _decrements_):
+
+#linebreak()
 
 ```
 an enemy moves right means the x-coord increments.
 an enemy moves left means the x-coord decrements.
 ```
 
+#linebreak()
+
 These two rules could be collapsed into the following one alone:
+
+#linebreak()
 
 ```
 an enemy moves right/left means the x-coord increments/decrements.
 ```
+#linebreak()
 
 We think that these expansions could be treated as "syntax sugar", so the right place to perform them would be when preprocessing the parse tree (or partially generated Abstract Syntax Tree) before it is really executed by the interpreter.
 
-Perhaps the system could also turn the (expanded) ASTs into some intermediate (human readable) human-readable, expanded version of the code, so that the programmer could verify that the expansion was done correctly.
+Perhaps the system could also turn the (expanded) ASTs into some intermediate (human-readable) expanded version of the code, so that the programmer could verify that the expansion was done correctly.
 
 === Semantic Compression
 
@@ -50,11 +67,15 @@ Another thing that we have looked at critically (but still have not explained wh
 
 The rule defines the relationship "an enemy is near a player" like so:
 
+#linebreak()
+
 ```
 an enemy is near a player means: 
     the enemy's x-coord = the player's x-coord, 
     the enemy's y-coord = the player's y-coord.
 ```
+
+#linebreak()
 
 The number one problem (looking at this code from a Common Sense perspective) is that the user might expect this predicate to behave "symmetrically" i.e., if it is true at any point that _the enemy is near the player_, it should also be true that the _player is near the enemy_.
 
@@ -76,7 +97,7 @@ Programming by voice has received attention in the last years from both the comm
 
 This has happened as a result of the increase in acquired disabilities realted to long periods of typing: Repetitive Stress Injury (RSI), which can lead to severe neck ache and back pain @lagergren2021programming, @arnold2000programming.
 
-Another advantage of spoken systems is that speech is generally considered to be a faster input medium than typing: most pepople can speak faster than they can type, at least when speaking a natural language.
+Another advantage of spoken systems is that speech is generally considered to be a faster input medium than typing: most people can speak faster than they can type, at least when speaking a natural language.
 
 === Voice User Interfaces (VUIs)
 
@@ -90,9 +111,9 @@ Some of the HCI general concerns discussed here, are: (1) Providing suitable fee
 
 Some of the more VUI specific ones are: (1) Appropriate output sentences (2) Output Voice Quality (3) Proper entry recognition.
 
-Discoverability, Mixed Initiative and (mutlimodal) output remain some of the key challenging aspects of designing a speech enabled system.
+Discoverability, Mixed Initiative and (multimodal) output remain some of the key challenging aspects of designing a speech enabled system.
 
-Speech output, especially when enumerating avaiable options, can be slow and tedious, it may therefore be of some benefit to provide an alternative alley for the output of a VUI system: such as a Graphical User Interface when feasible, thus making the system multimodal.
+Speech output, especially when enumerating available options, can be slow and tedious, it may therefore be of some benefit to provide an alternative alley for the output of a VUI system: such as a Graphical User Interface when feasible, thus making the system multimodal.
 
 === Difficulties in the application of voice to programming
 
@@ -100,7 +121,7 @@ There are quite a few hurdles on this path, some of them are general to the desi
 
 Some of the more general problems are related to: (1) the ephemeral nature of speech as compared to text (it is harder to edit and refine a document using speech) @farinazzo2010empirical. (2) issues in discoverability; or making sure the user is aware of the options available to him/her at any point of using a voice enabled system. (3) issues in transcription: there is a tradeoff between the size of the available vocabulary and the precision with which the words are recognized @farinazzo2010empirical. (4) privacy and noise-related concerns (eg: at a crowded workplace), obviously since everyone in the proximity of the user of a Voice User Interface could hear him/her speak.
 
-Some of the more programming-specific problems are: (1) recognizing keywords and abbreviations in code (at least in "traditional" code) that aren't contemplated by off-the-mill voice recognition software @arnold2000programming. (2) dealing with multiple levels of nesting in programming language structures @arnold2000programming.
+Some of the more programming-specific problems are: (1) recognizing keywords and abbreviations in code (at least in "traditional" code) that are not contemplated by off-the-mill voice recognition software @arnold2000programming. (2) dealing with multiple levels of nesting in programming language structures @arnold2000programming.
 
 === Syntax-directed voice editors
 
