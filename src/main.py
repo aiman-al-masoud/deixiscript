@@ -6,7 +6,7 @@ from lang import *
 from parser import Parser
 from plan import plan
 from zorror import Zorror
-from show import graphvizied
+from show import graphvizied, show
 from os import environ
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 # import pygame
@@ -29,8 +29,8 @@ class CLI:
             case ':undo': self.undo()
             case ':start-simulation': self.startSimulation()
             case ':pause-simulation': self.pauseSimulation()
+            case ':show-model': show(self.history[-1])
             case _: self.runCode(cmd)
-            # case ':show-model': pass
             # case ':show-potentials': pass
             # case ':show-definitions': pass
 

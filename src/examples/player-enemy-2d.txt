@@ -24,8 +24,8 @@ an enemy can move down.
 there is an enemy.
 there is a player.
 the player's health = 400.0.
-the player's x-coord = 300.0.
-the enemy's x-coord = 100.0.
+the player's x-coord = 350.0.
+the enemy's x-coord = 150.0.
 the player's y-coord = 300.0.
 the enemy's y-coord = 100.0.
 the enemy's color = red.

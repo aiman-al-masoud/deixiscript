@@ -6,7 +6,6 @@ def graphvizied(kb:KB):
     edges:List[Tuple[str, str, str]]=[]
     for id, thing in enumerate(kb.wm):
         for k, v in thing.items():
-            print(k,v)
             edges.append((str(id), str(v), k))
 
     x1=[f'"{s[0]}" -> "{s[1]}" [ label="{s[2]}" ];' for s in edges]
@@ -26,7 +25,7 @@ def graphvizied(kb:KB):
 #     Source(source, filename='tmp.gv', format='png').render()
 
 # from core.KB import KB
-# def show(kb:KB):
-#     from graphviz import Source
-#     source = graphvizied(kb)
-#     Source(source, filename='tmp.png').view()
+def show(kb:KB):
+    from graphviz import Source
+    source = graphvizied(kb)
+    Source(source, filename='tmp.png').view()
