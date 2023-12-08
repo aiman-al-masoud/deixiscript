@@ -1,4 +1,3 @@
-
 = Programming Languages
 
 When we speak of "programming" languages in the contemporary sense, we generally refer to a particular kind of computer language (a formal language that can be processed by computers) that is suitable for what we call general-purpose programming. This usually involves the property of Turing-completeness; that is, the ability to describe the workings of a Turing Machine, the epitome of the theoretical general-purpose computing device.

@@ -792,12 +792,11 @@ an enemy can move down.
 there is an enemy.
 there is a player.
 the player's health = 400.0.
-the player's x-coord = 300.0.
-the enemy's x-coord = 100.0.
+the player's x-coord = 350.0.
+the enemy's x-coord = 150.0.
 the player's y-coord = 300.0.
 the enemy's y-coord = 100.0.
 the enemy's color = red.
-the player's color = green.
 
 the enemy should ensure the player is dead.
 ```
@@ -806,7 +805,7 @@ The program declares several capabilities of an "enemy". An enemy can move in a 
 
 One thing to note, unfortunately, is that this code is quite verbose, there seems to be a lot of unnecessary repetition; we will try offering a solution to maybe fix this problem in the next chapter.
 
-The overall effect of the program, when run in simulation mood, is to show a static green dot (the player), and a moving red dot (the enemy) that attempts to reach the green dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will cause the enemy to "reawaken" and resume "chasing" the player.
+The overall effect of the program, when run in simulation mood, is to show a static black dot (the player), and a moving red dot (the enemy) that attempts to reach the black dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will cause the enemy to "reawaken" and resume "chasing" the player.
 
 This behavior of the enemy is achieved without telling the enemy explicitly what to do, it is rather through the `plan()` function (which we have discussed earlier) that a strategy for the enemy is automatically computed.
 
@@ -816,7 +815,27 @@ Of course, as we have said before, what is actually computed during a simulation
 
 Another thing to note about the program is that the way the rule for the predicate "near" is defined introduces a problem that we will also discuss (and propose a tentative solution for) in the next chapter.
 
+Below are four commented screenshots that show the execution of this program in the interactive environment (REPL).
 
+#figure(
+	image("figures/repl1.png", width: 80%),
+	caption: "Before loading the program into the interactive environment, the cartesian graph is empty.",
+)
+
+#figure(
+	image("figures/repl2.png", width: 80%),
+	caption: "When the program is loaded, two colored dots appear on the graph. We can also inspect the state of the world model with the appropriate metacommand. As we can see, the player initially has a positive health and is located away from the enemy."
+)
+
+#figure(
+	image("figures/repl3.png", width: 80%),
+	caption: "When the simulation is started, the red dot (representing the enemy) begins moving toward the black dot (representing the player)."
+)
+
+#figure(
+	image("figures/repl4.png", width: 80%),
+	caption: "After a while, the enemy reaches the player and begins 'hitting' it, decreasing its health. We can see here the final stage of the process: the enemy's location is the same as the player's location, and the player's health is zero."
+)
 
 // Orders and Planning
 // http://www.cs.toronto.edu/~hector/pcr.html
