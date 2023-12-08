@@ -114,7 +114,7 @@ According to the authors, the main features that distinguish natural language fr
 
 Implicit referencing refers to the usage of Deixis in speech, pronouns such as "it", "he", "she", words like "the former", "the latter" and demonstratives like "this", "that" - all words clearly exemplifying this phenomenon.
 
-Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "he pets the cat and the cheetah" understood as an abbreviation for "he pets the cat and he pets the cheetah". An example of semantic compression would be the sentence "first go from left to right, then viceversa", where "viceversa", in this case, would mean: "from right to left".
+Compression is a mechanism that avoids the tedious repetition of information and it can be of two kinds: syntactic or semantic. The former refers to the use of words such as "and" in a sentence like: "he pets the cat and the cheetah" understood as an abbreviation for "he pets the cat and he pets the cheetah". An example of semantic compression would be the sentence "first go from left to right, then vice versa", where "vice versa", in this case, would mean: "from right to left".
 
 Context Dependence refers to the fact that, contra most programming languages, the same string in natural language can be reduced in different ways depending on the surrounding context, not only on the string itself. In the sentence: "the mouse runs, then it jumps, the cat kills it, then it jumps" there are two identical instances of the phrase "then it jumps". In the former the pronoun "it" refers to the mouse, in the latter the pronoun "it" refers to the cat.
 
