@@ -100,9 +100,19 @@
 
   show quote: set text(font: "FreeSans", size: 11pt)
 
-
   // Title page.
-  v(0.25fr)
+
+  // Logo
+  // if logo != none {
+    // v(0.25fr)
+    align(center, image("./figures/logo.png", width: 26%))
+    // v(0.50fr)
+  // } else {
+    // v(0.75fr)
+  // }
+
+  // title
+  // v(0.25fr)
   align(center)[
     #text(1.5em, weight: 550, title)
   ]
@@ -122,15 +132,6 @@
       ]),
     ),
   )
-
-  // Logo
-  if logo != none {
-    v(0.25fr)
-    align(center, image(logo, width: 26%))
-    v(0.50fr)
-  } else {
-    v(0.75fr)
-  }
   
   pagebreak()
 
