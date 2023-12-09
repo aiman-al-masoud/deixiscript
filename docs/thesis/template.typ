@@ -97,41 +97,81 @@
   set heading(numbering: "1.1")
   set par(justify: true, linebreaks: "simple")
   set quote(block: true)
-
   show quote: set text(font: "FreeSans", size: 11pt)
 
   // Title page.
-
   // Logo
-  // if logo != none {
-    // v(0.25fr)
-    align(center, image("./figures/logo.png", width: 26%))
-    // v(0.50fr)
-  // } else {
-    // v(0.75fr)
-  // }
+  align(center, image("./figures/logo.png", width: 26%))
+
+  align(center)[
+    #text(1em, "UNIVERSITY OF PAVIA")
+  ]
+
+  align(center)[
+    #text(1em, "FACULTY OF ENGINEERING")
+  ]
+  
+  align(center)[
+    #text(0.8em, "DEPARTMENT OF ELECTRICAL, COMPUTER AND BIOMEDICAL ENGINEERING")
+  ]
+
+  v(0.2fr)
+  
+  align(center)[
+    #text(1em, "MASTER'S DEGREE IN COMPUTER ENGINEERING")
+  ]
+
+  v(0.2fr)
+
+  align(center)[
+    #text(1em, "MASTER THESIS")
+  ]
 
   // title
-  // v(0.25fr)
   align(center)[
     #text(1.5em, weight: 550, title)
   ]
 
+  // titolo
+  align(center)[
+    #text(1.2em, weight: 350, "Deixiscript: esplorazione e implementazione di un approccio \"di buon senso\" alla programmazione naturalistica")
+  ]
+
+
+  
+
+  v(0.5fr)
+
+  align(left)[
+    #text(1em, "Candidate: Aiman Al Masoud")
+  ]
+
+  align(left)[
+    #text(1em, "Supervisor: Prof. Marco Porta")
+  ]
+
+  v(1fr)
+
+  align(center)[
+    #text(1em, "A.Y. 2022/2023")
+  ]
+
+
   // Author information.
-  pad(
-    top: 0.7em,
-    grid(
-      columns: (1fr),
-      gutter: 1em,
-      ..authors.map(author => align(center)[
-        *#author.name* \
-        #author.email \
-        #author.affiliation \
-        #author.postal \
-        #author.phone
-      ]),
-    ),
-  )
+  // pad(
+  //   top: 0.7em,
+  //   grid(
+  //     columns: (1fr),
+  //     gutter: 1em,
+  //     ..authors.map(author => align(center)[
+  //       *#author.name* \
+  //       #author.email \
+  //       #author.affiliation \
+  //       #author.postal \
+  //       #author.phone
+  //     ]),
+  //   ),
+  // )
   
   pagebreak()
 
