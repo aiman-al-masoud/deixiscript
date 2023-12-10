@@ -454,23 +454,23 @@ This however would overlook the last aspect of the language that we still need t
 
 === Facts versus Events
 
-We will now introduce a distinction between two kinds of simple sentences. The two kinds are formally very similar (they are all represented by the same abstract syntax tree) but they have different syntax and semantics. We will call these two categories of simple sentences: "Facts" and "Events". 
+We will now introduce a distinction between two kinds of simple sentences. The two kinds are formally very similar (they are all represented by the same abstract syntax tree), but they have different syntax and semantics. We will call these two categories of simple sentences "Facts" and "Events". 
 
-We think of a Fact as just a regular proposition; a statement about how the world is at any particular point in time, and we instead think of an Event as an action that can be performed by an agent (the grammatical subject of the sentence, for simplicity).
+We think of a Fact as just a regular proposition (a statement about how the world is at any particular point in time), and we instead think of an Event as an action that can be performed by an agent (the grammatical subject of the sentence, for simplicity).
 
 Syntactically speaking, we will represent Facts as simple sentences with a copular verb (i.e., the verb "to be"). For instance, the sentence: "the fish is dead" falls under this category. 
 
-A Fact is a "static" state of affairs, a sentence representing a Fact describes the presence or absence of a particular situation "here and now" in the world model and always refers to the present tense (there are no other tenses in Deixiscript).
+A Fact is a "static" state of affairs. A sentence representing a Fact describes the presence or absence of a particular situation "here and now" in the world model and always refers to the present tense (there are no other tenses in Deixiscript).
 
-Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e., other than the verb "to be"), for instance: "the player moves right".
+Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e., other than the verb "to be"); for instance, "the player moves right".
 
 An Event does not describe a static state of affairs, but rather a dynamic action (performable by an agent) that causes certain kinds of changes to the world model when it is performed by the agent.
 
-As a side note, we should say that the ASK and TELL moods both make sense when applied to Facts; the system can "learn" (TELL) a fact, or it can "check" (ASK) a Fact. But the same distinction does not make much sense (in our current system) when applied to Events; the purpose behind performing an Event is purely to cause side-effects (TELL).
+As a side note, we should say that both the ASK and TELL moods make sense when applied to Facts; the system can "learn" (TELL) a fact, or it can "check" (ASK) a Fact. But the same distinction does not make much sense (in our current system) when applied to Events; the purpose behind performing an Event is purely to cause side-effects (TELL).
 
-We already said that the abstract structure behind Facts and Events is the same; they both have a subject, an object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g.: to eat, to drink, to run), whereas in case of a Fact this predicate is an adjective (e.g.: red, dead, near).
+We already said that the abstract structure behind Facts and Events is the same; they both have a subject, an object and a "predicate". In case of an Event this predicate is a non-copular verb (e.g., to eat, to drink, to run), whereas in case of a Fact this predicate is an adjective (e.g., red, dead, near).
 
-Some "adjectives" such as "near" (we will treat it as an adjective) are binary predicates because they require an object (e.g.: "the cat is near _the mat_"), they are akin in this sense to transitive verbs (such as the verb "to eat").
+Some "adjectives" such as "near" (we will treat it as an adjective) are binary predicates because they require an object (e.g., "the cat is near _the mat_"); they are akin, in this sense, to transitive verbs (such as the verb "to eat").
 
 === Potentials
 
@@ -478,7 +478,7 @@ There are two kinds of simple sentences, as we have seen; so how does the system
 
 A Potential specifies the condition under which a kind of Event can occur. A Potential also specifies the duration of this kind of Event, which is useful for the purposes of time-bounded planning and simulation, as we will see later. Syntactically, a Potential is (like a Definition) a kind of complex sentence.
 
-These (Facts, Events and Potentials) are the three basic ingredients for Deixiscript's limited notion of automated planning. The fourth ingredient is the "Order". An Order is a syntactical structure that consists of a noun phrase that represents an agent and of an expression (such as a Fact) that represents a goal to be accomplished by the aforementioned agent. Syntactically speaking, an Order will also end up looking like a complex sentence of sorts.
+Facts, Events and Potentials are the three basic ingredients for Deixiscript's limited notion of automated planning. The fourth ingredient is the "Order". An Order is a syntactic structure that consists of a noun phrase that represents an agent and of an expression (such as a Fact) that represents a goal to be accomplished by the aforementioned agent. Syntactically speaking, an Order will also end up looking like a complex sentence of sorts.
 
 === Search Heuristic
 
@@ -486,11 +486,25 @@ The search heuristic tries to find a finite sequence of Events (actions) that ca
 
 This search relies on the presence in the Knowledge Base of: (1) Definitions that detail the effects of an Event alongside the kind of doer, and also on (2) the presence of Potentials that specify the possibility of an Event under a given circumstance and its duration.
 
-=== The `plan()` function
+=== The `plan()` function <planFunction>
 
-The function `plan()` is responsible for carrying out this kind of heuristic search when needed; `plan()` takes an Order (agent and goal), a Knowledge Base, and a maximum duration (in seconds) of the plan to be found.
+The `plan()` function is responsible for carrying out this kind of heuristic search when needed; `plan()` takes an Order (agent and goal), a Knowledge Base, and a maximum duration (in seconds) of the plan to be found.
 
-Searching for the plan's steps works like this: (1) the goal expression is applied to the Knowledge Base (TELL) to produce a new "target" Knowledge Base that represents the world "as it should be". (2) a numerical error term is computed, this represents the difference between the desired state of the world model (contained in the target Knowledge Base) and the current state of the world model (contained in the old, original Knowledge Base). (3) all of the actions that the agent could perform are retrieved. For simplicity, it is assumed that they coincide with the Potentials where the (kind of the) agent appears as a subject. (4) each of these (possibly useful) actions is tried separately for effectiveness. An action is applied to the old Knowledge Base (TELL) and the error term is recomputed. If the new error term is less than the old one, then the action is deemed "useful", else it is not. (5) if the list of "useful" actions is empty, then the function errors out. (6) If the _precondition_ for any of the "useful" actions is still false, then the precondition is issued as an intermediate order (`plan()` is a recursive function). (7) Else every "useful" action can already be performed by the agent. We update the list of steps, the duration of the plan and the Knowledge Base.
+Searching for the plan's steps works as follows: 
+
+(1) The goal expression is applied to the Knowledge Base (TELL) to produce a new "target" Knowledge Base that represents the world "as it should be". 
+
+(2) A numerical error term is computed, which represents the difference between the desired state of the world model (contained in the target Knowledge Base) and the current state of the world model (contained in the old, original Knowledge Base).
+
+(3) All of the actions that the agent could perform are retrieved. For simplicity, it is assumed that they coincide with the Potentials where the (kind of the) agent appears as a subject. 
+
+(4) Each of these (possibly useful) actions is tried separately for effectiveness. An action is applied to the old Knowledge Base (TELL) and the error term is recomputed. If the new error term is less than the old one, then the action is deemed "useful", else it is not. 
+
+(5) If the list of "useful" actions is empty, then the function returns an error value (because the possibility of generating any plan is precluded).
+
+(6) If the _precondition_ for any of the "useful" actions is still false, then the _precondition_ is issued as an intermediate order (`plan()` is a recursive function).
+
+(7) Otherwise, every "useful" action can already be performed by the agent. The list of steps, the duration of the plan, and the Knowledge Base are all updated.
 
 The `plan()` function also has to foresee two special (but important) cases: (1) if the goal is already accomplished then the function returns the list of accumulated steps, this is the base case of the recursive algorithm; and (2) if the maximum duration set for the plan is ever exceeded, then the function also returns the accumulated list of steps, even if they do not accomplish the goal in this case.
 
@@ -527,9 +541,9 @@ else:
 
 === Error Term ("Cost Function")
 
-The reader will note that we have skipped over a few details, specifically: the detail of how the "error term" between two Knowledge Bases (between the respective two World Models) is computed.
+The reader will note that we have skipped over a few details, specifically the details of how the "error term" between two Knowledge Bases (between the respective two World Models) is computed.
 
-It is to be recalled that a World Model (for us) just means a list of dictionary objects containing key-value pairs. Therefore the error term is computed by cycling through each individual in the World Model and each key in an individual.
+It is to be recalled that a World Model (for us) just means a list of dictionary objects containing key-value pairs. Therefore, the error term is computed by cycling through each individual in the World Model and each key in an individual.
 
 The error term is the sum of the absolute values of the differences between the values of each key in target World Model versus its value in the current World Model:
 
@@ -540,25 +554,27 @@ $ sum_(i=0,k=0)^(i="#individuals", k="#keys") abs("WM"_("target")[i][k] - "WM"_(
 
 === Offline versus Online Planning
 
-As can be evinced, there are two ways in which the `plan()` function can be used. One way is analogous to what Hector Levesque calls "offline execution" in his book "Programming Cognitive Robots" (which we mentioned at the end of the previous chapter @chapterFourCognitiveRobots), and the other is analogous to what he calls "online execution".
+As can be evinced, there are two ways in which the `plan()` function can be used. One way is analogous to what Hector Levesque calls "offline execution" in his book "Programming Cognitive Robots" @programmingCognitiveRobots (which we mentioned in @chapterFourCognitiveRobots), and the other is analogous to what he calls "online execution".
 
-In offline execution all of the steps of the plan (the whole plan) are computed in advance, whereas in online execution only one step (the next) is computed at a time. Actually, in our case, more than one step is computed even in online mode, but the computation stops as soon as the maximum tolerated duration is reached (the duration of the sequenced actions, not of the time taken to compute them).
+In offline execution, all of the steps of the plan (the whole plan) are computed in advance, whereas in online execution only one step (the next) is computed at a time. Actually, in our case, more than one step is computed even in online mode, but the computation stops as soon as the maximum tolerated duration is reached (the duration of the sequenced actions, not of the time taken to compute them).
 
-In our prototype, offline execution is mostly intended for debugging purposes, to test whether a plan can be successfully computed; while online execution is useful to graphically simulate the interaction between agents.
+In our prototype, offline execution is mostly intended for debugging purposes, to test whether a plan can be successfully computed, while online execution is useful to graphically simulate the interaction between agents.
 
 === The Main Loop
 
-The kind of graphical simulations we have tried out involve a 2D world, where the individuals that have an x and a y coordinate as properties are displayed as colored points on a 2D Cartesian graph (we use Matplotlib to plot the graphs).
+The kind of graphical simulations we have tried out involve a 2D world, where the individuals that have an x and a y coordinate as properties are displayed as colored points on a 2D Cartesian graph (we use the Matplotlib Python library to plot the graphs).
 
 Before the simulation starts, "time is frozen". As soon as the simulation starts, the individuals in the World Model that have been given orders start behaving accordingly.
 
-There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order. 
+There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order.
+
+The choice of $N$ (the _period_ of the loop) determines the frequency with which the graphics are updated, decreasing $N$ means increasing the frame rate of the simulation; for instance, setting $N$ to 100 milliseconds (0.1 seconds) means the frame rate will be $frac(1, 0.1) = 10$ Frames Per Second (FPS).
 
 Each partial plan should not exceed in duration the period $N$ of the loop. After the partial plans are computed, they are executed, the graphics are updated, and the loop waits for $N$ milliseconds before proceeding to the next iteration.
 
 #pagebreak()
 
-The main loop is approximately described by the following piece of pseudo-code:
+The main loop is approximately described by the following pseudo-code:
 
 ```
 while true:
@@ -580,13 +596,13 @@ The simulation can be started from the interpreter's custom Read Eval Print Loop
 
 Now that we have painted a picture of what each part of the Deixiscript language is supposed to do, we wish to take a step back and look at the whole from a different perspective.
 
-We have sometimes hinted at the concrete representation that the abstract syntactic structures would take, for instance: we have said that Definitions, Potentials and Orders would end up looking like complex sentences. We have also said that (in general) the syntax would draw inspiration from English. However, we will say that it should also include some mathematical symbols (like most other programming languages) for the sake of convenience.
+We have sometimes hinted at the concrete representation that the abstract syntactic structures would take; for instance, we have said that Definitions, Potentials and Orders would end up looking like complex sentences. We have also said that (in general) the syntax would draw inspiration from English. However, we will say that it should also include some mathematical symbols (like most other programming languages) for the sake of convenience.
 
 === Backus-Naur Form (BNF)
 
-We will now present (in a slightly more formal fashion) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description; we have discussed BNF in a previous chapter when talking about ALGOL 60 (@algol). 
+We will now present (in a slightly more formal fashion) the concrete syntax of the Deixiscript language, and to do so we will use a dialect of the popular Backus-Naur Form (BNF) metalanguage for syntax description; we have discussed BNF in @algol, when talking about ALGOL 60.
 
-The following presentation will omit some of the more technical details for the sake of clarity, the actual code that generates the parser is written in Lark's own dialect of BNF (Lark, as we said at the beginning of this chapter, is the parsing toolkit for Python that we are using), and contains some extra caveats and technicalities compared to the following simplified one.
+The following presentation will omit some of the more technical details for the sake of clarity. The actual code that generates the parser is written in Lark's own dialect of BNF (Lark, as we said at the beginning of this chapter, is the parsing toolkit for Python that we are using), and contains some extra caveats and technicalities compared to the following simplified one.
 
 ==== Program
 
@@ -602,23 +618,23 @@ A "statement" can be any of the following syntactic structures:
 
 ==== Expression
 
-An "expression" is either a noun, or an simple sentence, or a binary expression:
+An "expression" is either a noun, or a simple sentence, or a binary expression:
 
 `<expression> := <noun-phrase> | <simple-sentence> | <binary-expression>`
 
 ==== Question
 
-A "question" is just a statement followed by a question mark, there is definitely room for improvement on this rule (as we have already observed in a previous section):
+A "question" is just a statement followed by a question mark (there is definitely room for improvement on this rule, as we have already observed in a previous section):
 
 `<question> := <statement> "?"`
 
 ==== Simple Sentence
 
-A simple sentence is a fact or an event; we wish to note that the distinction here is a purely syntactical one i.e., after an event or fact is parsed it is transformed into the same simple sentence abstract tree:
+A simple sentence is a fact or an event; we wish to note that the distinction here is a purely syntactical one, i.e., after an event or fact is parsed it is transformed into the same simple sentence abstract tree:
 
 `<simple-sentence> := <event> | <fact>`
 
-This is how an event looks like, it is basically an English simple sentence with only a subject and an optional object (the question mark after the second occurrence of the noun means that it is optional):
+An event is basically an English simple sentence with only a subject and an optional object (the question mark after the second occurrence of the noun indicates that it is optional):
 
 `<event> := <noun-phrase> <verb> <noun-phrase>?`
 
@@ -628,7 +644,7 @@ A fact, instead, looks like a simple sentence with a copular verb (i.e., the ver
 
 ==== Binary Expression
 
-A binary expression is two smaller expressions separated by a binary operator. The binary operator can be a logical operator ("and", "or"), a comparison operator (">", "<", etc.), an arithmetical operator ("+", "-", etc.) or the equal sign ("=") which (as already said) can be interpreted as an assignment or as an equality comparison depending on the surrounding syntactic context. 
+A binary expression is formed of two smaller expressions separated by a binary operator. The binary operator can be a logical operator ("and", "or"), a comparison operator (">", "<", etc.), an arithmetical operator ("+", "-", etc.) or the equal sign ("="), which (as already said), can be interpreted as an assignment or as an equality comparison depending on the surrounding syntactic context. 
 
 The BNF code below shows the binary expression as a single production rule, but in practice it would be split into several similar-looking rules (logic, arithmetic, comparison, etc.) for the purpose of defining operator precedence:
 
@@ -636,35 +652,35 @@ The BNF code below shows the binary expression as a single production rule, but 
 
 ==== Definition
 
-A definition is quite simply a simple sentence followed by the harcoded verb "to mean", followed by any expression (the "meaning"):
+A definition is a simple sentence followed by the harcoded verb "to mean", followed by any expression (the "meaning"):
 
 `<definition> := <simple-sentence> "means" <expression>`
 
 ==== Potential
 
-A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, followed by another (this time optional) noun (the direct object); there are two further optional parts of a potential: a duration in seconds and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true" i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
+A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, in turn followed by another (this time optional) noun (the direct object). There are two further optional parts of a potential: a duration in seconds and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true", i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
 
 `<potential> := <noun-phrase> "can" <verb> <noun-phrase>? ["(" <number> "seconds" ")"] ["if" <expression>]`
 
 ==== Order
 
-An Order is composed of a noun (the agent who receives the order), the harcoded verb phrase "should ensure" and an expression (the agents "goal").
+An Order is composed of a noun (the agent who receives the order), the hardcoded verb phrase "should ensure" and an expression (the agent's "goal").
 
 `<order> := <noun-phrase> "should ensure" <expression>`
 
 ==== Repetition
 
-A repetition statement is not really recessary (and we had not really mentioned it before now), but we decided to add it just for convenience; it consists of a simple sentence followed by a number, followed by the harcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
+A repetition statement is not really necessary (and we had not really mentioned it before), but we decided to add it just for convenience; it consists of a simple sentence followed by a number, in turn followed by the hardcoded word "times". A repetition, exactly as the name says, repeats an action a certain number of times, like in a loop.
 
 `<repetition> := <simple-sentence> <number> "times"`
 
 ==== Existential Quantifier
 
-The existential quantifier consists of the hard-coded string "there is" followed by a noun phrase:
+The existential quantifier consists of the hardcoded string "there is" followed by a noun phrase:
 
 `<existential-quantifier> := "there is" <noun-phrase>`
 
-The existential quantifier supports both moods (ASK and TELL). In case of ASK, it will return true if an individual corresponding to the noun phrase's description exists; and in case of TELL it will attempt creating such an individual in the world model (acting like a "constructor" of sorts).
+The existential quantifier supports both moods (ASK and TELL). In the case of ASK, it will return true if an individual corresponding to the noun phrase's description exists. In the case of TELL, it will attempt creating such an individual in the world model (acting like a "constructor" of sorts).
 
 ==== Noun Phrase
 
@@ -672,7 +688,7 @@ A noun phrase can be any of the following things:
 
 `<noun-phrase> := <constant> | <noun> | <article-phrase> | <genitive-phrase> | <attributive-phrase> | <pronoun> | <variable> | <number> | <parenthesized-phrase>`
 
-Constants are numbers, strings or Booleans; the ID type is not shown here because in principle it should not be accessible to the programmer (the ID of an individual is supposed to be used internally by the system) though the system could be easily extended to include a syntax for an "ID literal" which could be useful for debugging purposes:
+Constants are numbers, strings or Booleans; the ID type is not shown here because in principle it should not be accessible to the programmer (the ID of an individual is supposed to be used internally by the system), though the system could be easily extended to include a syntax for an "ID literal" which could be useful for debugging purposes:
 
 ==== Constant
   
@@ -701,7 +717,7 @@ A "genitive phrase" contains a noun phrase followed by a genitive particle ("apo
 
 ==== Parenthesized Phrase
 
-And finally, a "parenthesized phrase" is also a noun phrase, and it consists of an expression enclosed by parentheses. It can be useful to better specify the order of evaluation in mathematical formulas and the like:
+A "parenthesized phrase" is also a noun phrase, and it consists of an expression enclosed by parentheses. It can be useful to better specify the order of evaluation in mathematical formulas and the like:
 
 `<parenthesized-phrase> := "(" <expression> ")"`
 
@@ -709,19 +725,19 @@ And finally, a "parenthesized phrase" is also a noun phrase, and it consists of 
 
 As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e., written text, or even spoken sound) into a bidimensional, tree-like structure that clearly reflects the hierarchical relationship between the expression's constituents.
 
-Parsing however is just the first step of this process, after an initial (intermediate) "parse tree" is generated, this is in turn converted (transformed) into an abstract syntax tree, which is a more convenient and easier to work with representation of the latter, as it leaves out many of the unimportant details.
+Parsing, however, is just the first step of the process of obtaining an Abstract Syntax Tree (AST). After an initial (intermediate) "parse tree" is generated, this has to be converted (transformed) into an AST, which is a more convenient and easier to work with representation of the latter, as it leaves out many of the unimportant details.
 
 These "unimportant details" may specify whether the user took advantage of the "sugared" version of a construct or not; syntax sugar is a more appealing (terser, more expressive, easier to read) syntax that is usually implemented on top of a less appealing (more verbose, less expressive, harder to read) one.
 
-Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precendence of operators.
+Another example of "unimportant detail" may be the presence or absence of parentheses in an expression, which outlive their usefulness as soon as the syntax tree has been built with the correct (user-intended) precedence of operators.
 
-Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. The "Transformer" class it provides (completely unrelated to the "Transformer" neural network architecture in AI) performs a bottom up traversal of the parse tree, allowing us to define some further logic that converts the parse tree into a proper abstract syntax tree.
+Lark provides some useful facilities to further transform the parse trees it generates into abstract syntax trees. The "Transformer" class it provides (completely unrelated to the "Transformer" neural network architecture in AI) performs a bottom-up traversal of the parse tree, allowing to define some further logic that converts the parse tree into a proper abstract syntax tree.
 
 == Example Programs
 
-We will discuss three short example programs that showcase some of Deixiscript's capabilities as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions in the next chapter, about the possible improvements to the language.
+We will now discuss three short example programs that showcase some of Deixiscript's capabilities, as well as some of its current weaknesses. We shall have more to say about those weaknesses and some proposed solutions in the next chapter, about the possible improvements to the language.
 
-For the sake of convenience, we will assume that the following two Definitions have already been loaded (or typed) into the interactive environment, and are available for use at all times:
+For the sake of convenience, we will assume that the following two Definitions have already been loaded (or typed) into the interactive environment, and are always available:
 
 ```
 x's y increments means: x's y = x's y + 1.0.
@@ -730,7 +746,7 @@ x's y decrements means: x's y = x's y - 1.0.
 
 === 1. Pronouns
 
-The first of the examples showcases the functioning of pronouns in Deixiscript. The following is the code:
+The first example showcases the functioning of pronouns in Deixiscript. The following is the code:
 
 ```
 
@@ -743,15 +759,15 @@ there is a door.
 he moves right and it opens.
 ```
 
-The code defines the meaning of two kinds of actions (Events), one of which applies to a player, and the other applies to a door. In the sentence `he moves right and it opens` the first pronoun ("he") resolves to the player because it is used as the subject of the verb "to move", whereas the second pronoun "it" resolves to the door because it is used as the subject of the verb "to open".
+The previous code defines the meaning of two kinds of actions (Events), one of which applies to a player, and the other applies to a door. In the sentence `he moves right and it opens`, the first pronoun ("he") resolves to the player because "he" is used as the subject of the verb "to move", whereas the second pronoun ("it") resolves to the door because "it" is used as the subject of the verb "to open".
 
-As a side note: as of now there is no distinction between the pronouns (between the strings) "he" and "it", they are just synonyms to the interpreter. The example would have worked the same if those two pronouns had been swapped around.
+As a side note: as of now there is no distinction between the pronouns (between the strings) "he" and "it", they are just synonyms to the interpreter. The example would have worked the same if those two pronouns had been swapped.
 
 The world model's state after the execution of that last sentence will be one where the door has the property "state" set to the value "open", and the player has the property "x-coord" set to the numerical value 1.0.
 
 === 2. Fish
 
-The second example shows that the system of revisable rules work, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
+The second example showcases revisable rules, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
 
 #linebreak()
 
@@ -772,13 +788,13 @@ Here we are defining three rules. The first is just a "dummy rule" to enable us 
 
 The second rule defines "what it means to be dead for a generic fish" as being a fish out of the water (`location != water`). The third rule overrules the second by defining the death of an amphibious fish in other terms, in terms of a new "health" attribute having a value less than or equal to 0.
 
-A fish and an amphibious fish were created. The amphibious fish's health was set to a positive number and the (normal) fish's location was set to "land". Now, if we asked the interpreter the following question: `the amphibious fish is dead?` it would return a `false`, and if we asked it whether: `the non-amphibious fish is dead?` it would return a `true`.
+A fish and an amphibious fish were created. The amphibious fish's health was set to a positive number and the (normal) fish's location was set to "land". Now, if we asked the interpreter the following question: `the amphibious fish is dead?` it would return a `false`, and if we asked it whether `the non-amphibious fish is dead?`, it would return a `true`.
 
-Of course, changing the values of their attributes (e.g. setting the normal fish's location to "water") would change the values of the answers to the previous questions.
+Of course, changing the values of their attributes (e.g., setting the normal fish's location to "water") would change the values of the answers to the previous questions.
 
 === 3. Player/Enemy <playerEnemy>
 
-The last of the three examples is about the automated planning of a (very simple) strategy that one of the individuals will "carry out" to fullfil its goal. The code is the following (we will comment on it below):
+The last of the three examples is about the automated planning of a (very simple) strategy that one of the individuals will "carry out" to fulfil its goal. The code is the following:
 
 #linebreak()
 
@@ -819,19 +835,19 @@ the enemy should ensure the player is dead.
 
 The program declares several capabilities of an "enemy". An enemy can move in a variety of directions (left, right, up, down) at will; an enemy can also "hit" a player, but only if it is "near the player". The interpreter is told what it means for the enemy to be near the player (in terms of x and y coordinates) and what it means for it to hit the player (the player's health decreases). The interpreter is also told what it means for a player to be dead (in terms of its "health"). Then the enemy is given the order to "ensure the player is dead".
 
-One thing to note, unfortunately, is that this code is quite verbose, there seems to be a lot of unnecessary repetition; we will try addressing this problem in the next chapter.
+One thing to note, unfortunately, is that this code is quite verbose and there seem to be a lot of unnecessary repetitions; we will try addressing this problem in the next chapter.
 
-The overall effect of the program, when run in simulation mood, is to show a static black dot (the player), and a moving red dot (the enemy) that attempts to reach the black dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will cause the enemy to "reawaken" and resume "chasing" the player.
+The overall effect of the program, when run in simulation mood, is to show a static black dot (the player), and a moving red dot (the enemy) that attempts to reach the black dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead"), if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will cause the enemy to "reawaken" and resume "chasing" the player.
 
-This behavior of the enemy is achieved without telling the enemy explicitly what to do, it is rather through the `plan()` function (which we have discussed earlier) that a strategy for the enemy is automatically computed.
+This behavior of the enemy is achieved without telling the enemy explicitly what to do, as it is rather the `plan()` function (@planFunction) under the hood that computes a strategy for the enemy.
 
-A strategy is expressed in terms of the actions that are available to the enemy, for instance: "enemy moves right, enemy moves up, enemy hits player, enemy hits player", this would work (for example) if the enemy was at position (1,2) on the Cartesian plane and the player was at position (2,3) and had 2 health points. 
+A strategy is expressed in terms of the actions that are available to the enemy. For instance, `the enemy moves right, the enemy moves up, the enemy hits the player, the enemy hits the player`, would work (for example) if the enemy was at position (1,2) on the Cartesian plane and the player was at position (2,3) and had 2 health points. 
 
-Of course, as we have said before, what is actually computed during a simulation session is generally a partial plan, that only gets the enemy closer to accomplishing the goal (and in this case, this literally means getting _closer_ to the player).
+Of course, as we have said before, what is actually computed during a simulation session is generally a partial plan, that only gets the enemy closer to accomplishing the goal (and, in this case, this literally means getting _closer_ to the player).
 
-Another thing to note about the program is that the way the rule for the predicate "near" is defined introduces a problem that we will also discuss (and propose a tentative solution for) in the next chapter.
+Another thing to note about the program is that the way the rule for the predicate "near" is defined introduces a problem that we will also discuss (also proposing a tentative solution for it) in the next chapter.
 
-Below are four commented screenshots that show the execution of this program in the interactive environment (REPL).
+Figures 2-5 show four commented screenshots that illustrate the execution of this program in the interactive environment (REPL).
 
 #figure(
 	image("figures/repl1.png", width: 80%),
