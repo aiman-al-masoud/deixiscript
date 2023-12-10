@@ -70,7 +70,7 @@ Yet another alternative is the Winograd schema challenge (WSC) @winogradChalleng
 
 == The Chinese Room Argument
 
-Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial in the philosophy of mind. Years before the advent of modern day LLMs, in 1980, philosopher John Searle (1932-) first published his famous Chinese Room Argument @searle1999chinese.
+Obviously, the merits, implications and interpretations of the results offered by a successfully passed instance of a Turing Test are controversial in the philosophy of mind. Years before the advent of modern day LLMs, in 1980, philosopher John Searle (1932-) first published his famous Chinese Room Argument @sep-chinese-room.
 
 In the mental experiment, Searle urges us (non-Chinese speakers) to imagine ourselves being locked up in a room filled with books on how to manipulate Chinese symbols algorithmically. One will find that he/she is able to communicate with the outside world only through a narrow interface of textual messages written on slips of paper and passed through the door.
 

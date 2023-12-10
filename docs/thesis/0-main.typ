@@ -25,4 +25,4 @@
 #pagebreak()
 #include "6-future-work.typ"
 #pagebreak()
-#bibliography("bib.bib")
+#bibliography("bib.bib", title: "References")
