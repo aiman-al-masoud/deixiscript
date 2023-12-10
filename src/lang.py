@@ -32,9 +32,11 @@ class Constant(NounPhrase):
     def eval(self, kb: 'KB'): return kb, self
     def english(self): return str(self)
 
-class Num(Constant, float): pass
+class Num(Constant, float):
+    def __bool__(self): return True
 
-class Str(Constant, str): pass
+class Str(Constant, str):
+    def __bool__(self): return True
 
 class Id(Constant, int):
     def english(self): return 'ID#'+str(self)
