@@ -6,18 +6,15 @@ from lang import *
 from parser import Parser
 from plan import plan
 from zorror import Zorror
-from show import graphvizied, show
+from show import show
+from time import sleep
+from matplotlib import pyplot as plt
 from os import environ
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-# import pygame
-from time import sleep
-
-from matplotlib import pyplot as plt
 
 
 @dataclass
 class CLI:
-    # surface:pygame.Surface
     LOOP_FREQ_SECONDS=0.4
     isSimulating:bool=False
     history:List[KB]=field(default_factory=lambda:[KB()]) 
@@ -31,8 +28,6 @@ class CLI:
             case ':pause-simulation': self.pauseSimulation()
             case ':show-model': show(self.history[-1])
             case _: self.runCode(cmd)
-            # case ':show-potentials': pass
-            # case ':show-definitions': pass
 
     def startSimulation(self): self.isSimulating=True
     def pauseSimulation(self): self.isSimulating=False
@@ -80,21 +75,6 @@ class CLI:
         plt.savefig('world_tmp')
     
     def simulate(self):
-
-        # pygame.event.get()
-
-        # self.surface.fill((255,255,255))
-        # for thing in self.history[-1].wm:
-        #     x,y=thing['x-coord'],thing['y-coord']
-        #     color=thing.get('color', 'black')
-        #     colorCode=colorCodeOf(str(color))
-        #     assert isinstance(x, Num) and isinstance(y, Num)
-        #     drawCircle(self.surface, colorCode, (int(x), int(y)), 20)
-        # pygame.display.flip()
-
-        # plt.xlim([0,1000])
-        # plt.ylim([0,1000])
-
         if not self.isSimulating: return
 
         for order in self.history[-1].ords:
@@ -106,8 +86,6 @@ class CLI:
             kb=maybeResult[0]
             self.history.append(kb)
 
-        # pygame.time.delay(int(self.LOOP_FREQ_SECONDS*1000))
-
 def colorCodeOf(name:str, alpha=0.5)->Tuple[int,int,int,int]:
     return {
         'black': (0,0,0,alpha),
@@ -116,19 +94,8 @@ def colorCodeOf(name:str, alpha=0.5)->Tuple[int,int,int,int]:
         'blue': (0,0,1, alpha),
     }[name]
 
-# def drawCircle(surface:pygame.Surface, color:Tuple[int,int,int,int], center:Tuple[int, int], radius:float):
-#     target_rect = pygame.Rect(center, (0, 0)).inflate((radius * 2, radius * 2))
-#     shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
-#     pygame.draw.circle(shape_surf, color, (radius, radius), radius)
-#     surface.blit(shape_surf, target_rect)
-
-
 if __name__ == '__main__':
-    # pygame.init()
-    # screen=pygame.display.set_mode([500, 500])
-    # cli=CLI(screen)
     cli=CLI()
-    # cli.load('./examples/player-enemy-2d.txt')
 
     def cliLoop():
         while True: cli.runCmd(input('> '))
@@ -139,7 +106,3 @@ if __name__ == '__main__':
         cli.simulate()
         cli.redraw()
         sleep(cli.LOOP_FREQ_SECONDS)
-
-
-# https://graphviz.org/docs/attrs/pos/
-# https://graphviz.org/Gallery/neato/transparency.html

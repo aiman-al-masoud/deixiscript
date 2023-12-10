@@ -1,7 +1,5 @@
-from dataclasses import dataclass
 import dataclasses
-
-from numpy import isin
+from dataclasses import dataclass
 from zorror import Zorror
 from functools import cmp_to_key, reduce
 from typing import Callable, List, Tuple, TypeVar
@@ -61,15 +59,8 @@ class Adjective(Ast):
     negation:bool
 
     def check(self, kb: 'KB', subject:'NounPhrase') -> bool:
-        
-        # print(Idea(subject, self.value))
         result=Idea(subject, self.value).ask().eval(kb)
-        
-        # print('subject=', subject, result)
-
         if isinstance(result, Zorror): return False!=self.negation
-        
-        # print('subject=', subject,  'value=', self.value, 'negation=', self.negation, 'result=', result[1])
         return bool(result[1])!=self.negation
 
     def make(self, kb:'KB', subject:'NounPhrase')->'KB|Zorror':
@@ -102,13 +93,8 @@ class ImplicitPhrase(NounPhrase):
         else:
             headIds=[Id(i) for i, thing in enumerate(kb.wm) if thing['type']==self.head]
             if not headIds: return Zorror(f'Could not find any "{self.english()}".')
-            
-            # print('headIds=', headIds, 'adjectives=', self.adjectives)
-            # print(kb.wm)
-
             adjIds=[i for i in headIds 
                 if all([a.check(kb, TypeCast(i, ImplicitPhrase(self.head))) for a in self.adjectives])  ]
-
             if not adjIds: return Zorror(f'Found some {self.head}, but no "{[x.english() for x in self.adjectives]}" ones.')
             if len(adjIds)==1: return kb.updateStm(self), adjIds[0]
             disambiguated=kb.disambiguate(self)            
@@ -316,7 +302,6 @@ class Def(Ast):
             self, 
             {p: makeGenitive(self.definendum.subject, p) for p in orphanedProps},
         )
-        # subst(newDef, {Pronoun():self.definendum.subject})
         newDefs=(*kb.defs, newDef)
         def compareFun(a,b): return bool(match(a,b)) - bool(match(b,a))
         sortedDefs=sorted(newDefs, key=cmp_to_key(compareFun))
@@ -388,8 +373,6 @@ class Prog(Ast, Tuple[Ast, ...]):
     def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
         newKb=kb
         result=Bool(False)
-
-
         for x in self:
             tmp=x.eval(newKb)
             if isinstance(tmp, Zorror): return tmp
