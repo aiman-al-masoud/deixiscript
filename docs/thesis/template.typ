@@ -103,48 +103,51 @@
   // Logo
   align(center, image("./figures/logo.png", width: 26%))
 
-  align(center)[
-    #text(1em, "UNIVERSITY OF PAVIA")
-  ]
+  v(0.2fr)
 
   align(center)[
-    #text(1em, "FACULTY OF ENGINEERING")
+    #text(0.8em, "UNIVERSITY OF PAVIA\nFACULTY OF ENGINEERING\nDEPARTMENT OF ELECTRICAL, COMPUTER AND BIOMEDICAL ENGINEERING")
   ]
+
+  // align(center)[
+  //   #text(0.8em, "FACULTY OF ENGINEERING")
+  // ]
   
-  align(center)[
-    #text(0.8em, "DEPARTMENT OF ELECTRICAL, COMPUTER AND BIOMEDICAL ENGINEERING")
-  ]
+  // align(center)[
+  //   #text(0.8em, "DEPARTMENT OF ELECTRICAL, COMPUTER AND BIOMEDICAL ENGINEERING")
+  // ]
 
   v(0.2fr)
   
   align(center)[
-    #text(1em, "MASTER'S DEGREE IN COMPUTER ENGINEERING")
+    #text(0.8em, "MASTER'S DEGREE IN COMPUTER ENGINEERING")
   ]
 
-  v(0.2fr)
+  v(0.4fr)
 
   align(center)[
-    #text(1em, "MASTER THESIS")
+    #text(0.8em, "MASTER THESIS")
   ]
+
+  v(0.4fr)
 
   // title
   align(center)[
-    #text(1.5em, weight: 550, title)
+    #text(1.1em, weight: 650, title)
   ]
 
   // titolo
   align(center)[
-    #text(1.2em, weight: 350, "Deixiscript: esplorazione e implementazione di un approccio \"di buon senso\" alla programmazione naturalistica")
+    #text(0.9em, weight: 350, "Deixiscript: esplorazione e implementazione di un approccio \"di buon senso\" alla programmazione naturalistica")
   ]
-
-
   
-
-  v(0.5fr)
+  v(0.8fr)
 
   align(left)[
     #text(1em, "Candidate: Aiman Al Masoud")
   ]
+
+  v(0.2fr)
 
   align(left)[
     #text(1em, "Supervisor: Prof. Marco Porta")
