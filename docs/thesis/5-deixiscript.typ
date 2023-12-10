@@ -819,7 +819,7 @@ the enemy should ensure the player is dead.
 
 The program declares several capabilities of an "enemy". An enemy can move in a variety of directions (left, right, up, down) at will; an enemy can also "hit" a player, but only if it is "near the player". The interpreter is told what it means for the enemy to be near the player (in terms of x and y coordinates) and what it means for it to hit the player (the player's health decreases). The interpreter is also told what it means for a player to be dead (in terms of its "health"). Then the enemy is given the order to "ensure the player is dead".
 
-One thing to note, unfortunately, is that this code is quite verbose, there seems to be a lot of unnecessary repetition; we will try offering a solution to maybe fix this problem in the next chapter.
+One thing to note, unfortunately, is that this code is quite verbose, there seems to be a lot of unnecessary repetition; we will try addressing this problem in the next chapter.
 
 The overall effect of the program, when run in simulation mood, is to show a static black dot (the player), and a moving red dot (the enemy) that attempts to reach the black dot, changing direction if necessary (for example when the position of the player is changed by modifying its x-coord or y-coord attributes through the REPL). Once the enemy reaches the player, it will "hit" it until the player's health becomes zero. At that point (when the player is "dead") if it changes position again, the enemy will not move; unless of course the health of the player is incremented through the REPL, which will cause the enemy to "reawaken" and resume "chasing" the player.
 
