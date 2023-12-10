@@ -458,11 +458,11 @@ We will now introduce a distinction between two kinds of simple sentences. The t
 
 We think of a Fact as just a regular proposition; a statement about how the world is at any particular point in time, and we instead think of an Event as an action that can be performed by an agent (the grammatical subject of the sentence, for simplicity).
 
-Syntactically speaking, we will represent Facts as simple sentences with a copular verb (i.e. the verb "to be"). For instance, the sentence: "the fish is dead" falls under this category. 
+Syntactically speaking, we will represent Facts as simple sentences with a copular verb (i.e., the verb "to be"). For instance, the sentence: "the fish is dead" falls under this category. 
 
 A Fact is a "static" state of affairs, a sentence representing a Fact describes the presence or absence of a particular situation "here and now" in the world model and always refers to the present tense (there are no other tenses in Deixiscript).
 
-Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e. other than the verb "to be"), for instance: "the player moves right".
+Events, on the other hand, will be represented by simple sentences with any verb other than the copula (i.e., other than the verb "to be"), for instance: "the player moves right".
 
 An Event does not describe a static state of affairs, but rather a dynamic action (performable by an agent) that causes certain kinds of changes to the world model when it is performed by the agent.
 
@@ -622,7 +622,7 @@ This is how an event looks like, it is basically an English simple sentence with
 
 `<event> := <noun-phrase> <verb> <noun-phrase>?`
 
-A fact, instead, looks like a simple sentence with a copular verb (i.e. the verb "to be" in English). The first noun phrase is the subject, the second is the predicative adjective, and the third is the (optional) object:
+A fact, instead, looks like a simple sentence with a copular verb (i.e., the verb "to be" in English). The first noun phrase is the subject, the second is the predicative adjective, and the third is the (optional) object:
 
 `<fact> := <noun-phrase> <copula> <noun-phrase> noun-phrase>?`
 
@@ -682,7 +682,7 @@ A `<noun>` is just a simple, basic English noun (actually any "non-verb word") a
 
 ==== Article Phrase
 
-A "real" noun (i.e. an implicit reference) is preceded by an English article (definite or indefinite); this is the kind of noun that will resolve to an ID when evaluated by the system:
+A "real" noun (i.e., an implicit reference) is preceded by an English article (definite or indefinite); this is the kind of noun that will resolve to an ID when evaluated by the system:
 
 `<article-phrase> := <article> <noun-phrase>`
 
@@ -707,7 +707,7 @@ And finally, a "parenthesized phrase" is also a noun phrase, and it consists of 
 
 === AST Transformations
 
-As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e. written text, or even spoken sound) into a bidimensional, tree-like structure that clearly reflects the hierarchical relationship between the expression's constituents.
+As we have said, we use the Lark parsing toolkit for Python to parse a concrete syntax similar to the one we have just described. Parsing is just the process of converting a linear (monodimensional) representation of language (i.e., written text, or even spoken sound) into a bidimensional, tree-like structure that clearly reflects the hierarchical relationship between the expression's constituents.
 
 Parsing however is just the first step of this process, after an initial (intermediate) "parse tree" is generated, this is in turn converted (transformed) into an abstract syntax tree, which is a more convenient and easier to work with representation of the latter, as it leaves out many of the unimportant details.
 
@@ -753,6 +753,8 @@ The world model's state after the execution of that last sentence will be one wh
 
 The second example shows that the system of revisable rules work, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
 
+#linebreak()
+
 ```
 
 a fish is amphibious means the kind = amphibious.
@@ -764,8 +766,9 @@ there is an amphibious fish.
 the amphibious fish's health = 10.0.
 the non-amphibious fish's location = land.
 ```
+#linebreak()
 
-Here we are defining three rules. The first is just a "dummy rule" to enable us to talk of the category of "amphibious" fish; the system needs a way (i.e. a property) to recognize an amphibious fish in the world model, and we could not think of anything nicer than just a somewhat boring "kind = amphibious" key/value pair.
+Here we are defining three rules. The first is just a "dummy rule" to enable us to talk of the category of "amphibious" fish; the system needs a way (i.e., a property) to recognize an amphibious fish in the world model, and we could not think of anything nicer than just a somewhat boring "kind = amphibious" key/value pair.
 
 The second rule defines "what it means to be dead for a generic fish" as being a fish out of the water (`location != water`). The third rule overrules the second by defining the death of an amphibious fish in other terms, in terms of a new "health" attribute having a value less than or equal to 0.
 
@@ -776,6 +779,8 @@ Of course, changing the values of their attributes (e.g. setting the normal fish
 === 3. Player/Enemy <playerEnemy>
 
 The last of the three examples is about the automated planning of a (very simple) strategy that one of the individuals will "carry out" to fullfil its goal. The code is the following (we will comment on it below):
+
+#linebreak()
 
 ```
 an enemy can hit a player, if the enemy is near the player.
@@ -809,6 +814,8 @@ the enemy's color = red.
 
 the enemy should ensure the player is dead.
 ```
+
+#linebreak()
 
 The program declares several capabilities of an "enemy". An enemy can move in a variety of directions (left, right, up, down) at will; an enemy can also "hit" a player, but only if it is "near the player". The interpreter is told what it means for the enemy to be near the player (in terms of x and y coordinates) and what it means for it to hit the player (the player's health decreases). The interpreter is also told what it means for a player to be dead (in terms of its "health"). Then the enemy is given the order to "ensure the player is dead".
 

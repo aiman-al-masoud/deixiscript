@@ -200,7 +200,7 @@ The focus of programming a cognitive robot (which could just be a software agent
 
 As we have already seen in the previous chapters, every programming paradigm sees the process of program-writing under a different light. In procedural programming, for instance, the goal of the programmer is to list out a detailed "recipe" of the steps to take to solve a problem. In logic programming, the programmer's goal is to declare the facts and inference rules.
 
-Programming a cognitive robot amounts to specifying a Basic Action Theory (BAT) for a dynamic world. A BAT is a specification of all of the fluents (properties of the world that may be changed by an action), the state of the world (i.e. the values of all of the fluents), and the primitive actions that are available to the robot (which can have an effect on the fluents).
+Programming a cognitive robot amounts to specifying a Basic Action Theory (BAT) for a dynamic world. A BAT is a specification of all of the fluents (properties of the world that may be changed by an action), the state of the world (i.e., the values of all of the fluents), and the primitive actions that are available to the robot (which can have an effect on the fluents).
 
 As such, this paradigm presents us with a peculiar mix of declarative and imperative approaches. It is (mostly) declarative because the robot is only told about its goals and of the ways in which the world can change following the occurrence of events, and has to compute a strategy automatically; and it is imperative because some knowledge (knowledge of the primitive actions for instance) can be presented in procedural form.
 

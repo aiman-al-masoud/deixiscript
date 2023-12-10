@@ -44,7 +44,7 @@ Chomsky argues that while systems like GPT are very good at capturing statistica
 
 Moreover, we can add, such models need huge amounts of data to achieve a level of linguistic competence that is even comparable to that of a human being; a great human author does not need to read a _million_ books before writing his/her _magnum opus_, maybe a couple thousands or less.
 
-Chomsky expresses his concern for the shift from a more "science-oriented" AI (i.e., geared towards understanding the phenomenon) to a more "engineering-oriented" one (i.e. just aiming to build a useful tool); this may lead to the risk of disillusionment for important scientific discoveries in the general public.
+Chomsky expresses his concern for the shift from a more "science-oriented" AI (i.e., geared towards understanding the phenomenon) to a more "engineering-oriented" one (i.e., just aiming to build a useful tool); this may lead to the risk of disillusionment for important scientific discoveries in the general public.
 
 Chomsky says that a person arguing that studying the extraordinary navigational capacities of ants is "useless" (because we modern humans have maps, GPS satellites, digital compasses, etc.) would be laughed at. But a person making a similar argument about the formal study of language (because we already have huge statistical models churning on terabytes of input data to produce near human-level quality prose) is much more likely to be taken seriously, nowadays.
 
