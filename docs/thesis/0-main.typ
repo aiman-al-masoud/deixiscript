@@ -14,15 +14,15 @@
 )
 
 #include "1-intro.typ"
-#pagebreak()
+#pagebreak(to: "even")
 #include "2-programming-languages.typ"
-#pagebreak()
+#pagebreak(to: "even")
 #include "3-naturalistic-programming.typ"
-#pagebreak()
+#pagebreak(to: "even")
 #include "4-common-sense.typ"
-#pagebreak()
+#pagebreak(to: "even")
 #include "5-deixiscript.typ"
-#pagebreak()
+#pagebreak(to: "even")
 #include "6-future-work.typ"
-#pagebreak()
+#pagebreak(to: "even")
 #bibliography("bib.bib", title: "References")

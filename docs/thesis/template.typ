@@ -1,33 +1,3 @@
-// #set heading(numbering: "1.")
-// #set text(font:"Times New Roman", size:13pt)
-
-// #set par(
-//     justify: true, 
-//     leading: 1.5em, 
-//     first-line-indent: 1em, 
-//     linebreaks: "simple",
-// )
-
-// #set page(
-//         paper: "a4",   
-//         margin: 3cm, 
-//         numbering: "1 / 1", 
-//         number-align: right,
-//         // header: [], 
-//         // footer: [],
-//         // margin: (right:3cm, left:3cm, top:4.5cm, bottom:4.5cm), 
-// )
-
-// #show heading.where(level:1): it => [
-//     #pagebreak()
-//     #set align(center)
-//     #set text(size:13pt, weight: "bold")
-//     #block(it) //.body
-// ]
-
-// #outline()
-
-
 #let buildMainHeader(mainHeadingContent) = {
   [
     #align(center, smallcaps(mainHeadingContent)) 
@@ -109,14 +79,6 @@
     #text(0.8em, "UNIVERSITY OF PAVIA\nFACULTY OF ENGINEERING\nDEPARTMENT OF ELECTRICAL, COMPUTER AND BIOMEDICAL ENGINEERING")
   ]
 
-  // align(center)[
-  //   #text(0.8em, "FACULTY OF ENGINEERING")
-  // ]
-  
-  // align(center)[
-  //   #text(0.8em, "DEPARTMENT OF ELECTRICAL, COMPUTER AND BIOMEDICAL ENGINEERING")
-  // ]
-
   v(0.2fr)
   
   align(center)[
@@ -159,23 +121,7 @@
     #text(1em, "A.Y. 2022/2023")
   ]
 
-
-  // Author information.
-  // pad(
-  //   top: 0.7em,
-  //   grid(
-  //     columns: (1fr),
-  //     gutter: 1em,
-  //     ..authors.map(author => align(center)[
-  //       *#author.name* \
-  //       #author.email \
-  //       #author.affiliation \
-  //       #author.postal \
-  //       #author.phone
-  //     ]),
-  //   ),
-  // )
-  
+  pagebreak()
   pagebreak()
 
   // Abstract page.
@@ -191,13 +137,11 @@
   abstract
   v(1.618fr)
   counter(page).update(1)
-  pagebreak()
+  pagebreak(to: "even")
 
   // Table of contents.
   outline(depth: 3, indent: true)
-  pagebreak()
-
-
+  pagebreak(to: "even")
 
   // Main body.
   set page(numbering: "1", number-align: center, margin: (right:3cm, left:3cm, top:4.5cm, bottom:4.5cm))
