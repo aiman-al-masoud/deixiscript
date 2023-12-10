@@ -1,14 +1,15 @@
 import dataclasses
 from dataclasses import dataclass
-from zorror import Zorror
 from functools import cmp_to_key, reduce
 from typing import Callable, List, Tuple, TypeVar
 from kb import KB
 
 
 class Ast:
-    def eval(self, kb:'KB')->'Tuple[KB, Constant]|Zorror': raise Exception(f'eval() not implemented in {self.__class__}')
-    def english(self)->str: raise Exception(f'english() not implemented in {self.__class__}')
+    def eval(self, kb:'KB')->'Tuple[KB, Constant]|Zorror': 
+        raise Exception(f'eval() not implemented in {self.__class__}')
+    def english(self)->str: 
+        raise Exception(f'english() not implemented in {self.__class__}')
 
     T=TypeVar('T')
     def toggleCmd(self:T, cmd:bool)->T:
@@ -31,13 +32,13 @@ class Constant(NounPhrase):
     def eval(self, kb: 'KB'): return kb, self
     def english(self): return str(self)
 
-class Id(Constant, int):
-    def english(self): return 'ID#'+str(self)
-    def __bool__(self): return True
-
 class Num(Constant, float): pass
 
 class Str(Constant, str): pass
+
+class Id(Constant, int):
+    def english(self): return 'ID#'+str(self)
+    def __bool__(self): return True
 
 @dataclass(frozen=True)
 class Var(NounPhrase):
@@ -59,13 +60,13 @@ class Adjective(Ast):
     negation:bool
 
     def check(self, kb: 'KB', subject:'NounPhrase') -> bool:
-        result=Idea(subject, self.value).ask().eval(kb)
+        result=SimpleSentence(subject, self.value).ask().eval(kb)
         if isinstance(result, Zorror): return False!=self.negation
         return bool(result[1])!=self.negation
 
     def make(self, kb:'KB', subject:'NounPhrase')->'KB|Zorror':
         if self.negation: return kb
-        result=Idea(subject, self.value, cmd=True).tell().eval(kb)
+        result=SimpleSentence(subject, self.value, cmd=True).tell().eval(kb)
         if isinstance(result, Zorror): return result
         return result[0]
 
@@ -259,7 +260,7 @@ class GteExp(CompareExp):
     def eval(self, kb: 'KB'): return super().eval(kb, lambda a,b: a>=b)
 
 @dataclass(frozen=True)
-class Idea(Ast):
+class SimpleSentence(Ast):
     subject:NounPhrase
     predicate:str
     object:NounPhrase=Bool(False)
@@ -274,7 +275,7 @@ class Idea(Ast):
         from subst import subst
         definition=None
         for d in kb.defs:
-            m=match(d.definendum, self)
+            m=match(d.definiendum, self)
             if m:
                 definition = subst(d.definition, m)
                 break
@@ -288,19 +289,19 @@ class Idea(Ast):
 
 @dataclass(frozen=True)
 class Def(Ast):
-    definendum:Idea
+    definiendum:SimpleSentence
     definition:Ast
 
     def eval(self, kb: 'KB') -> 'Tuple[KB, Constant]|Zorror':
         from match import match
         from subst import subst
         orphanedProps=[p for p in maybeOrphanedProps(self.definition) 
-                                if p not in [self.definendum.subject, self.definendum.object]]
-        if isinstance(self.definendum.object, ImplicitPhrase) and orphanedProps: 
-            return Zorror(f'Did the properties "{[x.english() for x in orphanedProps]}" refer to {self.definendum.subject.english()} or {self.definendum.object.english()}?')
+                                if p not in [self.definiendum.subject, self.definiendum.object]]
+        if isinstance(self.definiendum.object, ImplicitPhrase) and orphanedProps: 
+            return Zorror(f'Did the properties "{[x.english() for x in orphanedProps]}" refer to {self.definiendum.subject.english()} or {self.definiendum.object.english()}?')
         newDef=subst(
             self, 
-            {p: makeGenitive(self.definendum.subject, p) for p in orphanedProps},
+            {p: makeGenitive(self.definiendum.subject, p) for p in orphanedProps},
         )
         newDefs=(*kb.defs, newDef)
         def compareFun(a,b): return bool(match(a,b)) - bool(match(b,a))
@@ -308,7 +309,7 @@ class Def(Ast):
         return kb.copy(defs=tuple(sortedDefs)), Bool(False)
 
     def english(self):
-        return self.definendum.english() + ", means: " + self.definition.english()
+        return self.definiendum.english() + ", means: " + self.definition.english()
 
 def maybeOrphanedProps(ast:Ast)->List[ImplicitPhrase|Str]:
     if not isinstance(ast, Ast): return []
@@ -322,7 +323,7 @@ def makeGenitive(owner:NounPhrase, prop:ImplicitPhrase|Str):
 
 @dataclass(frozen=True)
 class Potential(Ast):
-    event:Idea
+    event:SimpleSentence
     precondition:Ast=Bool(True)
     durationSeconds:float=0.1
 
@@ -346,7 +347,6 @@ class Order(Ast):
             if not steps: return Zorror('The goal is already accomplished.')
             pretty=reduce(lambda a,b:a+b+'\n\t',[x.english() for x in steps], '')
             return Zorror(f'The plan (under {maybe[1]} seconds) is:\n\t{pretty}')
-
 
 @dataclass(frozen=True)
 class Repeat(Ast):
@@ -379,3 +379,8 @@ class Prog(Ast, Tuple[Ast, ...]):
             newKb=tmp[0]
             result=tmp[1]
         return newKb, result
+
+@dataclass(frozen=True)
+class Zorror:
+    msg:str
+    def __bool__(self): return False

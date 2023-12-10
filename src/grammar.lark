@@ -56,7 +56,6 @@ repeat: idea NUMBER "times"
 ?logic_exp: _expression | (_expression LOGICOP logic_exp)
 ?math_exp: _noun | (_noun MATHOP math_exp)
 verb: VERB | VERB "s"
-// TODO: split eq/neq from compare and increase priority of compare w/ resp to logic
 
 _ARTICLE: "a" | "an" | "the"
 MATHOP: "+" | "-" | "*" | "/"

@@ -56,7 +56,7 @@ def test_parse_repeat_event():
 
 def test_parse_idea_def_fact():
     st=parser.parse('the player is dead means: health <= 0')[0]
-    assert st == Def(Idea(ImplicitPhrase('player'), Str('dead')),  LteExp(Str('health'), Num(0)))
+    assert st == Def(SimpleSentence(ImplicitPhrase('player'), Str('dead')),  LteExp(Str('health'), Num(0)))
 
 def test_parse_idea_def_event():
     st=parser.parse('an enemy moves right means: x-coord increments, health decrements')[0]
@@ -124,7 +124,7 @@ def test_match_and_sentence():
 def test_match_sentence_with_pronoun():
     nopro=parser.parse('the enemy hits the player')[0]
     pro=parser.parse('it hits the player')[0]
-    assert match(nopro, pro) #and match(nopro, pro) 
+    assert match(nopro, pro)
 
 def test_match_variable_with_noun_phrase():
     super=parser.parse("x's y")[0]
@@ -149,8 +149,7 @@ def test_eval_sort_defs_by_descending_specificity():
 def test_eval_orphaned_property_names_in_definitions():
     x=parser.parse("a player is dead means: the player's life=0.0.").eval(KB())
     y=parser.parse('a player is dead means: the life=0.0.').eval(KB())
-    # z=parser.parse('a player is dead means: life=0.0.').eval(KB())
-    assert x==y #and y==z
+    assert x==y
 
 def test_eval_and_operator_1():
     result=parser.parse('true and true')[0].eval(KB())
@@ -270,4 +269,3 @@ def test_plan_enemy_should_ensure_player_is_dead():
     steps=maybePlan[0]
     groupedSteps=groupRepeated(steps)
     assert groupedSteps==[parser.parse('an enemy moves right 2 times')[0], parser.parse('an enemy hits the player 4 times')[0]]
-    # print([x.english() for x in groupedSteps])

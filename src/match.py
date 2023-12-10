@@ -22,7 +22,7 @@ def match(super:Ast, sub:Ast)->Dict[Ast, Ast]:
         case Genitive(), Genitive() if match(super.prop, sub.prop) and match(super.owner, sub.owner):
             return {super:sub}
 
-        case Idea(), Idea() if super.predicate==sub.predicate:
+        case SimpleSentence(), SimpleSentence() if super.predicate==sub.predicate:
             m1=match(super.subject, sub.subject)        
             if not m1: return {}
             m2=match(super.object, sub.object)
@@ -44,7 +44,7 @@ def match(super:Ast, sub:Ast)->Dict[Ast, Ast]:
         case NounPhrase(), Pronoun():
             return {super:sub}
 
-        case Def(), Def() if match(super.definendum, sub.definendum):
+        case Def(), Def() if match(super.definiendum, sub.definiendum):
             return {super:sub}
 
         case Ast(), TypeCast() if match(super, sub.asType):

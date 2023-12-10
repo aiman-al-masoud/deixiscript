@@ -5,7 +5,6 @@ from kb import KB
 from lang import *
 from parser import Parser
 from plan import plan
-from zorror import Zorror
 from show import show
 from time import sleep
 from matplotlib import pyplot as plt

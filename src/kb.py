@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from types import MappingProxyType as MPT
 from typing import TYPE_CHECKING, Tuple
 if TYPE_CHECKING: from lang import *
-from zorror import Zorror
 
 
 @dataclass(frozen=True)
@@ -26,6 +25,7 @@ class KB:
         return self.copy(stm=(noun.ask(), *self.stm)[:self.STM_SIZE])
 
     def getProp(self, id:'Id', prop:str):
+        from lang import Zorror
         thing=self.wm[id]
         if prop not in thing: return Zorror('')
         return thing[prop]

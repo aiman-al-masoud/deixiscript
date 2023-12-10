@@ -33,7 +33,7 @@ class Toast(Transformer[Any, Prog]):
     def genitive(self, cs): return Genitive(*cs)
     def defin(self, cs): return Def(*cs)
     def repeat(self, cs): return Repeat(*cs)
-    def idea(self, cs): return Idea(*cs)
+    def idea(self, cs): return SimpleSentence(*cs)
     def question(self, cs:List[Ast]): return cs[0].ask()
     def command(self, cs:List[Ast]): return cs[0].tell()
 
@@ -82,7 +82,7 @@ class Toast(Transformer[Any, Prog]):
                 noun.cmd,
             )
 
-    def potential_core(self, cs:List): return Potential(Idea(*cs))
+    def potential_core(self, cs:List): return Potential(SimpleSentence(*cs))
     
     def potential_with_duration(self, cs:List):
         potential=cs[0]

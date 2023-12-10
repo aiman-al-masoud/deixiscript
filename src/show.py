@@ -13,18 +13,6 @@ def graphvizied(kb:KB):
     x3=f'digraph G{{\n{x2}}}'
     return x3
 
-# rm tmp.gv.png
-# touch tmp.gv.png 
-# codium tmp.gv.png
-# clear
-# rlwrap python -m main.main
-
-# def save_png(kb:KB):
-#     from graphviz import Source
-#     source = graphvizied(kb)
-#     Source(source, filename='tmp.gv', format='png').render()
-
-# from core.KB import KB
 def show(kb:KB):
     from graphviz import Source
     source = graphvizied(kb)

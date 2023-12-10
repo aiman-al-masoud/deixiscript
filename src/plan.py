@@ -1,6 +1,5 @@
 from typing import List
 from lang import *
-from zorror import Zorror
 from kb import KB
 from match import match
 
@@ -9,12 +8,11 @@ def plan(
     kb:KB,
     maxDurationSeconds:float=1,
     durationSeconds:float=0,
-    steps:List[Idea]=[],
-)->'Tuple[List[Idea], float]|Zorror':
+    steps:List[SimpleSentence]=[],
+)->'Tuple[List[SimpleSentence], float]|Zorror':
 
     if durationSeconds > maxDurationSeconds:
         return steps, durationSeconds
-        # return Zorror(f'Max duration exceeded!')
     
     maybeGoalStatus=order.goal.ask().eval(kb)
     if isinstance(maybeGoalStatus, Zorror): return maybeGoalStatus
@@ -75,9 +73,9 @@ def worldError(kb1:KB, kb2:KB):
 
     return totalError
 
-def groupRepeated(steps:List[Idea]):
+def groupRepeated(steps:List[SimpleSentence]):
     from itertools import groupby
-    newSteps:List[Idea|Repeat]=[]
+    newSteps:List[SimpleSentence|Repeat]=[]
     for group in groupby(steps):
         times=len(list(group[1]))
         if times>1:
