@@ -5,7 +5,6 @@ from kb import KB
 from lang import *
 from parser import Parser
 from plan import plan
-from show import show
 from time import sleep
 from matplotlib import pyplot as plt
 from os import environ
@@ -92,6 +91,22 @@ def colorCodeOf(name:str, alpha=0.5)->Tuple[int,int,int,int]:
         'green': (0,1,0, alpha),
         'blue': (0,0,1, alpha),
     }[name]
+
+def graphvizied(kb:KB):
+    edges:List[Tuple[str, str, str]]=[]
+    for id, thing in enumerate(kb.wm):
+        for k, v in thing.items():
+            edges.append((str(id), str(v), k))
+
+    x1=[f'"{s[0]}" -> "{s[1]}" [ label="{s[2]}" ];' for s in edges]
+    x2=reduce(lambda a,b:a+b+'\n', x1, '')
+    x3=f'digraph G{{\n{x2}}}'
+    return x3
+
+def show(kb:KB):
+    from graphviz import Source
+    source = graphvizied(kb)
+    Source(source, filename='tmp.png').view()
 
 if __name__ == '__main__':
     cli=CLI()
