@@ -4,7 +4,7 @@ Before getting to the conclusions, we wish to dedicate part of the last chapter 
 
 == Possible Improvements
 
-We propose the addition of Syntactic and Semantic Compression facilities as possible improvements to the Deixiscript language.
+In this section, we propose the addition of Syntactic and Semantic Compression facilities as possible improvements to reduce Deixiscript's current level of verbosity; but another important improvement that could be made is to incorporate a better heuristic algorithm, that could allow planning to happen for a wider range of goals. For instance, one that could allow us to order the defender to "ensure the player stays alive" in the example made in @playerEnemeyDefender, instead of forcing us to specify _how_ it should do so (by "killing" the enemy).
 
 === Syntactic Compression
 
@@ -161,15 +161,3 @@ In any case, we think that the importance of natural language in the field of pr
 
 We believe that a deeper insight into the mechanisms afforded to us by natural language to describe natural and artificial processes (together with a clear understanding of its limitations and pitfalls) will ultimately benefit the next generation of _people who interact with computers_, whether they will be called "engineers", "programmers", "computer educators" or simply "natural language speakers".
 
-
-
-// Usability Tests are necessary
-// % TODO
-// % https://www.typingmaster.com/speech-speed-test/
-// % https://en.wikipedia.org/wiki/Speech_tempo
-// % https://typing-speed-test.aoeu.eu/
-// % https://en.wikipedia.org/wiki/Words_per_minute
-// % https://en.wikipedia.org/wiki/Repetitive_strain_injury
-// % https://en.wikipedia.org/wiki/Eye_strain
-// % https://en.wikipedia.org/wiki/Voice_user_interface
-// % https://userguiding.com/blog/voice-user-interface/ 

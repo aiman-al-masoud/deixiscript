@@ -60,8 +60,6 @@ The Graphviz @graphviz graph visualization software and related Python wrapper  
 
 The Matplotlib @matplotlib visualization tool and Python library was used to graphically display the evolution of some simulated processes.
 
-// (MIT for Pyright, Pytest, and Lark, CPL for Graphviz,)
-
 === Licensing
 
 All the software that was used to develop Deixiscript is available for free and under the terms of (different) opensource licenses. Other than the aforementioned ones, the core components of Deixiscript require no further dependencies outside of Python's own standard library.
@@ -167,15 +165,7 @@ We think that questions (and conditions) are more akin to programming language e
 
 In natural language, this response can be a simple "yes" or "no" (a condition also typically "evaluates" to a "yes" or a "no"), or it can be a "pointer to a thing" (such as in a reply to a "what", a "where" or a "who" question), or it can be an explanation of some phenomenon or behavior (such as in response to a "why" question).
 
-// https://stackoverflow.com/questions/19132/expression-versus-statement
-
 === Statements versus Conditions
-
-// In most popular programming languages there is some kind of syntactical distinction between a conditional expression and a statement. For instance, in C-like languages an assignment typically uses a single equal sign and an equality-comparison uses a double equals sign.
-
-// This extra operator is necessary because of the way C-like languages blur the distinction between an expression and a statement: they allow expressions to have side effects and they treat some "statements" like expressions.
-
-// (C, C++, Java, JavaScript, etc.)
 
 "C-like languages" (i.e., languages that have a C-like syntax, such as: C++, Java, JavaScript, etc.) tend to blur the distinction between an expression and a statement: they allow some expressions to have side effects and they treat some "statements" like expressions.
 
@@ -300,8 +290,6 @@ Deixiscript supports a limited kind of context-dependent resolution of pronouns,
 ==== Relative Clauses (not included)
 
 Deixiscript does not support relative clauses, although a previous version of it did support them. The decision to drop their support and focus instead on other aspects of the noun phrase (e.g., adjectives) came from the difficulties encountered in their implementation.
-
-// https://en.wikipedia.org/wiki/English_relative_clauses
 
 A relative clause is introduced by a relativizer (such as "that", "which", "who", etc.) followed by a sentence. In English, the prevalent strategy to refer back to the nucleus (or head) of the enclosing noun phrase is that of "gapping", i.e., leaving a "gap" in the place where the head would have stood, if the relative clause had been independent.
 
@@ -443,7 +431,6 @@ For instance, if we ask the system the question "the fish is dead?", the system 
 
 We have seen how it is possible to add Definitions that determine the effects of executing a simple sentence. This makes the execution of a simple sentence akin to a function invocation (and sometimes to a _procedure_ call) in more traditional languages.
 
-// contra CAL
 One must always keep in mind that any simple sentence may be subject to two interpretations ("ASK" mood and "TELL" mood) with the difference we discussed before: that the former (ASK) thinks of the simple sentence as an expression, i.e., it tries to verify if the condition it describes is true in the world model; and the latter (TELL) treats it as a statement, procedurally changing the world model according to what the sentence says it should look like.
 
 Given the analogy we have made with procedures, and despite the actual "dual" nature (ASK versus TELL) of a Deixiscript AST, one could nonetheless conclude that Deixiscript is a kind of procedural (or imperative) language.
@@ -744,9 +731,21 @@ x's y increments means: x's y = x's y + 1.0.
 x's y decrements means: x's y = x's y - 1.0.
 ```
 
-=== 1. Pronouns
+=== 1. Envelope
 
-The first example showcases the functioning of pronouns in Deixiscript. The following is the code:
+The first example demonstrates the existential quantifier's uage as a "constructor" with the following code:
+
+```
+an envelope is sealed means the state = closed.
+an envelope is red means the color = red.
+there is a sealed red envelope.
+```
+
+Two rules are introduced that apply to envelopes: the first defines what it means for an envelope to be "sealed" and the second defines what it means for it to be "red". An envelope is then created with these two properties, and the resulting world model will contain an envelope that has a "state" property set to "closed" and a "color" property set to "red".
+
+=== 2. Pronouns
+
+The second example showcases the functioning of pronouns in Deixiscript. The following is the code:
 
 ```
 
@@ -765,9 +764,9 @@ As a side note: as of now there is no distinction between the pronouns (between 
 
 The world model's state after the execution of that last sentence will be one where the door has the property "state" set to the value "open", and the player has the property "x-coord" set to the numerical value 1.0.
 
-=== 2. Fish
+=== 3. Fish
 
-The second example showcases revisable rules, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
+The third example showcases revisable rules, by defining a general rule and a specific one, and checking that they correctly apply to the relevant individuals.
 
 #linebreak()
 
@@ -792,9 +791,9 @@ A fish and an amphibious fish were created. The amphibious fish's health was set
 
 Of course, changing the values of their attributes (e.g., setting the normal fish's location to "water") would change the values of the answers to the previous questions.
 
-=== 3. Player/Enemy <playerEnemy>
+=== 4. Player/Enemy <playerEnemy>
 
-The last of the three examples is about the automated planning of a (very simple) strategy that one of the individuals will "carry out" to fulfil its goal. The code is the following:
+The fourth example concerns the automated planning of a (very simple) strategy that (only) one of the two individuals will "carry out" to fulfil its goal. The code is the following:
 
 #linebreak()
 
@@ -869,8 +868,110 @@ Figures 2-5 show four commented screenshots that illustrate the execution of thi
 	caption: "After a while, the enemy reaches the player and begins 'hitting' it, decreasing its health. We can see here the final stage of the process: the enemy's location is the same as the player's location, and the player's health is zero."
 )
 
-// Orders and Planning
-// http://www.cs.toronto.edu/~hector/pcr.html
-// https://github.com/ssardina/ergo
-// https://en.wikipedia.org/wiki/Agent-oriented_programming
-// cognitive robotics precedent
+=== 5. Player/Enemy/Defender <playerEnemeyDefender>
+
+The last example is an extension of the fourth, it demonstrates automated planning in the presence of two individuals with different (clashing) goals. In this example a new individual (the "defender") is added to the mix, who will oppose the enemy.
+
+Unfortunately, ordering the defender to ensure that the player stays alive (i.e, player's life > 0) will not work in the present version of Deixiscript. This is due to the simplicity (and limitation) of the current plan-finding heuristic (described in @planFunction).
+
+Hence, to achieve the same effect, we will instead have to order the defender to "ensure the enemy is dead" (thus implicitly _defending_ the player).
+
+To achieve this, we will have to add some more rules to the program we already had (and modify some existing ones), the resulting code is the following:
+
+#linebreak()
+
+```
+an enemy can hit a player, if the enemy is near the player.
+a defender can hit an enemy, if the defender is near the enemy.
+
+an enemy is near a player means: 
+    the enemy's x-coord = the player's x-coord, 
+    the enemy's y-coord = the player's y-coord.
+
+a defender is near an enemy means: 
+    the defender's x-coord = the enemy's x-coord, 
+    the defender's y-coord = the enemy's y-coord.
+
+an enemy hits the player means: 
+    the player's health decrements.
+
+a defender hits an enemy means: 
+    the enemy's health decrements.
+
+a player is dead, means the health = 0.0.
+an enemy is dead, means the health = 0.0.
+a player is alive, means the health > 0.0.
+an enemy is alive, means the health > 0.0.
+
+an enemy moves right means the x-coord increments.
+an enemy moves left means the x-coord decrements.
+an enemy moves down means the y-coord increments.
+an enemy moves up means the y-coord decrements.
+
+an enemy can move right if the enemy is alive (0.2 seconds).
+an enemy can move left if the enemy is alive (0.2 seconds).
+an enemy can move up if the enemy is alive (0.2 seconds).
+an enemy can move down if the enemy is alive (0.2 seconds).
+
+a defender moves right means the x-coord increments.
+a defender moves left means the x-coord decrements.
+a defender moves down means the y-coord increments.
+a defender moves up means the y-coord decrements.
+a defender can move right.
+a defender can move left.
+a defender can move up.
+a defender can move down.
+
+there is an enemy.
+there is a player.
+there is a defender.
+
+the player's x-coord = 350.0.
+the player's y-coord = 300.0.
+the player's health = 400.0.
+
+the enemy's x-coord = 50.0.
+the enemy's y-coord = 100.0.
+the enemy's health = 10.0.
+the enemy's color = red.
+
+the defender's x-coord = 300.0.
+the defender's y-coord = 450.0.
+the defender's color = blue.
+
+the enemy should ensure the player is dead.
+the defender should ensure the enemy is dead.
+```
+
+#linebreak()
+
+We essentially had to add rules to make sure that the defender could move and hit the enemy (just like the enemy can hit the player). We also modified the enemy's potentials to move: now the enemy can only move if it is alive (health > 0), this is to ensure that it (the enemy) will stop "dead in its tracks" when it is "killed" by the defender. Obviously, the code now has to declare an initial health for the enemy too, not just for the player.
+
+The enemy was also made a little slower than the defender, by specifying that the time taken for it to move in any direction is 0.2 seconds, which is more than the (default) of 0.1 seconds of the potentials where the Event's duration is undeclared.
+
+Figures 6-9 show some more commented screenshots that illustrate the execution of this program in the REPL.
+
+#figure(
+	image("figures/defender1.png", width: 80%),
+	caption: "The program is loaded into the interactive environment. The graph shows three points with different colors. As before, the red point is the enemy and the black point is the player. A blue points appears as well, representing the defender. For the sake of better illustrating the paths taken by the moving points on the graph, we will execute the show-trail metacommand, which will plot some red points in any spots where the individuals have been.",
+)
+
+#figure(
+	image("figures/defender2.png", width: 80%),
+	caption: "As soon as the simulation is started, the enemy (red) will try approaching the player, and the defender (blue) will in turn move towards the enemy. We have currently put the simulation on hold using the pause-simulation metacommand",
+)
+
+#figure(
+	image("figures/defender3.png", width: 80%),
+	caption: "While the simulation is paused, we will \"teleport\" the enemy downwards by manually setting its y-coordinate to a lower value.",
+)
+
+#figure(
+	image("figures/defender4.png", width: 80%),
+	caption: "As soon as we resume the simulation (using the start-simulation metacommand) the enemy from its new position will still try getting to the player, while the defender takes a sharp turn to its left to intercept the enemy coming from a new angle. We have put the simulation on hold once more, using the pause-simulation metacommand.",
+)
+
+#figure(
+	image("figures/defender5.png", width: 80%),
+	caption: "After resuming the simulation once more, the defender finally intercepts the enemy and hits it. The enemy's health suddenly drops to zero, so it stops moving; the defender halts too, because it no longer has any reason to move. We can inspect the current state of the world model with the show-model metacommand. As we can see, the enemy's health is zero, and the player's health is still intact. The player was successfully defended.",
+)

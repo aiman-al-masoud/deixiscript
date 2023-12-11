@@ -13,7 +13,7 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 @dataclass
 class CLI:
-    LOOP_DURATION_SECONDS=0.5
+    THINK_DURATION=0.5
     isSimulating:bool=False
     history:List[KB]=field(default_factory=lambda:[KB()]) 
     parser:Parser=field(default_factory=lambda:Parser('./grammar.lark'))
@@ -85,7 +85,7 @@ class CLI:
         if not self.isSimulating: return
 
         for order in self.history[-1].ords:
-            maybePlan=plan(order, self.history[-1], self.LOOP_DURATION_SECONDS)
+            maybePlan=plan(order, self.history[-1], self.THINK_DURATION)
             if isinstance(maybePlan, Zorror): 
                 continue
                 # raise Exception(maybePlan)
