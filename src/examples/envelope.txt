@@ -1,0 +1,3 @@
+an envelope is sealed means the state = closed.
+an envelope is red means the color = red.
+there is a sealed red envelope.
