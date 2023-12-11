@@ -23,7 +23,6 @@ an enemy is dead, means the health = 0.0.
 a player is alive, means the health > 0.0.
 an enemy is alive, means the health > 0.0.
 
-
 an enemy moves right means the x-coord increments.
 an enemy moves left means the x-coord decrements.
 an enemy moves down means the y-coord increments.
@@ -46,18 +45,19 @@ a defender can move down.
 there is an enemy.
 there is a player.
 there is a defender.
-the player's health = 400.0.
-the player's x-coord = 350.0.
-the enemy's x-coord = 50.0.
-the player's y-coord = 300.0.
-the enemy's y-coord = 100.0.
-the enemy's color = red.
-the defender's color = blue.
 
+the player's x-coord = 350.0.
+the player's y-coord = 300.0.
+the player's health = 400.0.
+
+the enemy's x-coord = 50.0.
+the enemy's y-coord = 100.0.
 the enemy's health = 10.0.
+the enemy's color = red.
 
 the defender's x-coord = 300.0.
 the defender's y-coord = 450.0.
+the defender's color = blue.
 
 the enemy should ensure the player is dead.
 the defender should ensure the enemy is dead.
