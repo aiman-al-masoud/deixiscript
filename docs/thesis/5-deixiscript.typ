@@ -559,8 +559,6 @@ $M$ is the maximum tolerated planning time, it is used as a parameter for the `p
 
 To summarize: each partial plan should not exceed in "duration" the number $M$; and after the partial plans are computed, they are executed, the graphics are updated, and the loop waits for $N$ (actual) milliseconds before proceeding to the next iteration.
 
-#pagebreak()
-
 The main loop is approximately described by the following pseudo-code:
 
 ```
@@ -574,6 +572,8 @@ while true:
 	
 	wait(N)
 ```
+
+#pagebreak()
 
 === REPL
 
@@ -733,7 +733,9 @@ x's y decrements means: x's y = x's y - 1.0.
 
 === 1. Envelope
 
-The first example demonstrates the existential quantifier's uage as a "constructor" with the following code:
+The first example demonstrates the existential quantifier's usage as a "constructor" with the following code:
+
+#linebreak()
 
 ```
 an envelope is sealed means the state = closed.
@@ -741,14 +743,19 @@ an envelope is red means the color = red.
 there is a sealed red envelope.
 ```
 
+#linebreak()
+
 Two rules are introduced that apply to envelopes: the first defines what it means for an envelope to be "sealed" and the second defines what it means for it to be "red". An envelope is then created with these two properties, and the resulting world model will contain an envelope that has a "state" property set to "closed" and a "color" property set to "red".
+
+#pagebreak()
 
 === 2. Pronouns
 
 The second example showcases the functioning of pronouns in Deixiscript. The following is the code:
 
-```
+#linebreak()
 
+```
 a player moves right means: the x-coord increments.
 a door opens means: the state = open.
 
@@ -757,6 +764,8 @@ the player's x-coord = 0.0.
 there is a door.
 he moves right and it opens.
 ```
+
+#linebreak()
 
 The previous code defines the meaning of two kinds of actions (Events), one of which applies to a player, and the other applies to a door. In the sentence `he moves right and it opens`, the first pronoun ("he") resolves to the player because "he" is used as the subject of the verb "to move", whereas the second pronoun ("it") resolves to the door because "it" is used as the subject of the verb "to open".
 
@@ -949,7 +958,7 @@ We essentially had to add rules to make sure that the defender could move and hi
 
 The enemy was also made a little slower than the defender, by specifying that the time taken for it to move in any direction is 0.2 "seconds", which is more than the (default) of 0.1 "seconds" of the potentials where the Event's duration is undeclared.
 
-Figures 6-9 show some more commented screenshots that illustrate the execution of this program in the REPL.
+Figures 6-10 show five more commented screenshots that illustrate the execution of this program in the REPL.
 
 #figure(
 	image("figures/defender1.png", width: 80%),
@@ -958,7 +967,7 @@ Figures 6-9 show some more commented screenshots that illustrate the execution o
 
 #figure(
 	image("figures/defender2.png", width: 80%),
-	caption: "As soon as the simulation is started, the enemy (red) will try approaching the player, and the defender (blue) will in turn move towards the enemy. We have currently put the simulation on hold using the pause-simulation metacommand",
+	caption: "As soon as the simulation is started, the enemy (red) will try approaching the player, and the defender (blue) will in turn move towards the enemy. We have currently put the simulation on hold using the pause-simulation metacommand.",
 )
 
 #figure(
