@@ -127,14 +127,16 @@
   // Abstract page.
   set page(numbering: "I", number-align: center)
   v(1fr)
-  align(center)[
-    #heading(
-      outlined: false,
-      numbering: none,
-      text(0.85em, smallcaps[Abstract]),
-    )
-  ]
-  abstract
+  // align(center)[
+  //   #heading(
+  //     outlined: false,
+  //     numbering: none,
+  //     text(0.85em, smallcaps[Abstract]),
+  //   )
+  // ]
+  // abstract
+  include "abstract.typ"
+
   v(1.618fr)
   counter(page).update(1)
   pagebreak(to: "even")
