@@ -100,7 +100,7 @@
 
   // titolo
   align(center)[
-    #text(0.9em, weight: 350, "Deixiscript: esplorazione e implementazione di un approccio \"di buon senso\" alla programmazione naturalistica")
+    #text(1em, weight: 350, "Deixiscript: esplorazione e implementazione di un approccio \"di buon senso\" alla programmazione naturalistica")
   ]
   
   v(0.8fr)
