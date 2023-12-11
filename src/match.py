@@ -50,7 +50,10 @@ def match(super:Ast, sub:Ast)->Dict[Ast, Ast]:
         case Ast(), TypeCast() if match(super, sub.asType):
             return {super:sub}
         
-        case Var(), NounPhrase() if not (isinstance(sub, Var) and super.name!=sub.name):
+        case Var(), NounPhrase(): #if not (isinstance(sub, Var) and super.name!=sub.name):
             return {super:sub}
+
+        # case NounPhrase(), Var():
+        #     return {super:sub}
 
     return {}

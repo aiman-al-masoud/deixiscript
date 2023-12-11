@@ -45,6 +45,7 @@ class Id(Constant, int):
 @dataclass(frozen=True)
 class Var(NounPhrase):
     name:str
+    def english(self): return self.name
 
 @dataclass(frozen=True)
 class Pronoun(NounPhrase):
@@ -349,6 +350,8 @@ class Order(Ast):
             if not steps: return Zorror('The goal is already accomplished.')
             pretty=reduce(lambda a,b:a+b+'\n\t',[x.english() for x in steps], '')
             return Zorror(f'The plan (under {maybe[1]} seconds) is:\n\t{pretty}')
+
+    def english(self): return self.agent.english() + " should ensure " + self.goal.english()
 
 @dataclass(frozen=True)
 class Repeat(Ast):

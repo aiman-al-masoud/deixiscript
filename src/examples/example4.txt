@@ -1,21 +1,63 @@
 x's y increments means: x's y = x's y + 10.0.
 x's y decrements means: x's y = x's y - 10.0.
 
-x is near y means: 
-    x's x-coord = y's x-coord,
-    x's x-coord = y's y-coord.
+an enemy can hit a player, if the enemy is near the player.
+a defender can hit an enemy, if the defender is near the enemy.
 
-x hits y means:
-    y's health decrements.
- 
-there is a player.
+an enemy is near a player means: 
+    the enemy's x-coord = the player's x-coord, 
+    the enemy's y-coord = the player's y-coord.
+
+a defender is near an enemy means: 
+    the defender's x-coord = the enemy's x-coord, 
+    the defender's y-coord = the enemy's y-coord.
+
+an enemy hits the player means: 
+    the player's health decrements.
+
+a defender hits an enemy means: 
+    the enemy's health decrements.
+
+a player is dead, means the health = 0.0.
+an enemy is dead, means the health = 0.0.
+a player is alive, means the health > 0.0.
+an enemy is alive, means the health > 0.0.
+
+
+an enemy moves right means the x-coord increments.
+an enemy moves left means the x-coord decrements.
+an enemy moves down means the y-coord increments.
+an enemy moves up means the y-coord decrements.
+
+an enemy can move right if the enemy is alive (0.2 seconds).
+an enemy can move left if the enemy is alive (0.2 seconds).
+an enemy can move up if the enemy is alive (0.2 seconds).
+an enemy can move down if the enemy is alive (0.2 seconds).
+
+a defender moves right means the x-coord increments.
+a defender moves left means the x-coord decrements.
+a defender moves down means the y-coord increments.
+a defender moves up means the y-coord decrements.
+a defender can move right.
+a defender can move left.
+a defender can move up.
+a defender can move down.
+
 there is an enemy.
-the player's x-coord = 10.0.
-the player's y-coord = 10.0.
-the enemy's x-coord = 10.0.
-the enemy's y-coord = 10.0.
-the player's health = 10.0.
+there is a player.
+there is a defender.
+the player's health = 400.0.
+the player's x-coord = 350.0.
+the enemy's x-coord = 50.0.
+the player's y-coord = 300.0.
+the enemy's y-coord = 100.0.
+the enemy's color = red.
+the defender's color = blue.
+
 the enemy's health = 10.0.
 
+the defender's x-coord = 300.0.
+the defender's y-coord = 450.0.
 
-
+the enemy should ensure the player is dead.
+the defender should ensure the enemy is dead.

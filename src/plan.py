@@ -27,6 +27,7 @@ def plan(
         couldDo:List[Potential]=[]
 
         for pot in whatAgentCanDo(order.agent, kb):
+            # print(pot.event.english())
             maybeNew=pot.event.tell().eval(kb)
             if isinstance(maybeNew, Zorror): return maybeNew
             newKb=maybeNew[0]
