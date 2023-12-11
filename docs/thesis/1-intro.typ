@@ -40,7 +40,7 @@ To make matters worse, a big thinker like Noam Chomsky (1928-) has expressed, in
 
 But the interview we just cited was not mainly about the threat of super-human Artificial General Intelligence (AGI) wreaking havoc in the world, as serious as it may be (and it is). The interview was mainly about the inadequacy of current Deep Learning models, such as the popular GPT (Generative Pre-trained Transformer), at actually modelling human linguistic thought.
 
-Chomsky argues that while systems like GPT are very good at capturing statistical patterns in natural language, they also work just as well with any "impossible language", i.e. with artificial grammars that infants do not learn spontaneously; making them an unreliable model of (at least) human language acquisition.
+Chomsky argues that while systems like GPT are very good at capturing statistical patterns in natural language, they also work just as well with any "impossible language", i.e., with artificial grammars that infants do not learn spontaneously; making them an unreliable model of (at least) human language acquisition.
 
 Moreover, we can add, such models need huge amounts of data to achieve a level of linguistic competence that is even comparable to that of a human being; a great human author does not need to read a _million_ books before writing his/her _magnum opus_, maybe a couple thousands or less.
 

@@ -83,7 +83,7 @@ Unfortunately, this is not the way Definitions work in Deixiscript. This could _
 
 A possible solution to indicate that a predicate is supposed to be applied symmetrically could be adding a "vice versa" optional clause to a definition (the usage of the phrase "vice versa" is an example of "semantic compression"  as we saw in a previous chapter in @pegasusCompression), this would indicate to the system that the subject and the object could be swapped together without change of meaning.
 
-We would also have to figure out what happens to the body of the Definition in TELL mood, i.e. when "the enemy is near the player" is used as a statement, does it cause the position of the enemy to change to that of the player, or vice versa?
+We would also have to figure out what happens to the body of the Definition in TELL mood, i.e., when "the enemy is near the player" is used as a statement, does it cause the position of the enemy to change to that of the player, or vice versa?
 
 == Possible Extensions: speech
 
