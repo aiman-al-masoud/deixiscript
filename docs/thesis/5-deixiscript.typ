@@ -551,13 +551,13 @@ In our prototype, offline execution is mostly intended for debugging purposes, t
 
 The kind of graphical simulations we have tried out involve a 2D world, where the individuals that have an x and a y coordinate as properties are displayed as colored points on a 2D Cartesian graph (we use the Matplotlib Python library to plot the graphs).
 
-Before the simulation starts, "time is frozen". As soon as the simulation starts, the individuals in the World Model that have been given orders start behaving accordingly.
+Before the simulation starts, "time is frozen". As soon as the simulation starts, the individuals in the World Model that have been given orders start behaving accordingly. Two numbers $M$ and $N$ are associated with the loop.
 
-There is a main loop with a fixed frequency (with a duration of some hundreds of milliseconds $N$) that recomputes the partial strategies (plans) for each individual that was given an order.
+The number $N$ is the period of the loop, it determines the frequency with which the graphics are updated. Decreasing $N$ means increasing the frame rate of the simulation; for instance, setting $N$ to 100 milliseconds (0.1 seconds) means the frame rate will be $frac(1, 0.1) = 10$ Frames Per Second (FPS).
 
-The choice of $N$ (the _period_ of the loop) determines the frequency with which the graphics are updated, decreasing $N$ means increasing the frame rate of the simulation; for instance, setting $N$ to 100 milliseconds (0.1 seconds) means the frame rate will be $frac(1, 0.1) = 10$ Frames Per Second (FPS).
+$M$ is the maximum tolerated planning time, it is used as a parameter for the `plan()` function which uses it as an upper bound for the duration of a computed partial plan. $M$ does not represent an objective time interval in seconds, because the simulation can be sped up and down by tweaking the number $N$. However, $M$ is important because setting a higher value of $M$ will allow the individuals to execute longer partial plans during a single iteration of the main loop, and vice versa for lower values of $M$.
 
-Each partial plan should not exceed in duration the period $N$ of the loop. After the partial plans are computed, they are executed, the graphics are updated, and the loop waits for $N$ milliseconds before proceeding to the next iteration.
+To summarize: each partial plan should not exceed in "duration" the number $M$; and after the partial plans are computed, they are executed, the graphics are updated, and the loop waits for $N$ (actual) milliseconds before proceeding to the next iteration.
 
 #pagebreak()
 
@@ -566,13 +566,13 @@ The main loop is approximately described by the following pseudo-code:
 ```
 while true:
 	for each order:
-		steps=plan(order, kb, PERIOD)
+		steps=plan(order, kb, M)
 		tell(steps, kb)
 	
 	for each individual in kb.world_model:
 		draw(individual)
 	
-	wait(PERIOD)
+	wait(N)
 ```
 
 === REPL
@@ -645,7 +645,7 @@ A definition is a simple sentence followed by the harcoded verb "to mean", follo
 
 ==== Potential
 
-A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, in turn followed by another (this time optional) noun (the direct object). There are two further optional parts of a potential: a duration in seconds and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true", i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
+A potential is a noun followed by the hardcoded modal verb "can", followed by any (non-copular) verb, in turn followed by another (this time optional) noun (the direct object). There are two further optional parts of a potential: a duration in "seconds" and a condition (in no fixed order). If the condition expression (introduced by an "if") is not explicitly stated, it is assumed to be equal to the Boolean value "true", i.e., the action that the potential describes could be carried out unconditionally (at will, without constraints) by the relevant agent.
 
 `<potential> := <noun-phrase> "can" <verb> <noun-phrase>? ["(" <number> "seconds" ")"] ["if" <expression>]`
 
@@ -947,7 +947,7 @@ the defender should ensure the enemy is dead.
 
 We essentially had to add rules to make sure that the defender could move and hit the enemy (just like the enemy can hit the player). We also modified the enemy's potentials to move: now the enemy can only move if it is alive (health > 0), this is to ensure that it (the enemy) will stop "dead in its tracks" when it is "killed" by the defender. Obviously, the code now has to declare an initial health for the enemy too, not just for the player.
 
-The enemy was also made a little slower than the defender, by specifying that the time taken for it to move in any direction is 0.2 seconds, which is more than the (default) of 0.1 seconds of the potentials where the Event's duration is undeclared.
+The enemy was also made a little slower than the defender, by specifying that the time taken for it to move in any direction is 0.2 "seconds", which is more than the (default) of 0.1 "seconds" of the potentials where the Event's duration is undeclared.
 
 Figures 6-9 show some more commented screenshots that illustrate the execution of this program in the REPL.
 

@@ -13,7 +13,7 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 @dataclass
 class CLI:
-    THINK_DURATION=0.5
+    MAX_PLAN_DURATION=0.5
     isSimulating:bool=False
     history:List[KB]=field(default_factory=lambda:[KB()]) 
     parser:Parser=field(default_factory=lambda:Parser('./grammar.lark'))
@@ -85,7 +85,7 @@ class CLI:
         if not self.isSimulating: return
 
         for order in self.history[-1].ords:
-            maybePlan=plan(order, self.history[-1], self.THINK_DURATION)
+            maybePlan=plan(order, self.history[-1], self.MAX_PLAN_DURATION)
             if isinstance(maybePlan, Zorror): 
                 continue
                 # raise Exception(maybePlan)
@@ -121,6 +121,7 @@ def show(kb:KB):
 
 if __name__ == '__main__':
     cli=CLI()
+    LOOP_DURATION_SECONDS=0.1
 
     def cliLoop():
         while True: cli.runCmd(input('> '))
@@ -130,5 +131,4 @@ if __name__ == '__main__':
     while True: 
         cli.simulate()
         cli.redraw()
-        sleep(0.1)
-        # sleep(cli.LOOP_DURATION_SECONDS)
+        sleep(LOOP_DURATION_SECONDS)
