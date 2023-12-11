@@ -13,23 +13,22 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 @dataclass
 class CLI:
-    # LOOP_DURATION_SECONDS=0.1
     LOOP_DURATION_SECONDS=0.5
     isSimulating:bool=False
     history:List[KB]=field(default_factory=lambda:[KB()]) 
     parser:Parser=field(default_factory=lambda:Parser('./grammar.lark'))
+    showTrail:bool=False
 
     def runCmd(self, cmd:str):
         match cmd.split(' ')[0]:
             case ':load': self.load(cmd.split(' ')[1])
             case ':undo': self.undo()
-            case ':start-simulation': self.startSimulation()
-            case ':pause-simulation': self.pauseSimulation()
+            case ':start-simulation': self.isSimulating=True
+            case ':pause-simulation': self.isSimulating=False
+            case ':show-trail': self.showTrail=True
+            case ':hide-trail': self.showTrail=False
             case ':show-model': show(self.history[-1])
             case _: self.runCode(cmd)
-
-    def startSimulation(self): self.isSimulating=True
-    def pauseSimulation(self): self.isSimulating=False
 
     def runCode(self, code:str):
         try: ast=self.parser.parse(code)
@@ -63,6 +62,14 @@ class CLI:
         plt.clf()
         plt.axis([0, 500, 0, 500])
 
+        if self.showTrail:
+            for kb in self.history:
+                for t in kb.wm:
+                    if 'x-coord' not in t: continue
+                    x,y=t['x-coord'],t['y-coord']
+                    assert isinstance(x, Num) and isinstance(y, Num)
+                    plt.scatter([int(x)], [int(y)], s=[10], c=[(1,0,0)])
+
         for thing in self.history[-1].wm:
             if 'x-coord' not in thing: continue
             x,y=thing['x-coord'],thing['y-coord']
@@ -71,6 +78,7 @@ class CLI:
 
             assert isinstance(x, Num) and isinstance(y, Num)
             plt.scatter([int(x)], [int(y)], s=[500], c=[colorCode])
+
         plt.savefig('world_tmp')
     
     def simulate(self):
