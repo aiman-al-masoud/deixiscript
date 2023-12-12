@@ -1,7 +1,7 @@
 #import "template.typ": project
 
 #show: project.with(
-  title: "Deixiscript: Exploring and Implementing a Common Sense Approach to Naturalistic Programming",
+  title: "",
   authors: (
     (name: "Aiman Al Masoud", 
     email: "", 

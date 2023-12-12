@@ -95,12 +95,12 @@
 
   // title
   align(center)[
-    #text(1.1em, weight: 650, title)
+    #text(1.1em, weight: 650, include("title-en.typ"))
   ]
 
   // titolo
   align(center)[
-    #text(1em, weight: 350, "Deixiscript: esplorazione e implementazione di un approccio \"di buon senso\" alla programmazione naturalistica")
+    #text(1em, weight: 350, include("title-it.typ"))
   ]
   
   v(0.8fr)
