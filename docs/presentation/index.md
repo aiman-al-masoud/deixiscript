@@ -50,11 +50,7 @@ This sometimes leads to the scattering of ideas in code: it may take disproporti
 
 Past experiences with new paradigms (such as Aspect Oriented Programming) have shown that it is possible to incorporate new ideas from natural languages into the artificial ones.
 
-# Natural Style
-    - implicit references
-    - universal quantification
-    - revisable rules
-    - implied knowledge
+
 # Existing Work (maybe timeline)
     - Literate Programming
     - Metafor
@@ -62,27 +58,12 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - CAL
     - SN
     - Inform 7
-<!-- # Prompt Engineering
-    - LLMs
-    - prompt structure
-    - techniques
-        - single-shot
-        - few-shot
-        - CoT
-    - LLM settings
-    - Risks
-        factuality
-        bias
-        prompt injection
-        prompt leaking
-        jailbreaking
-    - AI assisted coding
-    - why not enough -->
-# Criticism of natural language programming
-    - a lack of precision
-    - verbosity
-    - are legal documents really natural language?
-    - what is natural anyway in SW?
+    
+# Natural Style
+    - implicit references
+    - universal quantification
+    - revisable rules
+    - implied knowledge
 # Essence of Naturalistic Programming
     - high-level/low-level integration
     - reads almost as English
@@ -90,6 +71,13 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - revisable rules
     - error reporting in natural style
     - declarative (with compromises) 
+
+# Criticism of natural language programming
+    - a lack of precision
+    - verbosity
+    - are legal documents really natural language?
+    - what is natural anyway in SW?
+
 # Common Sense in relation to naturalistic programming
     - what is common sense
     - points in common with NP
@@ -111,7 +99,7 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - ASK/TELL
     - must be defined
     - the noun phrase
-# Syntax matching
+# Syntactic matching
     - Definitions
 # Knowledge Base
     - world model
@@ -140,4 +128,7 @@ Image Sources
 https://www.javatpoint.com/what-is-machine-language
 https://www.discovercoding.ca/hello-world-mips-assembly/
 https://it.wikipedia.org/wiki/Fortran#/media/File:Fortran_acs_cover.jpeg 
+https://www.iconfinder.com/icons/109573/dead_fish_pollution_raw_simple_waste_icon
+https://www.onlinewebfonts.com/icon/499063
+
 -->
