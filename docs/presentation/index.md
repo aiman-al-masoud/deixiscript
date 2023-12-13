@@ -51,12 +51,12 @@ This sometimes leads to the scattering of ideas in code: it may take disproporti
 Past experiences with new paradigms (such as Aspect Oriented Programming) have shown that it is possible to incorporate new ideas from natural languages into the artificial ones.
 
 # Existing Work (maybe timeline)
-    - Literate Programming
-    - Metafor
     - Pegasus
     - CAL
     - SN
     - Inform 7
+    - Literate Programming?
+    - Metafor?
 
 # Essence of Naturalistic Programming
     - high-level/low-level integration
@@ -94,7 +94,8 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - the simple sentence
     - ASK/TELL
     - must be defined
-    - the noun phrase
+# The noun phrase
+    -
 # Syntactic matching
     - Definitions
 # Knowledge Base
@@ -128,3 +129,5 @@ https://www.iconfinder.com/icons/109573/dead_fish_pollution_raw_simple_waste_ico
 https://www.onlinewebfonts.com/icon/499063
 
 -->
+
+
