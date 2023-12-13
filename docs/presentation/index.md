@@ -6,25 +6,21 @@ Good morning everyone. The title of my thesis is: Deixiscript: Exploring and Imp
 
 # Naturalistic Programming: what is it, why is it relevant
 
-Let's start by defining what we mean by naturalistic programming, and why we think it is relevant today. 
-
 Naturalistic programming is broadly understood as the attempt to write computer code in a some subset of natural language. 
 
-A subset: because natural language (despite the apperences) is an intricate system, and up until recently, it had never seen wide usage in programming. 
+Natural language (despite the apperences) is an intricate system, and up until recently, it had never seen wide usage in programming. 
 
-Natural language is not only objectively difficult to interpret on a computer, it can also be vague and ambigious. 
+Natural language can be vague and ambiguous, this is why attempts to use it for programming have been widely disregarded, even by prominent critics such as Edsger Dijsktra [SHOW QUOTE].
 
-This is why attempts to use it for programming have been widely disregarded, even by prominent critics such as Edsger Dijsktra [SHOW QUOTE].
+There are reasons to think that the status quo is about to change drastically. The introduction of Large Language Models (or LLMs), and of Prompt Engineering and AI-Assisted coding, is rapidly changing the way programmers write code. 
 
-There are reasons to think that the status quo is about to change drastically. The introduction of Large Language Models (or LLMs)  ...through Prompt Engineering and AI-Assisted coding... is rapidly changing the way programmers write code. 
+Matt Welsh, a computer scientist, thinks that in the arc of 10 to 30 years the whole field of computer science won't be remotely recognizable. 
 
-Matt Welsh, a computer scientist, thinks that this transformation very soon: according to him, in the arc of 10 to 30 years the whole field of computer science won't be remotely recognizable.
+Traditional programming languages may become (virtually) extinct.
 
-Traditional programming languages may become (virtually) extinct, being supplanted by natural language for most applications.
+This will bring benefits: as more people will be able to do more things with computers, but there will be the negative aspects. 
 
-This will bring benefits: as more people will be able to do more things with computers, and we surely hope so, but there will be the negative aspects. 
-
-From a purely scientific viewpoint, it is hard to be content with developing larger and larger deep learning models that simply work as black boxes that process language.
+From a purely scientific viewpoint, it is hard to be content with developing larger and larger deep learning black boxes.
 
 Eminent linguists and thinkers such as Noam Chomsky have expressed doubts regarding the LLMs' capacity to model language acquisition in humans: they can learn artificial languages just as easily.
 
@@ -34,11 +30,26 @@ From our point of view we think that it is paramount to understand how natural l
 
 Just like natural languages, programming languages change and evolve during time. You can see here a timeline of only some of the most important ones here. 
 
-Programming languages tend to follow a programming paradigm (and some are multiparadigm). The four most popular ones of all times are: procedural, functional, object oriented and logic. These paradigms in turn can be classified as declarative or imperative.
+Programming languages tend to follow a programming paradigm (and some are multiparadigm). 
+
+The four most popular ones of all times are: procedural, functional, object oriented and logic. 
+
+These paradigms in turn can be classified as declarative or imperative. 
+
+As we all know, declarative programming is about telling the computer what has to be done. Imperative programming puts more focus on the how.
 
 # The need for naturalistic programming
-    - precision/expressiveness tradeoff
-    - semantic gap & scattering of ideas (some examples)
+
+Programming languages are precise, but there is a tradeoff between the precision and the expressiveness of a language. 
+
+As is shown in this graph from a survey on Controlled Natural Languages (a kind of naturalistic language).
+
+There is also the issue of semantic gap: there is a wider gap between the concepts easily represented in programming languages and the natural human way of describing things.
+
+This sometimes leads to the scattering of ideas in code: it may take disproportionate effort to understand even simple logic expressed in a programming language, versus the same concept expressed in natural language.
+
+Past experiences with new paradigms (such as Aspect Oriented Programming) have shown that it is possible to incorporate new ideas from natural languages into the artificial ones.
+
 # Natural Style
     - implicit references
     - universal quantification
