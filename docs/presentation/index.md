@@ -50,7 +50,6 @@ This sometimes leads to the scattering of ideas in code: it may take disproporti
 
 Past experiences with new paradigms (such as Aspect Oriented Programming) have shown that it is possible to incorporate new ideas from natural languages into the artificial ones.
 
-
 # Existing Work (maybe timeline)
     - Literate Programming
     - Metafor
@@ -58,19 +57,16 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - CAL
     - SN
     - Inform 7
-    
-# Natural Style
-    - implicit references
-    - universal quantification
-    - revisable rules
-    - implied knowledge
+
 # Essence of Naturalistic Programming
     - high-level/low-level integration
     - reads almost as English
-    - moderate use of implicit references
+    - implicit references
+    - implied knowledge
     - revisable rules
     - error reporting in natural style
     - declarative (with compromises) 
+    - universal quantification ?
 
 # Criticism of natural language programming
     - a lack of precision
