@@ -58,7 +58,7 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - Literate Programming?
     - Metafor?
 
-# Essence of Naturalistic Programming
+# Naturalistic Ideas
     - high-level/low-level integration
     - reads almost as English
     - implicit references
@@ -68,18 +68,19 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - declarative (with compromises) 
     - universal quantification ?
 
-# Criticism of natural language programming
-    - a lack of precision
-    - verbosity
-    - are legal documents really natural language?
-    - what is natural anyway in SW?
-
 # Common Sense in relation to naturalistic programming
     - what is common sense
     - points in common with NP
         - disambiguation & implied knowledge
         - revisable rules
         - automated planning & declarative programming
+
+# Criticism of natural language programming
+    - a lack of precision
+    - verbosity
+    - are legal documents really natural language?
+    - what is natural anyway in SW?
+
 # Deixiscript
     - origin of name 
     - goals and non goals
@@ -90,11 +91,14 @@ Past experiences with new paradigms (such as Aspect Oriented Programming) have s
     - parser
     - functional style 
     - interpreter pattern
-# Simple Sentences & Noun Phrases
+
+# interpreter pattern
+
+# Simple Sentences
     - the simple sentence
     - ASK/TELL
     - must be defined
-# The noun phrase
+# noun phrases
     -
 # Syntactic matching
     - Definitions
