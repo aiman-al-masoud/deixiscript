@@ -78,7 +78,7 @@ Inform 7: 2005/2006, for interactive fiction, wider usage, has past tense, is al
 
 SN: 2019, more formal-looking than the others, naturalistic iterators through introspection.
 
-Metafor: not full system, generates scaffolding code, uses common sense knowledge from big Open Mind corpus.
+Metafor: not full system, generates scaffolding code, uses common sense knowledge from big Open Mind corpus. storytelling
 
 Literate programming: from the 80's, not single language, approach, by Donald Knuth, code for humans not for machine, markup+programming language.
 
