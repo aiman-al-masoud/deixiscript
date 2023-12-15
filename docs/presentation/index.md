@@ -6,98 +6,149 @@ Good morning everyone. The title of my thesis is: Deixiscript: Exploring and Imp
 
 # Naturalistic Programming: what is it, why is it relevant
 
-Naturalistic programming is broadly understood as the attempt to write computer code in a some subset of natural language. 
+Broadly understood as attempt to write computer code in subset of natural language.
 
-Natural language (despite the apperences) is an intricate system, and up until recently, it had never seen wide usage in programming. 
+Natural language (despite apperences) is intricate system. Up until recently never seen wide usage in programming.
 
-Natural language can be vague and ambiguous, this is why attempts to use it for programming have been widely disregarded, even by prominent critics such as Edsger Dijsktra [SHOW QUOTE].
+Natural language can be ambiguous and verbose. Attempts to use it for programming have been widely disregarded. Prominent critics such as Edsger Dijsktra [SHOW QUOTE].
 
-There are reasons to think that the status quo is about to change drastically. The introduction of Large Language Models (or LLMs), and of Prompt Engineering and AI-Assisted coding, is rapidly changing the way programmers write code. 
+Reasons to think that status quo is about to change drastically. 
 
-Matt Welsh, a computer scientist, thinks that in the arc of 10 to 30 years the whole field of computer science won't be remotely recognizable. 
+Introduction of Large Language Models (LLMs), and Prompt Engineering and AI-Assisted coding. Rapidly changing the way programmers write code.
+
+Matt Welsh, a computer scientist, predicts that in the arc of 10 to 30 years the whole field of computer science won't be remotely recognizable. 
 
 Traditional programming languages may become (virtually) extinct.
 
-This will bring benefits: as more people will be able to do more things with computers, but there will be the negative aspects. 
+Benefits: more people will be able to do more things with computers. 
 
-From a purely scientific viewpoint, it is hard to be content with developing larger and larger deep learning black boxes.
+Problems: legal, economic change.
 
-Eminent linguists and thinkers such as Noam Chomsky have expressed doubts regarding the LLMs' capacity to model language acquisition in humans: they can learn artificial languages just as easily.
+From purely scientific viewpoint: it's hard to be content with developing larger and larger deep learning black boxes.
 
-From our point of view we think that it is paramount to understand how natural language is better (and how it is worse) than programming languages at describing computer programs.
+Eminent linguists and thinkers (Noam Chomsky) have expressed doubts regarding LLMs' capacity to model language acquisition in humans. 
+
+LLMs learn artificial languages just as easily.
+
+From our point of view: paramount to understand how natural language is better (and how worse) than programming languages at describing computer programs.
 
 # Programming Languages History
 
-Just like natural languages, programming languages change and evolve during time. You can see here a timeline of only some of the most important ones here. 
+Just like natural languages, programming languages change and evolve [SHOW TIMELINE OF IMPORTANT PROGRAMMING LANGUAGES].
 
-Programming languages tend to follow a programming paradigm (and some are multiparadigm). 
+A Programming language tends to follow a programming paradigm (and some are multiparadigm).
 
-The four most popular ones of all times are: procedural, functional, object oriented and logic. 
+The four most popular paradigms of all times: procedural, functional, object oriented and logic. 
 
-These paradigms in turn can be classified as declarative or imperative. 
+Paradigms in turn can be classified as declarative or imperative.
 
-As we all know, declarative programming is about telling the computer what has to be done. Imperative programming puts more focus on the how.
+Imperative programming is about telling computer how to do something. Declarative more about the what, leaving details out.
 
 # The need for naturalistic programming
 
-Programming languages are precise, but there is a tradeoff between the precision and the expressiveness of a language. 
+Programming languages are precise.
 
-As is shown in this graph from a survey on Controlled Natural Languages (a kind of naturalistic language).
+But there is tradeoff between the precision and the expressiveness of a language. 
 
-There is also the issue of semantic gap: there is a wider gap between the concepts easily represented in programming languages and the natural human way of describing things.
+[DESCRIBE GRAPH OF CONTROLLED NATURAL LANGUAGE SURVEY].
 
-This sometimes leads to the scattering of ideas in code: it may take disproportionate effort to understand even simple logic expressed in a programming language, versus the same concept expressed in natural language.
+Also issue of semantic gap.
 
-Past experiences with new paradigms (such as Aspect Oriented Programming) have shown that it is possible to incorporate new ideas from natural languages into the artificial ones.
+[DEFINE SEMANTIC GAP].
+
+Semantic gap often causes unclear/obfuscated exposition of ideas in code. 
+
+Some researchers call this: "the scattering of ideas".
+
+Disproportionate effort to understand simple logic expressed in a programming, versus a natural language.
+
+Improvement is possible.
+
+Aspect Oriented Programming increases modularity of code by separation of cross-cutting concerns. Similar to referential capabilities of "chapters" in a book.
 
 # Existing Work (maybe timeline)
-    - Pegasus
-    - CAL
-    - SN
-    - Inform 7
-    - Literate Programming?
-    - Metafor?
+
+There has been substantial work in field of naturalistic programming. We mention a few.
+
+Pegasus: 2006, general purpose system, allows context dependent implicit references, syntactic/semantic compression, uses language independent notation under the hood.
+
+CAL: 2006, English compiler, implemented in CAL itself, more procedural style.
+
+Inform 7: 2005/2006, for interactive fiction, wider usage, has past tense, is also  slightly context dependent, rule-based with circumstances, recently open sourced (2022).
+
+SN: 2019, more formal-looking than the others, naturalistic iterators through introspection.
+
+Metafor: not full system, generates scaffolding code, uses common sense knowledge from big Open Mind corpus.
+
+Literate programming: from the 80's, not single language, approach, by Donald Knuth, code for humans not for machine, markup+programming language.
 
 # Naturalistic Ideas
-    - high-level/low-level integration
-    - reads almost as English
-    - implicit references
-    - implied knowledge
-    - revisable rules
-    - error reporting in natural style
-    - declarative (with compromises) 
-    - universal quantification ?
+
+Some general ideas from the surveyed languages.
+
+Implicit reference: using noun phrases rather than variable names.
+
+Implied Knowledge: context dependent resolution of noun phrases [DISCUSS TABLE/BALL EXAMPLE].
+
+Revisable rules: (and defaults) revise assumptions made about general class when talking about specific class. More drastic than OOP (which has Liskov limitation).
+
+Liskov: any property that holds for a superclass should still hold for a subclass.
+
+Error handling: (as Inform 7 Graham Nielsen says) should happen in natural terms, should give suggestions. We may say: "speak the user's language" (Jakob Nielsen's 10 usability heuristics).
+
+High-leve/Low-level integration: allows to relate high-level knowledge to low-level details. As creators of CAL say: like a maths textbook. Formal code interspersed in natural language. Also like Literate Programming.
+
 
 # Common Sense in relation to naturalistic programming
-    - what is common sense
-    - points in common with NP
-        - disambiguation & implied knowledge
-        - revisable rules
-        - automated planning & declarative programming
+
+There is relation between common sense in AI and naturalistic programming.
+
+[DEFINE COMMON SENSE IN AI]
+
+Early usage of term by John McCarthy in paper.
+
+Common Sense is hard compared to narrow problem solving (such as chess).
+
+[LIST OUT SIMILARITIES WITH NATURALISTIC PROGRAMMING]
+
+AI approaches can be seen as a kind of declarative programming.
+
+Automated planning: Intelligence is seen as ability to achieve goals, so planning is needed.
 
 # Criticism of natural language programming
-    - a lack of precision
-    - verbosity
-    - are legal documents really natural language?
-    - what is natural anyway in SW?
+
+[LIST OUT CRITICISMS]
 
 # Deixiscript
-    - origin of name 
-    - goals and non goals
-    - evolution
+
+[SEE SLIDES]
+
 # Implementation Details
-    - language
-    - libraries & licenses
-    - parser
-    - functional style 
-    - interpreter pattern
+
+[SEE SLIDES]
 
 # interpreter pattern
 
+[SHOW UML DIAGRAM]
+
+Terminal (leaf) vs Compound expressions.
+
+Same interface.
+
+Solve (or "eval") method that takes context.
+
+Terminal evaluates to itself.
+
+Compound evaluates children, then applies further logic.
+
+Result returned. Context is modified if needed.
+
+In our case, new context object is returned (functional approach).
+
 # Simple Sentences
-    - the simple sentence
-    - ASK/TELL
-    - must be defined
+
+[SEE SLIDES]
+
 # noun phrases
     -
 # Syntactic matching
