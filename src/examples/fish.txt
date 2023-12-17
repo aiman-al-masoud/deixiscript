@@ -5,6 +5,7 @@ an amphibious fish is dead means the health <= 0.0.
 there is a fish.
 there is an amphibious fish.
 the amphibious fish's health = 10.0.
+the amphibious fish's location = land.
 the non-amphibious fish's location = land.
 
 the non-amphibious fish is dead, (the amphibious fish is dead) = false?
