@@ -1,3 +1,5 @@
+// original template from: https://github.com/zagoli/simple-typst-thesis
+
 #let buildMainHeader(mainHeadingContent) = {
   [
     #align(center, smallcaps(mainHeadingContent)) 

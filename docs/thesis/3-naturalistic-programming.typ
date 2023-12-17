@@ -92,13 +92,9 @@ The program, which can be seen as a very peculiar kind of transpiler, called Met
 
 The code generated was "scaffolding", or underspecified code, that in fact was not meant to be executed right out of the box. Related to this, is an interesting concept discussed in the work; that ambiguity is not always a negative aspect of natural language, but, on the contrary, it is a means of avoiding difficult design decisions at too early of a stage in a project; and indeed Metafor was designed to automatically refactor the output Python code whenever it received an indication that the underlying representation was no longer adequate to the story being told and had to change; for instance, by automatically promoting attributes of a Python class to sub-classes of their own @liu2005metafor. 
 
-// This ties in well with the idea of "successive refinements" we mentioned earlier.
-
 The paper also touched upon the concept of programmatic semantics, expanded upon in another work @liu2005programmatic by the same two authors; which is the idea that natural language structures imply and can be mapped to the more traditional programming constructs, the authors claim that "a surprising amount" of what they call programmatic semantics can be inferred from the linguistic structure of a story @liu2005metafor. The authors propose, by making a simple example, that noun phrases may generally correspond to data structures, verbs to functions, and so on. <verbsasfuncs>
 
 As we already saw, the code produced by the system was never really meant to be complete or executable, but its main purpose was to facilitate the task of outlining a project, especially for novice users. And it showed promising results when it was tested by a group of 13 students, some of which with novice and some of which with intermediate programming skills. The students responded to the question of whether they would be likely to use it as a brainstorming tool, in lieu of more traditional pen-and-paper methods @liu2005metafor.
-
-//  STORIES! inform 7!!!
 
 == Existing Naturalistic Languages
 
@@ -122,7 +118,7 @@ These three mechanisms, in the authors' opinion, all help in reducing the amount
 
 ==== Idea Notation
 
-The authors discuss of a possible formalization of human thought; it may or may not be possible for a computer to "experience" the same thoughts and feelings as a human being, but, according to the authors, it should be possible to describe the structure of human thought formally enough for it to be imitated mechanically. // human THOUGHT
+The authors discuss of a possible formalization of human thought; it may or may not be possible for a computer to "experience" the same thoughts and feelings as a human being, but, according to the authors, it should be possible to describe the structure of human thought formally enough for it to be imitated mechanically.
 
 They propose a distinction between what they call "Atomic" versus "Complex" ideas, the former stemming directly from human perception (such as "the smell of wood", or "the warmth of wood"), and the latter being a combination of the former (such as the very idea of "wood").
 
@@ -248,7 +244,8 @@ An example of how this is an issue is given by the (code organization) problem o
 
 The solution to this problem in Inform 6 (which is an OOP language) was either to add a general rule, which was deemed a little over-the-top for such an ad-hoc circumstance; or to attach this behavior to a specific action: the taking of the apple (therefore: inside the apple fruit's code), which was also deemed inappropriate, because, paraphrasing the author's elegant explanation: some might see this peculiarity (the immaterial grasping hand) as a behavior of the magic ring, and some might see it as a behavior of the box, but certainly none will naturally come to think of it as a behavior of the apple.
 
-The solution in Inform 7 involves the introduction of a new kind of rule, which specifies the circumstances under which other rules have to be ignored. // cf: machines like us 
+The solution in Inform 7 involves the introduction of a new kind of rule, which specifies the circumstances under which other rules have to be ignored.
+
 In general, specific rules take precedence over more general ones, and the order of declaration of the rules in the source code is irrelevant, because rule-precedence is handled automatically.
 
 This system of so called "gradation of rules" needs: (1) a working system of types that can recognize and match subtypes to general types; and (2) a mechanism to declare "circumstances" in which different rules apply (or do not).
@@ -452,8 +449,6 @@ When it comes to readability, he draws the distinction between readability-per-l
 However, readability-per-line is a successful marketing strategy, because it means that a language will seem easy to learn, to the eyes of its new potential users, and that feature can be successfully employed to advertise a language over its competitors; the author further exemplifies this with the analogy of advertising for small monthly installments versus large upfront payments, as an instance of a parallel successful marketing strategy.
 
 While natural language certainly is not better than mathematical notation at succinctly expressing mathematical equations, there are other areas of human experience that are more easily, and perhaps more effectively, captured through the mechanisms of natural language.
-
-// Programming Languages shouldn't be" too Natural" Mandrioli, Dino and Pradella, Matteo
 
 === Are legal documents _really_ written in "natural" language?
 

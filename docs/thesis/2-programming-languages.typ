@@ -321,8 +321,6 @@ For instance, querying for `father(X, luke)` will attempt to find Luke's father 
 
 Prolog and similar systems always assume that the information they possess is complete; that anything that is true is also known to be true, or equivalently that anything that is not known to be true has to be false. This is known as the Closed-World Assumption (CWA), and it is generally contrasted with the Open-World Assumption (OWA) used by some other systems. The CWA is related to the concept of "Negation as Failure", which views negation as the failure to prove the truth of a statement @sebesta2012concepts.
 
-// https://www.dataversity.net/introduction-to-open-world-assumption-vs-closed-world-assumption/
-
 === The impact of Prolog 
 
 Logic Programming has seen periods of greater popularity, especially during the years of the Japanese Fifth Generation Computer Systems (FGCS) initiative, from the early 1980s to the early 1990s @smith2006history. This paradigm has not become more widespread, in part because of performance related issues; Unification is relatively slow: there are still no known fast solutions in pure Logic Programming to elementary problems such as sorting a list of numbers, short of explicitly writing the code for a sorting algorithm, which means abandoning pure Logic Programming @sebesta2012concepts.
@@ -375,79 +373,3 @@ In other words, while it is certainly true that all programming languages serve 
 
 As Guy Steele (1954-), computer scientist and language designer, explains (and shows) in his talk "Growing a Language" @steele1998growing, planning for (organic, user directed) growth is the best strategy a modern language designer can take. Starting with a large set of primitives (like PL/I) is as bad as starting without the proper facilities to let the language users themselves define new constructs, that integrate well with the language's native ones.
 
-
-// - believing that something that changed didn't change (as a result of high coupling)
-// - believing that something that hasn't changed did change (as a result of repetition)
-
-// ----------
-// = Temporary Notes
-
-// BASIC
-
-// BASIC (Beginner's All-purpose Symbolic Instruction Code) was originally
-
-// 1963 to
-// design a new language especially for liberal arts students.
-
-// The most important aspect of the original BASIC was that it was the first
-// widely used language that was used through terminals connected to a remote
-// computer. Terminals had just begun to be available at that time. Before then,
-// most programs were entered into computers through either punched cards or
-// paper tape.
-
-// The resurgence of BASIC in the 1990s was driven by the appearance of
-// Visual BASIC (VB). VB became widely used in large part because it provided
-// a simple way of building graphical user interfaces (GUIs), hence the name
-// Visual BASIC.
-
-// APL
-// A Programming Language
-// originally designed in the '60s by Kenneth E. Iverson at IBM, not to be implemented.
-
-// Huge number of operators, unreadable
-
-
-// Pascal, C
-
-// LOGIC PROGRAMMING & PROLOG
-
-// - declarative paradigm
-// - programming based on predicate logic
-// - data specification AND inference method
-
-// https://www.sciencedirect.com/topics/computer-science/resolution-principle
-
-// During the early 1970s,
-// The first Prolog interpreter was developed at Marseille in 1972
-// University of Aix-Marseille
-// Department of Artificial Intelligence at the University of Edin-
-// burgh
-
-// intelligent database, facts and rules
-
-// two major reasons why logic programming has
-// not become more widely used. First, as with some other nonimperative
-// approaches, programs written in logic languages thus far have proven to
-// be highly inefficient relative to equivalent imperative programs. Second, it
-// has been determined that it is an effective approach for only a few relatively
-// small areas of application: certain kinds of database management systems and
-// some areas of AI.
-
-// Prolog++
-
-// https://wiki.c2.com/?DesignByCommittee: Ada, COBOL, Haskell
-
-
-// Markup Languages
-
-// (the pragmatic programmer)
-// - believing that something that changed didn't change (as a result of high coupling)
-// - believing that something that hasn't changed did change (as a result of repetition)
-
-// declarative "better"
-
-// // growing a lang, Guy Steele
-// ----------------------
-// There are other kinds of Imperative programming such as unstructured programming which makes use of goto statements, but Procedural programming relies on structured programming techniques (control flow structures such as loops and if statements rather than gotos) and procedures (a kind of routine) to modularize the program.
-
-// // % https://survey.stackoverflow.co/2023/#technology

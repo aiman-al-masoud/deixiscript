@@ -59,14 +59,3 @@ The third chapter will bring the focus on naturalistic programming specifically,
 The fourth chapter will jump straight into the intriguing (yet difficult) topic of Common Sense in AI, and will try relating some of the principles of naturalistic programming to some of those in classical (or "Symbolic", or "Good Old Fashioned") AI.
 
 The last two chapters will be dedicated to describing our work in trying to implement some of the naturalistic ideas into a new prototype language we are designing ("Deixiscript").
-
-// == Practical Goals (and Non-Goals)
-
-// == Goals
-// To show that is is possible to efficiently approximate some key features of natural language (implicit referencing and syntactic compression) with a formalized subset of it.
-
-// To present the implementation of a formalized subset of the English language, showcasing said naturalistic features.
-
-// To suggest that said formalized language subset may prove useful for some lightweight scripting tasks, particularly as a spoken language.
-// == Non Goals
-// The goal is not to make a full system, but rather to prototype a language. Modern LLMs provide a way to translate natural language to code, but we want a language rather than a probabilistic translator, we want to axiomatize that part of natural language that is useful for programming.

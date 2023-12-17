@@ -11,3 +11,4 @@ docs/attachments/
 *.blg
 *.bbl
 *tmp*
+!aiman-al-masoud-thesis-deixiscript.pdf
